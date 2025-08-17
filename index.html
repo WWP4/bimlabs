@@ -298,6 +298,36 @@
 @media (max-width:900px){ .footer-inner{ grid-template-columns:1fr; } }
 
 
+    /* ====== STORY ====== */
+.story-section{
+  background: linear-gradient(110deg,#171a22 65%,#101014 100%);
+  padding: 4.5rem 0 4.8rem;
+}
+.story-wrap{
+  max-width: 1100px; margin: 0 auto; padding: 0 2rem;
+  display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 3rem; align-items: center;
+}
+.story-title{ font-size: 2.05rem; font-weight: 900; color: var(--blue); letter-spacing: .02em; margin: 0 0 .9rem; }
+.story-lead{ font-size: 1.12rem; color: #e8eef6; opacity: .92; line-height: 1.65; margin: 0 0 1.1rem; }
+.story-points{ list-style: none; padding: 0; margin: 0 0 1.5rem; }
+.story-points li{ position: relative; padding-left: 1.4rem; margin: .4rem 0; color: #dfe6ee; line-height: 1.65; }
+.story-points li::before{
+  content: ""; width: .5rem; height: .5rem; background: var(--blue); border-radius: 50%;
+  position: absolute; left: 0; top: .55rem; box-shadow: 0 0 0 4px rgba(78,198,255,.12);
+}
+.story-cta-row{ display:flex; gap:.9rem; flex-wrap:wrap; margin-top:.2rem; }
+.story-cta{ background: var(--blue); color: var(--black); padding: .85rem 1.4rem; border-radius: 2rem; font-weight: 800; text-decoration: none; box-shadow: 0 2px 14px #4ec6ff27; }
+.story-cta:hover{ background:#fff; color:var(--blue); }
+.story-link{ color:#b8c7da; font-weight:700; text-decoration:none; }
+.story-link:hover{ color:var(--blue); }
+.story-card{ background: var(--glass2); border: 1.5px solid #1e232e; border-radius: 1.6em; box-shadow: 0 8px 34px #4ec6ff1a, 0 1px 8px #0006; overflow: hidden; }
+.story-card img{ display:block; width:100%; height:100%; object-fit: cover; }
+@media (max-width: 900px){
+  .story-wrap{ grid-template-columns: 1fr; gap: 1.8rem; }
+  .story-title{ font-size: 1.6rem; }
+}
+
+
     .story-section{
   background: linear-gradient(110deg,#171a22 65%,#101014 100%);
   padding: 4.5rem 0;
@@ -397,7 +427,38 @@
       <a href="#portfolio" class="story-link">See Live Work ↗</a>
     </div>
   </div>
+</ssection>
+
+    <!-- ====== FOUNDER STORY ====== -->
+<section class="story-section" id="our-story" data-aos="fade-up">
+  <div class="story-wrap">
+    <div class="story-copy">
+      <h2 class="story-title">Why I Started BIM Labs</h2>
+      <p class="story-lead">
+        Agencies quoted $5k–$20k for basic sites. It didn’t sit right—especially for small teams trying to grow.
+        I started BIM Labs to build the kind of websites and CRMs I wish I had: fast, minimal, and priced like a partner,
+        not a gatekeeper.
+      </p>
+      <ul class="story-points">
+        <li><b>Fair pricing:</b> high-end look + real functionality without bloat.</li>
+        <li><b>Owner’s mindset:</b> we care about your pipeline and outcomes, not billable hours.</li>
+        <li><b>Speed to value:</b> launch fast, iterate weekly, measure everything.</li>
+      </ul>
+      <div class="story-cta-row">
+        <a href="#contact" class="story-cta">Start a Vision Call</a>
+        <a href="#portfolio" class="story-link">See Live Work ↗</a>
+      </div>
+    </div>
+
+    <div class="story-media">
+      <div class="story-card">
+        <img src="https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=1200&q=80"
+             alt="BIM Labs studio" loading="lazy">
+      </div>
+    </div>
+  </div>
 </section>
+
 
   <!-- ABOUT -->
   <section class="about-section" id="about" data-aos="fade-up">
@@ -449,26 +510,20 @@
     </div>
   </section>
   <!-- PORTFOLIO -->
-  <section class="portfolio-section" id="portfolio">
-    <div class="portfolio-title" data-aos="fade-up">Selected Portfolio</div>
-    <div class="portfolio-gallery">
-      <div class="portfolio-card" data-aos="zoom-in-up">
-        <div class="portfolio-label">Featured</div>
-        <img src="your-real-project1.png" alt="Client 1" />
-        <div class="portfolio-desc">Real brand. Custom UX. Enterprise-level CRM. (Swap in your project)</div>
-      </div>
-      <div class="portfolio-card" data-aos="zoom-in-up" data-aos-delay="100">
-        <div class="portfolio-label">Agency</div>
-        <img src="your-real-project2.png" alt="Client 2" />
-        <div class="portfolio-desc">Creative studio with dynamic client dashboard. (Swap in your project)</div>
-      </div>
-      <div class="portfolio-card" data-aos="zoom-in-up" data-aos-delay="200">
-        <div class="portfolio-label">Education</div>
-        <img src="your-real-project3.png" alt="Client 3" />
-        <div class="portfolio-desc">Modern, mobile-first, full client portal and events. (Swap in your project)</div>
-      </div>
-    </div>
-  </section>
+ <div class="portfolio-card" data-aos="zoom-in-up">
+  <div class="portfolio-label">Live Demo</div>
+  <!-- Fake browser chrome -->
+  <div style="height:52px;background:#151a22;border:1px solid #1e232e;border-radius:12px 12px 0 0;padding:0 12px;display:flex;align-items:center;gap:8px;">
+    <span style="width:10px;height:10px;background:#ff5f57;border-radius:50%;"></span>
+    <span style="width:10px;height:10px;background:#febc2e;border-radius:50%;"></span>
+    <span style="width:10px;height:10px;background:#28c840;border-radius:50%;"></span>
+    <span style="color:#cdd9e6;margin-left:12px;opacity:.9;font-size:.9rem;">wonderworldplaysets.com</span>
+    <a href="https://wonderworldplaysets.com" target="_blank" style="margin-left:auto;color:#4EC6FF;text-decoration:none;font-weight:700;font-size:.9rem;">Open ↗</a>
+  </div>
+  <iframe src="https://wonderworldplaysets.com" style="width:100%;height:460px;border:1px solid #1e232e;border-top:none;border-radius:0 0 12px 12px;" loading="lazy"></iframe>
+  <div class="portfolio-desc" style="margin-top:1rem;">Explore one of our builds without leaving the page.</div>
+</div>
+
   <!-- SERVICES -->
   <section class="services-section" id="services">
     <div class="section-title" data-aos="fade-up">Services</div>
