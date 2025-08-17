@@ -489,34 +489,30 @@
   </div>
 </section>
 
- <!-- ====== BEFORE / AFTER (REPLACEMENT) ====== -->
-<section id="compare" class="compare-section" data-aos="fade-up">
-  <div class="compare-header" style="max-width:1100px;margin:0 auto 1rem;display:flex;align-items:center;justify-content:space-between;padding:0 1rem;">
-    <h2 class="section-title" style="margin:0;">Before → After</h2>
-    <a href="#contact" class="compare-cta" style="background:#4EC6FF;color:#101014;font-weight:800;padding:.65rem 1.1rem;border-radius:999px;text-decoration:none;box-shadow:0 2px 14px rgba(78,198,255,.25);">Rebuild My Site</a>
-  </div>
-
-  <div class="compare" style="position:relative;max-width:1100px;margin:0 auto;border-radius:16px;overflow:hidden;box-shadow:0 10px 36px rgba(0,0,0,.35);border:1px solid #1e232e;">
-    <!-- Replace these src paths with your saved screenshots -->
-    <img src="images:before-site.png" alt="Before BIM Labs website" class="compare-img" style="display:block;width:100%;height:auto;" />
-    <div class="compare-overlay" style="position:absolute;inset:0;width:55%;overflow:hidden;transition:width .2s;">
-      <img src="images:after-site.png" alt="After BIM Labs website" class="compare-img" style="display:block;width:100%;height:auto;" />
+ <!-- ====== BEFORE / AFTER ====== -->
+<section class="compare-section" data-aos="fade-up">
+  <div class="compare-wrap">
+    <div class="compare-copy">
+      <h2 class="compare-title">From Generic → BIM Labs</h2>
+      <p class="compare-lead">Slide to see how we turn a cluttered site into a minimal, conversion-ready experience.</p>
+      <a href="#contact" class="compare-cta">Rebuild My Site</a>
     </div>
 
-    <!-- Slider -->
-    <input class="compare-slider" type="range" min="0" max="100" value="55" aria-label="Compare slider"
-           style="position:absolute;left:50%;top:0;transform:translateX(-50%);height:100%;width:100%;appearance:none;background:transparent;outline:none;cursor:ew-resize;">
-    <!-- Handle (visual) -->
-    <div aria-hidden="true" class="compare-handle"
-         style="position:absolute;top:50%;left:55%;transform:translate(-50%,-50%);width:48px;height:48px;border-radius:50%;background:#4EC6FF;box-shadow:0 0 0 6px rgba(78,198,255,.22),0 8px 22px rgba(0,0,0,.35);display:flex;align-items:center;justify-content:center;font-weight:900;color:#101014;">
-      ⇆
+    <div class="compare-card">
+      <div class="compare">
+        <img src="images/before-site.png" alt="Before site" class="compare-img" />
+        <div class="compare-overlay">
+          <img src="images/after-site.png" alt="After site" class="compare-img" />
+        </div>
+        <input class="compare-slider" type="range" min="0" max="100" value="55" aria-label="Compare slider" />
+      </div>
+      <div class="compare-labels">
+        <span>Before</span><span>After</span>
+      </div>
     </div>
-  </div>
-
-  <div class="compare-labels" style="max-width:1100px;margin:.6rem auto 0;display:flex;justify-content:space-between;color:#b8c7da;padding:0 6px;font-weight:700;letter-spacing:.02em;">
-    <span>Before</span><span>After</span>
   </div>
 </section>
+
 
 
 <section class="features-section" id="features">
