@@ -1,0 +1,113 @@
+<!-- HERO = Animated Logo as Permanent Hero (no fade out) -->
+<section class="hero-landing">
+  <div class="hero-inner">
+    <!-- Your exact animated logo -->
+    <div class="logo-container">
+      <div class="letters">
+        <span>B</span><span>I</span><span>M</span><span>L</span><span>A</span><span>B</span><span>S</span>
+      </div>
+      <svg class="symbol" viewBox="0 0 100 100" aria-hidden="true">
+        <path id="symbolPath" class="outline" d="M50 10 A40 40 0 1 1 50 90 L80 90" />
+        <path class="fill-shape" d="M50 30 A20 20 0 1 1 50 70 Z" />
+      </svg>
+    </div>
+
+    <!-- Tagline & primary CTA stay visible after the animation -->
+    <p class="tagline">High-End Websites & CRMs. Built Fast. Built Right.</p>
+    <div class="hero-ctas">
+      <a class="cta primary" href="#contact">Book a Vision Call →</a>
+      <a class="cta ghost" href="#work">See Our Work</a>
+    </div>
+
+    <!-- Optional: skip intro (for repeat visitors) -->
+    <button class="skip-intro" onclick="document.body.classList.add('intro-done')">Skip intro</button>
+  </div>
+
+  <div class="scroll-hint">Scroll</div>
+</section>
+
+<style>
+  :root { --black:#101014; --blue:#4EC6FF; --white:#fff; }
+  .hero-landing{
+    min-height: 92vh;
+    display:grid; place-items:center;
+    background: radial-gradient(1200px 700px at 80% -10%, #1b2143 0%, #0f1220 40%), var(--black);
+    color: var(--white);
+    overflow:hidden; text-align:center; padding: 6vh 24px;
+  }
+  .hero-inner{ max-width: 860px; margin: 0 auto; }
+  .logo-container{ display:inline-flex; align-items:center; justify-content:center; margin: 0 auto 1.2rem; }
+  .letters span{
+    font-family: 'Montserrat', Arial, sans-serif;
+    font-size:54px; font-weight:900; letter-spacing:.04em;
+    display:inline-block; margin-right:2px; opacity:0; transform:translateY(18px);
+    animation: slideFade .9s forwards cubic-bezier(.41,0,.29,1);
+  }
+  .letters span:nth-child(-n+3){ color:#e7e7e7; }
+  .letters span:nth-child(n+4){ color:var(--blue); }
+  .letters span:nth-child(3){ margin-right:13px; }
+  .letters span:nth-child(1){animation-delay:.13s;}
+  .letters span:nth-child(2){animation-delay:.27s;}
+  .letters span:nth-child(3){animation-delay:.38s;}
+  .letters span:nth-child(4){animation-delay:.51s;}
+  .letters span:nth-child(5){animation-delay:.61s;}
+  .letters span:nth-child(6){animation-delay:.72s;}
+  .letters span:nth-child(7){animation-delay:.83s;}
+  @keyframes slideFade{ to{ opacity:1; transform:translateY(0); } }
+
+  .symbol{ width:52px;height:52px;margin-left:18px; }
+  .symbol .outline{
+    fill:none; stroke:var(--blue); stroke-width:5; stroke-linecap:round; stroke-linejoin:round;
+    stroke-dasharray: var(--length); stroke-dashoffset: var(--length);
+    animation: draw 1.2s forwards cubic-bezier(.4,0,.2,1); animation-delay:.2s;
+  }
+  @keyframes draw{ to{ stroke-dashoffset:0; } }
+  .symbol .fill-shape{ fill:var(--blue); opacity:0; animation: fadeInFill .58s forwards; animation-delay:1.12s; }
+  @keyframes fadeInFill{ to{ opacity:1 } }
+
+  .tagline{
+    margin: .6rem auto 1.1rem;
+    font-size: clamp(18px, 2vw, 22px);
+    font-weight: 700; color:#eaf2fb;
+    opacity:0; transform: translateY(6px);
+    animation: taglineIn .7s ease 1.35s forwards;
+  }
+  @keyframes taglineIn{ to{ opacity:1; transform: translateY(0);} }
+
+  .hero-ctas{ display:flex; gap:.8rem; justify-content:center; flex-wrap:wrap; margin-top:.3rem; }
+  .cta{
+    display:inline-block; padding:.9rem 1.6rem; border-radius:40px; font-weight:900; text-decoration:none;
+    transform: translateY(8px) scale(.98); opacity:0; transition:.2s;
+    animation: ctaIn .6s ease 1.8s forwards;
+  }
+  .cta.primary{ background:var(--blue); color:#0d1130; box-shadow:0 10px 30px #4ec6ff33; animation: ctaIn .6s ease 1.8s forwards, pulse 2s ease-in-out 2.5s infinite; }
+  .cta.ghost{ border:1px solid #2b345f; color:#e7eef7; background:#141938; }
+  @keyframes ctaIn{ to{ opacity:1; transform: translateY(0) scale(1); } }
+  @keyframes pulse{ 0%,100%{ box-shadow:0 10px 30px #4ec6ff33 } 50%{ box-shadow:0 16px 44px #4ec6ff66 } }
+
+  .skip-intro{
+    margin-top:16px; background:transparent; color:#b6c2d1; border:1px solid #2b345f;
+    padding:.45rem .8rem; border-radius:999px; font-weight:700; cursor:pointer; opacity:.75;
+  }
+  .skip-intro:hover{ opacity:1; }
+
+  .scroll-hint{
+    position:absolute; bottom:22px; left:50%; transform:translateX(-50%);
+    color:#9fb3c8; font-size:.9rem; letter-spacing:.12em; text-transform:uppercase;
+    opacity:.0; animation: hintIn .6s ease 2.2s forwards, bob 2.8s ease-in-out 2.8s infinite;
+  }
+  @keyframes hintIn{ to{ opacity:.85 } }
+  @keyframes bob{ 0%,100%{ transform:translate(-50%,0) } 50%{ transform:translate(-50%,-6px) } }
+
+  /* If user clicks Skip, stop pulsing and set everything 'settled' */
+  body.intro-done .cta.primary{ animation: none; box-shadow:0 10px 30px #4ec6ff33; }
+</style>
+
+<script>
+  // compute path length for the stroke animation (exact behavior)
+  const symPath = document.getElementById('symbolPath');
+  if (symPath) {
+    const length = symPath.getTotalLength();
+    symPath.style.setProperty('--length', length);
+  }
+</script>
