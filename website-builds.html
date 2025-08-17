@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Website Builds | BIM Labs</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
+  <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
+  <style>
+    :root {
+      --black: #101014;
+      --blue: #4EC6FF;
+      --white: #fff;
+      --gray: #F5F6F8;
+      --card-bg: #16191d;
+    }
+    body {
+      background: var(--black);
+      color: var(--white);
+      font-family: 'Montserrat', Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      letter-spacing: 0.01em;
+      overflow-x: hidden;
+    }
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 4rem 5vw;
+    }
+    .hero {
+      text-align: left;
+      margin-bottom: 4rem;
+      padding-top: 3rem;
+    }
+    .hero-title {
+      font-size: 2.8rem;
+      font-weight: 900;
+      color: var(--white);
+      letter-spacing: 0.04em;
+      margin-bottom: 0.7em;
+      line-height: 1.09;
+    }
+    .hero-title span {
+      color: var(--blue);
+    }
+    .hero-desc {
+      font-size: 1.23rem;
+      color: var(--gray);
+      margin-bottom: 2.1em;
+      opacity: .88;
+      max-width: 600px;
+    }
+    .cta-btn {
+      background: var(--blue);
+      color: var(--black);
+      border: none;
+      border-radius: 2em;
+      padding: 0.95em 2.7em;
+      font-size: 1.1rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      box-shadow: 0 2px 18px #4ec6ff2c;
+      cursor: pointer;
+      transition: background .15s, color .15s;
+    }
+    .cta-btn:hover {
+      background: var(--white);
+      color: var(--blue);
+    }
+    .section {
+      margin-bottom: 4.5rem;
+    }
+    .section-title {
+      font-size: 2.0rem;
+      font-weight: 800;
+      color: var(--blue);
+      margin-bottom: 1.3rem;
+      letter-spacing: 0.03em;
+      text-shadow: 0 1px 8px #10101428;
+    }
+    .benefits-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+      gap: 2.3rem;
+      margin-top: 2rem;
+    }
+    .benefit-card {
+      background: var(--card-bg);
+      border-radius: 1.3em;
+      padding: 2.1em 1.7em;
+      border: 1.5px solid #1e232e;
+      color: var(--white);
+      min-height: 145px;
+      box-shadow: 0 2px 18px #4ec6ff0d;
+      transition: border .16s, box-shadow .19s;
+      display: flex;
+      flex-direction: column;
+      gap: 0.9em;
+    }
+    .benefit-title {
+      color: var(--blue);
+      font-weight: 700;
+      font-size: 1.08rem;
+    }
+    .process-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+    .process-step {
+      background: #15171b;
+      border-radius: 1.1em;
+      border: 1.5px solid #1e232e;
+      padding: 1.5em 1.3em;
+      color: var(--white);
+      box-shadow: 0 2px 8px #4ec6ff12;
+      font-size: 1.04rem;
+      font-weight: 400;
+      min-height: 110px;
+      transition: border .16s, box-shadow .18s;
+    }
+    .step-number {
+      color: var(--blue);
+      font-weight: 700;
+      font-size: 1.13rem;
+      margin-bottom: .3em;
+      letter-spacing: 0.02em;
+    }
+    .portfolio-img {
+      width: 100%;
+      max-width: 540px;
+      border-radius: 1.2em;
+      box-shadow: 0 4px 36px #4ec6ff18;
+      margin: 2em 0;
+      display: block;
+    }
+    .testimonial-section {
+      background: #181b21;
+      border-radius: 1.3em;
+      padding: 2.1em 1.7em;
+      color: var(--white);
+      border: 1.5px solid #1e232e;
+      box-shadow: 0 2px 12px #4ec6ff18;
+      font-size: 1.07rem;
+      max-width: 480px;
+      margin: 2.5em 0;
+    }
+    .testimonial-author {
+      margin-top: 1.1em;
+      font-weight: 700;
+      color: var(--blue);
+      font-size: 1.01rem;
+    }
+    /* Responsive */
+    @media (max-width: 700px) {
+      .container {padding: 1.5rem 2vw;}
+      .hero-title {font-size: 1.4rem;}
+      .section-title {font-size: 1.15rem;}
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- HERO -->
+    <section class="hero" data-aos="fade-down">
+      <div class="hero-title"><span>Website Builds</span><br>Beautiful. Powerful. Effortless.</div>
+      <div class="hero-desc">
+        Experience a new level of web design—minimal, bold, and engineered for results. Our websites blend visual perfection with rock-solid performance, giving your brand the digital presence it deserves.
+      </div>
+      <a href="#contact" class="cta-btn" data-aos="fade-up">Start Your Project</a>
+    </section>
+
+    <!-- WHY CHOOSE US -->
+    <section class="section" data-aos="fade-up">
+      <div class="section-title">Why Invest in a BIM Labs Website?</div>
+      <div class="benefits-grid">
+        <div class="benefit-card">
+          <div class="benefit-title">Luxury, Minimalist Design</div>
+          Every detail, from typography to layout, is curated for an unforgettable first impression.
+        </div>
+        <div class="benefit-card">
+          <div class="benefit-title">Custom-Tailored UX</div>
+          Designed around your customers—so navigation feels natural and conversion is effortless.
+        </div>
+        <div class="benefit-card">
+          <div class="benefit-title">Lightning Fast & SEO-Ready</div>
+          Built with best practices for speed and Google ranking right out of the box.
+        </div>
+        <div class="benefit-card">
+          <div class="benefit-title">Mobile Perfect</div>
+          Flawless on any device, for every visitor.
+        </div>
+      </div>
+    </section>
+
+    <!-- HOW IT WORKS -->
+    <section class="section" data-aos="fade-up">
+      <div class="section-title">How It Works</div>
+      <div class="process-grid">
+        <div class="process-step">
+          <div class="step-number">1. Vision Call</div>
+          We meet, understand your goals, and map the perfect site for your brand.
+        </div>
+        <div class="process-step">
+          <div class="step-number">2. Design & Build</div>
+          Your custom site is designed, built, and previewed—feedback welcome at every step.
+        </div>
+        <div class="process-step">
+          <div class="step-number">3. Test & Launch</div>
+          We rigorously test and launch your site to the world—pixel-perfect and ready.
+        </div>
+        <div class="process-step">
+          <div class="step-number">4. Support & Growth</div>
+          Get peace of mind with post-launch support and optimization as your brand grows.
+        </div>
+      </div>
+    </section>
+
+    <!-- PORTFOLIO EXAMPLE (replace src with your own image!) -->
+    <section class="section" data-aos="fade-up">
+      <div class="section-title">See the Difference</div>
+      <img src="https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=900&q=80" alt="Website Example" class="portfolio-img">
+    </section>
+
+    <!-- TESTIMONIAL -->
+    <section class="testimonial-section" data-aos="fade-right">
+      “Working with BIM Labs felt like stepping into the future. Our new website is stunning, and our leads doubled in a month.”
+      <div class="testimonial-author">— Olivia S., Brand Director</div>
+    </section>
+
+    <!-- CTA -->
+    <section class="section" id="contact" data-aos="fade-up">
+      <div class="section-title">Ready to Elevate Your Brand?</div>
+      <a href="mailto:benjamin@bimlabs.com" class="cta-btn">Book Your Free Vision Call</a>
+    </section>
+  </div>
+  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+  <script>
+    AOS.init({
+      duration: 950,
+      once: true,
+      easing: "ease-in-out-cubic",
+    });
+  </script>
+</body>
+</html>
