@@ -297,6 +297,47 @@
 .footer-bottom{ border-top:1px solid #1e232e; margin-top:2rem; padding-top:1rem; text-align:center; color:#b6c2d1; opacity:.85; }
 @media (max-width:900px){ .footer-inner{ grid-template-columns:1fr; } }
 
+
+    .story-section{
+  background: linear-gradient(110deg,#171a22 65%,#101014 100%);
+  padding: 4.5rem 0;
+}
+.story-card{
+  max-width: 940px; margin: 0 auto; padding: 2.2rem 2rem;
+  background: var(--glass2); backdrop-filter: blur(8px);
+  border: 1.5px solid #1e232e; border-radius: 1.6em;
+  box-shadow: 0 8px 34px #4ec6ff1a, 0 1px 8px #0006; color: var(--white);
+}
+.story-title{
+  font-size: 1.9rem; font-weight: 900; color: var(--blue);
+  letter-spacing: .02em; margin: 0 0 1rem 0;
+}
+.story-lead{
+  font-size: 1.12rem; opacity: .92; line-height: 1.65; margin-bottom: 1.3rem;
+  color: #e8eef6;
+}
+.story-points{
+  margin: 0 0 1.6rem 0; padding-left: 1.1rem; line-height: 1.7; opacity:.95;
+}
+.story-points li{ margin: .25rem 0; }
+.story-cta-row{
+  display:flex; gap: .9rem; align-items:center; flex-wrap:wrap;
+}
+.story-cta{
+  display:inline-block; background: var(--blue); color: var(--black);
+  padding: .8rem 1.4rem; border-radius: 2rem; font-weight: 800;
+  box-shadow: 0 2px 14px #4ec6ff27; text-decoration:none;
+}
+.story-cta:hover{ background: #fff; color: var(--blue); }
+.story-link{
+  color: #b8c7da; text-decoration:none; font-weight:700;
+}
+.story-link:hover{ color: var(--blue); }
+@media (max-width:600px){
+  .story-title{ font-size:1.35rem; }
+  .story-card{ padding: 1.4rem 1rem; }
+}
+
   </style>
 </head>
 <body>
