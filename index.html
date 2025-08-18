@@ -675,6 +675,64 @@
 .sched-alt:hover{ color: var(--blue); }
 
 
+/* --- Services (flagship-first) --- */
+.services-flagship{
+  display:grid; gap:18px;
+  grid-template-columns: repeat(3, minmax(0,1fr));
+  margin-top: 2rem;
+}
+@media (max-width:980px){ .services-flagship{ grid-template-columns:1fr; } }
+
+.svc-card{
+  position:relative; overflow:hidden;
+  background: var(--glass2);
+  border: 1.5px solid #1e232e;
+  border-radius: 1.4em;
+  box-shadow: 0 8px 28px #4ec6ff1b;
+  padding: 1.6rem 1.4rem 1.4rem;
+  transition: transform .18s, box-shadow .18s, border-color .18s;
+  display:flex; flex-direction:column; gap:.55rem;
+}
+.svc-card:hover{
+  transform: translateY(-4px);
+  border-color: var(--blue);
+  box-shadow: 0 12px 36px #4ec6ff2a;
+}
+.svc-card__icon{
+  width:42px; height:42px; border-radius:12px;
+  display:grid; place-items:center; font-size:20px;
+  background: #4ec6ff14; color:#9fdcff; border:1px solid #213042;
+  box-shadow: inset 0 2px 14px #4ec6ff22;
+}
+.svc-card__title{ margin:.1rem 0 0; font-size:1.28rem; font-weight:900; color:var(--blue); }
+.svc-card__sub{ margin:0; color:#e8eef6; opacity:.92; line-height:1.55; }
+.svc-card__cta{
+  align-self:flex-start; margin-top:.6rem;
+  background: var(--blue); color: var(--black); font-weight:800;
+  padding:.62rem 1.15rem; border-radius:999px; text-decoration:none;
+  box-shadow:0 2px 14px #4ec6ff22;
+}
+.svc-card__cta:hover{ background:#fff; color:var(--blue); }
+
+/* themed subtle overlays */
+.svc-card--site{ background: linear-gradient(180deg, rgba(78,198,255,.06), transparent), var(--glass2); }
+.svc-card--portal{ background: linear-gradient(180deg, rgba(78,198,255,.04), transparent), var(--glass2); }
+.svc-card--crm{ background: linear-gradient(180deg, rgba(78,198,255,.08), transparent), var(--glass2); }
+
+/* Secondary row */
+.services-secondary{
+  display:flex; flex-wrap:wrap; gap:.6rem .6rem;
+  margin-top: 1.6rem; align-items:center;
+}
+.svc-chip{
+  background:#4ec6ff14; color:#cfe3f5;
+  border:1px solid #213042; border-radius:999px;
+  padding:.45rem .9rem; font-weight:700; font-size:.95rem;
+}
+.svc-secondary-cta{
+  margin-left:auto; color:#8fd8ff; font-weight:800; text-decoration:none;
+}
+.svc-secondary-cta:hover{ color:#bfe9ff; }
 
 
 <style>
@@ -964,36 +1022,44 @@
 
   
 
-  <!-- SERVICES -->
-  <section class="services-section" id="services">
+ <section class="services-section" id="services">
+  <div class="wrap" style="max-width:1100px;margin:0 auto;padding:0 2rem;">
     <div class="section-title" data-aos="fade-up">Services</div>
-    <div class="services-list">
-      <div class="service-card" data-aos="fade-right" data-aos-delay="100">
-        <div class="service-title">Full Website Builds</div>
-        Cutting-edge sites for every brand. <a href="website-builds.html">Learn More</a>
-      </div>
-      <div class="service-card" data-aos="fade-right" data-aos-delay="200">
-        <div class="service-title">Custom Client Portals</div>
-        Make onboarding, communication, and support seamless. <a href="client-portals.html">Learn More</a>
-      </div>
-      <div class="service-card" data-aos="fade-right" data-aos-delay="300">
-        <div class="service-title">CRM Integration</div>
-        Automate your business with a bespoke CRM. <a href="crm.html">Learn More</a>
-      </div>
-      <div class="service-card" data-aos="fade-right" data-aos-delay="400">
-        <div class="service-title">Maintenance & Hosting</div>
-        Secure, worry-free, lightning fast. <a href="maintenance.html">Learn More</a>
-      </div>
-      <div class="service-card" data-aos="fade-right" data-aos-delay="500">
-        <div class="service-title">Branding & Copywriting</div>
-        Your story, your way, everywhere. <a href="branding-and-copywriting.html">Learn More</a>
-      </div>
-      <div class="service-card" data-aos="fade-right" data-aos-delay="600">
-        <div class="service-title">Speed Optimization</div>
-        The fastest site in your space, guaranteed. <a href="speed-optimization.html">Learn More</a>
-      </div>
+
+    <!-- Flagship 3 -->
+    <div class="services-flagship" data-aos="fade-up" data-aos-delay="50">
+      <article class="svc-card svc-card--site">
+        <div class="svc-card__icon" aria-hidden="true">🖥️</div>
+        <h3 class="svc-card__title">Full Website Builds</h3>
+        <p class="svc-card__sub">Minimal, fast, and conversion-first.</p>
+        <a class="svc-card__cta" href="website-builds.html">Explore Website Builds</a>
+      </article>
+
+      <article class="svc-card svc-card--portal">
+        <div class="svc-card__icon" aria-hidden="true">🔐</div>
+        <h3 class="svc-card__title">Custom Client Portals</h3>
+        <p class="svc-card__sub">Onboarding, docs, support—centralized.</p>
+        <a class="svc-card__cta" href="client-portals.html">See Portal Options</a>
+      </article>
+
+      <article class="svc-card svc-card--crm">
+        <div class="svc-card__icon" aria-hidden="true">⚙️</div>
+        <h3 class="svc-card__title">CRM Integration</h3>
+        <p class="svc-card__sub">Pipeline + automations that scale.</p>
+        <a class="svc-card__cta" href="crm.html">View CRM Integrations</a>
+      </article>
     </div>
-  </section>
+
+    <!-- Secondary / add-ons -->
+    <div class="services-secondary" data-aos="fade-up" data-aos-delay="150" aria-label="Additional services">
+      <span class="svc-chip">Maintenance & Hosting</span>
+      <span class="svc-chip">Branding & Copywriting</span>
+      <span class="svc-chip">Speed Optimization</span>
+      <a class="svc-secondary-cta" href="#contact">Ask about add-ons</a>
+    </div>
+  </div>
+</section>
+
  
   <!-- TESTIMONIALS -->
   <section class="testimonials-section" id="testimonials">
