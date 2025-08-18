@@ -735,6 +735,87 @@
 .svc-secondary-cta:hover{ color:#bfe9ff; }
 
 
+    /* ===== SERVICES — full-screen story ===== */
+.services-fs{
+  position: relative;
+  scroll-margin-top: 84px;      /* nice anchor offset under sticky nav */
+  overflow: hidden;
+}
+
+.services-fs{
+  /* vertical snap inside just this section */
+  height: auto;
+}
+.services-fs .svc-slide{
+  position: relative;
+  height: 100vh;
+  min-height: 680px;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  scroll-snap-align: start;
+}
+
+/* Enable snapping only while inside the section */
+@supports (scroll-snap-type: y mandatory){
+  .services-fs{ scroll-snap-type: y mandatory; }
+}
+
+/* Animated background canvas */
+.svc-canvas{
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  z-index: 1; pointer-events: none;
+  background:
+    radial-gradient(1200px 800px at 10% -10%, rgba(78,198,255,.06), transparent 55%),
+    radial-gradient(900px 600px at 110% 10%, rgba(78,198,255,.05), transparent 60%),
+    #0b0f16;
+}
+
+/* Content block */
+.svc-content{
+  position: relative; z-index: 2;
+  width: min(1100px, 92vw);
+  padding: clamp(20px, 4vw, 36px);
+  border-radius: 22px;
+  background: rgba(18,22,30,.78);
+  border: 1px solid #1e232e;
+  box-shadow: 0 10px 40px rgba(0,0,0,.35), 0 8px 32px rgba(78,198,255,.08);
+  backdrop-filter: blur(8px);
+}
+
+.svc-eyebrow{
+  margin: 0 0 .35rem; color: var(--blue);
+  text-transform: uppercase; letter-spacing:.18em; font-weight:900; font-size:.8rem;
+}
+.svc-title{
+  margin:.1rem 0 .4rem; font-size: clamp(28px, 4.6vw, 46px);
+  font-weight:900; line-height:1.06; color:#fff;
+}
+.svc-lead{ color:#e9eef6; opacity:.92; font-size: clamp(16px, 2vw, 20px); margin: 0 0 1rem; }
+.svc-points{ margin:0 0 1.1rem; padding-left:1.1rem; color:#dfe6ee; line-height:1.7; }
+.svc-points li{ margin:.25rem 0; }
+.svc-cta-row{ display:flex; gap:.8rem 1rem; flex-wrap:wrap; }
+.svc-cta{
+  background: var(--blue); color:#0d1218; font-weight:900;
+  padding:.8rem 1.3rem; border-radius:999px; text-decoration:none;
+  box-shadow: 0 6px 24px rgba(78,198,255,.22);
+}
+.svc-cta:hover{ background:#fff; color:var(--blue); }
+.svc-link{ color:#b8c7da; font-weight:800; text-decoration:none; }
+.svc-link:hover{ color:var(--blue); }
+
+/* Subtle theme tint per slide */
+.svc-slide[data-theme="site"]   .svc-canvas{ background: radial-gradient(1000px 700px at 85% 0%, rgba(78,198,255,.08), transparent 60%), #0b0f16; }
+.svc-slide[data-theme="portal"] .svc-canvas{ background: radial-gradient(1100px 760px at 15% 0%, rgba(78,198,255,.07), transparent 60%), #0b0f16; }
+.svc-slide[data-theme="crm"]    .svc-canvas{ background: radial-gradient(1200px 820px at 50% 0%, rgba(78,198,255,.09), transparent 62%), #0b0f16; }
+
+/* Compact on small screens */
+@media (max-width:900px){
+  .svc-content{ padding: 20px; }
+  .svc-points{ font-size: .98rem; }
+}
+
+
 <style>
 /* Keep hero background pure black */
 .hero { position: relative; background:#000; overflow:hidden; }
@@ -1022,42 +1103,72 @@
 
   
 
- <section class="services-section" id="services">
-  <div class="wrap" style="max-width:1100px;margin:0 auto;padding:0 2rem;">
-    <div class="section-title" data-aos="fade-up">Services</div>
+ <section id="services" class="services-fs">
+  <!-- Slide 1 — Full Website Builds -->
+  <article class="svc-slide" data-theme="site">
+    <canvas class="svc-canvas" aria-hidden="true"></canvas>
 
-    <!-- Flagship 3 -->
-    <div class="services-flagship" data-aos="fade-up" data-aos-delay="50">
-      <article class="svc-card svc-card--site">
-        <div class="svc-card__icon" aria-hidden="true"></div>
-        <h3 class="svc-card__title">Full Website Builds</h3>
-        <p class="svc-card__sub">Minimal, fast, and conversion-first.</p>
-        <a class="svc-card__cta" href="website-builds.html">Explore Website Builds</a>
-      </article>
+    <div class="svc-content">
+      <p class="svc-eyebrow">Full Website Builds</p>
+      <h2 class="svc-title">Cut the noise. Ship a high-end, conversion-first site.</h2>
+      <p class="svc-lead">Minimal design, ruthless clarity, real speed. Launch in 2–3 weeks, not months.</p>
 
-      <article class="svc-card svc-card--portal">
-        <div class="svc-card__icon" aria-hidden="true"></div>
-        <h3 class="svc-card__title">Custom Client Portals</h3>
-        <p class="svc-card__sub">Onboarding, docs, support—centralized.</p>
-        <a class="svc-card__cta" href="client-portals.html">See Portal Options</a>
-      </article>
+      <ul class="svc-points">
+        <li>Custom design — no templates</li>
+        <li>~1.7s TTI on real mobile</li>
+        <li>Analytics + A/B ready</li>
+      </ul>
 
-      <article class="svc-card svc-card--crm">
-        <div class="svc-card__icon" aria-hidden="true"></div>
-        <h3 class="svc-card__title">CRM Integration</h3>
-        <p class="svc-card__sub">Pipeline + automations that scale.</p>
-        <a class="svc-card__cta" href="crm.html">View CRM Integrations</a>
-      </article>
+      <div class="svc-cta-row">
+        <a class="svc-cta" href="website-builds.html">Explore Website Builds</a>
+        <a class="svc-link" href="#work">See Live Work ↗</a>
+      </div>
     </div>
+  </article>
 
-    <!-- Secondary / add-ons -->
-    <div class="services-secondary" data-aos="fade-up" data-aos-delay="150" aria-label="Additional services">
-      <span class="svc-chip">Maintenance & Hosting</span>
-      <span class="svc-chip">Branding & Copywriting</span>
-      <span class="svc-chip">Speed Optimization</span>
-      <a class="svc-secondary-cta" href="#contact">Ask about add-ons</a>
+  <!-- Slide 2 — Custom Client Portals -->
+  <article class="svc-slide" data-theme="portal">
+    <canvas class="svc-canvas" aria-hidden="true"></canvas>
+
+    <div class="svc-content">
+      <p class="svc-eyebrow">Custom Client Portals</p>
+      <h2 class="svc-title">Onboarding, docs, support—everything in one beautiful place.</h2>
+      <p class="svc-lead">Give clients a branded home with logins, resources, updates, and support built-in.</p>
+
+      <ul class="svc-points">
+        <li>Secure auth + roles</li>
+        <li>File sharing & status updates</li>
+        <li>Payments / subscriptions optional</li>
+      </ul>
+
+      <div class="svc-cta-row">
+        <a class="svc-cta" href="client-portals.html">See Portal Options</a>
+        <a class="svc-link" href="#contact">Ask a Question ↗</a>
+      </div>
     </div>
-  </div>
+  </article>
+
+  <!-- Slide 3 — CRM Integration -->
+  <article class="svc-slide" data-theme="crm">
+    <canvas class="svc-canvas" aria-hidden="true"></canvas>
+
+    <div class="svc-content">
+      <p class="svc-eyebrow">CRM Integration</p>
+      <h2 class="svc-title">Automate the pipeline. Capture → nurture → book.</h2>
+      <p class="svc-lead">Forms drop into your CRM with automations, sequences, and calendar booking that just works.</p>
+
+      <ul class="svc-points">
+        <li>Lead routing & automations</li>
+        <li>Email/SMS templates</li>
+        <li>Calendars, payments, reporting</li>
+      </ul>
+
+      <div class="svc-cta-row">
+        <a class="svc-cta" href="crm.html">View CRM Integrations</a>
+        <a class="svc-link" href="#contact">Book a Demo ↗</a>
+      </div>
+    </div>
+  </article>
 </section>
 
  
@@ -1285,8 +1396,96 @@
   prefersReduced.addEventListener('change', e => e.matches ? pause() : start());
 })();
 </script>
-</body>
-</html>
+
+  <script>
+(() => {
+  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  document.querySelectorAll('.svc-canvas').forEach((canvas, idx) => {
+    const ctx = canvas.getContext('2d', { alpha: false });
+    let W=0, H=0, T=0, raf=0;
+
+    // Per-slide tuning for subtle variation
+    const THEMES = [
+      { speed: .036, amp: 64, hue: 202 },
+      { speed: .030, amp: 76, hue: 202 },
+      { speed: .024, amp: 92, hue: 202 }
+    ];
+    const CFG = THEMES[idx % THEMES.length];
+
+    function resize(){
+      const dpr = Math.min(2, window.devicePixelRatio || 1);
+      W = canvas.width  = Math.floor(canvas.clientWidth  * dpr);
+      H = canvas.height = Math.floor(canvas.clientHeight * dpr);
+      ctx.setTransform(dpr,0,0,dpr,0,0);
+      ctx.fillStyle = '#0b0f16';
+      ctx.fillRect(0,0,W,H);
+    }
+    new ResizeObserver(resize).observe(canvas);
+
+    function polyline(yBase, seed, t){
+      const pts = [];
+      const cols = 120;
+      for(let i=0;i<=cols;i++){
+        const x = (i/cols) * W;
+        const ph = t * CFG.speed + i * 0.16 + seed;
+        const y = yBase
+          + Math.sin(ph*2.1) * (CFG.amp*0.46)
+          + Math.cos(ph*0.8)  * (CFG.amp*0.22);
+        pts.push({x,y});
+      }
+      // halo
+      ctx.save();
+      ctx.globalCompositeOperation = 'lighter';
+      ctx.lineJoin='round'; ctx.lineCap='round';
+
+      ctx.filter = 'blur(6px)';
+      ctx.strokeStyle = `hsla(${CFG.hue} 100% 60% / .22)`;
+      ctx.lineWidth = 7;
+      ctx.beginPath(); pts.forEach((p,i)=> i?ctx.lineTo(p.x,p.y):ctx.moveTo(p.x,p.y)); ctx.stroke();
+
+      ctx.filter = 'blur(2px)';
+      ctx.strokeStyle = `hsla(${CFG.hue} 100% 70% / .35)`;
+      ctx.lineWidth = 4;
+      ctx.beginPath(); pts.forEach((p,i)=> i?ctx.lineTo(p.x,p.y):ctx.moveTo(p.x,p.y)); ctx.stroke();
+
+      // core
+      ctx.filter = 'none';
+      ctx.strokeStyle = 'rgba(255,255,255,.85)';
+      ctx.lineWidth = 2;
+      ctx.beginPath(); pts.forEach((p,i)=> i?ctx.lineTo(p.x,p.y):ctx.moveTo(p.x,p.y)); ctx.stroke();
+      ctx.restore();
+    }
+
+    function frame(now){
+      T = now || T;
+      ctx.fillStyle = '#0b0f16';
+      ctx.fillRect(0,0,W,H);
+
+      const center = H * 0.55;
+      let y = center - 110;
+      for(let layer=0; layer<3; layer++){
+        const spacing = 34 + layer*4;
+        for(let k=0;k<3-layer;k++){
+          const yLine = y + k*spacing + Math.sin(T*0.0006 + k)*6;
+          polyline(yLine, k + layer*10, T);
+        }
+        y += spacing * 1.2;
+      }
+      raf = requestAnimationFrame(frame);
+    }
+
+    // Start/stop per visibility for perf
+    const io = new IntersectionObserver(([entry])=>{
+      if (prefersReduced) return;
+      if (entry.isIntersecting) { resize(); cancelAnimationFrame(raf); raf = requestAnimationFrame(frame); }
+      else { cancelAnimationFrame(raf); }
+    }, { threshold: 0.15 });
+
+    io.observe(canvas);
+  });
+})();
+</script>
 
   
 </body>
