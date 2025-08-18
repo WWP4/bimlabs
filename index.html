@@ -675,219 +675,113 @@
 .sched-alt:hover{ color: var(--blue); }
 
 
-/* --- Services (flagship-first) --- */
-.services-flagship{
-  display:grid; gap:18px;
-  grid-template-columns: repeat(3, minmax(0,1fr));
-  margin-top: 2rem;
-}
-@media (max-width:980px){ .services-flagship{ grid-template-columns:1fr; } }
+/* ===== SERVICES — full-screen, alternating ===== */
+.svc-wrap{ position:relative; height:100%; scroll-snap-type:y mandatory; overflow-y:auto; }
 
-.svc-card{
-  position:relative; overflow:hidden;
-  background: var(--glass2);
-  border: 1.5px solid #1e232e;
-  border-radius: 1.4em;
-  box-shadow: 0 8px 28px #4ec6ff1b;
-  padding: 1.6rem 1.4rem 1.4rem;
-  transition: transform .18s, box-shadow .18s, border-color .18s;
-  display:flex; flex-direction:column; gap:.55rem;
-}
-.svc-card:hover{
-  transform: translateY(-4px);
-  border-color: var(--blue);
-  box-shadow: 0 12px 36px #4ec6ff2a;
-}
-.svc-card__icon{
-  width:42px; height:42px; border-radius:12px;
-  display:grid; place-items:center; font-size:20px;
-  background: #4ec6ff14; color:#9fdcff; border:1px solid #213042;
-  box-shadow: inset 0 2px 14px #4ec6ff22;
-}
-.svc-card__title{ margin:.1rem 0 0; font-size:1.28rem; font-weight:900; color:var(--blue); }
-.svc-card__sub{ margin:0; color:#e8eef6; opacity:.92; line-height:1.55; }
-.svc-card__cta{
-  align-self:flex-start; margin-top:.6rem;
-  background: var(--blue); color: var(--black); font-weight:800;
-  padding:.62rem 1.15rem; border-radius:999px; text-decoration:none;
-  box-shadow:0 2px 14px #4ec6ff22;
-}
-.svc-card__cta:hover{ background:#fff; color:var(--blue); }
-
-/* themed subtle overlays */
-.svc-card--site{ background: linear-gradient(180deg, rgba(78,198,255,.06), transparent), var(--glass2); }
-.svc-card--portal{ background: linear-gradient(180deg, rgba(78,198,255,.04), transparent), var(--glass2); }
-.svc-card--crm{ background: linear-gradient(180deg, rgba(78,198,255,.08), transparent), var(--glass2); }
-
-/* Secondary row */
-.services-secondary{
-  display:flex; flex-wrap:wrap; gap:.6rem .6rem;
-  margin-top: 1.6rem; align-items:center;
-}
-.svc-chip{
-  background:#4ec6ff14; color:#cfe3f5;
-  border:1px solid #213042; border-radius:999px;
-  padding:.45rem .9rem; font-weight:700; font-size:.95rem;
-}
-.svc-secondary-cta{
-  margin-left:auto; color:#8fd8ff; font-weight:800; text-decoration:none;
-}
-.svc-secondary-cta:hover{ color:#bfe9ff; }
-
-
-    /* ===== SERVICES — full-screen story ===== */
-.services-fs{
-  position: relative;
-  scroll-margin-top: 84px;      /* nice anchor offset under sticky nav */
-  overflow: hidden;
-}
-
-.services-fs{
-  /* vertical snap inside just this section */
-  height: auto;
-}
-.services-fs .svc-slide{
-  position: relative;
-  height: 100vh;
-  min-height: 680px;
-  display: grid;
-  place-items: center;
-  overflow: hidden;
-  scroll-snap-align: start;
-}
-
-/* Enable snapping only while inside the section */
-@supports (scroll-snap-type: y mandatory){
-  .services-fs{ scroll-snap-type: y mandatory; }
-}
-
-/* Animated background canvas */
-.svc-canvas{
-  position: absolute; inset: 0; width: 100%; height: 100%;
-  z-index: 1; pointer-events: none;
-  background:
-    radial-gradient(1200px 800px at 10% -10%, rgba(78,198,255,.06), transparent 55%),
-    radial-gradient(900px 600px at 110% 10%, rgba(78,198,255,.05), transparent 60%),
-    #0b0f16;
-}
-
-/* Content block */
-.svc-content{
-  position: relative; z-index: 2;
-  width: min(1100px, 92vw);
-  padding: clamp(20px, 4vw, 36px);
-  border-radius: 22px;
-  background: rgba(18,22,30,.78);
-  border: 1px solid #1e232e;
-  box-shadow: 0 10px 40px rgba(0,0,0,.35), 0 8px 32px rgba(78,198,255,.08);
-  backdrop-filter: blur(8px);
-}
-
-.svc-eyebrow{
-  margin: 0 0 .35rem; color: var(--blue);
-  text-transform: uppercase; letter-spacing:.18em; font-weight:900; font-size:.8rem;
-}
-.svc-title{
-  margin:.1rem 0 .4rem; font-size: clamp(28px, 4.6vw, 46px);
-  font-weight:900; line-height:1.06; color:#fff;
-}
-.svc-lead{ color:#e9eef6; opacity:.92; font-size: clamp(16px, 2vw, 20px); margin: 0 0 1rem; }
-.svc-points{ margin:0 0 1.1rem; padding-left:1.1rem; color:#dfe6ee; line-height:1.7; }
-.svc-points li{ margin:.25rem 0; }
-.svc-cta-row{ display:flex; gap:.8rem 1rem; flex-wrap:wrap; }
-.svc-cta{
-  background: var(--blue); color:#0d1218; font-weight:900;
-  padding:.8rem 1.3rem; border-radius:999px; text-decoration:none;
-  box-shadow: 0 6px 24px rgba(78,198,255,.22);
-}
-.svc-cta:hover{ background:#fff; color:var(--blue); }
-.svc-link{ color:#b8c7da; font-weight:800; text-decoration:none; }
-.svc-link:hover{ color:var(--blue); }
-
-/* Subtle theme tint per slide */
-.svc-slide[data-theme="site"]   .svc-canvas{ background: radial-gradient(1000px 700px at 85% 0%, rgba(78,198,255,.08), transparent 60%), #0b0f16; }
-.svc-slide[data-theme="portal"] .svc-canvas{ background: radial-gradient(1100px 760px at 15% 0%, rgba(78,198,255,.07), transparent 60%), #0b0f16; }
-.svc-slide[data-theme="crm"]    .svc-canvas{ background: radial-gradient(1200px 820px at 50% 0%, rgba(78,198,255,.09), transparent 62%), #0b0f16; }
-
-/* Compact on small screens */
-@media (max-width:900px){
-  .svc-content{ padding: 20px; }
-  .svc-points{ font-size: .98rem; }
-}
-
-    /* Full-screen storytelling */
-.services-fs{ position:relative; scroll-margin-top:84px; }
-.services-fs{ scroll-snap-type: y mandatory; }
 .svc-slide{
-  height:100vh; min-height:680px;
-  display:grid; place-items:center;
-  scroll-snap-align:start; padding:clamp(16px,3vw,28px);
-  background:#0b0f16; /* matches your dark base */
+  position:relative; height:100vh; min-height:720px;
+  scroll-snap-align:start; display:flex; align-items:center; justify-content:center;
+  padding: clamp(24px, 5vw, 72px);
 }
 
-/* The content card */
-.svc-panel{
-  position:relative;
-  width:min(1100px, 92vw);
-  border-radius:20px;
-  background: rgba(16,20,28,.82);
-  border:1px solid #1e232e;
-  box-shadow: 0 10px 40px rgba(0,0,0,.35);
-  backdrop-filter: blur(8px);
-  padding: clamp(20px, 4vw, 36px);
-  overflow: hidden;
-  isolation: isolate; /* keep outline glow inside */
-}
-
-/* Animated “running light” outline */
-.svc-outline{
-  position:absolute; inset:0; border-radius:inherit; pointer-events:none;
-  /* Outer glow mask: keeps only the border area visible */
-  --b: 2px;                    /* visible border thickness */
-  --g: 16px;                   /* glow blur */
-  --pad: 1px;                  /* padding so glow doesn't clip corners */
-  padding: var(--pad);
-  /* We paint a moving conic gradient then mask to a ring */
+/* Subtle depth grid (no waves) */
+.svc-bg{
+  position:absolute; inset:0; z-index:0;
   background:
-    conic-gradient(from var(--angle), hsl(206 100% 55%) 0 20%, transparent 25% 100%);
-  filter: blur(var(--g));
-  -webkit-mask:
-    linear-gradient(#000 0 0) content-box,
-    linear-gradient(#000 0 0);
+    linear-gradient(0deg, #fff0 24px, #fff1 25px, #fff0 26px) center/100% 26px,
+    linear-gradient(90deg,#fff0 24px,#fff1 25px,#fff0 26px) center/26px 100%,
+    radial-gradient(900px 600px at 85% -10%, rgba(78,198,255,.06), transparent 60%),
+    radial-gradient(700px 400px at 5% -10%, rgba(78,198,255,.05), transparent 60%),
+    var(--black);
+  mask-image: radial-gradient(1200px 800px at 50% -20%, #000, transparent 80%);
+  opacity:.28;
+}
+
+/* Layout modes */
+.center .inner{ max-width: 980px; text-align:center; position:relative; z-index:2; }
+
+.split{ width:100%; position:relative; z-index:2; }
+.split .grid{ display:grid; grid-template-columns: 1.15fr 1fr; gap:min(5vw,60px);
+              align-items:center; width:min(1200px, 92vw); margin:0 auto; }
+.split.right .grid{ grid-template-columns: 1fr 1.15fr; }
+.split.right .visual{ order:1; } .split.right .copy{ order:2; }
+
+@media (max-width:1000px){
+  .split .grid, .split.right .grid{ grid-template-columns: 1fr; gap:28px; }
+  .split.right .visual{ order:2; } .split.right .copy{ order:1; }
+}
+
+/* Copy */
+.eyebrow{ color:var(--blue); text-transform:uppercase; letter-spacing:.18em; font-weight:900; font-size:.8rem; margin:0 0 .5rem; }
+.title{ margin:.1rem 0 .6rem; font-weight:900; line-height:1.04; font-size: clamp(34px, 6vw, 72px); }
+.lead{ margin:0 0 1.15rem; color:#dfe6ee; font-size: clamp(16px,2vw,20px); max-width: 48ch; }
+.points{ margin:0 0 1.3rem; padding-left:1.1rem; color:#a8b6c8; line-height:1.7; }
+.points li{ margin:.25rem 0; }
+
+.cta-row{ display:flex; gap:.8rem 1rem; flex-wrap:wrap; }
+.btn{
+  background:var(--blue); color:#091018; font-weight:900; text-decoration:none;
+  padding:.9rem 1.4rem; border-radius:999px; box-shadow:0 10px 36px #4ec6ff38;
+}
+.btn:hover{ background:#fff; color:var(--blue); }
+.link{ color:#b9c6d8; text-decoration:none; font-weight:800; }
+.link:hover{ color:var(--blue); }
+
+/* Visual (replace with real screenshots when ready) */
+.visual{ display:grid; place-items:center; }
+.mock{
+  width:min(600px, 88%); aspect-ratio: 16/10; border-radius:22px;
+  background:
+    linear-gradient(180deg, #fff2, #0000),
+    radial-gradient(900px 420px at 10% -50%, rgba(78,198,255,.16), transparent 60%),
+    #121a24;
+  border:1px solid #243146;
+  box-shadow: 0 30px 80px rgba(0,0,0,.45), inset 0 1px 18px rgba(78,198,255,.12);
+  overflow:hidden; position:relative;
+}
+.mock::after{
+  content:""; position:absolute; inset:0; mix-blend-mode:screen;
+  background: conic-gradient(from var(--ang,0turn), #6ec8ff88 0 10%, #0000 12% 100%);
+  filter:blur(10px); opacity:.6; animation: sweep 6s linear infinite;
+}
+@keyframes sweep{ to{ --ang:1turn; } }
+.mock-ui{ position:absolute; inset:18px; border-radius:16px; overflow:hidden; border:1px solid #243146; }
+.mock-header{ position:absolute; top:0; left:0; right:0; height:58%; display:grid; place-items:center; color:#9ec9ff; font-weight:800; font-size:clamp(18px,2vw,24px); }
+.mock-cells{ position:absolute; bottom:0; left:0; right:0; height:42%; display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px; padding:12px; }
+.cell{ border:1px solid #243146; border-radius:12px; background:#151e2c; box-shadow: inset 0 0 0 1px #1b2941, 0 10px 24px rgba(0,0,0,.35); }
+
+/* Progress dots (fixed) */
+.nav-dots{
+  position: fixed; right: 18px; top: 50%; transform: translateY(-50%);
+  display:flex; flex-direction:column; gap:10px; z-index:100;
+}
+.dot{ width:10px; height:10px; border-radius:10px; background:#2a3750; border:1px solid #344764; transition: all .2s ease; }
+.dot.active{ background: var(--blue); box-shadow:0 0 0 6px #4ec6ff22; }
+
+/* Viewport runner (fixed, not on cards) */
+.edge-runner{
+  position:fixed; inset:16px; border-radius:28px; pointer-events:none;
+  z-index:99; padding:1px;
+  background: conic-gradient(from var(--runner-ang,0turn), var(--blue) 0 14%, transparent 18% 100%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
   -webkit-mask-composite: xor; mask-composite: exclude;
-  border: var(--b) solid transparent; /* thickness of the ring */
-  animation: orbit 4.8s linear infinite;
+  filter: blur(14px) saturate(1.05);
   opacity:.9;
+  animation: spin var(--runner-speed, 6s) linear infinite both;
 }
-
-/* Slow orbit of the light around the border */
-@keyframes orbit {
-  to { --angle: 1turn; }
-}
-
-/* Reduce motion */
+@keyframes spin{ to{ --runner-ang: 1turn; } }
 @media (prefers-reduced-motion: reduce){
-  .svc-outline{ animation: none; background: radial-gradient(400px 200px at 10% 0%, hsl(206 100% 55% / .25), transparent 60%); filter: blur(12px); }
+  .edge-runner{ animation:none; background: radial-gradient(700px 300px at 10% 0%, var(--blue)/.28, transparent 60%); filter: blur(18px); }
 }
 
-/* Tone tweaks per slide (very subtle) */
-.tone-a .svc-outline{ background: conic-gradient(from var(--angle), hsl(206 100% 60%) 0 18%, transparent 22% 100%); }
-.tone-b .svc-outline{ background: conic-gradient(from var(--angle), hsl(206 100% 55%) 0 22%, transparent 26% 100%); }
-.tone-c .svc-outline{ background: conic-gradient(from var(--angle), hsl(206 100% 50%) 0 20%, transparent 24% 100%); }
-
-/* Typography + content */
-.svc-eyebrow{ margin:0 0 .35rem; color:var(--blue); text-transform:uppercase; letter-spacing:.18em; font-weight:900; font-size:.8rem; }
-.svc-title{ margin:.1rem 0 .5rem; font-size: clamp(28px, 4.6vw, 46px); font-weight:900; line-height:1.06; color:#fff; }
-.svc-lead{ color:#e9eef6; opacity:.92; font-size: clamp(16px, 2vw, 20px); margin:0 0 1rem; }
-.svc-points{ margin:0 0 1.1rem; padding-left:1.1rem; color:#dfe6ee; line-height:1.7; }
-.svc-points li{ margin:.25rem 0; }
-.svc-cta-row{ display:flex; gap:.8rem 1rem; flex-wrap:wrap; }
-.svc-cta{ background:var(--blue); color:#0d1218; font-weight:900; padding:.8rem 1.3rem; border-radius:999px; text-decoration:none; box-shadow:0 6px 24px rgba(78,198,255,.22); }
-.svc-cta:hover{ background:#fff; color:var(--blue); }
-.svc-link{ color:#b8c7da; font-weight:800; text-decoration:none; }
-.svc-link:hover{ color:var(--blue); }
+/* Runner tuning per active slide (JS sets body[data-active]) */
+body[data-active="0"]{ --runner-speed: 6.5s; }
+body[data-active="1"]{ --runner-ang: .25turn; --runner-speed: 5s; }
+body[data-active="2"]{ --runner-ang: .5turn;  --runner-speed: 5.6s; }
 
 
+
+  
 
 <style>
 /* Keep hero background pure black */
@@ -1176,66 +1070,94 @@
 
   
 
-<section id="services" class="services-fs">
-  <!-- Slide 1 — Full Website Builds -->
-  <article class="svc-slide">
-    <div class="svc-panel tone-a">
-      <div class="svc-outline" aria-hidden="true"></div>
+<!-- ====== SERVICES (full-screen, alternating) ====== -->
+<!-- Progress dots (fixed) -->
+<nav class="nav-dots" aria-label="section progress">
+  <a class="dot" href="#s1" aria-label="Full Website Builds"></a>
+  <a class="dot" href="#s2" aria-label="Custom Client Portals"></a>
+  <a class="dot" href="#s3" aria-label="CRM Integration"></a>
+</nav>
 
-      <p class="svc-eyebrow">Full Website Builds</p>
-      <h2 class="svc-title">Cut the noise. Ship a high-end, conversion-first site.</h2>
-      <p class="svc-lead">Minimal design, ruthless clarity, real speed. Launch in 2–3 weeks, not months.</p>
-      <ul class="svc-points">
+<!-- Viewport edge runner (fixed) -->
+<div class="edge-runner" aria-hidden="true"></div>
+
+<section id="services" class="svc-wrap">
+  <!-- Slide 1: CENTER -->
+  <section id="s1" class="svc-slide center">
+    <div class="svc-bg"></div>
+    <div class="inner">
+      <p class="eyebrow">Full Website Builds</p>
+      <h2 class="title">Cut the noise. Ship a high-end, conversion-first site.</h2>
+      <p class="lead">Minimal design, ruthless clarity, real speed. Launch in weeks, not months.</p>
+      <ul class="points">
         <li>Custom design — no templates</li>
-        <li>~1.7s TTI on real mobile</li>
-        <li>Analytics + A/B ready</li>
+        <li>Real-world performance budgets</li>
+        <li>Analytics, tags & A/B ready</li>
       </ul>
-      <div class="svc-cta-row">
-        <a class="svc-cta" href="website-builds.html">Explore Website Builds</a>
-        <a class="svc-link" href="#work">See Live Work ↗</a>
+      <div class="cta-row">
+        <a class="btn" href="website-builds.html">Explore Website Builds</a>
+        <a class="link" href="#work">See live work</a>
       </div>
     </div>
-  </article>
+  </section>
 
-  <!-- Slide 2 — Custom Client Portals -->
-  <article class="svc-slide">
-    <div class="svc-panel tone-b">
-      <div class="svc-outline" aria-hidden="true"></div>
-
-      <p class="svc-eyebrow">Custom Client Portals</p>
-      <h2 class="svc-title">Onboarding, docs, support—everything in one place.</h2>
-      <p class="svc-lead">Give clients a branded home with logins, resources, updates, and support built in.</p>
-      <ul class="svc-points">
-        <li>Secure auth + roles</li>
-        <li>File sharing & status updates</li>
-        <li>Payments / subscriptions optional</li>
-      </ul>
-      <div class="svc-cta-row">
-        <a class="svc-cta" href="client-portals.html">See Portal Options</a>
-        <a class="svc-link" href="#contact">Ask a Question ↗</a>
+  <!-- Slide 2: LEFT COPY / RIGHT VISUAL -->
+  <section id="s2" class="svc-slide split left">
+    <div class="svc-bg"></div>
+    <div class="grid">
+      <div class="copy">
+        <p class="eyebrow">Custom Client Portals</p>
+        <h2 class="title">Onboarding, docs, support — everything in one place.</h2>
+        <p class="lead">Give clients a branded home with logins, resources, updates, and support built in.</p>
+        <ul class="points">
+          <li>Secure auth + roles</li>
+          <li>Status updates, notifications, search</li>
+          <li>Payments & subscriptions optional</li>
+        </ul>
+        <div class="cta-row">
+          <a class="btn" href="client-portals.html">See Portal Options</a>
+          <a class="link" href="#contact">Ask a question</a>
+        </div>
+      </div>
+      <div class="visual" aria-hidden="true">
+        <div class="mock">
+          <div class="mock-ui">
+            <div class="mock-header">Client Portal — Dashboard</div>
+            <div class="mock-cells"><div class="cell"></div><div class="cell"></div><div class="cell"></div></div>
+          </div>
+        </div>
       </div>
     </div>
-  </article>
+  </section>
 
-  <!-- Slide 3 — CRM Integration -->
-  <article class="svc-slide">
-    <div class="svc-panel tone-c">
-      <div class="svc-outline" aria-hidden="true"></div>
-
-      <p class="svc-eyebrow">CRM Integration</p>
-      <h2 class="svc-title">Automate the pipeline. Capture → nurture → book.</h2>
-      <p class="svc-lead">Lead routing, sequences, scheduling, payments, and reporting—wired to your site.</p>
-      <ul class="svc-points">
-        <li>Lead routing & automations</li>
-        <li>Email/SMS templates</li>
-        <li>Calendars, payments, reporting</li>
-      </ul>
-      <div class="svc-cta-row">
-        <a class="svc-cta" href="crm.html">View CRM Integrations</a>
-        <a class="svc-link" href="#contact">Book a Demo ↗</a>
+  <!-- Slide 3: RIGHT COPY / LEFT VISUAL -->
+  <section id="s3" class="svc-slide split right">
+    <div class="svc-bg"></div>
+    <div class="grid">
+      <div class="visual" aria-hidden="true">
+        <div class="mock">
+          <div class="mock-ui">
+            <div class="mock-header">CRM — Pipeline</div>
+            <div class="mock-cells"><div class="cell"></div><div class="cell"></div><div class="cell"></div></div>
+          </div>
+        </div>
+      </div>
+      <div class="copy">
+        <p class="eyebrow">CRM Integration</p>
+        <h2 class="title">Automate the pipeline. Capture → nurture → book.</h2>
+        <p class="lead">Forms drop into CRM with routing, sequences, scheduling, payments, and reporting.</p>
+        <ul class="points">
+          <li>Lead routing & automations</li>
+          <li>Email/SMS templates</li>
+          <li>Calendars, payments, reporting</li>
+        </ul>
+        <div class="cta-row">
+          <a class="btn" href="crm.html">View CRM Integrations</a>
+          <a class="link" href="#contact">Book a demo</a>
+        </div>
       </div>
     </div>
-  </article>
+  </section>
 </section>
 
 
@@ -1552,6 +1474,38 @@
 
     io.observe(canvas);
   });
+})();
+</script>
+
+  <script>
+/* Services: progress dots + active slide state + smooth scroll */
+(() => {
+  const root = document.body;
+  const slides = Array.from(document.querySelectorAll('#services .svc-slide'));
+  const dots = Array.from(document.querySelectorAll('.nav-dots .dot'));
+  if (!slides.length || !dots.length) return;
+
+  const setActive = (id) => {
+    const idx = slides.findIndex(s => s.id === id);
+    if (idx < 0) return;
+    root.setAttribute('data-active', String(idx));
+    dots.forEach((d,i)=> d.classList.toggle('active', i===idx));
+  };
+
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e => { if (e.isIntersecting) setActive(e.target.id); });
+  }, {threshold: 0.55});
+  slides.forEach(s => io.observe(s));
+
+  const prefersReduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  dots.forEach((dot,i)=>{
+    dot.addEventListener('click', (e)=>{
+      e.preventDefault();
+      slides[i].scrollIntoView({behavior: prefersReduced ? 'auto' : 'smooth'});
+    });
+  });
+
+  setActive(slides[0].id);
 })();
 </script>
 
