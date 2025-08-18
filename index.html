@@ -815,6 +815,79 @@
   .svc-points{ font-size: .98rem; }
 }
 
+    /* Full-screen storytelling */
+.services-fs{ position:relative; scroll-margin-top:84px; }
+.services-fs{ scroll-snap-type: y mandatory; }
+.svc-slide{
+  height:100vh; min-height:680px;
+  display:grid; place-items:center;
+  scroll-snap-align:start; padding:clamp(16px,3vw,28px);
+  background:#0b0f16; /* matches your dark base */
+}
+
+/* The content card */
+.svc-panel{
+  position:relative;
+  width:min(1100px, 92vw);
+  border-radius:20px;
+  background: rgba(16,20,28,.82);
+  border:1px solid #1e232e;
+  box-shadow: 0 10px 40px rgba(0,0,0,.35);
+  backdrop-filter: blur(8px);
+  padding: clamp(20px, 4vw, 36px);
+  overflow: hidden;
+  isolation: isolate; /* keep outline glow inside */
+}
+
+/* Animated “running light” outline */
+.svc-outline{
+  position:absolute; inset:0; border-radius:inherit; pointer-events:none;
+  /* Outer glow mask: keeps only the border area visible */
+  --b: 2px;                    /* visible border thickness */
+  --g: 16px;                   /* glow blur */
+  --pad: 1px;                  /* padding so glow doesn't clip corners */
+  padding: var(--pad);
+  /* We paint a moving conic gradient then mask to a ring */
+  background:
+    conic-gradient(from var(--angle), hsl(206 100% 55%) 0 20%, transparent 25% 100%);
+  filter: blur(var(--g));
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor; mask-composite: exclude;
+  border: var(--b) solid transparent; /* thickness of the ring */
+  animation: orbit 4.8s linear infinite;
+  opacity:.9;
+}
+
+/* Slow orbit of the light around the border */
+@keyframes orbit {
+  to { --angle: 1turn; }
+}
+
+/* Reduce motion */
+@media (prefers-reduced-motion: reduce){
+  .svc-outline{ animation: none; background: radial-gradient(400px 200px at 10% 0%, hsl(206 100% 55% / .25), transparent 60%); filter: blur(12px); }
+}
+
+/* Tone tweaks per slide (very subtle) */
+.tone-a .svc-outline{ background: conic-gradient(from var(--angle), hsl(206 100% 60%) 0 18%, transparent 22% 100%); }
+.tone-b .svc-outline{ background: conic-gradient(from var(--angle), hsl(206 100% 55%) 0 22%, transparent 26% 100%); }
+.tone-c .svc-outline{ background: conic-gradient(from var(--angle), hsl(206 100% 50%) 0 20%, transparent 24% 100%); }
+
+/* Typography + content */
+.svc-eyebrow{ margin:0 0 .35rem; color:var(--blue); text-transform:uppercase; letter-spacing:.18em; font-weight:900; font-size:.8rem; }
+.svc-title{ margin:.1rem 0 .5rem; font-size: clamp(28px, 4.6vw, 46px); font-weight:900; line-height:1.06; color:#fff; }
+.svc-lead{ color:#e9eef6; opacity:.92; font-size: clamp(16px, 2vw, 20px); margin:0 0 1rem; }
+.svc-points{ margin:0 0 1.1rem; padding-left:1.1rem; color:#dfe6ee; line-height:1.7; }
+.svc-points li{ margin:.25rem 0; }
+.svc-cta-row{ display:flex; gap:.8rem 1rem; flex-wrap:wrap; }
+.svc-cta{ background:var(--blue); color:#0d1218; font-weight:900; padding:.8rem 1.3rem; border-radius:999px; text-decoration:none; box-shadow:0 6px 24px rgba(78,198,255,.22); }
+.svc-cta:hover{ background:#fff; color:var(--blue); }
+.svc-link{ color:#b8c7da; font-weight:800; text-decoration:none; }
+.svc-link:hover{ color:var(--blue); }
+
+
 
 <style>
 /* Keep hero background pure black */
@@ -1103,22 +1176,20 @@
 
   
 
- <section id="services" class="services-fs">
+<section id="services" class="services-fs">
   <!-- Slide 1 — Full Website Builds -->
-  <article class="svc-slide" data-theme="site">
-    <canvas class="svc-canvas" aria-hidden="true"></canvas>
+  <article class="svc-slide">
+    <div class="svc-panel tone-a">
+      <div class="svc-outline" aria-hidden="true"></div>
 
-    <div class="svc-content">
       <p class="svc-eyebrow">Full Website Builds</p>
       <h2 class="svc-title">Cut the noise. Ship a high-end, conversion-first site.</h2>
       <p class="svc-lead">Minimal design, ruthless clarity, real speed. Launch in 2–3 weeks, not months.</p>
-
       <ul class="svc-points">
         <li>Custom design — no templates</li>
         <li>~1.7s TTI on real mobile</li>
         <li>Analytics + A/B ready</li>
       </ul>
-
       <div class="svc-cta-row">
         <a class="svc-cta" href="website-builds.html">Explore Website Builds</a>
         <a class="svc-link" href="#work">See Live Work ↗</a>
@@ -1127,20 +1198,18 @@
   </article>
 
   <!-- Slide 2 — Custom Client Portals -->
-  <article class="svc-slide" data-theme="portal">
-    <canvas class="svc-canvas" aria-hidden="true"></canvas>
+  <article class="svc-slide">
+    <div class="svc-panel tone-b">
+      <div class="svc-outline" aria-hidden="true"></div>
 
-    <div class="svc-content">
       <p class="svc-eyebrow">Custom Client Portals</p>
-      <h2 class="svc-title">Onboarding, docs, support—everything in one beautiful place.</h2>
-      <p class="svc-lead">Give clients a branded home with logins, resources, updates, and support built-in.</p>
-
+      <h2 class="svc-title">Onboarding, docs, support—everything in one place.</h2>
+      <p class="svc-lead">Give clients a branded home with logins, resources, updates, and support built in.</p>
       <ul class="svc-points">
         <li>Secure auth + roles</li>
         <li>File sharing & status updates</li>
         <li>Payments / subscriptions optional</li>
       </ul>
-
       <div class="svc-cta-row">
         <a class="svc-cta" href="client-portals.html">See Portal Options</a>
         <a class="svc-link" href="#contact">Ask a Question ↗</a>
@@ -1149,20 +1218,18 @@
   </article>
 
   <!-- Slide 3 — CRM Integration -->
-  <article class="svc-slide" data-theme="crm">
-    <canvas class="svc-canvas" aria-hidden="true"></canvas>
+  <article class="svc-slide">
+    <div class="svc-panel tone-c">
+      <div class="svc-outline" aria-hidden="true"></div>
 
-    <div class="svc-content">
       <p class="svc-eyebrow">CRM Integration</p>
       <h2 class="svc-title">Automate the pipeline. Capture → nurture → book.</h2>
-      <p class="svc-lead">Forms drop into your CRM with automations, sequences, and calendar booking that just works.</p>
-
+      <p class="svc-lead">Lead routing, sequences, scheduling, payments, and reporting—wired to your site.</p>
       <ul class="svc-points">
         <li>Lead routing & automations</li>
         <li>Email/SMS templates</li>
         <li>Calendars, payments, reporting</li>
       </ul>
-
       <div class="svc-cta-row">
         <a class="svc-cta" href="crm.html">View CRM Integrations</a>
         <a class="svc-link" href="#contact">Book a Demo ↗</a>
@@ -1170,6 +1237,7 @@
     </div>
   </article>
 </section>
+
 
  
   <!-- TESTIMONIALS -->
