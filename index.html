@@ -545,6 +545,109 @@
 .case-meta p{ margin:0; color:#bcd0e4; opacity:.9; }
 @media (max-width:900px){ .cases-rail{ grid-auto-columns:85%; } }
 
+    /* ===== LUMINOUS DIVIDER ===== */
+.lux-divider{
+  position:relative; height:46px; margin: 22px 0 40px;
+  --c1: rgba(78,198,255,.95);      /* BIM blue core */
+  --c2: rgba(78,198,255,.40);      /* outer glow */
+}
+.lux-divider::before,
+.lux-divider::after{
+  content:""; position:absolute; left:50%; transform:translateX(-50%); top:50%;
+  width:min(82vw, 1120px);
+  pointer-events:none; border-radius:999px;
+}
+.lux-divider::before{
+  height:2px;
+  background: linear-gradient(90deg,
+     transparent 0%,
+     var(--c2) 18%,
+     var(--c1) 38%,
+     #ffffff 50%,
+     var(--c1) 62%,
+     var(--c2) 82%,
+     transparent 100%);
+  filter: brightness(1.05);
+  animation: luxShift 12s linear infinite;
+  background-size: 200% 100%;
+}
+.lux-divider::after{
+  height:20px;
+  background: radial-gradient(50% 130% at 50% 50%, var(--c2), transparent 66%);
+  filter: blur(10px); opacity:.55;
+  animation: luxBreathe 5.8s ease-in-out infinite alternate;
+}
+@keyframes luxShift{ from{background-position:0 0;} to{background-position:200% 0;} }
+@keyframes luxBreathe{ 0%{opacity:.40; transform:translateX(-50%) scaleX(.96);}
+                       100%{opacity:.66; transform:translateX(-50%) scaleX(1.02);} }
+
+
+    /* ===== STORY – premium layout ===== */
+.story-section{
+  background: linear-gradient(110deg,#171a22 60%,#101014 100%);
+  padding: clamp(48px, 7vw, 84px) 0;
+}
+.story-shell{ max-width:1100px; margin:0 auto; padding:0 24px; }
+.story-card{
+  position:relative; display:grid; gap:36px;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, .95fr);
+  padding: clamp(24px, 3.8vw, 36px);
+  background: rgba(18,22,30,.78);
+  border:1px solid #1e232e; border-radius:22px;
+  box-shadow: 0 10px 40px rgba(0,0,0,.35), 0 8px 32px rgba(78,198,255,.08);
+  backdrop-filter: blur(8px);
+}
+@media (max-width:930px){ .story-card{ grid-template-columns:1fr; } }
+
+.story-title{ margin:0 0 .5em; font-size: clamp(22px, 3.2vw, 34px); color:var(--blue); font-weight:900; }
+.story-lead{ margin:0 0 1em; font-size:1.08rem; color:#e8eef6; opacity:.92; line-height:1.65;}
+.story-points{ margin:0 0 1.2rem; padding-left:1.1rem; line-height:1.7; opacity:.95; color:#dfe6ee;}
+.story-points li{ margin:.3rem 0; position:relative; }
+.story-points li::before{
+  content:""; position:absolute; left:-1.1rem; top:.6rem; width:.5rem; height:.5rem; border-radius:50%;
+  background:#4EC6FF; box-shadow:0 0 0 5px rgba(78,198,255,.12);
+}
+.story-cta-row{ display:flex; gap:.9rem; flex-wrap:wrap; margin-top:.2rem; }
+.story-cta{ background:var(--blue); color:#101014; font-weight:800; padding:.8rem 1.3rem; border-radius:2rem; box-shadow:0 2px 14px #4ec6ff27; }
+.story-cta:hover{ background:#fff; color:var(--blue); }
+.story-link{ color:#b8c7da; font-weight:700; text-decoration:none; }
+.story-link:hover{ color:var(--blue); }
+
+/* Media frame with subtle glow + tilt */
+.media-frame{
+  position:relative; border-radius:16px; overflow:hidden;
+  background:#0f1218; border:1px solid #1e232e;
+  box-shadow: 0 12px 40px rgba(78,198,255,.12);
+  isolation:isolate;
+}
+.media-frame::before{
+  /* inner glow ring */
+  content:""; position:absolute; inset:-1px; border-radius:inherit; pointer-events:none;
+  background: radial-gradient(120% 120% at 85% 15%, rgba(78,198,255,.20), transparent 40%),
+              radial-gradient(120% 120% at 15% 85%, rgba(78,198,255,.16), transparent 42%);
+  mix-blend-mode: screen; filter: blur(4px);
+}
+.media-frame img{ display:block; width:100%; height:100%; object-fit:cover; transform: translateZ(0); }
+
+.media-frame:hover{ transform: perspective(1000px) rotateX(.75deg) rotateY(-.75deg); transition: transform .35s cubic-bezier(.2,.7,.2,1); }
+
+/* ===== Glowing frame around the whole card (subtle) ===== */
+.lux-frame::after{
+  content:""; position:absolute; inset:-2px; border-radius:24px; pointer-events:none;
+  background:
+     conic-gradient(from 0deg, rgba(78,198,255,.08), transparent 20% 80%, rgba(78,198,255,.08)),
+     radial-gradient(120% 50% at 50% 0%, rgba(78,198,255,.10), transparent 60%);
+  filter: blur(6px); opacity:.8; mix-blend-mode: screen;
+  mask: radial-gradient(120% 120% at 50% 50%, transparent 60%, #000 61%);
+  animation: frameBreathe 6.5s ease-in-out infinite alternate;
+}
+@keyframes frameBreathe{
+  0%{ opacity:.55; transform: scale(.995); }
+  100%{ opacity:.88; transform: scale(1.005); }
+}
+
+
+
 <style>
 /* Keep hero background pure black */
 .hero { position: relative; background:#000; overflow:hidden; }
@@ -555,7 +658,6 @@
 /* Make sure your hero text sits above the canvas */
 .hero [data-hero-content]{ position:relative; z-index:2; }
 </style>
-
     
   </style>
 </head>
@@ -628,34 +730,37 @@
     
 
     <!-- ====== FOUNDER STORY ====== -->
-<section class="story-section" id="our-story" data-aos="fade-up">
-  <div class="story-wrap">
-    <div class="story-copy">
-      <h2 class="story-title">Why I Started BIM Labs</h2>
-      <p class="story-lead">
-        Agencies quoted $5k–$20k for basic sites. It didn’t sit right—especially for small teams trying to grow.
-        I started BIM Labs to build the kind of websites and CRMs I wish I had: fast, minimal, and priced like a partner,
-        not a gatekeeper.
-      </p>
-      <ul class="story-points">
-        <li><b>Fair pricing:</b> high-end look + real functionality without bloat.</li>
-        <li><b>Owner’s mindset:</b> we care about your pipeline and outcomes, not billable hours.</li>
-        <li><b>Speed to value:</b> launch fast, iterate weekly, measure everything.</li>
-      </ul>
-      <div class="story-cta-row">
-        <a href="#contact" class="story-cta">Start a Vision Call</a>
-        <a href="#portfolio" class="story-link">See Live Work ↗</a>
+<section class="story-section" id="our-story">
+  <div class="story-shell">
+    <div class="story-card lux-frame">
+      <div class="story-col story-copy">
+        <h2 class="story-title">Why I Started BIM Labs</h2>
+        <p class="story-lead">Agencies quoted $5k–$20k … priced like a partner, not a gatekeeper.</p>
+        <ul class="story-points">
+          <li><b>Fair pricing:</b> high-end look + real functionality without bloat.</li>
+          <li><b>Owner’s mindset:</b> we care about your pipeline and outcomes, not billable hours.</li>
+          <li><b>Speed to value:</b> launch fast, iterate weekly, measure everything.</li>
+        </ul>
+        <div class="story-cta-row">
+          <a href="#contact" class="story-cta">Start a Vision Call</a>
+          <a href="#portfolio" class="story-link">See Live Work ↗</a>
+        </div>
       </div>
-    </div>
 
-    <div class="story-media">
-      <div class="story-card">
-        <img src="https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=1200&q=80"
-             alt="BIM Labs studio" loading="lazy">
-      </div>
+      <figure class="story-col story-media">
+        <div class="media-frame">
+          <img src="https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=1400&q=80"
+               alt="BIM Labs studio" loading="lazy">
+        </div>
+      </figure>
     </div>
   </div>
 </section>
+
+
+  <!-- Luminous divider -->
+<div class="lux-divider" aria-hidden="true"></div>
+
 
  <!-- ====== BEFORE / AFTER ====== -->
 <section class="compare-section" data-aos="fade-up">
