@@ -860,6 +860,48 @@
   })();
 </script>
 
+  <script>
+(() => {
+  const c = document.getElementById('hero-canvas');
+  if(!c) return;
+  const ctx = c.getContext('2d');
+  let w,h, t=0, stop=false;
+
+  function resize(){ w = c.width = c.offsetWidth; h = c.height = c.offsetHeight; }
+  new ResizeObserver(resize).observe(c);
+
+  function arc(x,y,r,s,e,o){
+    ctx.beginPath();
+    ctx.strokeStyle = `rgba(78,198,255,${o})`;
+    ctx.lineWidth = 1;
+    ctx.arc(x,y,r,s,e);
+    ctx.stroke();
+  }
+
+  function frame(){
+    if(stop) return;
+    ctx.clearRect(0,0,w,h);
+    const cx = w*0.55, cy = h*0.55;
+    for(let i=0;i<9;i++){
+      const r = Math.min(w,h)*(.28 + i*0.05);
+      const phase = t*0.0006 + i*0.18;
+      arc(cx, cy, r, Math.PI*phase, Math.PI*(1.2+phase), 0.12 - i*0.01);
+    }
+    t += 16;
+    requestAnimationFrame(frame);
+  }
+
+  // Respect reduced motion
+  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)');
+  function start(){ if(!prefersReduced.matches){ stop=false; frame(); } }
+  function pause(){ stop=true; }
+  start();
+  prefersReduced.addEventListener('change', e => e.matches ? pause() : start());
+})();
+</script>
+</body>
+</html>
+
   
 </body>
 </html>
