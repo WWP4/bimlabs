@@ -780,6 +780,94 @@ body[data-active="1"]{ --runner-ang: .25turn; --runner-speed: 5s; }
 body[data-active="2"]{ --runner-ang: .5turn;  --runner-speed: 5.6s; }
 
 
+/* ===== Services FS Section ===== */
+.svc-wrap{ position:relative; height:100%; scroll-snap-type:y mandatory; overflow-y:auto; }
+
+.svc-slide{
+  position:relative; height:100vh; min-height:720px; scroll-snap-align:start;
+  display:flex; align-items:center; justify-content:center;
+  padding: clamp(24px, 5vw, 72px);
+}
+
+/* Subtle background grid */
+.svc-bg{
+  position:absolute; inset:0; z-index:0;
+  background:
+    linear-gradient(0deg, #fff0 24px, #fff1 25px, #fff0 26px) center/100% 26px,
+    linear-gradient(90deg,#fff0 24px,#fff1 25px,#fff0 26px) center/26px 100%,
+    radial-gradient(900px 600px at 85% -10%, rgba(78,198,255,.06), transparent 60%),
+    radial-gradient(700px 400px at 5% -10%, rgba(78,198,255,.05), transparent 60%),
+    var(--black, #0b0f16);
+  mask-image: radial-gradient(1200px 800px at 50% -20%, #000, transparent 80%);
+  opacity:.24;
+}
+
+/* Layout modes */
+.svc-center .svc-inner{ max-width: 980px; text-align:center; position:relative; z-index:2; }
+
+.svc-split{ width:100%; position:relative; z-index:2; }
+.svc-grid{ display:grid; grid-template-columns: 1.15fr 1fr; gap:min(5vw,60px);
+           align-items:center; width:min(1200px, 92vw); margin:0 auto; }
+.svc-right .svc-grid{ grid-template-columns: 1fr 1.15fr; }
+.svc-right .svc-para{ order:1; } .svc-right .svc-copy{ order:2; }
+
+@media (max-width:1000px){
+  .svc-grid{ grid-template-columns: 1fr; gap:28px; }
+  .svc-right .svc-para{ order:2; } .svc-right .svc-copy{ order:1; }
+}
+
+/* Copy */
+.svc-eyebrow{ color:var(--blue, hsl(206 100% 55%)); text-transform:uppercase; letter-spacing:.18em; font-weight:900; font-size:.8rem; margin:0 0 .5rem; }
+.svc-title{ margin:.1rem 0 .6rem; font-weight:900; line-height:1.04; font-size: clamp(34px, 6vw, 72px); }
+.svc-lead{ margin:0 0 1.15rem; color:#dfe6ee; font-size: clamp(16px,2vw,20px); max-width: 48ch; }
+.svc-points{ margin:0 0 1.2rem; padding-left:1.1rem; color:#a8b6c8; line-height:1.7; }
+.svc-points li{ margin:.25rem 0; }
+
+.svc-cta-row{ display:flex; gap:.8rem 1rem; flex-wrap:wrap; }
+.svc-btn{
+  background:var(--blue, hsl(206 100% 55%)); color:#091018; font-weight:900; text-decoration:none;
+  padding:.9rem 1.4rem; border-radius:999px; box-shadow:0 10px 36px #4ec6ff38;
+}
+.svc-btn:hover{ background:#fff; color:var(--blue, hsl(206 100% 55%)); }
+.svc-link{ color:#b9c6d8; text-decoration:none; font-weight:800; }
+.svc-link:hover{ color:var(--blue, hsl(206 100% 55%)); }
+
+/* Animated paragraphs */
+.svc-para{ position:relative; z-index:2; }
+.svc-desc{ max-width: 580px; color:#dfe6ee; font-size: clamp(1rem, 2vw, 1.2rem); line-height:1.7; }
+.svc-desc span{ display:inline-block; opacity:0; transform: translateY(16px); animation: svc-rise .7s ease forwards; }
+.svc-desc span:nth-child(1){ animation-delay:.05s } .svc-desc span:nth-child(2){ animation-delay:.25s }
+.svc-desc span:nth-child(3){ animation-delay:.45s } .svc-desc span:nth-child(4){ animation-delay:.65s }
+@keyframes svc-rise{ to{ opacity:1; transform:none; } }
+
+/* Progress dots (fixed to this section) */
+.svc-dots{
+  position: fixed; right: 18px; top: 50%; transform: translateY(-50%);
+  display:flex; flex-direction:column; gap:10px; z-index: 2000;
+}
+.svc-dot{ width:10px; height:10px; border-radius:10px; background:#2a3750; border:1px solid #344764; transition: all .2s ease; }
+.svc-dot.svc-active{ background: var(--blue, hsl(206 100% 55%)); box-shadow:0 0 0 6px #4ec6ff22; }
+
+/* Viewport running light (premium outline) */
+.svc-edge-runner{
+  position:fixed; inset:16px; border-radius:28px; pointer-events:none;
+  z-index: 1999; padding:1px;
+  background: conic-gradient(from var(--svc-ang,0turn), var(--blue, hsl(206 100% 55%)) 0 14%, transparent 18% 100%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor; mask-composite: exclude;
+  filter: blur(14px) saturate(1.05);
+  opacity:.9;
+  animation: svc-spin var(--svc-speed,6s) linear infinite both;
+}
+@keyframes svc-spin{ to{ --svc-ang: 1turn; } }
+@media (prefers-reduced-motion: reduce){
+  .svc-edge-runner{ animation:none; background: radial-gradient(700px 300px at 10% 0%, var(--blue, hsl(206 100% 55%))/.28, transparent 60%); filter: blur(18px); }
+}
+
+/* Runner tuning per active slide (JS sets body[data-svc]) */
+body[data-svc="0"]{ --svc-speed: 6.5s; }
+body[data-svc="1"]{ --svc-ang: .25turn; --svc-speed: 5s; }
+body[data-svc="2"]{ --svc-ang: .5turn;  --svc-speed: 5.6s; }
 
   
 
@@ -1070,94 +1158,107 @@ body[data-active="2"]{ --runner-ang: .5turn;  --runner-speed: 5.6s; }
 
   
 
-<!-- ====== SERVICES (full-screen, alternating) ====== -->
-<!-- Progress dots (fixed) -->
-<nav class="nav-dots" aria-label="section progress">
-  <a class="dot" href="#s1" aria-label="Full Website Builds"></a>
-  <a class="dot" href="#s2" aria-label="Custom Client Portals"></a>
-  <a class="dot" href="#s3" aria-label="CRM Integration"></a>
-</nav>
-
-<!-- Viewport edge runner (fixed) -->
-<div class="edge-runner" aria-hidden="true"></div>
-
+<!-- ===== Services (full-screen, alternating, animated paragraphs) ===== -->
 <section id="services" class="svc-wrap">
-  <!-- Slide 1: CENTER -->
-  <section id="s1" class="svc-slide center">
+
+  <!-- Fixed UI for this section only -->
+  <div class="svc-edge-runner" aria-hidden="true"></div>
+  <nav class="svc-dots" aria-label="section progress">
+    <a class="svc-dot" href="#svc-s1" aria-label="Full Website Builds"></a>
+    <a class="svc-dot" href="#svc-s2" aria-label="Custom Client Portals"></a>
+    <a class="svc-dot" href="#svc-s3" aria-label="CRM Integration"></a>
+  </nav>
+
+  <!-- Slide 1 — CENTER -->
+  <section id="svc-s1" class="svc-slide svc-center">
     <div class="svc-bg"></div>
-    <div class="inner">
-      <p class="eyebrow">Full Website Builds</p>
-      <h2 class="title">Cut the noise. Ship a high-end, conversion-first site.</h2>
-      <p class="lead">Minimal design, ruthless clarity, real speed. Launch in weeks, not months.</p>
-      <ul class="points">
+    <div class="svc-inner">
+      <p class="svc-eyebrow">Full Website Builds</p>
+      <h2 class="svc-title">Cut the noise. Ship a high-end, conversion-first site.</h2>
+      <p class="svc-lead">Minimal design, ruthless clarity, real speed. Launch in weeks, not months.</p>
+
+      <ul class="svc-points">
         <li>Custom design — no templates</li>
         <li>Real-world performance budgets</li>
         <li>Analytics, tags & A/B ready</li>
       </ul>
-      <div class="cta-row">
-        <a class="btn" href="website-builds.html">Explore Website Builds</a>
-        <a class="link" href="#work">See live work</a>
+
+      <div class="svc-para">
+        <p class="svc-desc">
+          <span>We build modern websites that feel premium and move fast.</span>
+          <span>Your content and brand system drive the design — not the other way around.</span>
+          <span>Every page ships with Core Web Vitals in the green and copy that converts.</span>
+          <span>From structure and SEO to launch and handoff, we minimize friction.</span>
+        </p>
+      </div>
+
+      <div class="svc-cta-row">
+        <a class="svc-btn" href="website-builds.html">Explore Website Builds</a>
+        <a class="svc-link" href="#work">See live work</a>
       </div>
     </div>
   </section>
 
-  <!-- Slide 2: LEFT COPY / RIGHT VISUAL -->
-  <section id="s2" class="svc-slide split left">
+  <!-- Slide 2 — LEFT COPY / RIGHT PARAGRAPH -->
+  <section id="svc-s2" class="svc-slide svc-split svc-left">
     <div class="svc-bg"></div>
-    <div class="grid">
-      <div class="copy">
-        <p class="eyebrow">Custom Client Portals</p>
-        <h2 class="title">Onboarding, docs, support — everything in one place.</h2>
-        <p class="lead">Give clients a branded home with logins, resources, updates, and support built in.</p>
-        <ul class="points">
+    <div class="svc-grid">
+      <div class="svc-copy">
+        <p class="svc-eyebrow">Custom Client Portals</p>
+        <h2 class="svc-title">Onboarding, docs, support — everything in one place.</h2>
+        <p class="svc-lead">Give clients a branded home with logins, resources, updates, and support built-in.</p>
+        <ul class="svc-points">
           <li>Secure auth + roles</li>
           <li>Status updates, notifications, search</li>
           <li>Payments & subscriptions optional</li>
         </ul>
-        <div class="cta-row">
-          <a class="btn" href="client-portals.html">See Portal Options</a>
-          <a class="link" href="#contact">Ask a question</a>
+        <div class="svc-cta-row">
+          <a class="svc-btn" href="client-portals.html">See Portal Options</a>
+          <a class="svc-link" href="#contact">Ask a question</a>
         </div>
       </div>
-      <div class="visual" aria-hidden="true">
-        <div class="mock">
-          <div class="mock-ui">
-            <div class="mock-header">Client Portal — Dashboard</div>
-            <div class="mock-cells"><div class="cell"></div><div class="cell"></div><div class="cell"></div></div>
-          </div>
+
+      <div class="svc-para">
+        <p class="svc-desc">
+          <span>Your portal becomes the central hub for every client.</span>
+          <span>Onboarding checklists, document sharing, approvals, and progress live in one place.</span>
+          <span>Role-based access keeps sensitive information secure while keeping your team efficient.</span>
+          <span>We can add subscriptions, payments, and support tickets when you’re ready.</span>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Slide 3 — RIGHT COPY / LEFT PARAGRAPH -->
+  <section id="svc-s3" class="svc-slide svc-split svc-right">
+    <div class="svc-bg"></div>
+    <div class="svc-grid">
+      <div class="svc-para">
+        <p class="svc-desc">
+          <span>Capture leads on your site and route them to the right pipeline automatically.</span>
+          <span>Automations send the right email/SMS sequences, book meetings, and log activity.</span>
+          <span>Dashboards stay clean with dedupe and enrichment — no more manual upkeep.</span>
+          <span>We connect your forms, calendars, and payments so the CRM finally works for you.</span>
+        </p>
+      </div>
+
+      <div class="svc-copy">
+        <p class="svc-eyebrow">CRM Integration</p>
+        <h2 class="svc-title">Automate the pipeline. Capture → nurture → book.</h2>
+        <p class="svc-lead">Forms flow into CRM with routing, sequences, scheduling, payments, and reporting.</p>
+        <ul class="svc-points">
+          <li>Lead routing & automations</li>
+          <li>Email/SMS templates</li>
+          <li>Calendars, payments, reporting</li>
+        </ul>
+        <div class="svc-cta-row">
+          <a class="svc-btn" href="crm.html">View CRM Integrations</a>
+          <a class="svc-link" href="#contact">Book a demo</a>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Slide 3: RIGHT COPY / LEFT VISUAL -->
-  <section id="s3" class="svc-slide split right">
-    <div class="svc-bg"></div>
-    <div class="grid">
-      <div class="visual" aria-hidden="true">
-        <div class="mock">
-          <div class="mock-ui">
-            <div class="mock-header">CRM — Pipeline</div>
-            <div class="mock-cells"><div class="cell"></div><div class="cell"></div><div class="cell"></div></div>
-          </div>
-        </div>
-      </div>
-      <div class="copy">
-        <p class="eyebrow">CRM Integration</p>
-        <h2 class="title">Automate the pipeline. Capture → nurture → book.</h2>
-        <p class="lead">Forms drop into CRM with routing, sequences, scheduling, payments, and reporting.</p>
-        <ul class="points">
-          <li>Lead routing & automations</li>
-          <li>Email/SMS templates</li>
-          <li>Calendars, payments, reporting</li>
-        </ul>
-        <div class="cta-row">
-          <a class="btn" href="crm.html">View CRM Integrations</a>
-          <a class="link" href="#contact">Book a demo</a>
-        </div>
-      </div>
-    </div>
-  </section>
 </section>
 
 
@@ -1502,6 +1603,40 @@ body[data-active="2"]{ --runner-ang: .5turn;  --runner-speed: 5.6s; }
     dot.addEventListener('click', (e)=>{
       e.preventDefault();
       slides[i].scrollIntoView({behavior: prefersReduced ? 'auto' : 'smooth'});
+    });
+  });
+
+  setActive(slides[0].id);
+})();
+</script>
+
+  <script>
+(function(){
+  const root  = document.body;
+  const host  = document.getElementById('services');
+  if(!host) return;
+
+  const slides = Array.from(host.querySelectorAll('.svc-slide'));
+  const dots   = Array.from(document.querySelectorAll('.svc-dots .svc-dot'));
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function setActive(id){
+    const idx = slides.findIndex(s => s.id === id);
+    if (idx < 0) return;
+    root.setAttribute('data-svc', String(idx));
+    dots.forEach((d,i)=> d.classList.toggle('svc-active', i===idx));
+  }
+
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e => { if (e.isIntersecting) setActive(e.target.id); });
+  }, { threshold: 0.55 });
+
+  slides.forEach(s => io.observe(s));
+
+  dots.forEach((dot,i)=>{
+    dot.addEventListener('click', e => {
+      e.preventDefault();
+      slides[i].scrollIntoView({ behavior: reduced ? 'auto' : 'smooth' });
     });
   });
 
