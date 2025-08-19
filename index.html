@@ -1547,7 +1547,7 @@ body[data-svc="2"]{ --svc-ang: .5turn;  --svc-speed: 5.6s; }
   </div>
 </section>
 
-  <!-- ====== Start Wizard Logic ====== -->
+<!-- ====== Start Wizard Logic (robust) ====== -->
 <script>
 (() => {
   const form = document.getElementById('startForm');
@@ -1557,90 +1557,92 @@ body[data-svc="2"]{ --svc-ang: .5turn;  --svc-speed: 5.6s; }
   const bar   = document.querySelector('.start-bar');
   const choiceInput = document.getElementById('svChoice');
 
-  let i = 0;
+  // helpers
   const set = (idx) => {
     steps.forEach(s => s.classList.remove('is-active'));
     steps[idx].classList.add('is-active');
     if (bar) bar.style.width = `${((idx+1)/steps.length)*100}%`;
-    i = idx;
+    current = idx;
+  };
+  const selectChoice = (el) => {
+    form.querySelectorAll('.start-choice').forEach(c => c.classList.remove('is-selected'));
+    el.classList.add('is-selected');
+    choiceInput.value = el.dataset.choice || '';
+  };
+  const nudge = () => {
+    // quick “shake” nudge if nothing selected
+    const wrap = form.querySelector('.start-choices');
+    if (!wrap) return;
+    wrap.style.transition = 'transform .12s';
+    wrap.style.transform = 'translateX(3px)';
+    setTimeout(()=> wrap.style.transform = 'translateX(-3px)', 90);
+    setTimeout(()=> wrap.style.transform = 'none', 180);
   };
 
+  let current = 0;
+
+  // Auto-select DEPOSIT when flow opens, so Next always works
+  const auto = form.querySelector('.start-choice[data-choice="deposit"]');
+  if (auto) selectChoice(auto);
+
   function valid(idx){
-    const fs = steps[idx];
-    const reqs = [...fs.querySelectorAll('input[required]')];
+    // require fields in current step
+    const reqs = [...steps[idx].querySelectorAll('input[required]')];
     for (const el of reqs){
       if (!el.value.trim()) { el.focus(); return false; }
       if (el.type === 'email' && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(el.value)) { el.focus(); return false; }
     }
-    if (idx === 1 && !choiceInput.value) return false;
+    // step 2 must have a choice; if missing, default to deposit
+    if (idx === 1 && !choiceInput.value) {
+      if (auto) { selectChoice(auto); }
+      else { nudge(); return false; }
+    }
     return true;
   }
 
   form.addEventListener('click', (e) => {
-    const t = e.target;
-    if (t.matches('.start-next')) { if (!valid(i)) return; if (i < steps.length-1) set(i+1); }
-    if (t.matches('.start-prev')) { if (i > 0) set(i-1); }
+    const t = e.target.closest('button, a');
+    if (!t) return;
+
+    if (t.matches('.start-next')) {
+      if (!valid(current)) return;
+      if (current < steps.length - 1) set(current + 1);
+      return;
+    }
+    if (t.matches('.start-prev')) {
+      if (current > 0) set(current - 1);
+      return;
+    }
     if (t.matches('.start-choice')) {
-      form.querySelectorAll('.start-choice').forEach(c => c.classList.remove('is-selected'));
-      t.classList.add('is-selected');
-      choiceInput.value = t.dataset.choice;
+      selectChoice(t);
+      return;
     }
   });
 
-  // “Begin Flow” button
-  document.querySelectorAll('[data-start-goto="1"]').forEach(b=>{
-    b.addEventListener('click', (e)=>{ e.preventDefault(); set(0); });
+  // Keyboard: Enter advances, Esc goes back
+  form.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      if (!valid(current)) return;
+      if (current < steps.length - 1) set(current + 1);
+    } else if (e.key === 'Escape' && current > 0) {
+      e.preventDefault();
+      set(current - 1);
+    }
   });
 
+  // “Begin Flow” button shows step 1 and auto-selects deposit
+  document.querySelectorAll('[data-start-goto="1"]').forEach(b=>{
+    b.addEventListener('click', (e)=>{ 
+      e.preventDefault(); 
+      set(0); 
+      if (auto) selectChoice(auto);
+    });
+  });
+
+  // init
   set(0);
 })();
-</script>
-
-<!-- ====== Deposit / Checkout Handler ====== -->
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-  async function startCheckout(){
-    const name  = document.querySelector('#svName')?.value?.trim()
-               || document.querySelector('#ctName')?.value?.trim() || '';
-    const email = document.querySelector('#svEmail')?.value?.trim()
-               || document.querySelector('#ctEmail')?.value?.trim() || '';
-
-    const payload = {
-      name, email,
-      company: document.querySelector('#company')?.value?.trim() || '',
-      phone:   document.querySelector('#phone')?.value?.trim() || '',
-      notes:   document.querySelector('#notes')?.value?.trim() || '',
-      builderConfig: (typeof calc === 'function' ? calc() : {})
-    };
-
-    const ok = document.querySelector('.start-success');
-    ok?.classList.add('is-show');
-
-    try{
-      const res = await fetch('/checkout', {
-        method:'POST',
-        headers:{'Content-Type':'application/json'},
-        body: JSON.stringify(payload)
-      });
-      let data = {};
-      try { data = await res.json(); } catch(e) {}
-      if (res.ok && data.url) {
-        window.location.href = data.url;
-      } else {
-        ok?.classList.remove('is-show');
-        alert(data.error || 'Could not start checkout.');
-      }
-    } catch(err){
-      ok?.classList.remove('is-show');
-      alert('Could not start checkout.');
-    }
-  }
-
-  // Hook up all deposit buttons (IDs + class)
-  document
-    .querySelectorAll('#order-deposit, #order-deposit-top, .js-order-deposit')
-    .forEach(btn => btn.addEventListener('click', startCheckout));
-});
 </script>
 
 
