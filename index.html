@@ -963,6 +963,84 @@ body[data-svc="2"]{ --svc-ang: .5turn;  --svc-speed: 5.6s; }
   .tm-glow{ animation: none; background: radial-gradient(700px 300px at 10% 0%, #4ec6ff55, transparent 60%); filter: blur(18px); }
 }
 
+    /* ===== CONTACT (ct-*) ===== */
+.ct-wrap{ background: radial-gradient(1200px 800px at 10% -10%, rgba(78,198,255,.07), transparent 60%), #0b0f16; padding: clamp(48px,7vw,96px) 0; }
+.ct-shell{ max-width: 1100px; margin:0 auto; padding: 0 24px; display:grid; grid-template-columns: minmax(0,1.25fr) minmax(0,.75fr); gap:28px; align-items:start; }
+@media (max-width:980px){ .ct-shell{ grid-template-columns:1fr; } }
+
+.ct-head{ grid-column:1 / -1; }
+.ct-title{ margin:0; font-size: clamp(28px,4.8vw,40px); color:var(--blue); font-weight:900; }
+.ct-sub{ margin:.35rem 0 1rem; color:#cfe1f4; opacity:.9; max-width:62ch; }
+
+.ct-progress{ height:6px; background:#142031; border:1px solid #203149; border-radius:999px; overflow:hidden; box-shadow:0 2px 12px #0006 inset; }
+.ct-bar{ display:block; width:33.33%; height:100%; background: linear-gradient(90deg, #4EC6FF, #7DD3FF); transition: width .35s ease; }
+
+.ct-form{
+  position:relative; padding:20px; background: rgba(16,22,30,.88);
+  border:1px solid #1e2b3b; border-radius:20px;
+  box-shadow: 0 18px 50px rgba(0,0,0,.35), 0 6px 26px rgba(78,198,255,.10);
+}
+.ct-step{ display:none; }
+.ct-step.is-active{ display:block; animation: ctFade .35s ease both; }
+@keyframes ctFade{ from{ opacity:.3; transform: translateY(6px);} to{ opacity:1; transform:none;} }
+
+.ct-label{ display:block; font-weight:900; color:var(--blue); margin:.7rem 0 .35rem; }
+.ct-input, .ct-textarea, .ct-input[type=email], .ct-input[type=text], .ct-input select{
+  width:100%; background:#0f141c; border:1px solid #223146; color:#e8eefc;
+  border-radius:12px; padding:.8rem 1rem; font-size:1rem; outline:none; transition:border .15s, box-shadow .15s;
+}
+.ct-input:focus, .ct-textarea:focus{ border-color:#2a90c6; box-shadow:0 0 0 6px #4ec6ff22; }
+.ct-textarea{ resize:vertical; min-height:140px; }
+
+.ct-pills{ display:flex; flex-wrap:wrap; gap:.5rem; margin:.3rem 0 1rem; }
+.ct-pill{
+  background:#0f141c; color:#cfe1f4; border:1px solid #223146; border-radius:999px; padding:.45rem .9rem; font-weight:800; cursor:pointer;
+  transition: border .15s, background .15s, transform .12s;
+}
+.ct-pill:hover{ border-color:#2a90c6; transform: translateY(-1px); }
+.ct-pill.is-selected{ background:#122033; border-color:#4EC6FF; box-shadow:0 0 0 6px #4ec6ff22; color:#e8eefc; }
+
+.ct-actions{ display:flex; gap:.6rem; margin-top:1rem; }
+.ct-btn{
+  appearance:none; border:none; cursor:pointer; border-radius:999px;
+  background:#223146; color:#dfe8f5; font-weight:900; padding:.8rem 1.3rem; transition: background .15s, color .15s, transform .12s, box-shadow .15s;
+}
+.ct-btn:hover{ background:#2a3b54; }
+.ct-primary{ background:var(--blue); color:#091018; box-shadow:0 10px 32px #4ec6ff2a; }
+.ct-primary:hover{ background:#fff; color:var(--blue); transform: translateY(-1px); }
+
+.ct-spinner{ --s:12px; width:var(--s); height:var(--s); border-radius:50%; border:2px solid #0b1722; border-left-color:#091018; margin-left:.5rem; display:none; animation: ctSpin .8s linear infinite; }
+@keyframes ctSpin{ to{ transform: rotate(360deg); } }
+.ct-btn.is-loading .ct-spinner{ display:inline-block; }
+.ct-btn.is-loading .ct-btn-label{ opacity:.65; }
+
+.ct-success{ display:none; }
+.ct-success.is-show{ display:block; animation: ctPop .35s ease both; }
+@keyframes ctPop{ from{ opacity:0; transform: scale(.98);} to{ opacity:1; transform: none;} }
+
+.ct-success-card{
+  text-align:center; margin-top:1rem; padding:1.2rem; border:1px solid #1e2b3b; border-radius:16px; background:#111826;
+  box-shadow:0 10px 28px #0005, inset 0 1px 8px rgba(78,198,255,.08);
+}
+.ct-check{
+  --d:22px; width:var(--d); height:var(--d); border-radius:50%; margin:0 auto .6rem; background:#22d3ee;
+  box-shadow:0 0 0 6px #22d3ee22; position:relative;
+}
+.ct-check::after{
+  content:""; position:absolute; left:6px; top:5px; width:8px; height:4px; border:3px solid #0b1320; border-top:none; border-right:none; transform: rotate(-45deg);
+}
+.ct-success-card h3{ margin:.2rem 0 .3rem; }
+.ct-link{ color:#9fd6ff; font-weight:800; text-decoration:none; }
+.ct-link:hover{ color:#fff; }
+
+.ct-help{
+  align-self:stretch; background: rgba(16,22,30,.55); border:1px solid #1e2b3b; border-radius:16px; padding:16px 16px; box-shadow: 0 10px 28px rgba(0,0,0,.28);
+}
+.ct-help ul{ margin:0 0 .8rem; padding-left:1rem; color:#cfe1f4; line-height:1.7; }
+.ct-alt{ color:#b8c6d8; }
+.ct-alt a{ color:#9fd6ff; font-weight:800; text-decoration:none; }
+.ct-alt a:hover{ color:#fff; }
+
   
 
 <style>
@@ -1484,19 +1562,103 @@ body[data-svc="2"]{ --svc-ang: .5turn;  --svc-speed: 5.6s; }
   </div>
 </section>
 
-  <!-- CONTACT -->
-  <section class="contact-section" id="contact">
-    <div class="section-title" data-aos="fade-up">Contact</div>
-    <form class="contact-form" data-aos="fade-up" data-aos-delay="300">
-      <label for="name">Name</label>
-      <input id="name" type="text" required>
-      <label for="email">Email</label>
-      <input id="email" type="email" required>
-      <label for="message">Message</label>
-      <textarea id="message" rows="4" required></textarea>
-      <button class="contact-btn" type="submit">Send</button>
+<!-- ===== CONTACT (App-style) ===== -->
+<section id="contact" class="ct-wrap" aria-label="Contact form">
+  <div class="ct-shell">
+    <header class="ct-head">
+      <h2 class="ct-title">Start a Vision Call</h2>
+      <p class="ct-sub">Tell us what you’re building. We’ll reply the same day with next steps.</p>
+    </header>
+
+    <!-- Progress bar -->
+    <div class="ct-progress" aria-hidden="true">
+      <span class="ct-bar"></span>
+    </div>
+
+    <!-- Form -->
+    <form class="ct-form" id="ctForm" novalidate>
+      <!-- Step 1 -->
+      <fieldset class="ct-step is-active" data-step="1" aria-label="Your info">
+        <label class="ct-label" for="ctName">Name</label>
+        <input id="ctName" name="name" class="ct-input" type="text" autocomplete="name" required />
+
+        <label class="ct-label" for="ctEmail">Email</label>
+        <input id="ctEmail" name="email" class="ct-input" type="email" autocomplete="email" required />
+
+        <div class="ct-actions">
+          <button class="ct-btn ct-next" type="button">Next</button>
+        </div>
+      </fieldset>
+
+      <!-- Step 2 -->
+      <fieldset class="ct-step" data-step="2" aria-label="Project details">
+        <label class="ct-label" for="ctTopic">What do you need?</label>
+        <div class="ct-pills" role="group" aria-label="Service options">
+          <button type="button" class="ct-pill" data-value="Website Builds">Website Builds</button>
+          <button type="button" class="ct-pill" data-value="Client Portal">Client Portal</button>
+          <button type="button" class="ct-pill" data-value="CRM Integration">CRM Integration</button>
+        </div>
+        <input type="hidden" id="ctService" name="service" />
+
+        <label class="ct-label" for="ctMessage">Message</label>
+        <textarea id="ctMessage" name="message" class="ct-textarea" rows="5" placeholder="Share context (timeline, goals, must-haves)…" required></textarea>
+
+        <div class="ct-actions">
+          <button class="ct-btn ct-prev" type="button">Back</button>
+          <button class="ct-btn ct-next" type="button">Next</button>
+        </div>
+      </fieldset>
+
+      <!-- Step 3 -->
+      <fieldset class="ct-step" data-step="3" aria-label="Schedule preference">
+        <label class="ct-label" for="ctWhen">When works best?</label>
+        <select id="ctWhen" name="when" class="ct-input">
+          <option value="ASAP">ASAP</option>
+          <option value="This Week">This Week</option>
+          <option value="Next Week">Next Week</option>
+        </select>
+
+        <label class="ct-label" for="ctBudget">Rough budget</label>
+        <select id="ctBudget" name="budget" class="ct-input">
+          <option value="Undisclosed">Undisclosed</option>
+          <option value="Under $5k">Under $5k</option>
+          <option value="$5k–$12k">$5k–$12k</option>
+          <option value="$12k+">$12k+</option>
+        </select>
+
+        <div class="ct-actions">
+          <button class="ct-btn ct-prev" type="button">Back</button>
+          <button id="ctSubmit" class="ct-btn ct-primary" type="submit">
+            <span class="ct-btn-label">Send</span>
+            <span class="ct-spinner" aria-hidden="true"></span>
+          </button>
+        </div>
+      </fieldset>
+
+      <!-- Success state -->
+      <div class="ct-success" role="status" aria-live="polite">
+        <div class="ct-success-card">
+          <div class="ct-check" aria-hidden="true"></div>
+          <h3>Message sent</h3>
+          <p>Thanks! We’ll reply today with a short plan and a link to book a call.</p>
+          <a href="#work" class="ct-link">Browse our work →</a>
+        </div>
+      </div>
     </form>
-  </section>
+
+    <!-- Side help -->
+    <aside class="ct-help">
+      <ul>
+        <li>Typical launch: <b>2–3 weeks</b></li>
+        <li>TTI on mobile: <b>~1.7s</b></li>
+        <li>We integrate: <b>CRM + automations</b></li>
+      </ul>
+      <p class="ct-alt">Prefer email? <a href="mailto:benjamin@bimlabs.com">benjamin@bimlabs.com</a></p>
+    </aside>
+  </div>
+</section>
+
+  
   <!-- ====== FOOTER ====== -->
 <footer class="site-footer" data-aos="fade-up">
   <div class="footer-inner">
@@ -1856,6 +2018,96 @@ body[data-svc="2"]{ --svc-ang: .5turn;  --svc-speed: 5.6s; }
   renderDots();
   go(0, false);      // Wonder World featured first
   resetTimer();
+})();
+</script>
+
+  <script>
+(() => {
+  const form = document.getElementById('ctForm');
+  if(!form) return;
+
+  const steps = [...form.querySelectorAll('.ct-step')];
+  const progress = document.querySelector('.ct-bar');
+  const svcHidden = form.querySelector('#ctService');
+  const success = form.querySelector('.ct-success');
+  const submitBtn = form.querySelector('#ctSubmit');
+
+  let current = 0;
+
+  function show(i){
+    steps.forEach(s => s.classList.remove('is-active'));
+    steps[i].classList.add('is-active');
+    progress.style.width = `${((i+1)/steps.length)*100}%`;
+    current = i;
+  }
+
+  // simple validators
+  function validStep(i){
+    const fs = steps[i];
+    const inputs = [...fs.querySelectorAll('input[required], textarea[required]')];
+    for(const el of inputs){
+      if(!el.value.trim()){
+        el.focus(); el.classList.add('ct-invalid');
+        setTimeout(()=> el.classList.remove('ct-invalid'), 800);
+        return false;
+      }
+      if(el.type === 'email' && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(el.value)){ el.focus(); return false; }
+    }
+    return true;
+  }
+
+  // next/back
+  form.addEventListener('click', e=>{
+    if(e.target.classList.contains('ct-next')){
+      if(!validStep(current)) return;
+      if(current < steps.length-1) show(current+1);
+    }
+    if(e.target.classList.contains('ct-prev')){
+      if(current > 0) show(current-1);
+    }
+  });
+
+  // pill select
+  form.querySelectorAll('.ct-pill').forEach(p=>{
+    p.addEventListener('click', ()=>{
+      form.querySelectorAll('.ct-pill').forEach(x=>x.classList.remove('is-selected'));
+      p.classList.add('is-selected');
+      svcHidden.value = p.dataset.value;
+    });
+  });
+
+  // submit
+  form.addEventListener('submit', async e=>{
+    e.preventDefault();
+    if(!validStep(current)) return;
+
+    // Show loading
+    submitBtn.classList.add('is-loading');
+    submitBtn.setAttribute('disabled','disabled');
+
+    // TODO: Replace with your endpoint (e.g., Formspree / API)
+    // Example POST (uncomment and set your endpoint):
+    // const resp = await fetch('https://formspree.io/f/xkgbgbjd', {
+    //   method:'POST', headers:{'Accept':'application/json'},
+    //   body: new FormData(form)
+    // });
+
+    // Simulate async UX
+    await new Promise(r=>setTimeout(r, 900));
+
+    // Done
+    submitBtn.classList.remove('is-loading');
+    submitBtn.removeAttribute('disabled');
+    form.reset();
+    form.querySelectorAll('.ct-pill').forEach(x=>x.classList.remove('is-selected'));
+    svcHidden.value = '';
+
+    success.classList.add('is-show');
+    show(steps.length-1); // keep progress full
+  });
+
+  // init
+  show(0);
 })();
 </script>
 
