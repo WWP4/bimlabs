@@ -1091,6 +1091,96 @@ body[data-svc="2"]{ --svc-ang: .5turn;  --svc-speed: 5.6s; }
 .order-faq{ margin:.6rem 0 0; padding-left:18px; line-height:1.7; color:#b8c6d8 }
 .order-note{ color:#9ab0c9; font-size:.95rem; margin:.5rem 0 0 }
 
+
+    /* ===== START (full-screen immersive) ===== */
+.start-wrap{
+  position:relative; min-height:100vh; display:flex; align-items:center;
+  padding: clamp(24px, 6vw, 72px) 24px; overflow:hidden;
+}
+.start-bg{
+  position:absolute; inset:0; z-index:0;
+  background:
+    linear-gradient(0deg, #fff0 24px, #fff1 25px, #fff0 26px) center/100% 26px,
+    linear-gradient(90deg,#fff0 24px,#fff1 25px,#fff0 26px) center/26px 100%,
+    radial-gradient(900px 600px at 85% -10%, rgba(78,198,255,.06), transparent 60%),
+    radial-gradient(700px 400px at 5% -10%, rgba(78,198,255,.05), transparent 60%),
+    var(--black);
+  mask-image: radial-gradient(1200px 800px at 50% -20%, #000, transparent 80%);
+  opacity:.28;
+}
+.start-grid{
+  position:relative; z-index:2;
+  width:min(1200px, 92vw); margin:0 auto;
+  display:grid; grid-template-columns: 1.1fr 0.9fr; gap:min(6vw, 60px); align-items:center;
+}
+@media (max-width:1000px){ .start-grid{ grid-template-columns:1fr; gap:28px; } }
+
+.start-eyebrow{ color:var(--blue); text-transform:uppercase; letter-spacing:.18em; font-weight:900; font-size:.8rem; margin:0 0 .5rem; }
+.start-title{ margin:.1rem 0 .6rem; font-weight:900; line-height:1.04; font-size: clamp(34px, 6vw, 72px); }
+.start-lead{ margin:0 0 1rem; color:#dfe6ee; font-size: clamp(16px,2vw,20px); max-width: 48ch; }
+.start-points{ margin:0 0 1.2rem; padding-left:1.1rem; color:#a8b6c8; line-height:1.7; }
+.start-points li{ margin:.25rem 0; }
+
+.start-cta-row{ display:flex; gap: .8rem 1rem; flex-wrap:wrap; }
+.start-btn{
+  background:var(--blue); color:#091018; font-weight:900; text-decoration:none;
+  padding:.9rem 1.4rem; border-radius:999px; box-shadow:0 10px 36px #4ec6ff38; display:inline-block;
+}
+.start-btn:hover{ background:#fff; color:var(--blue); }
+.start-btn.ghost{ background:#223146; color:#dfe8f5; box-shadow:none; }
+.start-btn.outline{ background:transparent; border:1px solid #27405a; color:#cfe1f4; }
+.start-btn.primary{ background:var(--blue); color:#091018; }
+.start-link{ color:#b9c6d8; text-decoration:none; font-weight:800; }
+.start-link:hover{ color:var(--blue); }
+
+.start-app{
+  position:relative; border-radius:20px; background: rgba(16,22,30,.82);
+  border:1px solid #1e2b3b; box-shadow: 0 14px 40px rgba(0,0,0,.35), inset 0 1px 10px rgba(78,198,255,.08);
+  padding:18px; overflow:hidden;
+}
+.start-head{ display:flex; align-items:center; gap:10px; margin-bottom:10px; }
+.start-badge{ background:var(--blue); color:#091018; font-weight:900; font-size:.8rem; border-radius:999px; padding:.25rem .65rem; }
+.start-progress{ flex:1; height:6px; background:#142031; border:1px solid #203149; border-radius:999px; overflow:hidden; }
+.start-bar{ display:block; width:33.33%; height:100%; background: linear-gradient(90deg, #4EC6FF, #7DD3FF); transition:width .35s ease; }
+
+.start-form{ display:block; }
+.start-step{ display:none; }
+.start-step.is-active{ display:block; animation: ctFade .35s ease both; }
+@keyframes ctFade{ from{ opacity:.3; transform: translateY(6px);} to{ opacity:1; transform:none;} }
+
+.start-label{ display:block; font-weight:900; color:var(--blue); margin:.7rem 0 .35rem; }
+.start-input, .start-input[type=email], .start-input[type=text], .start-step select{
+  width:100%; background:#0f141c; border:1px solid #223146; color:#e8eefc;
+  border-radius:12px; padding:.8rem 1rem; font-size:1rem; outline:none; transition:border .15s, box-shadow .15s;
+}
+.start-input:focus{ border-color:#2a90c6; box-shadow:0 0 0 6px #4ec6ff22; }
+
+.start-actions{ display:flex; gap:.6rem; margin-top:1rem; flex-wrap:wrap; }
+
+.start-choices{ display:grid; gap:10px; margin:.5rem 0 1rem; }
+.start-choice{
+  text-align:left; cursor:pointer; background:#0f141c; border:1px solid #223146; border-radius:12px; padding:12px 14px;
+  color:#cfe1f4; transition: border .15s, transform .12s, box-shadow .15s;
+}
+.start-choice:hover{ border-color:#2a90c6; transform: translateY(-1px); }
+.start-choice.is-selected{ border-color:#4EC6FF; box-shadow:0 0 0 6px #4ec6ff22; }
+.c-title{ display:block; font-weight:800; }
+.c-sub{ display:block; opacity:.9; font-size:.95rem; }
+
+.start-summary{ background:#0f141c; border:1px solid #223146; border-radius:12px; padding:12px 14px; }
+.s-line{ margin:.4rem 0 .4rem; color:#cfe1f4; }
+.s-list{ margin:.4rem 0 0; padding-left:1.1rem; color:#a8b6c8; }
+
+.start-success{ display:none; }
+.start-success.is-show{ display:block; animation: ctPop .35s ease both; }
+@keyframes ctPop{ from{ opacity:0; transform: scale(.98);} to{ opacity:1; transform: none;} }
+.start-success-card{
+  text-align:center; margin-top:1rem; padding:1.2rem; border:1px solid #1e2b3b; border-radius:16px; background:#111826;
+  box-shadow:0 10px 28px #0005, inset 0 1px 8px rgba(78,198,255,.08);
+}
+.start-check{ --d:22px; width:var(--d); height:var(--d); border-radius:50%; margin:0 auto .6rem; background:#22d3ee; box-shadow:0 0 0 6px #22d3ee22; position:relative; }
+.start-check::after{ content:""; position:absolute; left:6px; top:5px; width:8px; height:4px; border:3px solid #0b1320; border-top:none; border-right:none; transform: rotate(-45deg); }
+
     
 <style>
 /* Keep hero background pure black */
@@ -1234,37 +1324,6 @@ body[data-svc="2"]{ --svc-ang: .5turn;  --svc-speed: 5.6s; }
   </svg>
 </div>
 
-<!-- ====== START YOUR VISION ====== -->
-<section id="start-vision" class="order-wrap" data-aos="fade-up">
-  <h2 class="order-title">Start Your Vision</h2>
-  <p class="order-sub">Getting started with BIM Labs is simple — just a few steps to lock in your build.</p>
-
-  <div class="order-grid">
-    <!-- Card 1 -->
-    <div class="order-card">
-      <h3>1. Place Your Deposit</h3>
-      <ol class="order-steps">
-        <li>Click the button below to place your $500 Vision Deposit.</li>
-        <li>Secure checkout via Stripe (Card, Apple Pay, ACH).</li>
-        <li>Deposit is applied to your final build.</li>
-      </ol>
-      <button id="order-deposit-top" class="btn btn--primary">Place $500 Vision Deposit</button>
-    </div>
-
-    <!-- Card 2 -->
-    <div class="order-card">
-      <h3>2. Book Your Kickoff Call</h3>
-      <ol class="order-steps">
-        <li>Choose a time that works for you right after deposit.</li>
-        <li>Meet live to shape scope, timeline, and design goals.</li>
-        <li>We start building within days of your kickoff.</li>
-      </ol>
-      <a href="#contact" class="btn">Or Book a Vision Call First</a>
-    </div>
-  </div>
-
-  <p class="order-note">Projects typically launch in <b>2–3 weeks</b>. Need questions answered first? <a href="mailto:benjamin@bimlabs.com">Email us</a>.</p>
-</section>
 
 
  <!-- ====== BEFORE / AFTER ====== -->
@@ -1381,7 +1440,113 @@ body[data-svc="2"]{ --svc-ang: .5turn;  --svc-speed: 5.6s; }
 <script src="https://assets.calendly.com/assets/external/widget.js" async></script>
 
 
-  
+  <!-- ====== START YOUR VISION (Full-Screen) ====== -->
+<section id="start" class="start-wrap">
+  <div class="start-bg" aria-hidden="true"></div>
+
+  <div class="start-grid">
+    <!-- Left: Copy -->
+    <div class="start-copy">
+      <p class="start-eyebrow">Start Your Vision</p>
+      <h2 class="start-title">Lock your build in minutes.</h2>
+      <p class="start-lead">
+        A quick, app-style flow to kick off your project: share basics, choose how you want to start, and secure your slot.
+      </p>
+
+      <ul class="start-points">
+        <li>Deposit applies to your final build</li>
+        <li>Stripe checkout (Card, ACH, Apple/Google Pay)</li>
+        <li>Kickoff scheduled instantly after payment</li>
+      </ul>
+
+      <div class="start-cta-row">
+        <a href="#start" class="start-btn" data-start-goto="1">Begin Flow</a>
+        <a class="start-link" href="#contact">Prefer a vision call first?</a>
+      </div>
+    </div>
+
+    <!-- Right: App card -->
+    <div class="start-app">
+      <header class="start-head">
+        <span class="start-badge">Quick Start</span>
+        <div class="start-progress" aria-hidden="true"><span class="start-bar"></span></div>
+      </header>
+
+      <!-- Step 1 -->
+      <form id="startForm" class="start-form">
+        <fieldset class="start-step is-active" data-step="1" aria-label="Your info">
+          <label class="start-label" for="svName">Name</label>
+          <input id="svName" name="name" class="start-input" type="text" autocomplete="name" required />
+
+          <label class="start-label" for="svEmail">Email</label>
+          <input id="svEmail" name="email" class="start-input" type="email" autocomplete="email" required />
+
+          <div class="start-actions">
+            <button type="button" class="start-btn start-next">
+              Next
+            </button>
+          </div>
+        </fieldset>
+
+        <!-- Step 2 -->
+        <fieldset class="start-step" data-step="2" aria-label="Choose how to start">
+          <label class="start-label">How would you like to begin?</label>
+          <div class="start-choices" role="group" aria-label="Start options">
+            <button type="button" class="start-choice" data-choice="deposit">
+              <span class="c-title">Place $500 Vision Deposit</span>
+              <span class="c-sub">Applied to your build • Reserves your slot today</span>
+            </button>
+            <button type="button" class="start-choice" data-choice="call">
+              <span class="c-title">Book a Vision Call First</span>
+              <span class="c-sub">Talk scope, timeline, and fit — then decide</span>
+            </button>
+          </div>
+
+          <input type="hidden" id="svChoice" name="start_choice" />
+
+          <div class="start-actions">
+            <button type="button" class="start-btn ghost start-prev">Back</button>
+            <button type="button" class="start-btn start-next">Next</button>
+          </div>
+        </fieldset>
+
+        <!-- Step 3 -->
+        <fieldset class="start-step" data-step="3" aria-label="Confirm">
+          <div class="start-summary">
+            <h3>You're set.</h3>
+            <p class="s-line">We’ll apply your deposit at invoice and email a receipt.</p>
+            <ul class="s-list">
+              <li><b>Launch speed:</b> typically 2–3 weeks after kickoff</li>
+              <li><b>Payments:</b> Stripe (Card, ACH, Apple/Google Pay)</li>
+              <li><b>Refunds:</b> If we can’t take the project, deposit is refunded</li>
+            </ul>
+          </div>
+
+          <div class="start-actions">
+            <button
+              type="button"
+              class="start-btn primary js-order-deposit"
+              data-fallback="#contact"
+            >
+              Place $500 Vision Deposit
+            </button>
+            <a href="#contact" class="start-btn outline">Book a Vision Call</a>
+          </div>
+        </fieldset>
+
+        <!-- Success -->
+        <div class="start-success" role="status" aria-live="polite">
+          <div class="start-success-card">
+            <div class="start-check" aria-hidden="true"></div>
+            <h3>Deposit started</h3>
+            <p>Redirecting to secure checkout…</p>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
 
 <!-- ===== Services (full-screen, alternating, animated paragraphs) ===== -->
 <section id="services" class="svc-wrap">
@@ -2130,42 +2295,108 @@ Agency pricing is broken. We build premium websites and wire automations at fair
     setTimeout(type, 26); // typing speed (ms)
   }
 
-  const io = new IntersectionObserver(([e])=>{
-    if (e.isIntersecting && !started){
-      started = true;
-      if (reduced){ el.textContent = copy; el.style.borderRight = 'none'; }
-      else type();
-    }
-  }, { threshold: 0.45 });
 
-  io.observe(el);
+
+<script>
+(() => {
+  const form = document.getElementById('startForm');
+  if (!form) return;
+
+  const steps = [...form.querySelectorAll('.start-step')];
+  const bar   = document.querySelector('.start-bar');
+  const choiceInput = document.getElementById('svChoice');
+
+  let i = 0;
+  const set = (idx) => {
+    steps.forEach(s => s.classList.remove('is-active'));
+    steps[idx].classList.add('is-active');
+    if (bar) bar.style.width = `${((idx+1)/steps.length)*100}%`;
+    i = idx;
+  };
+
+  function valid(idx){
+    const fs = steps[idx];
+    const reqs = [...fs.querySelectorAll('input[required]')];
+    for (const el of reqs){
+      if (!el.value.trim()) { el.focus(); return false; }
+      if (el.type === 'email' && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(el.value)) { el.focus(); return false; }
+    }
+    if (idx === 1 && !choiceInput.value) return false;
+    return true;
+  }
+
+  form.addEventListener('click', (e) => {
+    const t = e.target;
+    if (t.matches('.start-next')) {
+      if (!valid(i)) return;
+      if (i < steps.length-1) set(i+1);
+    }
+    if (t.matches('.start-prev')) {
+      if (i > 0) set(i-1);
+    }
+    if (t.matches('.start-choice')) {
+      form.querySelectorAll('.start-choice').forEach(c => c.classList.remove('is-selected'));
+      t.classList.add('is-selected');
+      choiceInput.value = t.dataset.choice;
+    }
+  });
+
+  // Allow "Begin Flow" button to jump to step 1
+  document.querySelectorAll('[data-start-goto="1"]').forEach(b=>{
+    b.addEventListener('click', (e)=>{ e.preventDefault(); set(0); });
+  });
+
+  set(0);
 })();
 </script>
+
 <script>
-  // Reuse the same payload + /checkout flow you already use
-  document.getElementById('order-deposit')?.addEventListener('click', async () => {
+/* Reuse your /checkout flow for ALL deposit buttons */
+(() => {
+  async function startCheckout(){
+    const name  = document.querySelector('#svName')?.value?.trim() ||
+                  document.querySelector('#ctName')?.value?.trim() || '';
+    const email = document.querySelector('#svEmail')?.value?.trim() ||
+                  document.querySelector('#ctEmail')?.value?.trim() || '';
+
+    // Optional extras you already capture elsewhere:
     const payload = {
-      name:   document.querySelector('#name')?.value?.trim() || '',
-      email:  document.querySelector('#email')?.value?.trim() || '',
-      company:document.querySelector('#company')?.value?.trim() || '',
-      phone:  document.querySelector('#phone')?.value?.trim() || '',
-      notes:  document.querySelector('#notes')?.value?.trim() || '',
+      name, email,
+      company: document.querySelector('#company')?.value?.trim() || '',
+      phone:   document.querySelector('#phone')?.value?.trim() || '',
+      notes:   document.querySelector('#notes')?.value?.trim() || '',
       builderConfig: (typeof calc === 'function' ? calc() : {})
     };
 
-    const res = await fetch('/checkout', {
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body: JSON.stringify(payload)
-    });
-    const { url, error } = await res.json();
-    if (url) window.location.href = url;
-    else alert(error || 'Could not start checkout.');
-  });
+    // Visual success cue before redirect
+    const ok = document.querySelector('.start-success');
+    ok?.classList.add('is-show');
+
+    try{
+      const res = await fetch('/checkout', {
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body: JSON.stringify(payload)
+      });
+      const { url, error } = await res.json();
+      if (url) window.location.href = url;
+      else {
+        ok?.classList.remove('is-show');
+        alert(error || 'Could not start checkout.');
+      }
+    } catch(err){
+      ok?.classList.remove('is-show');
+      alert('Could not start checkout.');
+    }
+  }
+
+  document.querySelectorAll('.js-order-deposit,.#order-deposit,#order-deposit-top')
+    .forEach(btn => btn && btn.addEventListener('click', startCheckout));
+})();
+</script>
+
+  
   </script>
 </body>
 </html>
 
-  
-</body>
-</html>
