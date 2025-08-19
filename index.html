@@ -1079,7 +1079,43 @@ body[data-svc="2"]{ --svc-ang: .5turn;  --svc-speed: 5.6s; }
 .about-min__link:hover{ color: var(--blue); }
 @media (prefers-reduced-motion: reduce){ .about-min__typed{ border-right: none; } }
   
+/* ===== Pricing FX */
+.pricingFx{padding:clamp(48px,7vw,96px) 0; background:radial-gradient(900px 500px at 10% -10%,rgba(78,198,255,.06),transparent 60%),#0b0f16;}
+.pricingFx__in{max-width:1100px;margin:0 auto;padding:0 24px;}
+.pricingFx__title{font-size:clamp(28px,5vw,42px);font-weight:900;color:#4EC6FF;margin:0 0 .4rem;}
+.pricingFx__sub{color:#cfe1f4;opacity:.9;margin:0 0 1.2rem;}
+.pricingFx__grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+@media(max-width:980px){.pricingFx__grid{grid-template-columns:1fr}}
 
+.pCard{
+  position:relative; border:1px solid #1e2b3b; border-radius:20px; background:rgba(16,22,30,.88);
+  padding:18px; box-shadow:0 14px 44px rgba(0,0,0,.35),0 6px 26px rgba(78,198,255,.12);
+  transform:translateZ(0); transition:transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+  overflow:hidden;
+}
+.pCard:hover{ transform: translateY(-6px); border-color:#2a90c6; box-shadow:0 22px 60px rgba(0,0,0,.45),0 8px 36px rgba(78,198,255,.18); }
+.pCard--featured{ border-color:#4EC6FF; box-shadow:0 18px 50px rgba(78,198,255,.18); }
+.pCard__glow{
+  content:""; position:absolute; inset:-1px; border-radius:inherit; pointer-events:none; opacity:.85; filter:blur(14px);
+  background:conic-gradient(from var(--ang,0turn),rgba(78,198,255,.0) 0 10%,rgba(78,198,255,.35) 12% 20%,rgba(78,198,255,.0) 22% 100%);
+  animation:spin 6.5s linear infinite;
+}
+@keyframes spin{to{--ang:1turn}}
+
+.pCard__badge{color:#9fd6ff;font-weight:900;margin-bottom:.35rem;}
+.pCard__price{margin:.1rem 0 .6rem;font-weight:900;font-size:clamp(22px,4vw,30px)}
+.pCard__list{margin:0 0 1rem;padding-left:1.1rem;line-height:1.7;color:#cfe1f4}
+.pCard__cta{
+  display:inline-block;background:#4EC6FF;color:#091018;font-weight:900;text-decoration:none;
+  padding:.75rem 1.2rem;border-radius:999px;box-shadow:0 10px 32px rgba(78,198,255,.22);
+}
+.pCard__cta:hover{background:#fff;color:#4EC6FF}
+.pCard__hint{color:#9ab0c9;font-size:.9rem;margin:.45rem 0 0}
+
+.pricingFx__faq details{background:#151a1f;border:1px solid #1e2b3b;border-radius:10px;padding:.75rem 1rem;margin:.6rem 0;color:#dfe6ee;}
+.pricingFx__faq summary{cursor:pointer;font-weight:800;color:#e8eefc;}
+
+    
 <style>
 /* Keep hero background pure black */
 .hero { position: relative; background:#000; overflow:hidden; }
@@ -1519,70 +1555,76 @@ body[data-svc="2"]{ --svc-ang: .5turn;  --svc-speed: 5.6s; }
 </section>
 
 
-  <!-- ====== PRICING ====== -->
-<section id="pricing" class="pricing-section" data-aos="fade-up">
-  <div class="pricing-wrap">
-    <h2 class="pricing-title">Simple, Premium Packages</h2>
-    <p class="pricing-sub">Launch fast, look high-end, and plug in CRM that actually works.</p>
+ <!-- ====== PRICING / PRESET LAUNCHER ====== -->
+<section id="pricing" class="pricingFx" data-aos="fade-up">
+  <div class="pricingFx__in">
+    <header class="pricingFx__head">
+      <h2 class="pricingFx__title">Simple Presets → Build Your Own</h2>
+      <p class="pricingFx__sub">Choose a starting point. The builder opens pre-configured, and you can tweak anything.</p>
+    </header>
 
-    <div class="pricing-grid">
+    <div class="pricingFx__grid">
       <!-- Launch -->
-      <div class="price-card">
-        <div class="price-badge">Launch</div>
-        <div class="price-amount">$3,500–$5,000</div>
-        <ul class="price-list">
-          <li>5–7 page redesign (minimal + bold)</li>
-          <li>Copy assist + on-brand imagery</li>
-          <li>Speed + basic SEO setup</li>
-          <li>1 feedback round, analytics, handoff</li>
+      <article class="pCard" data-glow>
+        <div class="pCard__glow" aria-hidden="true"></div>
+        <div class="pCard__badge">Launch</div>
+        <h3 class="pCard__price">$1,500–$3,000</h3>
+        <ul class="pCard__list">
+          <li>Up to 7 pages • Minimal + bold</li>
+          <li>Copy polish • SEO setup</li>
+          <li>Fast launch • Analytics</li>
         </ul>
-        <a href="#contact" class="price-cta">Start with Launch</a>
-      </div>
+        <a class="pCard__cta"
+           href="website-builds.html?p=7&copy=light&speed=standard&support=none">
+          Start with Launch
+        </a>
+        <p class="pCard__hint">Opens builder with base preset</p>
+      </article>
 
       <!-- Growth -->
-      <div class="price-card price-card--featured">
-        <div class="price-badge">Growth</div>
-        <div class="price-amount">$7,500–$12,000</div>
-        <ul class="price-list">
-          <li>Website + functional CRM (pipeline)</li>
-          <li>Lead forms → CRM with automations</li>
-          <li>Email/SMS templates + calendar connect</li>
-          <li>Training + 30-day optimization</li>
+      <article class="pCard pCard--featured" data-glow>
+        <div class="pCard__glow" aria-hidden="true"></div>
+        <div class="pCard__badge">Growth</div>
+        <h3 class="pCard__price">$3,000–$5,000</h3>
+        <ul class="pCard__list">
+          <li>Site + CRM pipeline</li>
+          <li>Lead forms → automations</li>
+          <li>Email/SMS templates • Calendar</li>
         </ul>
-        <a href="#contact" class="price-cta">Build My Site + CRM</a>
-      </div>
+        <a class="pCard__cta"
+           href="website-builds.html?crm=1&email=1&speed=standard&support=none">
+          Build My Site + CRM
+        </a>
+        <p class="pCard__hint">CRM + Email pre-selected</p>
+      </article>
 
       <!-- Retainer -->
-      <div class="price-card">
-        <div class="price-badge">Retainer</div>
-        <div class="price-amount">$1,500–$3,000 / mo</div>
-        <ul class="price-list">
+      <article class="pCard" data-glow>
+        <div class="pCard__glow" aria-hidden="true"></div>
+        <div class="pCard__badge">Retainer</div>
+        <h3 class="pCard__price">$1,500–$3,000 / mo</h3>
+        <ul class="pCard__list">
           <li>New pages & landing tests</li>
-          <li>CRM flows, offers, and reporting</li>
-          <li>Ongoing CRO + performance</li>
-          <li>Priority support</li>
+          <li>CRM flows • offers • reporting</li>
+          <li>Ongoing CRO • performance</li>
         </ul>
-        <a href="#contact" class="price-cta">Scale with Us</a>
-      </div>
+        <a class="pCard__cta"
+           href="website-builds.html?support=lite">
+          Scale with Us
+        </a>
+        <p class="pCard__hint">Adds monthly support</p>
+      </article>
     </div>
 
-    <!-- FAQs -->
-    <div class="faq-wrap" data-aos="fade-up">
-      <details>
-        <summary>How fast can we launch?</summary>
-        <p>Launch: 10–14 days. Growth (site+CRM): ~2–3 weeks depending on scope and assets.</p>
-      </details>
-      <details>
-        <summary>Who owns the website and CRM?</summary>
-        <p>You do. We use open tools and hand over everything with documentation.</p>
-      </details>
-      <details>
-        <summary>Do you offer a risk-free guarantee?</summary>
-        <p>Yes. If you don’t see measurable results in 60–90 days, we’ll make it right.</p>
-      </details>
+    <!-- Quick FAQs -->
+    <div class="pricingFx__faq" data-aos="fade-up">
+      <details><summary>How fast can we launch?</summary><p>Launch: ~10–14 days. Growth: ~2–3 weeks.</p></details>
+      <details><summary>Who owns the site & CRM?</summary><p>You do. We hand over everything with docs.</p></details>
+      <details><summary>Risk-free?</summary><p>Yes—if there’s no measurable lift, we make it right.</p></details>
     </div>
   </div>
 </section>
+
 
 <!-- ===== CONTACT (App-style) ===== -->
 <section id="contact" class="ct-wrap" aria-label="Contact form">
