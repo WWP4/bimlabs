@@ -869,6 +869,100 @@ body[data-svc="0"]{ --svc-speed: 6.5s; }
 body[data-svc="1"]{ --svc-ang: .25turn; --svc-speed: 5s; }
 body[data-svc="2"]{ --svc-ang: .5turn;  --svc-speed: 5.6s; }
 
+
+
+    /* ===== Testimonials — Spotlight (tm-*) ===== */
+.tm-wrap{
+  position:relative;
+  padding: clamp(48px, 8vw, 100px) 0;
+  background: radial-gradient(900px 600px at 10% -10%, rgba(78,198,255,.06), transparent 60%),
+              radial-gradient(700px 400px at 110% 0%, rgba(78,198,255,.05), transparent 60%),
+              #0b0f16;
+  color:#e8eefc;
+  overflow:clip;
+}
+.tm-bg{
+  position:absolute; inset:0; pointer-events:none; opacity:.18;
+  background:
+    linear-gradient(0deg, #fff0 24px, #fff1 25px, #fff0 26px) center/100% 26px,
+    linear-gradient(90deg,#fff0 24px,#fff1 25px,#fff0 26px) center/26px 100%;
+}
+.tm-head{ width:min(1100px,92vw); margin:0 auto 28px; padding:0 20px; }
+.tm-title{ margin:0; font-size: clamp(28px, 4.8vw, 46px); font-weight:900; }
+.tm-sub{ margin:.4rem 0 0; color:#b8c6d8; max-width:60ch; }
+
+/* GRID */
+.tm-grid{
+  width:min(1100px,92vw); margin:22px auto 0; padding:0 20px;
+  display:grid; gap:22px;
+  grid-template-columns: 1.4fr 1fr;
+}
+@media (max-width:980px){ .tm-grid{ grid-template-columns: 1fr; } }
+
+/* FEATURED */
+.tm-feature{
+  position:relative; border-radius:20px; padding:24px;
+  background: rgba(16,22,30,.78);
+  border:1px solid #1e2b3b;
+  box-shadow: 0 14px 40px rgba(0,0,0,.35), inset 0 1px 10px rgba(78,198,255,.08);
+}
+.tm-glow{
+  position:absolute; inset:-1px; pointer-events:none; border-radius:inherit;
+  padding:1px; filter: blur(16px); opacity:.7;
+  background: conic-gradient(from var(--tm-ang,0turn), hsl(206 100% 55%) 0 12%, transparent 16% 100%);
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+  -webkit-mask-composite:xor; mask-composite:exclude;
+  animation: tm-orbit var(--tm-speed,6s) linear infinite;
+}
+@keyframes tm-orbit{ to{ --tm-ang: 1turn; } }
+
+.tm-quote{ margin:0; }
+.tm-quote-text{ margin:0 0 1.1rem; font-size: clamp(18px,2.2vw,22px); line-height:1.7; }
+.tm-quote-foot{ display:flex; gap:.6rem; align-items:baseline; color:#9fc9ff; font-weight:800; }
+.tm-name::after{ content:"·"; margin:0 .5rem; color:#3a4b63; }
+.tm-role{ color:#b6c4d7; font-weight:700; }
+
+/* Controls */
+.tm-controls{ display:flex; align-items:center; gap:.5rem; margin-top:14px; }
+.tm-prev,.tm-next{
+  width:36px; height:36px; border-radius:999px; border:1px solid #27405a;
+  background:#132031; color:#9fd6ff; font-weight:900; cursor:pointer;
+}
+.tm-prev:hover,.tm-next:hover{ background:#e8eefc; color:#0f1a27; }
+.tm-dots{ display:flex; gap:8px; margin:0 .4rem; }
+.tm-dots button{
+  width:9px; height:9px; border-radius:9px; border:1px solid #2f4158; background:#223046; cursor:pointer;
+}
+.tm-dots button[aria-selected="true"]{ background:#4ec6ff; box-shadow:0 0 0 6px #4ec6ff22; }
+
+/* STACK — mini cards */
+.tm-stack{ display:grid; gap:16px; align-content:start; }
+.tm-card{
+  border-radius:16px; padding:18px;
+  background: rgba(16,22,30,.65);
+  border:1px solid #1e2b3b;
+  box-shadow: 0 10px 28px rgba(0,0,0,.28), inset 0 1px 8px rgba(78,198,255,.06);
+  cursor:pointer; transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease;
+}
+.tm-card:hover{ transform: translateY(-3px); border-color:#2b3d56; box-shadow:0 16px 36px rgba(0,0,0,.36); }
+.tm-card p{ margin:0; color:#cfe1f4; font-size: .98rem; line-height:1.55; }
+.tm-card .tm-mini-foot{ margin-top:.5rem; color:#9fc9ff; font-weight:800; font-size:.9rem; }
+
+/* Logos row */
+.tm-logos{
+  width:min(1100px,92vw); margin:26px auto 0; padding:0 20px;
+  display:flex; flex-wrap:wrap; gap:10px 18px; opacity:.9;
+}
+.tm-logo{
+  display:inline-block; padding:.45rem .8rem; border:1px solid #243146; border-radius:999px;
+  color:#bcd2ea; background:#101a27; font-weight:800; font-size:.9rem;
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce){
+  .tm-glow{ animation: none; background: radial-gradient(700px 300px at 10% 0%, #4ec6ff55, transparent 60%); filter: blur(18px); }
+}
+
   
 
 <style>
@@ -1263,24 +1357,47 @@ body[data-svc="2"]{ --svc-ang: .5turn;  --svc-speed: 5.6s; }
 
 
  
-  <!-- TESTIMONIALS -->
-  <section class="testimonials-section" id="testimonials">
-    <div class="section-title" data-aos="fade-up">Testimonials</div>
-    <div class="testimonial-grid">
-      <div class="testimonial-card" data-aos="fade-up" data-aos-delay="100">
-        “Our new site is so clean and fast—clients notice instantly. Best investment we've made.”
-        <div class="testimonial-author">— Olivia S., Clinic Owner</div>
+ <!-- ===== Testimonials (Spotlight) ===== -->
+<section id="testimonials" class="tm-wrap" aria-label="Customer testimonials">
+  <div class="tm-bg" aria-hidden="true"></div>
+
+  <header class="tm-head">
+    <h2 class="tm-title">Testimonials</h2>
+    <p class="tm-sub">Real outcomes from teams that wanted speed, clarity, and growth.</p>
+  </header>
+
+  <div class="tm-grid">
+    <!-- FEATURED pane -->
+    <article class="tm-feature" aria-live="polite">
+      <div class="tm-glow" aria-hidden="true"></div>
+      <blockquote class="tm-quote">
+        <p class="tm-quote-text"></p>
+        <footer class="tm-quote-foot">
+          <span class="tm-name"></span>
+          <span class="tm-role"></span>
+        </footer>
+      </blockquote>
+
+      <div class="tm-controls">
+        <button class="tm-prev" aria-label="Previous testimonial">‹</button>
+        <div class="tm-dots" role="tablist" aria-label="Select testimonial"></div>
+        <button class="tm-next" aria-label="Next testimonial">›</button>
       </div>
-      <div class="testimonial-card" data-aos="fade-up" data-aos-delay="200">
-        “We booked more demos in two weeks than the last two months. Minimal works.”
-        <div class="testimonial-author">— Marcus D., Agency Director</div>
-      </div>
-      <div class="testimonial-card" data-aos="fade-up" data-aos-delay="300">
-        “Managing families and events is a breeze now. The CRM is next-level.”
-        <div class="testimonial-author">— Jamie L., School Admin</div>
-      </div>
-    </div>
-  </section>
+    </article>
+
+    <!-- STACK of small cards (nav) -->
+    <aside class="tm-stack" aria-label="More testimonials"></aside>
+  </div>
+
+  <!-- Logos row (optional) -->
+  <div class="tm-logos" aria-label="Clients">
+    <span class="tm-logo">Wonder World Playsets</span>
+    <span class="tm-logo">City Clinic</span>
+    <span class="tm-logo">Northpoint Schools</span>
+    <span class="tm-logo">Prime Agency</span>
+  </div>
+</section>
+
 
   <section class="pricing-comparison" data-aos="fade-up" style="padding:4rem 1rem; background:#171a22; color:#fff;">
   <h2 style="text-align:center; font-size:2rem; margin-bottom:2rem;">Industry Standard vs. BIM Labs</h2>
@@ -1641,6 +1758,116 @@ body[data-svc="2"]{ --svc-ang: .5turn;  --svc-speed: 5.6s; }
   });
 
   setActive(slides[0].id);
+})();
+</script>
+
+<script>
+(() => {
+  // Testimonial data (Wonder World first)
+  const DATA = [
+    {
+      text: "The AI assistant BIMLabs built for us is a game-changer. Schools can ask about products, surfacing, or grants and get instant answers—no waiting on emails. In our first month, quote requests doubled.",
+      name: "Director of Sales",
+      role: "Wonder World Playsets"
+    },
+    {
+      text: "Pages load instantly now. Our intake forms plug straight into the CRM, and new clients comment on how smooth everything feels.",
+      name: "Olivia S.",
+      role: "Clinic Owner"
+    },
+    {
+      text: "We booked 21 demos in two weeks—more than the previous two months combined. The site just guides people to the next step.",
+      name: "Marcus D.",
+      role: "Agency Director"
+    },
+    {
+      text: "Parents stopped emailing us the same questions. The portal shows schedules, invoices, and updates in one place. Support volume dropped by 58%.",
+      name: "Jamie L.",
+      role: "School Admin"
+    },
+    {
+      text: "Sales stopped living in someone’s inbox. Leads route automatically, tasks fire, and follow-ups go out on time. Pipeline time is down ~35%.",
+      name: "Kendrick P.",
+      role: "Operations Manager"
+    },
+    {
+      text: "The new site launched fast and clean. We hit Core Web Vitals across the board and finally feel confident sending traffic to it.",
+      name: "Renee K.",
+      role: "Marketing Lead"
+    }
+  ];
+
+  const qText = document.querySelector('.tm-quote-text');
+  const qName = document.querySelector('.tm-name');
+  const qRole = document.querySelector('.tm-role');
+  const stack = document.querySelector('.tm-stack');
+  const dotsWrap = document.querySelector('.tm-dots');
+  const prevBtn = document.querySelector('.tm-prev');
+  const nextBtn = document.querySelector('.tm-next');
+
+  let idx = 0, timer = null;
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function renderStack(){
+    if (!stack) return;
+    stack.innerHTML = '';
+    DATA.forEach((t, i) => {
+      const card = document.createElement('button');
+      card.className = 'tm-card';
+      card.type = 'button';
+      card.setAttribute('aria-label', `Show testimonial from ${t.name}, ${t.role}`);
+      card.innerHTML = `<p>“${t.text}”</p><div class="tm-mini-foot">— ${t.name}, ${t.role}</div>`;
+      card.addEventListener('click', () => go(i, true));
+      stack.appendChild(card);
+    });
+  }
+
+  function renderDots(){
+    if (!dotsWrap) return;
+    dotsWrap.innerHTML = '';
+    DATA.forEach((_, i) => {
+      const d = document.createElement('button');
+      d.type = 'button';
+      d.setAttribute('role','tab');
+      d.setAttribute('aria-selected', i === idx ? 'true' : 'false');
+      d.addEventListener('click', () => go(i, true));
+      dotsWrap.appendChild(d);
+    });
+  }
+
+  function renderFeature(){
+    const t = DATA[idx];
+    if (qText) qText.textContent = '“' + t.text + '”';
+    if (qName) qName.textContent = '— ' + t.name;
+    if (qRole) qRole.textContent = ', ' + t.role;
+    if (dotsWrap) [...dotsWrap.children].forEach((d,i)=> d.setAttribute('aria-selected', i===idx ? 'true' : 'false'));
+  }
+
+  function go(nextIndex, manual=false){
+    idx = (nextIndex + DATA.length) % DATA.length;
+    renderFeature();
+    if(manual){ resetTimer(); }
+  }
+
+  function resetTimer(){
+    if(timer) clearInterval(timer);
+    if(!reduced){
+      timer = setInterval(()=> go(idx+1, false), 7000);
+    }
+  }
+
+  if (prevBtn) prevBtn.addEventListener('click', () => go(idx-1, true));
+  if (nextBtn) nextBtn.addEventListener('click', () => go(idx+1, true));
+  document.addEventListener('keydown', e => {
+    if(e.key === 'ArrowLeft') go(idx-1, true);
+    if(e.key === 'ArrowRight') go(idx+1, true);
+  });
+
+  // init
+  renderStack();
+  renderDots();
+  go(0, false);      // Wonder World featured first
+  resetTimer();
 })();
 </script>
 
