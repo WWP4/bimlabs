@@ -1547,6 +1547,103 @@ body[data-svc="2"]{ --svc-ang: .5turn;  --svc-speed: 5.6s; }
   </div>
 </section>
 
+  <!-- ====== Start Wizard Logic ====== -->
+<script>
+(() => {
+  const form = document.getElementById('startForm');
+  if (!form) return;
+
+  const steps = [...form.querySelectorAll('.start-step')];
+  const bar   = document.querySelector('.start-bar');
+  const choiceInput = document.getElementById('svChoice');
+
+  let i = 0;
+  const set = (idx) => {
+    steps.forEach(s => s.classList.remove('is-active'));
+    steps[idx].classList.add('is-active');
+    if (bar) bar.style.width = `${((idx+1)/steps.length)*100}%`;
+    i = idx;
+  };
+
+  function valid(idx){
+    const fs = steps[idx];
+    const reqs = [...fs.querySelectorAll('input[required]')];
+    for (const el of reqs){
+      if (!el.value.trim()) { el.focus(); return false; }
+      if (el.type === 'email' && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(el.value)) { el.focus(); return false; }
+    }
+    if (idx === 1 && !choiceInput.value) return false;
+    return true;
+  }
+
+  form.addEventListener('click', (e) => {
+    const t = e.target;
+    if (t.matches('.start-next')) { if (!valid(i)) return; if (i < steps.length-1) set(i+1); }
+    if (t.matches('.start-prev')) { if (i > 0) set(i-1); }
+    if (t.matches('.start-choice')) {
+      form.querySelectorAll('.start-choice').forEach(c => c.classList.remove('is-selected'));
+      t.classList.add('is-selected');
+      choiceInput.value = t.dataset.choice;
+    }
+  });
+
+  // “Begin Flow” button
+  document.querySelectorAll('[data-start-goto="1"]').forEach(b=>{
+    b.addEventListener('click', (e)=>{ e.preventDefault(); set(0); });
+  });
+
+  set(0);
+})();
+</script>
+
+<!-- ====== Deposit / Checkout Handler ====== -->
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  async function startCheckout(){
+    const name  = document.querySelector('#svName')?.value?.trim()
+               || document.querySelector('#ctName')?.value?.trim() || '';
+    const email = document.querySelector('#svEmail')?.value?.trim()
+               || document.querySelector('#ctEmail')?.value?.trim() || '';
+
+    const payload = {
+      name, email,
+      company: document.querySelector('#company')?.value?.trim() || '',
+      phone:   document.querySelector('#phone')?.value?.trim() || '',
+      notes:   document.querySelector('#notes')?.value?.trim() || '',
+      builderConfig: (typeof calc === 'function' ? calc() : {})
+    };
+
+    const ok = document.querySelector('.start-success');
+    ok?.classList.add('is-show');
+
+    try{
+      const res = await fetch('/checkout', {
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body: JSON.stringify(payload)
+      });
+      let data = {};
+      try { data = await res.json(); } catch(e) {}
+      if (res.ok && data.url) {
+        window.location.href = data.url;
+      } else {
+        ok?.classList.remove('is-show');
+        alert(data.error || 'Could not start checkout.');
+      }
+    } catch(err){
+      ok?.classList.remove('is-show');
+      alert('Could not start checkout.');
+    }
+  }
+
+  // Hook up all deposit buttons (IDs + class)
+  document
+    .querySelectorAll('#order-deposit, #order-deposit-top, .js-order-deposit')
+    .forEach(btn => btn.addEventListener('click', startCheckout));
+});
+</script>
+
+
 
 <!-- ===== Services (full-screen, alternating, animated paragraphs) ===== -->
 <section id="services" class="svc-wrap">
@@ -2276,13 +2373,14 @@ body[data-svc="2"]{ --svc-ang: .5turn;  --svc-speed: 5.6s; }
 })();
 </script>
 
-  <script>
+<script>
 (() => {
   const copy = `Hi, I’m Benjamin Morrison—founder of BIM Labs.
 
 I started BIM Labs because small teams were priced out of fast, clear websites and the tools that actually grow a pipeline. I remember wishing I had clean design, real speed, and a CRM that worked together when I began.
 
 Agency pricing is broken. We build premium websites and wire automations at fair prices—so small teams can move like big ones.`;
+
   const el = document.getElementById('about-min-typed');
   if (!el) return;
 
@@ -2290,11 +2388,22 @@ Agency pricing is broken. We build premium websites and wire automations at fair
   const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   function type() {
-    if (i >= copy.length){ el.style.borderRight = 'none'; return; }
+    if (i >= copy.length) { el.style.borderRight = 'none'; return; }
     el.textContent += copy.charAt(i++);
-    setTimeout(type, 26); // typing speed (ms)
+    setTimeout(type, 26);
   }
 
+  const io = new IntersectionObserver(([e])=>{
+    if (e.isIntersecting && !started){
+      started = true;
+      if (reduced){ el.textContent = copy; el.style.borderRight = 'none'; }
+      else type();
+    }
+  }, { threshold: 0.45 });
+
+  io.observe(el);
+})();
+</script>
 
 
 <script>
@@ -2351,15 +2460,13 @@ Agency pricing is broken. We build premium websites and wire automations at fair
 </script>
 
 <script>
-/* Reuse your /checkout flow for ALL deposit buttons */
-(() => {
-  async function startCheckout(){
-    const name  = document.querySelector('#svName')?.value?.trim() ||
-                  document.querySelector('#ctName')?.value?.trim() || '';
-    const email = document.querySelector('#svEmail')?.value?.trim() ||
-                  document.querySelector('#ctEmail')?.value?.trim() || '';
+document.addEventListener('DOMContentLoaded', () => {
+  async function startCheckout() {
+    const name  = document.querySelector('#svName')?.value?.trim()
+               || document.querySelector('#ctName')?.value?.trim() || '';
+    const email = document.querySelector('#svEmail')?.value?.trim()
+               || document.querySelector('#ctEmail')?.value?.trim() || '';
 
-    // Optional extras you already capture elsewhere:
     const payload = {
       name, email,
       company: document.querySelector('#company')?.value?.trim() || '',
@@ -2368,35 +2475,37 @@ Agency pricing is broken. We build premium websites and wire automations at fair
       builderConfig: (typeof calc === 'function' ? calc() : {})
     };
 
-    // Visual success cue before redirect
     const ok = document.querySelector('.start-success');
     ok?.classList.add('is-show');
 
-    try{
+    try {
       const res = await fetch('/checkout', {
-        method:'POST',
-        headers:{'Content-Type':'application/json'},
+        method: 'POST',
+        headers: {'Content-Type':'application/json'},
         body: JSON.stringify(payload)
       });
-      const { url, error } = await res.json();
-      if (url) window.location.href = url;
-      else {
+
+      let data = {};
+      try { data = await res.json(); } catch(e) {}
+
+      if (res.ok && data.url) {
+        window.location.href = data.url;
+      } else {
         ok?.classList.remove('is-show');
-        alert(error || 'Could not start checkout.');
+        alert(data.error || 'Could not start checkout.');
       }
-    } catch(err){
+    } catch (err) {
       ok?.classList.remove('is-show');
       alert('Could not start checkout.');
     }
   }
 
-  document.querySelectorAll('.js-order-deposit,.#order-deposit,#order-deposit-top')
-    .forEach(btn => btn && btn.addEventListener('click', startCheckout));
-})();
+  // VALID selectors only — no ".#order-deposit"
+  const depositButtons = document.querySelectorAll('#order-deposit, #order-deposit-top, .js-order-deposit');
+  depositButtons.forEach(btn => btn.addEventListener('click', startCheckout));
+});
 </script>
 
-  
-  </script>
 </body>
 </html>
 
