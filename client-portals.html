@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Client Portals — Options | BIMLabs</title>
+<meta name="description" content="Branded portals for owners, staff, and customers with auth, docs, updates, payments, and support."/>
+<style>
+  :root{--bg:#0b0f16;--ink:#e8eefc;--muted:#a9b7cc;--blue:#4EC6FF;--line:#1c2533;--panel:#111722;--r:22px}
+  *{box-sizing:border-box} html,body{height:100%} body{margin:0;background:var(--bg);color:var(--ink);font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial}
+
+  /* Edge glow */
+  .runner{position:fixed;inset:16px;border-radius:26px;pointer-events:none;z-index:5;padding:1px;
+    background:conic-gradient(from var(--ang,0turn),var(--blue) 0 14%,transparent 18% 100%);
+    -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+    -webkit-mask-composite:xor;mask-composite:exclude;filter:blur(14px) saturate(1.05);opacity:.9;animation:spin 6s linear infinite}
+  @keyframes spin{to{--ang:1turn}}
+  @media(prefers-reduced-motion:reduce){.runner{animation:none;background:radial-gradient(700px 300px at 10% 0%,#4ec6ff55,transparent 60%);filter:blur(18px)}}
+
+  /* Nav */
+  .nav{position:sticky;top:0;z-index:10;backdrop-filter:blur(8px);background:linear-gradient(180deg,rgba(10,15,22,.88),rgba(10,15,22,.55));border-bottom:1px solid #1e2b3b}
+  .nav__in{max-width:1100px;margin:0 auto;padding:.9rem 20px;display:flex;align-items:center;justify-content:space-between}
+  .brand{font-weight:900;letter-spacing:.04em}.brand span{color:var(--blue)}
+  .nav a{color:#cfe1f4;text-decoration:none;font-weight:800}
+  .cta{background:var(--blue);color:#091018;padding:.6rem 1rem;border-radius:999px;box-shadow:0 2px 14px #4ec6ff2a}
+
+  /* Hero */
+  .hero__in{max-width:1100px;margin:0 auto;padding:clamp(56px,9vw,120px) 20px}
+  .eyebrow{color:var(--blue);text-transform:uppercase;letter-spacing:.18em;font-weight:900;font-size:.8rem;margin:0 0 .4rem}
+  .h1{margin:.1rem 0 .7rem;font-size:clamp(34px,6vw,72px);font-weight:900;line-height:1.04}
+  .sub{margin:0;color:#dfe6ee;opacity:.92;max-width:760px;font-size:clamp(16px,2vw,20px)}
+  .actions{display:flex;gap:.8rem 1rem;flex-wrap:wrap;margin-top:1.1rem}
+  .btn{appearance:none;border:none;border-radius:999px;cursor:pointer;font-weight:900;padding:.9rem 1.3rem;background:var(--blue);color:#091018;box-shadow:0 10px 32px #4ec6ff2a;text-decoration:none}
+  .btn:hover{background:#fff;color:var(--blue)} .ghost{background:#223146;color:#dfe8f5}.ghost:hover{background:#2a3b54;color:#fff}
+
+  /* Section shell */
+  .wrap{max-width:1100px;margin:0 auto;padding:clamp(28px,6vw,56px) 20px}
+  .grid{display:grid;gap:18px}
+  .three{grid-template-columns:1fr 1fr 1fr} @media(max-width:980px){.three{grid-template-columns:1fr}}
+
+  /* Cards */
+  .card{background:rgba(16,22,30,.92);border:1px solid #1e2b3b;border-radius:var(--r);padding:18px;box-shadow:0 14px 44px rgba(0,0,0,.35),inset 0 1px 8px rgba(78,198,255,.08);opacity:0;transform:translateY(16px)}
+  .card h3{margin:.2rem 0 .4rem} .muted{color:var(--muted)}
+  .list{margin:.4rem 0 0;padding-left:1.1rem;color:#cfe1f4;line-height:1.7}
+  .pill{display:inline-block;background:#0f141c;border:1px solid #223146;border-radius:999px;padding:.35rem .7rem;font-weight:800;color:#bcd2ea;font-size:.85rem}
+
+  /* Split band */
+  .band{display:grid;grid-template-columns:1.2fr .8fr;gap:18px;align-items:center}
+  @media(max-width:980px){.band{grid-template-columns:1fr}}
+
+  /* Options matrix */
+  .matrix{border:1px solid #203149;border-radius:16px;overflow:hidden}
+  .row{display:grid;grid-template-columns:1.2fr repeat(3,1fr);gap:0}
+  .row>div{padding:12px;border-bottom:1px solid #1a2536}
+  .row.head{background:#0f1622;color:#9fd6ff;font-weight:900}
+  .row .ok{color:#85e0ff;font-weight:800}
+  .row:nth-child(even){background:#0f141c}
+
+  /* Reveal */
+  .reveal.in{opacity:1;transform:none;transition:opacity .6s ease,transform .6s cubic-bezier(.2,.7,.2,1)}
+</style>
+</head>
+<body>
+  <div class="runner" aria-hidden="true"></div>
+
+  <nav class="nav">
+    <div class="nav__in">
+      <a class="brand" href="index.html">BIM<span>Labs</span></a>
+      <div style="display:flex;gap:12px;align-items:center">
+        <a href="website-builds-balanced.html">Website Builds</a>
+        <a href="#matrix">Options</a>
+        <a class="cta" href="#demo">Book a Demo</a>
+      </div>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <div class="hero__in">
+      <p class="eyebrow">Custom Client Portals</p>
+      <h1 class="h1">Onboarding, docs, support — everything in one place.</h1>
+      <p class="sub">Branded portals with secure logins, resources, approvals, updates, payments, and support—built to match your workflow.</p>
+      <div class="actions">
+        <a class="btn" href="#matrix">See portal options</a>
+        <a class="btn ghost" href="#demo">Ask a question</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Who gets a portal -->
+  <section class="wrap">
+    <div class="grid three">
+      <article class="card reveal">
+        <h3>Owner Portal</h3>
+        <p class="muted">All projects, invoices, and approvals in one view.</p>
+        <ul class="list">
+          <li>Dashboards & permissions</li><li>Approvals & e‑sign</li><li>Billing & subscriptions</li>
+        </ul>
+      </article>
+      <article class="card reveal">
+        <h3>Staff Portal</h3>
+        <p class="muted">Daily tasks, docs, and status without email chains.</p>
+        <ul class="list">
+          <li>Assignments & checklists</li><li>Versioned documents</li><li>Internal notes</li>
+        </ul>
+      </article>
+      <article class="card reveal">
+        <h3>Customer Portal</h3>
+        <p class="muted">Self‑serve hub for updates, files, and payments.</p>
+        <ul class="list">
+          <li>Status & messaging</li><li>Invoices & subscriptions</li><li>Support tickets</li>
+        </ul>
+      </article>
+    </div>
+  </section>
+
+  <!-- How it works -->
+  <section class="wrap band">
+    <div class="card reveal">
+      <h3>How we build it</h3>
+      <p class="muted">We map roles → data → actions, then ship a branded UI with clean auth and an admin you can maintain.</p>
+      <ul class="list">
+        <li>Role‑based access (RBAC)</li>
+        <li>Doc library with search and versioning</li>
+        <li>Notifications (email/SMS/push)</li>
+        <li>Payments + subscriptions (optional)</li>
+        <li>Support threads or ticketing</li>
+      </ul>
+      <div style="margin-top:.6rem;display:flex;gap:.4rem;flex-wrap:wrap">
+        <span class="pill">Fast launch</span><span class="pill">Your branding</span><span class="pill">Mobile‑ready</span>
+      </div>
+    </div>
+    <aside class="card reveal" id="demo">
+      <h3>Automation + AI</h3>
+      <p class="muted">Onboarding checklists open automatically, docs attach to the user, and the AI assistant answers with your content—then hands off to staff when needed.</p>
+      <ul class="list">
+        <li>Welcome sequences by plan</li>
+        <li>Auto‑create folders & permissions</li>
+        <li>AI Q&A grounded in your docs</li>
+      </ul>
+      <div style="display:flex;gap:.6rem;margin-top:.7rem">
+        <a class="btn" href="mailto:benjamin@bimlabs.com?subject=Client%20Portals%20Demo">Book a Demo</a>
+        <a class="btn ghost" href="crm-integrations.html">See CRM Integrations</a>
+      </div>
+    </aside>
+  </section>
+
+  <!-- Options matrix -->
+  <section class="wrap" id="matrix">
+    <div class="card reveal">
+      <h3 style="margin:.2rem 0 .6rem">Portal options</h3>
+      <div class="matrix">
+        <div class="row head">
+          <div>Feature</div><div>Owner</div><div>Staff</div><div>Customer</div>
+        </div>
+        <div class="row"><div>Secure login (RBAC)</div><div class="ok">•</div><div class="ok">•</div><div class="ok">•</div></div>
+        <div class="row"><div>Dashboards & KPIs</div><div class="ok">•</div><div>—</div><div>—</div></div>
+        <div class="row"><div>Docs & versioning</div><div class="ok">•</div><div class="ok">•</div><div class="ok">•</div></div>
+        <div class="row"><div>Approvals / e‑sign</div><div class="ok">•</div><div class="ok">•</div><div>—</div></div>
+        <div class="row"><div>Messaging / tickets</div><div class="ok">•</div><div class="ok">•</div><div class="ok">•</div></div>
+        <div class="row"><div>Invoices & payments</div><div class="ok">•</div><div>—</div><div class="ok">•</div></div>
+        <div class="row"><div>Subscriptions</div><div class="ok">•</div><div>—</div><div class="ok">•</div></div>
+        <div class="row"><div>Notifications (email/SMS)</div><div class="ok">•</div><div class="ok">•</div><div class="ok">•</div></div>
+        <div class="row"><div>AI assistant (your docs)</div><div class="ok">•</div><div>—</div><div class="ok">•</div></div>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:12px">
+        <div class="muted">Starts at <b>$1,500</b>. Typical portals land <b>$3k–$5k</b>.</div>
+        <div style="display:flex;gap:.6rem">
+          <a class="btn" href="mailto:benjamin@bimlabs.com?subject=Portal%20Options">Get a scoped plan</a>
+          <a class="btn ghost" href="website-builds-balanced.html">Website Builds</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+<script>
+(() => {
+  const items=[...document.querySelectorAll('.reveal')];
+  const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('in')}),{threshold:.2});
+  items.forEach(i=>io.observe(i));
+})();
+</script>
+</body>
+</html>
