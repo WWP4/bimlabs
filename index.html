@@ -1048,6 +1048,36 @@ body[data-svc="2"]{ --svc-ang: .5turn;  --svc-speed: 5.6s; }
   pointer-events: auto;
 }
 
+/* === Minimal About */
+.about-min{
+  padding: clamp(56px, 9vw, 120px) 0;
+  background: linear-gradient(180deg, transparent, rgba(255,255,255,.02) 40%, transparent 100%);
+}
+.about-min__in{ max-width: 1000px; margin: 0 auto; padding: 0 24px; }
+.about-min__eyebrow{
+  color: var(--blue); text-transform: uppercase; letter-spacing: .18em;
+  font-weight: 900; font-size: .8rem; margin: 0 0 .5rem;
+}
+.about-min__title{
+  margin: 0 0 1rem; font-weight: 900; line-height: 1.06;
+  font-size: clamp(28px, 5vw, 48px);
+}
+.about-min__typed{
+  margin: 0; max-width: 70ch; color: #e8eef6; opacity: .95;
+  font-size: clamp(1rem, 1.7vw, 1.15rem); line-height: 1.7;
+  white-space: pre-line; border-right: 2px solid var(--blue);
+  padding-right: .15rem; /* cursor breathing room */
+  overflow: hidden;
+}
+.about-min__cta{ display: flex; gap: .9rem; flex-wrap: wrap; margin-top: 1.2rem; }
+.about-min__btn{
+  background: var(--blue); color: #0d1218; font-weight: 900; text-decoration: none;
+  padding: .85rem 1.3rem; border-radius: 999px; box-shadow: 0 10px 32px rgba(78,198,255,.22);
+}
+.about-min__btn:hover{ background: #fff; color: var(--blue); }
+.about-min__link{ color: #b8c7da; font-weight: 800; text-decoration: none; }
+.about-min__link:hover{ color: var(--blue); }
+@media (prefers-reduced-motion: reduce){ .about-min__typed{ border-right: none; } }
   
 
 <style>
@@ -1130,31 +1160,16 @@ body[data-svc="2"]{ --svc-ang: .5turn;  --svc-speed: 5.6s; }
   </div>
 </section>
     
+<!-- ===== ABOUT (minimal typewriter) ===== -->
+<section id="our-story" class="about-min">
+  <div class="about-min__in">
+    <p class="about-min__eyebrow">About Me</p>
+    <h2 class="about-min__title">Why I Started BIM Labs</h2>
+    <p id="about-min-typed" class="about-min__typed" aria-live="polite"></p>
 
-    <!-- ====== FOUNDER STORY ====== -->
-<section class="story-section" id="our-story">
-  <div class="story-shell">
-    <div class="story-card lux-frame">
-      <div class="story-col story-copy">
-        <h2 class="story-title">Why I Started BIM Labs</h2>
-        <p class="story-lead">Agencies quoted $5k–$20k … priced like a partner, not a gatekeeper.</p>
-        <ul class="story-points">
-          <li><b>Fair pricing:</b> high-end look + real functionality without bloat.</li>
-          <li><b>Owner’s mindset:</b> we care about your pipeline and outcomes, not billable hours.</li>
-          <li><b>Speed to value:</b> launch fast, iterate weekly, measure everything.</li>
-        </ul>
-        <div class="story-cta-row">
-          <a href="#contact" class="story-cta">Start a Vision Call</a>
-          <a href="#portfolio" class="story-link">See Live Work ↗</a>
-        </div>
-      </div>
-
-      <figure class="story-col story-media">
-        <div class="media-frame">
-          <img src="https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=1400&q=80"
-               alt="BIM Labs studio" loading="lazy">
-        </div>
-      </figure>
+    <div class="about-min__cta">
+      <a href="#contact" class="about-min__btn">Start a Vision Call</a>
+      <a href="#work" class="about-min__link">See Live Work ↗</a>
     </div>
   </div>
 </section>
@@ -2115,6 +2130,37 @@ body[data-svc="2"]{ --svc-ang: .5turn;  --svc-speed: 5.6s; }
 
   // init
   show(0);
+})();
+</script>
+
+  <script>
+(() => {
+  const copy = `Hi, I’m Benjamin Morrison—founder of BIM Labs.
+
+I started BIM Labs because small teams were priced out of fast, clear websites and the tools that actually grow a pipeline. I remember wishing I had clean design, real speed, and a CRM that worked together when I began.
+
+Agency pricing is broken. We build premium websites and wire automations at fair prices—so small teams can move like big ones.`;
+  const el = document.getElementById('about-min-typed');
+  if (!el) return;
+
+  let i = 0, started = false;
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function type() {
+    if (i >= copy.length){ el.style.borderRight = 'none'; return; }
+    el.textContent += copy.charAt(i++);
+    setTimeout(type, 26); // typing speed (ms)
+  }
+
+  const io = new IntersectionObserver(([e])=>{
+    if (e.isIntersecting && !started){
+      started = true;
+      if (reduced){ el.textContent = copy; el.style.borderRight = 'none'; }
+      else type();
+    }
+  }, { threshold: 0.45 });
+
+  io.observe(el);
 })();
 </script>
 
