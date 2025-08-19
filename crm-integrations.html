@@ -1,0 +1,266 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>CRM Integrations — Automate the Pipeline | BIMLabs</title>
+<meta name="description" content="Lead capture, routing, automations, AI assistant, scheduling, payments, and reporting—wired into your CRM." />
+<style>
+  :root{
+    --bg:#0b0f16;
+    --ink:#e8eefc;
+    --muted:#a9b7cc;
+    --blue:#4EC6FF;
+    --line:#1c2533;
+    --panel:#111722;
+    --radius:22px;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial}
+
+  /* NAV (simple) */
+  .nav{position:sticky;top:0;z-index:30;backdrop-filter:blur(8px);
+       background:linear-gradient(180deg,rgba(10,15,22,.88),rgba(10,15,22,.55));border-bottom:1px solid #1e2b3b}
+  .nav__in{max-width:1100px;margin:0 auto;padding:.9rem 20px;display:flex;align-items:center;justify-content:space-between}
+  .brand{font-weight:900;letter-spacing:.04em}
+  .brand span{color:var(--blue)}
+  .nav a{color:#cfe1f4;text-decoration:none;font-weight:800}
+  .cta{background:var(--blue);color:#091018;padding:.6rem 1rem;border-radius:999px;box-shadow:0 2px 14px #4ec6ff2a}
+
+  /* Edge runner around viewport */
+  .runner{position:fixed;inset:16px;border-radius:26px;pointer-events:none;z-index:5;padding:1px;
+    background:conic-gradient(from var(--ang,0turn),var(--blue) 0 14%,transparent 18% 100%);
+    -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+    -webkit-mask-composite:xor;mask-composite:exclude;filter:blur(14px) saturate(1.05);opacity:.9;
+    animation:spin var(--speed,6s) linear infinite both}
+  @keyframes spin{to{--ang:1turn}}
+  @media (prefers-reduced-motion:reduce){.runner{animation:none;background:radial-gradient(700px 300px at 10% 0%,#4ec6ff55,transparent 60%);filter:blur(18px)}}
+
+  /* HERO */
+  .hero{position:relative;overflow:hidden}
+  .hero__in{max-width:1100px;margin:0 auto;padding: clamp(56px,9vw,120px) 20px}
+  .eyebrow{color:var(--blue);text-transform:uppercase;letter-spacing:.18em;font-weight:900;font-size:.8rem;margin:0 0 .4rem}
+  .h1{margin:.1rem 0 .7rem;font-size: clamp(34px, 6vw, 72px);font-weight:900;line-height:1.04}
+  .sub{margin:0;color:#dfe6ee;opacity:.92;max-width:720px;font-size: clamp(16px,2vw,20px)}
+  .hero__actions{display:flex;gap:.8rem 1rem;flex-wrap:wrap;margin-top:1.1rem}
+  .btn{appearance:none;border:none;border-radius:999px;cursor:pointer;font-weight:900;padding:.9rem 1.3rem;
+       background:var(--blue);color:#091018;box-shadow:0 10px 32px #4ec6ff2a;text-decoration:none}
+  .btn:hover{background:#fff;color:var(--blue)}
+  .ghost{background:#223146;color:#dfe8f5}
+  .ghost:hover{background:#2a3b54;color:#fff}
+
+  /* Section shell */
+  .wrap{max-width:1100px;margin:0 auto;padding: clamp(28px,6vw,56px) 20px}
+
+  /* TIMELINE (pipeline) */
+  .pipe{display:grid;grid-template-columns: .08fr 1fr;gap:20px;position:relative}
+  .rail{position:relative}
+  .rail::before{content:"";position:absolute;left:50%;top:0;bottom:0;width:2px;background:#223146;box-shadow:0 0 0 6px rgba(78,198,255,.12)}
+  .dot{width:12px;height:12px;border-radius:12px;background:#4ec6ff;position:absolute;left:50%;transform:translate(-50%,-50%);box-shadow:0 0 0 8px #4ec6ff22}
+  .step{background: rgba(16,22,30,.88);border:1px solid #1e2b3b;border-radius:var(--radius);
+        box-shadow:0 18px 50px rgba(0,0,0,.35),0 6px 26px rgba(78,198,255,.10);padding:18px;opacity:0;transform:translateY(16px)}
+  .step h3{margin:.2rem 0 .4rem;font-size:1.35rem}
+  .step p{margin:0 0 .6rem;color:#cfe1f4}
+  .tags{display:flex;flex-wrap:wrap;gap:.35rem;margin-top:.4rem}
+  .tag{display:inline-block;background:#0f141c;border:1px solid #223146;border-radius:999px;padding:.35rem .7rem;font-weight:800;color:#bcd2ea;font-size:.85rem}
+
+  /* AI + Automations grid */
+  .grid{display:grid;grid-template-columns: 1fr 1fr;gap:20px}
+  @media(max-width:980px){.grid{grid-template-columns:1fr}}
+  .card{background: rgba(16,22,30,.9);border:1px solid #1e2b3b;border-radius:var(--radius);padding:18px;box-shadow:0 14px 44px rgba(0,0,0,.35), inset 0 1px 8px rgba(78,198,255,.08)}
+  .card h3{margin:.2rem 0 .4rem}
+  .list{margin:.4rem 0 0;padding-left:1.1rem;color:#cfe1f4;line-height:1.7}
+  .note{color:#9ab0c9;margin:.5rem 0 0}
+
+  /* Sticky quote/demo */
+  .sticky{position:sticky;top:84px}
+  .quote{font-size:1.05rem;line-height:1.6;margin:0}
+  .quote b{color:#9fd6ff}
+
+  /* CTA BAR */
+  .cta-bar{display:flex;justify-content:space-between;gap:14px;align-items:center;background:#101723;border:1px solid #1e2b3b;border-radius:16px;padding:14px 16px;margin-top:20px}
+  .price{font-weight:900}
+  .meta{color:#9ab0c9}
+
+  /* Animations */
+  .reveal.in{opacity:1;transform:none;transition:opacity .6s ease, transform .6s cubic-bezier(.2,.7,.2,1)}
+</style>
+</head>
+<body>
+  <div class="runner" aria-hidden="true"></div>
+
+  <nav class="nav">
+    <div class="nav__in">
+      <a class="brand" href="index.html">BIM<span>Labs</span></a>
+      <div style="display:flex;gap:12px;align-items:center">
+        <a href="website-builds-balanced.html">Website Builds</a>
+        <a href="#pipeline">Pipeline</a>
+        <a class="cta" href="#book">Book a Demo</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <header class="hero">
+    <div class="hero__in">
+      <p class="eyebrow">CRM Integration</p>
+      <h1 class="h1">Automate the pipeline. Capture → nurture → book.</h1>
+      <p class="sub">Forms flow into CRM with lead routing, sequences, scheduling, payments, and reporting — plus an AI assistant that answers real questions with your data.</p>
+      <div class="hero__actions">
+        <a class="btn" href="#pipeline">See the pipeline</a>
+        <a class="btn ghost" href="#book">Book a demo</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- PIPELINE -->
+  <section id="pipeline" class="wrap">
+    <h2 class="eyebrow">Pipeline Process</h2>
+    <h2 style="margin:.1rem 0 1rem;font-size: clamp(24px,4vw,36px);font-weight:900">From first click to booked meeting — fully automated.</h2>
+
+    <div class="pipe">
+      <div class="rail">
+        <!-- dots will be positioned via inline style -->
+        <span class="dot" style="top:4%"></span>
+        <span class="dot" style="top:24%"></span>
+        <span class="dot" style="top:44%"></span>
+        <span class="dot" style="top:66%"></span>
+        <span class="dot" style="top:90%"></span>
+      </div>
+      <div class="lane">
+        <article class="step reveal">
+          <h3>1) Capture</h3>
+          <p>Website forms and chat route straight into your CRM with source tags and UTM data. No copy-paste, no inbox hunting.</p>
+          <div class="tags">
+            <span class="tag">Branded forms</span><span class="tag">UTM + source</span><span class="tag">Spam guard</span>
+          </div>
+        </article>
+
+        <article class="step reveal">
+          <h3>2) Qualify</h3>
+          <p>Auto-score new leads with budget and timeline questions. If qualified, route to the right pipeline and owner.</p>
+          <div class="tags">
+            <span class="tag">Scoring rules</span><span class="tag">Round-robin</span><span class="tag">Smart tags</span>
+          </div>
+        </article>
+
+        <article class="step reveal">
+          <h3>3) Nurture</h3>
+          <p>Email/SMS sequences personalize by segment. AI generates draft replies that cite your docs and policies.</p>
+          <div class="tags">
+            <span class="tag">Sequences</span><span class="tag">Templates</span><span class="tag">AI reply assist</span>
+          </div>
+        </article>
+
+        <article class="step reveal">
+          <h3>4) Book</h3>
+          <p>Prospects pick a time; calendars and video links are created automatically. Optional payment or deposit at booking.</p>
+          <div class="tags">
+            <span class="tag">Calendar connect</span><span class="tag">Timezones</span><span class="tag">Payments</span>
+          </div>
+        </article>
+
+        <article class="step reveal">
+          <h3>5) Report</h3>
+          <p>Dashboards show where leads came from, time-to-first-touch, and close rates — so you can invest with confidence.</p>
+          <div class="tags">
+            <span class="tag">Attribution</span><span class="tag">SLAs</span><span class="tag">Revenue</span>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- AI + AUTOMATIONS -->
+  <section class="wrap">
+    <div class="grid">
+      <article class="card reveal">
+        <h3>AI Assistant (Your Data)</h3>
+        <p>Give prospects instant answers about products, policies, pricing ranges, install timelines — grounded in your docs. The assistant can hand off to a human, push the lead into CRM, and attach the conversation as a note.</p>
+        <ul class="list">
+          <li>Retrieval over your catalog, policies, FAQs</li>
+          <li>Intent detection → route to the right pipeline</li>
+          <li>“Add to Quote” or “Book Now” actions</li>
+        </ul>
+        <p class="note">We built this for Wonder World Playsets and saw quote requests double in month one.</p>
+      </article>
+
+      <aside class="card sticky reveal">
+        <h3>What clients say</h3>
+        <p class="quote">“We booked 21 demos in two weeks — more than the previous two months combined. The site and automations guide people to the next step.”<br><b>— Agency Director</b></p>
+        <div class="cta-bar" id="book">
+          <div>
+            <div class="price">Starting at $1,500</div>
+            <div class="meta">Most CRM builds land between $3k–$5k</div>
+          </div>
+          <a class="btn" href="mailto:benjamin@bimlabs.com">Book a Demo</a>
+        </div>
+      </aside>
+
+      <article class="card reveal">
+        <h3>Automations that do the work</h3>
+        <p>Clear rules move leads forward without busywork. We make the flows readable so your team can edit them later.</p>
+        <ul class="list">
+          <li>New lead → score → assign → notify owner</li>
+          <li>Unreplied 24h → reminder to owner</li>
+          <li>No-show → reschedule sequence</li>
+          <li>Won → invoice and onboarding sequence</li>
+        </ul>
+      </article>
+
+      <article class="card reveal">
+        <h3>Calendars, Payments, Reporting</h3>
+        <p>We connect your calendars to prevent double booking, add payment links on booking if needed, and wire dashboards so leaders get the signal without digging.</p>
+        <ul class="list">
+          <li>Google/Outlook calendars</li>
+          <li>Stripe deposits or full payment</li>
+          <li>Attribution and source-to-revenue</li>
+        </ul>
+      </article>
+    </div>
+  </section>
+
+  <!-- FINAL CTA -->
+  <section class="wrap">
+    <div class="card reveal" style="display:grid;grid-template-columns:1.15fr .85fr;gap:18px;align-items:center">
+      <div>
+        <h3 style="margin:.2rem 0 .4rem">Ready to automate the pipeline?</h3>
+        <p class="sub" style="margin:0">We’ll connect forms, calendars, payments, and sequences — and add an AI assistant trained on your content. Launch fast, then iterate.</p>
+      </div>
+      <div style="display:flex;gap:.6rem;justify-content:flex-end;flex-wrap:wrap">
+        <a class="btn" href="mailto:benjamin@bimlabs.com?subject=CRM%20Integration%20Demo">Book a Demo</a>
+        <a class="btn ghost" href="website-builds-balanced.html">See Website Builds</a>
+      </div>
+    </div>
+  </section>
+
+<script>
+/* Reveal animation + runner tuning by section */
+(() => {
+  const prefersReduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const reveals = [...document.querySelectorAll('.reveal')];
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting) e.target.classList.add('in');
+    });
+  }, {threshold:.2});
+  reveals.forEach(r=>io.observe(r));
+
+  // Subtle speed shift of edge runner based on scroll depth
+  const runner = document.querySelector('.runner');
+  const sections = [...document.querySelectorAll('section,header.hero')];
+  const sp = ['6.5s','5.4s','5.9s','5.2s'];
+  const io2 = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        const i = Math.max(0, sections.indexOf(e.target) % sp.length);
+        runner && runner.style.setProperty('--speed', sp[i]);
+      }
+    });
+  }, {threshold:.55});
+  sections.forEach(s=>io2.observe(s));
+})();
+</script>
+</body>
+</html>
