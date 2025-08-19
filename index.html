@@ -1078,7 +1078,19 @@ body[data-svc="2"]{ --svc-ang: .5turn;  --svc-speed: 5.6s; }
 .about-min__link{ color: #b8c7da; font-weight: 800; text-decoration: none; }
 .about-min__link:hover{ color: var(--blue); }
 @media (prefers-reduced-motion: reduce){ .about-min__typed{ border-right: none; } }
-  
+
+
+
+    .order-wrap{ margin-top:10px }
+.order-title{ margin:0 0 .3rem; font-size:1.4rem; font-weight:900; color:#e8eefc }
+.order-sub{ margin:0 0 1rem; color:#cfe1f4; opacity:.92 }
+.order-grid{ display:grid; grid-template-columns:1fr 1fr; gap:16px }
+@media(max-width:900px){ .order-grid{ grid-template-columns:1fr } }
+.order-card{ background:rgba(16,22,30,.85); border:1px solid #1e2b3b; border-radius:14px; padding:16px }
+.order-steps{ margin:.4rem 0 .6rem; padding-left:18px; line-height:1.7; color:#dfe6ee }
+.order-faq{ margin:.6rem 0 0; padding-left:18px; line-height:1.7; color:#b8c6d8 }
+.order-note{ color:#9ab0c9; font-size:.95rem; margin:.5rem 0 0 }
+
     
 <style>
 /* Keep hero background pure black */
@@ -1090,7 +1102,7 @@ body[data-svc="2"]{ --svc-ang: .5turn;  --svc-speed: 5.6s; }
 /* Make sure your hero text sits above the canvas */
 .hero [data-hero-content]{ position:relative; z-index:2; }
 </style>
-    
+  
   </style>
 </head>
 <body>
@@ -1517,6 +1529,43 @@ body[data-svc="2"]{ --svc-ang: .5turn;  --svc-speed: 5.6s; }
     </div>
   </div>
 </section>
+
+  <!-- ===== START: How to Order / Deposit ===== -->
+<section class="order-wrap card">
+  <h2 class="order-title">How to place a deposit & start</h2>
+  <p class="order-sub">Two simple ways to kick things off. Your $500 Vision Deposit is fully applied to your final build.</p>
+
+  <div class="order-grid">
+    <div class="order-card">
+      <h3>Option A — Quick start</h3>
+      <ol class="order-steps">
+        <li>Enter your contact info above (name + email).</li>
+        <li>Click “Place $500 Vision Deposit”.</li>
+        <li>Complete the secure Stripe checkout.</li>
+        <li>Book your kickoff on the thank-you page.</li>
+      </ol>
+      <button id="order-deposit" class="btn">Place $500 Vision Deposit</button>
+      <p class="order-note">Prefer to chat first? <a href="mailto:benjamin@bimlabs.com">Email us</a>.</p>
+    </div>
+
+    <div class="order-card">
+      <h3>Option B — Configure first</h3>
+      <ol class="order-steps">
+        <li>Use the add-ons below to shape your package.</li>
+        <li>Review the live quote on the right.</li>
+        <li>Place the $500 deposit to reserve your slot.</li>
+        <li>We finalize scope and invoice the balance.</li>
+      </ol>
+      <ul class="order-faq">
+        <li><b>Refundable?</b> If we can’t take the project, yes. Otherwise it’s applied to your build.</li>
+        <li><b>Timeline?</b> Launch in ~2–3 weeks after kickoff.</li>
+        <li><b>Payments?</b> Card, ACH, Apple Pay, Google Pay via Stripe.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+<!-- ===== END: How to Order / Deposit ===== -->
+
 
 
 <!-- ===== CONTACT (App-style) ===== -->
@@ -2098,6 +2147,30 @@ Agency pricing is broken. We build premium websites and wire automations at fair
   io.observe(el);
 })();
 </script>
+<script>
+  // Reuse the same payload + /checkout flow you already use
+  document.getElementById('order-deposit')?.addEventListener('click', async () => {
+    const payload = {
+      name:   document.querySelector('#name')?.value?.trim() || '',
+      email:  document.querySelector('#email')?.value?.trim() || '',
+      company:document.querySelector('#company')?.value?.trim() || '',
+      phone:  document.querySelector('#phone')?.value?.trim() || '',
+      notes:  document.querySelector('#notes')?.value?.trim() || '',
+      builderConfig: (typeof calc === 'function' ? calc() : {})
+    };
+
+    const res = await fetch('/checkout', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify(payload)
+    });
+    const { url, error } = await res.json();
+    if (url) window.location.href = url;
+    else alert(error || 'Could not start checkout.');
+  });
+  </script>
+</body>
+</html>
 
   
 </body>
