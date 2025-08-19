@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Website Builds — Starting at $1,500 | BIMLabs</title>
+<style>
+  body{ margin:0; background:#0b0f16; color:#e8eefc;
+        font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial; }
+  .wrap{ max-width:1100px; margin:0 auto; padding:40px 20px; display:grid; grid-template-columns:1fr 1fr; gap:24px; }
+  @media(max-width:900px){ .wrap{ grid-template-columns:1fr; } }
+  .card{ background: rgba(16,22,30,.88); border:1px solid #1e2b3b; border-radius:18px;
+         box-shadow: 0 10px 30px rgba(0,0,0,.35); padding:20px; }
+  h1{ margin:0 0 .5rem; font-size:2rem; color:#4ec6ff; }
+  .group{ border-top:1px solid #1e2b3b; margin-top:16px; padding-top:14px; }
+  .row{ display:flex; justify-content:space-between; align-items:center; margin:.5rem 0; }
+  .select{ background:#0f141c; color:#e8eefc; border:1px solid #223146; border-radius:8px; padding:.4rem .6rem; }
+  .btn{ background:#4ec6ff; color:#0b0f16; border:none; padding:.8rem 1.2rem; font-weight:800; border-radius:999px; cursor:pointer; }
+  .btn:hover{ background:#fff; color:#4ec6ff; }
+  .line{ display:flex; justify-content:space-between; border-bottom:1px dashed #2a3b54; padding:.35rem 0; }
+  .total{ font-size:1.8rem; font-weight:900; margin-top:12px; }
+</style>
+</head>
+<body>
+<main class="wrap">
+  <section class="card">
+    <h1>Website Builds — Starting at $1,500</h1>
+    <p>Base build includes up to 7 pages, blog, and SEO setup. Add features to fit your needs. Most projects land $1.5k–$5k.</p>
+
+    <div class="group">
+      <h3>Add-ons</h3>
+      <div class="row"><label><input type="checkbox" id="crm"> CRM Integration</label><b id="crmOut">$0</b></div>
+      <div class="row"><label><input type="checkbox" id="email"> Email Automation</label><b id="emailOut">$0</b></div>
+      <div class="row"><label><input type="checkbox" id="ai"> AI Assistant</label><b id="aiOut">$0</b></div>
+      <div class="row"><label><input type="checkbox" id="portal"> Client Portal</label><b id="portalOut">$0</b></div>
+      <div class="row"><label><input type="checkbox" id="shop"> E-commerce</label><b id="shopOut">$0</b></div>
+    </div>
+
+    <div class="group">
+      <h3>Delivery Speed</h3>
+      <div class="row"><label>Timeline</label>
+        <select id="speed" class="select">
+          <option value="standard">Standard (2–3 weeks)</option>
+          <option value="rush">Rush (7–10 days)</option>
+        </select>
+        <b id="rushOut">$0</b>
+      </div>
+    </div>
+
+    <div class="group">
+      <h3>Support</h3>
+      <div class="row"><label>Monthly Support</label>
+        <select id="support" class="select">
+          <option value="none">None</option>
+          <option value="lite">Lite ($500/mo)</option>
+          <option value="pro">Pro ($1,000/mo)</option>
+        </select>
+      </div>
+    </div>
+  </section>
+
+  <aside class="card">
+    <h2>Your Quote</h2>
+    <div class="line"><span>Base Website</span><b>$1,500</b></div>
+    <div class="line"><span>CRM Integration</span><b id="crmCost">$0</b></div>
+    <div class="line"><span>Email Automation</span><b id="emailCost">$0</b></div>
+    <div class="line"><span>AI Assistant</span><b id="aiCost">$0</b></div>
+    <div class="line"><span>Client Portal</span><b id="portalCost">$0</b></div>
+    <div class="line"><span>E-commerce</span><b id="shopCost">$0</b></div>
+    <div class="line"><span>Rush Delivery</span><b id="rushCost">$0</b></div>
+    <div class="line"><span>Subtotal</span><b id="subtotal">$1,500</b></div>
+    <div class="line"><span>Support Plan</span><b id="supportCost">$0/mo</b></div>
+    <div class="total" id="total">$1,500</div>
+    <p>One-time build. Optional monthly support extra.</p>
+  </aside>
+</main>
+
+<script>
+(function(){
+  const PRICING = {
+    base: 1500,
+    crm: 600,
+    email: 400,
+    ai: 1200,
+    portal: 900,
+    shop: 800,
+    rush: 0.15,
+    support: { none: 0, lite: 500, pro: 1000 }
+  };
+  const $ = s=>document.querySelector(s);
+  const toggles = { crm:$("#crm"), email:$("#email"), ai:$("#ai"), portal:$("#portal"), shop:$("#shop") };
+  const speedSel = $("#speed"), supportSel=$("#support");
+
+  function fmt(n){ return "$"+n.toLocaleString(); }
+  function calc(){
+    let subtotal = PRICING.base;
+    let crm = toggles.crm.checked ? PRICING.crm : 0;
+    let email = toggles.email.checked ? PRICING.email : 0;
+    let ai = toggles.ai.checked ? PRICING.ai : 0;
+    let portal = toggles.portal.checked ? PRICING.portal : 0;
+    let shop = toggles.shop.checked ? PRICING.shop : 0;
+    subtotal += crm+email+ai+portal+shop;
+    let rush = speedSel.value==="rush" ? subtotal*PRICING.rush : 0;
+    let total = subtotal+rush;
+    let support=PRICING.support[supportSel.value]||0;
+
+    $("#crmCost").textContent=crm?fmt(crm):"$0";
+    $("#emailCost").textContent=email?fmt(email):"$0";
+    $("#aiCost").textContent=ai?fmt(ai):"$0";
+    $("#portalCost").textContent=portal?fmt(portal):"$0";
+    $("#shopCost").textContent=shop?fmt(shop):"$0";
+    $("#rushCost").textContent=rush?fmt(rush):"$0";
+    $("#subtotal").textContent=fmt(subtotal);
+    $("#supportCost").textContent=support?fmt(support)+"/mo":"$0/mo";
+    $("#total").textContent=fmt(total);
+  }
+
+  Object.values(toggles).forEach(el=>el.addEventListener("change",calc));
+  speedSel.addEventListener("change",calc);
+  supportSel.addEventListener("change",calc);
+  calc();
+})();
+</script>
+</body>
+</html>
