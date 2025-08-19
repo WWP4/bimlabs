@@ -4,33 +4,54 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Website Builds — Starting at $1,500 | BIMLabs</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700;900&display=swap" rel="stylesheet">
 <style>
-  body{ margin:0; background:#0b0f16; color:#e8eefc;
-        font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial; }
+  :root{--bg:#0b0f16;--ink:#e8eefc;--muted:#a9b7cc;--blue:#4EC6FF;--line:#1c2533}
+  *{box-sizing:border-box} html,body{height:100%}
+  body{ margin:0; background:var(--bg); color:var(--ink); font-family: Montserrat, ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial; }
   .wrap{ max-width:1100px; margin:0 auto; padding:40px 20px; display:grid; grid-template-columns:1fr 1fr; gap:24px; }
   @media(max-width:900px){ .wrap{ grid-template-columns:1fr; } }
-  .card{ background: rgba(16,22,30,.88); border:1px solid #1e2b3b; border-radius:18px;
-         box-shadow: 0 10px 30px rgba(0,0,0,.35); padding:20px; }
-  h1{ margin:0 0 .5rem; font-size:2rem; color:#4ec6ff; }
+  .card{ background: rgba(16,22,30,.92); border:1px solid #1e2b3b; border-radius:18px;
+         box-shadow: 0 10px 30px rgba(0,0,0,.35), 0 6px 26px rgba(78,198,255,.10); padding:20px; }
+  h1{ margin:0 0 .5rem; font-size:2rem; color:var(--blue); }
   .group{ border-top:1px solid #1e2b3b; margin-top:16px; padding-top:14px; }
-  .row{ display:flex; justify-content:space-between; align-items:center; margin:.5rem 0; }
-  .select{ background:#0f141c; color:#e8eefc; border:1px solid #223146; border-radius:8px; padding:.4rem .6rem; }
-  .btn{ background:#4ec6ff; color:#0b0f16; border:none; padding:.8rem 1.2rem; font-weight:800; border-radius:999px; cursor:pointer; }
-  .btn:hover{ background:#fff; color:#4ec6ff; }
+  .row{ display:flex; justify-content:space-between; align-items:center; margin:.55rem 0; gap:10px}
+  .select,.input,.textarea{
+    width:100%; background:#0f141c; color:#e8eefc; border:1px solid #223146; border-radius:10px; padding:.6rem .7rem;
+  }
+  .textarea{min-height:100px}
+  .btn{ background:var(--blue); color:#0b0f16; border:none; padding:.8rem 1.2rem; font-weight:900; border-radius:999px; cursor:pointer; box-shadow:0 10px 32px rgba(78,198,255,.22)}
+  .btn:hover{ background:#fff; color:var(--blue); }
+  .ghost{ background:#223146; color:#dfe8f5 }
+  .ghost:hover{ background:#2a3b54; color:#fff }
   .line{ display:flex; justify-content:space-between; border-bottom:1px dashed #2a3b54; padding:.35rem 0; }
   .total{ font-size:1.8rem; font-weight:900; margin-top:12px; }
+  .hint{ color:var(--muted); font-size:.95rem; }
+  .badge{display:inline-block;background:#102032;border:1px solid #223146;color:#bcd2ea;border-radius:999px;padding:.3rem .6rem;font-weight:800;font-size:.85rem;margin-right:6px}
 </style>
 </head>
 <body>
 <main class="wrap">
+
+  <!-- LEFT: Builder -->
   <section class="card">
     <h1>Website Builds — Starting at $1,500</h1>
     <p>Base build includes up to 7 pages, blog, and SEO setup. Add features to fit your needs. Most projects land $1.5k–$5k.</p>
 
     <div class="group">
+      <h3>Contact</h3>
+      <div class="row"><input id="name" class="input" placeholder="Full name"></div>
+      <div class="row"><input id="email" class="input" type="email" placeholder="Email"></div>
+      <div class="row"><input id="company" class="input" placeholder="Company (optional)"></div>
+      <div class="row"><input id="phone" class="input" placeholder="Phone (optional)"></div>
+      <div class="row"><textarea id="notes" class="textarea" placeholder="Share your vision, pages, timeline… (optional)"></textarea></div>
+    </div>
+
+    <div class="group">
       <h3>Add-ons</h3>
       <div class="row"><label><input type="checkbox" id="crm"> CRM Integration</label><b id="crmOut">$0</b></div>
-      <div class="row"><label><input type="checkbox" id="email"> Email Automation</label><b id="emailOut">$0</b></div>
+      <div class="row"><label><input type="checkbox" id="emailAddon"> Email Automation</label><b id="emailOut">$0</b></div>
       <div class="row"><label><input type="checkbox" id="ai"> AI Assistant</label><b id="aiOut">$0</b></div>
       <div class="row"><label><input type="checkbox" id="portal"> Client Portal</label><b id="portalOut">$0</b></div>
       <div class="row"><label><input type="checkbox" id="shop"> E-commerce</label><b id="shopOut">$0</b></div>
@@ -59,6 +80,7 @@
     </div>
   </section>
 
+  <!-- RIGHT: Quote + Deposit -->
   <aside class="card">
     <h2>Your Quote</h2>
     <div class="line"><span>Base Website</span><b>$1,500</b></div>
@@ -71,12 +93,26 @@
     <div class="line"><span>Subtotal</span><b id="subtotal">$1,500</b></div>
     <div class="line"><span>Support Plan</span><b id="supportCost">$0/mo</b></div>
     <div class="total" id="total">$1,500</div>
-    <p>One-time build. Optional monthly support extra.</p>
+    <p class="hint">One-time build. Optional monthly support extra.</p>
+
+    <div class="row" style="margin-top:10px;gap:10px">
+      <button id="depositBtn" class="btn">Place $500 Vision Deposit</button>
+      <a class="btn ghost" href="mailto:benjamin@bimlabs.com?subject=Share%20my%20vision">Continue without deposit</a>
+    </div>
+    <p class="hint">Deposit is fully applied to your final invoice.</p>
+
+    <div style="margin-top:8px">
+      <span class="badge">Apple Pay</span>
+      <span class="badge">Google Pay</span>
+      <span class="badge">Link</span>
+      <span class="badge">Card</span>
+    </div>
   </aside>
 </main>
 
 <script>
 (function(){
+  // --- Pricing model
   const PRICING = {
     base: 1500,
     crm: 600,
@@ -87,38 +123,84 @@
     rush: 0.15,
     support: { none: 0, lite: 500, pro: 1000 }
   };
-  const $ = s=>document.querySelector(s);
-  const toggles = { crm:$("#crm"), email:$("#email"), ai:$("#ai"), portal:$("#portal"), shop:$("#shop") };
-  const speedSel = $("#speed"), supportSel=$("#support");
+
+  // --- Helpers
+  const $ = s => document.querySelector(s);
+  const toggles = { crm:$("#crm"), email:$("#emailAddon"), ai:$("#ai"), portal:$("#portal"), shop:$("#shop") };
+  const speedSel = $("#speed"), supportSel = $("#support");
 
   function fmt(n){ return "$"+n.toLocaleString(); }
+
+  // --- Calculate and update UI
   function calc(){
     let subtotal = PRICING.base;
-    let crm = toggles.crm.checked ? PRICING.crm : 0;
-    let email = toggles.email.checked ? PRICING.email : 0;
-    let ai = toggles.ai.checked ? PRICING.ai : 0;
-    let portal = toggles.portal.checked ? PRICING.portal : 0;
-    let shop = toggles.shop.checked ? PRICING.shop : 0;
-    subtotal += crm+email+ai+portal+shop;
-    let rush = speedSel.value==="rush" ? subtotal*PRICING.rush : 0;
-    let total = subtotal+rush;
-    let support=PRICING.support[supportSel.value]||0;
+    const sel = {
+      crm: !!toggles.crm.checked,
+      email: !!toggles.email.checked,
+      ai: !!toggles.ai.checked,
+      portal: !!toggles.portal.checked,
+      shop: !!toggles.shop.checked,
+      speed: speedSel.value,
+      support: supportSel.value
+    };
 
-    $("#crmCost").textContent=crm?fmt(crm):"$0";
-    $("#emailCost").textContent=email?fmt(email):"$0";
-    $("#aiCost").textContent=ai?fmt(ai):"$0";
-    $("#portalCost").textContent=portal?fmt(portal):"$0";
-    $("#shopCost").textContent=shop?fmt(shop):"$0";
-    $("#rushCost").textContent=rush?fmt(rush):"$0";
-    $("#subtotal").textContent=fmt(subtotal);
-    $("#supportCost").textContent=support?fmt(support)+"/mo":"$0/mo";
-    $("#total").textContent=fmt(total);
+    const costs = {
+      crm: sel.crm ? PRICING.crm : 0,
+      email: sel.email ? PRICING.email : 0,
+      ai: sel.ai ? PRICING.ai : 0,
+      portal: sel.portal ? PRICING.portal : 0,
+      shop: sel.shop ? PRICING.shop : 0
+    };
+
+    subtotal += costs.crm + costs.email + costs.ai + costs.portal + costs.shop;
+    const rush = sel.speed === "rush" ? subtotal * PRICING.rush : 0;
+    const total = subtotal + rush;
+    const support = PRICING.support[sel.support] || 0;
+
+    // UI
+    $("#crmCost").textContent    = costs.crm   ? fmt(costs.crm)   : "$0";
+    $("#emailCost").textContent  = costs.email ? fmt(costs.email) : "$0";
+    $("#aiCost").textContent     = costs.ai    ? fmt(costs.ai)    : "$0";
+    $("#portalCost").textContent = costs.portal? fmt(costs.portal): "$0";
+    $("#shopCost").textContent   = costs.shop  ? fmt(costs.shop)  : "$0";
+    $("#rushCost").textContent   = rush        ? fmt(rush)        : "$0";
+    $("#subtotal").textContent   = fmt(subtotal);
+    $("#supportCost").textContent= support     ? fmt(support)+"/mo" : "$0/mo";
+    $("#total").textContent      = fmt(total);
+
+    return { sel, subtotal, total, rush, support };
   }
 
-  Object.values(toggles).forEach(el=>el.addEventListener("change",calc));
-  speedSel.addEventListener("change",calc);
-  supportSel.addEventListener("change",calc);
+  // Hook changes
+  Object.values(toggles).forEach(el => el.addEventListener("change", calc));
+  speedSel.addEventListener("change", calc);
+  supportSel.addEventListener("change", calc);
   calc();
+
+  // --- Deposit: send config + user info to server, get Checkout URL
+  $("#depositBtn").addEventListener("click", async () => {
+    const config = calc(); // latest numbers
+    const payload = {
+      name:   $("#name").value.trim(),
+      email:  $("#email").value.trim(),
+      company:$("#company").value.trim(),
+      phone:  $("#phone").value.trim(),
+      notes:  $("#notes").value.trim(),
+      builderConfig: config
+    };
+    try{
+      const res = await fetch("/checkout", {
+        method:"POST",
+        headers: { "Content-Type":"application/json" },
+        body: JSON.stringify(payload)
+      });
+      const { url } = await res.json();
+      if (url) window.location.href = url;
+      else alert("Could not start checkout.");
+    }catch(e){
+      alert("Checkout error. Please try again or email benjamin@bimlabs.com");
+    }
+  });
 })();
 </script>
 </body>
