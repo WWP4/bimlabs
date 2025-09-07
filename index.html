@@ -1517,8 +1517,71 @@ body[data-svc="2"]{ --svc-ang: .5turn;  --svc-speed: 5.6s; }
           </div>
         </fieldset>
 
+        <!-- Step 3 (NEW) — Add-ons -->
+<fieldset class="start-step" data-step="3" aria-label="Add-ons">
+  <h3 style="margin:.2rem 0 .6rem; color:#cfe1f4;">Choose Add-ons (optional)</h3>
+
+  <div class="addons-grid" style="display:grid; gap:12px; margin:.6rem 0 1rem;">
+    <!-- 24/7 Support -->
+    <label class="addon-card">
+      <input type="checkbox" id="svAddSupport" hidden>
+      <div class="addon-body">
+        <div class="addon-head">
+          <span class="addon-title">24/7 Growth Support</span>
+          <span class="addon-price">$145/mo</span>
+        </div>
+        <p class="addon-copy">Instant email support for site tweaks + one monthly strategy call.</p>
+      </div>
+    </label>
+
+    <!-- Growth Kit -->
+    <label class="addon-card">
+      <input type="checkbox" id="svAddGrowth" hidden>
+      <div class="addon-body">
+        <div class="addon-head">
+          <span class="addon-title">Launch Growth Kit</span>
+          <span class="addon-price">$450 one-time</span>
+        </div>
+        <p class="addon-copy">2 ready-to-run landing campaigns + automation wiring.</p>
+      </div>
+    </label>
+
+    <!-- CRM options -->
+    <div class="addon-card" style="padding:0;">
+      <div class="addon-body" style="padding:14px 14px 8px;">
+        <div class="addon-head">
+          <span class="addon-title">Branded CRM Dashboard</span>
+          <span class="addon-price">From $1,500</span>
+        </div>
+        <p class="addon-copy" style="margin-bottom:.6rem;">Central lead dashboard + automations. Pick a level:</p>
+
+        <div class="crm-choices">
+          <label class="crm-option"><input type="radio" name="svCRM" value="none" checked><span>None</span></label>
+          <label class="crm-option"><input type="radio" name="svCRM" value="basic"><span>Basic — $1,500</span></label>
+          <label class="crm-option"><input type="radio" name="svCRM" value="custom"><span>Custom — $2,200</span></label>
+          <label class="crm-option"><input type="radio" name="svCRM" value="ai"><span>AI-Enhanced — $6,000</span></label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Running summary (wired in next step) -->
+  <div class="start-summary">
+    <h3 style="margin:.2rem 0 .3rem;">Project Summary</h3>
+    <ul class="s-list" id="svSummaryList"></ul>
+    <p class="s-line" id="svTotals"></p>
+    <p class="s-line"><b>Today’s charge:</b> $500 deposit</p>
+  </div>
+
+  <div class="start-actions">
+    <button type="button" class="start-btn ghost start-prev">Back</button>
+    <button type="button" class="start-btn start-next">Next</button>
+  </div>
+</fieldset>
+
+
         <!-- Step 3 -->
-        <fieldset class="start-step" data-step="3" aria-label="Confirm">
+       <fieldset class="start-step" data-step="4" aria-label="Confirm">
           <div class="start-summary">
             <h3>You're set.</h3>
             <p class="s-line">We’ll apply your deposit at invoice and email a receipt.</p>
