@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>BIM Labs — Founders Launch Rate: High-End Websites + Automation</title>
+  <meta name="description" content="BIM Labs builds high-end websites and CRM automations. Limited Founders Launch Rate: $3,500 value for $750. Apply for one of 3 onboarding slots this month." />
+
+  <!-- Fonts & AOS -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg:#0B0F19;
+      --bg-soft:#0E1324;
+      --ink:#E8EEF9;
+      --muted:#8FA1C7;
+      --blue:#2AA4FF;
+      --blue-600:#0B63B6;
+      --accent:#7AD7FF;
+      --glass: rgba(42,164,255,0.12);
+      --glow: 0 0 40px rgba(42,164,255,0.2), 0 0 12px rgba(42,164,255,0.2);
+      --radius: 18px;
+      --shadow: 0 10px 30px rgba(0,0,0,0.45);
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:Montserrat,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+      background: radial-gradient(1200px 800px at 15% 0%, rgba(42,164,255,0.08), transparent 55%),
+                  radial-gradient(900px 600px at 85% 20%, rgba(122,215,255,0.08), transparent 60%),
+                  linear-gradient(180deg, #0B0F19 0%, #0A0D16 100%);
+      color:var(--ink);
+      letter-spacing:.01em;
+    }
+
+    a{color:var(--accent);text-decoration:none}
+    a:hover{text-decoration:underline}
+
+    /* Header */
+    .nav{
+      position:sticky; top:0; z-index:50;
+      background:linear-gradient(180deg, rgba(14,19,36,0.85), rgba(14,19,36,0.55));
+      backdrop-filter: blur(10px);
+      border-bottom:1px solid rgba(122,215,255,0.14);
+    }
+    .wrap{max-width:1200px;margin:0 auto;padding:0 20px}
+    .nav-inner{display:flex;align-items:center;justify-content:space-between;height:70px}
+    .brand{display:flex;align-items:center;gap:12px;text-decoration:none}
+    .logo{
+      width:38px;height:38px;border-radius:12px;
+      background:
+        radial-gradient(60% 60% at 70% 30%, rgba(122,215,255,.6), rgba(42,164,255,.0) 70%),
+        linear-gradient(140deg, #0B63B6, #2AA4FF);
+      box-shadow:var(--glow);
+    }
+    .brand h1{font-size:18px;margin:0;font-weight:800;letter-spacing:.12em}
+    .nav-links{display:flex;gap:24px;align-items:center}
+    .btn{
+      display:inline-flex;align-items:center;justify-content:center;
+      padding:12px 18px;border-radius:12px;font-weight:700;border:1px solid rgba(122,215,255,.25);
+      background:linear-gradient(180deg, rgba(42,164,255,.12), rgba(42,164,255,.05));
+      transition:transform .2s ease, box-shadow .2s ease, border-color .2s ease, background .2s ease;
+    }
+    .btn:hover{transform:translateY(-1px);box-shadow:var(--glow);border-color:rgba(122,215,255,.45)}
+    .btn-primary{
+      border-color:transparent;
+      background:linear-gradient(180deg, #2AA4FF, #0B63B6);
+      color:#fff;
+      box-shadow:0 8px 20px rgba(10,99,182,.35), inset 0 0 0 1px rgba(255,255,255,.08);
+    }
+    .btn-primary:hover{box-shadow:0 10px 30px rgba(10,99,182,.45)}
+
+    /* Hero */
+    .hero{
+      position:relative; overflow:hidden;
+      border-bottom:1px solid rgba(122,215,255,0.12);
+    }
+    .gridlines{
+      position:absolute; inset:0; pointer-events:none; opacity:.15;
+      background-image:
+        linear-gradient(rgba(122,215,255,0.08) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(122,215,255,0.08) 1px, transparent 1px);
+      background-size:48px 48px, 48px 48px;
+      mask-image: radial-gradient(60% 60% at 50% 0%, black 0%, transparent 70%);
+    }
+    .hero-inner{display:grid;grid-template-columns:1.2fr 1fr;gap:40px;align-items:center;padding:72px 0}
+    .eyebrow{color:var(--accent);font-weight:700;letter-spacing:.16em;font-size:12px;text-transform:uppercase}
+    .h1{
+      font-size: clamp(32px, 6vw, 62px);
+      line-height: 1.02; margin:.35em 0 .2em 0; font-weight:900;
+      text-shadow: 0 6px 40px rgba(42,164,255,.12);
+    }
+    .lead{font-size:clamp(16px, 2.2vw, 20px); color:var(--muted); max-width:52ch}
+    .hero-cta{display:flex;gap:12px;margin-top:24px;flex-wrap:wrap}
+
+    .stat{
+      display:flex;gap:12px;align-items:center;margin-top:20px;color:var(--muted);font-size:14px
+    }
+    .pill{
+      display:inline-flex;align-items:center;gap:8px;
+      padding:10px 12px;border-radius:999px;font-size:13px;font-weight:700;color:#dff5ff;
+      background:linear-gradient(180deg, rgba(42,164,255,.16), rgba(42,164,255,.06));
+      border:1px solid rgba(122,215,255,.22)
+    }
+
+    .device{
+      border-radius:24px; overflow:hidden; border:1px solid rgba(122,215,255,0.18);
+      background:
+        radial-gradient(120% 120% at 80% -10%, rgba(42,164,255,.10), transparent 60%),
+        linear-gradient(180deg, #0D1328, #0A0F1F);
+      box-shadow: var(--shadow);
+      padding:26px;
+    }
+    .device-screen{
+      border-radius:14px; height:420px;
+      background:linear-gradient(180deg, #0E182E, #0B1324);
+      border:1px solid rgba(122,215,255,0.14);
+      position:relative; overflow:hidden;
+    }
+    .pulse{
+      position:absolute; inset:0; background:radial-gradient(60% 60% at 50% 0%, rgba(42,164,255,.16), transparent 60%);
+      animation:pulse 6s ease-in-out infinite;
+    }
+    @keyframes pulse{0%,100%{opacity:.45}50%{opacity:.8}}
+
+    /* Sections */
+    section{padding:72px 0;border-bottom:1px solid rgba(122,215,255,0.12)}
+    .kicker{color:var(--accent);text-transform:uppercase;letter-spacing:.18em;font-weight:800;font-size:12px;margin-bottom:10px}
+    .h2{font-size: clamp(26px, 4.2vw, 42px);margin:0 0 8px 0}
+    .sub{color:var(--muted);max-width:70ch}
+
+    .cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:28px}
+    .card{
+      background:linear-gradient(180deg, rgba(42,164,255,.10), rgba(42,164,255,.05));
+      border:1px solid rgba(122,215,255,.18); border-radius:var(--radius); padding:22px;
+      transition:transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+    }
+    .card:hover{transform:translateY(-4px);box-shadow:var(--glow);border-color:rgba(122,215,255,.34)}
+    .card h3{margin:0 0 8px 0;font-size:18px}
+    .card p{margin:0;color:var(--muted)}
+
+    /* Pricing */
+    .pricing{
+      display:grid;grid-template-columns:1.2fr .8fr;gap:24px;align-items:stretch;margin-top:28px
+    }
+    .panel{
+      background:linear-gradient(180deg, rgba(42,164,255,.10), rgba(42,164,255,.05));
+      border:1px solid rgba(122,215,255,.18); border-radius:var(--radius); padding:24px
+    }
+    .strike{color:#9bb5d1;text-decoration:line-through;opacity:.7}
+    .price{
+      font-size:42px;font-weight:900;margin:6px 0 0 0;
+      background:linear-gradient(180deg,#DFF5FF,#7AD7FF 70%,#2AA4FF);
+      -webkit-background-clip:text;background-clip:text;color:transparent
+    }
+    .badge{
+      display:inline-flex;gap:8px;align-items:center;font-weight:800;font-size:12px;
+      border:1px solid rgba(122,215,255,.25); padding:8px 10px;border-radius:999px;
+      background:linear-gradient(180deg, rgba(42,164,255,.16), rgba(42,164,255,.06))
+    }
+    .list{display:grid;gap:10px;margin:16px 0}
+    .list li{list-style:none;position:relative;padding-left:26px}
+    .list li:before{
+      content:"";position:absolute;left:0;top:.45em;width:14px;height:14px;border-radius:4px;
+      background:linear-gradient(180deg,#2AA4FF,#0B63B6);box-shadow:0 0 12px rgba(42,164,255,.35)
+    }
+
+    /* Process */
+    .steps{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-top:22px}
+    .step{padding:18px;border-radius:16px;border:1px solid rgba(122,215,255,.18);
+      background:linear-gradient(180deg, rgba(42,164,255,.10), rgba(42,164,255,.05))}
+    .step b{display:block;font-size:13px;color:#bfeaff;letter-spacing:.12em;margin-bottom:6px}
+    .step p{margin:0;color:var(--muted)}
+
+    /* Gallery */
+    .gallery{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:18px}
+    .shot{
+      aspect-ratio:16/10;border-radius:14px;overflow:hidden;border:1px solid rgba(122,215,255,.16);
+      background:linear-gradient(180deg,#0E182E,#0B1324);
+      position:relative
+    }
+    .shot:after{
+      content:"Preview";position:absolute;right:10px;bottom:10px;font-size:12px;color:#c7eaff;
+      background:rgba(42,164,255,.12);border:1px solid rgba(122,215,255,.25);padding:6px 8px;border-radius:10px
+    }
+
+    /* Testimonials */
+    .quotes{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:18px}
+    .quote{padding:18px;border-radius:16px;border:1px solid rgba(122,215,255,.18);
+      background:linear-gradient(180deg, rgba(122,215,255,.08), rgba(42,164,255,.03))}
+    .quote .name{margin-top:10px;color:#cfe7ff;font-weight:700;font-size:14px}
+
+    /* FAQ */
+    .faq{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:18px}
+    .qa{padding:18px;border-radius:16px;border:1px solid rgba(122,215,255,.18);
+      background:linear-gradient(180deg, rgba(42,164,255,.10), rgba(42,164,255,.05))}
+    .qa h4{margin:0 0 8px 0}
+
+    /* Form */
+    .form{
+      display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:18px
+    }
+    .form .full{grid-column:1/-1}
+    .field{
+      display:flex;flex-direction:column;gap:8px;
+      background:linear-gradient(180deg, rgba(42,164,255,.08), rgba(42,164,255,.04));
+      border:1px solid rgba(122,215,255,.18); border-radius:12px;padding:12px
+    }
+    label{font-size:12px;color:#bfe7ff;font-weight:700;letter-spacing:.12em;text-transform:uppercase}
+    input, select, textarea{
+      width:100%;background:#0a111f;border:1px solid rgba(122,215,255,.2);color:var(--ink);
+      border-radius:10px;padding:12px;outline:none
+    }
+    textarea{min-height:120px;resize:vertical}
+    .fine{color:var(--muted);font-size:12px}
+
+    /* Sticky Apply */
+    .applybar{
+      position:sticky;bottom:16px;z-index:40;display:flex;justify-content:center;margin-top:12px
+    }
+    .applyinner{
+      display:flex;align-items:center;gap:14px;padding:12px 16px;border-radius:14px;
+      background:linear-gradient(180deg, rgba(42,164,255,.18), rgba(42,164,255,.08));
+      border:1px solid rgba(122,215,255,.25);box-shadow:var(--glow)
+    }
+    .applyinner .mini{font-size:13px;color:#dff5ff}
+
+    /* Footer */
+    footer{padding:36px 0;color:#a9c6e6}
+    .footgrid{display:flex;flex-wrap:wrap;gap:18px;align-items:center;justify-content:space-between}
+
+    /* Responsive */
+    @media (max-width:980px){
+      .hero-inner{grid-template-columns:1fr; gap:28px}
+      .cards{grid-template-columns:1fr}
+      .pricing{grid-template-columns:1fr}
+      .steps{grid-template-columns:1fr 1fr}
+      .gallery{grid-template-columns:1fr 1fr}
+      .quotes{grid-template-columns:1fr}
+      .faq{grid-template-columns:1fr}
+      .form{grid-template-columns:1fr}
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Nav -->
+  <header class="nav">
+    <div class="wrap nav-inner">
+      <a class="brand" href="#top" aria-label="BIM Labs Home">
+        <div class="logo" aria-hidden="true"></div>
+        <h1>BIM LABS</h1>
+      </a>
+      <nav class="nav-links">
+        <a href="#features" class="btn">Features</a>
+        <a href="#pricing" class="btn">Pricing</a>
+        <a href="#work" class="btn">Work</a>
+        <a href="#apply" class="btn btn-primary">Apply Now</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero" id="top">
+    <div class="gridlines" aria-hidden="true"></div>
+    <div class="wrap hero-inner">
+      <div data-aos="fade-up" data-aos-delay="80">
+        <div class="eyebrow">Founders Launch Rate — Limited Spots</div>
+        <div class="h1">High-End Website + Automation That Actually Converts</div>
+        <p class="lead">Bespoke design, lead capture modals, CRM hooks, and speed-obsessed builds. This month we’re onboarding <b>3 projects</b> at our launch rate: <span class="strike">$3,500</span> → <b>$750</b>.</p>
+        <div class="hero-cta">
+          <a href="#apply" class="btn btn-primary">Apply for a Slot</a>
+          <a href="#features" class="btn">What’s Included</a>
+        </div>
+        <div class="stat">
+          <span class="pill">Custom Design</span>
+          <span class="pill">Automation Ready</span>
+          <span class="pill">AOS Motion System</span>
+        </div>
+      </div>
+
+      <div data-aos="zoom-in" data-aos-delay="120">
+        <div class="device">
+          <div class="device-screen">
+            <div class="pulse"></div>
+            <!-- Optional: Add a simple mock UI -->
+            <div style="position:absolute;inset:20px;display:grid;grid-template-rows:auto 1fr;gap:16px;">
+              <div style="display:flex;gap:10px;">
+                <div style="height:10px;width:80px;border-radius:6px;background:rgba(122,215,255,.25)"></div>
+                <div style="height:10px;width:40px;border-radius:6px;background:rgba(122,215,255,.18)"></div>
+              </div>
+              <div style="border:1px solid rgba(122,215,255,.18);border-radius:12px;background:rgba(42,164,255,.06);"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sticky Apply -->
+    <div class="applybar">
+      <div class="applyinner" data-aos="fade-up" data-aos-delay="180">
+        <span class="mini">3 slots this month • Typical value <span class="strike">$3,500</span> • Your rate: $750</span>
+        <a href="#apply" class="btn btn-primary">Start Application</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section id="features">
+    <div class="wrap">
+      <div data-aos="fade-up">
+        <div class="kicker">Deliverables</div>
+        <h2 class="h2">Everything You Need to Launch & Convert</h2>
+        <p class="sub">We combine high-end visuals with revenue infrastructure. Every pixel and automation supports a single outcome: qualified leads.</p>
+      </div>
+
+      <div class="cards">
+        <div class="card" data-aos="fade-up" data-aos-delay="50">
+          <h3>Custom Design System</h3>
+          <p>Modern, minimal aesthetic with blue/black tech styling, responsive layouts, and accessibility best practices.</p>
+        </div>
+        <div class="card" data-aos="fade-up" data-aos-delay="100">
+          <h3>Lead Capture & Popups</h3>
+          <p>Banner + modal capture, exit-intent prompts, and segment-aware CTAs to grow your list without being annoying.</p>
+        </div>
+        <div class="card" data-aos="fade-up" data-aos-delay="150">
+          <h3>Automation & CRM Hooks</h3>
+          <p>Form → CRM, tags, and notifications. Plug into your stack (Mailchimp, Brevo, Zoho, HubSpot) cleanly.</p>
+        </div>
+        <div class="card" data-aos="fade-up" data-aos-delay="200">
+          <h3>Speed & SEO Foundations</h3>
+          <p>Lean code, image optimization, metadata, and lighthouse-friendly structure for fast indexing.</p>
+        </div>
+        <div class="card" data-aos="fade-up" data-aos-delay="250">
+          <h3>AOS Motion System</h3>
+          <p>Subtle, performance-minded animation for premium feel without distracting from conversion.</p>
+        </div>
+        <div class="card" data-aos="fade-up" data-aos-delay="300">
+          <h3>1-Week Delivery Window</h3>
+          <p>Portfolio-builder cadence: tight scope, decisive revisions, and a clear launch path.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pricing -->
+  <section id="pricing">
+    <div class="wrap">
+      <div data-aos="fade-up">
+        <div class="kicker">Founders Launch Rate</div>
+        <h2 class="h2">$3,500 Value — Your Rate This Month: $750</h2>
+        <p class="sub">We’re accepting three projects to build case studies and reviews. In exchange for the discount, we ask for a testimonial after launch.</p>
+      </div>
+
+      <div class="pricing">
+        <div class="panel" data-aos="fade-up" data-aos-delay="60">
+          <div class="badge">What you get</div>
+          <ul class="list">
+            <li>Custom 1–3 page site (hero, offer, proof, CTA)</li>
+            <li>Banner + popup capture with smart timing</li>
+            <li>Primary form integrated to your CRM/email tool</li>
+            <li>AOS animation system and premium styling</li>
+            <li>Basic SEO/analytics (meta, OG, GA snippet)</li>
+            <li>Launch checklist + handoff video</li>
+          </ul>
+        </div>
+
+        <div class="panel" data-aos="fade-up" data-aos-delay="120">
+          <div class="badge">Your rate</div>
+          <div class="strike">$3,500</div>
+          <div class="price">$750</div>
+          <p class="sub">Limited to 3 onboarding slots this month.</p>
+          <a href="#apply" class="btn btn-primary" style="width:100%;margin-top:10px">Apply Now</a>
+          <p class="fine" style="margin-top:10px">Turnaround assumes timely content and feedback.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Work / Gallery -->
+  <section id="work">
+    <div class="wrap">
+      <div data-aos="fade-up">
+        <div class="kicker">Selected UI</div>
+        <h2 class="h2">Recent Aesthetic Directions</h2>
+        <p class="sub">Clean lines, confident type, and restrained motion. We keep the interface calm so the value proposition is loud.</p>
+      </div>
+
+      <div class="gallery">
+        <div class="shot" data-aos="zoom-in" data-aos-delay="60"></div>
+        <div class="shot" data-aos="zoom-in" data-aos-delay="120"></div>
+        <div class="shot" data-aos="zoom-in" data-aos-delay="180"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Process -->
+  <section>
+    <div class="wrap">
+      <div data-aos="fade-up">
+        <div class="kicker">Process</div>
+        <h2 class="h2">Designed to Ship</h2>
+        <p class="sub">Tight feedback loops and clear milestones keep momentum high and scope crisp.</p>
+      </div>
+      <div class="steps">
+        <div class="step" data-aos="fade-up" data-aos-delay="60">
+          <b>Step 01</b>
+          <p>Apply and share goals, audience, and examples you like.</p>
+        </div>
+        <div class="step" data-aos="fade-up" data-aos-delay="120">
+          <b>Step 02</b>
+          <p>Kickoff: finalize copy, lead magnet, and form fields.</p>
+        </div>
+        <div class="step" data-aos="fade-up" data-aos-delay="180">
+          <b>Step 03</b>
+          <p>Design/build sprint with mid-week review.</p>
+        </div>
+        <div class="step" data-aos="fade-up" data-aos-delay="240">
+          <b>Step 04</b>
+          <p>QA, connect CRM, launch, and record handoff video.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials -->
+  <section>
+    <div class="wrap">
+      <div data-aos="fade-up">
+        <div class="kicker">Proof</div>
+        <h2 class="h2">Early Client Feedback</h2>
+        <p class="sub">As part of the Founders Launch Rate, you agree to provide a testimonial after go-live.</p>
+      </div>
+      <div class="quotes">
+        <div class="quote" data-aos="fade-up" data-aos-delay="60">
+          “The site feels premium and focused. Leads started coming in day one.”
+          <div class="name">Operations Director, Education Brand</div>
+        </div>
+        <div class="quote" data-aos="fade-up" data-aos-delay="120">
+          “Clean, fast, and the popup timing is perfect. Integrations were seamless.”
+          <div class="name">Marketing Lead, Nonprofit</div>
+        </div>
+        <div class="quote" data-aos="fade-up" data-aos-delay="180">
+          “They shipped in a week with zero drama. Exactly what we needed.”
+          <div class="name">Founder, DTC</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section>
+    <div class="wrap">
+      <div data-aos="fade-up">
+        <div class="kicker">FAQ</div>
+        <h2 class="h2">Good to Know</h2>
+      </div>
+      <div class="faq">
+        <div class="qa" data-aos="fade-up" data-aos-delay="60">
+          <h4>What platform do you use?</h4>
+          <p>We build performance-first, exportable sites (vanilla HTML/CSS/JS) and can adapt to your stack (Netlify, Vercel, Showit, or a headless CMS) as needed.</p>
+        </div>
+        <div class="qa" data-aos="fade-up" data-aos-delay="120">
+          <h4>What automations are included?</h4>
+          <p>Lead form → CRM/email tool with tagging, internal notification, and optional double-opt-in. We’ll wire the basics so you can scale later.</p>
+        </div>
+        <div class="qa" data-aos="fade-up" data-aos-delay="180">
+          <h4>What content do you need?</h4>
+          <p>Your logo, key value props, simple offer, and any assets (product photos, testimonials). We’ll refine copy, but raw inputs speed everything up.</p>
+        </div>
+        <div class="qa" data-aos="fade-up" data-aos-delay="240">
+          <h4>Can I add pages later?</h4>
+          <p>Yes. We structure the code so additional pages and sections are straightforward.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Application -->
+  <section id="apply">
+    <div class="wrap">
+      <div data-aos="fade-up">
+        <div class="kicker">Apply</div>
+        <h2 class="h2">Request One of the 3 Slots</h2>
+        <p class="sub">Tell us about your goals. We’ll review fit and reply with next steps within one business day.</p>
+      </div>
+
+      <!-- Netlify-ready form (adjust action if using another backend) -->
+      <form name="bimlabs-founders-application" method="POST" data-netlify="true" netlify-honeypot="bot-field" class="form" data-aos="fade-up" data-aos-delay="80">
+        <input type="hidden" name="form-name" value="bimlabs-founders-application" />
+        <input type="hidden" name="campaign" value="Founders Launch Rate — Sept 2025" />
+        <p style="display:none">
+          <label>Don’t fill this out if you’re human: <input name="bot-field" /></label>
+        </p>
+
+        <div class="field">
+          <label for="name">Full Name</label>
+          <input id="name" name="name" required placeholder="Jane Doe" />
+        </div>
+
+        <div class="field">
+          <label for="email">Email</label>
+          <input id="email" name="email" type="email" required placeholder="you@company.com" />
+        </div>
+
+        <div class="field">
+          <label for="phone">Phone (optional)</label>
+          <input id="phone" name="phone" placeholder="(555) 555-5555" />
+        </div>
+
+        <div class="field">
+          <label for="company">Company / Org</label>
+          <input id="company" name="company" required placeholder="Your Company Inc." />
+        </div>
+
+        <div class="field">
+          <label for="website">Current Website (if any)</label>
+          <input id="website" name="website" type="url" placeholder="https://example.com" />
+        </div>
+
+        <div class="field">
+          <label for="budget">Budget</label>
+          <select id="budget" name="budget" required>
+            <option value="" disabled selected>Select one</option>
+            <option value="$750 (Launch Rate)">$750 (Launch Rate)</option>
+            <option value="$1k–$3k">$1k–$3k</option>
+            <option value="$3k–$7k">$3k–$7k</option>
+            <option value="$7k+">$7k+</option>
+          </select>
+        </div>
+
+        <div class="field full">
+          <label for="goals">Goals & Key Offer</label>
+          <textarea id="goals" name="goals" placeholder="What should the site accomplish? Who’s the audience? What’s the main CTA?"></textarea>
+        </div>
+
+        <div class="field">
+          <label for="timeline">Timeline</label>
+          <select id="timeline" name="timeline" required>
+            <option value="" disabled selected>Select one</option>
+            <option value="ASAP">ASAP</option>
+            <option value="This Month">This Month</option>
+            <option value="30–60 Days">30–60 Days</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="crm">Email/CRM Tool</label>
+          <select id="crm" name="crm">
+            <option value="" disabled selected>Select one</option>
+            <option>Mailchimp</option>
+            <option>Brevo</option>
+            <option>Zoho</option>
+            <option>HubSpot</option>
+            <option>Other</option>
+          </select>
+        </div>
+
+        <div class="field full">
+          <label class="checkbox" for="consent" style="display:flex;align-items:center;gap:10px;font-weight:600;color:#cfe7ff">
+            <input id="consent" name="consent" type="checkbox" required />
+            I understand the launch rate includes providing a testimonial after go-live.
+          </label>
+        </div>
+
+        <div class="full" style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">
+          <button type="submit" class="btn btn-primary">Submit Application</button>
+          <span class="fine">We’ll reply within one business day.</span>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <footer>
+    <div class="wrap footgrid">
+      <div style="display:flex;align-items:center;gap:10px">
+        <div class="logo" aria-hidden="true" style="width:26px;height:26px;border-radius:8px"></div>
+        <div style="font-weight:800;letter-spacing:.12em">BIM LABS</div>
+      </div>
+      <div>© <span id="year"></span> BIM Labs. All rights reserved.</div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+  <script>
+    AOS.init({ duration: 700, easing: 'ease-out', once: true, offset: 80 });
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Smooth anchor scrolling
+    document.querySelectorAll('a[href^="#"]').forEach(a=>{
+      a.addEventListener('click', e=>{
+        const id = a.getAttribute('href');
+        const el = document.querySelector(id);
+        if(!el) return;
+        e.preventDefault();
+        window.scrollTo({ top: el.getBoundingClientRect().top + window.pageYOffset - 64, behavior: 'smooth' });
+      })
+    });
+  </script>
+</body>
+</html>
