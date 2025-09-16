@@ -2,312 +2,416 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>BIM Labs — Scroll-Activated Color Wash</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BIM Labs — Founders Launch Rate ($3,500 → $750)</title>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
 <style>
   :root{
     --blue:#4EC6FF;
     --black:#0b0f16;
     --ink:#e8eef6;
+    --muted:#b8c6d8;
     --white:#fff;
-    --glow: 0 0 24px rgba(78,198,255,.25), 0 0 80px rgba(78,198,255,.08);
-    --radius: 22px;
   }
   *{box-sizing:border-box}
   html,body{height:100%}
   body{
     margin:0; font-family:Montserrat,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
-    background:var(--black); color:var(--ink);
-    overflow-x:hidden;
+    background:linear-gradient(180deg,#0b0f16 0%, #0a0e15 100%);
+    color:var(--ink);
+    line-height:1.45;
+    scroll-behavior:smooth;
   }
+  a{color:var(--blue); text-decoration:none}
+  a:hover{color:#bfe7ff}
 
   /* NAV */
   .nav{
-    position:fixed; inset:0 0 auto 0; height:64px; z-index:1000;
-    display:flex; align-items:center; justify-content:space-between;
-    padding:0 18px; backdrop-filter:blur(8px);
-    background:linear-gradient(180deg, rgba(11,15,22,.75), rgba(11,15,22,.25));
-    border-bottom:1px solid rgba(78,198,255,.16);
+    position:sticky; top:0; z-index:50;
+    background:linear-gradient(180deg, rgba(11,15,22,.85), rgba(11,15,22,.55));
+    backdrop-filter: blur(8px);
+    border-bottom:1px solid #152233;
   }
-  .brand{font-weight:900; letter-spacing:.06em; color:#e7e7e7; text-decoration:none}
+  .nav__in{max-width:1120px;margin:0 auto;padding:.8rem 18px;display:flex;gap:14px;align-items:center;justify-content:space-between}
+  .brand{font-weight:900; letter-spacing:.06em; color:#e7e7e7}
   .brand span{color:var(--blue)}
-  .nav a.btn{
-    text-decoration:none; font-weight:800; color:#071019; background:var(--blue);
-    padding:.6rem 1rem; border-radius:999px; box-shadow:0 8px 28px rgba(78,198,255,.25);
+  .nav__cta{
+    display:inline-flex; align-items:center; gap:10px;
+    background:var(--blue); color:#0d1218; font-weight:900; padding:.6rem 1rem;
+    border-radius:999px; box-shadow:0 8px 28px rgba(78,198,255,.2);
   }
-  .nav a.btn:hover{background:#fff; color:var(--blue)}
+  .nav__cta:hover{background:#fff; color:var(--blue)}
 
-  /* SECTIONS */
-  .snapper{
-    scroll-snap-type:y mandatory;
-    overflow-y:auto; height:100vh;
+  /* Announcement */
+  .announce{
+    background:#0e141d; border-bottom:1px solid #162336;
   }
-  section.s{
-    position:relative; min-height:100vh; scroll-snap-align:start;
-    display:grid; place-items:center; padding:96px 20px 48px;
-    transition: background-color .65s cubic-bezier(.2,.7,.2,1), color .65s cubic-bezier(.2,.7,.2,1);
-    background:var(--black); color:var(--ink);
-    border-bottom:1px solid rgba(78,198,255,.08);
+  .announce__in{
+    max-width:1120px;margin:0 auto;padding:.55rem 18px;
+    display:flex; gap:10px; align-items:center; justify-content:center; flex-wrap:wrap;
+    color:#cfeaff; font-weight:800; font-size:.95rem;
   }
-  .s__in{max-width:1050px; margin:0 auto; display:grid; gap:18px; text-align:center}
-  .eyebrow{color:var(--blue); text-transform:uppercase; letter-spacing:.18em; font-weight:900; font-size:.82rem}
-  .title{margin:.1rem 0 .25rem; font-weight:900; line-height:1.02; font-size:clamp(34px,6vw,72px)}
-  .lead{margin:0 auto; max-width:62ch; font-size:clamp(16px,2.2vw,20px); line-height:1.65; opacity:.95}
-  .cta{display:flex; gap:12px; justify-content:center; flex-wrap:wrap; margin-top:10px}
+  .pill{
+    background:#112030; border:1px solid #223a52; border-radius:999px; padding:.32rem .8rem;
+  }
+
+  /* Sections */
+  section{
+    position:relative; overflow:hidden;
+    padding: clamp(56px, 10vh, 120px) 18px;
+    transition: color .55s ease, background-color .55s ease;
+  }
+  .wrap{max-width:1120px; margin:0 auto}
+
+  /* Wash overlay (the wow effect) */
+  .wash{
+    position:absolute; inset:0; pointer-events:none; opacity:0;
+    background:
+      radial-gradient(1200px 600px at 15% -10%, rgba(78,198,255,.17), transparent 60%),
+      radial-gradient(1000px 480px at 85% -10%, rgba(78,198,255,.12), transparent 62%),
+      linear-gradient(180deg, rgba(78,198,255,.12), rgba(78,198,255,.06));
+    transition: opacity .65s ease;
+    mix-blend-mode: screen;
+  }
+  section.active .wash{ opacity:1 }
+
+  /* Section head + copy */
+  .eyebrow{color:var(--blue); text-transform:uppercase; letter-spacing:.18em; font-weight:900; font-size:.8rem}
+  .title{margin:.1rem 0 .45rem; font-weight:900; line-height:1.04; font-size: clamp(34px, 6vw, 68px)}
+  .lead{margin:0 0 1rem; color:#dfe8f5; font-size: clamp(16px, 2vw, 20px); max-width: 68ch}
+
+  /* Buttons */
+  .cta{display:flex; gap:12px; flex-wrap:wrap; align-items:center; margin-top:12px}
   .btn{
-    display:inline-block; padding:.9rem 1.4rem; border-radius:999px; font-weight:900; text-decoration:none;
-    background:#1a2433; color:#dff2ff; border:1px solid #24364c; transition:transform .15s, background .15s, color .15s, box-shadow .18s;
+    display:inline-block; padding:.9rem 1.4rem; border-radius:999px; font-weight:900;
+    background:#172233; color:#dff2ff; border:1px solid #213147;
+    transition:transform .12s ease, background .18s ease, color .18s ease, box-shadow .18s ease;
   }
-  .btn:hover{transform:translateY(-2px); background:#223346}
-  .btn.primary{background:var(--blue); color:#071019; border-color:transparent; box-shadow:0 10px 36px rgba(78,198,255,.28)}
-  .btn.primary:hover{background:#fff; color:var(--blue)}
+  .btn:hover{transform:translateY(-2px); background:#1b2a3f}
+  .btn.primary{ background:var(--blue); color:#0d1218; border:none; box-shadow:0 10px 36px rgba(78,198,255,.26) }
+  .btn.primary:hover{ background:#fff; color:var(--blue) }
 
-  /* WOW EFFECT — when a section is active, it turns brand blue and text flips white */
-  .s.is-active{
-    background:var(--blue);
-    color:var(--white);
-  }
-  .s.is-active .eyebrow{color:#0b1320; text-shadow:none}
-  .s.is-active .btn{background:#0f2131; border-color:#0a1724; color:#cfeaff}
-  .s.is-active .btn.primary{background:#0b1320; color:#bfe7ff; box-shadow:0 16px 40px rgba(0,40,80,.35)}
-  .s.is-active .btn.primary:hover{background:#08101a; color:#e8f6ff}
-
-  /* Accent lines that breathe in/out per section */
+  /* Luminous rail */
   .rail{
-    height:22px; margin:18px auto 0; max-width:900px; position:relative; filter:saturate(1.1);
-    opacity:.75;
+    height:22px; margin:18px 0 0; position:relative; filter:saturate(1.1);
+    opacity:.8;
   }
-  .rail:before, .rail:after{
-    content:""; position:absolute; inset:0; border-radius:999px;
-    background: radial-gradient(600px 100px at 20% 50%, rgba(255,255,255,.85), transparent 55%),
-                radial-gradient(700px 120px at 80% 50%, rgba(255,255,255,.65), transparent 60%);
-    mix-blend-mode:overlay; filter:blur(8px);
-    opacity:.0; transition:opacity .6s ease;
+  .rail::before{
+    content:""; position:absolute; inset:-2px; border-radius:999px;
+    background:
+      linear-gradient(90deg, rgba(255,255,255,.85), rgba(255,255,255,0) 55%),
+      linear-gradient(270deg, rgba(255,255,255,.65), rgba(255,255,255,0) 60%);
+    mix-blend-mode:overlay; filter: blur(10px);
+    opacity:.0; transition: opacity .65s ease;
   }
-  .s.is-active .rail:before, .s.is-active .rail:after{opacity:.5}
+  section.active .rail::before{ opacity:.45 }
 
-  /* “Device” preview cards */
+  /* Hero specific */
+  .hero{padding-top: min(18vh, 160px)}
+  .proof{display:flex; gap:10px; flex-wrap:wrap; color:#cfe3f5; font-weight:800; font-size:.96rem}
+  .chip{padding:.45rem .75rem; border-radius:999px; background:#152132; border:1px solid #1e3143}
+
+  /* Feature grid (cards) */
+  .grid3{display:grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap:16px; margin-top:18px}
+  .card{
+    border:1px solid #203147; border-radius:16px; padding:18px;
+    background:linear-gradient(180deg, #0f1827, #0c141f);
+    box-shadow: 0 10px 34px rgba(0,0,0,.35), inset 0 1px 12px rgba(78,198,255,.08);
+    transition:transform .15s ease, border-color .18s, box-shadow .18s;
+  }
+  .card:hover{ transform: translateY(-3px); border-color:#2a90c6; box-shadow:0 18px 40px rgba(0,0,0,.45) }
+  .card h3{margin:.1rem 0 .4rem}
+  .card p{margin:0; color:#cfe1f4; opacity:.95}
+
+  /* Device mock */
   .panel{
-    margin:16px auto 0; width:min(960px, 92vw); border-radius:var(--radius);
-    border:1px solid rgba(78,198,255,.18); background:linear-gradient(180deg, #0f1624, #0b111c);
+    margin:16px 0 0; border:1px solid #22364a; border-radius:18px; overflow:hidden;
+    background:linear-gradient(180deg,#0f1521,#0a111a);
     box-shadow:0 20px 60px rgba(0,0,0,.45), inset 0 1px 16px rgba(78,198,255,.08);
-    overflow:hidden;
   }
-  .panel__screen{
-    aspect-ratio:16/9; position:relative; overflow:hidden;
-    background:linear-gradient(180deg,#0b1422,#0a101a);
-  }
-  .panel__ui{
-    position:absolute; inset:18px; border:1px solid #24364c; border-radius:14px; overflow:hidden;
-    display:grid; grid-template-rows: 1fr .9fr; gap:12px;
-  }
-  .panel__head{display:grid; place-items:center; color:#9fd6ff; font-weight:800; letter-spacing:.05em}
-  .panel__grid{display:grid; grid-template-columns:repeat(3,1fr); gap:10px}
-  .cell{border:1px solid #24364c; border-radius:10px; background:#132033; box-shadow:inset 0 0 0 1px #17324a}
+  .screen{aspect-ratio:16/9; position:relative; overflow:hidden}
+  .ui{ position:absolute; inset:16px; border:1px solid #22364a; border-radius:12px; overflow:hidden;
+       display:grid; grid-template-rows: 1fr .9fr; gap:10px }
+  .ui__head{display:grid; place-items:center; color:#9fd6ff; font-weight:800; letter-spacing:.05em}
+  .ui__grid{display:grid; grid-template-columns:repeat(3,1fr); gap:10px}
+  .cell{border:1px solid #213a53; border-radius:10px; background:#132033; box-shadow:inset 0 0 0 1px #18324a}
 
-  /* Light sweep in active state */
-  .panel__sweep{
-    content:""; position:absolute; inset:0; mix-blend-mode:screen; pointer-events:none;
-    background: conic-gradient(from 0turn, #9fe4ff55 0 10%, #0000 14% 100%);
+  /* Sweep when active */
+  .sweep{
+    position:absolute; inset:0; mix-blend-mode:screen; pointer-events:none;
+    background: conic-gradient(from var(--ang,0turn), #9fe4ff66 0 12%, #0000 16% 100%);
     filter: blur(10px);
-    transform: translate3d(0,0,0);
-    opacity:0; transition: opacity .6s ease;
-    animation: spin 6s linear infinite;
+    opacity:0; transition:opacity .6s ease;
+    animation: spin 7s linear infinite;
   }
-  .s.is-active .panel__sweep{opacity:1}
-  @keyframes spin { to { transform: rotate(1turn); } }
+  section.active .sweep{ opacity:1 }
+  @keyframes spin{ to{ --ang:1turn } }
 
-  /* Helpful micro-copy chips */
-  .chips{display:flex; gap:8px; justify-content:center; flex-wrap:wrap; margin-top:10px}
-  .chip{padding:.45rem .75rem; border-radius:999px; border:1px solid #24364c; background:#121a26; color:#cfeaff; font-weight:800; font-size:.92rem}
+  /* Work iframe preview */
+  .browser{
+    border:1px solid #22364a; border-radius:14px; overflow:hidden; background:#0f1521
+  }
+  .bar{display:flex; gap:8px; align-items:center; height:42px; padding:0 10px; background:#131a28; border-bottom:1px solid #22364a}
+  .dot{width:10px; height:10px; border-radius:10px; display:inline-block}
+  .red{background:#ff5f57}.yellow{background:#febc2e}.green{background:#28c840}
+  .url{color:#b8c8dd; font-size:.92rem}
+  iframe{width:100%; height:420px; border:0; background:#0e141f}
+
+  /* Pricing compare */
+  .compare{display:grid; grid-template-columns: 1fr 1fr; gap:16px; margin-top:18px}
+  .pcard{border:1px solid #22364a; border-radius:14px; padding:16px; background:#121a26}
+  .pcard--bim{background:linear-gradient(120deg,#19243b,#101014); border-color: var(--blue); box-shadow:0 10px 36px rgba(78,198,255,.18)}
+  .pcard h3{margin:.2rem 0 .6rem}
+  .pcard ul{margin:.4rem 0 0; padding-left:18px}
+  .pcard li{line-height:1.7}
+  @media (max-width:980px){ .grid3{grid-template-columns:1fr} .compare{grid-template-columns:1fr} }
+
+  /* Parallax (gentle) */
+  [data-parallax]{ will-change: transform; transform: translateY(0) }
+
+  /* Active color flip for text */
+  section.active{ color:var(--white) }
+  section.active .eyebrow{ color:#0d1522 }
+  section.active .btn{ background:#0e1a28; color:#cfeaff; border-color:#0d1624 }
+  section.active .btn.primary{ background:#0b1320; color:#bfe7ff }
 
   /* Footer */
-  .footer{
-    padding:28px; text-align:center; color:#9bb7d6; border-top:1px solid rgba(78,198,255,.16);
-    background:linear-gradient(180deg, rgba(11,15,22,.2), rgba(11,15,22,.6));
-  }
-
-  /* Reduced motion: keep the color flip but tone down the extras */
-  @media (prefers-reduced-motion: reduce){
-    .panel__sweep{animation:none}
-  }
+  footer{padding:28px 18px; text-align:center; color:#9bb7d6; border-top:1px solid #162336}
 </style>
 </head>
 <body>
 
-  <header class="nav">
-    <a class="brand" href="#">BIM<span>Labs</span></a>
-    <a class="btn" href="#contact">Book a Vision Call</a>
-  </header>
+<!-- NAV -->
+<header class="nav">
+  <div class="nav__in">
+    <div class="brand">BIM<span>Labs</span></div>
+    <a class="nav__cta" href="#contact">Apply for $750 Rate</a>
+  </div>
+</header>
 
-  <main class="snapper" id="snapper">
-    <!-- HERO -->
-    <section class="s is-active" id="home" aria-label="Hero">
-      <div class="s__in">
-        <p class="eyebrow">Scroll-Activated Demo</p>
-        <h1 class="title">Your brand color takes over each section as it enters the viewport.</h1>
-        <p class="lead">This static landing page showcases a premium “color wash” effect: as you scroll, the active section becomes light blue and the typography flips for instant focus.</p>
-        <div class="cta">
-          <a class="btn primary" href="#features">See It In Action</a>
-          <a class="btn" href="#contact">Start a Project</a>
-        </div>
-        <div class="rail" aria-hidden="true"></div>
-        <div class="panel" aria-hidden="true">
-          <div class="panel__screen">
-            <div class="panel__sweep"></div>
-            <div class="panel__ui">
-              <div class="panel__head">Premium UI • AOS-Free, Pure IO + CSS</div>
-              <div class="panel__grid">
-                <div class="cell"></div><div class="cell"></div><div class="cell"></div>
-                <div class="cell"></div><div class="cell"></div><div class="cell"></div>
-                <div class="cell"></div><div class="cell"></div><div class="cell"></div>
-              </div>
-            </div>
+<!-- ANNOUNCE -->
+<div class="announce">
+  <div class="announce__in">
+    <span class="pill">Founders Launch Rate</span>
+    <span class="pill">Value <s>$3,500</s> → <strong>$750</strong></span>
+    <span class="pill">Only 3 slots • 2–3 week launch</span>
+  </div>
+</div>
+
+<!-- HERO -->
+<section id="home" class="hero active">
+  <div class="wash" aria-hidden="true"></div>
+  <div class="wrap">
+    <p class="eyebrow">Campaign</p>
+    <h1 class="title" data-parallax="10">High-end website + CRM. Built fast. Built right.</h1>
+    <p class="lead" data-parallax="6">
+      Minimal, premium design with lead capture, CRM hooks, and performance that hits Core Web Vitals.
+      This month only: we’re onboarding three projects at our <b>$750 Founders Launch Rate</b>.
+    </p>
+    <div class="cta" data-parallax="4">
+      <a class="btn primary" href="#contact">Apply for a Slot</a>
+      <a class="btn" href="#work">See Live Work</a>
+    </div>
+    <div class="rail" aria-hidden="true"></div>
+    <div class="panel" style="margin-top:16px">
+      <div class="screen">
+        <div class="sweep"></div>
+        <div class="ui">
+          <div class="ui__head">Calm, clear hero + decisive CTA</div>
+          <div class="ui__grid">
+            <div class="cell"></div><div class="cell"></div><div class="cell"></div>
+            <div class="cell"></div><div class="cell"></div><div class="cell"></div>
+            <div class="cell"></div><div class="cell"></div><div class="cell"></div>
           </div>
         </div>
-        <div class="chips">
-          <span class="chip">IntersectionObserver</span>
-          <span class="chip">Scroll Snap</span>
-          <span class="chip">Color Inversion</span>
-          <span class="chip">Reduced-Motion Safe</span>
-        </div>
       </div>
-    </section>
+    </div>
+    <ul class="proof" style="margin-top:12px">
+      <li class="chip">~1.7s TTI (mobile)</li>
+      <li class="chip">Lead routing → CRM</li>
+      <li class="chip">A/B ready</li>
+    </ul>
+  </div>
+</section>
 
-    <!-- FEATURES -->
-    <section class="s" id="features" aria-label="Features">
-      <div class="s__in">
-        <p class="eyebrow">Polish in Small Form</p>
-        <h2 class="title">A tiny page with big-brand energy.</h2>
-        <p class="lead">We keep it minimal and fast: no frameworks needed. The effect is pure CSS + JS, runs at 60fps on mid-range phones, and degrades gracefully.</p>
-        <div class="cta">
-          <a class="btn primary" href="#work">View a Live Mock</a>
-          <a class="btn" href="#contact">Ask About Pricing</a>
-        </div>
-        <div class="rail" aria-hidden="true"></div>
-        <div class="panel" aria-hidden="true">
-          <div class="panel__screen">
-            <div class="panel__sweep"></div>
-            <div class="panel__ui">
-              <div class="panel__head">Conversion-First Layouts</div>
-              <div class="panel__grid">
-                <div class="cell"></div><div class="cell"></div><div class="cell"></div>
-                <div class="cell"></div><div class="cell"></div><div class="cell"></div>
-                <div class="cell"></div><div class="cell"></div><div class="cell"></div>
-              </div>
-            </div>
+<!-- FEATURES -->
+<section id="features">
+  <div class="wash" aria-hidden="true"></div>
+  <div class="wrap">
+    <p class="eyebrow">What’s included</p>
+    <h2 class="title" data-parallax="8">Everything you need to launch & convert</h2>
+    <p class="lead" data-parallax="5">We pair tasteful visuals with revenue infrastructure so your site looks premium and works like a growth tool.</p>
+
+    <div class="grid3">
+      <article class="card" data-parallax="4">
+        <h3>Custom Design System</h3>
+        <p>Blue/black tech aesthetic, clean type, responsive, and accessible out of the box.</p>
+      </article>
+      <article class="card" data-parallax="3">
+        <h3>Lead Capture & Popups</h3>
+        <p>Banner + timed modal, exit-intent, and CRM tags without being annoying.</p>
+      </article>
+      <article class="card" data-parallax="2">
+        <h3>Automation & Analytics</h3>
+        <p>Wire to Mailchimp, Brevo, Zoho, HubSpot; add GA, events, and A/B hooks.</p>
+      </article>
+    </div>
+
+    <div class="rail" aria-hidden="true"></div>
+    <div class="panel">
+      <div class="screen">
+        <div class="sweep"></div>
+        <div class="ui">
+          <div class="ui__head">Conversion-first layout & motion discipline</div>
+          <div class="ui__grid">
+            <div class="cell"></div><div class="cell"></div><div class="cell"></div>
+            <div class="cell"></div><div class="cell"></div><div class="cell"></div>
+            <div class="cell"></div><div class="cell"></div><div class="cell"></div>
           </div>
         </div>
-        <div class="chips">
-          <span class="chip">Core Web Vitals</span>
-          <span class="chip">App-Like Motion</span>
-          <span class="chip">Pixel Clean</span>
+      </div>
+    </div>
+
+    <div class="cta" style="margin-top:14px">
+      <a class="btn primary" href="#contact">Start the Application</a>
+      <a class="btn" href="#pricing">See Pricing Context</a>
+    </div>
+  </div>
+</section>
+
+<!-- WORK -->
+<section id="work">
+  <div class="wash" aria-hidden="true"></div>
+  <div class="wrap">
+    <p class="eyebrow">Selected work</p>
+    <h2 class="title" data-parallax="6">Minimal, quick to grasp, impossible to ignore</h2>
+    <p class="lead" data-parallax="4">We’ll replace this preview with your real shots. The wash effect draws focus without gimmicks.</p>
+
+    <div class="browser" style="margin-top:12px">
+      <div class="bar">
+        <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+        <span class="url" style="margin-left:8px">wonderworldplaysets.com</span>
+      </div>
+      <iframe src="https://wonderworldplaysets.com" title="Wonder World Playsets (preview)"></iframe>
+    </div>
+
+    <div class="cta" style="margin-top:14px">
+      <a class="btn primary" href="#contact">Book a Walkthrough</a>
+      <a class="btn" href="#home">Back to Top</a>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING COMPARE -->
+<section id="pricing">
+  <div class="wash" aria-hidden="true"></div>
+  <div class="wrap">
+    <p class="eyebrow">This month only</p>
+    <h2 class="title" data-parallax="6">$3,500 value — your rate: $750</h2>
+    <p class="lead" data-parallax="4">We’re onboarding three projects to build case studies and reviews. In exchange for the discount, we ask for a short testimonial after launch.</p>
+
+    <div class="compare">
+      <div class="pcard">
+        <h3>Industry Standard</h3>
+        <ul>
+          <li>Basic site: $2,000–$8,000</li>
+          <li>Custom small-business site: $3,000–$10,000</li>
+        </ul>
+        <p style="color:#9fb2c9; margin-top:.8rem">Typical agency ranges.</p>
+      </div>
+      <div class="pcard pcard--bim">
+        <h3>BIM Labs (Founders Launch)</h3>
+        <ul>
+          <li>Custom 1–3 page site + CRM hooks</li>
+          <li>Lead capture, motion, performance</li>
+          <li>Launch in 2–3 weeks</li>
+          <li><b>$750</b> (<s>$3,500</s> value) • 3 slots</li>
+        </ul>
+        <div class="cta" style="margin-top:10px">
+          <a class="btn primary" href="#contact">Apply Now</a>
         </div>
       </div>
-    </section>
+    </div>
+  </div>
+</section>
 
-    <!-- WORK -->
-    <section class="s" id="work" aria-label="Work">
-      <div class="s__in">
-        <p class="eyebrow">Selected Work</p>
-        <h2 class="title">Minimal, quick to grasp, impossible to ignore.</h2>
-        <p class="lead">We’ll replace these placeholders with your live shots. The wash effect draws attention without gimmicks.</p>
-        <div class="cta">
-          <a class="btn primary" href="#contact">Request a Walkthrough</a>
-          <a class="btn" href="#home">Back to Top</a>
-        </div>
-        <div class="rail" aria-hidden="true"></div>
-        <div class="panel" aria-hidden="true">
-          <div class="panel__screen">
-            <div class="panel__sweep"></div>
-            <div class="panel__ui">
-              <div class="panel__head">Live Embeds / Case Panels</div>
-              <div class="panel__grid">
-                <div class="cell"></div><div class="cell"></div><div class="cell"></div>
-                <div class="cell"></div><div class="cell"></div><div class="cell"></div>
-                <div class="cell"></div><div class="cell"></div><div class="cell"></div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="chips">
-          <span class="chip">Client Portals</span>
-          <span class="chip">CRM Hooks</span>
-          <span class="chip">Lead Capture</span>
-        </div>
+<!-- CONTACT / APPLICATION -->
+<section id="contact">
+  <div class="wash" aria-hidden="true"></div>
+  <div class="wrap">
+    <p class="eyebrow">Apply</p>
+    <h2 class="title" data-parallax="6">Request one of the three slots</h2>
+    <p class="lead" data-parallax="4">Tell us what you’re building. We’ll confirm fit and reply the same day.</p>
+
+    <form action="https://formspree.io/f/xkgbgbjd" method="POST" style="margin-top:14px; display:grid; gap:12px; max-width:560px">
+      <input name="name" type="text" placeholder="Your name"
+        style="padding:14px 16px; border-radius:12px; border:1px solid #22364a; background:#111a26; color:#e8eef6; font-size:1rem" required>
+      <input name="email" type="email" placeholder="you@company.com"
+        style="padding:14px 16px; border-radius:12px; border:1px solid #22364a; background:#111a26; color:#e8eef6; font-size:1rem" required>
+      <textarea name="message" rows="5" placeholder="Goals, timeline, and must-haves"
+        style="padding:14px 16px; border-radius:12px; border:1px solid #22364a; background:#111a26; color:#e8eef6; font-size:1rem"></textarea>
+      <div class="cta">
+        <button class="btn primary" type="submit">Apply for $750 Rate</button>
+        <a class="btn" href="mailto:benbimlabs@gmail.com">Prefer email? benbimlabs@gmail.com</a>
       </div>
-    </section>
+    </form>
 
-    <!-- CONTACT -->
-    <section class="s" id="contact" aria-label="Contact">
-      <div class="s__in">
-        <p class="eyebrow">Start a Vision Call</p>
-        <h2 class="title">Tell us what you’re building.</h2>
-        <p class="lead">We’ll reply the same day with next steps, a quick plan, and how we’d bring this effect to your brand system.</p>
+    <div class="rail" aria-hidden="true"></div>
+    <p class="lead" style="color:#9bb7d6; margin-top:12px">Turnaround assumes timely content and feedback.</p>
+  </div>
+</section>
 
-        <form class="cta" action="https://formspree.io/f/xkgbgbjd" method="POST">
-          <input type="email" name="email" placeholder="you@company.com"
-                 style="padding:.9rem 1rem;border-radius:999px;border:1px solid #24364c;background:#121a26;color:#dff2ff;min-width:260px" required>
-          <button class="btn primary" type="submit">Send</button>
-        </form>
-
-        <div class="rail" aria-hidden="true"></div>
-        <p class="lead" style="opacity:.8">Prefer email? <a href="mailto:benbimlabs@gmail.com" style="color:inherit;font-weight:800;text-decoration:underline">benbimlabs@gmail.com</a></p>
-      </div>
-    </section>
-  </main>
-
-  <footer class="footer">
-    © <span id="year"></span> BIM Labs — High-End Web & CRM Studio
-  </footer>
+<footer>© <span id="year"></span> BIM Labs. High-End Web & CRM Studio.</footer>
 
 <script>
-  // Year stamp
+  // Year
   document.getElementById('year').textContent = new Date().getFullYear();
 
-  // IntersectionObserver to toggle .is-active on sections
+  // IntersectionObserver to add/remove .active (gentle wash; no snap)
   (function(){
-    const sections = Array.from(document.querySelectorAll('section.s'));
+    const sections = Array.from(document.querySelectorAll('section'));
     if(!sections.length) return;
 
-    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const opts = { root: null, threshold: 0.55 };
-
-    function setActive(target){
-      sections.forEach(s => s.classList.toggle('is-active', s === target));
-    }
-
-    const io = new IntersectionObserver((entries)=>{
-      // Find the most visible entry and activate it
-      const vis = entries
-        .filter(e => e.isIntersecting)
-        .sort((a,b)=> b.intersectionRatio - a.intersectionRatio)[0];
-      if (vis) setActive(vis.target);
-    }, opts);
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) e.target.classList.add('active');
+        else e.target.classList.remove('active');
+      });
+    }, { threshold: 0.45 });
 
     sections.forEach(s => io.observe(s));
+  })();
 
-    // Optional: snap to nearest section on wheel end (for a “solid” feel)
-    // Kept gentle to avoid fighting native scroll; remove if undesired.
-    let snapTimer = null;
-    const scroller = document.getElementById('snapper');
-    scroller.addEventListener('scroll', () => {
-      if (reduced) return;
-      clearTimeout(snapTimer);
-      snapTimer = setTimeout(()=>{
-        // Find section with center closest to viewport center
-        const mid = scroller.scrollTop + scroller.clientHeight/2;
-        let best = sections[0], bestDist = Infinity;
-        for(const s of sections){
-          const r = s.getBoundingClientRect();
-          const center = r.top + scroller.scrollTop + r.height/2;
-          const d = Math.abs(center - mid);
-          if (d < bestDist){ bestDist = d; best = s; }
-        }
-        best.scrollIntoView({behavior:'smooth'});
-      }, 160);
-    }, {passive:true});
+  // Gentle parallax on elements with data-parallax="strength"
+  (function(){
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduced) return;
+
+    const items = Array.from(document.querySelectorAll('[data-parallax]'));
+    if (!items.length) return;
+
+    let ticking = false;
+
+    function onScroll(){
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        const vh = window.innerHeight;
+        items.forEach(el => {
+          const rect = el.getBoundingClientRect();
+          const strength = parseFloat(el.getAttribute('data-parallax')) || 5;
+          // Map element center to [-1,1] across the viewport
+          const center = rect.top + rect.height/2;
+          const ratio = (center - vh/2) / (vh/2);
+          const translate = Math.max(-1, Math.min(1, ratio)) * strength * -1; // invert so it moves gently up when entering
+          el.style.transform = `translateY(${translate}px)`;
+        });
+        ticking = false;
+      });
+    }
+    document.addEventListener('scroll', onScroll, { passive:true });
+    window.addEventListener('resize', onScroll);
+    onScroll();
   })();
 </script>
 </body>
