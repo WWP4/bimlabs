@@ -1193,45 +1193,121 @@ body[data-svc="2"]{ --svc-ang: .5turn;  --svc-speed: 5.6s; }
 .hero [data-hero-content]{ position:relative; z-index:2; }
 
 
-    /* ====== POPUP STYLES ====== */
-.popup-overlay {
-  position: fixed; inset: 0;
-  background: rgba(0,0,0,.75);
-  display: flex; align-items: center; justify-content: center;
-  opacity: 0; pointer-events: none;
-  transition: opacity .35s ease;
-  z-index: 3000;
-}
-.popup-overlay.show { opacity: 1; pointer-events: auto; }
-
-.popup-box {
-  position:relative;
-  background: rgba(22,28,38,.95);
-  padding: 2rem 1.8rem;
-  border-radius: 1.2rem;
-  max-width: 420px; width: 90%;
-  box-shadow: 0 12px 40px rgba(0,0,0,.45), 0 8px 28px rgba(78,198,255,.18);
-  text-align: center; color: #fff;
-}
-.popup-box h2 { color: var(--blue); margin-bottom: .6rem; }
-.popup-box p { font-size: 1rem; margin-bottom: 1.2rem; color: #dfe6ee; }
-
-.popup-box label { display:block; text-align:left; margin:.5rem 0 .2rem; font-weight:700; color: var(--blue); }
-.popup-box input {
-  width:100%; padding:.65rem .8rem; border-radius:.5rem; border:1px solid #243146;
-  background:#0f141c; color:#fff; margin-bottom:.6rem;
-}
-.popup-btn {
-  background: var(--blue); color:#091018; font-weight:900; border:none; padding:.8rem 1.4rem; border-radius:2rem;
-  cursor:pointer; box-shadow:0 6px 22px rgba(78,198,255,.28); transition: background .2s;
-}
-.popup-btn:hover { background:#fff; color:var(--blue); }
-
-.popup-close {
-  position:absolute; top:12px; right:16px; background:none; border:none; color:#fff; font-size:1.5rem; cursor:pointer;
+/* ===== BIM Launch Popup (premium) ===== */
+:root{
+  --popup-bg: rgba(14,18,26,.86);
+  --popup-stroke: #1e2b3b;
+  --popup-ink: #e9eef6;
+  --popup-muted: #b8c6d8;
+  --popup-rail: #4EC6FF;
 }
 
-</style>
+.popup-overlay{
+  position: fixed; inset:0;
+  display:flex; align-items:center; justify-content:center;
+  background: rgba(0,0,0,.65);
+  backdrop-filter: blur(2px);
+  opacity:0; pointer-events:none; transition: opacity .22s ease;
+  z-index:3000;
+}
+.popup-overlay.show{ opacity:1; pointer-events:auto; }
+
+/* card */
+.popup-card{
+  position:relative; width:min(520px, 92vw);
+  color:var(--popup-ink);
+  border-radius:16px; overflow:hidden;
+  background: var(--popup-bg);
+  border:1px solid var(--popup-stroke);
+  box-shadow:
+    0 24px 80px rgba(0,0,0,.50),
+    0 6px 28px rgba(78,198,255,.10);
+  transform: scale(.98); opacity:.0;
+  transition: transform .22s ease, opacity .22s ease;
+}
+.popup-overlay.show .popup-card{ transform: scale(1); opacity:1; }
+@media (prefers-reduced-motion: reduce){
+  .popup-card{ transform:none !important; }
+}
+
+/* brand rail */
+.popup-rail{
+  height:3px; width:100%;
+  background: linear-gradient(90deg, var(--popup-rail), rgba(78,198,255,.25));
+}
+
+/* header */
+.popup-head{
+  padding:18px 22px 10px 22px;
+  display:flex; align-items:flex-start; gap:10px;
+}
+.popup-badge{
+  font-weight:900; letter-spacing:.06em; font-size:.72rem; text-transform:uppercase;
+  color:#0b1220; background: var(--popup-rail);
+  padding:.28rem .55rem; border-radius:999px;
+  box-shadow:0 2px 10px rgba(78,198,255,.25);
+}
+.popup-title{
+  margin:6px 0 0 0; font-size:1.26rem; font-weight:900; line-height:1.2;
+}
+
+/* content */
+.popup-body{ padding:8px 22px 18px 22px; }
+.popup-sub{ margin:0 0 .65rem; color:var(--popup-muted); font-size:.98rem; }
+.popup-list{ margin:.25rem 0 1rem; padding-left:1.1rem; color:#cfe1f4; }
+.popup-list li{ margin:.25rem 0; }
+
+/* form */
+.popup-form label{
+  display:block; font-weight:800; color:var(--popup-rail);
+  margin:.5rem 0 .25rem; font-size:.92rem;
+}
+.popup-input{
+  width:100%; background:#0f141c; color:#e8eefc;
+  border:1px solid #223146; border-radius:10px;
+  padding:.75rem .85rem; outline:none;
+  transition:border .15s, box-shadow .15s;
+}
+.popup-input:focus{
+  border-color:#2a90c6; box-shadow:0 0 0 6px rgba(78,198,255,.18);
+}
+
+.popup-actions{
+  display:flex; align-items:center; gap:.6rem; margin-top:.9rem;
+}
+.popup-btn{
+  background: var(--popup-rail); color:#091018; font-weight:900;
+  border:none; padding:.8rem 1.3rem; border-radius:999px; cursor:pointer;
+  box-shadow:0 10px 32px rgba(78,198,255,.22);
+}
+.popup-btn:hover{ background:#fff; color:var(--popup-rail); }
+
+.popup-ghost{
+  background:transparent; border:1px solid #27405a; color:#cfe1f4;
+  border-radius:999px; padding:.72rem 1.1rem; font-weight:800; cursor:pointer;
+}
+.popup-ghost:hover{ border-color: var(--popup-rail); color: var(--popup-rail); }
+
+/* trust line */
+.popup-note{
+  margin:.55rem 0 0; font-size:.84rem; color:#9db2c8;
+}
+
+/* close */
+.popup-close{
+  position:absolute; top:10px; right:12px;
+  width:36px; height:36px; border-radius:999px;
+  border:1px solid #223146; background:#0f141c; color:#cfe1f4;
+  cursor:pointer; font-size:18px; line-height:0;
+}
+.popup-close:hover{ color:#fff; border-color:#32557a; }
+
+/* success */
+.popup-success{
+  display:none; padding:.6rem; text-align:center; color:#bfe6ff; font-weight:800;
+}
+.popup-success.show{ display:block; }
+
   
   
   </style>
@@ -2654,23 +2730,141 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 </script>
-<!-- ===== POPUP MODAL ===== -->
-<div id="launchPopup" class="popup-overlay" role="dialog" aria-modal="true" aria-labelledby="popupTitle">
-  <div class="popup-box">
+<!-- ===== BIM Launch Popup ===== -->
+<div id="launchPopup" class="popup-overlay" role="dialog" aria-modal="true" aria-labelledby="popupTitle" aria-describedby="popupDesc">
+  <div class="popup-card" role="document">
+    <div class="popup-rail" aria-hidden="true"></div>
     <button class="popup-close" aria-label="Close popup">×</button>
-    <h2 id="popupTitle">Founders Launch Program</h2>
-    <p>We’re only accepting <b>5 applicants this month</b>. Get an 8-section site, 3 landing pages, pop-ups, guides, and a 4-campaign “Money Models” pack for <b>$850</b>.</p>
-    <form id="popupForm">
-      <label for="popupName">Name</label>
-      <input type="text" id="popupName" name="name" required>
-      <label for="popupPhone">Phone</label>
-      <input type="tel" id="popupPhone" name="phone" required>
-      <label for="popupEmail">Email</label>
-      <input type="email" id="popupEmail" name="email" required>
-      <button type="submit" class="popup-btn">Apply Now</button>
-    </form>
+
+    <div class="popup-head">
+      <span class="popup-badge">Founders</span>
+      <h2 id="popupTitle" class="popup-title">Launch Program — 5 Slots</h2>
+    </div>
+
+    <div class="popup-body">
+      <p id="popupDesc" class="popup-sub">
+        Full conversion system for $850: 8-section site, 3 landing pages, customizable pop-ups & guides, plus 4 tailored campaigns.
+      </p>
+      <ul class="popup-list">
+        <li>Minimal, fast, and CRM-ready</li>
+        <li>Design + build in weeks</li>
+        <li>Case-study cohort pricing</li>
+      </ul>
+
+      <form id="popupForm" class="popup-form" novalidate>
+        <label for="popupName">Name</label>
+        <input class="popup-input" type="text" id="popupName" name="name" autocomplete="name" required>
+
+        <label for="popupEmail">Email</label>
+        <input class="popup-input" type="email" id="popupEmail" name="email" autocomplete="email" required>
+
+        <label for="popupPhone">Phone</label>
+        <input class="popup-input" type="tel" id="popupPhone" name="phone" autocomplete="tel" required>
+
+        <div class="popup-actions">
+          <button type="submit" class="popup-btn">Apply Now</button>
+          <button type="button" class="popup-ghost" data-popup-dismiss>Not now</button>
+        </div>
+        <p class="popup-note">We’ll review and reply today. No spam, ever.</p>
+        <div class="popup-success" id="popupSuccess">Thanks — your application is in. We’ll reach out today.</div>
+      </form>
+    </div>
   </div>
 </div>
+
+  <script>
+(function(){
+  const overlay = document.getElementById('launchPopup');
+  const card    = overlay?.querySelector('.popup-card');
+  const close   = overlay?.querySelector('.popup-close');
+  const dismiss = overlay?.querySelector('[data-popup-dismiss]');
+  const form    = document.getElementById('popupForm');
+  const success = document.getElementById('popupSuccess');
+  const KEY = 'bimlabs_launch_seen_at';
+  const HOLD_DAYS = 7;
+
+  // Helpers
+  const dayMs = 24*60*60*1000;
+  const seenAt = Number(localStorage.getItem(KEY) || 0);
+  const seenTooSoon = Date.now() - seenAt < HOLD_DAYS*dayMs;
+
+  function lockScroll(on){
+    document.documentElement.style.overflow = on ? 'hidden' : '';
+    document.body.style.overflow = on ? 'hidden' : '';
+  }
+
+  function openPopup(){
+    if(!overlay) return;
+    overlay.classList.add('show');
+    lockScroll(true);
+    // focus first field for accessibility
+    form?.querySelector('input')?.focus({preventScroll:true});
+  }
+
+  function closePopup(){
+    overlay?.classList.remove('show');
+    lockScroll(false);
+  }
+
+  // Triggers: show at 50% scroll OR exit-intent (desktop). First-time visitors only.
+  function onScrollTrigger(){
+    const scrolled = (window.scrollY || document.documentElement.scrollTop);
+    const docH = document.documentElement.scrollHeight - window.innerHeight;
+    if(docH > 0 && scrolled/docH > 0.5){
+      window.removeEventListener('scroll', onScrollTrigger);
+      // gentle delay to avoid feeling jumpy
+      setTimeout(()=> openPopup(), 400);
+      localStorage.setItem(KEY, String(Date.now()));
+    }
+  }
+
+  function onExitIntent(e){
+    if(e.clientY <= 0){ // cursor leaves top
+      document.removeEventListener('mouseout', onExitIntent);
+      setTimeout(()=> openPopup(), 300);
+      localStorage.setItem(KEY, String(Date.now()));
+    }
+  }
+
+  if(!seenTooSoon){
+    // choose one primary trigger; fallback to the other if not met
+    window.addEventListener('scroll', onScrollTrigger, {passive:true});
+    if(matchMedia('(pointer:fine)').matches){ // desktop only
+      document.addEventListener('mouseout', onExitIntent);
+    }
+  }
+
+  // Close interactions
+  close?.addEventListener('click', closePopup);
+  dismiss?.addEventListener('click', closePopup);
+  overlay?.addEventListener('click', (e)=>{ if(e.target === overlay) closePopup(); });
+  document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape') closePopup(); });
+
+  // Basic form handling
+  form?.addEventListener('submit', async (e)=>{
+    e.preventDefault();
+    const name  = form.popupName.value.trim();
+    const email = form.popupEmail.value.trim();
+    const phone = form.popupPhone.value.trim();
+    if(!name || !email || !phone){ return; }
+
+    try{
+      await fetch("https://formspree.io/f/xkgbgbjd", {
+        method:"POST",
+        headers: { "Accept":"application/json", "Content-Type":"application/json" },
+        body: JSON.stringify({ name, email, phone })
+      });
+      success?.classList.add('show');
+      // disable inputs after success
+      [...form.elements].forEach(el=> el.disabled = true);
+      localStorage.setItem(KEY, String(Date.now()));
+    }catch(err){
+      alert("Could not submit. Please try again.");
+    }
+  });
+})();
+</script>
+
 
 </body>
 </html>
