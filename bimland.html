@@ -162,24 +162,27 @@ body {
 </head>
 <body>
 
-<!-- HERO (full screen) -->
 <section id="contractor-hero">
   <div class="hero-rail" aria-hidden="true"></div>
   <div class="hero-shell">
     <p class="hero-eyebrow">For Contractors</p>
     <h1 class="hero-title">Stop losing jobs to slow quotes.</h1>
-    <p class="hero-sub">Give prospects a credible range in 60 seconds. Capture details. Auto-book a site assessment. Built for custom work with adjustable assumptions so your margins stay safe.</p>
+    <p class="hero-sub">
+      Give prospects a credible range in 60 seconds. One closed job usually pays for the whole build.
+      We set you up, train you, and hand it over — no retainer.
+    </p>
     <ul class="hero-chips">
-      <li>Ballpark with ± confidence</li>
-      <li>Trade-specific logic</li>
-      <li>Branded email summary</li>
+      <li>Instant ballpark with ± confidence</li>
+      <li>Trade-specific logic (roofing, remodel, HVAC, landscaping)</li>
+      <li>Branded PDF/email quotes</li>
     </ul>
     <div class="hero-cta">
-      <a href="#iqt-pro" class="btn btn--primary">Try the Instant Quote</a>
-      <a href="#contact" class="btn btn--ghost">Book a Vision Call</a>
+      <a href="#offer" class="btn btn--primary">Claim Founder Price</a>
+      <a href="#iqt-pro" class="btn btn--ghost">Try the Instant Quote</a>
     </div>
   </div>
 </section>
+
 <!-- ============================
   BIM Labs — Contractors Hero + Shared-Outcome Offer
   Brand: #101014 / #4EC6FF / #FFFFFF
@@ -233,155 +236,62 @@ body {
   </div>
 </section>
 
-<!-- ============================
-  Shared-Outcome Offer (Risk/Reward)
-============================= -->
-<section id="shared-offer" class="so-wrap" aria-labelledby="soTitle">
-  <div class="so-shell">
+<section id="offer" style="padding: clamp(28px,6vw,56px) 0; background: radial-gradient(900px 600px at 12% -10%, rgba(78,198,255,.06), transparent 60%), #101014;">
+  <div class="iqt-shell">
     <div class="card">
       <div class="card-head">
-        <h2 id="soTitle" class="card-title">Shared-Outcome Launch</h2>
-        <span class="pill">Skin in the game</span>
+        <h2 class="card-title">Founder Build — $1,500</h2>
+        <span class="pill">Only <b id="slots">3</b> slots</span>
       </div>
       <div class="card-body">
-        <div class="so-grid">
-          <!-- LEFT: Terms -->
-          <div class="so-col">
-            <p class="so-lead">
-              We share the risk and the upside. You’re not just “buying a site”—you’re buying outcomes.
-            </p>
-            <ul class="so-points">
-              <li><strong>$850 founder build</strong> — full site + Instant Quote + CRM wiring.</li>
-              <li>
-                <strong>30-day performance window:</strong> we aim for one of these goals (pick the one that fits):
-                <ul class="so-sub">
-                  <li><em>20 qualified estimates</em> through the tool, or</li>
-                  <li><em>5 booked site assessments</em>, or</li>
-                  <li><em>1 closed job</em> influenced by the funnel.</li>
-                </ul>
-              </li>
-              <li>
-                <strong>If we miss:</strong> we continue optimizing the funnel for free until the goal is hit
-                <span class="so-muted">(copy, routing, friction fixes, rules tuning)</span>.
-              </li>
-              <li>
-                <strong>If we outperform:</strong> optional success fee <em>(e.g., 2% of the first 3 jobs</em>
-                closed from the funnel) — capped and time-boxed.
-              </li>
-            </ul>
-            <p class="so-note">
-              We’ll confirm the KPI you prefer during kickoff and instrument tracking (UTMs / tags / source).
-            </p>
-            <div class="so-ctas">
-              <a href="#contact" class="btn btn--primary">Secure Shared-Outcome Launch</a>
-              <a href="#iqt-pro" class="btn btn--ghost">See a Live Estimate</a>
+        <div class="row two">
+          <ul style="margin:0; padding-left:1.1rem; line-height:1.7; color:#e3ecf3">
+            <li>Custom 8-section website (BIM Labs style)</li>
+            <li>3 landing pages (offer • retarget • lead magnet)</li>
+            <li>Instant Quote Tool (+ branded PDF/email)</li>
+            <li>4 “Money Model” campaign guides</li>
+            <li>Training & full handoff — you own it</li>
+          </ul>
+          <div>
+            <div class="pill" style="margin-bottom:.6rem">Valued at $8,700+</div>
+            <p class="hint" style="margin:.2rem 0 .8rem">Founder price ends in <b><span id="countdown">—:—:—</span></b></p>
+            <div class="form-actions" style="justify-content:flex-start">
+              <!-- Deposit: replace href with your checkout/deposit link -->
+              <a id="depositBtn" class="btn btn--primary" href="/deposit-link">Pay $500 Deposit</a>
+              <a class="btn btn--ghost" href="#iqt-pro">See Estimate First</a>
             </div>
+            <p class="hint">Balance due at handoff (in ~2–3 weeks). No retainer.</p>
           </div>
-
-          <!-- RIGHT: KPI Card -->
-          <aside class="so-col">
-            <div class="kpi">
-              <div class="kpi-head">
-                <h3>Performance Targets</h3>
-                <span class="pill">30-day window</span>
-              </div>
-              <div class="kpi-body">
-                <div class="kpi-line"><span>Qualified estimates</span><strong>20+</strong></div>
-                <div class="kpi-line"><span>Booked assessments</span><strong>5+</strong></div>
-                <div class="kpi-line"><span>Closed jobs (influenced)</span><strong>≥1</strong></div>
-                <div class="kpi-foot">
-                  <p class="kpi-fine">
-                    Choose one KPI. If we don’t hit it, we keep working free until we do.
-                    If we exceed, success fee applies (optional, capped).
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            <div class="so-small">
-              <details>
-                <summary>How we count “qualified estimates”</summary>
-                <p>Leads with complete contact info + realistic scope + within service area. Duplicates excluded.</p>
-              </details>
-              <details>
-                <summary>Attribution</summary>
-                <p>We tag form submits and calendar bookings; closed-job attribution can be self-reported with PO/job IDs.</p>
-              </details>
-            </div>
-          </aside>
         </div>
       </div>
     </div>
   </div>
 </section>
+<script>
+// Countdown (set your real deadline)
+(function(){
+  const end = new Date('2025-09-30T23:59:59-05:00').getTime();
+  const el  = document.getElementById('countdown');
+  const pad = n => n<10? '0'+n : n;
+  function tick(){
+    const ms = end - Date.now();
+    if(ms<=0){ el.textContent = '00:00:00'; return; }
+    const h = Math.floor(ms/3.6e6);
+    const m = Math.floor(ms/6e4)%60;
+    const s = Math.floor(ms/1e3)%60;
+    el.textContent = `${pad(h)}:${pad(m)}:${pad(s)}`;
+    requestAnimationFrame(tick);
+  }
+  tick();
+})();
+// Visual slots decrement after deposit click (optional)
+document.getElementById('depositBtn')?.addEventListener('click', ()=> {
+  const s = document.getElementById('slots');
+  const n = Math.max(0, parseInt(s.textContent||'3',10)-1);
+  s.textContent = String(n);
+});
+</script>
 
-<style>
-/* ========== Shared base (reuses your tokens) ========== */
-:root{ --black:#101014; --blue:#4EC6FF; --white:#fff; --ink:#E8EEF6; --muted:#B8C6D8; --line:#1E232E; --glass:rgba(16,22,30,.78); }
-.btn{ display:inline-flex; align-items:center; justify-content:center; gap:.6rem; padding:.95rem 1.5rem; border-radius:999px; font-weight:900; text-decoration:none; cursor:pointer; border:none; min-width:180px; }
-.btn--primary{ background:var(--blue); color:#0b1016; box-shadow:0 12px 30px rgba(78,198,255,.28); }
-.btn--primary:hover{ filter:brightness(.96) }
-.btn--ghost{ background:#0E1116; color:#fff; }
-.pill{ display:inline-block; background:#101a27; color:#9fd6ff; border:1px solid #243146; font-weight:900; padding:.26rem .7rem; border-radius:999px; }
-
-/* ========== HERO ========== */
-.bim-hero{ position:relative; overflow:hidden; background:
-  radial-gradient(900px 600px at 82% -10%, rgba(78,198,255,.08), transparent 60%),
-  radial-gradient(800px 500px at -10% 0%, rgba(78,198,255,.06), transparent 60%),
-  var(--black);
-}
-.bim-hero__rail{ height:6px; width:100%; background:linear-gradient(90deg,var(--blue),rgba(78,198,255,.35),var(--blue)); box-shadow:0 10px 28px #4ec6ff2b; }
-.bim-hero__shell{ width:min(1200px,92vw); margin:0 auto; padding: clamp(40px,6vw,80px) 0; }
-.bim-hero__grid{ display:grid; grid-template-columns:1.15fr .85fr; gap:22px; align-items:stretch; }
-@media (max-width:1020px){ .bim-hero__grid{ grid-template-columns:1fr; } }
-
-.bim-hero__copy{ align-self:center; }
-.bim-hero__eyebrow{ color:var(--blue); text-transform:uppercase; letter-spacing:.18em; font-weight:900; font-size:.8rem; margin:0 0 .6rem; }
-.bim-hero__title{ margin:.1rem 0 .6rem; font-weight:900; line-height:1.04; font-size: clamp(34px,6vw,56px); color:#fff; }
-.bim-hero__sub{ max-width:70ch; color:var(--muted); margin:0 0 1rem; font-size: clamp(1rem,2vw,1.18rem); }
-.bim-hero__chips{ display:flex; gap:.6rem; flex-wrap:wrap; margin:.8rem 0 1.1rem; padding:0; list-style:none; }
-.bim-hero__chips li{ padding:.45rem .8rem; border-radius:999px; background:rgba(255,255,255,.05); border:1px solid #243146; color:#bcd2ea; font-weight:800; font-size:.95rem; }
-.bim-hero__cta{ display:flex; gap: .8rem 1rem; flex-wrap:wrap; margin-top:.4rem; }
-
-.bim-hero__card{ background:var(--glass); border:1px solid var(--line); border-radius:16px; box-shadow:0 10px 36px rgba(0,0,0,.35), 0 6px 24px rgba(78,198,255,.12); }
-.card-head{ display:flex; align-items:center; justify-content:space-between; gap:10px; padding:14px 16px; border-bottom:1px solid #243146; background:linear-gradient(180deg, rgba(255,255,255,.03), transparent); }
-.card-title{ margin:0; font-size:1.05rem; font-weight:900; color:#eaf3ff; }
-.card-body{ padding:14px 16px 16px; }
-.bim-hero__list{ margin:.2rem 0 1rem; padding-left:1.1rem; line-height:1.7; color:#dfe6ee; }
-.tag{ display:inline-block; background:#101a27; color:#9fd6ff; border:1px solid #243146; padding:.28rem .7rem; border-radius:999px; font-weight:900; margin-right:.4rem; }
-.tag--blue{ background:var(--blue); border:none; color:#091018; }
-.bim-hero__value{ display:flex; gap:.6rem; flex-wrap:wrap; margin:.2rem 0 .2rem; }
-.bim-hero__fine{ color:#9ab0c9; font-size:.92rem; }
-
-/* ========== SHARED OFFER ========== */
-.so-wrap{ background:
-  radial-gradient(900px 600px at 12% -10%, rgba(78,198,255,.06), transparent 60%),
-  radial-gradient(800px 500px at 110% 0%, rgba(78,198,255,.06), transparent 60%),
-  var(--black);
-  padding: clamp(28px,6vw,56px) 0;
-}
-.so-shell{ width:min(1100px,92vw); margin:0 auto; }
-.card{ background:var(--glass); border:1px solid var(--line); border-radius:16px; box-shadow:0 10px 36px rgba(0,0,0,.35), 0 6px 24px rgba(78,198,255,.12); }
-.so-grid{ display:grid; grid-template-columns:1.2fr .8fr; gap:22px; align-items:start; }
-@media (max-width:1020px){ .so-grid{ grid-template-columns:1fr; } }
-
-.so-col{ }
-.so-lead{ color:#dfe6ee; font-size:1.05rem; margin:.1rem 0 1rem; }
-.so-points{ margin:.2rem 0 0; padding-left:1.1rem; line-height:1.7; color:#e3ecf3; }
-.so-sub{ margin:.2rem 0 .6rem; padding-left:1.1rem; line-height:1.6; color:#cfe1f4; }
-.so-note{ color:#9db2c8; }
-.so-ctas{ display:flex; gap:.8rem; flex-wrap:wrap; margin-top: .9rem; }
-
-.kpi{ border:1px solid #243146; border-radius:12px; background:#0f141c; }
-.kpi-head{ display:flex; align-items:center; justify-content:space-between; gap:10px; padding:12px 14px; border-bottom:1px solid #243146; }
-.kpi-body{ padding:12px 14px; }
-.kpi-line{ display:flex; align-items:center; justify-content:space-between; padding:8px 0; border-bottom:1px dashed #1e2b3b; }
-.kpi-line:last-child{ border-bottom:none; }
-.kpi-fine{ color:#9ab0c9; font-size:.92rem; margin:.6rem 0 0; }
-.so-small{ margin-top:12px; }
-.so-small details{ background:#0f141c; border:1px solid #243146; border-radius:10px; padding:.6rem .8rem; color:#cfe1f4; }
-.so-muted{ color:#9db2c8; font-weight:600; }
-</style>
 
 <!-- INSTANT QUOTE (tight + structured, full page width, no borders showing as white) -->
 <section id="iqt-pro" aria-labelledby="iqt-title">
@@ -959,5 +869,25 @@ el.bookCall.addEventListener('click', (e)=>{
 /* Init */
 setTrade('roofing');
 </script>
+  <div id="stickyCTA" style="position:fixed;left:0;right:0;bottom:0;z-index:999;background:#0E1116;border-top:1px solid #1e232e;box-shadow:0 -6px 24px rgba(0,0,0,.25);">
+  <div class="footer-in" style="display:flex;gap:12px;align-items:center;justify-content:space-between;padding:10px 0;">
+    <div style="font-weight:800;color:#E8EEF6;">Founder Build $1,500 · <span style="color:#9fd6ff">3 slots</span> · ends in <span id="countdownMini">—:—:—</span></div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <a class="btn btn--primary" href="/deposit-link">Pay $500 Deposit</a>
+      <a class="btn btn--ghost" href="#iqt-pro">See Estimate</a>
+    </div>
+  </div>
+</div>
+<script>
+(function syncMini(){
+  const src = document.getElementById('countdown');
+  const mini= document.getElementById('countdownMini');
+  if(!src||!mini) return;
+  const o = new MutationObserver(()=> mini.textContent = src.textContent);
+  o.observe(src,{childList:true,characterData:true,subtree:true});
+  mini.textContent = src.textContent;
+})();
+</script>
+
 </body>
 </html>
