@@ -1217,6 +1217,45 @@ body[data-svc="2"]{ --svc-ang: .5turn;  --svc-speed: 5.6s; }
   color: inherit;
 }
 
+
+    /* === Global immersive background + two palettes === */
+:root{
+  /* Palette A (default = dark) */
+  --bgA:  #0b0f16;
+  --inkA: #e9eef6;
+
+  /* Palette B (inverted = light) */
+  --bgB:  #e9eef6;
+  --inkB: #0b0f16;
+}
+
+/* Global “live” variables the page actually uses */
+body{ --bg: var(--bgA); --ink: var(--inkA); }
+
+/* When inverted sections are active, flip to palette B */
+body[data-theme="B"]{ --bg: var(--bgB); --ink: var(--inkB); }
+
+/* Put the background color on a fixed layer for smooth fades */
+html, body{ background: transparent; }
+body::before{
+  content:"";
+  position: fixed; inset:0; z-index:-1;
+  background: var(--bg);
+  transition: background 180ms linear;
+}
+
+/* Make chosen sections show the global bg (no their own block bg) */
+.bg-immersive{ background: transparent !important; }
+
+/* Let text follow the current ink color in immersive sections */
+.bg-immersive :where(h1,h2,h3,h4,p,li,a,small,strong,em){
+  color: var(--ink) !important;
+}
+
+/* If you want links to look nice on both themes */
+.bg-immersive a{ text-decoration: none; font-weight: 700; }
+.bg-immersive a:hover{ opacity:.9; }
+
   
   </style>
 </head>
@@ -1466,7 +1505,7 @@ body[data-svc="2"]{ --svc-ang: .5turn;  --svc-speed: 5.6s; }
 
 
   <!-- ====== START YOUR VISION (Full-Screen) ====== -->
-<section id="start" class="start-wrap">
+<section id="start" class="start-wrap bg-immersive invert-trigger">
   <div class="start-bg" aria-hidden="true"></div>
 
   <div class="start-grid">
@@ -2740,88 +2779,29 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 })();
 </script>
-
 <script>
-(function(){
-  // Which sections to animate (add/remove selectors as needed)
-  const targets = document.querySelectorAll('.theme-fader');
-  if (!targets.length) return;
+(() => {
+  // Only sections with .invert-trigger will toggle the theme
+  const triggers = Array.from(document.querySelectorAll('.invert-trigger'));
+  if (!triggers.length) return;
 
-  // helpers
-  function lerpHex(a, b, t){
-    const ah = parseInt(a.slice(1),16), bh = parseInt(b.slice(1),16);
-    const ar=(ah>>16)&255, ag=(ah>>8)&255, ab=ah&255;
-    const br=(bh>>16)&255, bg=(bh>>8)&255, bb=bh&255;
-    const r = Math.round(ar+(br-ar)*t),
-          g = Math.round(ag+(bg-ag)*t),
-          b2= Math.round(ab+(bb-ab)*t);
-    return `#${(1<<24 | r<<16 | g<<8 | b2).toString(16).slice(1)}`;
+  // Is the viewport center inside a given section?
+  function centerInside(el){
+    const r = el.getBoundingClientRect();
+    const cy = window.innerHeight / 2;
+    return r.top <= cy && r.bottom >= cy;
   }
 
-  // Tuning: start/end colours for the fade INSIDE each chosen section
-  const START_BG  = '#4EC6FF';  // your brand blue
-  const END_BG    = '#000000';  // black
-  const START_INK = '#101014';  // dark text on blue
-  const END_INK   = '#FFFFFF';  // white text on black
-
-  // Map each section independently
   function update(){
-    const vh = window.innerHeight || 1;
-
-    targets.forEach(el => {
-      const rect = el.getBoundingClientRect();
-
-      // Progress from 0→1 while the section is on screen.
-      // This version starts “after” the top enters (10%) and completes near the bottom (90%).
-      const start = vh * 0.10;
-      const end   = Math.max(start+1, rect.height - vh*0.10);
-      let t = ( (vh - rect.top - start) / end );
-      t = Math.max(0, Math.min(1, t));          // clamp
-      // Optional ease:
-      t = t*t*(3-2*t);                           // smoothstep
-
-      // Set ONLY this section’s variables
-      el.style.setProperty('--fader-bg',  lerpHex(START_BG,  END_BG,  t));
-      el.style.setProperty('--fader-ink', lerpHex(START_INK, END_INK, t));
-    });
+    // If any trigger owns the viewport center, flip to palette B
+    const on = triggers.some(centerInside);
+    document.body.dataset.theme = on ? 'B' : 'A';
   }
 
   update();
-  addEventListener('scroll', update, {passive:true});
+  addEventListener('scroll', update, { passive:true });
   addEventListener('resize', update);
 })();
-  (function(){
-  const root  = document.body;
-  const host  = document.getElementById('services');
-  if(!host) return;
-
-  const slides = Array.from(host.querySelectorAll('.svc-slide'));
-  const dots   = Array.from(document.querySelectorAll('.svc-dots .svc-dot'));
-  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-  function setActive(id){
-    const idx = slides.findIndex(s => s.id === id);
-    if (idx < 0) return;
-    root.setAttribute('data-svc', String(idx));
-    dots.forEach((d,i)=> d.classList.toggle('svc-active', i===idx));
-  }
-
-  const io = new IntersectionObserver((entries)=>{
-    entries.forEach(e => { if (e.isIntersecting) setActive(e.target.id); });
-  }, { root: host, threshold: 0.55 });
-
-  slides.forEach(s => io.observe(s));
-
-  dots.forEach((dot,i)=>{
-    dot.addEventListener('click', e => {
-      e.preventDefault();
-      slides[i].scrollIntoView({ behavior: reduced ? 'auto' : 'smooth' });
-    });
-  });
-
-  setActive(slides[0].id);
-})();
-
 </script>
 
 </body>
