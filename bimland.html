@@ -1,24 +1,32 @@
 <!-- ============================
-  BIM Labs — Founders Launch (5 Slots)
-  Minimal, white/blue/black. AOS fade-only. No preview scaffolding.
+  BIM LABS — FOUNDERS LAUNCH (5 SLOTS)
+  Brand: #101014 / #4EC6FF / #FFFFFF
+  AOS fade-only. No external dependencies beyond AOS.
 ============================= -->
-<section id="founders" class="bl-wrap" aria-labelledby="blFdTitle">
-  <div class="bl-ribbon" aria-hidden="true"></div>
-  <div class="bl-shell">
-    <header class="bl-head" data-aos="fade-up">
-      <p class="bl-eyebrow">Founders Launch</p>
-      <h2 id="blFdTitle" class="bl-title">
-        $8,700+ build for <span class="bl-price">$850</span>
-        <span class="bl-dot" aria-hidden="true">•</span>
-        <span class="bl-slots"><strong id="blSlots">5</strong> slots</span>
+<section id="bim-founders" class="bimfd" aria-labelledby="bimfdTitle">
+  <div class="bimfd__rail" aria-hidden="true"></div>
+
+  <div class="bimfd__shell">
+    <header class="bimfd__head" data-aos="fade-up">
+      <span class="bimfd__eyebrow">Founders Launch</span>
+      <h2 id="bimfdTitle" class="bimfd__title">
+        $8,700+ value for <span class="bimfd__price">$850</span>
+        <span class="bimfd__dot" aria-hidden="true">•</span>
+        <span class="bimfd__slots"><strong id="bimfdSlots">5</strong> slots</span>
       </h2>
-      <p class="bl-sub">Conversion-first website + CRM wiring + four growth campaigns. Minimal, fast, and built around your pipeline. Launch in 2–3 weeks.</p>
-      <div class="bl-deadline" role="group" aria-label="Application deadline">
-        <span class="bl-chip">Apply by <time id="blDate" datetime="2025-09-30T23:59:59-05:00">Sep 30</time></span>
-        <span class="bl-chip">Time left <span id="blCountdown" class="bl-count" aria-live="polite">—:—:—</span></span>
-        <span class="bl-chip">No long-term contract</span>
+      <p class="bimfd__sub">Conversion-first BIM build: premium site, wired CRM, and four growth campaigns. Minimal, fast, and shipped in 2–3 weeks.</p>
+
+      <div class="bimfd__deadline" role="group" aria-label="Application deadline">
+        <span class="bimfd__chip">
+          Apply by <time id="bimfdDate" datetime="2025-09-30T23:59:59-05:00">Sep 30</time>
+        </span>
+        <span class="bimfd__chip">
+          Time left <span id="bimfdCountdown" class="bimfd__count" aria-live="polite">—:—:—</span>
+        </span>
+        <span class="bimfd__chip">No long-term contract</span>
       </div>
-      <ul class="bl-proof" data-aos="fade-up">
+
+      <ul class="bimfd__proof" data-aos="fade-up">
         <li>8-section custom site</li>
         <li>3 landing pages</li>
         <li>4 campaigns + playbooks</li>
@@ -26,64 +34,69 @@
       </ul>
     </header>
 
-    <div class="bl-grid">
-      <!-- Offer -->
-      <article class="bl-card bl-offer" data-aos="fade-up">
-        <h3 class="bl-card-title">What’s Included</h3>
-        <ul class="bl-list">
+    <div class="bimfd__grid">
+      <!-- OFFER -->
+      <article class="bimfd__card" data-aos="fade-up">
+        <div class="bimfd__cardhead">
+          <h3 class="bimfd__cardtitle">What’s Included</h3>
+          <span class="bimfd__tag">Valued at $8,700+</span>
+        </div>
+
+        <ul class="bimfd__list">
           <li>Custom website (8 polished sections) in BIM Labs style</li>
-          <li>3 landing pages for growth motions</li>
+          <li>3 landing pages (offer, lead magnet, retarget)</li>
           <li>4 done-with-you campaigns + PDF playbooks</li>
           <li>CRM setup: forms, pipeline, scheduling</li>
           <li>Kickoff strategy call + handoff workshop</li>
         </ul>
-        <div class="bl-tags">
-          <span class="bl-tag">Valued at $8,700+</span>
-          <span class="bl-tag bl-strong">Your cost: $850</span>
+
+        <div class="bimfd__tags">
+          <span class="bimfd__tag bimfd__tag--strong">Your cost: $850</span>
         </div>
-        <div class="bl-next">
-          <strong>Next steps:</strong> Apply → we confirm fit → kickoff in 3–5 days.
+
+        <div class="bimfd__next">
+          <strong>Next:</strong> Apply → we confirm fit → kickoff in 3–5 days.
         </div>
       </article>
 
-      <!-- Apply -->
-      <aside class="bl-card bl-apply" data-aos="fade-up" data-aos-delay="120" aria-label="Apply for Founders Launch">
-        <div class="bl-card-head">
-          <h3 class="bl-card-title">Apply Now</h3>
-          <span class="bl-tag">Founder pricing</span>
+      <!-- APPLY -->
+      <aside class="bimfd__card bimfd__apply" data-aos="fade-up" data-aos-delay="120" aria-label="Apply for Founders Launch">
+        <div class="bimfd__cardhead bimfd__cardhead--dark">
+          <h3 class="bimfd__cardtitle">Apply Now</h3>
+          <span class="bimfd__tag">Founder pricing</span>
         </div>
 
-        <form id="blForm" class="bl-form" novalidate>
-          <!-- honeypot -->
-          <input type="text" name="website" class="bl-hp" tabindex="-1" autocomplete="off" aria-hidden="true"/>
+        <form id="bimfdForm" class="bimfd__form" novalidate>
+          <!-- Honeypot -->
+          <input type="text" name="website" class="bimfd__hp" tabindex="-1" autocomplete="off" aria-hidden="true">
 
-          <label class="bl-label" for="blName">Name</label>
-          <input id="blName" name="name" class="bl-input" required autocomplete="name"/>
+          <label class="bimfd__label" for="bimfdName">Name</label>
+          <input id="bimfdName" name="name" class="bimfd__input" required autocomplete="name">
 
-          <label class="bl-label" for="blEmail">Email</label>
-          <input id="blEmail" name="email" class="bl-input" type="email" inputmode="email" required autocomplete="email"/>
+          <label class="bimfd__label" for="bimfdEmail">Email</label>
+          <input id="bimfdEmail" name="email" class="bimfd__input" type="email" inputmode="email" required autocomplete="email">
 
-          <label class="bl-label" for="blCompany">Company</label>
-          <input id="blCompany" name="company" class="bl-input" autocomplete="organization"/>
+          <label class="bimfd__label" for="bimfdCompany">Company</label>
+          <input id="bimfdCompany" name="company" class="bimfd__input" autocomplete="organization">
 
-          <label class="bl-label" for="blGoal">Your #1 goal in 60 days</label>
-          <textarea id="blGoal" name="goal" class="bl-textarea" rows="3" required></textarea>
+          <label class="bimfd__label" for="bimfdGoal">Your #1 goal in 60 days</label>
+          <textarea id="bimfdGoal" name="goal" class="bimfd__textarea" rows="3" required></textarea>
 
-          <p class="bl-hint">We’ll review fit and reply the same day with next steps.</p>
+          <p class="bimfd__hint">We’ll review fit and reply the same day with next steps.</p>
 
-          <div class="bl-actions">
-            <button id="blSubmit" class="bl-btn bl-primary" type="submit" aria-live="polite">
-              <span class="bl-btn-label">Apply for $850 Cohort</span>
-              <span class="bl-spinner" aria-hidden="true"></span>
+          <div class="bimfd__actions">
+            <button id="bimfdSubmit" class="bimfd__btn bimfd__primary" type="submit">
+              <span class="bimfd__btnlabel">Apply for $850 Cohort</span>
+              <span class="bimfd__spinner" aria-hidden="true"></span>
             </button>
-            <a href="#book" class="bl-btn bl-ghost">Prefer a vision call?</a>
+            <a href="#contact" class="bimfd__btn bimfd__ghost">Prefer a vision call?</a>
           </div>
 
-          <p class="bl-error" role="alert" aria-live="assertive" hidden></p>
+          <p class="bimfd__error" role="alert" aria-live="assertive" hidden></p>
 
-          <div class="bl-success" aria-live="polite">
-            <div class="bl-success-card">
-              <div class="bl-check" aria-hidden="true"></div>
+          <div class="bimfd__success" aria-live="polite">
+            <div class="bimfd__successcard">
+              <div class="bimfd__check" aria-hidden="true"></div>
               <h4>Application received</h4>
               <p>We’ll email you today with next steps.</p>
             </div>
@@ -91,113 +104,121 @@
         </form>
       </aside>
     </div>
-
-    <!-- Campaigns -->
-    <section class="bl-band" data-aos="fade-up">
-      <h3 class="bl-band-title">The 4 Campaigns</h3>
-      <div class="bl-camp-grid">
-        <div class="bl-camp"><h4>Launch / Announcement</h4><p>Announce clearly and convert interest into booked calls.</p></div>
-        <div class="bl-camp"><h4>Lead Magnet</h4><p>Deliver value, tag leads, nurture into consults.</p></div>
-        <div class="bl-camp"><h4>Offer Sprint</h4><p>Push a single offer with daily prompts and retargeting.</p></div>
-        <div class="bl-camp"><h4>Testimonial Drive</h4><p>Collect social proof and book demos from real stories.</p></div>
-      </div>
-    </section>
   </div>
 </section>
 
 <style>
-/* ===== Brand tokens (inherit if present) ===== */
-:root{
-  --bl-blue: var(--blue, #002D72);
-  --bl-ink:  var(--black, #0B0F19);
-  --bl-muted:#516072;
-  --bl-line: #E7EDF6;
-  --bl-sky:  #F3F8FF;
-  --bl-white:#FFFFFF;
+/* ============================
+   BIM Labs — Founders Styles
+   Brand tokens
+============================= */
+#bim-founders.bimfd{
+  --bim-black: #101014;
+  --bim-blue:  #4EC6FF;
+  --bim-white: #ffffff;
+  --bim-ink:   #E8EEF6;
+  --bim-muted: #B8C6D8;
+  --bim-line:  #1E232E;
+  --bim-glass: rgba(22,26,32,.78);
+  background: var(--bim-black);
+  color: var(--bim-ink);
+  font-family: 'Montserrat', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  letter-spacing: .01em;
 }
 
-/* Layout */
-.bl-wrap{background:var(--bl-white); color:var(--bl-ink); font-family:'Montserrat',system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;}
-.bl-ribbon{height:6px; background:linear-gradient(90deg,#0B3B8B,#4EC6FF 35%,#0B3B8B); box-shadow:0 8px 18px rgba(78,198,255,.25)}
-.bl-shell{width:min(1100px,92vw); margin:0 auto; padding: clamp(28px,4vw,46px) 0}
+/* Top cyan rail */
+.bimfd__rail{ height:6px; background:linear-gradient(90deg, var(--bim-blue), rgba(78,198,255,.35), var(--bim-blue)); box-shadow:0 10px 28px #4ec6ff2b; }
+
+.bimfd__shell{ width:min(1100px,92vw); margin:0 auto; padding: clamp(28px,4vw,46px) 0; }
 
 /* Head */
-.bl-head{text-align:center}
-.bl-eyebrow{color:var(--bl-blue); font-weight:900; text-transform:uppercase; letter-spacing:.18em; font-size:.8rem; margin:0 0 .6rem}
-.bl-title{margin:.2rem 0 .5rem; font-weight:900; line-height:1.06; font-size:clamp(30px,4.8vw,46px)}
-.bl-price{color:var(--bl-blue)}
-.bl-dot{opacity:.35; margin:0 .55ch}
-.bl-sub{max-width:68ch; margin:0 auto; color:var(--bl-muted)}
-.bl-deadline{margin-top:.8rem; display:flex; gap:.6rem; justify-content:center; flex-wrap:wrap; align-items:center; font-weight:800; color:#193246}
-.bl-chip{background:var(--bl-sky); border:1px solid #D6E6FA; padding:.38rem .8rem; border-radius:999px}
-.bl-count{font-variant-numeric:tabular-nums; background:#0E1116; color:#fff; padding:.35rem .55rem; border-radius:8px}
+.bimfd__head{ text-align:center; }
+.bimfd__eyebrow{ color:var(--bim-blue); font-weight:900; text-transform:uppercase; letter-spacing:.18em; font-size:.8rem; margin:0 0 .6rem; display:inline-block; }
+.bimfd__title{ margin:.25rem 0 .55rem; font-weight:900; line-height:1.05; font-size: clamp(30px, 5vw, 48px); color:#fff; }
+.bimfd__price{ color:var(--bim-blue); }
+.bimfd__dot{ opacity:.35; margin:0 .55ch; }
+.bimfd__sub{ max-width:68ch; margin:0 auto; color:var(--bim-muted); }
+
+.bimfd__deadline{ margin-top:.9rem; display:flex; gap:.6rem; justify-content:center; flex-wrap:wrap; align-items:center; font-weight:800; color:#cfe3f5; }
+.bimfd__chip{ background:#0f141c; border:1px solid #243146; padding:.38rem .8rem; border-radius:999px; }
+.bimfd__count{ font-variant-numeric:tabular-nums; background:#0E1116; color:#fff; padding:.35rem .55rem; border-radius:8px; }
 
 /* Proof chips */
-.bl-proof{margin:1rem 0 0; padding:0; list-style:none; display:flex; justify-content:center; gap:.6rem; flex-wrap:wrap}
-.bl-proof li{padding:.45rem .8rem; border-radius:999px; background:var(--bl-sky); border:1px solid #D6E6FA; color:#083347; font-weight:800}
+.bimfd__proof{ margin:1rem 0 0; padding:0; list-style:none; display:flex; justify-content:center; gap:.6rem; flex-wrap:wrap; }
+.bimfd__proof li{ padding:.45rem .8rem; border-radius:999px; background:rgba(255,255,255,.05); border:1px solid #243146; color:#bcd2ea; font-weight:800; }
 
 /* Grid */
-.bl-grid{display:grid; gap:22px; grid-template-columns:1fr 1fr; align-items:start; margin-top: clamp(16px,3vw,24px)}
-@media (max-width:900px){ .bl-grid{grid-template-columns:1fr} }
+.bimfd__grid{ display:grid; gap:22px; grid-template-columns:1fr 1fr; align-items:start; margin-top: clamp(16px,3vw,24px); }
+@media (max-width:900px){ .bimfd__grid{ grid-template-columns:1fr } }
 
-/* Cards */
-.bl-card{background:#fff; border:1px solid var(--bl-line); border-radius:16px; box-shadow:0 10px 30px rgba(0,0,0,.06); overflow:hidden}
-.bl-card-head{display:flex; justify-content:space-between; align-items:center; gap:10px; padding:1rem 1.1rem; border-bottom:1px solid var(--bl-line)}
-.bl-card-title{margin:0; font-size:1.05rem; font-weight:900}
-.bl-offer .bl-list, .bl-apply .bl-form{padding:1.1rem}
+/* Cards (glass) */
+.bimfd__card{
+  background: var(--bim-glass);
+  border:1px solid var(--bim-line);
+  border-radius:16px;
+  box-shadow: 0 10px 36px rgba(0,0,0,.35), 0 6px 24px rgba(78,198,255,.12);
+  overflow:hidden;
+}
+.bimfd__cardhead{
+  display:flex; justify-content:space-between; align-items:center; gap:10px;
+  padding:1rem 1.1rem; border-bottom:1px solid #243146; background:linear-gradient(180deg, rgba(255,255,255,.03), transparent);
+}
+.bimfd__cardhead--dark{ background:linear-gradient(180deg, #0f141c, rgba(255,255,255,.03)); }
+.bimfd__cardtitle{ margin:0; font-size:1.05rem; font-weight:900; color:#eaf3ff; }
+.bimfd__tag{ background:#101a27; color:#9fd6ff; font-weight:900; border:1px solid #243146; padding:.28rem .7rem; border-radius:999px; }
 
-/* Lists / tags */
-.bl-list{margin:0; padding-left:1.1rem; line-height:1.68}
-.bl-tags{display:flex; gap:.6rem; flex-wrap:wrap; padding:0 1.1rem 1.1rem}
-.bl-tag{background:var(--bl-sky); border:1px solid #D6E6FA; padding:.32rem .72rem; border-radius:999px; font-weight:900; color:#0D2C3A}
-.bl-strong{background:var(--bl-blue); border-color:transparent; color:#fff}
-.bl-next{border-top:1px solid var(--bl-line); padding:.9rem 1.1rem; color:var(--bl-muted)}
+.bimfd__list{ margin:0; padding:1.1rem 1.1rem 1.1rem 1.5rem; line-height:1.7; color:#e3ecf3; }
+.bimfd__tags{ display:flex; gap:.6rem; flex-wrap:wrap; padding:0 1.1rem 1.1rem; }
+.bimfd__tag--strong{ background: var(--bim-blue); color:#061018; border:none; }
+
+.bimfd__next{ border-top:1px solid #243146; padding:.9rem 1.1rem; color:#b8c6d8; }
 
 /* Form */
-.bl-hp{position:absolute; left:-9999px; width:1px; height:1px; opacity:0}
-.bl-label{display:block; font-weight:900; color:var(--bl-blue); margin:.5rem 0 .28rem}
-.bl-input,.bl-textarea{width:100%; border:1px solid #D8E4F1; border-radius:10px; padding:.8rem 1rem; font-size:1rem; background:#fff; color:var(--bl-ink)}
-.bl-input:focus,.bl-textarea:focus{outline:none; border-color:var(--bl-blue); box-shadow:0 0 0 4px rgba(0,45,114,.15)}
-.bl-hint{margin:.35rem 0 0; color:#6a7c92; font-size:.94rem}
-.bl-actions{display:flex; gap:.6rem; align-items:center; flex-wrap:wrap; margin-top:1rem}
-.bl-btn{display:inline-flex; align-items:center; gap:.6rem; border:none; border-radius:999px; cursor:pointer; font-weight:900; padding:.95rem 1.45rem; text-decoration:none}
-.bl-primary{background:var(--bl-blue); color:#fff; box-shadow:0 10px 26px rgba(0,45,114,.25)}
-.bl-primary:hover{filter:brightness(.96)}
-.bl-primary.is-loading{opacity:.85; pointer-events:none}
-.bl-ghost{background:#0E1116; color:#fff}
-.bl-ghost:hover{opacity:.92}
-.bl-spinner{width:18px; height:18px; border-radius:50%; border:2px solid rgba(255,255,255,.6); border-top-color:#0E1116; display:none}
-.bl-primary.is-loading .bl-spinner{display:inline-block; animation:blspin .8s linear infinite}
-@keyframes blspin{to{transform:rotate(360deg)}}
-.bl-error{margin:.6rem 0 0; color:#a91919; font-weight:800}
-.bl-success{display:none}
-.bl-success.is-show{display:block; margin-top:1rem}
-.bl-success-card{background:var(--bl-sky); border:1px solid #D6E6FA; padding:1rem; border-radius:12px; text-align:center}
-.bl-check{width:22px; height:22px; border-radius:50%; background:#22d3ee; margin:0 auto .6rem; position:relative}
-.bl-check::after{content:""; position:absolute; left:6px; top:5px; width:8px; height:4px; border:3px solid #0b1320; border-top:none; border-right:none; transform:rotate(-45deg)}
+.bimfd__apply .bimfd__form{ padding:1.1rem; }
+.bimfd__hp{ position:absolute; left:-9999px; width:1px; height:1px; opacity:0; }
+.bimfd__label{ display:block; font-weight:900; color:var(--bim-blue); margin:.5rem 0 .25rem; }
+.bimfd__input, .bimfd__textarea{
+  width:100%; background:#0f141c; color:#eaf3ff; border:1px solid #223146; border-radius:10px;
+  padding:.8rem 1rem; font-size:1rem; outline:none; transition:border .15s, box-shadow .15s;
+}
+.bimfd__input:focus, .bimfd__textarea:focus{ border-color:#2a90c6; box-shadow:0 0 0 6px rgba(78,198,255,.18); }
+.bimfd__hint{ margin:.35rem 0 0; color:#9db2c8; font-size:.94rem; }
+.bimfd__actions{ display:flex; gap:.6rem; align-items:center; flex-wrap:wrap; margin-top:1rem; }
 
-/* Campaign band */
-.bl-band{margin-top: clamp(18px,4vw,36px); background:#fff; border:1px solid var(--bl-line); border-radius:16px; box-shadow:0 8px 24px rgba(0,0,0,.05); padding: clamp(16px,3vw,22px)}
-.bl-band-title{margin:0 0 .6rem; font-size:1.1rem; font-weight:900}
-.bl-camp-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:12px}
-@media(max-width:900px){ .bl-camp-grid{grid-template-columns:1fr 1fr} }
-@media(max-width:600px){ .bl-camp-grid{grid-template-columns:1fr} }
-.bl-camp{border:1px solid var(--bl-line); border-radius:12px; padding:1rem; background:#fff}
-.bl-camp h4{margin:0 0 .25rem; font-size:1rem}
-.bl-camp p{margin:0; color:var(--bl-muted); font-size:.95rem}
+.bimfd__btn{ display:inline-flex; align-items:center; gap:.6rem; border:none; border-radius:999px; cursor:pointer; font-weight:900; padding:.95rem 1.45rem; text-decoration:none; }
+.bimfd__primary{ background:var(--bim-blue); color:#0b1016; box-shadow:0 12px 30px rgba(78,198,255,.28); }
+.bimfd__primary:hover{ filter:brightness(.96); }
+.bimfd__primary.is-loading{ opacity:.85; pointer-events:none; }
+.bimfd__ghost{ background:#0E1116; color:#fff; text-decoration:none; }
+.bimfd__ghost:hover{ opacity:.92; }
+
+.bimfd__spinner{ width:18px; height:18px; border-radius:50%; border:2px solid rgba(255,255,255,.6); border-top-color:#0E1116; display:none; }
+.bimfd__primary.is-loading .bimfd__spinner{ display:inline-block; animation: bimspin .8s linear infinite; }
+@keyframes bimspin{ to{ transform: rotate(360deg); } }
+
+.bimfd__error{ margin:.6rem 0 0; color:#ff9b9b; font-weight:800; }
+.bimfd__success{ display:none; }
+.bimfd__success.is-show{ display:block; margin-top:1rem; }
+.bimfd__successcard{
+  background:#0f141c; border:1px solid #243146; padding:1rem; border-radius:12px; text-align:center;
+  box-shadow: inset 0 1px 10px rgba(78,198,255,.08);
+}
+.bimfd__check{ width:22px; height:22px; border-radius:50%; background:#22d3ee; margin:0 auto .6rem; position:relative; box-shadow:0 0 0 6px #22d3ee22; }
+.bimfd__check::after{ content:""; position:absolute; left:6px; top:5px; width:8px; height:4px; border:3px solid #0b1320; border-top:none; border-right:none; transform:rotate(-45deg); }
 
 /* Motion prefs */
-@media (prefers-reduced-motion: reduce){ .bl-primary.is-loading .bl-spinner{animation:none} }
+@media (prefers-reduced-motion: reduce){ .bimfd__primary.is-loading .bimfd__spinner{ animation:none } }
 </style>
 
 <script>
 (function(){
   // Countdown
-  const dateEl = document.getElementById('blDate');
-  const countdown = document.getElementById('blCountdown');
-  const slots = document.getElementById('blSlots');
+  const dateEl = document.getElementById('bimfdDate');
+  const countdown = document.getElementById('bimfdCountdown');
+  const slotsEl = document.getElementById('bimfdSlots');
   const DEADLINE = dateEl ? new Date(dateEl.getAttribute('datetime')) : null;
-  function pad(n){return n<10 ? '0'+n : ''+n}
+
+  function pad(n){ return n<10 ? '0'+n : ''+n; }
   function tick(){
     if(!DEADLINE || !countdown) return;
     const ms = DEADLINE - new Date();
@@ -209,15 +230,15 @@
   tick();
 
   // Form
-  const form = document.getElementById('blForm');
-  const btn = document.getElementById('blSubmit');
-  const ok = document.querySelector('#founders .bl-success');
-  const err = document.querySelector('#founders .bl-error');
+  const form = document.getElementById('bimfdForm');
+  const btn  = document.getElementById('bimfdSubmit');
+  const ok   = document.querySelector('#bim-founders .bimfd__success');
+  const err  = document.querySelector('#bim-founders .bimfd__error');
 
   function decSlots(){
-    if(!slots) return;
-    const next = Math.max(parseInt(slots.textContent || '5',10)-1,0);
-    slots.textContent = String(next);
+    if(!slotsEl) return;
+    const next = Math.max(parseInt(slotsEl.textContent || '5',10)-1,0);
+    slotsEl.textContent = String(next);
   }
 
   form?.addEventListener('submit', async (e)=>{
@@ -228,9 +249,9 @@
     const hp = form.querySelector('input[name="website"]');
     if(hp && hp.value){ return; }
 
-    const name = form.blName.value.trim();
-    const email = form.blEmail.value.trim();
-    const goal = form.blGoal.value.trim();
+    const name = form.bimfdName.value.trim();
+    const email= form.bimfdEmail.value.trim();
+    const goal = form.bimfdGoal.value.trim();
     if(!name || !email || !goal){
       err.textContent = 'Please complete all required fields.';
       err.hidden = false;
@@ -244,10 +265,11 @@
       const payload = {
         name,
         email,
-        company: form.blCompany.value.trim(),
+        company: form.bimfdCompany.value.trim(),
         goal,
         source: 'Founders Launch Cohort'
       };
+
       const res = await fetch('https://formspree.io/f/xkgbgbjd', {
         method:'POST',
         headers:{'Accept':'application/json','Content-Type':'application/json'},
