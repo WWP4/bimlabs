@@ -13,15 +13,18 @@
       --white: #fff;
       --glass: rgba(36,52,82,0.29);
       --glass2: rgba(22,26,32,0.66);
+      /* live theme colors we’ll animate */
+  --bg: #4EC6FF;   /* start: brand blue */
+  --ink: #101014;  /* start: dark text on blue */
     }
-    body {
-      background: var(--black);
-      color: var(--white);
-      margin: 0; padding: 0;
-      font-family: 'Montserrat', Arial, sans-serif;
-      letter-spacing: 0.01em;
-      min-height: 100vh;
-    }
+body {
+  background: var(--bg);
+  color: var(--ink);
+  margin: 0; padding: 0;
+  font-family: 'Montserrat', Arial, sans-serif;
+  letter-spacing: 0.01em;
+  min-height: 100vh;
+}
     a { color: var(--blue); text-decoration: none; transition: color .17s;}
     a:hover { color: #80e1ff; }
     /* Logo */
@@ -1341,7 +1344,7 @@ body[data-svc="2"]{ --svc-ang: .5turn;  --svc-speed: 5.6s; }
     </svg>
   </div>
 
- <section class="hero" id="home">
+<section class="hero theme-fader" id="home">
   <canvas id="hero-canvas" aria-hidden="true"></canvas>
 
   <div class="hero__container" data-hero-content>
@@ -1469,7 +1472,7 @@ body[data-svc="2"]{ --svc-ang: .5turn;  --svc-speed: 5.6s; }
 
 
 
-<section class="features-section" id="features">
+<section class="features-section theme-fader" id="features">
   <div class="features-wrap">
     <div class="features-copy" data-aos="fade-right">
       <h2 class="features-title">Minimal On Purpose</h2>
@@ -2865,6 +2868,56 @@ document.addEventListener('DOMContentLoaded', () => {
 })();
 </script>
 
+<script>
+(function(){
+  // Which sections to animate (add/remove selectors as needed)
+  const targets = document.querySelectorAll('.theme-fader');
+  if (!targets.length) return;
+
+  // helpers
+  function lerpHex(a, b, t){
+    const ah = parseInt(a.slice(1),16), bh = parseInt(b.slice(1),16);
+    const ar=(ah>>16)&255, ag=(ah>>8)&255, ab=ah&255;
+    const br=(bh>>16)&255, bg=(bh>>8)&255, bb=bh&255;
+    const r = Math.round(ar+(br-ar)*t),
+          g = Math.round(ag+(bg-ag)*t),
+          b2= Math.round(ab+(bb-ab)*t);
+    return `#${(1<<24 | r<<16 | g<<8 | b2).toString(16).slice(1)}`;
+  }
+
+  // Tuning: start/end colours for the fade INSIDE each chosen section
+  const START_BG  = '#4EC6FF';  // your brand blue
+  const END_BG    = '#000000';  // black
+  const START_INK = '#101014';  // dark text on blue
+  const END_INK   = '#FFFFFF';  // white text on black
+
+  // Map each section independently
+  function update(){
+    const vh = window.innerHeight || 1;
+
+    targets.forEach(el => {
+      const rect = el.getBoundingClientRect();
+
+      // Progress from 0→1 while the section is on screen.
+      // This version starts “after” the top enters (10%) and completes near the bottom (90%).
+      const start = vh * 0.10;
+      const end   = Math.max(start+1, rect.height - vh*0.10);
+      let t = ( (vh - rect.top - start) / end );
+      t = Math.max(0, Math.min(1, t));          // clamp
+      // Optional ease:
+      t = t*t*(3-2*t);                           // smoothstep
+
+      // Set ONLY this section’s variables
+      el.style.setProperty('--fader-bg',  lerpHex(START_BG,  END_BG,  t));
+      el.style.setProperty('--fader-ink', lerpHex(START_INK, END_INK, t));
+    });
+  }
+
+  update();
+  addEventListener('scroll', update, {passive:true});
+  addEventListener('resize', update);
+})();
+</script>
 
 </body>
 </html>
