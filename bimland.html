@@ -1,291 +1,380 @@
 <!-- ============================
-  BIM LABS — FOUNDERS LAUNCH (5 SLOTS)
+  BIM Labs — Contractors Landing + Instant Quote (drop-in)
   Brand: #101014 / #4EC6FF / #FFFFFF
-  AOS fade-only. No external dependencies beyond AOS.
+  AOS fade-only
 ============================= -->
-<section id="bim-founders" class="bimfd" aria-labelledby="bimfdTitle">
-  <div class="bimfd__rail" aria-hidden="true"></div>
 
-  <div class="bimfd__shell">
-    <header class="bimfd__head" data-aos="fade-up">
-      <span class="bimfd__eyebrow">Founders Launch</span>
-      <h2 id="bimfdTitle" class="bimfd__title">
-        $8,700+ value for <span class="bimfd__price">$850</span>
-        <span class="bimfd__dot" aria-hidden="true">•</span>
-        <span class="bimfd__slots"><strong id="bimfdSlots">5</strong> slots</span>
-      </h2>
-      <p class="bimfd__sub">Conversion-first BIM build: premium site, wired CRM, and four growth campaigns. Minimal, fast, and shipped in 2–3 weeks.</p>
+<section id="contractors" class="ctr-wrap" aria-labelledby="ctrTitle">
+  <div class="ctr-rail" aria-hidden="true"></div>
 
-      <div class="bimfd__deadline" role="group" aria-label="Application deadline">
-        <span class="bimfd__chip">
-          Apply by <time id="bimfdDate" datetime="2025-09-30T23:59:59-05:00">Sep 30</time>
-        </span>
-        <span class="bimfd__chip">
-          Time left <span id="bimfdCountdown" class="bimfd__count" aria-live="polite">—:—:—</span>
-        </span>
-        <span class="bimfd__chip">No long-term contract</span>
-      </div>
-
-      <ul class="bimfd__proof" data-aos="fade-up">
-        <li>8-section custom site</li>
-        <li>3 landing pages</li>
-        <li>4 campaigns + playbooks</li>
-        <li>Forms • pipeline • scheduling</li>
+  <div class="ctr-shell">
+    <header class="ctr-head" data-aos="fade-up">
+      <p class="ctr-eyebrow">For Contractors</p>
+      <h2 id="ctrTitle" class="ctr-title">Stop losing jobs to slow quotes.</h2>
+      <p class="ctr-sub">Give prospects a professional ballpark in 60 seconds, capture the lead, and auto-book a site assessment. Our instant quote tool replaces days of back-and-forth and wins the speed game.</p>
+      <ul class="ctr-proof">
+        <li>Ballpark quotes with ± confidence</li>
+        <li>Trade-specific pricing logic</li>
+        <li>PDF/email summary to client</li>
       </ul>
     </header>
 
-    <div class="bimfd__grid">
-      <!-- OFFER -->
-      <article class="bimfd__card" data-aos="fade-up">
-        <div class="bimfd__cardhead">
-          <h3 class="bimfd__cardtitle">What’s Included</h3>
-          <span class="bimfd__tag">Valued at $8,700+</span>
-        </div>
+    <!-- ===== Instant Quote Tool ===== -->
+    <section id="iqt" class="iqt" aria-label="Instant Quote Tool" data-aos="fade-up">
+      <form id="iqtForm" class="iqt-form" novalidate>
+        <div class="iqt-grid">
+          <div class="iqt-left">
+            <div class="iqt-row">
+              <label class="iqt-label" for="trade">Trade</label>
+              <select id="trade" class="iqt-input" required>
+                <option value="roofing">Roofing</option>
+                <option value="landscaping">Landscaping</option>
+                <option value="remodel">Remodel</option>
+                <option value="hvac">HVAC</option>
+              </select>
+            </div>
 
-        <ul class="bimfd__list">
-          <li>Custom website (8 polished sections) in BIM Labs style</li>
-          <li>3 landing pages (offer, lead magnet, retarget)</li>
-          <li>4 done-with-you campaigns + PDF playbooks</li>
-          <li>CRM setup: forms, pipeline, scheduling</li>
-          <li>Kickoff strategy call + handoff workshop</li>
-        </ul>
+            <div class="iqt-row">
+              <label class="iqt-label" for="size">Project size (sq ft)</label>
+              <input id="size" class="iqt-input" type="number" min="50" step="10" value="1200" required>
+            </div>
 
-        <div class="bimfd__tags">
-          <span class="bimfd__tag bimfd__tag--strong">Your cost: $850</span>
-        </div>
+            <div class="iqt-row">
+              <label class="iqt-label" for="complexity">Complexity</label>
+              <select id="complexity" class="iqt-input" required>
+                <option value="low">Low</option>
+                <option value="standard" selected>Standard</option>
+                <option value="high">High</option>
+              </select>
+            </div>
 
-        <div class="bimfd__next">
-          <strong>Next:</strong> Apply → we confirm fit → kickoff in 3–5 days.
-        </div>
-      </article>
+            <div class="iqt-row iqt-row--two">
+              <label class="iqt-check"><input id="premium" type="checkbox"> <span>Premium materials</span></label>
+              <label class="iqt-check"><input id="rush" type="checkbox"> <span>Rush turnaround</span></label>
+            </div>
 
-      <!-- APPLY -->
-      <aside class="bimfd__card bimfd__apply" data-aos="fade-up" data-aos-delay="120" aria-label="Apply for Founders Launch">
-        <div class="bimfd__cardhead bimfd__cardhead--dark">
-          <h3 class="bimfd__cardtitle">Apply Now</h3>
-          <span class="bimfd__tag">Founder pricing</span>
-        </div>
+            <div class="iqt-row">
+              <label class="iqt-label" for="distance">Distance from your shop (miles)</label>
+              <input id="distance" class="iqt-input" type="number" min="0" step="1" value="12">
+            </div>
 
-        <form id="bimfdForm" class="bimfd__form" novalidate>
-          <!-- Honeypot -->
-          <input type="text" name="website" class="bimfd__hp" tabindex="-1" autocomplete="off" aria-hidden="true">
-
-          <label class="bimfd__label" for="bimfdName">Name</label>
-          <input id="bimfdName" name="name" class="bimfd__input" required autocomplete="name">
-
-          <label class="bimfd__label" for="bimfdEmail">Email</label>
-          <input id="bimfdEmail" name="email" class="bimfd__input" type="email" inputmode="email" required autocomplete="email">
-
-          <label class="bimfd__label" for="bimfdCompany">Company</label>
-          <input id="bimfdCompany" name="company" class="bimfd__input" autocomplete="organization">
-
-          <label class="bimfd__label" for="bimfdGoal">Your #1 goal in 60 days</label>
-          <textarea id="bimfdGoal" name="goal" class="bimfd__textarea" rows="3" required></textarea>
-
-          <p class="bimfd__hint">We’ll review fit and reply the same day with next steps.</p>
-
-          <div class="bimfd__actions">
-            <button id="bimfdSubmit" class="bimfd__btn bimfd__primary" type="submit">
-              <span class="bimfd__btnlabel">Apply for $850 Cohort</span>
-              <span class="bimfd__spinner" aria-hidden="true"></span>
-            </button>
-            <a href="#contact" class="bimfd__btn bimfd__ghost">Prefer a vision call?</a>
-          </div>
-
-          <p class="bimfd__error" role="alert" aria-live="assertive" hidden></p>
-
-          <div class="bimfd__success" aria-live="polite">
-            <div class="bimfd__successcard">
-              <div class="bimfd__check" aria-hidden="true"></div>
-              <h4>Application received</h4>
-              <p>We’ll email you today with next steps.</p>
+            <div class="iqt-actions">
+              <button type="button" id="estimateBtn" class="iqt-btn iqt-primary">Get Instant Estimate</button>
+              <button type="button" id="bookBtn" class="iqt-btn iqt-ghost">Book a Site Assessment</button>
             </div>
           </div>
-        </form>
-      </aside>
-    </div>
+
+          <aside class="iqt-right" aria-live="polite">
+            <div class="iqt-card">
+              <h3 class="iqt-card-title">Estimated Range</h3>
+              <div class="iqt-nums">
+                <div>
+                  <div class="iqt-num" id="lowNum">$—</div>
+                  <div class="iqt-hint">Low</div>
+                </div>
+                <div>
+                  <div class="iqt-num" id="highNum">$—</div>
+                  <div class="iqt-hint">High</div>
+                </div>
+              </div>
+
+              <div class="iqt-conf">
+                <span class="iqt-conf-label">Confidence</span>
+                <div class="iqt-conf-bar"><span id="confBar" style="width:0%"></span></div>
+                <span class="iqt-conf-note" id="confNote">—</span>
+              </div>
+
+              <div class="iqt-break">
+                <div class="iqt-line"><span>Materials</span><strong id="materialsNum">$—</strong></div>
+                <div class="iqt-line"><span>Labor</span><strong id="laborNum">$—</strong></div>
+                <div class="iqt-line"><span>Travel & Overhead</span><strong id="overheadNum">$—</strong></div>
+              </div>
+
+              <p class="iqt-disclaimer">This is a preliminary ballpark. We’ll confirm on a quick call or site visit before work begins.</p>
+            </div>
+
+            <div class="iqt-card">
+              <h3 class="iqt-card-title">Email Me This Estimate</h3>
+              <div class="iqt-row">
+                <label class="iqt-label" for="name">Name</label>
+                <input id="name" class="iqt-input" type="text" autocomplete="name" required>
+              </div>
+              <div class="iqt-row">
+                <label class="iqt-label" for="email">Email</label>
+                <input id="email" class="iqt-input" type="email" autocomplete="email" required>
+              </div>
+              <div class="iqt-row">
+                <label class="iqt-label" for="phone">Phone (optional)</label>
+                <input id="phone" class="iqt-input" type="tel" autocomplete="tel">
+              </div>
+
+              <div class="iqt-actions">
+                <button type="submit" class="iqt-btn iqt-primary" id="sendBtn">
+                  <span class="iqt-btn-label">Send & Request Call</span>
+                  <span class="iqt-spinner" aria-hidden="true"></span>
+                </button>
+                <p class="iqt-trust">We reply same-day. No spam.</p>
+              </div>
+
+              <p class="iqt-error" id="iqtError" role="alert" hidden></p>
+              <div class="iqt-success" id="iqtSuccess" hidden>
+                <div class="iqt-check" aria-hidden="true"></div>
+                <p>Sent. We’ll email your estimate and next steps today.</p>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </form>
+    </section>
   </div>
 </section>
 
 <style>
-/* ============================
-   BIM Labs — Founders Styles
-   Brand tokens
-============================= */
-#bim-founders.bimfd{
-  --bim-black: #101014;
-  --bim-blue:  #4EC6FF;
-  --bim-white: #ffffff;
-  --bim-ink:   #E8EEF6;
-  --bim-muted: #B8C6D8;
-  --bim-line:  #1E232E;
-  --bim-glass: rgba(22,26,32,.78);
-  background: var(--bim-black);
-  color: var(--bim-ink);
-  font-family: 'Montserrat', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-  letter-spacing: .01em;
-}
+/* ===== Brand ===== */
+.ctr-wrap{ --black:#101014; --blue:#4EC6FF; --white:#fff; --ink:#E8EEF6; --muted:#B8C6D8; --line:#1E232E; --glass:rgba(16,22,30,.78);
+  background:var(--black); color:var(--ink); font-family:'Montserrat',system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif; }
+.ctr-rail{ height:6px; background:linear-gradient(90deg,var(--blue),rgba(78,198,255,.35),var(--blue)); box-shadow:0 10px 28px #4ec6ff2b; }
+.ctr-shell{ width:min(1100px,92vw); margin:0 auto; padding: clamp(28px,4vw,46px) 0; }
 
-/* Top cyan rail */
-.bimfd__rail{ height:6px; background:linear-gradient(90deg, var(--bim-blue), rgba(78,198,255,.35), var(--bim-blue)); box-shadow:0 10px 28px #4ec6ff2b; }
+.ctr-head{text-align:center}
+.ctr-eyebrow{ color:var(--blue); font-weight:900; text-transform:uppercase; letter-spacing:.18em; font-size:.8rem; margin:0 0 .6rem }
+.ctr-title{ margin:.2rem 0 .5rem; font-weight:900; line-height:1.06; font-size:clamp(30px,5vw,46px); color:#fff }
+.ctr-sub{ max-width:70ch; margin:0 auto; color:var(--muted) }
+.ctr-proof{ display:flex; gap:.6rem; flex-wrap:wrap; justify-content:center; margin:1rem 0 0; padding:0; list-style:none }
+.ctr-proof li{ padding:.45rem .8rem; border-radius:999px; background:rgba(255,255,255,.05); border:1px solid #243146; color:#bcd2ea; font-weight:800 }
 
-.bimfd__shell{ width:min(1100px,92vw); margin:0 auto; padding: clamp(28px,4vw,46px) 0; }
+/* ===== Tool layout ===== */
+.iqt{ margin-top: clamp(18px,4vw,32px) }
+.iqt-grid{ display:grid; gap:22px; grid-template-columns: 1fr 1fr; align-items:start }
+@media (max-width:900px){ .iqt-grid{ grid-template-columns:1fr } }
 
-/* Head */
-.bimfd__head{ text-align:center; }
-.bimfd__eyebrow{ color:var(--bim-blue); font-weight:900; text-transform:uppercase; letter-spacing:.18em; font-size:.8rem; margin:0 0 .6rem; display:inline-block; }
-.bimfd__title{ margin:.25rem 0 .55rem; font-weight:900; line-height:1.05; font-size: clamp(30px, 5vw, 48px); color:#fff; }
-.bimfd__price{ color:var(--bim-blue); }
-.bimfd__dot{ opacity:.35; margin:0 .55ch; }
-.bimfd__sub{ max-width:68ch; margin:0 auto; color:var(--bim-muted); }
+.iqt-left{ background:var(--glass); border:1px solid var(--line); border-radius:16px; padding:1.1rem; box-shadow:0 10px 36px rgba(0,0,0,.35), 0 6px 24px rgba(78,198,255,.12) }
+.iqt-right{ display:grid; gap:16px }
+.iqt-card{ background:var(--glass); border:1px solid var(--line); border-radius:16px; padding:1.1rem; box-shadow:0 10px 36px rgba(0,0,0,.35), 0 6px 24px rgba(78,198,255,.12) }
+.iqt-card-title{ margin:0 0 .6rem; font-size:1.05rem; font-weight:900; color:#eaf3ff }
 
-.bimfd__deadline{ margin-top:.9rem; display:flex; gap:.6rem; justify-content:center; flex-wrap:wrap; align-items:center; font-weight:800; color:#cfe3f5; }
-.bimfd__chip{ background:#0f141c; border:1px solid #243146; padding:.38rem .8rem; border-radius:999px; }
-.bimfd__count{ font-variant-numeric:tabular-nums; background:#0E1116; color:#fff; padding:.35rem .55rem; border-radius:8px; }
+.iqt-row{ margin:.55rem 0 }
+.iqt-row--two{ display:flex; gap:12px; align-items:center }
+.iqt-label{ display:block; font-weight:900; color:var(--blue); margin:.2rem 0 .25rem }
+.iqt-input{ width:100%; background:#0f141c; color:#eaf3ff; border:1px solid #223146; border-radius:10px; padding:.8rem 1rem; font-size:1rem; outline:none; transition:border .15s, box-shadow .15s }
+.iqt-input:focus{ border-color:#2a90c6; box-shadow:0 0 0 6px rgba(78,198,255,.18) }
+.iqt-check{ display:flex; align-items:center; gap:.5rem; color:#cfe1f4; font-weight:800 }
+.iqt-actions{ display:flex; gap:.6rem; flex-wrap:wrap; margin-top:1rem }
 
-/* Proof chips */
-.bimfd__proof{ margin:1rem 0 0; padding:0; list-style:none; display:flex; justify-content:center; gap:.6rem; flex-wrap:wrap; }
-.bimfd__proof li{ padding:.45rem .8rem; border-radius:999px; background:rgba(255,255,255,.05); border:1px solid #243146; color:#bcd2ea; font-weight:800; }
+.iqt-btn{ display:inline-flex; align-items:center; gap:.6rem; border:none; border-radius:999px; cursor:pointer; font-weight:900; padding:.9rem 1.4rem; text-decoration:none }
+.iqt-primary{ background:var(--blue); color:#091018; box-shadow:0 12px 30px rgba(78,198,255,.28) }
+.iqt-primary:hover{ filter:brightness(.96) }
+.iqt-ghost{ background:#0E1116; color:#fff }
 
-/* Grid */
-.bimfd__grid{ display:grid; gap:22px; grid-template-columns:1fr 1fr; align-items:start; margin-top: clamp(16px,3vw,24px); }
-@media (max-width:900px){ .bimfd__grid{ grid-template-columns:1fr } }
+.iqt-nums{ display:flex; gap:16px; justify-content:space-between; align-items:flex-end; margin:.2rem 0 .4rem }
+.iqt-num{ font-size:clamp(20px,3.2vw,32px); font-weight:900; color:#fff }
+.iqt-hint{ color:#9db2c8; font-weight:700; font-size:.92rem }
 
-/* Cards (glass) */
-.bimfd__card{
-  background: var(--bim-glass);
-  border:1px solid var(--bim-line);
-  border-radius:16px;
-  box-shadow: 0 10px 36px rgba(0,0,0,.35), 0 6px 24px rgba(78,198,255,.12);
-  overflow:hidden;
-}
-.bimfd__cardhead{
-  display:flex; justify-content:space-between; align-items:center; gap:10px;
-  padding:1rem 1.1rem; border-bottom:1px solid #243146; background:linear-gradient(180deg, rgba(255,255,255,.03), transparent);
-}
-.bimfd__cardhead--dark{ background:linear-gradient(180deg, #0f141c, rgba(255,255,255,.03)); }
-.bimfd__cardtitle{ margin:0; font-size:1.05rem; font-weight:900; color:#eaf3ff; }
-.bimfd__tag{ background:#101a27; color:#9fd6ff; font-weight:900; border:1px solid #243146; padding:.28rem .7rem; border-radius:999px; }
+.iqt-conf{ margin:.2rem 0 .6rem }
+.iqt-conf-label{ font-weight:900; color:#9fd6ff; margin-right:.4rem }
+.iqt-conf-bar{ height:8px; background:#162033; border:1px solid #223146; border-radius:999px; overflow:hidden; display:inline-block; width:160px; vertical-align:middle }
+.iqt-conf-bar span{ display:block; height:100%; background:linear-gradient(90deg,#4EC6FF,#8EE4FF) }
 
-.bimfd__list{ margin:0; padding:1.1rem 1.1rem 1.1rem 1.5rem; line-height:1.7; color:#e3ecf3; }
-.bimfd__tags{ display:flex; gap:.6rem; flex-wrap:wrap; padding:0 1.1rem 1.1rem; }
-.bimfd__tag--strong{ background: var(--bim-blue); color:#061018; border:none; }
+.iqt-break{ border-top:1px solid #243146; margin-top:.6rem; padding-top:.6rem; display:grid; gap:.25rem }
+.iqt-line{ display:flex; justify-content:space-between; color:#cfe1f4 }
 
-.bimfd__next{ border-top:1px solid #243146; padding:.9rem 1.1rem; color:#b8c6d8; }
+.iqt-disclaimer{ color:#9ab0c9; font-size:.92rem; margin:.6rem 0 0 }
 
-/* Form */
-.bimfd__apply .bimfd__form{ padding:1.1rem; }
-.bimfd__hp{ position:absolute; left:-9999px; width:1px; height:1px; opacity:0; }
-.bimfd__label{ display:block; font-weight:900; color:var(--bim-blue); margin:.5rem 0 .25rem; }
-.bimfd__input, .bimfd__textarea{
-  width:100%; background:#0f141c; color:#eaf3ff; border:1px solid #223146; border-radius:10px;
-  padding:.8rem 1rem; font-size:1rem; outline:none; transition:border .15s, box-shadow .15s;
-}
-.bimfd__input:focus, .bimfd__textarea:focus{ border-color:#2a90c6; box-shadow:0 0 0 6px rgba(78,198,255,.18); }
-.bimfd__hint{ margin:.35rem 0 0; color:#9db2c8; font-size:.94rem; }
-.bimfd__actions{ display:flex; gap:.6rem; align-items:center; flex-wrap:wrap; margin-top:1rem; }
+.iqt-trust{ color:#9ab0c9; font-size:.92rem; margin: .2rem 0 0 }
+.iqt-spinner{ width:18px; height:18px; border-radius:50%; border:2px solid rgba(255,255,255,.6); border-top-color:#0E1116; display:none }
+.iqt-btn.is-loading .iqt-spinner{ display:inline-block; animation:spin .8s linear infinite }
+@keyframes spin{ to{ transform:rotate(360deg) } }
 
-.bimfd__btn{ display:inline-flex; align-items:center; gap:.6rem; border:none; border-radius:999px; cursor:pointer; font-weight:900; padding:.95rem 1.45rem; text-decoration:none; }
-.bimfd__primary{ background:var(--bim-blue); color:#0b1016; box-shadow:0 12px 30px rgba(78,198,255,.28); }
-.bimfd__primary:hover{ filter:brightness(.96); }
-.bimfd__primary.is-loading{ opacity:.85; pointer-events:none; }
-.bimfd__ghost{ background:#0E1116; color:#fff; text-decoration:none; }
-.bimfd__ghost:hover{ opacity:.92; }
-
-.bimfd__spinner{ width:18px; height:18px; border-radius:50%; border:2px solid rgba(255,255,255,.6); border-top-color:#0E1116; display:none; }
-.bimfd__primary.is-loading .bimfd__spinner{ display:inline-block; animation: bimspin .8s linear infinite; }
-@keyframes bimspin{ to{ transform: rotate(360deg); } }
-
-.bimfd__error{ margin:.6rem 0 0; color:#ff9b9b; font-weight:800; }
-.bimfd__success{ display:none; }
-.bimfd__success.is-show{ display:block; margin-top:1rem; }
-.bimfd__successcard{
-  background:#0f141c; border:1px solid #243146; padding:1rem; border-radius:12px; text-align:center;
-  box-shadow: inset 0 1px 10px rgba(78,198,255,.08);
-}
-.bimfd__check{ width:22px; height:22px; border-radius:50%; background:#22d3ee; margin:0 auto .6rem; position:relative; box-shadow:0 0 0 6px #22d3ee22; }
-.bimfd__check::after{ content:""; position:absolute; left:6px; top:5px; width:8px; height:4px; border:3px solid #0b1320; border-top:none; border-right:none; transform:rotate(-45deg); }
-
-/* Motion prefs */
-@media (prefers-reduced-motion: reduce){ .bimfd__primary.is-loading .bimfd__spinner{ animation:none } }
+.iqt-error{ color:#ff9b9b; font-weight:800; margin:.5rem 0 0 }
+.iqt-success{ background:#0f141c; border:1px solid #243146; border-radius:12px; padding:.8rem; text-align:center; margin-top:.6rem }
+.iqt-check{ width:22px; height:22px; border-radius:50%; background:#22d3ee; margin:.2rem auto .4rem; position:relative; box-shadow:0 0 0 6px #22d3ee22 }
+.iqt-check::after{ content:""; position:absolute; left:6px; top:5px; width:8px; height:4px; border:3px solid #0b1320; border-top:none; border-right:none; transform:rotate(-45deg) }
 </style>
 
 <script>
+/**
+ * Simple, credible ballpark engine with ranges & confidence.
+ * Tune CONFIG to your trades. All numbers are examples.
+ */
 (function(){
-  // Countdown
-  const dateEl = document.getElementById('bimfdDate');
-  const countdown = document.getElementById('bimfdCountdown');
-  const slotsEl = document.getElementById('bimfdSlots');
-  const DEADLINE = dateEl ? new Date(dateEl.getAttribute('datetime')) : null;
+  const CONFIG = {
+    roofing: {
+      baseRate: 7.5,    // $/sqft baseline
+      minBase: 8500,    // minimum viable job
+      comp: { low: 0.9, standard: 1.0, high: 1.25 },
+      premiumMaterials: 1.18,
+      laborFactor: 0.42,   // share of total considered labor
+      overheadPerMile: 2.2, // $/mile
+      rush: 1.10
+    },
+    landscaping: {
+      baseRate: 6.2, minBase: 6000,
+      comp: { low: 0.92, standard: 1.0, high: 1.3 },
+      premiumMaterials: 1.22,
+      laborFactor: 0.46,
+      overheadPerMile: 1.6,
+      rush: 1.08
+    },
+    remodel: {
+      baseRate: 14.0, minBase: 12000,
+      comp: { low: 0.95, standard: 1.0, high: 1.35 },
+      premiumMaterials: 1.20,
+      laborFactor: 0.50,
+      overheadPerMile: 2.8,
+      rush: 1.12
+    },
+    hvac: {
+      baseRate: 9.0, minBase: 6500,
+      comp: { low: 0.9, standard: 1.0, high: 1.3 },
+      premiumMaterials: 1.15,
+      laborFactor: 0.44,
+      overheadPerMile: 2.0,
+      rush: 1.12
+    }
+  };
 
-  function pad(n){ return n<10 ? '0'+n : ''+n; }
-  function tick(){
-    if(!DEADLINE || !countdown) return;
-    const ms = DEADLINE - new Date();
-    if(ms <= 0){ countdown.textContent = '00:00:00'; return; }
-    const s = Math.floor(ms/1000)%60, m = Math.floor(ms/1000/60)%60, h = Math.floor(ms/1000/60/60);
-    countdown.textContent = `${pad(h)}:${pad(m)}:${pad(s)}`;
-    requestAnimationFrame(tick);
+  const els = {
+    trade: document.getElementById('trade'),
+    size: document.getElementById('size'),
+    complexity: document.getElementById('complexity'),
+    premium: document.getElementById('premium'),
+    rush: document.getElementById('rush'),
+    distance: document.getElementById('distance'),
+    lowNum: document.getElementById('lowNum'),
+    highNum: document.getElementById('highNum'),
+    materialsNum: document.getElementById('materialsNum'),
+    laborNum: document.getElementById('laborNum'),
+    overheadNum: document.getElementById('overheadNum'),
+    confBar: document.getElementById('confBar'),
+    confNote: document.getElementById('confNote'),
+    estimateBtn: document.getElementById('estimateBtn'),
+    bookBtn: document.getElementById('bookBtn'),
+    form: document.getElementById('iqtForm'),
+    name: document.getElementById('name'),
+    email: document.getElementById('email'),
+    phone: document.getElementById('phone'),
+    error: document.getElementById('iqtError'),
+    success: document.getElementById('iqtSuccess'),
+    sendBtn: document.getElementById('sendBtn'),
+  };
+
+  function money(n){ return n.toLocaleString(undefined,{ style:'currency', currency:'USD', maximumFractionDigits:0 }); }
+  function clamp(v,min,max){ return Math.max(min, Math.min(max, v)); }
+
+  function compute(){
+    const T = CONFIG[els.trade.value];
+    const sqft = Math.max(0, Number(els.size.value||0));
+    const comp = T.comp[els.complexity.value] || 1.0;
+    const isPrem = els.premium.checked;
+    const isRush = els.rush.checked;
+    const miles = Math.max(0, Number(els.distance.value||0));
+
+    // Baseline
+    let base = Math.max(T.minBase, sqft * T.baseRate);
+    base *= comp;
+    if(isPrem) base *= T.premiumMaterials;
+    if(isRush) base *= T.rush;
+    const overhead = miles * T.overheadPerMile * 2; // there & back
+
+    const subtotal = base + overhead;
+
+    // Confidence: larger size + standard complexity => higher confidence
+    let conf = 0.55;
+    if (sqft > 1000) conf += 0.15;
+    if (sqft > 2000) conf += 0.1;
+    if (els.complexity.value === 'low') conf += 0.05;
+    if (els.complexity.value === 'high') conf -= 0.07;
+    if (isPrem) conf -= 0.03;
+    conf = clamp(conf, 0.45, 0.9);
+
+    // Range width based on confidence (tighter if higher confidence)
+    const spread = (1 - conf) * 0.35 + 0.10; // 10% to 45%
+    const low = subtotal * (1 - spread/2);
+    const high = subtotal * (1 + spread/2);
+
+    // Breakout (very simple shares)
+    const labor = subtotal * T.laborFactor;
+    const materials = subtotal * (1 - T.laborFactor) - overhead;
+
+    return { low, high, materials, labor, overhead, conf, sqft };
   }
-  tick();
 
-  // Form
-  const form = document.getElementById('bimfdForm');
-  const btn  = document.getElementById('bimfdSubmit');
-  const ok   = document.querySelector('#bim-founders .bimfd__success');
-  const err  = document.querySelector('#bim-founders .bimfd__error');
-
-  function decSlots(){
-    if(!slotsEl) return;
-    const next = Math.max(parseInt(slotsEl.textContent || '5',10)-1,0);
-    slotsEl.textContent = String(next);
+  function render(){
+    const r = compute();
+    els.lowNum.textContent = money(r.low);
+    els.highNum.textContent = money(r.high);
+    els.materialsNum.textContent = money(Math.max(0, r.materials));
+    els.laborNum.textContent = money(Math.max(0, r.labor));
+    els.overheadNum.textContent = money(Math.max(0, r.overhead));
+    const pct = Math.round(r.conf*100);
+    els.confBar.style.width = pct + '%';
+    els.confNote.textContent = `±${Math.round(((r.high - r.low)/((r.high+r.low)/2))*100/2)}% • ${pct}% confidence`;
   }
 
-  form?.addEventListener('submit', async (e)=>{
+  // Initial render and on change
+  ['trade','size','complexity','premium','rush','distance'].forEach(id=>{
+    els[id].addEventListener('input', render);
+  });
+  render();
+
+  // Quick “book assessment” scroll
+  els.bookBtn.addEventListener('click', ()=>{
+    document.getElementById('contact')?.scrollIntoView({behavior:'smooth'});
+  });
+
+  // Submit to Formspree with full payload
+  els.form.addEventListener('submit', async (e)=>{
     e.preventDefault();
-    err.hidden = true; err.textContent = '';
+    els.error.hidden = true; els.success.hidden = true;
 
-    // Honeypot
-    const hp = form.querySelector('input[name="website"]');
-    if(hp && hp.value){ return; }
-
-    const name = form.bimfdName.value.trim();
-    const email= form.bimfdEmail.value.trim();
-    const goal = form.bimfdGoal.value.trim();
-    if(!name || !email || !goal){
-      err.textContent = 'Please complete all required fields.';
-      err.hidden = false;
+    // simple validation
+    if(!els.name.value.trim() || !els.email.value.trim()){
+      els.error.textContent = 'Please enter your name and email.';
+      els.error.hidden = false;
       return;
     }
 
-    btn.classList.add('is-loading');
-    btn.setAttribute('disabled','disabled');
+    const r = compute();
+    const payload = {
+      source: 'BIM Instant Quote (Contractors)',
+      trade: els.trade.value,
+      size_sqft: Number(els.size.value||0),
+      complexity: els.complexity.value,
+      premium_materials: els.premium.checked,
+      rush: els.rush.checked,
+      distance_miles: Number(els.distance.value||0),
+      estimate_low: Math.round(r.low),
+      estimate_high: Math.round(r.high),
+      materials: Math.round(Math.max(0, r.materials)),
+      labor: Math.round(Math.max(0, r.labor)),
+      overhead: Math.round(Math.max(0, r.overhead)),
+      confidence: r.conf,
+      name: els.name.value.trim(),
+      email: els.email.value.trim(),
+      phone: els.phone.value.trim()
+    };
+
+    els.sendBtn.classList.add('is-loading');
+    els.sendBtn.setAttribute('disabled','disabled');
 
     try{
-      const payload = {
-        name,
-        email,
-        company: form.bimfdCompany.value.trim(),
-        goal,
-        source: 'Founders Launch Cohort'
-      };
-
-      const res = await fetch('https://formspree.io/f/xkgbgbjd', {
+      await fetch('https://formspree.io/f/xkgbgbjd', {
         method:'POST',
-        headers:{'Accept':'application/json','Content-Type':'application/json'},
+        headers:{ 'Accept':'application/json','Content-Type':'application/json' },
         body: JSON.stringify(payload)
       });
-      if(!res.ok) throw new Error('Network error');
-
-      ok.classList.add('is-show');
-      form.querySelectorAll('input,textarea,button').forEach(el=>el.disabled=true);
-      decSlots();
-    }catch(ex){
-      err.textContent = 'Something went wrong. Please try again in a moment.';
-      err.hidden = false;
-      btn.classList.remove('is-loading');
-      btn.removeAttribute('disabled');
+      els.success.hidden = false;
+      els.form.querySelectorAll('input,select,button').forEach(el=>el.disabled=true);
+    }catch(err){
+      els.error.textContent = 'Could not send right now. Please try again in a moment.';
+      els.error.hidden = false;
+    }finally{
+      els.sendBtn.classList.remove('is-loading');
+      els.sendBtn.removeAttribute('disabled');
     }
   });
+
+  // Also compute on click
+  document.getElementById('estimateBtn').addEventListener('click', render);
 })();
 </script>
