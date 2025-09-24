@@ -1209,7 +1209,17 @@ body[data-svc="2"]{ --svc-ang: .5turn;  --svc-speed: 5.6s; }
 }
 .popup-success.show{ display:block; }
 
-  
+  /* Consume the theme-fader variables */
+.theme-fader{
+  background: var(--fader-bg, #000);
+  color: var(--fader-ink, #fff);
+  transition: background .4s ease, color .4s ease;
+}
+/* Let text inside inherit the ink color instead of hardcoded colors */
+.theme-fader :where(h1,h2,h3,h4,p,li,a,small,strong,em){
+  color: inherit;
+}
+
   
   </style>
 </head>
