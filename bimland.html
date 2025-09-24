@@ -184,6 +184,88 @@ body {
 </section>
 
 
+  <section id="offer" style="padding: clamp(28px,6vw,56px) 0; background:
+  radial-gradient(900px 600px at 12% -10%, rgba(78,198,255,.06), transparent 60%),
+  #101014;">
+  <div class="iqt-shell">
+    <div class="card">
+      <div class="card-head">
+        <h2 class="card-title" style="font-size:1.15rem">Founder Build — $1,500</h2>
+        <span class="pill">Only <b id="slots">3</b> slots</span>
+      </div>
+
+      <div class="card-body">
+        <div class="offer-grid">
+          <!-- LEFT: What you get -->
+          <div>
+            <p class="sec-title" style="margin:0 0 .6rem">What you get in 2–3 weeks</p>
+            <ul class="offer-bullets">
+              <li><strong>8-section website</strong> in the BIM Labs style</li>
+              <li><strong>Instant Quote tool</strong> with trade rules</li>
+              <li><strong>3 landing pages</strong> (offer • lead magnet • retarget)</li>
+              <li><strong>Playbooks</strong> for four growth campaigns</li>
+              <li><strong>Training & full handoff</strong> — you own it</li>
+            </ul>
+          </div>
+
+          <!-- RIGHT: Value, timer, CTAs -->
+          <div class="offer-cta">
+            <div class="pill" style="margin-bottom:.6rem">Valued at $8,700+</div>
+            <p class="hint" style="margin:.1rem 0 .8rem">
+              Founder price ends in <b><span id="countdown">—:—:—</span></b>
+            </p>
+            <div class="form-actions" style="justify-content:flex-start">
+              <!-- Replace href with your real checkout/deposit link -->
+              <a id="depositBtn" class="btn btn--primary" href="/deposit-link">Pay $500 Deposit</a>
+              <a class="btn btn--ghost" href="#iqt-pro">See Estimate First</a>
+            </div>
+            <p class="hint" style="margin:.6rem 0 0">Balance due at handoff (~2–3 weeks). No retainer.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+/* small layout helper to keep it tight and premium */
+.offer-grid{
+  display:grid; grid-template-columns:1.1fr .9fr; gap:18px; align-items:start;
+}
+@media (max-width:900px){ .offer-grid{ grid-template-columns:1fr; } }
+.offer-bullets{ margin:0; padding-left:1.1rem; line-height:1.7; color:#e3ecf3 }
+.offer-bullets li + li{ margin-top:.25rem }
+.offer-bullets strong{ color:#EAF3FF }
+.offer-cta{ align-self:center }
+</style>
+
+<script>
+// Countdown (keep or change date)
+(function(){
+  const end = new Date('2025-09-30T23:59:59-05:00').getTime();
+  const el  = document.getElementById('countdown');
+  const pad = n => n<10? '0'+n : n;
+  function tick(){
+    const ms = end - Date.now();
+    if(ms<=0){ el.textContent = '00:00:00'; return; }
+    const h = Math.floor(ms/3.6e6);
+    const m = Math.floor(ms/6e4)%60;
+    const s = Math.floor(ms/1e3)%60;
+    el.textContent = `${pad(h)}:${pad(m)}:${pad(s)}`;
+    requestAnimationFrame(tick);
+  }
+  tick();
+})();
+
+// Visual slot decrement (optional nicety)
+document.getElementById('depositBtn')?.addEventListener('click', ()=> {
+  const s = document.getElementById('slots');
+  const n = Math.max(0, parseInt(s.textContent||'3',10)-1);
+  s.textContent = String(n);
+});
+</script>
+
+
 <!-- INSTANT QUOTE (tight + structured, full page width, no borders showing as white) -->
 <section id="iqt-pro" aria-labelledby="iqt-title">
   <div class="iqt-shell">
