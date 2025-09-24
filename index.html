@@ -2825,6 +2825,38 @@ document.addEventListener('DOMContentLoaded', () => {
   addEventListener('scroll', update, {passive:true});
   addEventListener('resize', update);
 })();
+  (function(){
+  const root  = document.body;
+  const host  = document.getElementById('services');
+  if(!host) return;
+
+  const slides = Array.from(host.querySelectorAll('.svc-slide'));
+  const dots   = Array.from(document.querySelectorAll('.svc-dots .svc-dot'));
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function setActive(id){
+    const idx = slides.findIndex(s => s.id === id);
+    if (idx < 0) return;
+    root.setAttribute('data-svc', String(idx));
+    dots.forEach((d,i)=> d.classList.toggle('svc-active', i===idx));
+  }
+
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e => { if (e.isIntersecting) setActive(e.target.id); });
+  }, { root: host, threshold: 0.55 });
+
+  slides.forEach(s => io.observe(s));
+
+  dots.forEach((dot,i)=>{
+    dot.addEventListener('click', e => {
+      e.preventDefault();
+      slides[i].scrollIntoView({ behavior: reduced ? 'auto' : 'smooth' });
+    });
+  });
+
+  setActive(slides[0].id);
+})();
+
 </script>
 
 </body>
