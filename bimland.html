@@ -184,63 +184,6 @@ body {
 </section>
 
 
-<section id="offer" style="padding: clamp(28px,6vw,56px) 0; background: radial-gradient(900px 600px at 12% -10%, rgba(78,198,255,.06), transparent 60%), #101014;">
-  <div class="iqt-shell">
-    <div class="card">
-      <div class="card-head">
-        <h2 class="card-title">Founder Build — $1,500</h2>
-        <span class="pill">Only <b id="slots">3</b> slots</span>
-      </div>
-      <div class="card-body">
-        <div class="row two">
-          <ul style="margin:0; padding-left:1.1rem; line-height:1.7; color:#e3ecf3">
-            <li>Custom 8-section website (BIM Labs style)</li>
-            <li>3 landing pages (offer • retarget • lead magnet)</li>
-            <li>Instant Quote Tool (+ branded PDF/email)</li>
-            <li>4 “Money Model” campaign guides</li>
-            <li>Training & full handoff — you own it</li>
-          </ul>
-          <div>
-            <div class="pill" style="margin-bottom:.6rem">Valued at $8,700+</div>
-            <p class="hint" style="margin:.2rem 0 .8rem">Founder price ends in <b><span id="countdown">—:—:—</span></b></p>
-            <div class="form-actions" style="justify-content:flex-start">
-              <!-- Deposit: replace href with your checkout/deposit link -->
-              <a id="depositBtn" class="btn btn--primary" href="/deposit-link">Pay $500 Deposit</a>
-              <a class="btn btn--ghost" href="#iqt-pro">See Estimate First</a>
-            </div>
-            <p class="hint">Balance due at handoff (in ~2–3 weeks). No retainer.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-<script>
-// Countdown (set your real deadline)
-(function(){
-  const end = new Date('2025-09-30T23:59:59-05:00').getTime();
-  const el  = document.getElementById('countdown');
-  const pad = n => n<10? '0'+n : n;
-  function tick(){
-    const ms = end - Date.now();
-    if(ms<=0){ el.textContent = '00:00:00'; return; }
-    const h = Math.floor(ms/3.6e6);
-    const m = Math.floor(ms/6e4)%60;
-    const s = Math.floor(ms/1e3)%60;
-    el.textContent = `${pad(h)}:${pad(m)}:${pad(s)}`;
-    requestAnimationFrame(tick);
-  }
-  tick();
-})();
-// Visual slots decrement after deposit click (optional)
-document.getElementById('depositBtn')?.addEventListener('click', ()=> {
-  const s = document.getElementById('slots');
-  const n = Math.max(0, parseInt(s.textContent||'3',10)-1);
-  s.textContent = String(n);
-});
-</script>
-
-
 <!-- INSTANT QUOTE (tight + structured, full page width, no borders showing as white) -->
 <section id="iqt-pro" aria-labelledby="iqt-title">
   <div class="iqt-shell">
