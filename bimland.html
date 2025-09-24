@@ -263,7 +263,47 @@ document.getElementById('depositBtn')?.addEventListener('click', ()=> {
   const n = Math.max(0, parseInt(s.textContent||'3',10)-1);
   s.textContent = String(n);
 });
+
+  <!-- ... your sections ... -->
+
+<style>
+/* small layout helper to keep it tight and premium */
+.offer-grid{
+  display:grid; grid-template-columns:1.1fr .9fr; gap:18px; align-items:start;
+}
+@media (max-width:900px){ .offer-grid{ grid-template-columns:1fr; } }
+.offer-bullets{ margin:0; padding-left:1.1rem; line-height:1.7; color:#e3ecf3 }
+.offer-bullets li + li{ margin-top:.25rem }
+.offer-bullets strong{ color:#EAF3FF }
+.offer-cta{ align-self:center }
+</style>
+
+<script>
+// Countdown (keep or change date)
+(function(){
+  const end = new Date('2025-09-30T23:59:59-05:00').getTime();
+  const el  = document.getElementById('countdown');
+  const pad = n => n<10? '0'+n : n;
+  function tick(){
+    const ms = end - Date.now();
+    if(ms<=0){ el.textContent = '00:00:00'; return; }
+    const h = Math.floor(ms/3.6e6);
+    const m = Math.floor(ms/6e4)%60;
+    const s = Math.floor(ms/1e3)%60;
+    el.textContent = `${pad(h)}:${pad(m)}:${pad(s)}`;
+    requestAnimationFrame(tick);
+  }
+  tick();
+})();
+
+// Visual slot decrement (optional nicety)
+document.getElementById('depositBtn')?.addEventListener('click', ()=> {
+  const s = document.getElementById('slots');
+  const n = Math.max(0, parseInt(s.textContent||'3',10)-1);
+  s.textContent = String(n);
+});
 </script>
+
 
 
 <!-- INSTANT QUOTE (tight + structured, full page width, no borders showing as white) -->
