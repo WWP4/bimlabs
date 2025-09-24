@@ -1,97 +1,89 @@
 <!-- ============================
-  BIM LABS — FOUNDERS LAUNCH (5 SLOTS)
-  Bright premium style. AOS fade only.
+  BIM Labs — Founders Launch (5 Slots)
+  Minimal, white/blue/black. AOS fade-only. No preview scaffolding.
 ============================= -->
-
-<section id="founders" class="fd-wrap fd-bright fd-flow" aria-labelledby="fdTitle">
-  <div class="fd-ribbon" aria-hidden="true"></div>
-
-  <div class="fd-shell">
-    <header class="fd-head" data-aos="fade-up">
-      <p class="fd-eyebrow">Founders Launch</p>
-      <h2 id="fdTitle" class="fd-title">
-        Get an $8,700+ build for <span class="fd-price">$850</span>
-        <span class="fd-divider" aria-hidden="true">•</span>
-        <span class="fd-slotswrap">
-          <span class="fd-slots" data-slots="5">5</span> slots this month
-        </span>
+<section id="founders" class="bl-wrap" aria-labelledby="blFdTitle">
+  <div class="bl-ribbon" aria-hidden="true"></div>
+  <div class="bl-shell">
+    <header class="bl-head" data-aos="fade-up">
+      <p class="bl-eyebrow">Founders Launch</p>
+      <h2 id="blFdTitle" class="bl-title">
+        $8,700+ build for <span class="bl-price">$850</span>
+        <span class="bl-dot" aria-hidden="true">•</span>
+        <span class="bl-slots"><strong id="blSlots">5</strong> slots</span>
       </h2>
-      <p class="fd-sub">Premium site + CRM + four sales campaigns. Built fast, modern, and alive with design.</p>
-
-      <div class="fd-deadline" role="group" aria-label="Application deadline">
-        <span class="fd-deadline-chip">
-          Apply by <time class="fd-date" datetime="2025-09-30T23:59:59-05:00">Sep 30</time>
-        </span>
-        <span class="fd-countdown" data-deadline="2025-09-30T23:59:59-05:00" aria-live="polite">—:—:—</span>
+      <p class="bl-sub">Conversion-first website + CRM wiring + four growth campaigns. Minimal, fast, and built around your pipeline. Launch in 2–3 weeks.</p>
+      <div class="bl-deadline" role="group" aria-label="Application deadline">
+        <span class="bl-chip">Apply by <time id="blDate" datetime="2025-09-30T23:59:59-05:00">Sep 30</time></span>
+        <span class="bl-chip">Time left <span id="blCountdown" class="bl-count" aria-live="polite">—:—:—</span></span>
+        <span class="bl-chip">No long-term contract</span>
       </div>
-
-      <ul class="fd-proof" data-aos="fade-up">
-        <li>No long-term contract</li>
-        <li>Founder pricing</li>
-        <li>2–3 week timeline</li>
+      <ul class="bl-proof" data-aos="fade-up">
+        <li>8-section custom site</li>
+        <li>3 landing pages</li>
+        <li>4 campaigns + playbooks</li>
+        <li>Forms • pipeline • scheduling</li>
       </ul>
     </header>
 
-    <div class="fd-grid">
+    <div class="bl-grid">
       <!-- Offer -->
-      <article class="fd-card fd-offer" data-aos="fade-up">
-        <div class="fd-card-head">
-          <h3 class="fd-card-title">What’s Included</h3>
-        </div>
-        <ul class="fd-list">
-          <li>Custom website (8 polished sections)</li>
-          <li>3 landing pages for campaigns</li>
+      <article class="bl-card bl-offer" data-aos="fade-up">
+        <h3 class="bl-card-title">What’s Included</h3>
+        <ul class="bl-list">
+          <li>Custom website (8 polished sections) in BIM Labs style</li>
+          <li>3 landing pages for growth motions</li>
           <li>4 done-with-you campaigns + PDF playbooks</li>
           <li>CRM setup: forms, pipeline, scheduling</li>
           <li>Kickoff strategy call + handoff workshop</li>
         </ul>
-        <div class="fd-value">
-          <span class="fd-tag">Valued at $8,700+</span>
-          <span class="fd-tag fd-strong">Your cost: $850</span>
+        <div class="bl-tags">
+          <span class="bl-tag">Valued at $8,700+</span>
+          <span class="bl-tag bl-strong">Your cost: $850</span>
         </div>
-        <div class="fd-next">
-          <strong>What happens next:</strong> we review fit → confirm slot → start kickoff within 3–5 days.
+        <div class="bl-next">
+          <strong>Next steps:</strong> Apply → we confirm fit → kickoff in 3–5 days.
         </div>
       </article>
 
       <!-- Apply -->
-      <aside class="fd-card fd-apply" data-aos="fade-up" data-aos-delay="120">
-        <div class="fd-card-head fd-card-head--dark">
-          <h3 class="fd-card-title">Apply Now</h3>
+      <aside class="bl-card bl-apply" data-aos="fade-up" data-aos-delay="120" aria-label="Apply for Founders Launch">
+        <div class="bl-card-head">
+          <h3 class="bl-card-title">Apply Now</h3>
+          <span class="bl-tag">Founder pricing</span>
         </div>
 
-        <form id="fdForm" class="fd-form" novalidate>
+        <form id="blForm" class="bl-form" novalidate>
           <!-- honeypot -->
-          <input type="text" name="website" class="fd-hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+          <input type="text" name="website" class="bl-hp" tabindex="-1" autocomplete="off" aria-hidden="true"/>
 
-          <label class="fd-label" for="fdName">Name</label>
-          <input id="fdName" name="name" class="fd-input" required autocomplete="name" />
+          <label class="bl-label" for="blName">Name</label>
+          <input id="blName" name="name" class="bl-input" required autocomplete="name"/>
 
-          <label class="fd-label" for="fdEmail">Email</label>
-          <input id="fdEmail" name="email" class="fd-input" type="email" inputmode="email" required autocomplete="email" />
+          <label class="bl-label" for="blEmail">Email</label>
+          <input id="blEmail" name="email" class="bl-input" type="email" inputmode="email" required autocomplete="email"/>
 
-          <label class="fd-label" for="fdCompany">Company</label>
-          <input id="fdCompany" name="company" class="fd-input" autocomplete="organization" />
+          <label class="bl-label" for="blCompany">Company</label>
+          <input id="blCompany" name="company" class="bl-input" autocomplete="organization"/>
 
-          <label class="fd-label" for="fdGoal">Your #1 goal in 60 days</label>
-          <textarea id="fdGoal" name="goal" class="fd-textarea" rows="3" required></textarea>
+          <label class="bl-label" for="blGoal">Your #1 goal in 60 days</label>
+          <textarea id="blGoal" name="goal" class="bl-textarea" rows="3" required></textarea>
 
-          <p class="fd-hint">No pressure. We reply the same day with next steps.</p>
+          <p class="bl-hint">We’ll review fit and reply the same day with next steps.</p>
 
-          <div class="fd-actions">
-            <button id="fdSubmit" class="fd-btn fd-primary" type="submit" aria-live="polite">
-              <span class="fd-btn-label">Apply for $850 Cohort</span>
-              <span class="fd-spinner" aria-hidden="true"></span>
+          <div class="bl-actions">
+            <button id="blSubmit" class="bl-btn bl-primary" type="submit" aria-live="polite">
+              <span class="bl-btn-label">Apply for $850 Cohort</span>
+              <span class="bl-spinner" aria-hidden="true"></span>
             </button>
-            <a href="#contact" class="fd-btn fd-ghost">Talk first</a>
-            <p class="fd-trust">We’ll reply same-day. No spam.</p>
+            <a href="#book" class="bl-btn bl-ghost">Prefer a vision call?</a>
           </div>
 
-          <p class="fd-error" role="alert" aria-live="assertive" hidden></p>
+          <p class="bl-error" role="alert" aria-live="assertive" hidden></p>
 
-          <div class="fd-success" aria-live="polite">
-            <div class="fd-success-card">
-              <div class="fd-check" aria-hidden="true"></div>
+          <div class="bl-success" aria-live="polite">
+            <div class="bl-success-card">
+              <div class="bl-check" aria-hidden="true"></div>
               <h4>Application received</h4>
               <p>We’ll email you today with next steps.</p>
             </div>
@@ -101,170 +93,144 @@
     </div>
 
     <!-- Campaigns -->
-    <article class="fd-band fd-campaigns" data-aos="fade-up">
-      <div class="fd-band-in">
-        <h3 class="fd-band-title">The 4 Campaigns</h3>
-        <div class="fd-camp-grid">
-          <div class="fd-camp"><h4>Launch / Announcement</h4><p>Announce clearly and convert interest into booked calls.</p></div>
-          <div class="fd-camp"><h4>Lead Magnet</h4><p>Deliver value, tag leads, and nurture into consults.</p></div>
-          <div class="fd-camp"><h4>Offer Sprint</h4><p>Push a single offer with daily prompts and retargeting.</p></div>
-          <div class="fd-camp"><h4>Testimonial Drive</h4><p>Collect social proof and book demos off real stories.</p></div>
-        </div>
+    <section class="bl-band" data-aos="fade-up">
+      <h3 class="bl-band-title">The 4 Campaigns</h3>
+      <div class="bl-camp-grid">
+        <div class="bl-camp"><h4>Launch / Announcement</h4><p>Announce clearly and convert interest into booked calls.</p></div>
+        <div class="bl-camp"><h4>Lead Magnet</h4><p>Deliver value, tag leads, nurture into consults.</p></div>
+        <div class="bl-camp"><h4>Offer Sprint</h4><p>Push a single offer with daily prompts and retargeting.</p></div>
+        <div class="bl-camp"><h4>Testimonial Drive</h4><p>Collect social proof and book demos from real stories.</p></div>
       </div>
-    </article>
-
-    <!-- FAQ -->
-    <section class="fd-faq" aria-label="FAQ">
-      <details data-aos="fade-up"><summary>Who is it for?</summary><p>Owners and small teams who want a premium site + campaigns without agency pricing.</p></details>
-      <details data-aos="fade-up"><summary>Timeline?</summary><p>2–3 weeks from kickoff to launch.</p></details>
-      <details data-aos="fade-up"><summary>What’s included in $850?</summary><p>Custom site, 3 landing pages, CRM wiring, 4 playbooks, and 2 calls.</p></details>
-      <details data-aos="fade-up"><summary>Slots?</summary><p>Only 5 this month. Then we roll to the next cohort.</p></details>
     </section>
   </div>
 </section>
 
 <style>
+/* ===== Brand tokens (inherit if present) ===== */
 :root{
-  --fd-blue: var(--blue, #4EC6FF);
-  --fd-ink:  var(--black, #101014);
-  --fd-ink-2:#0E1116;
-  --fd-muted:#506175;
-  --fd-line: #E8EEF5;
-  --fd-sky:  #F0FAFF;
-  --fd-sky-2:#F8FCFF;
-  --fd-white:#ffffff;
+  --bl-blue: var(--blue, #002D72);
+  --bl-ink:  var(--black, #0B0F19);
+  --bl-muted:#516072;
+  --bl-line: #E7EDF6;
+  --bl-sky:  #F3F8FF;
+  --bl-white:#FFFFFF;
 }
-.fd-flow{ font-family:'Montserrat', Arial, sans-serif; background: var(--fd-white); color: var(--fd-ink-2); }
-.fd-ribbon{ height:6px; background: linear-gradient(90deg, var(--fd-blue), #9FE4FF 40%, var(--fd-blue)); box-shadow: 0 6px 14px rgba(78,198,255,.25); }
-.fd-shell{ width:min(1100px,92vw); margin:0 auto; padding: clamp(28px,4vw,44px) 24px; }
+
+/* Layout */
+.bl-wrap{background:var(--bl-white); color:var(--bl-ink); font-family:'Montserrat',system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;}
+.bl-ribbon{height:6px; background:linear-gradient(90deg,#0B3B8B,#4EC6FF 35%,#0B3B8B); box-shadow:0 8px 18px rgba(78,198,255,.25)}
+.bl-shell{width:min(1100px,92vw); margin:0 auto; padding: clamp(28px,4vw,46px) 0}
 
 /* Head */
-.fd-head{ text-align:center; }
-.fd-eyebrow{ color: var(--fd-blue); font-weight:900; text-transform:uppercase; letter-spacing:.18em; font-size:.8rem; margin:0 0 .6rem }
-.fd-title{ margin:.25rem 0 .5rem; font-weight:900; line-height:1.06; font-size: clamp(28px, 4.6vw, 44px); color: var(--fd-ink); }
-.fd-price{ color: var(--fd-blue) }
-.fd-divider{ opacity:.35; margin:0 .5ch }
-.fd-sub{ max-width: 68ch; color: var(--fd-muted); margin: 0 auto .4rem }
-.fd-deadline{ margin-top:.7rem; display:flex; gap:.6rem; justify-content:center; align-items:center; font-weight:800; color:#102635 }
-.fd-deadline-chip{ background: var(--fd-sky); border:1px solid #D6ECFA; padding:.35rem .75rem; border-radius:999px }
-.fd-countdown{ font-variant-numeric: tabular-nums; padding:.35rem .55rem; border-radius:8px; background:#0E1116; color:#fff }
+.bl-head{text-align:center}
+.bl-eyebrow{color:var(--bl-blue); font-weight:900; text-transform:uppercase; letter-spacing:.18em; font-size:.8rem; margin:0 0 .6rem}
+.bl-title{margin:.2rem 0 .5rem; font-weight:900; line-height:1.06; font-size:clamp(30px,4.8vw,46px)}
+.bl-price{color:var(--bl-blue)}
+.bl-dot{opacity:.35; margin:0 .55ch}
+.bl-sub{max-width:68ch; margin:0 auto; color:var(--bl-muted)}
+.bl-deadline{margin-top:.8rem; display:flex; gap:.6rem; justify-content:center; flex-wrap:wrap; align-items:center; font-weight:800; color:#193246}
+.bl-chip{background:var(--bl-sky); border:1px solid #D6E6FA; padding:.38rem .8rem; border-radius:999px}
+.bl-count{font-variant-numeric:tabular-nums; background:#0E1116; color:#fff; padding:.35rem .55rem; border-radius:8px}
 
 /* Proof chips */
-.fd-proof{ display:flex; justify-content:center; gap:.6rem; flex-wrap:wrap; margin:.8rem 0 0; padding:0; list-style:none }
-.fd-proof li{ padding:.45rem .8rem; border-radius:999px; background:var(--fd-sky); border:1px solid #D6ECFA; color:#093344; font-weight:800 }
+.bl-proof{margin:1rem 0 0; padding:0; list-style:none; display:flex; justify-content:center; gap:.6rem; flex-wrap:wrap}
+.bl-proof li{padding:.45rem .8rem; border-radius:999px; background:var(--bl-sky); border:1px solid #D6E6FA; color:#083347; font-weight:800}
 
 /* Grid */
-.fd-grid{ display:grid; gap:22px; grid-template-columns:1fr 1fr; align-items:start; margin-top: clamp(16px,3vw,24px) }
-@media (max-width:900px){ .fd-grid{ grid-template-columns:1fr } }
+.bl-grid{display:grid; gap:22px; grid-template-columns:1fr 1fr; align-items:start; margin-top: clamp(16px,3vw,24px)}
+@media (max-width:900px){ .bl-grid{grid-template-columns:1fr} }
 
 /* Cards */
-.fd-card{ border:1px solid var(--fd-line); border-radius:16px; background:#fff; box-shadow:0 8px 28px rgba(0,0,0,.06); overflow:hidden }
-.fd-card-head{ background: linear-gradient(180deg, var(--fd-white), var(--fd-sky)); border-bottom:1px solid var(--fd-line); padding:.85rem 1rem }
-.fd-card-head--dark{ background: linear-gradient(180deg, rgba(16,17,22,.94), rgba(16,17,22,.78)); color:#fff; border-bottom-color: rgba(255,255,255,.08) }
-.fd-card-title{ margin:0; font-size:1.15rem; font-weight:900; color: inherit }
-.fd-offer, .fd-apply{ padding:0 }
-.fd-offer .fd-list, .fd-apply .fd-form{ padding:1.1rem }
-.fd-list{ line-height:1.65; color: var(--fd-ink); padding-left: 1.1rem; margin:0 }
-.fd-value{ padding: 0 1.1rem 1.1rem; display:flex; gap:.6rem; flex-wrap:wrap }
-.fd-tag{ background: var(--fd-sky); border:1px solid #D6ECFA; padding:.32rem .72rem; border-radius:999px; font-weight:800; color:#0D2C3A }
-.fd-tag.fd-strong{ background: var(--fd-blue); color:#061018; border:none }
-.fd-next{ border-top:1px solid var(--fd-line); padding: .9rem 1.1rem; color: var(--fd-muted); }
+.bl-card{background:#fff; border:1px solid var(--bl-line); border-radius:16px; box-shadow:0 10px 30px rgba(0,0,0,.06); overflow:hidden}
+.bl-card-head{display:flex; justify-content:space-between; align-items:center; gap:10px; padding:1rem 1.1rem; border-bottom:1px solid var(--bl-line)}
+.bl-card-title{margin:0; font-size:1.05rem; font-weight:900}
+.bl-offer .bl-list, .bl-apply .bl-form{padding:1.1rem}
+
+/* Lists / tags */
+.bl-list{margin:0; padding-left:1.1rem; line-height:1.68}
+.bl-tags{display:flex; gap:.6rem; flex-wrap:wrap; padding:0 1.1rem 1.1rem}
+.bl-tag{background:var(--bl-sky); border:1px solid #D6E6FA; padding:.32rem .72rem; border-radius:999px; font-weight:900; color:#0D2C3A}
+.bl-strong{background:var(--bl-blue); border-color:transparent; color:#fff}
+.bl-next{border-top:1px solid var(--bl-line); padding:.9rem 1.1rem; color:var(--bl-muted)}
 
 /* Form */
-.fd-hp{ position:absolute; left:-9999px; width:1px; height:1px; opacity:0 }
-.fd-label{ font-weight:800; color: var(--fd-blue); margin:.5rem 0 .25rem; display:block }
-.fd-input,.fd-textarea{ width:100%; border:1px solid #D8E4F0; border-radius:10px; padding:.75rem 1rem; font-size:1rem; background:#fff; color: var(--fd-ink-2) }
-.fd-input:focus,.fd-textarea:focus{ border-color: var(--fd-blue); box-shadow:0 0 0 4px rgba(78,198,255,.20); outline:none }
-.fd-hint{ margin:.25rem 0 0; color:#6b7b8f; font-size:.92rem }
-.fd-actions{ margin-top:1rem; display:flex; gap:.6rem; align-items:center; flex-wrap:wrap }
-.fd-btn{ border:none; border-radius:999px; cursor:pointer; font-weight:900; padding:.9rem 1.4rem; display:inline-flex; align-items:center; gap:.6rem }
-.fd-primary{ background: var(--fd-blue); color:#0b1016; box-shadow:0 6px 18px rgba(78,198,255,.28) }
-.fd-primary:hover{ background:#0E1116; color:#fff }
-.fd-primary.is-loading{ pointer-events:none; opacity:.85 }
-.fd-ghost{ background:#0E1116; color:#fff; text-decoration:none }
-.fd-ghost:hover{ opacity:.92 }
-.fd-trust{ font-size:.92rem; color:#5a6f87; margin-left:.2rem }
-.fd-spinner{ width:18px; height:18px; border-radius:50%; border:2px solid rgba(255,255,255,.6); border-top-color:#0E1116; display:none; }
-.fd-primary.is-loading .fd-spinner{ display:inline-block; animation: fdspin .8s linear infinite }
-@keyframes fdspin{ to{ transform: rotate(360deg) } }
-
-.fd-error{ margin:.6rem 0 0; color:#a91919; font-weight:700 }
-.fd-success{ display:none }
-.fd-success.is-show{ display:block; margin-top:1rem }
-.fd-success-card{ background: var(--fd-sky-2); border:1px solid #D6ECFA; padding:1rem; border-radius:12px; text-align:center }
-.fd-check{ width:22px; height:22px; border-radius:50%; background:#22d3ee; margin:0 auto .6rem; position:relative }
-.fd-check::after{ content:""; position:absolute; left:6px; top:5px; width:8px; height:4px; border:3px solid #0b1320; border-top:none; border-right:none; transform:rotate(-45deg) }
+.bl-hp{position:absolute; left:-9999px; width:1px; height:1px; opacity:0}
+.bl-label{display:block; font-weight:900; color:var(--bl-blue); margin:.5rem 0 .28rem}
+.bl-input,.bl-textarea{width:100%; border:1px solid #D8E4F1; border-radius:10px; padding:.8rem 1rem; font-size:1rem; background:#fff; color:var(--bl-ink)}
+.bl-input:focus,.bl-textarea:focus{outline:none; border-color:var(--bl-blue); box-shadow:0 0 0 4px rgba(0,45,114,.15)}
+.bl-hint{margin:.35rem 0 0; color:#6a7c92; font-size:.94rem}
+.bl-actions{display:flex; gap:.6rem; align-items:center; flex-wrap:wrap; margin-top:1rem}
+.bl-btn{display:inline-flex; align-items:center; gap:.6rem; border:none; border-radius:999px; cursor:pointer; font-weight:900; padding:.95rem 1.45rem; text-decoration:none}
+.bl-primary{background:var(--bl-blue); color:#fff; box-shadow:0 10px 26px rgba(0,45,114,.25)}
+.bl-primary:hover{filter:brightness(.96)}
+.bl-primary.is-loading{opacity:.85; pointer-events:none}
+.bl-ghost{background:#0E1116; color:#fff}
+.bl-ghost:hover{opacity:.92}
+.bl-spinner{width:18px; height:18px; border-radius:50%; border:2px solid rgba(255,255,255,.6); border-top-color:#0E1116; display:none}
+.bl-primary.is-loading .bl-spinner{display:inline-block; animation:blspin .8s linear infinite}
+@keyframes blspin{to{transform:rotate(360deg)}}
+.bl-error{margin:.6rem 0 0; color:#a91919; font-weight:800}
+.bl-success{display:none}
+.bl-success.is-show{display:block; margin-top:1rem}
+.bl-success-card{background:var(--bl-sky); border:1px solid #D6E6FA; padding:1rem; border-radius:12px; text-align:center}
+.bl-check{width:22px; height:22px; border-radius:50%; background:#22d3ee; margin:0 auto .6rem; position:relative}
+.bl-check::after{content:""; position:absolute; left:6px; top:5px; width:8px; height:4px; border:3px solid #0b1320; border-top:none; border-right:none; transform:rotate(-45deg)}
 
 /* Campaign band */
-.fd-band{ margin-top: clamp(18px,4vw,36px); background: linear-gradient(180deg, #F6FBFF, #EAF6FF); border:1px solid #D6ECFA; border-radius:16px; box-shadow:0 8px 28px rgba(0,0,0,.05) }
-.fd-band-in{ padding: clamp(16px,3vw,24px) }
-.fd-band-title{ margin:0 0 .6rem; font-size:1.2rem; font-weight:900; color: var(--fd-ink) }
+.bl-band{margin-top: clamp(18px,4vw,36px); background:#fff; border:1px solid var(--bl-line); border-radius:16px; box-shadow:0 8px 24px rgba(0,0,0,.05); padding: clamp(16px,3vw,22px)}
+.bl-band-title{margin:0 0 .6rem; font-size:1.1rem; font-weight:900}
+.bl-camp-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:12px}
+@media(max-width:900px){ .bl-camp-grid{grid-template-columns:1fr 1fr} }
+@media(max-width:600px){ .bl-camp-grid{grid-template-columns:1fr} }
+.bl-camp{border:1px solid var(--bl-line); border-radius:12px; padding:1rem; background:#fff}
+.bl-camp h4{margin:0 0 .25rem; font-size:1rem}
+.bl-camp p{margin:0; color:var(--bl-muted); font-size:.95rem}
 
-.fd-camp-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-top:.6rem }
-@media (max-width:900px){ .fd-camp-grid{ grid-template-columns:1fr 1fr } }
-@media (max-width:600px){ .fd-camp-grid{ grid-template-columns:1fr } }
-.fd-camp{ background:#fff; border:1px solid var(--fd-line); border-radius:10px; padding:1rem; box-shadow:0 3px 12px rgba(0,0,0,.04) }
-.fd-camp h4{ margin:0 0 .25rem; color: var(--fd-ink); font-size:1rem }
-.fd-camp p{ margin:0; color: var(--fd-muted); font-size:.95rem }
-
-/* FAQ */
-.fd-faq{ margin-top: clamp(18px,4vw,28px); display:grid; gap:.6rem }
-.fd-faq details{ border:1px solid var(--fd-line); border-radius:10px; background:#FDFEFF; padding:.8rem 1rem; box-shadow:0 2px 6px rgba(0,0,0,.03) }
-.fd-faq summary{ font-weight:800; color: var(--fd-ink); cursor:pointer }
-.fd-faq p{ color: var(--fd-muted); margin:.4rem 0 0 }
-
-/* Motion preferences */
-@media (prefers-reduced-motion: reduce){
-  .fd-spinner{ animation: none }
-}
+/* Motion prefs */
+@media (prefers-reduced-motion: reduce){ .bl-primary.is-loading .bl-spinner{animation:none} }
 </style>
 
 <script>
 (function(){
-  const root = document.getElementById('founders');
-  const cd   = root?.querySelector('.fd-countdown');
-  const err  = root?.querySelector('.fd-error');
-  const form = root?.querySelector('#fdForm');
-  const btn  = root?.querySelector('#fdSubmit');
-  const ok   = root?.querySelector('.fd-success');
-  const slotsEl = root?.querySelector('.fd-slots');
-
-  // Countdown (HH:MM:SS, stops at 00:00:00)
-  const DEADLINE = cd?.dataset.deadline ? new Date(cd.dataset.deadline) : null;
-  function pad(n){ return n < 10 ? '0'+n : ''+n; }
+  // Countdown
+  const dateEl = document.getElementById('blDate');
+  const countdown = document.getElementById('blCountdown');
+  const slots = document.getElementById('blSlots');
+  const DEADLINE = dateEl ? new Date(dateEl.getAttribute('datetime')) : null;
+  function pad(n){return n<10 ? '0'+n : ''+n}
   function tick(){
-    if(!cd || !DEADLINE) return;
+    if(!DEADLINE || !countdown) return;
     const ms = DEADLINE - new Date();
-    if(ms <= 0){ cd.textContent = '00:00:00'; return; }
-    const s = Math.floor(ms/1000)%60;
-    const m = Math.floor(ms/1000/60)%60;
-    const h = Math.floor(ms/1000/60/60);
-    cd.textContent = `${pad(h)}:${pad(m)}:${pad(s)}`;
+    if(ms <= 0){ countdown.textContent = '00:00:00'; return; }
+    const s = Math.floor(ms/1000)%60, m = Math.floor(ms/1000/60)%60, h = Math.floor(ms/1000/60/60);
+    countdown.textContent = `${pad(h)}:${pad(m)}:${pad(s)}`;
     requestAnimationFrame(tick);
   }
   tick();
 
-  // Faux slot decrement on successful submit (visual only)
-  function decrementSlots(){
-    if(!slotsEl) return;
-    const current = parseInt(slotsEl.dataset.slots || slotsEl.textContent || '5', 10);
-    const next = Math.max(current - 1, 0);
-    slotsEl.dataset.slots = String(next);
-    slotsEl.textContent = String(next);
+  // Form
+  const form = document.getElementById('blForm');
+  const btn = document.getElementById('blSubmit');
+  const ok = document.querySelector('#founders .bl-success');
+  const err = document.querySelector('#founders .bl-error');
+
+  function decSlots(){
+    if(!slots) return;
+    const next = Math.max(parseInt(slots.textContent || '5',10)-1,0);
+    slots.textContent = String(next);
   }
 
-  // Form handling
   form?.addEventListener('submit', async (e)=>{
     e.preventDefault();
-    err.hidden = true;
-    err.textContent = '';
+    err.hidden = true; err.textContent = '';
 
-    // basic front-end validation
+    // Honeypot
     const hp = form.querySelector('input[name="website"]');
-    if(hp && hp.value){ return; } // bot
-    const name = form.fdName.value.trim();
-    const email = form.fdEmail.value.trim();
-    const goal = form.fdGoal.value.trim();
+    if(hp && hp.value){ return; }
+
+    const name = form.blName.value.trim();
+    const email = form.blEmail.value.trim();
+    const goal = form.blGoal.value.trim();
     if(!name || !email || !goal){
       err.textContent = 'Please complete all required fields.';
       err.hidden = false;
@@ -278,25 +244,21 @@
       const payload = {
         name,
         email,
-        company: form.fdCompany.value.trim(),
+        company: form.blCompany.value.trim(),
         goal,
-        source:'Founders Launch Cohort'
+        source: 'Founders Launch Cohort'
       };
-
       const res = await fetch('https://formspree.io/f/xkgbgbjd', {
         method:'POST',
-        headers:{ 'Accept':'application/json','Content-Type':'application/json' },
+        headers:{'Accept':'application/json','Content-Type':'application/json'},
         body: JSON.stringify(payload)
       });
-
-      if(!res.ok){
-        throw new Error('Network response was not ok');
-      }
+      if(!res.ok) throw new Error('Network error');
 
       ok.classList.add('is-show');
       form.querySelectorAll('input,textarea,button').forEach(el=>el.disabled=true);
-      decrementSlots();
-    }catch(e){
+      decSlots();
+    }catch(ex){
       err.textContent = 'Something went wrong. Please try again in a moment.';
       err.hidden = false;
       btn.classList.remove('is-loading');
