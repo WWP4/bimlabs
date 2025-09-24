@@ -151,7 +151,6 @@ body {
 }
 
     
-    }
     /* ====== FEATURES (split) ====== */
 .features-section{ background:linear-gradient(90deg,#101014 70%,#1b2028); padding:5rem 0; }
 .features-wrap{ max-width:1100px; margin:0 auto; padding:0 2rem; display:grid; grid-template-columns:1.05fr .95fr; gap:3rem; align-items:center; }
@@ -1082,8 +1081,6 @@ body[data-svc="2"]{ --svc-ang: .5turn;  --svc-speed: 5.6s; }
 .start-check{ --d:22px; width:var(--d); height:var(--d); border-radius:50%; margin:0 auto .6rem; background:#22d3ee; box-shadow:0 0 0 6px #22d3ee22; position:relative; }
 .start-check::after{ content:""; position:absolute; left:6px; top:5px; width:8px; height:4px; border:3px solid #0b1320; border-top:none; border-right:none; transform: rotate(-45deg); }
 
-    
-<style>
 /* Keep hero background pure black */
 .hero { position: relative; background:#000; overflow:hidden; }
 #hero-canvas{
@@ -2204,38 +2201,6 @@ body[data-svc="2"]{ --svc-ang: .5turn;  --svc-speed: 5.6s; }
 
     io.observe(canvas);
   });
-})();
-</script>
-
-  <script>
-/* Services: progress dots + active slide state + smooth scroll */
-(() => {
-  const root = document.body;
-  const slides = Array.from(document.querySelectorAll('#services .svc-slide'));
-  const dots = Array.from(document.querySelectorAll('.nav-dots .dot'));
-  if (!slides.length || !dots.length) return;
-
-  const setActive = (id) => {
-    const idx = slides.findIndex(s => s.id === id);
-    if (idx < 0) return;
-    root.setAttribute('data-active', String(idx));
-    dots.forEach((d,i)=> d.classList.toggle('active', i===idx));
-  };
-
-  const io = new IntersectionObserver((entries)=>{
-    entries.forEach(e => { if (e.isIntersecting) setActive(e.target.id); });
-  }, {threshold: 0.55});
-  slides.forEach(s => io.observe(s));
-
-  const prefersReduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  dots.forEach((dot,i)=>{
-    dot.addEventListener('click', (e)=>{
-      e.preventDefault();
-      slides[i].scrollIntoView({behavior: prefersReduced ? 'auto' : 'smooth'});
-    });
-  });
-
-  setActive(slides[0].id);
 })();
 </script>
 
