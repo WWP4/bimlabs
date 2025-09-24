@@ -1,102 +1,275 @@
-<!-- ======================================================
-  BIM Labs — Contractors Instant Quote (v2 Pro)
-  Brand: #101014 / #4EC6FF / #FFFFFF
-  Features:
-   • Stepper UI (Inputs → Estimate → Email)
-   • Trade tabs with rich, conditional fields
-   • Accuracy meter + assumptions box
-   • Materials/Labor/Overhead chart (CSS-only bars)
-   • Photo/plan uploads (names captured in payload)
-   • Distance/rush/premium, roof pitch, stories, tear-off, etc.
-   • Clean, glass cards on black canvas (BIM look)
-====================================================== -->
-<section id="iqt-pro" class="bim-iqt" aria-labelledby="iqtTitle">
-  <div class="bim-iqt__rail" aria-hidden="true"></div>
-  <div class="bim-iqt__shell">
-    <header class="bim-iqt__head" data-aos="fade-up">
-      <p class="bim-iqt__eyebrow">For Contractors</p>
-      <h2 id="iqtTitle" class="bim-iqt__title">Instant Ballpark. Fewer Calls. Faster Wins.</h2>
-      <p class="bim-iqt__sub">Give prospects a credible range in 60 seconds, capture details, and auto-book a site assessment. Built for custom work with adjustable assumptions.</p>
-      <ul class="bim-iqt__chips">
-        <li>± Confidence with clear assumptions</li>
-        <li>Trade-specific logic (roofing, remodel, HVAC, landscaping)</li>
-        <li>Branded email summary + next steps</li>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>BIM Labs — Contractors | Instant Quote</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
+<style>
+/* ===== Reset / Base ===== */
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+body {
+  margin: 0; background: #101014; color: #E8EEF6;
+  font-family: 'Montserrat', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
+  letter-spacing: .01em;
+}
+:root{
+  --black:#101014; --blue:#4EC6FF; --white:#fff;
+  --ink:#E8EEF6; --muted:#B8C6D8; --line:#1E232E; --glass:rgba(16,22,30,.78);
+}
+
+/* ===== Full-screen HERO ===== */
+#contractor-hero{
+  min-height: 100vh; display:grid; place-items:center; position:relative; overflow:hidden;
+  background:
+    radial-gradient(900px 600px at 82% -10%, rgba(78,198,255,.08), transparent 60%),
+    radial-gradient(800px 500px at -10% 0%, rgba(78,198,255,.06), transparent 60%),
+    var(--black);
+}
+.hero-shell{ width:min(1200px, 92vw); margin:0 auto; padding: clamp(40px, 6vw, 80px) 0; }
+.hero-eyebrow{
+  color: var(--blue); text-transform: uppercase; letter-spacing: .18em;
+  font-weight:900; font-size:.8rem; margin:0 0 .6rem;
+}
+.hero-title{
+  margin:.1rem 0 .6rem; font-weight:900; line-height:1.04;
+  font-size: clamp(34px, 6vw, 64px); color:#fff;
+}
+.hero-sub{ max-width: 70ch; color: var(--muted); margin: 0 0 1.1rem; font-size: clamp(1rem, 2vw, 1.2rem); }
+.hero-chips{ display:flex; gap:.6rem; flex-wrap:wrap; margin: .7rem 0 1.2rem; padding:0; list-style:none; }
+.hero-chips li{
+  padding:.45rem .8rem; border-radius:999px; background:rgba(255,255,255,.05);
+  border:1px solid #243146; color:#bcd2ea; font-weight:800; font-size:.95rem;
+}
+.hero-cta{ display:flex; gap:.8rem 1rem; flex-wrap:wrap; margin-top:.5rem; }
+.btn{
+  display:inline-flex; align-items:center; justify-content:center; gap:.6rem;
+  padding: .95rem 1.5rem; border-radius: 999px; font-weight:900; text-decoration:none; cursor:pointer;
+  border: none; min-width: 180px;
+}
+.btn--primary{ background: var(--blue); color:#0b1016; box-shadow:0 12px 30px rgba(78,198,255,.28); }
+.btn--primary:hover{ filter: brightness(.96); }
+.btn--ghost{ background:#0E1116; color:#fff; }
+.hero-rail{ height:6px; width:100%; position:absolute; top:0; left:0;
+  background:linear-gradient(90deg,var(--blue),rgba(78,198,255,.35),var(--blue));
+  box-shadow:0 10px 28px #4ec6ff2b;
+}
+
+/* ===== Full page Instant Quote (tight, structured) ===== */
+#iqt-pro{
+  position:relative; padding: clamp(32px, 6vw, 72px) 0;
+  background:
+    radial-gradient(900px 600px at 12% -10%, rgba(78,198,255,.06), transparent 60%),
+    radial-gradient(800px 500px at 110% 0%, rgba(78,198,255,.06), transparent 60%),
+    var(--black);
+}
+.iqt-shell{ width:min(1200px, 92vw); margin:0 auto; }
+.iqt-head{ text-align:center; margin-bottom: clamp(18px, 3vw, 28px); }
+.iqt-eyebrow{ color: var(--blue); text-transform:uppercase; letter-spacing:.18em; font-weight:900; font-size:.8rem; margin:0 0 .6rem; }
+.iqt-title{ margin:.2rem 0 .4rem; font-weight:900; line-height:1.06; font-size: clamp(28px, 4.8vw, 42px); color:#fff; }
+.iqt-sub{ max-width:70ch; margin:0 auto; color:var(--muted); }
+.iqt-chips{ display:flex; gap:.6rem; flex-wrap:wrap; justify-content:center; margin:1rem 0 0; padding:0; list-style:none; }
+.iqt-chips li{ padding:.45rem .8rem; border-radius:999px; background:rgba(255,255,255,.05); border:1px solid #243146; color:#bcd2ea; font-weight:800; }
+
+/* Grid: left form / right sticky estimate */
+.iqt-grid{
+  display:grid; grid-template-columns:1.15fr .85fr; gap:22px; align-items:start;
+}
+@media (max-width: 1020px){ .iqt-grid{ grid-template-columns:1fr; } }
+
+.card{
+  background:var(--glass); border:1px solid var(--line); border-radius:16px;
+  box-shadow:0 10px 36px rgba(0,0,0,.35), 0 6px 24px rgba(78,198,255,.12);
+}
+.card-head{
+  display:flex; align-items:center; justify-content:space-between; gap:10px;
+  padding:14px 16px; border-bottom:1px solid #243146; background:linear-gradient(180deg, rgba(255,255,255,.03), transparent);
+}
+.card-title{ margin:0; font-size:1.05rem; font-weight:900; color:#eaf3ff; }
+.card-body{ padding:14px 16px 16px; }
+
+.sticky{ position: sticky; top: 18px; }
+
+/* Sections inside form */
+.sec{ border:1px solid #243146; border-radius:12px; padding:12px; background:#0f141c; margin: 10px 0; }
+.sec-title{ margin:0 0 8px; font-weight:900; color:#9fd6ff; font-size:.98rem; }
+.row{ display:grid; gap:12px; }
+.row.two{ grid-template-columns:1fr 1fr; }
+@media (max-width: 700px){ .row.two{ grid-template-columns:1fr; } }
+.label{ display:block; font-weight:900; color:var(--blue); margin:.2rem 0 .25rem; }
+.input{
+  width:100%; background:#0f141c; color:#eaf3ff; border:1px solid #223146; border-radius:10px;
+  padding:.82rem 1rem; font-size:1rem; outline:none; transition:border .15s, box-shadow .15s;
+}
+.input:focus{ border-color:#2a90c6; box-shadow:0 0 0 6px rgba(78,198,255,.18) }
+.check{ display:flex; align-items:center; gap:.55rem; color:#cfe1f4; font-weight:800; }
+.hint{ color:#9db2c8; font-size:.9rem; }
+
+/* Tabbed trades */
+.tabs{ display:flex; gap:6px; flex-wrap:wrap; margin: 2px 0 10px; }
+.tab{
+  border:1px solid #243146; background:#0f141c; color:#cfe1f4; font-weight:800;
+  padding:.5rem .9rem; border-radius:999px; cursor:pointer;
+}
+.tab.is-on, .tab:hover{ border-color: var(--blue); box-shadow:0 0 0 6px rgba(78,198,255,.18); }
+
+/* Actions footer inside form */
+.form-actions{
+  display:flex; flex-wrap:wrap; gap:10px; align-items:center; justify-content:flex-end;
+  padding-top: 8px; border-top:1px solid #243146; margin-top: 12px;
+}
+.btn--neutral{ background:#223146; color:#dfe8f5; }
+.btn--neutral:hover{ background:#2a3b54; }
+
+/* Estimate card */
+.pill{ display:inline-block; background:#101a27; color:#9fd6ff; border:1px solid #243146; font-weight:900; padding:.26rem .7rem; border-radius:999px; }
+.range{ display:flex; gap:18px; align-items:flex-end; justify-content:space-between; margin:.6rem 0 .6rem }
+.num{ font-size:clamp(22px,3.4vw,34px); font-weight:900; color:#fff }
+.numhint{ color:#9db2c8; font-weight:700; font-size:.92rem }
+
+.acc{ display:flex; align-items:center; gap:.5rem; margin:.2rem 0 .8rem; flex-wrap:wrap }
+.acc-label{ font-weight:900; color:#9fd6ff }
+.acc-bar{ height:8px; width:180px; background:#162033; border:1px solid #223146; border-radius:999px; overflow:hidden }
+.acc-bar span{ display:block; height:100%; background:linear-gradient(90deg,#4EC6FF,#8EE4FF) }
+.acc-note{ color:#9db2c8; font-weight:700; font-size:.95rem }
+
+.bars{ display:grid; gap:.45rem; margin:.4rem 0 .6rem }
+.bline{ display:grid; grid-template-columns:1fr auto auto; gap:10px; align-items:center }
+.rail{ height:8px; background:#162033; border:1px solid #223146; border-radius:999px; overflow:hidden }
+.rail i{ display:block; height:100%; background:linear-gradient(90deg,#4EC6FF,#7DD3FF) }
+
+.assm{ margin-top:.6rem; border:1px solid #243146; border-radius:12px; padding:.6rem .8rem; background:#0f141c }
+.assm summary{ cursor:pointer; font-weight:900; color:#eaf3ff }
+.assm ul{ margin:.4rem 0 0; padding-left:1.1rem; color:#cfe1f4; line-height:1.6 }
+
+/* Email block in estimate card */
+.stack{ display:grid; gap:10px; margin-top: 10px; }
+.error{ color:#ff9b9b; font-weight:800; margin:.4rem 0 0 }
+.success{
+  background:#0f141c; border:1px solid #243146; border-radius:12px; padding:.9rem; text-align:center; margin-top:.7rem
+}
+.check{ width:22px; height:22px; border-radius:50%; background:#22d3ee; margin:.2rem auto .5rem; position:relative; box-shadow:0 0 0 6px #22d3ee22 }
+.check::after{ content:""; position:absolute; left:6px; top:5px; width:8px; height:4px; border:3px solid #0b1320; border-top:none; border-right:none; transform:rotate(-45deg) }
+
+/* Footer (clean) */
+.footer{
+  border-top:1px solid #1e232e; padding: 20px 0; text-align:center; color:#b6c2d1;
+}
+.footer-in{ width:min(1200px,92vw); margin:0 auto; font-size:.95rem; }
+</style>
+</head>
+<body>
+
+<!-- HERO (full screen) -->
+<section id="contractor-hero">
+  <div class="hero-rail" aria-hidden="true"></div>
+  <div class="hero-shell">
+    <p class="hero-eyebrow">For Contractors</p>
+    <h1 class="hero-title">Stop losing jobs to slow quotes.</h1>
+    <p class="hero-sub">Give prospects a credible range in 60 seconds. Capture details. Auto-book a site assessment. Built for custom work with adjustable assumptions so your margins stay safe.</p>
+    <ul class="hero-chips">
+      <li>Ballpark with ± confidence</li>
+      <li>Trade-specific logic</li>
+      <li>Branded email summary</li>
+    </ul>
+    <div class="hero-cta">
+      <a href="#iqt-pro" class="btn btn--primary">Try the Instant Quote</a>
+      <a href="#contact" class="btn btn--ghost">Book a Vision Call</a>
+    </div>
+  </div>
+</section>
+
+<!-- INSTANT QUOTE (tight + structured, full page width, no borders showing as white) -->
+<section id="iqt-pro" aria-labelledby="iqt-title">
+  <div class="iqt-shell">
+    <header class="iqt-head">
+      <p class="iqt-eyebrow">Instant Quote</p>
+      <h2 id="iqt-title" class="iqt-title">A real-world estimator—clean, fast, credible.</h2>
+      <p class="iqt-sub">This is a preliminary ballpark to start the conversation. We’ll confirm on a quick call or site visit.</p>
+      <ul class="iqt-chips">
+        <li>Adjust assumptions, see impact</li>
+        <li>Materials/Labor/Overhead breakdown</li>
+        <li>Distance & rush controls</li>
       </ul>
     </header>
 
-    <div class="iqtpro-grid" data-aos="fade-up">
-      <!-- LEFT: FORM (Stepper) -->
-      <form id="iqtProForm" class="iqtpro-card" novalidate>
-        <div class="iqtpro-card__head">
-          <h3 class="iqtpro-card__title">Project Details</h3>
-          <div class="iqtpro-steps" aria-hidden="true">
-            <span class="iqtpro-step is-on">1</span>
-            <span class="iqtpro-step">2</span>
-            <span class="iqtpro-step">3</span>
-          </div>
+    <div class="iqt-grid">
+      <!-- LEFT: FORM -->
+      <div class="card">
+        <div class="card-head">
+          <h3 class="card-title">Project Details</h3>
         </div>
-
-        <!-- Step 1: TRADE + INPUTS -->
-        <fieldset class="iqtpro-step-pane is-active" data-step="1" aria-label="Inputs">
-          <!-- Trade tabs -->
-          <div class="iqtpro-tabs" role="tablist" aria-label="Trade">
-            <button type="button" class="iqtpro-tab is-active" data-trade="roofing" role="tab" aria-selected="true">Roofing</button>
-            <button type="button" class="iqtpro-tab" data-trade="remodel" role="tab" aria-selected="false">Remodel</button>
-            <button type="button" class="iqtpro-tab" data-trade="hvac" role="tab" aria-selected="false">HVAC</button>
-            <button type="button" class="iqtpro-tab" data-trade="landscaping" role="tab" aria-selected="false">Landscaping</button>
+        <div class="card-body">
+          <!-- Tabs -->
+          <div class="tabs" role="tablist" aria-label="Trade">
+            <button type="button" class="tab is-on" data-trade="roofing" aria-selected="true">Roofing</button>
+            <button type="button" class="tab" data-trade="remodel" aria-selected="false">Remodel</button>
+            <button type="button" class="tab" data-trade="hvac" aria-selected="false">HVAC</button>
+            <button type="button" class="tab" data-trade="landscaping" aria-selected="false">Landscaping</button>
           </div>
 
-          <!-- Shared basics -->
-          <div class="iqtpro-row">
-            <label class="iqtpro-label" for="sqft">Approximate area (sq ft)</label>
-            <input id="sqft" name="sqft" class="iqtpro-input" type="number" min="50" step="10" value="1200" required>
-          </div>
-
-          <div class="iqtpro-row iqtpro-row--two">
-            <div>
-              <label class="iqtpro-label" for="distance">Distance from shop (miles)</label>
-              <input id="distance" name="distance" class="iqtpro-input" type="number" min="0" step="1" value="12">
-            </div>
-            <div>
-              <label class="iqtpro-label" for="complexity">Complexity</label>
-              <select id="complexity" name="complexity" class="iqtpro-input">
-                <option value="low">Low</option>
-                <option value="standard" selected>Standard</option>
-                <option value="high">High</option>
-              </select>
-            </div>
-          </div>
-
-          <!-- Trade-specific groups -->
-          <div class="iqtpro-trade iqtpro-trade--roofing">
-            <div class="iqtpro-row iqtpro-row--two">
+          <!-- Shared Basics -->
+          <div class="sec">
+            <p class="sec-title">Basics</p>
+            <div class="row two">
               <div>
-                <label class="iqtpro-label" for="roofStories">Stories</label>
-                <select id="roofStories" class="iqtpro-input">
+                <label class="label" for="sqft">Approximate area (sq ft)</label>
+                <input id="sqft" class="input" type="number" min="50" step="10" value="1200" required>
+              </div>
+              <div>
+                <label class="label" for="distance">Distance from shop (miles)</label>
+                <input id="distance" class="input" type="number" min="0" step="1" value="12">
+              </div>
+            </div>
+            <div class="row two" style="margin-top:10px">
+              <div>
+                <label class="label" for="complexity">Complexity</label>
+                <select id="complexity" class="input">
+                  <option value="low">Low</option>
+                  <option value="standard" selected>Standard</option>
+                  <option value="high">High</option>
+                </select>
+              </div>
+              <div class="check" style="align-self:end">
+                <input id="rush" type="checkbox"> <label for="rush" style="cursor:pointer">Rush turnaround</label>
+              </div>
+            </div>
+          </div>
+
+          <!-- Roofing -->
+          <div class="sec trade trade--roofing">
+            <p class="sec-title">Roofing Options</p>
+            <div class="row two">
+              <div>
+                <label class="label" for="roofStories">Stories</label>
+                <select id="roofStories" class="input">
                   <option value="1">1</option><option value="2" selected>2</option><option value="3">3</option>
                 </select>
               </div>
               <div>
-                <label class="iqtpro-label" for="roofPitch">Roof pitch</label>
-                <select id="roofPitch" class="iqtpro-input">
+                <label class="label" for="roofPitch">Roof pitch</label>
+                <select id="roofPitch" class="input">
                   <option value="low">Low (≤4/12)</option>
                   <option value="medium" selected>Medium (5–8/12)</option>
                   <option value="steep">Steep (≥9/12)</option>
                 </select>
               </div>
             </div>
-
-            <div class="iqtpro-row iqtpro-row--two">
-              <label class="iqtpro-check"><input id="tearOff" type="checkbox"> <span>Tear-off existing roof</span></label>
-              <label class="iqtpro-check"><input id="premiumRoof" type="checkbox"> <span>Premium shingles/metal</span></label>
+            <div class="row two" style="margin-top:10px">
+              <label class="check"><input id="tearOff" type="checkbox"> <span>Tear-off existing roof</span></label>
+              <label class="check"><input id="premiumRoof" type="checkbox"> <span>Premium shingles/metal</span></label>
             </div>
           </div>
 
-          <div class="iqtpro-trade iqtpro-trade--remodel" hidden>
-            <div class="iqtpro-row iqtpro-row--two">
+          <!-- Remodel -->
+          <div class="sec trade trade--remodel" hidden>
+            <p class="sec-title">Remodel Options</p>
+            <div class="row two">
               <div>
-                <label class="iqtpro-label" for="roomType">Room type</label>
-                <select id="roomType" class="iqtpro-input">
+                <label class="label" for="roomType">Room type</label>
+                <select id="roomType" class="input">
                   <option value="kitchen" selected>Kitchen</option>
                   <option value="bath">Bath</option>
                   <option value="basement">Basement</option>
@@ -104,668 +277,485 @@
                 </select>
               </div>
               <div>
-                <label class="iqtpro-label" for="finishLevel">Finish level</label>
-                <select id="finishLevel" class="iqtpro-input">
+                <label class="label" for="finishLevel">Finish level</label>
+                <select id="finishLevel" class="input">
                   <option value="standard" selected>Standard</option>
                   <option value="premium">Premium</option>
                   <option value="luxury">Luxury</option>
                 </select>
               </div>
             </div>
-            <label class="iqtpro-check"><input id="permits" type="checkbox"> <span>Permits/engineering required</span></label>
+            <label class="check" style="margin-top:10px"><input id="permits" type="checkbox"> <span>Permits/engineering required</span></label>
           </div>
 
-          <div class="iqtpro-trade iqtpro-trade--hvac" hidden>
-            <div class="iqtpro-row iqtpro-row--two">
+          <!-- HVAC -->
+          <div class="sec trade trade--hvac" hidden>
+            <p class="sec-title">HVAC Options</p>
+            <div class="row two">
               <div>
-                <label class="iqtpro-label" for="tonnage">System size (tons)</label>
-                <select id="tonnage" class="iqtpro-input">
+                <label class="label" for="tonnage">System size (tons)</label>
+                <select id="tonnage" class="input">
                   <option>2.0</option><option selected>3.0</option><option>4.0</option><option>5.0</option>
                 </select>
               </div>
               <div>
-                <label class="iqtpro-label" for="seer">Efficiency</label>
-                <select id="seer" class="iqtpro-input">
+                <label class="label" for="seer">Efficiency</label>
+                <select id="seer" class="input">
                   <option value="14">SEER 14–15</option>
                   <option value="16" selected>SEER 16–18</option>
                   <option value="20">SEER 20+</option>
                 </select>
               </div>
             </div>
-            <label class="iqtpro-check"><input id="ductwork" type="checkbox"> <span>New/major ductwork</span></label>
+            <label class="check" style="margin-top:10px"><input id="ductwork" type="checkbox"> <span>New/major ductwork</span></label>
           </div>
 
-          <div class="iqtpro-trade iqtpro-trade--landscaping" hidden>
-            <div class="iqtpro-row">
-              <label class="iqtpro-label" for="features">Features</label>
-              <select id="features" class="iqtpro-input" multiple>
+          <!-- Landscaping -->
+          <div class="sec trade trade--landscaping" hidden>
+            <p class="sec-title">Landscaping Options</p>
+            <div class="row">
+              <label class="label" for="features">Features</label>
+              <select id="features" class="input" multiple>
                 <option value="patio">Patio</option>
                 <option value="retaining">Retaining wall</option>
                 <option value="irrigation">Irrigation</option>
                 <option value="lighting">Lighting</option>
                 <option value="planting">Planting beds</option>
               </select>
-              <small class="iqtpro-hint">Hold Ctrl/Cmd to select multiple.</small>
+              <p class="hint">Hold Ctrl/Cmd to select multiple.</p>
             </div>
-            <label class="iqtpro-check"><input id="premiumLand" type="checkbox"> <span>Premium stone/materials</span></label>
+            <label class="check" style="margin-top:10px"><input id="premiumLand" type="checkbox"> <span>Premium stone/materials</span></label>
           </div>
 
-          <div class="iqtpro-row iqtpro-row--two">
-            <label class="iqtpro-check"><input id="rush" type="checkbox"> <span>Rush turnaround</span></label>
-            <span></span>
+          <!-- Files -->
+          <div class="sec">
+            <p class="sec-title">Photos / Plans (optional)</p>
+            <input id="files" type="file" multiple class="input" accept=".jpg,.jpeg,.png,.pdf">
+            <p class="hint">File names are included in the estimate email so we can match your project.</p>
           </div>
 
-          <div class="iqtpro-row">
-            <label class="iqtpro-label">Photos / plans (optional)</label>
-            <input id="files" type="file" multiple class="iqtpro-input iqtpro-input--file" accept=".jpg,.jpeg,.png,.pdf">
-            <small class="iqtpro-hint">File names are included in the estimate email so we can match your project.</small>
+          <div class="form-actions">
+            <button type="button" class="btn btn--neutral" id="resetForm">Reset</button>
+            <button type="button" class="btn btn--primary" id="calcEstimate">See Estimate</button>
           </div>
-
-          <div class="iqtpro-actions">
-            <button type="button" class="iqtpro-btn iqtpro-primary" id="stepToEstimate">See Estimate</button>
-          </div>
-        </fieldset>
-
-        <!-- Step 2: ESTIMATE -->
-        <fieldset class="iqtpro-step-pane" data-step="2" aria-label="Estimate">
-          <div class="iqtpro-est">
-            <div class="iqtpro-pill">Preliminary Ballpark</div>
-            <div class="iqtpro-range">
-              <div>
-                <div class="iqtpro-num" id="estLow">$—</div>
-                <div class="iqtpro-numhint">Low</div>
-              </div>
-              <div>
-                <div class="iqtpro-num" id="estHigh">$—</div>
-                <div class="iqtpro-numhint">High</div>
-              </div>
-            </div>
-
-            <div class="iqtpro-acc">
-              <span class="iqtpro-acc__label">Confidence</span>
-              <div class="iqtpro-acc__bar"><span id="accBar" style="width:0%"></span></div>
-              <span class="iqtpro-acc__note" id="accNote">—</span>
-            </div>
-
-            <div class="iqtpro-bars">
-              <div class="bar">
-                <span>Materials</span>
-                <div class="bar__rail"><i id="barMat" style="width:0%"></i></div>
-                <strong id="matNum">$—</strong>
-              </div>
-              <div class="bar">
-                <span>Labor</span>
-                <div class="bar__rail"><i id="barLab" style="width:0%"></i></div>
-                <strong id="labNum">$—</strong>
-              </div>
-              <div class="bar">
-                <span>Travel & Overhead</span>
-                <div class="bar__rail"><i id="barOh" style="width:0%"></i></div>
-                <strong id="ohNum">$—</strong>
-              </div>
-            </div>
-
-            <details class="iqtpro-assm">
-              <summary>Assumptions & Notes</summary>
-              <ul id="assumptionsList"></ul>
-            </details>
-          </div>
-
-          <div class="iqtpro-actions">
-            <button type="button" class="iqtpro-btn" id="backToInputs">Back</button>
-            <button type="button" class="iqtpro-btn iqtpro-ghost" id="gotoBook">Book Site Assessment</button>
-            <button type="button" class="iqtpro-btn iqtpro-primary" id="stepToEmail">Email Me This</button>
-          </div>
-        </fieldset>
-
-        <!-- Step 3: EMAIL -->
-        <fieldset class="iqtpro-step-pane" data-step="3" aria-label="Email">
-          <div class="iqtpro-row iqtpro-row--two">
-            <div>
-              <label class="iqtpro-label" for="custName">Name</label>
-              <input id="custName" class="iqtpro-input" type="text" autocomplete="name" required>
-            </div>
-            <div>
-              <label class="iqtpro-label" for="custEmail">Email</label>
-              <input id="custEmail" class="iqtpro-input" type="email" autocomplete="email" required>
-            </div>
-          </div>
-          <div class="iqtpro-row">
-            <label class="iqtpro-label" for="custPhone">Phone (optional)</label>
-            <input id="custPhone" class="iqtpro-input" type="tel" autocomplete="tel">
-          </div>
-
-          <div class="iqtpro-actions">
-            <button type="button" class="iqtpro-btn" id="backToEstimate">Back</button>
-            <button type="submit" class="iqtpro-btn iqtpro-primary" id="sendEstimate">
-              <span class="iqtpro-btnlabel">Send & Request Call</span>
-              <span class="iqtpro-spinner" aria-hidden="true"></span>
-            </button>
-          </div>
-
-          <p class="iqtpro-error" id="iqtproError" role="alert" hidden></p>
-          <div class="iqtpro-success" id="iqtproSuccess" hidden>
-            <div class="iqtpro-check" aria-hidden="true"></div>
-            <p>Sent. We’ll email your estimate and next steps today.</p>
-          </div>
-        </fieldset>
-      </form>
-
-      <!-- RIGHT: TRUST CARD -->
-      <aside class="iqtpro-card">
-        <div class="iqtpro-card__head">
-          <h3 class="iqtpro-card__title">Why this wins bids</h3>
         </div>
-        <ul class="iqtpro-points">
-          <li><strong>Speed</strong> — first credible number usually wins. You reply in minutes, not days.</li>
-          <li><strong>Control</strong> — trade rules + assumptions keep ranges safe for custom work.</li>
-          <li><strong>Professionalism</strong> — a clean, branded email with clear next steps.</li>
-          <li><strong>Less admin</strong> — fewer back-and-forth calls just to get ballpark figures.</li>
-        </ul>
-        <div class="iqtpro-cta">
-          <a href="#contact" class="iqtpro-btn iqtpro-ghost">Prefer a vision call?</a>
+      </div>
+
+      <!-- RIGHT: ESTIMATE (sticky) -->
+      <aside class="card sticky">
+        <div class="card-head">
+          <h3 class="card-title">Estimate & Email</h3>
+        </div>
+        <div class="card-body">
+          <span class="pill">Preliminary Ballpark</span>
+          <div class="range">
+            <div>
+              <div class="num" id="estLow">$—</div>
+              <div class="numhint">Low</div>
+            </div>
+            <div>
+              <div class="num" id="estHigh">$—</div>
+              <div class="numhint">High</div>
+            </div>
+          </div>
+
+          <div class="acc">
+            <span class="acc-label">Confidence</span>
+            <div class="acc-bar"><span id="accBar" style="width:0%"></span></div>
+            <span class="acc-note" id="accNote">—</span>
+          </div>
+
+          <div class="bars">
+            <div class="bline">
+              <span>Materials</span>
+              <div class="rail"><i id="barMat" style="width:0%"></i></div>
+              <strong id="matNum">$—</strong>
+            </div>
+            <div class="bline">
+              <span>Labor</span>
+              <div class="rail"><i id="barLab" style="width:0%"></i></div>
+              <strong id="labNum">$—</strong>
+            </div>
+            <div class="bline">
+              <span>Travel & Overhead</span>
+              <div class="rail"><i id="barOh" style="width:0%"></i></div>
+              <strong id="ohNum">$—</strong>
+            </div>
+          </div>
+
+          <details class="assm">
+            <summary>Assumptions & Notes</summary>
+            <ul id="assumptionsList"></ul>
+          </details>
+
+          <div class="sec" style="margin-top:12px">
+            <p class="sec-title">Email Me This Estimate</p>
+            <div class="stack">
+              <div class="row two">
+                <div>
+                  <label class="label" for="custName">Name</label>
+                  <input id="custName" class="input" type="text" autocomplete="name" />
+                </div>
+                <div>
+                  <label class="label" for="custEmail">Email</label>
+                  <input id="custEmail" class="input" type="email" autocomplete="email" />
+                </div>
+              </div>
+              <div>
+                <label class="label" for="custPhone">Phone (optional)</label>
+                <input id="custPhone" class="input" type="tel" autocomplete="tel" />
+              </div>
+              <div class="form-actions" style="justify-content:flex-start;padding-top:0;border:none;margin:0">
+                <button class="btn btn--primary" id="sendEstimate">
+                  <span>Send & Request Call</span>
+                </button>
+                <button class="btn btn--ghost" id="bookCall">Book Site Assessment</button>
+              </div>
+              <p class="error" id="err" hidden></p>
+              <div class="success" id="ok" hidden>
+                <div class="check" aria-hidden="true"></div>
+                <p>Sent. We’ll email your estimate and next steps today.</p>
+              </div>
+            </div>
+          </div>
+
         </div>
       </aside>
     </div>
   </div>
 </section>
 
-<style>
-/* ===== Brand tokens (inherit-safe) ===== */
-#iqt-pro.bim-iqt{
-  --black:#101014; --blue:#4EC6FF; --white:#fff;
-  --ink:#E8EEF6; --muted:#B8C6D8; --line:#1E232E; --glass:rgba(16,22,30,.78);
-  background:var(--black); color:var(--ink); font-family:'Montserrat',system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
-}
-.bim-iqt__rail{ height:6px; background:linear-gradient(90deg,var(--blue),rgba(78,198,255,.35),var(--blue)); box-shadow:0 10px 28px #4ec6ff2b; }
-.bim-iqt__shell{ width:min(1100px,92vw); margin:0 auto; padding: clamp(28px,4vw,46px) 0; }
-.bim-iqt__head{text-align:center}
-.bim-iqt__eyebrow{ color:var(--blue); font-weight:900; text-transform:uppercase; letter-spacing:.18em; font-size:.8rem; margin:0 0 .6rem }
-.bim-iqt__title{ margin:.2rem 0 .5rem; font-weight:900; line-height:1.06; font-size:clamp(30px,5vw,46px); color:#fff }
-.bim-iqt__sub{ max-width:70ch; margin:0 auto; color:var(--muted) }
-.bim-iqt__chips{ display:flex; gap:.6rem; flex-wrap:wrap; justify-content:center; margin:1rem 0 0; padding:0; list-style:none }
-.bim-iqt__chips li{ padding:.45rem .8rem; border-radius:999px; background:rgba(255,255,255,.05); border:1px solid #243146; color:#bcd2ea; font-weight:800 }
-
-/* ===== Layout ===== */
-.iqtpro-grid{ display:grid; gap:22px; grid-template-columns:1.2fr .8fr; align-items:start }
-@media (max-width:980px){ .iqtpro-grid{ grid-template-columns:1fr } }
-
-/* ===== Card ===== */
-.iqtpro-card{
-  background:var(--glass); border:1px solid var(--line); border-radius:16px;
-  box-shadow:0 10px 36px rgba(0,0,0,.35), 0 6px 24px rgba(78,198,255,.12);
-  padding:1.1rem;
-}
-.iqtpro-card__head{ display:flex; align-items:center; justify-content:space-between; gap:10px; padding-bottom:.6rem; border-bottom:1px solid #243146; }
-.iqtpro-card__title{ margin:0; font-size:1.05rem; font-weight:900; color:#eaf3ff }
-
-/* Steps */
-.iqtpro-steps{ display:flex; gap:6px; }
-.iqtpro-step{ width:24px; height:24px; border-radius:999px; display:grid; place-items:center; font-weight:900; font-size:.85rem; color:#0b1016; background:#283246; border:1px solid #32415c }
-.iqtpro-step.is-on{ background:var(--blue); border-color:transparent }
-
-/* Tabs */
-.iqtpro-tabs{ display:flex; gap:6px; flex-wrap:wrap; margin:.5rem 0 }
-.iqtpro-tab{ border:1px solid #243146; background:#0f141c; color:#cfe1f4; font-weight:800; padding:.5rem .9rem; border-radius:999px; cursor:pointer }
-.iqtpro-tab.is-active, .iqtpro-tab:hover{ border-color:var(--blue); box-shadow:0 0 0 6px rgba(78,198,255,.18) }
-
-.iqtpro-row{ margin:.6rem 0 }
-.iqtpro-row--two{ display:grid; grid-template-columns:1fr 1fr; gap:12px }
-@media (max-width:640px){ .iqtpro-row--two{ grid-template-columns:1fr } }
-
-  .iqtpro-input{
-  width:100%; background:#0f141c; color:#eaf3ff; border:1px solid #223146; border-radius:10px;
-  padding:.82rem 1rem; font-size:1rem; outline:none; transition:border .15s, box-shadow .15s;
-}
-.iqtpro-input:focus{ border-color:#2a90c6; box-shadow:0 0 0 6px rgba(78,198,255,.18) }
-.iqtpro-input--file{ padding:.65rem .8rem; }
-
-.iqtpro-check{ display:flex; align-items:center; gap:.55rem; color:#cfe1f4; font-weight:800 }
-
-/* Step panes */
-.iqtpro-step-pane{ display:none; padding-top:.7rem }
-.iqtpro-step-pane.is-active{ display:block }
-
-/* Estimate */
-.iqtpro-est{ margin-top:.2rem }
-.iqtpro-pill{ display:inline-block; background:#101a27; color:#9fd6ff; border:1px solid #243146; font-weight:900; padding:.26rem .7rem; border-radius:999px; }
-.iqtpro-range{ display:flex; gap:18px; align-items:flex-end; justify-content:space-between; margin:.6rem 0 .6rem }
-.iqtpro-num{ font-size:clamp(22px,3.4vw,34px); font-weight:900; color:#fff }
-.iqtpro-numhint{ color:#9db2c8; font-weight:700; font-size:.92rem }
-
-.iqtpro-acc{ display:flex; align-items:center; gap:.5rem; margin:.2rem 0 .8rem; flex-wrap:wrap }
-.iqtpro-acc__label{ font-weight:900; color:#9fd6ff }
-.iqtpro-acc__bar{ height:8px; width:180px; background:#162033; border:1px solid #223146; border-radius:999px; overflow:hidden }
-.iqtpro-acc__bar span{ display:block; height:100%; background:linear-gradient(90deg,#4EC6FF,#8EE4FF) }
-.iqtpro-acc__note{ color:#9db2c8; font-weight:700; font-size:.95rem }
-
-.iqtpro-bars{ display:grid; gap:.45rem; margin:.4rem 0 .6rem }
-.bar{ display:grid; grid-template-columns:1fr auto auto; gap:10px; align-items:center }
-.bar__rail{ height:8px; background:#162033; border:1px solid #223146; border-radius:999px; overflow:hidden }
-.bar__rail i{ display:block; height:100%; background:linear-gradient(90deg,#4EC6FF,#7DD3FF) }
-
-.iqtpro-assm{ margin-top:.4rem; border:1px solid #243146; border-radius:12px; padding:.6rem .8rem; background:#0f141c }
-.iqtpro-assm summary{ cursor:pointer; font-weight:900; color:#eaf3ff }
-.iqtpro-assm ul{ margin:.4rem 0 0; padding-left:1.1rem; color:#cfe1f4; line-height:1.6 }
-
-/* Actions */
-.iqtpro-actions{ display:flex; gap:.6rem; flex-wrap:wrap; margin-top:.9rem }
-.iqtpro-btn{
-  display:inline-flex; align-items:center; gap:.6rem; border:none; border-radius:999px; cursor:pointer; font-weight:900; padding:.9rem 1.4rem; text-decoration:none;
-  background:#223146; color:#dfe8f5;
-}
-.iqtpro-btn:hover{ background:#2a3b54 }
-.iqtpro-primary{ background:#4EC6FF; color:#091018; box-shadow:0 12px 30px rgba(78,198,255,.28) }
-.iqtpro-primary:hover{ filter:brightness(.96) }
-.iqtpro-ghost{ background:#0E1116; color:#fff }
-
-/* Trust card */
-.iqtpro-points{ margin:.6rem 0; padding-left:1.1rem; line-height:1.7; color:#dfe6ee }
-.iqtpro-cta{ margin-top:.7rem }
-
-/* Error/success */
-.iqtpro-error{ color:#ff9b9b; font-weight:800; margin:.6rem 0 0 }
-.iqtpro-success{ background:#0f141c; border:1px solid #243146; border-radius:12px; padding:.9rem; text-align:center; margin-top:.7rem }
-.iqtpro-check{ width:22px; height:22px; border-radius:50%; background:#22d3ee; margin:.2rem auto .5rem; position:relative; box-shadow:0 0 0 6px #22d3ee22 }
-.iqtpro-check::after{ content:""; position:absolute; left:6px; top:5px; width:8px; height:4px; border:3px solid #0b1320; border-top:none; border-right:none; transform:rotate(-45deg) }
-
-.iqtpro-spinner{ width:18px; height:18px; border-radius:50%; border:2px solid rgba(255,255,255,.6); border-top-color:#0E1116; display:none }
-.iqtpro-btn.is-loading .iqtpro-spinner{ display:inline-block; animation: iqspin .8s linear infinite }
-@keyframes iqspin{ to{ transform:rotate(360deg) } }
-</style>
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-in">© <span id="year"></span> BIM Labs. All rights reserved.</div>
+</footer>
 
 <script>
-/* ======================================================
-   BIM Labs — Contractors Instant Quote (v2 Pro) Logic
-   - Trade tabs with conditional fields
-   - Pricing engine with assumptions + confidence
-   - Stepper navigation (1→2→3)
-   - Email submission to Formspree (JSON)
-====================================================== */
-(function(){
-  // Elements
-  const root = document.getElementById('iqt-pro');
-  if(!root) return;
+/* Year */
+document.getElementById('year').textContent = new Date().getFullYear();
 
-  // Steps
-  const panes = [...root.querySelectorAll('.iqtpro-step-pane')];
-  const dots  = [...root.querySelectorAll('.iqtpro-step')];
+/* Tabs (trades) */
+const tabs = Array.from(document.querySelectorAll('.tab'));
+const trades = {
+  roofing: document.querySelector('.trade--roofing'),
+  remodel: document.querySelector('.trade--remodel'),
+  hvac: document.querySelector('.trade--hvac'),
+  landscaping: document.querySelector('.trade--landscaping'),
+};
+let activeTrade = 'roofing';
+function setTrade(t){
+  activeTrade = t;
+  tabs.forEach(b=>{
+    const on = b.dataset.trade === t;
+    b.classList.toggle('is-on', on);
+    b.setAttribute('aria-selected', on ? 'true' : 'false');
+  });
+  Object.entries(trades).forEach(([k,node])=> node.hidden = k !== t);
+}
+tabs.forEach(b=> b.addEventListener('click', ()=> setTrade(b.dataset.trade)));
 
-  // Tabs / trades
-  const tabs  = [...root.querySelectorAll('.iqtpro-tab')];
-  const tradeBlocks = {
-    roofing: root.querySelector('.iqtpro-trade--roofing'),
-    remodel: root.querySelector('.iqtpro-trade--remodel'),
-    hvac: root.querySelector('.iqtpro-trade--hvac'),
-    landscaping: root.querySelector('.iqtpro-trade--landscaping'),
-  };
-  let activeTrade = 'roofing';
+/* Inputs */
+const el = {
+  sqft: document.getElementById('sqft'),
+  distance: document.getElementById('distance'),
+  complexity: document.getElementById('complexity'),
+  rush: document.getElementById('rush'),
+  files: document.getElementById('files'),
+  // Roofing
+  roofStories: document.getElementById('roofStories'),
+  roofPitch: document.getElementById('roofPitch'),
+  tearOff: document.getElementById('tearOff'),
+  premiumRoof: document.getElementById('premiumRoof'),
+  // Remodel
+  roomType: document.getElementById('roomType'),
+  finishLevel: document.getElementById('finishLevel'),
+  permits: document.getElementById('permits'),
+  // HVAC
+  tonnage: document.getElementById('tonnage'),
+  seer: document.getElementById('seer'),
+  ductwork: document.getElementById('ductwork'),
+  // Landscaping
+  features: document.getElementById('features'),
+  premiumLand: document.getElementById('premiumLand'),
 
-  // Shared inputs
-  const el = {
-    sqft: root.querySelector('#sqft'),
-    distance: root.querySelector('#distance'),
-    complexity: root.querySelector('#complexity'),
-    rush: root.querySelector('#rush'),
-    files: root.querySelector('#files'),
-
-    // Roofing
-    roofStories: root.querySelector('#roofStories'),
-    roofPitch: root.querySelector('#roofPitch'),
-    tearOff: root.querySelector('#tearOff'),
-    premiumRoof: root.querySelector('#premiumRoof'),
-
-    // Remodel
-    roomType: root.querySelector('#roomType'),
-    finishLevel: root.querySelector('#finishLevel'),
-    permits: root.querySelector('#permits'),
-
-    // HVAC
-    tonnage: root.querySelector('#tonnage'),
-    seer: root.querySelector('#seer'),
-    ductwork: root.querySelector('#ductwork'),
-
-    // Landscaping
-    features: root.querySelector('#features'),
-    premiumLand: root.querySelector('#premiumLand'),
-
-    // Estimate output
-    estLow: root.querySelector('#estLow'),
-    estHigh: root.querySelector('#estHigh'),
-    accBar: root.querySelector('#accBar'),
-    accNote: root.querySelector('#accNote'),
-    barMat: root.querySelector('#barMat'),
-    barLab: root.querySelector('#barLab'),
-    barOh: root.querySelector('#barOh'),
-    matNum: root.querySelector('#matNum'),
-    labNum: root.querySelector('#labNum'),
-    ohNum: root.querySelector('#ohNum'),
-    assumptionsList: root.querySelector('#assumptionsList'),
-
-    // Step buttons
-    toEstimate: root.querySelector('#stepToEstimate'),
-    backToInputs: root.querySelector('#backToInputs'),
-    toEmail: root.querySelector('#stepToEmail'),
-    backToEstimate: root.querySelector('#backToEstimate'),
-    gotoBook: root.querySelector('#gotoBook'),
-
-    // Email step
-    form: root.querySelector('#iqtProForm'),
-    sendBtn: root.querySelector('#sendEstimate'),
-    err: root.querySelector('#iqtproError'),
-    ok: root.querySelector('#iqtproSuccess'),
-    custName: root.querySelector('#custName'),
-    custEmail: root.querySelector('#custEmail'),
-    custPhone: root.querySelector('#custPhone'),
-  };
-
-  // Trade pricing config (illustrative, safe ranges)
-  const CFG = {
-    roofing: {
-      baseRate: 7.8, minBase: 9000,
-      comp: { low: 0.92, standard: 1.0, high: 1.28 },
-      pitch: { low: 0.96, medium: 1.0, steep: 1.18 },
-      stories: { '1': 0.96, '2': 1.0, '3': 1.12 },
-      tearOff: 1.10,
-      premium: 1.18,
-      laborFactor: 0.44,
-      overheadPerMile: 2.4,
-      rush: 1.10
-    },
-    remodel: {
-      baseRate: 15.0, minBase: 14000,
-      comp: { low: 0.95, standard: 1.0, high: 1.35 },
-      roomMul: { kitchen: 1.2, bath: 1.1, basement: 1.15, addition: 1.35 },
-      finish: { standard: 1.0, premium: 1.18, luxury: 1.35 },
-      permits: 1.08,
-      laborFactor: 0.5,
-      overheadPerMile: 2.8,
-      rush: 1.12
-    },
-    hvac: {
-      baseRate: 9.2, minBase: 7000,
-      comp: { low: 0.92, standard: 1.0, high: 1.28 },
-      tonsMul: { '2.0': 0.92, '3.0': 1.0, '4.0': 1.15, '5.0': 1.28 },
-      seerMul: { '14': 0.95, '16': 1.0, '20': 1.18 },
-      duct: 1.15,
-      laborFactor: 0.46,
-      overheadPerMile: 2.1,
-      rush: 1.12
-    },
-    landscaping: {
-      baseRate: 6.6, minBase: 6500,
-      comp: { low: 0.92, standard: 1.0, high: 1.32 },
-      features: { patio: 1.15, retaining: 1.22, irrigation: 1.12, lighting: 1.10, planting: 1.08 },
-      premium: 1.20,
-      laborFactor: 0.46,
-      overheadPerMile: 1.7,
-      rush: 1.08
-    }
-  };
-
-  // Money and helpers
-  const money = (n)=> (isFinite(n) ? n.toLocaleString(undefined,{style:'currency',currency:'USD',maximumFractionDigits:0}) : '$—');
-  const clamp = (v,a,b)=> Math.max(a, Math.min(b, v));
-
-  // Switch trade tabs
-  function setTrade(t){
-    activeTrade = t;
-    tabs.forEach(btn=>{
-      const on = btn.dataset.trade === t;
-      btn.classList.toggle('is-active', on);
-      btn.setAttribute('aria-selected', on ? 'true': 'false');
-    });
-    Object.entries(tradeBlocks).forEach(([key,node])=>{
-      if(!node) return;
-      node.hidden = key !== t;
-    });
-  }
-  tabs.forEach(btn=> btn.addEventListener('click', ()=> setTrade(btn.dataset.trade)));
-  setTrade('roofing');
-
-  // Compute engine
-  function compute(){
-    const T = CFG[activeTrade];
-    const sqft = Math.max(0, Number(el.sqft.value||0));
-    const miles = Math.max(0, Number(el.distance.value||0));
-    const compv = el.complexity.value;
-
-    let base = Math.max(T.minBase, sqft * T.baseRate);
-    base *= (T.comp[compv] || 1.0);
-
-    const assumptions = [];
-
-    // Trade-specific modifiers + assumptions
-    if(activeTrade === 'roofing'){
-      base *= (T.pitch[el.roofPitch.value] || 1.0);
-      base *= (T.stories[el.roofStories.value] || 1.0);
-      if(el.tearOff.checked){ base *= T.tearOff; assumptions.push('Includes tear-off of existing roof'); }
-      if(el.premiumRoof.checked){ base *= T.premium; assumptions.push('Premium shingles/metal'); }
-      assumptions.push(`Stories: ${el.roofStories.value}, Pitch: ${el.roofPitch.value}`);
-    }
-    if(activeTrade === 'remodel'){
-      base *= (T.roomMul[el.roomType.value] || 1.0);
-      base *= (T.finish[el.finishLevel.value] || 1.0);
-      if(el.permits.checked){ base *= T.permits; assumptions.push('Includes permits/engineering'); }
-      assumptions.push(`Room: ${el.roomType.value}, Finish: ${el.finishLevel.value}`);
-    }
-    if(activeTrade === 'hvac'){
-      base *= (T.tonsMul[el.tonnage.value] || 1.0);
-      base *= (T.seerMul[el.seer.value] || 1.0);
-      if(el.ductwork.checked){ base *= T.duct; assumptions.push('Includes major ductwork'); }
-      assumptions.push(`System: ${el.tonnage.value} tons, SEER ${el.seer.value}+`);
-    }
-    if(activeTrade === 'landscaping'){
-      const selected = [...el.features.selectedOptions].map(o=>o.value);
-      selected.forEach(f=> base *= (T.features[f] || 1.0));
-      if(el.premiumLand.checked){ base *= T.premium; assumptions.push('Premium stone/materials'); }
-      assumptions.push(`Features: ${selected.length ? selected.join(', ') : 'None'}`);
-    }
-
-    if(el.rush.checked){ base *= T.rush; assumptions.push('Rush turnaround'); }
-
-    const overhead = miles * T.overheadPerMile * 2; // round trip
-    const subtotal = base + overhead;
-
-    // Confidence heuristic: larger sqft + standard complexity + fewer premium toggles = higher confidence
-    let conf = 0.55;
-    if(sqft > 1000) conf += 0.12;
-    if(sqft > 2000) conf += 0.1;
-    if(compv === 'low') conf += 0.05;
-    if(compv === 'high') conf -= 0.08;
-
-    const premiumFlags = [
-      el.premiumRoof?.checked,
-      el.premiumLand?.checked,
-      el.ductwork?.checked,
-      el.permits?.checked
-    ].filter(Boolean).length;
-    conf -= premiumFlags * 0.02;
-    conf = clamp(conf, 0.45, 0.92);
-
-    // Range width
-    const spread = (1 - conf) * 0.34 + 0.10; // 10%–44%
-    const low  = subtotal * (1 - spread/2);
-    const high = subtotal * (1 + spread/2);
-
-    // Breakout
-    const labor = subtotal * T.laborFactor;
-    const materials = Math.max(0, subtotal - labor - overhead);
-
-    // Assumptions basics
-    assumptions.push(`Distance: ${miles} mi`);
-    assumptions.push(`Complexity: ${compv}`);
-    if(sqft) assumptions.push(`Area: ~${Math.round(sqft)} sq ft`);
-
-    // Confidence note
-    const mid = (low + high)/2;
-    const plusminus = ((high - low)/2)/mid; // relative half-range
-    const pmPct = Math.round(plusminus * 100);
-
-    return { low, high, materials, labor, overhead, conf, pmPct, assumptions };
-  }
-
-  function renderEstimate(){
-    const r = compute();
-
-    el.estLow.textContent  = money(r.low);
-    el.estHigh.textContent = money(r.high);
-
-    const confPct = Math.round(r.conf*100);
-    el.accBar.style.width  = confPct + '%';
-    el.accNote.textContent = `±${r.pmPct}% • ${confPct}% confidence`;
-
-    el.matNum.textContent = money(r.materials);
-    el.labNum.textContent = money(r.labor);
-    el.ohNum.textContent  = money(r.overhead);
-
-    const total = r.materials + r.labor + r.overhead || 1;
-    el.barMat.style.width = Math.round((r.materials/total)*100) + '%';
-    el.barLab.style.width = Math.round((r.labor/total)*100) + '%';
-    el.barOh.style.width  = Math.round((r.overhead/total)*100) + '%';
-
-    // Assumptions list
-    el.assumptionsList.innerHTML = '';
-    r.assumptions.forEach(a=>{
-      const li = document.createElement('li');
-      li.textContent = a;
-      el.assumptionsList.appendChild(li);
-    });
-
-    return r; // return for email payload
-  }
-
-  // Stepper
-  let step = 0;
-  function goto(n){
-    step = clamp(n, 0, panes.length-1);
-    panes.forEach((p,i)=> p.classList.toggle('is-active', i===step));
-    dots.forEach((d,i)=> d.classList.toggle('is-on', i<=step));
-  }
-  goto(0);
+  // Estimate output
+  estLow: document.getElementById('estLow'),
+  estHigh: document.getElementById('estHigh'),
+  accBar: document.getElementById('accBar'),
+  accNote: document.getElementById('accNote'),
+  barMat: document.getElementById('barMat'),
+  barLab: document.getElementById('barLab'),
+  barOh: document.getElementById('barOh'),
+  matNum: document.getElementById('matNum'),
+  labNum: document.getElementById('labNum'),
+  ohNum: document.getElementById('ohNum'),
+  assumptionsList: document.getElementById('assumptionsList'),
 
   // Buttons
-  el.toEstimate.addEventListener('click', ()=>{
-    // Basic validation for step 1
-    if(!el.sqft.value || Number(el.sqft.value) < 50){ el.sqft.focus(); return; }
-    renderEstimate();
-    goto(1);
+  calcEstimate: document.getElementById('calcEstimate'),
+  resetForm: document.getElementById('resetForm'),
+  sendEstimate: document.getElementById('sendEstimate'),
+  bookCall: document.getElementById('bookCall'),
+
+  // Email
+  custName: document.getElementById('custName'),
+  custEmail: document.getElementById('custEmail'),
+  custPhone: document.getElementById('custPhone'),
+  err: document.getElementById('err'),
+  ok: document.getElementById('ok'),
+};
+
+/* Pricing config (illustrative) */
+const CFG = {
+  roofing: {
+    baseRate: 7.8, minBase: 9000,
+    comp: { low: 0.92, standard: 1.0, high: 1.28 },
+    pitch: { low: 0.96, medium: 1.0, steep: 1.18 },
+    stories: { '1': 0.96, '2': 1.0, '3': 1.12 },
+    tearOff: 1.10, premium: 1.18,
+    laborFactor: 0.44, overheadPerMile: 2.4, rush: 1.10
+  },
+  remodel: {
+    baseRate: 15.0, minBase: 14000,
+    comp: { low: 0.95, standard: 1.0, high: 1.35 },
+    roomMul: { kitchen: 1.2, bath: 1.1, basement: 1.15, addition: 1.35 },
+    finish: { standard: 1.0, premium: 1.18, luxury: 1.35 },
+    permits: 1.08,
+    laborFactor: 0.5, overheadPerMile: 2.8, rush: 1.12
+  },
+  hvac: {
+    baseRate: 9.2, minBase: 7000,
+    comp: { low: 0.92, standard: 1.0, high: 1.28 },
+    tonsMul: { '2.0': 0.92, '3.0': 1.0, '4.0': 1.15, '5.0': 1.28 },
+    seerMul: { '14': 0.95, '16': 1.0, '20': 1.18 },
+    duct: 1.15,
+    laborFactor: 0.46, overheadPerMile: 2.1, rush: 1.12
+  },
+  landscaping: {
+    baseRate: 6.6, minBase: 6500,
+    comp: { low: 0.92, standard: 1.0, high: 1.32 },
+    features: { patio: 1.15, retaining: 1.22, irrigation: 1.12, lighting: 1.10, planting: 1.08 },
+    premium: 1.20,
+    laborFactor: 0.46, overheadPerMile: 1.7, rush: 1.08
+  }
+};
+
+const money = n => isFinite(n) ? n.toLocaleString(undefined,{style:'currency',currency:'USD',maximumFractionDigits:0}) : '$—';
+const clamp = (v,a,b)=> Math.max(a, Math.min(b, v));
+
+function compute(){
+  const T = CFG[activeTrade];
+  const sqft = Math.max(0, Number(el.sqft.value||0));
+  const miles = Math.max(0, Number(el.distance.value||0));
+  const compv = el.complexity.value;
+
+  let base = Math.max(T.minBase, sqft * T.baseRate);
+  base *= (T.comp[compv] || 1.0);
+
+  const assumptions = [];
+  // Per-trade
+  if(activeTrade === 'roofing'){
+    base *= (T.pitch[el.roofPitch.value] || 1.0);
+    base *= (T.stories[el.roofStories.value] || 1.0);
+    if(el.tearOff.checked){ base *= T.tearOff; assumptions.push('Includes tear-off'); }
+    if(el.premiumRoof.checked){ base *= T.premium; assumptions.push('Premium shingles/metal'); }
+    assumptions.push(`Stories: ${el.roofStories.value}, Pitch: ${el.roofPitch.value}`);
+  }
+  if(activeTrade === 'remodel'){
+    base *= (T.roomMul[el.roomType.value] || 1.0);
+    base *= (T.finish[el.finishLevel.value] || 1.0);
+    if(el.permits.checked){ base *= T.permits; assumptions.push('Includes permits/engineering'); }
+    assumptions.push(`Room: ${el.roomType.value}, Finish: ${el.finishLevel.value}`);
+  }
+  if(activeTrade === 'hvac'){
+    base *= (T.tonsMul[el.tonnage.value] || 1.0);
+    base *= (T.seerMul[el.seer.value] || 1.0);
+    if(el.ductwork.checked){ base *= T.duct; assumptions.push('Major ductwork'); }
+    assumptions.push(`System: ${el.tonnage.value} tons, SEER ${el.seer.value}+`);
+  }
+  if(activeTrade === 'landscaping'){
+    const selected = [...el.features.selectedOptions].map(o=>o.value);
+    selected.forEach(f=> base *= (T.features[f] || 1.0));
+    if(el.premiumLand.checked){ base *= T.premium; assumptions.push('Premium stone/materials'); }
+    assumptions.push(`Features: ${selected.length ? selected.join(', ') : 'None'}`);
+  }
+
+  if(el.rush.checked){ base *= T.rush; assumptions.push('Rush turnaround'); }
+
+  const overhead = miles * T.overheadPerMile * 2;
+  const subtotal = base + overhead;
+
+  // Confidence
+  let conf = 0.55;
+  if(sqft > 1000) conf += 0.12;
+  if(sqft > 2000) conf += 0.1;
+  if(compv === 'low') conf += 0.05;
+  if(compv === 'high') conf -= 0.08;
+
+  const premiumFlags = [
+    el.premiumRoof?.checked, el.premiumLand?.checked, el.ductwork?.checked, el.permits?.checked
+  ].filter(Boolean).length;
+  conf -= premiumFlags * 0.02;
+  conf = clamp(conf, 0.45, 0.92);
+
+  const spread = (1 - conf) * 0.34 + 0.10;
+  const low  = subtotal * (1 - spread/2);
+  const high = subtotal * (1 + spread/2);
+
+  const labor = subtotal * T.laborFactor;
+  const materials = Math.max(0, subtotal - labor - overhead);
+
+  assumptions.push(`Distance: ${miles} mi`);
+  assumptions.push(`Complexity: ${compv}`);
+  if(sqft) assumptions.push(`Area: ~${Math.round(sqft)} sq ft`);
+
+  const mid = (low + high)/2;
+  const pmPct = Math.round((((high - low)/2)/mid)*100);
+
+  return { low, high, materials, labor, overhead, conf, pmPct, assumptions };
+}
+
+function renderEstimate(){
+  const r = compute();
+  el.estLow.textContent  = money(r.low);
+  el.estHigh.textContent = money(r.high);
+  const confPct = Math.round(r.conf*100);
+  el.accBar.style.width = confPct + '%';
+  el.accNote.textContent = `±${r.pmPct}% • ${confPct}% confidence`;
+
+  el.matNum.textContent = money(r.materials);
+  el.labNum.textContent = money(r.labor);
+  el.ohNum.textContent  = money(r.overhead);
+  const total = (r.materials + r.labor + r.overhead) || 1;
+  el.barMat.style.width = Math.round((r.materials/total)*100) + '%';
+  el.barLab.style.width = Math.round((r.labor/total)*100) + '%';
+  el.barOh.style.width  = Math.round((r.overhead/total)*100) + '%';
+
+  el.assumptionsList.innerHTML = '';
+  r.assumptions.forEach(a=>{
+    const li = document.createElement('li'); li.textContent = a; el.assumptionsList.appendChild(li);
   });
-  el.backToInputs?.addEventListener('click', ()=> goto(0));
-  el.toEmail.addEventListener('click', ()=> goto(2));
-  el.backToEstimate?.addEventListener('click', ()=> goto(1));
-  el.gotoBook?.addEventListener('click', ()=>{
-    document.getElementById('contact')?.scrollIntoView({behavior:'smooth'});
-  });
 
-  // Change handlers re-render estimate live on step 2
-  [
-    el.sqft, el.distance, el.complexity, el.rush, el.files,
-    el.roofStories, el.roofPitch, el.tearOff, el.premiumRoof,
-    el.roomType, el.finishLevel, el.permits,
-    el.tonnage, el.seer, el.ductwork,
-    el.features, el.premiumLand
-  ].forEach(ctrl=>{
-    if(!ctrl) return;
-    ctrl.addEventListener('input', ()=> { if(step===1) renderEstimate(); });
-  });
+  return r;
+}
 
-  // Trade switching should also recalc on step 2
-  tabs.forEach(btn=>{
-    btn.addEventListener('click', ()=> { if(step===1) renderEstimate(); });
-  });
+/* Calculate & Reset */
+el.calcEstimate.addEventListener('click', ()=>{
+  if(!el.sqft.value || Number(el.sqft.value) < 50){ el.sqft.focus(); return; }
+  renderEstimate();
+});
+el.resetForm.addEventListener('click', ()=>{
+  document.querySelector('form')?.reset?.();
+  // Manually reset selects and checkboxes where needed
+  setTrade('roofing');
+  el.sqft.value = 1200; el.distance.value = 12; el.complexity.value = 'standard';
+  el.tearOff.checked = false; el.premiumRoof.checked = false;
+  el.finishLevel.value = 'standard'; el.roomType.value = 'kitchen'; el.permits.checked = false;
+  el.tonnage.value = '3.0'; el.seer.value = '16'; el.ductwork.checked = false;
+  [...el.features.options].forEach(o=> o.selected = false);
+  el.premiumLand.checked = false; el.rush.checked = false;
 
-  // Submit email (Step 3)
-  el.form.addEventListener('submit', async (e)=>{
-    e.preventDefault();
-    el.err.hidden = true; el.ok.hidden = true;
+  // Clear estimate
+  ['estLow','estHigh','matNum','labNum','ohNum'].forEach(id=> document.getElementById(id).textContent = '$—');
+  ['barMat','barLab','barOh'].forEach(id=> document.getElementById(id).style.width = '0%');
+  el.accBar.style.width = '0%'; el.accNote.textContent = '—';
+  el.assumptionsList.innerHTML = '';
+  el.err.hidden = true; el.ok.hidden = true;
+});
 
-    if(!el.custName.value.trim() || !el.custEmail.value.trim()){
-      el.err.textContent = 'Please enter your name and email.';
-      el.err.hidden = false;
-      return;
-    }
+/* Email */
+el.sendEstimate.addEventListener('click', async ()=>{
+  el.err.hidden = true; el.ok.hidden = true;
+  if(!el.custName.value.trim() || !el.custEmail.value.trim()){
+    el.err.textContent = 'Please enter your name and email.'; el.err.hidden = false; return;
+  }
+  const snap = renderEstimate();
+  const landFeatures = el.features ? [...el.features.selectedOptions].map(o=>o.value) : [];
+  const fileNames = el.files?.files ? [...el.files.files].map(f=>f.name) : [];
 
-    // Compute final snapshot
-    const snapshot = renderEstimate();
-
-    // Capture selected features (landscaping)
-    const landFeatures = el.features ? [...el.features.selectedOptions].map(o=>o.value) : [];
-
-    // File names only (no upload to Formspree here)
-    const fileNames = el.files && el.files.files ? [...el.files.files].map(f=>f.name) : [];
-
-    // Assemble payload
-    const payload = {
-      source: 'BIM Instant Quote (Contractors v2)',
-      trade: activeTrade,
-      inputs: {
-        sqft: Number(el.sqft.value||0),
-        distance_miles: Number(el.distance.value||0),
-        complexity: el.complexity.value,
-        rush: !!el.rush.checked,
-
-        roofing: {
-          stories: el.roofStories?.value || null,
-          pitch: el.roofPitch?.value || null,
-          tear_off: !!el.tearOff?.checked,
-          premium: !!el.premiumRoof?.checked
-        },
-        remodel: {
-          room: el.roomType?.value || null,
-          finish: el.finishLevel?.value || null,
-          permits: !!el.permits?.checked
-        },
-        hvac: {
-          tonnage: el.tonnage?.value || null,
-          seer: el.seer?.value || null,
-          ductwork: !!el.ductwork?.checked
-        },
-        landscaping: {
-          features: landFeatures,
-          premium: !!el.premiumLand?.checked
-        },
-        files: fileNames
+  const payload = {
+    source: 'BIM Instant Quote — Contractors (Full Page)',
+    trade: activeTrade,
+    inputs: {
+      sqft: Number(el.sqft.value||0),
+      distance_miles: Number(el.distance.value||0),
+      complexity: el.complexity.value,
+      rush: !!el.rush.checked,
+      roofing: {
+        stories: el.roofStories?.value || null,
+        pitch: el.roofPitch?.value || null,
+        tear_off: !!el.tearOff?.checked,
+        premium: !!el.premiumRoof?.checked
       },
-      estimate: {
-        low: Math.round(snapshot.low),
-        high: Math.round(snapshot.high),
-        materials: Math.round(snapshot.materials),
-        labor: Math.round(snapshot.labor),
-        overhead: Math.round(snapshot.overhead),
-        confidence: snapshot.conf,
-        plusminus_pct: snapshot.pmPct,
-        assumptions: snapshot.assumptions
+      remodel: {
+        room: el.roomType?.value || null,
+        finish: el.finishLevel?.value || null,
+        permits: !!el.permits?.checked
       },
-      customer: {
-        name: el.custName.value.trim(),
-        email: el.custEmail.value.trim(),
-        phone: el.custPhone.value.trim()
-      }
-    };
-
-    // Send
-    el.sendBtn.classList.add('is-loading');
-    el.sendBtn.setAttribute('disabled','disabled');
-    try{
-      await fetch('https://formspree.io/f/xkgbgbjd', {
-        method:'POST',
-        headers:{ 'Accept':'application/json','Content-Type':'application/json' },
-        body: JSON.stringify(payload)
-      });
-      el.ok.hidden = false;
-      // Optionally lock fields
-      root.querySelectorAll('input,select,button').forEach(n=>{
-        if(n.id !== 'gotoBook') n.disabled = true;
-      });
-    }catch(err){
-      el.err.textContent = 'Could not send right now. Please try again in a moment.';
-      el.err.hidden = false;
-    }finally{
-      el.sendBtn.classList.remove('is-loading');
-      el.sendBtn.removeAttribute('disabled');
+      hvac: {
+        tonnage: el.tonnage?.value || null,
+        seer: el.seer?.value || null,
+        ductwork: !!el.ductwork?.checked
+      },
+      landscaping: {
+        features: landFeatures,
+        premium: !!el.premiumLand?.checked
+      },
+      files: fileNames
+    },
+    estimate: {
+      low: Math.round(snap.low),
+      high: Math.round(snap.high),
+      materials: Math.round(snap.materials),
+      labor: Math.round(snap.labor),
+      overhead: Math.round(snap.overhead),
+      confidence: snap.conf,
+      plusminus_pct: snap.pmPct,
+      assumptions: snap.assumptions
+    },
+    customer: {
+      name: el.custName.value.trim(),
+      email: el.custEmail.value.trim(),
+      phone: el.custPhone.value.trim()
     }
-  });
+  };
 
-})();
+  const btn = el.sendEstimate;
+  btn.disabled = true; btn.textContent = 'Sending...';
+  try{
+    await fetch('https://formspree.io/f/xkgbgbjd', {
+      method:'POST',
+      headers:{ 'Accept':'application/json','Content-Type':'application/json' },
+      body: JSON.stringify(payload)
+    });
+    el.ok.hidden = false;
+  }catch{
+    el.err.textContent = 'Could not send right now. Please try again in a moment.'; el.err.hidden = false;
+  }finally{
+    btn.disabled = false; btn.textContent = 'Send & Request Call';
+  }
+});
+
+/* Book call */
+el.bookCall.addEventListener('click', (e)=>{
+  e.preventDefault();
+  document.getElementById('contact')?.scrollIntoView({behavior:'smooth'});
+});
+
+/* Live re-render on input (kept tight) */
+[
+  el.sqft, el.distance, el.complexity, el.rush, el.files,
+  el.roofStories, el.roofPitch, el.tearOff, el.premiumRoof,
+  el.roomType, el.finishLevel, el.permits,
+  el.tonnage, el.seer, el.ductwork,
+  el.features, el.premiumLand
+].forEach(ctrl=>{
+  if(!ctrl) return;
+  ctrl.addEventListener('input', ()=> renderEstimate());
+});
+
+/* Init */
+setTrade('roofing');
 </script>
+</body>
+</html>
