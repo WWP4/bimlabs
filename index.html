@@ -1256,6 +1256,149 @@ body::before{
 .bg-immersive a{ text-decoration: none; font-weight: 700; }
 .bg-immersive a:hover{ opacity:.9; }
 
+    /* ===== INDUSTRY STANDARD (full-page) ===== */
+.industry {
+  position: relative;
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: clamp(28px, 6vw, 80px) 24px;
+  overflow: clip;
+}
+
+.industry__shell{
+  width:min(1100px, 92vw);
+  display:grid;
+  grid-template-columns: 1.05fr .95fr;
+  gap:min(6vw, 60px);
+  align-items:center;
+  position:relative;
+  z-index:2;
+}
+@media (max-width: 1000px){ .industry__shell{ grid-template-columns:1fr; } }
+
+/* Left: copy */
+.industry__eyebrow{
+  color: var(--blue);
+  text-transform: uppercase;
+  letter-spacing: .18em;
+  font-weight: 900;
+  font-size: .8rem;
+  margin: 0 0 .5rem;
+}
+.industry__title{
+  margin: .1rem 0 .6rem;
+  font-weight: 900;
+  line-height: 1.04;
+  font-size: clamp(34px, 6vw, 70px);
+}
+.industry__lead{
+  color: #dfe6ee;
+  font-size: clamp(1rem, 2.1vw, 1.25rem);
+  line-height: 1.75;
+  opacity: .95;
+}
+.industry__hr{
+  height: 3px;
+  width: 100%;
+  margin: 18px 0 14px;
+  background: linear-gradient(90deg, var(--blue), transparent 70%);
+  border-radius: 999px;
+  box-shadow: 0 0 24px #4ec6ff33;
+}
+
+/* Chips */
+.industry__chips{
+  list-style: none; padding:0; margin: 16px 0 0;
+  display:flex; flex-wrap:wrap; gap:10px;
+}
+.industry__chips li{
+  background: rgba(22,26,32,.82);
+  border: 1px solid #223146;
+  color:#cfe1f4;
+  padding:.55rem .9rem;
+  border-radius: 999px;
+  font-weight: 800;
+  font-size:.95rem;
+  box-shadow: 0 6px 22px #4ec6ff18;
+}
+
+/* CTA */
+.industry__cta{
+  display:flex; gap:.8rem; flex-wrap:wrap; margin-top:16px;
+}
+.industry__btn{
+  background: var(--blue); color:#091018; font-weight:900;
+  padding:.9rem 1.4rem; border-radius:999px; text-decoration:none;
+  box-shadow:0 10px 36px #4ec6ff38;
+}
+.industry__btn:hover{ background:#fff; color:var(--blue); }
+.industry__link{ color:#b9c6d8; font-weight:800; text-decoration:none; }
+.industry__link:hover{ color:var(--blue); }
+
+/* Right: SVG panel */
+.industry__panel{
+  position:relative;
+  border:1px solid #1e2b3b;
+  border-radius: 20px;
+  background: rgba(16,22,30,.78);
+  box-shadow: 0 14px 40px rgba(0,0,0,.35), inset 0 1px 10px rgba(78,198,255,.08);
+  overflow:hidden;
+  isolation:isolate;
+}
+.industry__panel::before{
+  content:"";
+  position:absolute; inset:-1px; pointer-events:none; border-radius: inherit;
+  background:
+    radial-gradient(120% 120% at 85% 15%, rgba(78,198,255,.18), transparent 40%),
+    radial-gradient(120% 120% at 15% 85%, rgba(78,198,255,.14), transparent 42%);
+  mix-blend-mode: screen; filter: blur(6px);
+}
+
+/* SVG sizing */
+.industry__svg-wrap{ aspect-ratio: 16/12; width:min(600px, 90vw); }
+@media (max-width:1000px){ .industry__svg-wrap{ width:100%; } }
+.industry__svg{ width:100%; height:100%; display:block; }
+
+/* SVG animation */
+@keyframes dash {
+  from { stroke-dashoffset: var(--len, 600); }
+  to   { stroke-dashoffset: 0; }
+}
+@keyframes glowPulse {
+  0% { opacity:.55; } 50% { opacity:.95; } 100% { opacity:.55; }
+}
+.industry .path--dash{
+  stroke-dasharray: var(--len, 600);
+  stroke-dashoffset: var(--len, 600);
+  animation: dash 1.8s ease forwards;
+}
+.industry .glow{ animation: glowPulse 6s ease-in-out infinite; }
+
+/* Number badges */
+.kpis{
+  display:grid; grid-template-columns: repeat(3, minmax(0,1fr));
+  gap:10px; margin-top:14px;
+}
+.kpi{
+  border:1px solid #223146; border-radius:12px; padding:10px 12px;
+  background:#0f141c; color:#cfe1f4;
+  box-shadow: inset 0 1px 8px rgba(78,198,255,.06);
+  text-align:center;
+}
+.kpi strong{ display:block; font-size:1.35rem; color:#e8eef6; }
+.kpi small{ opacity:.85; }
+
+/* Background grid + light */
+.industry__bg{
+  position:absolute; inset:0; z-index:0; pointer-events:none; opacity:.25;
+  background:
+    linear-gradient(0deg, #fff0 24px, #fff1 25px, #fff0 26px) center/100% 26px,
+    linear-gradient(90deg,#fff0 24px,#fff1 25px,#fff0 26px) center/26px 100%,
+    radial-gradient(900px 600px at 85% -10%, rgba(78,198,255,.08), transparent 60%),
+    radial-gradient(700px 400px at 5% -10%, rgba(78,198,255,.07), transparent 60%);
+}
+
   
   </style>
 </head>
@@ -1857,34 +2000,106 @@ body::before{
 
 
 
-  <section class="pricing-comparison" data-aos="fade-up" style="padding:4rem 1rem; background:#171a22; color:#fff;">
-  <h2 style="text-align:center; font-size:2rem; margin-bottom:2rem;">Industry Standard vs. BIM Labs</h2>
-  <div style="display:flex; flex-wrap:wrap; gap:2rem; max-width:1000px; margin:0 auto;">
-    
-    <div style="flex:1; background:#22242a; padding:1.5rem; border-radius:1em;">
-      <h3>Industry Standard</h3>
-      <ul>
-        <li>Basic site: <b>$2,000–$8,000</b></li>
-        <li>Custom small business site: <b>$3,000–$10,000</b></li>
-      </ul>
-      <p style="margin-top:1rem; font-size:1.05rem; opacity:.85;">
-        Source: <a href="https://bluegiftdigital.com/how-much-do-people-charge-for-website-design/" target="_blank" style="color:#4EC6FF; font-weight:600;">Blue Gift Digital</a>, 
-        <a href="https://thervo.com/costs/website-design-costs" target="_blank" style="color:#4EC6FF; font-weight:600;">Thervo</a>.
+  <section id="industry" class="industry bg-immersive invert-trigger" data-aos="fade-up">
+  <div class="industry__bg" aria-hidden="true"></div>
+
+  <div class="industry__shell">
+    <!-- Copy -->
+    <div>
+      <p class="industry__eyebrow">Perspective</p>
+      <h2 class="industry__title">The “industry standard” is broken.</h2>
+      <div class="industry__hr" aria-hidden="true"></div>
+      <p class="industry__lead">
+        Web design got outrageous — bloated timelines, trend-chasing visuals, and retainers for “maintenance” you don’t need.
+        We started BIM Labs to reset the baseline. We care about entrepreneurs of every size, and our mission is simple:
+        give everyone the same opportunity to succeed by shipping fast, conversion-first sites with CRM power
+        built-in. No mystery fees. No vanity fluff. Just real outcomes.
       </p>
-    </div>
-    
-    <div style="flex:1; background:linear-gradient(120deg,#19243b,#101014); padding:1.5rem; border-radius:1em; border:2px solid #4EC6FF;">
-      <h3>BIM Labs</h3>
-      <ul>
-        <li>Premium website + custom CRM</li>
-        <li>No templates — 100% branded design</li>
-        <li>Fast delivery: 2–3 weeks</li>
-        <li>Live chat & video support</li>
+
+      <ul class="industry__chips">
+        <li>Clarity over trends</li>
+        <li>2–3 week launches</li>
+        <li>CRM & automations native</li>
+        <li>Owner’s mindset</li>
       </ul>
-      <p style="margin-top:1rem; font-size:1.1rem;">
-        <b>All for a flat $2,500.</b>
-      </p>
+
+      <div class="kpis" role="group" aria-label="Proof points">
+        <div class="kpi"><strong data-kpi="28">0%</strong><small>Avg. lift from clarity</small></div>
+        <div class="kpi"><strong data-kpi="1.7">0s</strong><small>Mobile TTI (typical)</small></div>
+        <div class="kpi"><strong data-kpi="3">0</strong><small>Weeks to launch</small></div>
+      </div>
+
+      <div class="industry__cta">
+        <a href="#contact" class="industry__btn">Start a Vision Call</a>
+        <a href="#work" class="industry__link">See Live Work ↗</a>
+      </div>
     </div>
+
+    <!-- SVG Panel -->
+    <aside class="industry__panel">
+      <div class="industry__svg-wrap">
+        <svg class="industry__svg" viewBox="0 0 1200 900" xmlns="http://www.w3.org/2000/svg" aria-labelledby="industrySvgTitle industrySvgDesc" role="img">
+          <title id="industrySvgTitle">The Cost of Trend-First Web Design</title>
+          <desc id="industrySvgDesc">Stylized diagram contrasting bloated, trend-first builds with BIM Labs’ lean, conversion-first approach.</desc>
+
+          <!-- Background card -->
+          <rect x="24" y="24" width="1152" height="852" rx="28" fill="#0f141c" stroke="#223146"/>
+
+          <!-- “Agency Stack” squiggle (bloated path) -->
+          <g transform="translate(70,110)">
+            <path class="path--dash"
+                  d="M0,140 C120,10 180,290 300,160
+                     S540,30 640,180
+                     S820,330 980,120"
+                  fill="none" stroke="hsl(206 100% 55%)" stroke-width="4" opacity=".8"/>
+
+            <!-- labels -->
+            <g font-family="Montserrat, Arial, sans-serif" font-size="18" fill="#cfe1f4" opacity=".9">
+              <text x="0" y="0">Agency Stack</text>
+              <text x="220" y="210">Trends</text>
+              <text x="520" y="240">Delays</text>
+              <text x="880" y="90">Retainers</text>
+            </g>
+          </g>
+
+          <!-- BIM Labs line (direct path) -->
+          <g transform="translate(70,430)">
+            <path
+              d="M0,60 L980,60"
+              fill="none" stroke="#FFFFFF" stroke-width="2"/>
+            <path
+              d="M0,60 L980,60"
+              fill="none" stroke="hsl(206 100% 55%)" stroke-width="8" opacity=".28" class="glow"/>
+            <g font-family="Montserrat, Arial, sans-serif" font-size="18" fill="#cfe1f4" opacity=".95">
+              <text x="0" y="0">BIM Labs Line</text>
+              <text x="780" y="100">Launch → Iterate</text>
+            </g>
+          </g>
+
+          <!-- Right summary box -->
+          <g transform="translate(880,540)">
+            <rect width="246" height="210" rx="16" fill="#121a24" stroke="#243146"/>
+            <g font-family="Montserrat, Arial, sans-serif" fill="#e8eef6">
+              <text x="16" y="36" font-weight="900" font-size="20">What changes</text>
+              <text x="16" y="72"  font-size="16" opacity=".9">• Sections by intent</text>
+              <text x="16" y="98"  font-size="16" opacity=".9">• Real mobile speed</text>
+              <text x="16" y="124" font-size="16" opacity=".9">• CRM from day one</text>
+              <text x="16" y="150" font-size="16" opacity=".9">• No retainer trap</text>
+              <text x="16" y="186" font-size="14" opacity=".7">Owner-built. Results-led.</text>
+            </g>
+          </g>
+
+          <!-- Accent corner glow -->
+          <circle cx="1140" cy="60" r="120" fill="url(#glowGrad)" opacity=".55"/>
+          <defs>
+            <radialGradient id="glowGrad" cx="0" cy="0" r="1">
+              <stop offset="0%" stop-color="hsl(206 100% 60%)"/>
+              <stop offset="100%" stop-color="transparent"/>
+            </radialGradient>
+          </defs>
+        </svg>
+      </div>
+    </aside>
   </div>
 </section>
 
@@ -2730,6 +2945,47 @@ document.addEventListener('DOMContentLoaded', () => {
   update();
   addEventListener('scroll', update, { passive:true });
   addEventListener('resize', update);
+})();
+</script>
+<script>
+(() => {
+  // Animate KPI numbers when section enters view
+  const host = document.getElementById('industry');
+  if(!host) return;
+
+  const els = host.querySelectorAll('[data-kpi]');
+  let done = false;
+
+  const fmt = v => {
+    // Keep “1.7s” style for TTI, “3” for weeks, “28%” for lift
+    return String(v);
+  };
+
+  function tick(el, target){
+    const isFloat = String(target).includes('.');
+    const end = parseFloat(target);
+    const dur = 900;
+    const t0 = performance.now();
+
+    function step(now){
+      const p = Math.min(1, (now - t0) / dur);
+      const val = isFloat ? (end * p).toFixed(1) : Math.round(end * p);
+      const suffix = el.dataset.kpi.includes('.') ? (el.closest('.kpi').textContent.includes('TTI') ? 's' : '') : (el.closest('.kpi').textContent.includes('lift') ? '%' : '');
+      el.textContent = fmt(val + (suffix ? suffix : (el.dataset.kpi.includes('.') ? '' : '')));
+      if(p < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+
+  const io = new IntersectionObserver(([e])=>{
+    if(e.isIntersecting && !done){
+      done = true;
+      els.forEach(el => tick(el, el.dataset.kpi));
+      io.disconnect();
+    }
+  }, { threshold: .45 });
+
+  io.observe(host);
 })();
 </script>
 
