@@ -1483,6 +1483,15 @@ body::before{
 .kpi strong{ color: var(--ink); }
 .kpi small{ color: color-mix(in srgb, var(--ink) 75%, var(--bg) 25%); }
 
+    /* Optional: ensure primary CTA stays high-contrast on light */
+.industry__btn{
+  background: var(--blue);
+  color: #091018;
+  box-shadow: 0 10px 28px color-mix(in srgb, var(--blue) 35%, transparent);
+}
+.industry__btn:hover{ background:#fff; color:var(--blue); }
+
+
   </style>
 </head>
 <body>
