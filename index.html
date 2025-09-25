@@ -1464,6 +1464,24 @@ body::before{
   background: color-mix(in srgb, var(--bg) 92%, var(--ink) 8%);
   border: 1px solid color-mix(in srgb, var(--ink) 15%, transparent);
 }
+/* === Industry chips & KPI — theme-aware === */
+.industry__chips li{
+  /* soft pill that adapts to current theme */
+  background: color-mix(in srgb, var(--bg) 85%, var(--ink) 15%);
+  border: 1px solid color-mix(in srgb, var(--ink) 18%, transparent);
+  color: var(--ink);
+  box-shadow: 0 6px 16px color-mix(in srgb, var(--ink) 8%, transparent);
+}
+
+/* KPI cards under the chips */
+.kpi{
+  background: color-mix(in srgb, var(--bg) 88%, var(--ink) 12%);
+  border: 1px solid color-mix(in srgb, var(--ink) 16%, transparent);
+  color: var(--ink);
+  box-shadow: inset 0 1px 6px color-mix(in srgb, var(--ink) 6%, transparent);
+}
+.kpi strong{ color: var(--ink); }
+.kpi small{ color: color-mix(in srgb, var(--ink) 75%, var(--bg) 25%); }
 
   </style>
 </head>
