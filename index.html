@@ -1399,6 +1399,51 @@ body::before{
     radial-gradient(700px 400px at 5% -10%, rgba(78,198,255,.07), transparent 60%);
 }
 
+    /* ===== Proof & Pricing box (replaces SVG panel) ===== */
+.proofbox{
+  position:relative;
+  border:1px solid #1e2b3b;
+  border-radius:20px;
+  background: rgba(16,22,30,.78);
+  box-shadow: 0 14px 40px rgba(0,0,0,.35), inset 0 1px 10px rgba(78,198,255,.08);
+  padding:18px;
+  color:#e8eef6;
+}
+.proofbox__head{
+  display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:8px;
+}
+.proofbox__title{ margin:0; font-size:1.1rem; font-weight:900; letter-spacing:.02em; color:#e8eef6; }
+.proofbox__badge{
+  background: var(--blue); color:#091018; font-weight:900; font-size:.72rem; letter-spacing:.06em;
+  padding:.25rem .6rem; border-radius:999px; white-space:nowrap; box-shadow:0 2px 10px rgba(78,198,255,.25);
+}
+.proofbox__lead{ margin:.3rem 0 10px; color:#cfe1f4; opacity:.95; line-height:1.6; }
+.proofbox__sources{ list-style:none; padding:0; margin:0 0 12px; }
+.proofbox__sources li{ margin:.25rem 0; color:#b8c7da; }
+.proofbox__sources a{ color:var(--blue); font-weight:800; text-decoration:none; }
+.proofbox__sources a:hover{ color:#bfe6ff; }
+
+.proofbox__compare{
+  display:grid; grid-template-columns:1fr 1fr; gap:12px; margin:10px 0 8px;
+}
+@media (max-width:700px){ .proofbox__compare{ grid-template-columns:1fr; } }
+
+.proofbox__col{
+  border:1px solid #223146; border-radius:14px; background:#0f141c;
+  padding:14px; box-shadow: inset 0 1px 8px rgba(78,198,255,.06);
+}
+.proofbox__col h4{ margin:.1rem 0 .4rem; color:#cfe1f4; font-weight:900; }
+.proofbox__col ul{ margin:0 0 .6rem; padding-left:1.1rem; color:#b8c7da; line-height:1.6; }
+.proofbox__col--bim{ border-color: var(--blue); box-shadow: 0 0 0 1px #4ec6ff22, inset 0 1px 8px rgba(78,198,255,.10); }
+
+.proofbox__price{
+  display:inline-block; margin-top:.2rem;
+  font-weight:900; letter-spacing:.02em; color:#e8eef6;
+  background:#122033; border:1px solid #243146; border-radius:10px; padding:.35rem .6rem;
+}
+.proofbox__price--industry{ opacity:.9; }
+.proofbox__note{ margin:.4rem 0 0; color:#9ab0c9; font-size:.95rem; }
+
   
   </style>
 </head>
@@ -2035,12 +2080,56 @@ body::before{
       </div>
     </div>
 
-    <!-- SVG Panel -->
-    <aside class="industry__panel">
-      <div class="industry__svg-wrap">
-        <svg class="industry__svg" viewBox="0 0 1200 900" xmlns="http://www.w3.org/2000/svg" aria-labelledby="industrySvgTitle industrySvgDesc" role="img">
-          <title id="industrySvgTitle">The Cost of Trend-First Web Design</title>
-          <desc id="industrySvgDesc">Stylized diagram contrasting bloated, trend-first builds with BIM Labs’ lean, conversion-first approach.</desc>
+  <aside class="proofbox" data-aos="fade-left">
+  <header class="proofbox__head">
+    <h3 class="proofbox__title">Proof & Pricing</h3>
+    <span class="proofbox__badge">Transparent</span>
+  </header>
+
+  <div class="proofbox__body">
+    <p class="proofbox__lead">
+      Most agencies charge <b>$12k+</b> for a truly custom site with pop-ups, landing pages, and campaign wiring.
+      We ship the same outcome—fast and conversion-first.
+    </p>
+
+    <ul class="proofbox__sources">
+      <li>
+        Industry ranges: 
+        <a href="https://bluegiftdigital.com/how-much-do-people-charge-for-website-design/" target="_blank" rel="noopener">Blue Gift Digital</a>
+      </li>
+      <li>
+        Typical small business costs:
+        <a href="https://thervo.com/costs/website-design-costs" target="_blank" rel="noopener">Thervo</a>
+      </li>
+    </ul>
+
+    <div class="proofbox__compare">
+      <div class="proofbox__col">
+        <h4>“Industry Standard”</h4>
+        <ul>
+          <li>Custom site + pop-ups</li>
+          <li>Campaign pages & wiring</li>
+          <li>Long timelines, retainers</li>
+        </ul>
+        <div class="proofbox__price proofbox__price--industry">$12,000–$20,000+</div>
+      </div>
+
+      <div class="proofbox__col proofbox__col--bim">
+        <h4>BIM Labs</h4>
+        <ul>
+          <li>Custom design (no template)</li>
+          <li>Pop-ups, 3 landing pages</li>
+          <li>4 tailored campaigns</li>
+        </ul>
+        <div class="proofbox__price">$4,000 flat</div>
+      </div>
+    </div>
+
+    <p class="proofbox__note">
+      Includes: speed-first build, conversion layout, forms into CRM, launch in ~2–3 weeks. No retainer trap.
+    </p>
+  </div>
+</aside>
 
           <!-- Background card -->
           <rect x="24" y="24" width="1152" height="852" rx="28" fill="#0f141c" stroke="#223146"/>
