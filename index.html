@@ -2755,12 +2755,11 @@ body::before{
     submitBtn.classList.add('is-loading');
     submitBtn.setAttribute('disabled','disabled');
 
-    // TODO: Replace with your endpoint (e.g., Formspree / API)
-    // Example POST (uncomment and set your endpoint):
-    // const resp = await fetch('https://formspree.io/f/xkgbgbjd', {
-    //   method:'POST', headers:{'Accept':'application/json'},
-    //   body: new FormData(form)
-    // });
+ const resp = await fetch("https://formspree.io/f/xkgbgbjd", {
+  method: "POST",
+  headers: { "Accept": "application/json" },
+  body: new FormData(form)
+});
 
     // Simulate async UX
     await new Promise(r=>setTimeout(r, 900));
