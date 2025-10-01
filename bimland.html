@@ -506,6 +506,84 @@ document.getElementById('year').textContent = new Date().getFullYear();
   show(1);
 })();
 </script>
+<script>
+(function(){
+  const $ = s => document.querySelector(s);
+  const $$= s => [...document.querySelectorAll(s)];
+  const form = $('#qpForm'); if(!form) return;
+
+  const steps   = $$('.qp-step');
+  const bar     = $('#qpBar');
+  const stepNum = $('#qpStepNum');
+  const err     = $('#qpErr');
+  const ok      = $('#qpOk');
+  const prev    = $('#qpPrev');
+  const next    = $('#qpNext');
+  const save    = $('#qpSave');
+  const submit  = $('#qpSubmit');
+
+  let step = 1; const max = steps.length; const KEY='bim_qp_v1';
+
+  function show(n){
+    step = Math.max(1, Math.min(max, n));
+    steps.forEach(s => s.hidden = (+s.dataset.step !== step));
+    stepNum.textContent = String(step);
+    bar.style.width = (step/max*100) + '%';
+    prev.style.visibility = step===1 ? 'hidden' : 'visible';
+    next.style.display    = step===max ? 'none'   : 'inline-flex';
+    submit.style.display  = step===max ? 'inline-flex' : 'none';
+    err.style.display = 'none';
+  }
+  function validCurrent(){
+    const req = steps[step-1].querySelectorAll('[required]');
+    for (const f of req){ if(!f.value.trim()){ err.style.display='block'; f.focus(); return false; } }
+    return true;
+  }
+
+  next.addEventListener('click', ()=> { if(validCurrent()) show(step+1); });
+  prev.addEventListener('click', ()=> show(step-1));
+
+  save.addEventListener('click', ()=>{
+    const data = Object.fromEntries(new FormData(form).entries());
+    localStorage.setItem(KEY, JSON.stringify(data));
+    save.textContent='Saved'; setTimeout(()=> save.textContent='Save', 1000);
+  });
+
+  // Restore saved
+  try{
+    const saved = JSON.parse(localStorage.getItem(KEY)||'{}');
+    for(const [k,v] of Object.entries(saved)){ const el=form.elements[k]; if(el) el.value=v; }
+  }catch{}
+
+  form.addEventListener('submit', async (e)=>{
+    e.preventDefault(); err.style.display='none'; ok.style.display='none';
+    // validate all steps
+    for(const s of steps){
+      const req = s.querySelectorAll('[required]');
+      for(const f of req){ if(!f.value.trim()){ err.style.display='block'; f.focus(); return; } }
+    }
+    const payload = {
+      source:'BIM Founders — Contractor Quiz (Panel)',
+      ...Object.fromEntries(new FormData(form).entries()),
+      hold_expires_at: new Date(Date.now()+72*3600*1000).toISOString()
+    };
+    try{
+      await fetch('https://formspree.io/f/xkgbgbjd',{
+        method:'POST', headers:{'Accept':'application/json','Content-Type':'application/json'},
+        body: JSON.stringify(payload)
+      });
+      ok.style.display='block';
+      localStorage.removeItem(KEY);
+      form.reset(); show(1);
+    }catch{
+      err.textContent='Could not submit right now. Please try again in a moment.';
+      err.style.display='block';
+    }
+  });
+
+  show(1);
+})();
+</script>
 
 </body>
 </html>
