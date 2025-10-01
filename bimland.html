@@ -3,223 +3,141 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>BIM Labs — Contractors | Instant Quote</title>
+<title>BIM Labs — Contractors Founders Program</title>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
 <style>
-/* ===== Reset / Base ===== */
-* { box-sizing: border-box; }
-html, body { height: 100%; }
-body {
-  margin: 0; background: #101014; color: #E8EEF6;
-  font-family: 'Montserrat', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
-  letter-spacing: .01em;
-}
-:root{
-  --black:#101014; --blue:#4EC6FF; --white:#fff;
-  --ink:#E8EEF6; --muted:#B8C6D8; --line:#1E232E; --glass:rgba(16,22,30,.78);
-}
-
-/* ===== Full-screen HERO ===== */
-#contractor-hero{
-  min-height: 100vh; display:grid; place-items:center; position:relative; overflow:hidden;
-  background:
-    radial-gradient(900px 600px at 82% -10%, rgba(78,198,255,.08), transparent 60%),
-    radial-gradient(800px 500px at -10% 0%, rgba(78,198,255,.06), transparent 60%),
-    var(--black);
-}
-.hero-shell{ width:min(1200px, 92vw); margin:0 auto; padding: clamp(40px, 6vw, 80px) 0; }
-.hero-eyebrow{
-  color: var(--blue); text-transform: uppercase; letter-spacing: .18em;
-  font-weight:900; font-size:.8rem; margin:0 0 .6rem;
-}
-.hero-title{
-  margin:.1rem 0 .6rem; font-weight:900; line-height:1.04;
-  font-size: clamp(34px, 6vw, 64px); color:#fff;
-}
-.hero-sub{ max-width: 70ch; color: var(--muted); margin: 0 0 1.1rem; font-size: clamp(1rem, 2vw, 1.2rem); }
-.hero-chips{ display:flex; gap:.6rem; flex-wrap:wrap; margin: .7rem 0 1.2rem; padding:0; list-style:none; }
-.hero-chips li{
-  padding:.45rem .8rem; border-radius:999px; background:rgba(255,255,255,.05);
-  border:1px solid #243146; color:#bcd2ea; font-weight:800; font-size:.95rem;
-}
-.hero-cta{ display:flex; gap:.8rem 1rem; flex-wrap:wrap; margin-top:.5rem; }
-.btn{
-  display:inline-flex; align-items:center; justify-content:center; gap:.6rem;
-  padding: .95rem 1.5rem; border-radius: 999px; font-weight:900; text-decoration:none; cursor:pointer;
-  border: none; min-width: 180px;
-}
-.btn--primary{ background: var(--blue); color:#0b1016; box-shadow:0 12px 30px rgba(78,198,255,.28); }
-.btn--primary:hover{ filter: brightness(.96); }
-.btn--ghost{ background:#0E1116; color:#fff; }
-.hero-rail{ height:6px; width:100%; position:absolute; top:0; left:0;
-  background:linear-gradient(90deg,var(--blue),rgba(78,198,255,.35),var(--blue));
-  box-shadow:0 10px 28px #4ec6ff2b;
-}
-
-/* ===== Full page Instant Quote (tight, structured) ===== */
-#iqt-pro{
-  position:relative; padding: clamp(32px, 6vw, 72px) 0;
-  background:
-    radial-gradient(900px 600px at 12% -10%, rgba(78,198,255,.06), transparent 60%),
-    radial-gradient(800px 500px at 110% 0%, rgba(78,198,255,.06), transparent 60%),
-    var(--black);
-}
-.iqt-shell{ width:min(1200px, 92vw); margin:0 auto; }
-.iqt-head{ text-align:center; margin-bottom: clamp(18px, 3vw, 28px); }
-.iqt-eyebrow{ color: var(--blue); text-transform:uppercase; letter-spacing:.18em; font-weight:900; font-size:.8rem; margin:0 0 .6rem; }
-.iqt-title{ margin:.2rem 0 .4rem; font-weight:900; line-height:1.06; font-size: clamp(28px, 4.8vw, 42px); color:#fff; }
-.iqt-sub{ max-width:70ch; margin:0 auto; color:var(--muted); }
-.iqt-chips{ display:flex; gap:.6rem; flex-wrap:wrap; justify-content:center; margin:1rem 0 0; padding:0; list-style:none; }
-.iqt-chips li{ padding:.45rem .8rem; border-radius:999px; background:rgba(255,255,255,.05); border:1px solid #243146; color:#bcd2ea; font-weight:800; }
-
-/* Grid: left form / right sticky estimate */
-.iqt-grid{
-  display:grid; grid-template-columns:1.15fr .85fr; gap:22px; align-items:start;
-}
-@media (max-width: 1020px){ .iqt-grid{ grid-template-columns:1fr; } }
-
-.card{
-  background:var(--glass); border:1px solid var(--line); border-radius:16px;
-  box-shadow:0 10px 36px rgba(0,0,0,.35), 0 6px 24px rgba(78,198,255,.12);
-}
-.card-head{
-  display:flex; align-items:center; justify-content:space-between; gap:10px;
-  padding:14px 16px; border-bottom:1px solid #243146; background:linear-gradient(180deg, rgba(255,255,255,.03), transparent);
-}
-.card-title{ margin:0; font-size:1.05rem; font-weight:900; color:#eaf3ff; }
-.card-body{ padding:14px 16px 16px; }
-
-.sticky{ position: sticky; top: 18px; }
-
-/* Sections inside form */
-.sec{ border:1px solid #243146; border-radius:12px; padding:12px; background:#0f141c; margin: 10px 0; }
-.sec-title{ margin:0 0 8px; font-weight:900; color:#9fd6ff; font-size:.98rem; }
-.row{ display:grid; gap:12px; }
-.row.two{ grid-template-columns:1fr 1fr; }
-@media (max-width: 700px){ .row.two{ grid-template-columns:1fr; } }
-.label{ display:block; font-weight:900; color:var(--blue); margin:.2rem 0 .25rem; }
-.input{
-  width:100%; background:#0f141c; color:#eaf3ff; border:1px solid #223146; border-radius:10px;
-  padding:.82rem 1rem; font-size:1rem; outline:none; transition:border .15s, box-shadow .15s;
-}
-.input:focus{ border-color:#2a90c6; box-shadow:0 0 0 6px rgba(78,198,255,.18) }
-.check{ display:flex; align-items:center; gap:.55rem; color:#cfe1f4; font-weight:800; }
-.hint{ color:#9db2c8; font-size:.9rem; }
-
-/* Tabbed trades */
-.tabs{ display:flex; gap:6px; flex-wrap:wrap; margin: 2px 0 10px; }
-.tab{
-  border:1px solid #243146; background:#0f141c; color:#cfe1f4; font-weight:800;
-  padding:.5rem .9rem; border-radius:999px; cursor:pointer;
-}
-.tab.is-on, .tab:hover{ border-color: var(--blue); box-shadow:0 0 0 6px rgba(78,198,255,.18); }
-
-/* Actions footer inside form */
-.form-actions{
-  display:flex; flex-wrap:wrap; gap:10px; align-items:center; justify-content:flex-end;
-  padding-top: 8px; border-top:1px solid #243146; margin-top: 12px;
-}
-.btn--neutral{ background:#223146; color:#dfe8f5; }
-.btn--neutral:hover{ background:#2a3b54; }
-
-/* Estimate card */
-.pill{ display:inline-block; background:#101a27; color:#9fd6ff; border:1px solid #243146; font-weight:900; padding:.26rem .7rem; border-radius:999px; }
-.range{ display:flex; gap:18px; align-items:flex-end; justify-content:space-between; margin:.6rem 0 .6rem }
-.num{ font-size:clamp(22px,3.4vw,34px); font-weight:900; color:#fff }
-.numhint{ color:#9db2c8; font-weight:700; font-size:.92rem }
-
-.acc{ display:flex; align-items:center; gap:.5rem; margin:.2rem 0 .8rem; flex-wrap:wrap }
-.acc-label{ font-weight:900; color:#9fd6ff }
-.acc-bar{ height:8px; width:180px; background:#162033; border:1px solid #223146; border-radius:999px; overflow:hidden }
-.acc-bar span{ display:block; height:100%; background:linear-gradient(90deg,#4EC6FF,#8EE4FF) }
-.acc-note{ color:#9db2c8; font-weight:700; font-size:.95rem }
-
-.bars{ display:grid; gap:.45rem; margin:.4rem 0 .6rem }
-.bline{ display:grid; grid-template-columns:1fr auto auto; gap:10px; align-items:center }
-.rail{ height:8px; background:#162033; border:1px solid #223146; border-radius:999px; overflow:hidden }
-.rail i{ display:block; height:100%; background:linear-gradient(90deg,#4EC6FF,#7DD3FF) }
-
-.assm{ margin-top:.6rem; border:1px solid #243146; border-radius:12px; padding:.6rem .8rem; background:#0f141c }
-.assm summary{ cursor:pointer; font-weight:900; color:#eaf3ff }
-.assm ul{ margin:.4rem 0 0; padding-left:1.1rem; color:#cfe1f4; line-height:1.6 }
-
-/* Email block in estimate card */
-.stack{ display:grid; gap:10px; margin-top: 10px; }
-.error{ color:#ff9b9b; font-weight:800; margin:.4rem 0 0 }
-.success{
-  background:#0f141c; border:1px solid #243146; border-radius:12px; padding:.9rem; text-align:center; margin-top:.7rem
-}
-.check{ width:22px; height:22px; border-radius:50%; background:#22d3ee; margin:.2rem auto .5rem; position:relative; box-shadow:0 0 0 6px #22d3ee22 }
-.check::after{ content:""; position:absolute; left:6px; top:5px; width:8px; height:4px; border:3px solid #0b1320; border-top:none; border-right:none; transform:rotate(-45deg) }
-
-/* Footer (clean) */
-.footer{
-  border-top:1px solid #1e232e; padding: 20px 0; text-align:center; color:#b6c2d1;
-}
-.footer-in{ width:min(1200px,92vw); margin:0 auto; font-size:.95rem; }
+/* ===== Base ===== */
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;background:#101014;color:#E8EEF6;font-family:'Montserrat',system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;letter-spacing:.01em}
+:root{--black:#101014;--blue:#4EC6FF;--white:#fff;--ink:#E8EEF6;--muted:#B8C6D8;--line:#1E232E;--glass:rgba(16,22,30,.78)}
+.shell{width:min(1200px,92vw);margin:0 auto}
+.hint{color:#9db2c8;font-size:.95rem}
+.pill{display:inline-block;background:#101a27;color:#9fd6ff;border:1px solid #243146;font-weight:900;padding:.26rem .7rem;border-radius:999px}
+.card{background:var(--glass);border:1px solid var(--line);border-radius:16px;box-shadow:0 10px 36px rgba(0,0,0,.35),0 6px 24px rgba(78,198,255,.12)}
+.card-head{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:14px 16px;border-bottom:1px solid #243146;background:linear-gradient(180deg,rgba(255,255,255,.03),transparent)}
+.card-title{margin:0;font-size:1.12rem;font-weight:900;color:#eaf3ff}
+.card-body{padding:16px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.6rem;padding:.95rem 1.5rem;border-radius:999px;font-weight:900;text-decoration:none;cursor:pointer;border:none;min-width:180px}
+.btn--primary{background:var(--blue);color:#0b1016;box-shadow:0 12px 30px rgba(78,198,255,.28)}
+.btn--primary:hover{filter:brightness(.96)}
+.btn--ghost{background:#0E1116;color:#fff}
+.label{display:block;font-weight:900;color:var(--blue);margin:.2rem 0 .25rem}
+.input{width:100%;background:#0f141c;color:#eaf3ff;border:1px solid #223146;border-radius:10px;padding:.82rem 1rem;font-size:1rem;outline:none;transition:border .15s,box-shadow .15s}
+.input:focus{border-color:#2a90c6;box-shadow:0 0 0 6px rgba(78,198,255,.18)}
+.row{display:grid;gap:12px}
+.row.two{grid-template-columns:1fr 1fr}
+@media (max-width:700px){.row.two{grid-template-columns:1fr}}
+.sec{border:1px solid #243146;border-radius:12px;padding:12px;background:#0f141c;margin:10px 0}
+.sec-title{margin:0 0 8px;font-weight:900;color:#9fd6ff;font-size:.98rem}
+/* ===== Hero ===== */
+.hero{min-height:92vh;display:grid;place-items:center;position:relative;overflow:hidden;background:radial-gradient(900px 600px at 82% -10%,rgba(78,198,255,.08),transparent 60%),radial-gradient(800px 500px at -10% 0%,rgba(78,198,255,.06),transparent 60%),var(--black)}
+.hero__bg{position:absolute;inset:0;background:url('https://images.unsplash.com/photo-1600585154526-990dced4db0d?q=80&w=1920&auto=format&fit=crop') center/cover no-repeat;filter:saturate(1.05) contrast(1.02) brightness(.72);transform:scale(1.08);opacity:.0}
+.hero__overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(8,12,18,.78) 0%,rgba(8,12,18,.55) 48%,rgba(8,12,18,.35) 70%,rgba(8,12,18,.2) 100%),radial-gradient(600px 160px at 50% 0%,rgba(78,198,255,.18),transparent 70%);opacity:.0}
+.hero__rail{height:6px;width:100%;position:absolute;top:0;left:0;background:linear-gradient(90deg,var(--blue),rgba(78,198,255,.35),var(--blue));box-shadow:0 10px 28px #4ec6ff2b;transform:translateX(-30%);opacity:0}
+.hero__in{position:relative;z-index:2;width:min(1100px,92vw);margin:0 auto;padding:clamp(40px,6vw,90px) 0}
+.eyebrow{color:var(--blue);text-transform:uppercase;letter-spacing:.18em;font-weight:900;font-size:.8rem;margin:0 0 .6rem}
+.h1{margin:.1rem 0 .6rem;font-weight:900;line-height:1.04;font-size:clamp(34px,6vw,64px);color:#fff}
+.sub{max-width:70ch;color:var(--muted);margin:0 0 1.1rem;font-size:clamp(1rem,2vw,1.2rem)}
+.chips{display:flex;gap:.6rem;flex-wrap:wrap;margin:.7rem 0 1.2rem;padding:0;list-style:none}
+.chips li{padding:.45rem .8rem;border-radius:999px;background:rgba(255,255,255,.05);border:1px solid #243146;color:#bcd2ea;font-weight:800;font-size:.95rem}
+.cta{display:flex;gap:.8rem 1rem;flex-wrap:wrap;margin-top:.6rem}
+/* entrance anim */
+@keyframes floatIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+.hero__bg,.hero__overlay,.hero__rail{animation:floatIn .9s ease forwards}
+.hero__bg{animation-delay:.15s}
+.hero__overlay{animation-delay:.3s}
+.hero__rail{animation-delay:.45s}
+/* ===== How / Offer / Proof / FAQ / Apply ===== */
+.section{padding:clamp(32px,6vw,72px) 0;background:radial-gradient(900px 600px at 12% -10%,rgba(78,198,255,.06),transparent 60%),#101014}
+.offer-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:18px;align-items:start}
+@media (max-width:900px){.offer-grid{grid-template-columns:1fr}}
+.offer-bullets{margin:0;padding-left:1.1rem;line-height:1.7;color:#e3ecf3}
+.offer-bullets li+li{margin-top:.25rem}
+/* ===== Sticky CTA ===== */
+.stickybar{position:fixed;left:0;right:0;bottom:0;z-index:999;background:#0E1116;border-top:1px solid #1e232e;box-shadow:0 -6px 24px rgba(0,0,0,.25)}
+.stickybar__in{display:flex;gap:12px;align-items:center;justify-content:space-between;padding:10px 0}
+/* ===== Footer ===== */
+.footer{border-top:1px solid #1e232e;padding:20px 0;text-align:center;color:#b6c2d1}
 </style>
 </head>
 <body>
 
-<section id="contractor-hero">
-  <div class="hero-rail" aria-hidden="true"></div>
-  <div class="hero-shell">
-    <p class="hero-eyebrow">For Contractors</p>
-    <h1 class="hero-title">Stop losing jobs to slow quotes.</h1>
-    <p class="hero-sub">
-      Give prospects a credible range in 60 seconds. One closed job usually pays for the whole build.
-      We set you up, train you, and hand it over — no retainer.
-    </p>
-    <ul class="hero-chips">
-      <li>Instant ballpark with ± confidence</li>
-      <li>Trade-specific logic (roofing, remodel, HVAC, landscaping)</li>
-      <li>Branded PDF/email quotes</li>
+<!-- HERO -->
+<header class="hero" id="top">
+  <div class="hero__rail" aria-hidden="true"></div>
+  <div class="hero__bg" aria-hidden="true"></div>
+  <div class="hero__overlay" aria-hidden="true"></div>
+  <div class="hero__in">
+    <p class="eyebrow">For Contractors</p>
+    <h1 class="h1">A Contractor Website That Books Jobs in 14–21 Days</h1>
+    <p class="sub">Founder Program: we’re taking <b>3 contractors</b> at <b>$1,500</b> to deliver a premium site, a simple Instant Quote flow (installed for you), and three ready‑to‑run lead campaigns. You own everything—no retainer.</p>
+    <ul class="chips">
+      <li>Premium 8‑section site</li>
+      <li>Instant Quote & text‑back follow‑up</li>
+      <li>3 focused landing pages</li>
     </ul>
-    <div class="hero-cta">
-      <a href="#offer" class="btn btn--primary">Claim Founder Price</a>
-      <a href="#iqt-pro" class="btn btn--ghost">Try the Instant Quote</a>
+    <div class="cta">
+      <a href="#apply" class="btn btn--primary">Apply for a Founder Slot</a>
+      <a href="#how" class="btn btn--ghost">See How It Works</a>
+    </div>
+  </div>
+</header>
+
+<!-- HOW IT WORKS -->
+<section id="how" class="section">
+  <div class="shell">
+    <div class="card">
+      <div class="card-head">
+        <h2 class="card-title">How It Works (3 Steps)</h2>
+      </div>
+      <div class="card-body" style="display:grid;gap:18px;grid-template-columns:repeat(3,1fr)">
+        <div class="sec">
+          <p class="sec-title">1) Kickoff</p>
+          <p class="hint">30‑minute call to pick your priority service & city. We map offers, pages, and follow‑ups.</p>
+        </div>
+        <div class="sec">
+          <p class="sec-title">2) Build (Week 1)</p>
+          <p class="hint">We deliver your 8‑section site, install the Instant Quote flow, and create 3 landing pages with clear CTAs.</p>
+        </div>
+        <div class="sec">
+          <p class="sec-title">3) Launch (Week 2–3)</p>
+          <p class="hint">We wire tracking, connect CRM/text, load 3 campaigns, and hand off Loom walkthroughs. You own it.</p>
+        </div>
+      </div>
     </div>
   </div>
 </section>
 
-
-  <section id="offer" style="padding: clamp(28px,6vw,56px) 0; background:
-  radial-gradient(900px 600px at 12% -10%, rgba(78,198,255,.06), transparent 60%),
-  #101014;">
-  <div class="iqt-shell">
+<!-- OFFER -->
+<section id="offer" class="section">
+  <div class="shell">
     <div class="card">
       <div class="card-head">
-        <h2 class="card-title" style="font-size:1.15rem">Founder Build — $1,500</h2>
-        <span class="pill">Only <b id="slots">3</b> slots</span>
+        <h2 class="card-title">Founder Build — $1,500</h2>
+        <span class="pill">Only <b>3</b> slots</span>
       </div>
-
       <div class="card-body">
         <div class="offer-grid">
-          <!-- LEFT: What you get -->
           <div>
-            <p class="sec-title" style="margin:0 0 .6rem">What you get in 2–3 weeks</p>
+            <p class="sec-title" style="margin:0 0 .6rem">What You Get</p>
             <ul class="offer-bullets">
-              <li><strong>8-section website</strong> in the BIM Labs style</li>
-              <li><strong>Instant Quote tool</strong> with trade rules</li>
-              <li><strong>3 landing pages</strong> (offer • lead magnet • retarget)</li>
-              <li><strong>Playbooks</strong> for four growth campaigns</li>
-              <li><strong>Training & full handoff</strong> — you own it</li>
+              <li><strong>Premium 8‑section site</strong> (services, service areas, reviews, gallery, financing, CTA)</li>
+              <li><strong>Instant Quote flow installed</strong> (same‑day ballpark + text‑back follow‑up)</li>
+              <li><strong>3 landing pages</strong> (Emergency • Seasonal • Insurance/Storm)</li>
+              <li><strong>4 campaign playbooks</strong> (Local Search, LSA, Retargeting, Referral)</li>
+              <li><strong>CRM hookup</strong> + text/email templates + tracking</li>
+              <li><strong>Training & handoff</strong> — you keep everything, no retainer</li>
             </ul>
           </div>
-
-          <!-- RIGHT: Value, timer, CTAs -->
-          <div class="offer-cta">
+          <div class="offer-cta" style="align-self:center">
             <div class="pill" style="margin-bottom:.6rem">Valued at $8,700+</div>
-            <p class="hint" style="margin:.1rem 0 .8rem">
-              Founder price ends in <b><span id="countdown">—:—:—</span></b>
-            </p>
-            <div class="form-actions" style="justify-content:flex-start">
-              <!-- Replace href with your real checkout/deposit link -->
-              <a id="depositBtn" class="btn btn--primary" href="/deposit-link">Pay $500 Deposit</a>
-              <a class="btn btn--ghost" href="#iqt-pro">See Estimate First</a>
+            <p class="hint" style="margin:.1rem 0 .8rem">Hold a Founder slot for <b>72 hours</b> once you apply.</p>
+            <div class="cta" style="margin-top:.4rem">
+              <a class="btn btn--primary" href="#apply">Apply for a Founder Slot</a>
+              <a class="btn btn--ghost" href="#faq">Questions? Read FAQ</a>
             </div>
-            <p class="hint" style="margin:.6rem 0 0">Balance due at handoff (~2–3 weeks). No retainer.</p>
+            <p class="hint" style="margin:.6rem 0 0">Deposit due only if accepted. Balance at handoff (~14–21 days).</p>
           </div>
         </div>
       </div>
@@ -227,145 +145,123 @@ body {
   </div>
 </section>
 
-<style>
-/* small layout helper to keep it tight and premium */
-.offer-grid{
-  display:grid; grid-template-columns:1.1fr .9fr; gap:18px; align-items:start;
-}
-@media (max-width:900px){ .offer-grid{ grid-template-columns:1fr; } }
-.offer-bullets{ margin:0; padding-left:1.1rem; line-height:1.7; color:#e3ecf3 }
-.offer-bullets li + li{ margin-top:.25rem }
-.offer-bullets strong{ color:#EAF3FF }
-.offer-cta{ align-self:center }
-</style>
+<!-- PROOF / WHY IT WORKS -->
+<section id="proof" class="section">
+  <div class="shell">
+    <div class="card">
+      <div class="card-head">
+        <h2 class="card-title">Why This Works</h2>
+      </div>
+      <div class="card-body" style="display:grid;gap:16px;grid-template-columns:repeat(3,1fr)">
+        <div class="sec"><p class="sec-title">Speed to Quote</p><p class="hint">Homeowners get a same‑day ballpark and book a call faster. You cut out tire‑kickers.</p></div>
+        <div class="sec"><p class="sec-title">Offer + Page Match</p><p class="hint">Each service gets a focused page & CTA (Emergency, Seasonal, Insurance).</p></div>
+        <div class="sec"><p class="sec-title">Follow‑Up That Converts</p><p class="hint">Text + email templates send instantly, so good leads don’t go cold.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
 
-<script>
-// Countdown (keep or change date)
-(function(){
-  const end = new Date('2025-09-30T23:59:59-05:00').getTime();
-  const el  = document.getElementById('countdown');
-  const pad = n => n<10? '0'+n : n;
-  function tick(){
-    const ms = end - Date.now();
-    if(ms<=0){ el.textContent = '00:00:00'; return; }
-    const h = Math.floor(ms/3.6e6);
-    const m = Math.floor(ms/6e4)%60;
-    const s = Math.floor(ms/1e3)%60;
-    el.textContent = `${pad(h)}:${pad(m)}:${pad(s)}`;
-    requestAnimationFrame(tick);
-  }
-  tick();
-})();
+<!-- FAQ -->
+<section id="faq" class="section">
+  <div class="shell">
+    <div class="card">
+      <div class="card-head">
+        <h2 class="card-title">FAQ</h2>
+      </div>
+      <div class="card-body">
+        <details class="sec"><summary class="sec-title" style="cursor:pointer">Do you run the ads?</summary><p class="hint">We set up the first three campaigns with budgets you control. We can run them for a flat monthly if you want, but it’s optional.</p></details>
+        <details class="sec"><summary class="sec-title" style="cursor:pointer">Can I edit the site later?</summary><p class="hint">Yes. You get a short Loom walkthrough and full access.</p></details>
+        <details class="sec"><summary class="sec-title" style="cursor:pointer">What if I don’t like the design?</summary><p class="hint">Two quick revisions are included in the Founder build.</p></details>
+        <details class="sec"><summary class="sec-title" style="cursor:pointer">How fast is delivery?</summary><p class="hint">We target 14–21 days. If we miss, we finish the remaining pieces at no cost.</p></details>
+      </div>
+    </div>
+  </div>
+</section>
 
-// Visual slot decrement (optional nicety)
-document.getElementById('depositBtn')?.addEventListener('click', ()=> {
-  const s = document.getElementById('slots');
-  const n = Math.max(0, parseInt(s.textContent||'3',10)-1);
-  s.textContent = String(n);
-});
+<!-- APPLY -->
+<section id="apply" class="section" style="background:radial-gradient(900px 600px at 88% -10%,rgba(78,198,255,.06),transparent 60%),#101014">
+  <div class="shell">
+    <div class="card">
+      <div class="card-head">
+        <h2 class="card-title">Apply for a Founder Slot ($1,500)</h2>
+        <span class="pill">Only <b>3</b> slots</span>
+      </div>
+      <div class="card-body">
+        <form id="applyForm" class="row" style="gap:12px">
+          <div class="row two">
+            <div><label class="label">Name</label><input class="input" name="name" required></div>
+            <div><label class="label">Company</label><input class="input" name="company" required></div>
+          </div>
+          <div class="row two">
+            <div><label class="label">City/Area</label><input class="input" name="city" required></div>
+            <div><label class="label">Primary Service</label>
+              <select class="input" name="service" required>
+                <option value="">Select…</option>
+                <option>Remodel</option>
+                <option>Roofing</option>
+                <option>HVAC</option>
+                <option>General Contractor</option>
+                <option>Landscaping</option>
+              </select>
+            </div>
+          </div>
+          <div class="row two">
+            <div><label class="label">Email</label><input class="input" type="email" name="email" required></div>
+            <div><label class="label">Phone</label><input class="input" type="tel" name="phone"></div>
+          </div>
+          <div><label class="label">Anything we should know?</label><input class="input" name="notes" placeholder="Timeline, budget range, example jobs"></div>
 
-  <!-- ... your sections ... -->
+          <div class="cta" style="margin-top:.4rem">
+            <button class="btn btn--primary" type="submit">Submit Application</button>
+            <a class="btn btn--ghost" href="https://calendly.com/" target="_blank" rel="noopener">Prefer a 10‑min call?</a>
+          </div>
+          <p class="hint">Submitting holds a Founder slot for 72 hours while we review. We’ll email next steps within a day.</p>
 
-<style>
-/* small layout helper to keep it tight and premium */
-.offer-grid{
-  display:grid; grid-template-columns:1.1fr .9fr; gap:18px; align-items:start;
-}
-@media (max-width:900px){ .offer-grid{ grid-template-columns:1fr; } }
-.offer-bullets{ margin:0; padding-left:1.1rem; line-height:1.7; color:#e3ecf3 }
-.offer-bullets li + li{ margin-top:.25rem }
-.offer-bullets strong{ color:#EAF3FF }
-.offer-cta{ align-self:center }
-</style>
+          <p class="hint" id="applyErr" style="color:#ff9b9b;display:none">Could not submit right now. Please try again in a moment.</p>
+          <div id="applyOk" style="display:none;margin-top:.7rem" class="sec"><p>Thanks! Your application is in. We’ll reply shortly.</p></div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
 
-<script>
-// Countdown (keep or change date)
-(function(){
-  const end = new Date('2025-09-30T23:59:59-05:00').getTime();
-  const el  = document.getElementById('countdown');
-  const pad = n => n<10? '0'+n : n;
-  function tick(){
-    const ms = end - Date.now();
-    if(ms<=0){ el.textContent = '00:00:00'; return; }
-    const h = Math.floor(ms/3.6e6);
-    const m = Math.floor(ms/6e4)%60;
-    const s = Math.floor(ms/1e3)%60;
-    el.textContent = `${pad(h)}:${pad(m)}:${pad(s)}`;
-    requestAnimationFrame(tick);
-  }
-  tick();
-})();
-
-// Visual slot decrement (optional nicety)
-document.getElementById('depositBtn')?.addEventListener('click', ()=> {
-  const s = document.getElementById('slots');
-  const n = Math.max(0, parseInt(s.textContent||'3',10)-1);
-  s.textContent = String(n);
-});
-</script>
-
-
-
-
+<!-- STICKY CTA -->
+<div class="stickybar" role="region" aria-label="Sticky CTA">
+  <div class="shell stickybar__in">
+    <div style="font-weight:800;color:#E8EEF6;">Founder Build $1,500 · <span style="color:#9fd6ff">3 slots</span> · 72‑hour hold when you apply</div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <a class="btn btn--primary" href="#apply">Apply Now</a>
+      <a class="btn btn--ghost" href="#how">See How It Works</a>
+    </div>
+  </div>
+</div>
 
 <!-- FOOTER -->
 <footer class="footer">
-  <div class="footer-in">© <span id="year"></span> BIM Labs. All rights reserved.</div>
+  <div class="shell">© <span id="year"></span> BIM Labs. All rights reserved.</div>
 </footer>
 
 <script>
-/* Year */
+// Footer year
 document.getElementById('year').textContent = new Date().getFullYear();
-
-/* Tabs (trades) */
-const tabs = Array.from(document.querySelectorAll('.tab'));
-const trades = {
-  roofing: document.querySelector('.trade--roofing'),
-  remodel: document.querySelector('.trade--remodel'),
-  hvac: document.querySelector('.trade--hvac'),
-  landscaping: document.querySelector('.trade--landscaping'),
-};
-let activeTrade = 'roofing';
-function setTrade(t){
-  activeTrade = t;
-  tabs.forEach(b=>{
-    const on = b.dataset.trade === t;
-    b.classList.toggle('is-on', on);
-    b.setAttribute('aria-selected', on ? 'true' : 'false');
+// Apply form submit -> Formspree (change endpoint if needed)
+(function(){
+  const f=document.getElementById('applyForm');
+  const ok=document.getElementById('applyOk');
+  const err=document.getElementById('applyErr');
+  if(!f) return;
+  f.addEventListener('submit',async(e)=>{
+    e.preventDefault(); err.style.display='none'; ok.style.display='none';
+    const data=Object.fromEntries(new FormData(f).entries());
+    const payload={source:'BIM Founders — Contractor Apply',...data,hold_expires_at:new Date(Date.now()+72*3600*1000).toISOString()};
+    try{
+      await fetch('https://formspree.io/f/xkgbgbjd',{method:'POST',headers:{'Accept':'application/json','Content-Type':'application/json'},body:JSON.stringify(payload)});
+      ok.style.display='block'; f.reset();
+    }catch{
+      err.style.display='block';
+    }
   });
-  Object.entries(trades).forEach(([k,node])=> node.hidden = k !== t);
-}
-tabs.forEach(b=> b.addEventListener('click', ()=> setTrade(b.dataset.trade)));
-
-
-
-  // Email
-  custName: document.getElementById('custName'),
-  custEmail: document.getElementById('custEmail'),
-  custPhone: document.getElementById('custPhone'),
-  err: document.getElementById('err'),
-  ok: document.getElementById('ok'),
-};
-
-
-
-
-/* Book call */
-el.bookCall.addEventListener('click', (e)=>{
-  e.preventDefault();
-  document.getElementById('contact')?.scrollIntoView({behavior:'smooth'});
-});
-
-
-(function syncMini(){
-  const src = document.getElementById('countdown');
-  const mini= document.getElementById('countdownMini');
-  if(!src||!mini) return;
-  const o = new MutationObserver(()=> mini.textContent = src.textContent);
-  o.observe(src,{childList:true,characterData:true,subtree:true});
-  mini.textContent = src.textContent;
 })();
 </script>
-
 </body>
 </html>
