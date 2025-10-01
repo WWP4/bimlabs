@@ -3,13 +3,17 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>BIM Labs — Contractors Founders Program</title>
+<title>BIM Labs — Contractors Founder Program</title>
+<meta name="description" content="Go live in 14–21 days with a contractor site, Instant Quote flow, and ready-to-run campaigns. Founder Program: 3 contractors at $3,000. You own everything—no retainer." />
+<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
 <style>
 /* ===== Base ===== */
 *{box-sizing:border-box}
 html,body{height:100%}
-body{margin:0;background:#101014;color:#E8EEF6;font-family:'Montserrat',system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;letter-spacing:.01em}
+html{scroll-behavior:smooth}
+body{margin:0;background:#101014;color:#E8EEF6;font-family:'Montserrat',system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;letter-spacing:.01em;overflow-y:scroll;scroll-snap-type:y mandatory}
 :root{--black:#101014;--blue:#4EC6FF;--white:#fff;--ink:#E8EEF6;--muted:#B8C6D8;--line:#1E232E;--glass:rgba(16,22,30,.78)}
 .shell{width:min(1200px,92vw);margin:0 auto}
 .hint{color:#9db2c8;font-size:.95rem}
@@ -21,19 +25,24 @@ body{margin:0;background:#101014;color:#E8EEF6;font-family:'Montserrat',system-u
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:.6rem;padding:.95rem 1.5rem;border-radius:999px;font-weight:900;text-decoration:none;cursor:pointer;border:none;min-width:180px}
 .btn--primary{background:var(--blue);color:#0b1016;box-shadow:0 12px 30px rgba(78,198,255,.28)}
 .btn--primary:hover{filter:brightness(.96)}
-.btn--ghost{background:#0E1116;color:#fff}
+.btn--ghost{background:#0E1116;color:#fff;border:1px solid #1E232E}
 .label{display:block;font-weight:900;color:var(--blue);margin:.2rem 0 .25rem}
 .input{width:100%;background:#0f141c;color:#eaf3ff;border:1px solid #223146;border-radius:10px;padding:.82rem 1rem;font-size:1rem;outline:none;transition:border .15s,box-shadow .15s}
 .input:focus{border-color:#2a90c6;box-shadow:0 0 0 6px rgba(78,198,255,.18)}
-.row{display:grid;gap:12px}
-.row.two{grid-template-columns:1fr 1fr}
-@media (max-width:700px){.row.two{grid-template-columns:1fr}}
 .sec{border:1px solid #243146;border-radius:12px;padding:12px;background:#0f141c;margin:10px 0}
 .sec-title{margin:0 0 8px;font-weight:900;color:#9fd6ff;font-size:.98rem}
+
+/* ===== Panels ===== */
+.panel{min-height:100svh;display:grid;place-items:center;padding:clamp(28px,6vw,72px);position:relative;scroll-snap-align:start;overflow:hidden}
+.panel .shell{width:min(1200px,92vw);margin:0 auto}
+.panel--img{isolation:isolate}
+.panel--img::before{content:"";position:absolute;inset:0;background:center/cover no-repeat var(--panel-img, none);filter:saturate(1.04) contrast(1.02) brightness(.78);transform:scale(1.03);z-index:-2}
+.panel--img::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(8,12,18,.78) 0%,rgba(8,12,18,.55) 48%,rgba(8,12,18,.30) 100%),radial-gradient(700px 200px at 50% 0%,rgba(78,198,255,.15),transparent 70%);z-index:-1}
+
 /* ===== Hero ===== */
 .hero{min-height:92vh;display:grid;place-items:center;position:relative;overflow:hidden;background:radial-gradient(900px 600px at 82% -10%,rgba(78,198,255,.08),transparent 60%),radial-gradient(800px 500px at -10% 0%,rgba(78,198,255,.06),transparent 60%),var(--black)}
-.hero__bg{position:absolute;inset:0;background:url('https://images.unsplash.com/photo-1600585154526-990dced4db0d?q=80&w=1920&auto=format&fit=crop') center/cover no-repeat;filter:saturate(1.05) contrast(1.02) brightness(.72);transform:scale(1.08);opacity:.0}
-.hero__overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(8,12,18,.78) 0%,rgba(8,12,18,.55) 48%,rgba(8,12,18,.35) 70%,rgba(8,12,18,.2) 100%),radial-gradient(600px 160px at 50% 0%,rgba(78,198,255,.18),transparent 70%);opacity:.0}
+.hero__bg{position:absolute;inset:0;background:url('https://images.unsplash.com/photo-1600585154526-990dced4db0d?q=80&w=1920&auto=format&fit=crop') center/cover no-repeat;filter:saturate(1.05) contrast(1.02) brightness(.72);transform:scale(1.08);opacity:0}
+.hero__overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(8,12,18,.78) 0%,rgba(8,12,18,.55) 48%,rgba(8,12,18,.35) 70%,rgba(8,12,18,.2) 100%),radial-gradient(600px 160px at 50% 0%,rgba(78,198,255,.18),transparent 70%);opacity:0}
 .hero__rail{height:6px;width:100%;position:absolute;top:0;left:0;background:linear-gradient(90deg,var(--blue),rgba(78,198,255,.35),var(--blue));box-shadow:0 10px 28px #4ec6ff2b;transform:translateX(-30%);opacity:0}
 .hero__in{position:relative;z-index:2;width:min(1100px,92vw);margin:0 auto;padding:clamp(40px,6vw,90px) 0}
 .eyebrow{color:var(--blue);text-transform:uppercase;letter-spacing:.18em;font-weight:900;font-size:.8rem;margin:0 0 .6rem}
@@ -42,211 +51,106 @@ body{margin:0;background:#101014;color:#E8EEF6;font-family:'Montserrat',system-u
 .chips{display:flex;gap:.6rem;flex-wrap:wrap;margin:.7rem 0 1.2rem;padding:0;list-style:none}
 .chips li{padding:.45rem .8rem;border-radius:999px;background:rgba(255,255,255,.05);border:1px solid #243146;color:#bcd2ea;font-weight:800;font-size:.95rem}
 .cta{display:flex;gap:.8rem 1rem;flex-wrap:wrap;margin-top:.6rem}
-/* entrance anim */
 @keyframes floatIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
 .hero__bg,.hero__overlay,.hero__rail{animation:floatIn .9s ease forwards}
-.hero__bg{animation-delay:.15s}
-.hero__overlay{animation-delay:.3s}
-.hero__rail{animation-delay:.45s}
-/* ===== How / Offer / Proof / FAQ / Apply ===== */
+.hero__bg{animation-delay:.15s}.hero__overlay{animation-delay:.3s}.hero__rail{animation-delay:.45s}
+
+/* ===== Sections ===== */
 .section{padding:clamp(32px,6vw,72px) 0;background:radial-gradient(900px 600px at 12% -10%,rgba(78,198,255,.06),transparent 60%),#101014}
-.offer-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:18px;align-items:start}
-@media (max-width:900px){.offer-grid{grid-template-columns:1fr}}
-.offer-bullets{margin:0;padding-left:1.1rem;line-height:1.7;color:#e3ecf3}
-.offer-bullets li+li{margin-top:.25rem}
-/* ===== Sticky CTA ===== */
+
+/* ===== Quiz ===== */
+.quizpanel{display:grid;place-items:center;text-align:center}
+.qp-wrap{width:min(1040px,92vw);margin:0 auto}
+.qp-intro{max-width:70ch;margin:0 auto 16px;color:#B8C6D8}
+.qp-card{margin:16px auto 0;border:1px solid #1F2A3A;border-radius:20px;background:linear-gradient(180deg,rgba(255,255,255,.03),transparent 30%),#0f141c;box-shadow:0 30px 80px rgba(0,0,0,.45),0 20px 60px rgba(78,198,255,.12);overflow:hidden;padding:16px;transform:translateY(12px);opacity:0;animation:qpIn .7s ease .2s forwards}
+@keyframes qpIn{to{transform:none;opacity:1}}
+.qp-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-bottom:10px;border-bottom:1px solid #223146}
+.qp-title{margin:0;font-weight:900;color:#EAF3FF;font-size:1.05rem}
+.qp-pill{display:inline-block;padding:.35rem .8rem;border-radius:999px;border:1px solid #26405a;color:#9fd6ff;font-weight:900}
+.qp-rail{height:8px;background:#162033;border:1px solid #223146;border-radius:999px;overflow:hidden;margin-top:12px}
+.qp-rail i{display:block;height:100%;background:linear-gradient(90deg,#4EC6FF,#8EE4FF);width:0%}
+.qp-grid{display:grid;gap:12px;margin-top:12px}
+.qp-grid.two{grid-template-columns:1fr 1fr}
+@media (max-width:780px){.qp-grid.two{grid-template-columns:1fr}}
+.qp .label{display:block;font-weight:900;color:#9fd6ff;margin:.2rem 0 .25rem}
+.qp .input,.qp textarea,.qp select{width:100%;background:#0d131b;color:#eaf3ff;border:1px solid #223146;border-radius:10px;padding:.82rem 1rem;font-size:1rem;outline:none;transition:border .15s,box-shadow .15s}
+.qp .input:focus,.qp textarea:focus,.qp select:focus{border-color:#2a90c6;box-shadow:0 0 0 6px rgba(78,198,255,.18)}
+.qp textarea{min-height:120px;resize:vertical}
+.qp-actions{display:flex;justify-content:space-between;gap:10px;margin-top:12px}
+.qp-actions .btn{min-width:140px}
+.qp-err{color:#ff9b9b;font-weight:800;display:none;text-align:left}
+.qp-ok{display:none;text-align:center;margin-top:10px;padding:.8rem;border:1px solid #243146;border-radius:12px;background:#0f141c}
+
+/* ===== Sticky CTA & Footer ===== */
 .stickybar{position:fixed;left:0;right:0;bottom:0;z-index:999;background:#0E1116;border-top:1px solid #1e232e;box-shadow:0 -6px 24px rgba(0,0,0,.25)}
 .stickybar__in{display:flex;gap:12px;align-items:center;justify-content:space-between;padding:10px 0}
-/* ===== Footer ===== */
 .footer{border-top:1px solid #1e232e;padding:20px 0;text-align:center;color:#b6c2d1}
-
-
-  <style>
-/* 1) Full-screen panel behavior */
-html, body { height: 100%; scroll-behavior: smooth; }
-body {
-  margin: 0;
-  background: #101014;
-  color: #E8EEF6;
-  font-family: 'Montserrat', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-  letter-spacing: .01em;
-  overflow-y: scroll;
-  scroll-snap-type: y mandatory;          /* enable snap between panels */
-}
-
-/* 2) One class to rule each section */
-.panel {
-  min-height: 100svh;                     /* safe viewport height on mobile */
-  display: grid;
-  place-items: center;                     /* center content vertically/horizontally */
-  padding: clamp(28px, 6vw, 72px);
-  position: relative;
-  scroll-snap-align: start;                /* snap to the top of each panel */
-  overflow: hidden;
-}
-
-/* 3) A consistent inner width */
-.panel .shell { width: min(1200px, 92vw); margin: 0 auto; }
-
-/* 4) Optional background helpers for “full-bleed” hero looks */
-.panel--img {
-  isolation: isolate;
-}
-.panel--img::before {
-  content: "";
-  position: absolute; inset: 0;
-  background: center/cover no-repeat var(--panel-img, none);
-  filter: saturate(1.04) contrast(1.02) brightness(.78);
-  transform: scale(1.03);
-  z-index: -2;
-}
-.panel--img::after {
-  content: "";
-  position: absolute; inset: 0;
-  background:
-    linear-gradient(180deg, rgba(8,12,18,.78) 0%, rgba(8,12,18,.55) 48%, rgba(8,12,18,.30) 100%),
-    radial-gradient(700px 200px at 50% 0%, rgba(78,198,255,.15), transparent 70%);
-  z-index: -1;
-}
-
-/* 5) Shared UI atoms (buttons, eyebrow, headings) */
-.eyebrow { color:#4EC6FF; text-transform:uppercase; letter-spacing:.18em; font-weight:900; font-size:.8rem; margin:0 0 .6rem }
-.h1 { margin:.1rem 0 .6rem; font-weight:900; line-height:1.04; font-size: clamp(34px, 6vw, 64px); color:#fff }
-.sub { max-width: 70ch; color:#B8C6D8; margin:0 0 1.2rem; font-size: clamp(1rem, 2vw, 1.2rem) }
-.chips { display:flex; gap:.6rem; flex-wrap:wrap; margin: .8rem 0 1.2rem; padding:0; list-style:none }
-.chips li { padding:.45rem .8rem; border-radius:999px; background:rgba(255,255,255,.06); border:1px solid #243146; color:#bcd2ea; font-weight:800; font-size:.95rem }
-.cta { display:flex; gap:.8rem 1rem; flex-wrap:wrap; margin-top:.6rem }
-.btn { display:inline-flex; align-items:center; justify-content:center; gap:.6rem; padding:.95rem 1.5rem; border-radius:999px; font-weight:900; text-decoration:none; cursor:pointer; border:none; min-width:180px }
-.btn--primary { background:#4EC6FF; color:#0b1016; box-shadow:0 12px 30px rgba(78,198,255,.28) }
-.btn--primary:hover { filter: brightness(.96) }
-.btn--ghost { background:#0E1116; color:#fff; border:1px solid #1E232E }
-
-/* 6) Minimal top nav (optional) */
-.header {
-  position: fixed; top: 0; left: 0; right: 0; z-index: 50;
-  display: flex; align-items: center; justify-content: center;
-  padding: 10px 16px; backdrop-filter: blur(8px);
-  background: rgba(16, 16, 20, .45); border-bottom: 1px solid #1E232E;
-}
-.nav { display:flex; gap:12px; }
-.nav a { color:#bcd2ea; text-decoration:none; font-weight:800; padding:.5rem .8rem; border-radius:999px; border:1px solid transparent }
-.nav a[aria-current="true"] { border-color:#4EC6FF; color:#E8EEF6; }
-
-/* QUIZ PANEL (full-screen app feel) */
-.quizpanel {
-  display:grid; place-items:center; text-align:center;
-}
-.qp-wrap { width:min(1040px,92vw); margin:0 auto; }
-.qp-intro { max-width:70ch; margin:0 auto 16px; color:#B8C6D8; }
-
-/* App card */
-.qp-card{
-  margin:16px auto 0;
-  border:1px solid #1F2A3A; border-radius:20px;
-  background:linear-gradient(180deg,rgba(255,255,255,.03),transparent 30%), #0f141c;
-  box-shadow:0 30px 80px rgba(0,0,0,.45), 0 20px 60px rgba(78,198,255,.12);
-  overflow:hidden; padding:16px;
-  transform: translateY(12px); opacity:0; animation:qpIn .7s ease .2s forwards;
-}
-@keyframes qpIn { to { transform:none; opacity:1; } }
-
-/* Header + progress */
-.qp-head{ display:flex; align-items:center; justify-content:space-between; gap:12px; padding-bottom:10px; border-bottom:1px solid #223146 }
-.qp-title{ margin:0; font-weight:900; color:#EAF3FF; font-size:1.05rem }
-.qp-pill{ display:inline-block; padding:.35rem .8rem; border-radius:999px; border:1px solid #26405a; color:#9fd6ff; font-weight:900 }
-.qp-rail{ height:8px; background:#162033; border:1px solid #223146; border-radius:999px; overflow:hidden; margin-top:12px }
-.qp-rail i{ display:block; height:100%; background:linear-gradient(90deg,#4EC6FF,#8EE4FF); width:0% }
-
-/* Form */
-.qp-grid{ display:grid; gap:12px; margin-top:12px }
-.qp-grid.two{ grid-template-columns:1fr 1fr }
-@media (max-width:780px){ .qp-grid.two{ grid-template-columns:1fr } }
-
-.qp .label{ display:block; font-weight:900; color:#9fd6ff; margin:.2rem 0 .25rem }
-.qp .input, .qp textarea, .qp select{
-  width:100%; background:#0d131b; color:#eaf3ff; border:1px solid #223146; border-radius:10px;
-  padding:.82rem 1rem; font-size:1rem; outline:none; transition:border .15s, box-shadow .15s;
-}
-.qp .input:focus, .qp textarea:focus, .qp select:focus{ border-color:#2a90c6; box-shadow:0 0 0 6px rgba(78,198,255,.18) }
-.qp textarea{ min-height:120px; resize:vertical }
-
-.qp-actions{ display:flex; justify-content:space-between; gap:10px; margin-top: 12px }
-.qp-actions .btn{ min-width:140px }
-.qp-err{ color:#ff9b9b; font-weight:800; display:none; text-align:left }
-.qp-ok{ display:none; text-align:center; margin-top:10px; padding:.8rem; border:1px solid #243146; border-radius:12px; background:#0f141c }
-
-/* Panel background (optional image) */
-.panel--img { isolation:isolate; }
-.panel--img::before{
-  content:""; position:absolute; inset:0;
-  background:center/cover no-repeat var(--panel-img, none);
-  filter:saturate(1.04) contrast(1.02) brightness(.78); transform:scale(1.03); z-index:-2;
-}
-.panel--img::after{
-  content:""; position:absolute; inset:0;
-  background: linear-gradient(180deg, rgba(8,12,18,.78) 0%, rgba(8,12,18,.55) 48%, rgba(8,12,18,.30) 100%),
-             radial-gradient(700px 200px at 50% 0%, rgba(78,198,255,.15), transparent 70%);
-  z-index:-1;
-}
-
 </style>
-  
 </head>
 <body>
 
 <!-- HERO -->
-<header class="hero" id="top">
+<header class="hero" id="top" aria-label="Hero">
   <div class="hero__rail" aria-hidden="true"></div>
   <div class="hero__bg" aria-hidden="true"></div>
   <div class="hero__overlay" aria-hidden="true"></div>
   <div class="hero__in">
     <p class="eyebrow">For Contractors</p>
-    <h1 class="h1">A Contractor Website That Books Jobs in 14–21 Days</h1>
-    <p class="sub">Founder Program: we’re taking <b>3 contractors</b> at <b>$3000</b> to deliver a premium site, a simple Instant Quote flow (installed for you), and three ready‑to‑run lead campaigns. You own everything—no retainer.</p>
-    <ul class="chips">
+    <h1 class="h1">Go Live in 14–21 Days with a Contractor Site + Instant Quote That Books Jobs</h1>
+    <p class="sub">Founder Program: we’re taking <b>3 contractors</b> at <b>$3,000</b> to install a premium site, a simple Instant Quote flow, and three ready‑to‑run campaigns. You own everything—no retainer.</p>
+    <ul class="chips" aria-label="Highlights">
       <li>Premium 8‑section site</li>
       <li>Instant Quote & text‑back follow‑up</li>
       <li>3 focused landing pages</li>
+      <li>Tracking + CRM hookup</li>
     </ul>
     <div class="cta">
-      <a href="#apply" class="btn btn--primary">Apply for a Founder Slot</a>
-      <a href="#how" class="btn btn--ghost">See How It Works</a>
+      <a href="#apply" class="btn btn--primary">Apply & Hold Your Slot (72 hrs)</a>
+      <a href="#process" class="btn btn--ghost">See How It Works</a>
     </div>
   </div>
 </header>
 
-<!-- HOW IT WORKS -->
-<section id="how" class="section">
+<!-- FOUNDER'S PLEDGE / RISK REVERSAL -->
+<section class="section" aria-label="Founder's Pledge">
+  <div class="shell">
+    <div class="card">
+      <div class="card-head">
+        <h2 class="card-title">Founder’s Pledge</h2>
+      </div>
+      <div class="card-body" style="display:grid;gap:12px;grid-template-columns:repeat(3,1fr)">
+        <div class="sec"><p class="sec-title">Outcome over pages</p><p class="hint">Every section exists to book estimates. If it doesn’t help, it doesn’t ship.</p></div>
+        <div class="sec"><p class="sec-title">Two‑week build window</p><p class="hint">Go live in 14–21 days or we comp your next landing page.</p></div>
+        <div class="sec"><p class="sec-title">Plain‑English handoff</p><p class="hint">You own your site, data, and Loom walkthroughs. No retainers.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section id="process" class="section" aria-label="Process Steps">
   <div class="shell">
     <div class="card">
       <div class="card-head">
         <h2 class="card-title">How It Works (3 Steps)</h2>
       </div>
       <div class="card-body" style="display:grid;gap:18px;grid-template-columns:repeat(3,1fr)">
-        <div class="sec">
-          <p class="sec-title">1) Kickoff</p>
-          <p class="hint">30‑minute call to pick your priority service & city. We map offers, pages, and follow‑ups.</p>
-        </div>
-        <div class="sec">
-          <p class="sec-title">2) Build (Week 1)</p>
-          <p class="hint">We deliver your 8‑section site, install the Instant Quote flow, and create 3 landing pages with clear CTAs.</p>
-        </div>
-        <div class="sec">
-          <p class="sec-title">3) Launch (Week 2–3)</p>
-          <p class="hint">We wire tracking, connect CRM/text, load 3 campaigns, and hand off Loom walkthroughs. You own it.</p>
-        </div>
+        <div class="sec"><p class="sec-title">1) Kickoff</p><p class="hint">30‑minute call to pick your priority service & city. We map offers, pages, and follow‑ups.</p></div>
+        <div class="sec"><p class="sec-title">2) Build (Week 1)</p><p class="hint">We deliver your 8‑section site, install the Instant Quote flow, and create 3 landing pages with clear CTAs.</p></div>
+        <div class="sec"><p class="sec-title">3) Launch (Week 2–3)</p><p class="hint">We wire tracking, connect CRM/text, load 3 campaigns, and hand off Loom walkthroughs. You own it.</p></div>
       </div>
     </div>
   </div>
 </section>
 
-  <section id="quiz" class="panel panel--img quizpanel" style="--panel-img: url('YOUR-SECTION-IMAGE.jpg')">
+<!-- QUIZ (MAIN CTA) -->
+<section id="quiz" class="panel panel--img quizpanel" style="--panel-img:url('YOUR-SECTION-IMAGE.jpg')" aria-label="Quick Builder Quiz">
   <div class="qp-wrap qp">
     <p class="eyebrow">Quick Builder Quiz</p>
-    <h2 class="h1" style="font-size: clamp(28px, 5vw, 48px); margin-bottom:.4rem">Let’s see if we’re a fit</h2>
-    <p class="qp-intro">Answer a few questions so we can scope your build and move fast. It takes about a minute. You’ll hold a Founder slot for 72 hours while we review.</p>
+    <h2 class="h1" style="font-size:clamp(28px,5vw,48px);margin-bottom:.4rem">Let’s see if we’re a fit</h2>
+    <p class="qp-intro">Answer a few questions (~60 seconds). You’ll hold a Founder slot for 72 hours while we review.</p>
 
-    <div class="qp-card">
+    <div class="qp-card" role="form">
       <div class="qp-head">
         <h3 class="qp-title">Application — Contractors Founder Program ($3,000)</h3>
         <span class="qp-pill">Step <b id="qpStepNum">1</b> / 3</span>
@@ -258,32 +162,30 @@ body {
         <!-- STEP 1 -->
         <div class="qp-step" data-step="1">
           <div class="qp-grid two">
-            <div><label class="label">First name</label><input class="input" name="first_name" required></div>
-            <div><label class="label">Last name</label><input class="input" name="last_name" required></div>
+            <div><label class="label" for="first_name">First name</label><input id="first_name" class="input" name="first_name" required></div>
+            <div><label class="label" for="city">City/Area</label><input id="city" class="input" name="city" required></div>
           </div>
           <div class="qp-grid two">
-            <div><label class="label">Company</label><input class="input" name="company" required></div>
-            <div><label class="label">City/Area</label><input class="input" name="city" required></div>
-          </div>
-          <div>
-            <label class="label">Primary service</label>
-            <select class="input" name="service" required>
-              <option value="">Select…</option>
-              <option>Remodel</option><option>Roofing</option><option>HVAC</option>
-              <option>General Contractor</option><option>Landscaping</option>
-            </select>
+            <div><label class="label" for="service">Primary service</label>
+              <select id="service" class="input" name="service" required>
+                <option value="">Select…</option>
+                <option>Remodel</option><option>Roofing</option><option>HVAC</option>
+                <option>General Contractor</option><option>Landscaping</option>
+              </select>
+            </div>
+            <div><label class="label" for="company">Company (optional)</label><input id="company" class="input" name="company" placeholder="Optional"></div>
           </div>
         </div>
 
         <!-- STEP 2 -->
         <div class="qp-step" data-step="2" hidden>
           <div>
-            <label class="label">Why should we work with you?</label>
-            <textarea name="why_us" placeholder="Tell us what makes you different, your reputation, or team quality." required></textarea>
+            <label class="label" for="why_us">Why should we work with you?</label>
+            <textarea id="why_us" name="why_us" placeholder="What makes you different: reputation, team, guarantees…" required></textarea>
           </div>
           <div>
-            <label class="label">What’s your primary goal with us?</label>
-            <textarea name="goal" placeholder="Book more estimates, seasonal promo, improve close rate, cut response time…" required></textarea>
+            <label class="label" for="goal">What’s your primary goal with us?</label>
+            <textarea id="goal" name="goal" placeholder="Book more estimates, seasonal promo, improve close rate, cut response time…" required></textarea>
           </div>
         </div>
 
@@ -291,29 +193,30 @@ body {
         <div class="qp-step" data-step="3" hidden>
           <div class="qp-grid two">
             <div>
-              <label class="label">Budget range</label>
-              <select class="input" name="budget" required>
+              <label class="label" for="budget">Budget range</label>
+              <select id="budget" class="input" name="budget" required>
                 <option value="">Select…</option>
                 <option>$1k–$2k</option><option>$3k–$5k</option>
                 <option>$6k–$10k</option><option>$10k+</option>
               </select>
             </div>
             <div>
-              <label class="label">Timeline</label>
-              <select class="input" name="timeline" required>
+              <label class="label" for="timeline">Timeline</label>
+              <select id="timeline" class="input" name="timeline" required>
                 <option value="">Select…</option>
                 <option>ASAP (this month)</option><option>30–45 days</option><option>60–90 days</option>
               </select>
             </div>
           </div>
           <div class="qp-grid two">
-            <div><label class="label">Email</label><input class="input" type="email" name="email" required></div>
-            <div><label class="label">Phone</label><input class="input" type="tel" name="phone" placeholder="Optional"></div>
+            <div><label class="label" for="email">Email</label><input id="email" class="input" type="email" name="email" required></div>
+            <div><label class="label" for="phone">Phone</label><input id="phone" class="input" type="tel" name="phone" placeholder="Optional"></div>
           </div>
+          <p class="hint" style="margin:.4rem 0 0">We’ll only contact you about this project. Opt out anytime.</p>
         </div>
 
         <p class="qp-err" id="qpErr">Please complete the required fields.</p>
-        <div class="qp-ok" id="qpOk"><p>Thanks! We received your quiz. We’ll reply shortly.</p></div>
+        <div class="qp-ok" id="qpOk"><p>Thanks! We received your quiz. Your 72‑hour hold is active.</p></div>
 
         <div class="qp-actions">
           <button type="button" class="btn btn--ghost" id="qpPrev">Back</button>
@@ -328,91 +231,65 @@ body {
   </div>
 </section>
 
-
-  <!-- OFFER + VALUE (full-screen panel) -->
-<section id="offer" class="panel">
+<!-- OFFER / VALUE -->
+<section id="offer" class="panel" aria-label="Founder Offer">
   <div class="shell" style="text-align:center">
     <p class="eyebrow">Founder Program</p>
-    <h2 class="h1" style="font-size: clamp(28px, 5vw, 48px); margin-bottom:.2rem">
-      Everything you need to book jobs — for $3,000
-    </h2>
-    <p class="sub" style="margin:0 auto 1.4rem; max-width: 70ch">
-      Agencies charge <b>$6,000–$8,000</b> for a website alone. You’re getting a full custom site,
-      <b>3 landing pages</b>, <b>automations</b>, an <b>Instant Quote</b> tool, and <b>4 money-model campaigns</b> —
-      a system we value at <b>$7,500+</b>.
-    </p>
-
-    <!-- Value vs Founder split as chips (no cards) -->
+    <h2 class="h1" style="font-size:clamp(28px,5vw,48px);margin-bottom:.2rem">Everything you need to book jobs — for $3,000</h2>
+    <p class="sub" style="margin:0 auto 1.4rem;max-width:70ch">Agencies charge <b>$6,000–$8,000</b> for a website alone. You’re getting a full custom site, <b>3 landing pages</b>, <b>automations</b>, an <b>Instant Quote</b> tool, and <b>4 money‑model campaigns</b> — a system we value at <b>$7,500+</b>.</p>
     <ul class="chips" style="justify-content:center">
       <li>$6–8k — Custom contractor website</li>
       <li>$2.5k+ — Automation & CRM</li>
       <li>$2k+ — Campaign playbooks</li>
       <li>$1.5k+ — Instant Quote tool</li>
     </ul>
-
     <p class="sub" style="margin:.6rem 0 1.2rem">Founder price: <b>$3,000</b> — <b>3 slots</b> only</p>
-
     <div class="cta" style="justify-content:center">
       <a class="btn btn--primary" href="#apply">Apply for a Founder Slot</a>
-      <a class="btn btn--ghost" href="#how">See How It Works</a>
-    </div>
-
-    <!-- Slim deliverables list -->
-    <div style="display:grid;gap:10px;margin:1.6rem auto 0;max-width:900px">
-      <p class="sub" style="margin:0">Includes:</p>
-      <ul class="chips" style="justify-content:center">
-        <li>8-section premium site</li>
-        <li>3 focused landing pages</li>
-        <li>Instant Quote + text-back</li>
-        <li>Tracking + CRM hookup</li>
-        <li>4 campaign playbooks</li>
-        <li>Loom training & handoff</li>
-      </ul>
+      <a class="btn btn--ghost" href="#process">See How It Works</a>
     </div>
   </div>
 </section>
 
+<!-- WHO WE TAKE (Qualification) -->
+<section class="section" aria-label="Qualification">
+  <div class="shell">
+    <div class="card">
+      <div class="card-head"><h2 class="card-title">Who We’re a Fit For</h2></div>
+      <div class="card-body" style="display:grid;gap:12px;grid-template-columns:1fr 1fr">
+        <div class="sec"><p class="sec-title">Yes</p><p class="hint">Local contractors with a clear service and capacity to handle new estimates this month.</p></div>
+        <div class="sec"><p class="sec-title">Not Yet</p><p class="hint">If branding isn’t ready or you can’t respond to leads within hours, we’ll pause your slot.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
 
-<!-- HOW + PROOF (full-screen panel) -->
-<section id="how" class="panel">
+<!-- APPLY (Anchor target) -->
+<section id="apply" class="panel" aria-label="Apply">
   <div class="shell" style="text-align:center">
-    <p class="eyebrow">How it works</p>
-    <h2 class="h1" style="font-size: clamp(28px, 5vw, 48px); margin-bottom:.2rem">
-      Live in 14–21 days — 3 simple steps
-    </h2>
-    <p class="sub" style="margin:0 auto 1.4rem; max-width: 70ch">
-      We keep it fast and focused so you see results quickly.
-    </p>
-
-    <ul class="chips" style="justify-content:center">
-      <li><b>Kickoff</b> — pick priority service & city</li>
-      <li><b>Build</b> — site, landing pages, Instant Quote</li>
-      <li><b>Launch</b> — tracking, CRM/text, 4 campaigns</li>
-    </ul>
-
-    <p class="sub" style="margin:1.2rem auto .6rem; max-width: 70ch">Why it works:</p>
-    <ul class="chips" style="justify-content:center">
-      <li>Same-day ballpark speed → more booked calls</li>
-      <li>Offer + page match for each service</li>
-      <li>Instant text/email follow-ups (no cold leads)</li>
-    </ul>
-
-    <div class="cta" style="justify-content:center; margin-top:1rem">
-      <a href="#offer" class="btn btn--primary">See the $3,000 Founder Offer</a>
-      <a href="#apply" class="btn btn--ghost">Apply now</a>
+    <p class="eyebrow">Apply now</p>
+    <h2 class="h1" style="font-size:clamp(28px,5vw,48px);margin-bottom:.2rem">Hold your Founder slot for 72 hours</h2>
+    <p class="sub" style="max-width:70ch;margin:0 auto 1rem">Tell us your primary service and city. We’ll confirm fit and send a fast plan.</p>
+    <div class="cta" style="justify-content:center;margin-bottom:1rem">
+      <a href="#quiz" class="btn btn--primary">Start the 60‑second Quiz</a>
+      <a href="#process" class="btn btn--ghost">See How It Works</a>
     </div>
+    <!-- Optional: Calendly embed (uncomment to enable) -->
+    <!--
+    <div style="border:1px solid #1e232e;border-radius:12px;overflow:hidden">
+      <iframe src="https://calendly.com/YOUR-LINK/intro?hide_event_type_details=1&hide_gdpr_banner=1" style="width:100%;height:720px;border:0" title="Book a quick intro"></iframe>
+    </div>
+    -->
   </div>
-</section>
-
 </section>
 
 <!-- STICKY CTA -->
 <div class="stickybar" role="region" aria-label="Sticky CTA">
   <div class="shell stickybar__in">
-    <div style="font-weight:800;color:#E8EEF6;">Founder Build $3000 · <span style="color:#9fd6ff">3 slots</span> · 72‑hour hold when you apply</div>
+    <div style="font-weight:800;color:#E8EEF6;">Founder Build $3,000 · <span style="color:#9fd6ff">3 slots</span> · 72‑hour hold when you apply</div>
     <div style="display:flex;gap:8px;flex-wrap:wrap">
       <a class="btn btn--primary" href="#apply">Apply Now</a>
-      <a class="btn btn--ghost" href="#how">See How It Works</a>
+      <a class="btn btn--ghost" href="#process">See How It Works</a>
     </div>
   </div>
 </div>
@@ -425,88 +302,8 @@ body {
 <script>
 // Footer year
 document.getElementById('year').textContent = new Date().getFullYear();
-// Apply form submit -> Formspree (change endpoint if needed)
-(function(){
-  const f=document.getElementById('applyForm');
-  const ok=document.getElementById('applyOk');
-  const err=document.getElementById('applyErr');
-  if(!f) return;
-  f.addEventListener('submit',async(e)=>{
-    e.preventDefault(); err.style.display='none'; ok.style.display='none';
-    const data=Object.fromEntries(new FormData(f).entries());
-    const payload={source:'BIM Founders — Contractor Apply',...data,hold_expires_at:new Date(Date.now()+72*3600*1000).toISOString()};
-    try{
-      await fetch('https://formspree.io/f/xkgbgbjd',{method:'POST',headers:{'Accept':'application/json','Content-Type':'application/json'},body:JSON.stringify(payload)});
-      ok.style.display='block'; f.reset();
-    }catch{
-      err.style.display='block';
-    }
-  });
-})();
-</script>
- 
-<script>
-(function(){
-  const q = s => document.querySelector(s);
-  const qa= s => [...document.querySelectorAll(s)];
-  const form = q('#hqForm'); if(!form) return;
 
-  const steps = qa('.hq-step');
-  const bar   = q('#hqBar');
-  const stepNum = q('#hqStepNum');
-  const err = q('#hqErr'); const ok = q('#hqOk');
-  const prev = q('#hqPrev'); const next = q('#hqNext'); const save = q('#hqSave'); const submit = q('#hqSubmit');
-
-  let step = 1; const max = steps.length; const KEY='bim_inline_quiz_v1';
-
-  function show(n){
-    step=Math.max(1,Math.min(max,n));
-    steps.forEach(s=>s.hidden=(+s.dataset.step!==step));
-    stepNum.textContent=String(step);
-    bar.style.width=(step/max*100)+'%';
-    prev.style.visibility=step===1?'hidden':'visible';
-    next.style.display=step===max?'none':'inline-flex';
-    submit.style.display=step===max?'inline-flex':'none';
-    err.style.display='none';
-  }
-  function validateCurrent(){
-    const req=steps[step-1].querySelectorAll('[required]');
-    for(const f of req){ if(!f.value.trim()){ err.style.display='block'; f.focus(); return false; } }
-    return true;
-  }
-
-  next.addEventListener('click',()=>{ if(validateCurrent()) show(step+1); });
-  prev.addEventListener('click',()=> show(step-1));
-  save.addEventListener('click',()=>{
-    const data=Object.fromEntries(new FormData(form).entries());
-    localStorage.setItem(KEY,JSON.stringify(data));
-    save.textContent='Saved'; setTimeout(()=>save.textContent='Save',1000);
-  });
-
-  // Restore
-  try{ const saved=JSON.parse(localStorage.getItem(KEY)||'{}');
-    for(const [k,v] of Object.entries(saved)){ const el=form.elements[k]; if(el) el.value=v; }
-  }catch{}
-
-  form.addEventListener('submit',async(e)=>{
-    e.preventDefault(); err.style.display='none'; ok.style.display='none';
-    // validate all steps
-    for(const s of steps){
-      const req=s.querySelectorAll('[required]');
-      for(const f of req){ if(!f.value.trim()){ err.style.display='block'; f.focus(); return; } }
-    }
-    const payload={ source:'BIM Founders — Contractor Inline Quiz', ...Object.fromEntries(new FormData(form).entries()),
-      hold_expires_at:new Date(Date.now()+72*3600*1000).toISOString() };
-    try{
-      await fetch('https://formspree.io/f/xkgbgbjd',{method:'POST',headers:{'Accept':'application/json','Content-Type':'application/json'},body:JSON.stringify(payload)});
-      ok.style.display='block'; localStorage.removeItem(KEY); form.reset(); show(1);
-    }catch{ err.textContent='Could not submit right now. Please try again in a moment.'; err.style.display='block'; }
-  });
-
-  show(1);
-})();
-</script>
-<script>
+// Quiz logic (single source of truth)
 (function(){
   const $ = s => document.querySelector(s);
   const $$= s => [...document.querySelectorAll(s)];
@@ -555,9 +352,14 @@ document.getElementById('year').textContent = new Date().getFullYear();
     for(const [k,v] of Object.entries(saved)){ const el=form.elements[k]; if(el) el.value=v; }
   }catch{}
 
+  // Capture UTMs / attribution
+  const params = new URLSearchParams(location.search);
+  const utm = ['utm_source','utm_medium','utm_campaign','utm_term','utm_content']
+    .reduce((o,k)=>{ const v = params.get(k) || localStorage.getItem(k) || ''; if(v) localStorage.setItem(k,v); o[k]=v; return o; }, {});
+
   form.addEventListener('submit', async (e)=>{
     e.preventDefault(); err.style.display='none'; ok.style.display='none';
-    // validate all steps
+    // Validate all steps
     for(const s of steps){
       const req = s.querySelectorAll('[required]');
       for(const f of req){ if(!f.value.trim()){ err.style.display='block'; f.focus(); return; } }
@@ -565,6 +367,9 @@ document.getElementById('year').textContent = new Date().getFullYear();
     const payload = {
       source:'BIM Founders — Contractor Quiz (Panel)',
       ...Object.fromEntries(new FormData(form).entries()),
+      ...utm,
+      landing_path: location.pathname + location.search,
+      referrer: document.referrer || '',
       hold_expires_at: new Date(Date.now()+72*3600*1000).toISOString()
     };
     try{
@@ -581,9 +386,20 @@ document.getElementById('year').textContent = new Date().getFullYear();
     }
   });
 
+  // Keyboard: Enter advances when appropriate
+  form.addEventListener('keydown', (e)=>{
+    if(e.key==='Enter' && e.target.tagName!=='TEXTAREA'){
+      e.preventDefault();
+      if(step<max){ if(validCurrent()) show(step+1); } else { submit.click(); }
+    }
+  });
+
   show(1);
 })();
 </script>
+
+<!-- Optional: GA4 / Meta Pixel placeholders -->
+<!-- <script>/* GA4 gtag here; fire conversion on qpSubmit */</script> -->
 
 </body>
 </html>
