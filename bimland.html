@@ -136,6 +136,60 @@ body {
 </style>
   
 </head>
+  <style>
+/* QUIZ OVERLAY (app feel) */
+.quiz {
+  position: fixed; inset: 0; z-index: 9999;
+  display: none; /* toggled by JS */
+  background: rgba(10,12,16,.65);
+  backdrop-filter: blur(10px);
+}
+.quiz__sheet {
+  position: absolute; inset: 0;
+  display: grid; place-items: center;
+}
+.quiz__card {
+  width: min(820px, 92vw);
+  border-radius: 20px;
+  border: 1px solid #1F2A3A;
+  background: linear-gradient(180deg, rgba(255,255,255,.03), transparent 30%), #0f141c;
+  box-shadow: 0 30px 80px rgba(0,0,0,.45), 0 20px 60px rgba(78,198,255,.12);
+  overflow: hidden;
+}
+.quiz__head {
+  display:flex; align-items:center; justify-content:space-between; gap:12px;
+  padding: 14px 16px; border-bottom: 1px solid #1F2A3A;
+}
+.quiz__title { margin:0; font-weight:900; color:#EAF3FF; font-size:1.05rem }
+.quiz__x { background:transparent; border:1px solid #263244; color:#BFD6EA; padding:.5rem .8rem; border-radius:999px; cursor:pointer; font-weight:800 }
+.quiz__x:hover{ background:#121a25 }
+.quiz__body { padding: 16px; }
+
+.quiz__steps { display:flex; align-items:center; gap:10px; font-weight:800; color:#9fd6ff; margin: 0 0 8px; }
+.quiz__rail { height:8px; background:#162033; border:1px solid #223146; border-radius:999px; overflow:hidden; width:100% }
+.quiz__rail i { display:block; height:100%; background: linear-gradient(90deg,#4EC6FF,#8EE4FF); width:0% }
+
+.quiz__grid { display:grid; gap:12px }
+.quiz__grid.two{ grid-template-columns:1fr 1fr }
+@media (max-width: 700px){ .quiz__grid.two{ grid-template-columns:1fr } }
+
+.quiz .label{ display:block; font-weight:900; color:#9fd6ff; margin:.2rem 0 .25rem }
+.quiz .input, .quiz textarea, .quiz select{
+  width:100%; background:#0d131b; color:#eaf3ff; border:1px solid #223146; border-radius:10px;
+  padding:.82rem 1rem; font-size:1rem; outline:none; transition:border .15s, box-shadow .15s;
+}
+.quiz .input:focus, .quiz textarea:focus, .quiz select:focus{ border-color:#2a90c6; box-shadow:0 0 0 6px rgba(78,198,255,.18) }
+.quiz textarea{ min-height:120px; resize:vertical }
+
+.quiz__actions{ display:flex; justify-content:space-between; gap:10px; margin-top: 12px; }
+.quiz__actions .btn{ min-width:140px }
+
+.quiz__err{ color:#ff9b9b; font-weight:800; margin-top:8px; display:none }
+.quiz__ok{
+  background:#0f141c; border:1px solid #243146; border-radius:12px; padding:.9rem; text-align:center; margin-top:.7rem; display:none
+}
+</style>
+
 <body>
 
 <!-- HERO -->
@@ -346,5 +400,209 @@ document.getElementById('year').textContent = new Date().getFullYear();
   });
 })();
 </script>
+  <!-- QUIZ OVERLAY -->
+<div class="quiz" id="quiz">
+  <div class="quiz__sheet">
+    <div class="quiz__card" role="dialog" aria-modal="true" aria-labelledby="quizTitle">
+      <div class="quiz__head">
+        <h3 class="quiz__title" id="quizTitle">Quick Builder Quiz</h3>
+        <button class="quiz__x" id="quizClose" aria-label="Close quiz">Close</button>
+      </div>
+      <div class="quiz__body">
+        <!-- Step header -->
+        <div class="quiz__steps">
+          <span id="quizStepText">Step 1 of 3 — About you</span>
+          <div class="quiz__rail" aria-hidden="true"><i id="quizBar"></i></div>
+        </div>
+
+        <!-- Steps -->
+        <form id="quizForm" class="quiz__grid" autocomplete="on">
+          
+          <!-- STEP 1 -->
+          <div class="quiz__step" data-step="1">
+            <div class="quiz__grid two">
+              <div><label class="label">First name</label><input class="input" name="first_name" required></div>
+              <div><label class="label">Last name</label><input class="input" name="last_name" required></div>
+            </div>
+            <div class="quiz__grid two">
+              <div><label class="label">Company</label><input class="input" name="company" required></div>
+              <div><label class="label">City/Area</label><input class="input" name="city" required></div>
+            </div>
+            <div>
+              <label class="label">Primary service</label>
+              <select class="input" name="service" required>
+                <option value="">Select…</option>
+                <option>Remodel</option><option>Roofing</option><option>HVAC</option>
+                <option>General Contractor</option><option>Landscaping</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- STEP 2 -->
+          <div class="quiz__step" data-step="2" hidden>
+            <div>
+              <label class="label">Why should we work with you?</label>
+              <textarea name="why_us" placeholder="Tell us briefly about your business, reputation, or what makes you different." required></textarea>
+            </div>
+            <div>
+              <label class="label">What’s your primary goal with us?</label>
+              <textarea name="goal" placeholder="E.g., book more estimates, launch seasonal promo, improve close rate, cut response time…" required></textarea>
+            </div>
+          </div>
+
+          <!-- STEP 3 -->
+          <div class="quiz__step" data-step="3" hidden>
+            <div class="quiz__grid two">
+              <div>
+                <label class="label">Budget range</label>
+                <select class="input" name="budget" required>
+                  <option value="">Select…</option>
+                  <option>$1k–$2k</option>
+                  <option>$3k–$5k</option>
+                  <option>$6k–$10k</option>
+                  <option>$10k+</option>
+                </select>
+              </div>
+              <div>
+                <label class="label">Timeline</label>
+                <select class="input" name="timeline" required>
+                  <option value="">Select…</option>
+                  <option>ASAP (this month)</option>
+                  <option>30–45 days</option>
+                  <option>60–90 days</option>
+                </select>
+              </div>
+            </div>
+            <div class="quiz__grid two">
+              <div><label class="label">Email</label><input class="input" type="email" name="email" required></div>
+              <div><label class="label">Phone</label><input class="input" type="tel" name="phone" placeholder="Optional"></div>
+            </div>
+          </div>
+
+          <p class="quiz__err" id="quizErr">Please complete the required fields.</p>
+          <div class="quiz__ok" id="quizOk"><p>Thanks! We received your quiz. We’ll reply shortly.</p></div>
+
+          <!-- Nav actions -->
+          <div class="quiz__actions">
+            <button type="button" class="btn btn--ghost" id="quizPrev">Back</button>
+            <div style="display:flex; gap:10px">
+              <button type="button" class="btn btn--ghost" id="quizSave">Save</button>
+              <button type="button" class="btn btn--primary" id="quizNext">Next</button>
+              <button type="submit" class="btn btn--primary" id="quizSubmit" style="display:none">Submit</button>
+            </div>
+          </div>
+        </form>
+
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+(function(){
+  const qs = s => document.querySelector(s);
+  const qsa= s => [...document.querySelectorAll(s)];
+
+  // Elements
+  const modal = qs('#quiz');
+  const open  = qs('#quizOpen');
+  const close = qs('#quizClose');
+  const form  = qs('#quizForm');
+  const err   = qs('#quizErr');
+  const ok    = qs('#quizOk');
+  const stepText = qs('#quizStepText');
+  const bar   = qs('#quizBar');
+
+  const steps = qsa('.quiz__step');
+  const nextBtn = qs('#quizNext');
+  const prevBtn = qs('#quizPrev');
+  const saveBtn = qs('#quizSave');
+  const submitBtn = qs('#quizSubmit');
+
+  let step = 1;
+  const maxStep = steps.length;
+  const KEY = 'bim_quiz_v1';
+
+  function showStep(n){
+    step = Math.max(1, Math.min(maxStep, n));
+    steps.forEach(s => s.hidden = (Number(s.dataset.step)!==step));
+    stepText.textContent = `Step ${step} of ${maxStep} — ${step===1?'About you': step===2?'Your goals':'Budget & contact'}`;
+    bar.style.width = (step/maxStep*100) + '%';
+    prevBtn.style.visibility = step===1 ? 'hidden' : 'visible';
+    nextBtn.style.display    = step===maxStep ? 'none'   : 'inline-flex';
+    submitBtn.style.display  = step===maxStep ? 'inline-flex' : 'none';
+    err.style.display = 'none';
+  }
+
+  function openQuiz(e){ e?.preventDefault(); modal.style.display='block'; document.body.style.overflow='hidden'; showStep(step); }
+  function closeQuiz(){ modal.style.display='none'; document.body.style.overflow=''; }
+
+  open?.addEventListener('click', openQuiz);
+  close?.addEventListener('click', closeQuiz);
+  modal?.addEventListener('click', (e)=>{ if(e.target===modal) closeQuiz(); });
+
+  // Next/Prev with validation per step
+  nextBtn.addEventListener('click', ()=>{
+    const fields = steps[step-1].querySelectorAll('[required]');
+    for(const f of fields){
+      if(!f.value.trim()){ err.style.display='block'; f.focus(); return; }
+    }
+    err.style.display='none';
+    showStep(step+1);
+  });
+  prevBtn.addEventListener('click', ()=> showStep(step-1));
+
+  // Save partial to localStorage
+  saveBtn.addEventListener('click', ()=>{
+    const data = Object.fromEntries(new FormData(form).entries());
+    localStorage.setItem(KEY, JSON.stringify(data));
+    saveBtn.textContent = 'Saved';
+    setTimeout(()=> saveBtn.textContent='Save', 1200);
+  });
+
+  // Restore on load
+  try{
+    const saved = JSON.parse(localStorage.getItem(KEY) || '{}');
+    for(const [k,v] of Object.entries(saved)){
+      const el = form.elements[k];
+      if(el) el.value = v;
+    }
+  }catch{}
+
+  // Submit to Formspree
+  form.addEventListener('submit', async (e)=>{
+    e.preventDefault();
+    err.style.display='none'; ok.style.display='none';
+    const data = Object.fromEntries(new FormData(form).entries());
+    // Final required pass
+    for (const stepEl of steps){
+      const reqs = stepEl.querySelectorAll('[required]');
+      for(const f of reqs){ if(!f.value.trim()){ err.style.display='block'; f.focus(); return; } }
+    }
+    const payload = {
+      source: 'BIM Founders — Contractor Quiz',
+      ...data,
+      hold_expires_at: new Date(Date.now()+72*3600*1000).toISOString()
+    };
+    try{
+      await fetch('https://formspree.io/f/xkgbgbjd', {
+        method:'POST',
+        headers:{ 'Accept':'application/json','Content-Type':'application/json' },
+        body: JSON.stringify(payload)
+      });
+      ok.style.display='block';
+      localStorage.removeItem(KEY);
+      form.reset();
+      showStep(1);
+    }catch{
+      err.textContent = 'Could not submit right now. Please try again in a moment.';
+      err.style.display='block';
+    }
+  });
+
+  // Optional: open quiz if URL has #quiz
+  if(location.hash==='#quiz') openQuiz();
+})();
+</script>
+
 </body>
 </html>
