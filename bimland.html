@@ -85,6 +85,20 @@ body{margin:0;background:#101014;color:#E8EEF6;font-family:'Montserrat',system-u
 .stickybar{position:fixed;left:0;right:0;bottom:0;z-index:999;background:#0E1116;border-top:1px solid #1e232e;box-shadow:0 -6px 24px rgba(0,0,0,.25)}
 .stickybar__in{display:flex;gap:12px;align-items:center;justify-content:space-between;padding:10px 0}
 .footer{border-top:1px solid #1e232e;padding:20px 0;text-align:center;color:#b6c2d1}
+/* === Immersive How-It-Works Flow === */
+.flow{position:relative}
+.flow-rail{height:10px;background:#0f141c;border:1px solid #223146;border-radius:999px;overflow:hidden;box-shadow:0 10px 30px rgba(0,0,0,.25) inset}
+.flow-bar{height:100%;width:0%;background:linear-gradient(90deg,#4EC6FF,#8EE4FF);transition:width .7s ease}
+.flow-steps{display:grid;gap:16px;margin-top:18px;grid-template-columns:repeat(4,1fr)}
+@media (max-width:900px){.flow-steps{grid-template-columns:1fr 1fr}}
+.flow-step{border:1px solid #243146;border-radius:14px;padding:14px;background:#0f141c;opacity:.55;transform:translateY(6px);transition:opacity .4s ease, transform .4s ease, box-shadow .4s ease}
+.flow-step.is-on{opacity:1;transform:none;box-shadow:0 16px 40px rgba(78,198,255,.12)}
+.flow-ico{display:inline-flex;width:36px;height:36px;border-radius:10px;align-items:center;justify-content:center;background:#101a27;border:1px solid #223146;margin-bottom:8px}
+.flow-ttl{margin:.1rem 0 .2rem;font-weight:900;color:#eaf3ff}
+.flow-hint{margin:0;color:#9db2c8}
+.flow-done{margin-top:16px;border:1px dashed #2b3a50;border-radius:14px;padding:14px;text-align:center;background:linear-gradient(180deg,rgba(255,255,255,.02),transparent 40%),#0f141c}
+.flow-done b{color:#9fd6ff}
+
 </style>
 </head>
 <body>
@@ -128,16 +142,52 @@ body{margin:0;background:#101014;color:#E8EEF6;font-family:'Montserrat',system-u
 </section>
 
 <!-- PROCESS -->
-<section id="process" class="section" aria-label="Process Steps">
+<section id="process" class="section" aria-label="Immersive How It Works">
   <div class="shell">
-    <div class="card">
+    <div class="card flow">
       <div class="card-head">
-        <h2 class="card-title">How It Works (3 Steps)</h2>
+        <h2 class="card-title">How It Works — Your Build in Motion</h2>
+        <span class="pill" id="flowPct" aria-live="polite">0%</span>
       </div>
-      <div class="card-body" style="display:grid;gap:18px;grid-template-columns:repeat(3,1fr)">
-        <div class="sec"><p class="sec-title">1) Kickoff</p><p class="hint">30‑minute call to pick your priority service & city. We map offers, pages, and follow‑ups.</p></div>
-        <div class="sec"><p class="sec-title">2) Build (Week 1)</p><p class="hint">We deliver your 8‑section site, install the Instant Quote flow, and create 3 landing pages with clear CTAs.</p></div>
-        <div class="sec"><p class="sec-title">3) Launch (Week 2–3)</p><p class="hint">We wire tracking, connect CRM/text, load 3 campaigns, and hand off Loom walkthroughs. You own it.</p></div>
+      <div class="card-body">
+        <div class="flow-rail" aria-hidden="true"><div class="flow-bar" id="flowBar"></div></div>
+        <div class="flow-steps" id="flowSteps" role="list">
+          <div class="flow-step" role="listitem" data-step="1">
+            <div class="flow-ico" aria-hidden="true">
+              <!-- calendar svg -->
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M7 2v3M17 2v3M3 9h18M5 5h14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2Z" stroke="#9fd6ff" stroke-width="1.6" stroke-linecap="round"/></svg>
+            </div>
+            <p class="flow-ttl">Kickoff</p>
+            <p class="flow-hint">Pick your priority service & city. Map your offer and quote flow.</p>
+          </div>
+          <div class="flow-step" role="listitem" data-step="2">
+            <div class="flow-ico" aria-hidden="true">
+              <!-- layout svg -->
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="4" width="18" height="6" rx="1.6" stroke="#9fd6ff" stroke-width="1.6"/><rect x="3" y="12" width="8.8" height="8" rx="1.6" stroke="#9fd6ff" stroke-width="1.6"/><rect x="13.2" y="12" width="7.8" height="8" rx="1.6" stroke="#9fd6ff" stroke-width="1.6"/></svg>
+            </div>
+            <p class="flow-ttl">Build</p>
+            <p class="flow-hint">8‑section site + 3 landing pages with Instant Quote installed.</p>
+          </div>
+          <div class="flow-step" role="listitem" data-step="3">
+            <div class="flow-ico" aria-hidden="true">
+              <!-- bolt svg -->
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M13 2 4 14h6l-1 8 9-12h-6l1-8Z" stroke="#9fd6ff" stroke-width="1.6" stroke-linejoin="round"/></svg>
+            </div>
+            <p class="flow-ttl">Launch</p>
+            <p class="flow-hint">Tracking wired, CRM/text connected, campaigns loaded.</p>
+          </div>
+          <div class="flow-step" role="listitem" data-step="4">
+            <div class="flow-ico" aria-hidden="true">
+              <!-- chat svg -->
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M20 15.5c1.1-1 1.8-2.4 1.8-3.9C21.8 8.6 19.1 6 15.8 6H8.2C4.9 6 2.2 8.6 2.2 11.6c0 3 2.7 5.6 6 5.6h.7v3.1l3.9-3.1h3c1.3 0 2.6-.5 3.6-1.2Z" stroke="#9fd6ff" stroke-width="1.6" stroke-linejoin="round"/></svg>
+            </div>
+            <p class="flow-ttl">Follow‑ups</p>
+            <p class="flow-hint">Auto text/email in seconds. No cold leads left behind.</p>
+          </div>
+        </div>
+        <div class="flow-done" id="flowDone" aria-live="polite" hidden>
+          <p class="hint" style="margin:0">✅ <b>Done‑for‑you sales system installed.</b> Site + Instant Quote + tracking + campaigns, ready to book jobs.</p>
+        </div>
       </div>
     </div>
   </div>
@@ -401,5 +451,37 @@ document.getElementById('year').textContent = new Date().getFullYear();
 <!-- Optional: GA4 / Meta Pixel placeholders -->
 <!-- <script>/* GA4 gtag here; fire conversion on qpSubmit */</script> -->
 
+<script>
+// Immersive flow animation on view
+(function(){
+  const wrap = document.getElementById('flowSteps');
+  if(!wrap) return;
+  const steps = [...wrap.querySelectorAll('.flow-step')];
+  const bar   = document.getElementById('flowBar');
+  const pctEl = document.getElementById('flowPct');
+  const done  = document.getElementById('flowDone');
+  let ran=false;
+  function run(){
+    if(ran) return; ran=true;
+    let i=0;
+    function tick(){
+      if(i<steps.length){
+        steps[i].classList.add('is-on');
+        const pct = Math.round(((i+1)/steps.length)*100);
+        bar.style.width = pct + '%';
+        if(pctEl) pctEl.textContent = pct + '%';
+        i++; setTimeout(tick, 650);
+      }else{
+        if(done){ done.hidden=false; }
+      }
+    }
+    tick();
+  }
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting) run(); });
+  }, {threshold: .35});
+  io.observe(document.getElementById('process'));
+})();
+</script>
 </body>
 </html>
