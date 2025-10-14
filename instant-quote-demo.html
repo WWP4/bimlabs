@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Contractor Instant Quote</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --brand:#f1592a; /* construction orange */
+      --brand-dark:#c94722;
+      --ink:#0b1220;
+      --muted:#6b7280;
+      --bg:#ffffff; /* white background */
+      --card:#f9fafb; /* light card */
+      --shadow:0 6px 18px rgba(0,0,0,.1);
+      --radius:12px;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Inter,system-ui,Segoe UI,Roboto,Arial,sans-serif;color:var(--ink);background:var(--bg)}
+    h1,h2,h3{font-family:Oswald,Inter,system-ui,sans-serif;letter-spacing:.02em;color:#111827}
+    .container{max-width:1100px;margin:0 auto;padding:40px 20px}
+    .hero{background:#fff;border:2px solid var(--brand);padding:36px;border-radius:var(--radius);box-shadow:var(--shadow);text-align:center}
+    .badge{display:inline-block;background:var(--brand);color:#fff;padding:6px 14px;border-radius:999px;font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.08em}
+    .hero h1{font-size:38px;margin:16px 0}
+    .hero p{max-width:600px;margin:0 auto 18px;color:#374151}
+    .btn{appearance:none;border:0;border-radius:8px;padding:14px 18px;font-weight:700;cursor:pointer;text-transform:uppercase;letter-spacing:.06em}
+    .btn-primary{background:var(--brand);color:#fff;}
+    .btn-outline{background:transparent;border:2px solid var(--brand);color:var(--brand)}
+    .grid{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:32px}
+    @media (max-width:900px){.grid{grid-template-columns:1fr}}
+    .card{background:var(--card);padding:22px;border-radius:var(--radius);box-shadow:var(--shadow)}
+    label{font-size:14px;color:#374151;margin-bottom:4px;display:block}
+    select,input[type=text],input[type=email],input[type=number]{width:100%;padding:10px;border:1px solid #d1d5db;border-radius:6px;font-size:14px}
+    .chip{padding:8px 14px;border:1px solid #d1d5db;border-radius:20px;cursor:pointer;background:#fff}
+    .chip.active{background:var(--brand);color:#fff;border-color:var(--brand)}
+    .total{background:#fff;border:2px solid var(--brand);border-radius:var(--radius);padding:18px;text-align:center}
+    .total h2{margin:0;color:var(--brand);font-size:24px}
+    .footer{text-align:center;margin-top:40px;color:#6b7280;font-size:13px}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="hero">
+      <span class="badge">Contractor Instant‑Quote</span>
+      <h1>Get Your Estimate Instantly</h1>
+      <p>Professional instant-quote system built for contractors. Create, send, and close deals faster.</p>
+      <button class="btn btn-primary" id="scrollToTool">Start Quote</button>
+    </div>
+
+    <div class="grid" id="tool">
+      <div class="card">
+        <h3>Project Details</h3>
+        <label>Service Type</label>
+        <select id="service">
+          <option value="roofing">Roofing</option>
+          <option value="deck">Deck Build</option>
+          <option value="remodel">Remodel</option>
+          <option value="concrete">Concrete</option>
+          <option value="landscape">Landscaping</option>
+        </select>
+        <label>Approx. Area (sq ft)</label>
+        <input type="number" id="area" placeholder="e.g. 1200">
+        <label>Size</label>
+        <div class="chip" data-size="S">Small</div>
+        <div class="chip active" data-size="M">Medium</div>
+        <div class="chip" data-size="L">Large</div>
+      </div>
+
+      <div class="card">
+        <h3>Estimate Range</h3>
+        <div class="total">
+          <h2 id="range">$0 – $0</h2>
+          <p>Typical bid range based on scope and materials.</p>
+          <button class="btn btn-primary" id="downloadPdf">Download PDF</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">© 2025 BIM Labs Studio</div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+  <script>
+    const PRICING_SCHEMA = {roofing:{base:6500,perSqFt:6},deck:{base:9000,perSqFt:35},remodel:{base:14000,perSqFt:120},concrete:{base:4800,perSqFt:12},landscape:{base:3500,perSqFt:10}};
+    let state = {service:'roofing',area:0,size:'M'};
+    const rangeEl=document.getElementById('range');
+    const areaEl=document.getElementById('area');
+    const serviceEl=document.getElementById('service');
+    function format(n){return n.toLocaleString('en-US',{style:'currency',currency:'USD',maximumFractionDigits:0})}
+    function update(){
+      const p=PRICING_SCHEMA[state.service];
+      const total=p.base+(p.perSqFt*state.area);
+      const low=Math.round(total*0.9),high=Math.round(total*1.1);
+      rangeEl.textContent=`${format(low)} – ${format(high)}`;
+    }
+    serviceEl.addEventListener('change',()=>{state.service=serviceEl.value;update()});
+    areaEl.addEventListener('input',()=>{state.area=parseInt(areaEl.value)||0;update()});
+    document.querySelectorAll('.chip').forEach(ch=>ch.addEventListener('click',()=>{document.querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));ch.classList.add('active');state.size=ch.dataset.size;update()}));
+    document.getElementById('downloadPdf').addEventListener('click',()=>{
+      const {jsPDF}=window.jspdf;const doc=new jsPDF();
+      doc.setFontSize(16);doc.text('Contractor Instant Quote',20,20);
+      doc.text(`Service: ${state.service}`,20,40);
+      doc.text(`Area: ${state.area} sq ft`,20,60);
+      doc.text(`Range: ${rangeEl.textContent}`,20,80);
+      doc.save('quote.pdf');
+    });
+    update();
+  </script>
+</body>
+</html>
