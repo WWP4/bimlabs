@@ -84,7 +84,7 @@
 }
 .hero-overlay h1 {
   font-family: 'Oswald', sans-serif;
-  font-size: 40px;
+  font-size: 42px;
   margin: 10px 0 8px;
 }
 .hero-overlay p {
@@ -96,23 +96,31 @@
   gap: 12px;
   margin-top: 20px;
 }
+.hero-cta .btn-outline {
+  border: 2px solid #fff;
+  color: #fff;
+}
+.hero-video video {
+  opacity: 0;
+  animation: fadeIn 2s ease-in forwards;
+}
+@keyframes fadeIn {
+  to { opacity: 1; }
+}
 
     
   </style>
 </head>
-<body>
-  <div class="container">
-    <section class="hero-video" aria-label="Instant Quote Demo">
-  <video id="demoBg" autoplay muted playsinline loop poster="/media/instant-quote-poster.jpg">
-    <source src="/media/instant-quote-demo.mp4" type="video/mp4">
-    <!-- Optional fallback format -->
-    <source src="/media/instant-quote-demo.webm" type="video/webm">
+<section class="hero-video" aria-label="Instant Quote Demo">
+  <video autoplay muted playsinline loop poster="/media/instant-quote-poster.jpg">
+    <source src="https://bimlab.netlify.app/instant-quote-demo.mp4" type="video/mp4">
   </video>
 
   <div class="hero-overlay">
     <span class="badge">Concrete Flatwork — Instant Quote</span>
     <h1>Book Jobs Instantly. Right From Your Website.</h1>
-    <p>See the tool live in action. Built for contractors — quote by square footage, generate instant PDFs, and close jobs faster.</p>
+    <p>See the tool live in action — one-minute quotes, instant PDF generation, and client-ready pricing.</p>
+
     <div class="hero-cta">
       <button class="btn btn-primary" id="scrollToCalc">Try the Live Demo</button>
       <button class="btn btn-outline" id="watchDemo">Play Video</button>
