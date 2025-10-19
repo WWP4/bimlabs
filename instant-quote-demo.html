@@ -126,55 +126,22 @@
   </div>
 </section>
 
-  <div class="card" id="roi">
-  <h2 class="section-title">Your ROI in Minutes</h2>
-  <div class="row">
-    <div>
-      <label>Avg job value ($)</label>
-      <input type="number" id="job" value="7500">
-    </div>
-    <div>
-      <label>Leads per month from tool</label>
-      <input type="number" id="leads" value="20">
-    </div>
-  </div>
-  <div class="row" style="margin-top:10px">
-    <div>
-      <label>Close rate (%)</label>
-      <input type="number" id="close" value="25">
-    </div>
-    <div>
-      <label>Setup cost ($)</label>
-      <input type="number" id="cost" value="2000">
+<section class="refund-section" id="refund-deposit">
+  <div class="container">
+    <div class="card" style="border-left:4px solid var(--brand);padding:18px;margin-top:20px">
+      <h3 style="margin:0 0 6px">Risk-Free Deposit</h3>
+      <p style="margin:0 0 8px;font-size:14px;color:#374151">
+        Reserve your spot today with a <strong>$250 fully refundable deposit</strong>. 
+        Cancel anytime before production begins and get a full refund. 
+        Once production starts, your deposit locks your project and goes toward your build.
+      </p>
+      <p style="font-size:12px;color:#6b7280">
+        *Deposits secure limited city availability. Production usually begins within 24–48 hours of receiving your materials.
+      </p>
     </div>
   </div>
-  <div class="summary" style="margin-top:14px">
-    <div class="kpis">
-      <span class="pill" id="rev">Monthly Revenue: —</span>
-      <span class="pill" id="profit">Monthly Profit (est.): —</span>
-      <span class="pill" id="payback">Payback Period: —</span>
-    </div>
-  </div>
-</div>
-<script>
-function calc(){
-  const job=+document.getElementById('job').value||0;
-  const leads=+document.getElementById('leads').value||0;
-  const close=(+document.getElementById('close').value||0)/100;
-  const cost=+document.getElementById('cost').value||0;
-  const won = leads*close;
-  const revenue = won*job;
-  const monthlyProfit = revenue; // assume media spend = 0 here; adjust if needed
-  const paybackMonths = monthlyProfit>0 ? (cost/monthlyProfit).toFixed(2) : '—';
-  document.getElementById('rev').textContent = `Monthly Revenue: $${Math.round(revenue).toLocaleString()}`;
-  document.getElementById('profit').textContent = `Monthly Profit (est.): $${Math.round(monthlyProfit).toLocaleString()}`;
-  document.getElementById('payback').textContent = `Payback Period: ${paybackMonths} months`;
-}
-['job','leads','close','cost'].forEach(id=>{
-  document.getElementById(id).addEventListener('input',calc);
-});
-calc();
-</script>
+</section>
+
 
 
 
