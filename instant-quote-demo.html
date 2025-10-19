@@ -143,6 +143,166 @@
 </section>
 
 
+  <!-- ================================
+Instant Value Section (drop under hero)
+==================================== -->
+<link rel="stylesheet" href="https://unpkg.com/aos@2.3.4/dist/aos.css">
+<section class="value-impact" id="why-this-works">
+  <div class="container">
+    <div class="vi-head" data-aos="fade-up">
+      <span class="badge">Why Contractors Say Yes</span>
+      <h2 class="vi-title">Instant Value, Zero Guesswork</h2>
+      <p class="vi-sub">Your website gives a ballpark price, texts the homeowner, and drops the job in your CRM—while you’re on a pour.</p>
+    </div>
+
+    <div class="vi-grid">
+      <!-- Card 1 -->
+      <article class="vi-card" data-aos="fade-up" data-aos-delay="50">
+        <div class="vi-icon">
+          <!-- Clock / speed -->
+          <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8">
+            <circle cx="12" cy="12" r="9"></circle>
+            <path d="M12 7v5l3 2"></path>
+          </svg>
+        </div>
+        <h3>Built in 48 Hours</h3>
+        <p>Send your logo, colors, and services. We install the quoting + follow-up system in 48 hours or credit you $250.</p>
+      </article>
+
+      <!-- Card 2 -->
+      <article class="vi-card" data-aos="fade-up" data-aos-delay="100">
+        <div class="vi-icon">
+          <!-- Shield / ownership -->
+          <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8">
+            <path d="M12 3l7 4v5c0 5-3.5 9-7 9s-7-4-7-9V7l7-4z"></path>
+            <path d="M9 12l2 2 4-4"></path>
+          </svg>
+        </div>
+        <h3>You Own Everything</h3>
+        <p>Leads route straight to your CRM. No revenue share. No monthly lock-in. It’s your asset once paid.</p>
+      </article>
+
+      <!-- Card 3 -->
+      <article class="vi-card" data-aos="fade-up" data-aos-delay="150">
+        <div class="vi-icon">
+          <!-- Quote / form -->
+          <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8">
+            <rect x="4" y="3" width="16" height="18" rx="2"></rect>
+            <path d="M8 8h8M8 12h8M8 16h5"></path>
+          </svg>
+        </div>
+        <h3>Quotes in 60 Seconds</h3>
+        <p>Homeowners get a clear ballpark estimate and auto-reply. You get structured details to bid faster.</p>
+      </article>
+
+      <!-- Card 4 -->
+      <article class="vi-card" data-aos="fade-up" data-aos-delay="200">
+        <div class="vi-icon">
+          <!-- Plug / integrations -->
+          <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8">
+            <path d="M12 12l6-6M12 12l-6 6"></path>
+            <rect x="3" y="3" width="7" height="7" rx="1.5"></rect>
+            <rect x="14" y="14" width="7" height="7" rx="1.5"></rect>
+          </svg>
+        </div>
+        <h3>Works on Your Site</h3>
+        <p>Shopify, WordPress, Webflow, Squarespace, Wix—or a branded subdomain if your plan blocks scripts.</p>
+      </article>
+    </div>
+
+    <!-- Mini KPI band -->
+    <div class="vi-kpis" data-aos="fade-up" data-aos-delay="250" aria-label="Highlights">
+      <span class="pill">7–10 day payoff on one patio</span>
+      <span class="pill">Auto text + email follow-up</span>
+      <span class="pill">One-per-city option</span>
+    </div>
+
+    <!-- CTA Row -->
+    <div class="vi-actions" data-aos="fade-up" data-aos-delay="300">
+      <a class="btn btn-primary" href="#pricing">Get It Installed</a>
+      <a class="btn btn-outline" href="#demo">Watch the Live Demo</a>
+    </div>
+  </div>
+</section>
+
+<script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+<script>
+  // Safe init (won’t error if called twice)
+  try { AOS.init({ duration: 650, easing: 'ease-out', once: true }); } catch(e){}
+</script>
+
+<style>
+/* ===== Instant Value Styles (uses your existing tokens) ===== */
+.value-impact { 
+  background: linear-gradient(180deg, #fff 0%, #f9fafb 100%);
+  padding: 48px 0 56px;
+  border-top: 1px solid var(--border);
+}
+.vi-head { text-align:center; margin-bottom: 18px; }
+.vi-title { 
+  font-family: Oswald, Inter, sans-serif; 
+  font-size: 34px; 
+  margin: 10px 0 6px; 
+  letter-spacing: .02em; 
+}
+.vi-sub { 
+  max-width: 820px; 
+  margin: 0 auto 6px; 
+  color: var(--muted);
+}
+.vi-grid { 
+  display:grid; 
+  grid-template-columns: repeat(4,1fr); 
+  gap: 14px; 
+  margin-top: 14px;
+}
+@media (max-width: 1100px){ .vi-grid{ grid-template-columns: repeat(2,1fr);} }
+@media (max-width: 640px){ .vi-grid{ grid-template-columns: 1fr; } }
+
+.vi-card{ 
+  background:#fff; 
+  border:1px solid var(--border); 
+  border-radius: var(--radius); 
+  padding:16px; 
+  box-shadow: var(--shadow);
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+.vi-card:hover { 
+  transform: translateY(-2px); 
+  box-shadow: 0 12px 30px rgba(0,0,0,.12); 
+}
+.vi-card h3{ 
+  margin:10px 0 6px; 
+  font-size:18px; 
+  color:#111827;
+}
+.vi-card p{ 
+  margin:0; 
+  color:#4b5563; 
+  font-size:14px; 
+  line-height:1.55;
+}
+.vi-icon{ 
+  width:40px; height:40px; 
+  border-radius:10px; 
+  background: rgba(241,89,42,.12); 
+  color: var(--brand); 
+  display:flex; align-items:center; justify-content:center; 
+}
+
+.vi-kpis{ 
+  display:flex; gap:10px; flex-wrap:wrap; 
+  justify-content:center; 
+  margin-top:16px;
+}
+.vi-actions{ 
+  display:flex; gap:12px; justify-content:center; 
+  margin-top:18px;
+}
+/* Tighten badge in this context */
+.value-impact .badge{ background: var(--brand); }
+</style>
+
 
 
   
