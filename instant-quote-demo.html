@@ -1,6 +1,186 @@
 <!doctype html>
 <html lang="en">
 <head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Concrete Flatwork — Instant Quote</title>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- AOS CSS (for fade animations used below) -->
+  <link rel="stylesheet" href="https://unpkg.com/aos@2.3.4/dist/aos.css">
+
+  <style>
+    :root{
+      --brand:#f1592a; /* construction orange */
+      --brand-dark:#c94722;
+      --ink:#0b1220;
+      --muted:#6b7280;
+      --bg:#ffffff;
+      --card:#f9fafb;
+      --shadow:0 6px 18px rgba(0,0,0,.1);
+      --radius:12px;
+      --border:#e5e7eb;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Inter,system-ui,Segoe UI,Roboto,Arial,sans-serif;color:var(--ink);background:var(--bg)}
+    h1,h2,h3{font-family:Oswald,Inter,system-ui,sans-serif;letter-spacing:.02em;color:#111827}
+    .container{max-width:1200px;margin:0 auto;padding:40px 20px}
+    .badge{display:inline-block;background:var(--brand);color:#fff;padding:6px 14px;border-radius:999px;font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.09em}
+    .btn{appearance:none;border:0;border-radius:8px;padding:12px 16px;font-weight:800;cursor:pointer;text-transform:uppercase;letter-spacing:.06em}
+    .btn-primary{background:var(--brand);color:#fff}
+    .btn-outline{background:transparent;border:2px solid var(--brand);color:var(--brand)}
+    .card{background:#fff;border:1px solid var(--border);padding:20px;border-radius:var(--radius);box-shadow:var(--shadow)}
+    .pill{border:1px solid #e5e7eb;border-radius:999px;padding:6px 10px;background:#fff;color:#374151;font-size:12px}
+    .footer{text-align:center;margin:40px 0 26px;color:#6b7280;font-size:12px}
+
+    /* ===== Countdown Bar ===== */
+    .campaign-bar{
+      position:sticky; top:0; z-index:9999;
+      background:var(--brand); color:#fff;
+      border-bottom:1px solid rgba(255,255,255,.18);
+      box-shadow:0 4px 18px rgba(0,0,0,.15);
+    }
+    .camp-inner{
+      max-width:1200px; margin:0 auto; padding:8px 12px;
+      display:flex; align-items:center; justify-content:space-between; gap:12px;
+    }
+    .camp-left{ display:flex; align-items:center; gap:10px; font-size:14px; letter-spacing:.02em }
+    .camp-divider{ opacity:.6 }
+    .camp-right{ display:flex; gap:8px }
+    .btn-sm{ padding:8px 12px; border-radius:6px; font-size:12px; letter-spacing:.05em }
+    .camp-progress{ height:3px; background:rgba(255,255,255,.18) }
+    .camp-progress span{
+      display:block; height:100%; width:0%;
+      background:linear-gradient(90deg,#fff 0%,rgba(255,255,255,.85) 100%);
+      transition:width .8s ease;
+    }
+    @media (max-width:640px){
+      .camp-left{ font-size:13px }
+      .btn-sm{ padding:7px 10px; font-size:11px }
+    }
+
+    /* ===== HERO (polished) ===== */
+    .hero-video{
+      position:relative; height:420px; border-radius:12px; overflow:hidden;
+      box-shadow:var(--shadow); border-bottom:4px solid var(--brand);
+    }
+    .hero-video video{
+      position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
+      filter:brightness(.55); opacity:0; animation:heroFadeIn 1.2s ease-in forwards;
+    }
+    .hero-video::after{
+      content:""; position:absolute; inset:0;
+      background:linear-gradient(180deg, rgba(0,0,0,.55) 0%, rgba(0,0,0,.35) 45%, rgba(0,0,0,.55) 100%);
+    }
+    .hero-overlay{
+      position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center;
+      text-align:center; color:#fff; padding:24px;
+    }
+    .hero-overlay h1{
+      color:#fff; font-size:40px; letter-spacing:.01em; text-shadow:0 2px 8px rgba(0,0,0,.35);
+      margin:10px 0 8px;
+    }
+    .hero-overlay p{ max-width:840px; margin:0 auto 14px; color:#e5e7eb }
+    .hero-cta{ display:flex; gap:12px; margin-top:8px; flex-wrap:wrap; justify-content:center }
+    .hero-cta .btn-outline{ border:2px solid #fff; color:#fff }
+    @media (max-width:720px){ .hero-video{ height:360px } .hero-overlay h1{ font-size:30px } }
+    @keyframes heroFadeIn{ to { opacity:1 } }
+    .hero-overlay .badge{ background:rgba(255,255,255,.18); color:#fff; border:1px solid rgba(255,255,255,.35) }
+    @media (prefers-reduced-motion: reduce){
+      .hero-video video{ display:none }
+      .hero-video{ background:#111 url('poster.jpg') center/cover no-repeat }
+    }
+
+    /* ===== Instant Value ===== */
+    .value-impact { 
+      background: linear-gradient(180deg, #fff 0%, #f9fafb 100%); padding: 48px 0 56px;
+      border-top: 1px solid var(--border);
+    }
+    .vi-head { text-align:center; margin-bottom: 18px; }
+    .vi-title { font-size: 34px; margin: 10px 0 6px; letter-spacing: .02em; }
+    .vi-sub { max-width: 820px; margin: 0 auto 6px; color: var(--muted); }
+    .vi-grid { display:grid; grid-template-columns: repeat(4,1fr); gap: 14px; margin-top: 14px; }
+    @media (max-width:1100px){ .vi-grid{ grid-template-columns: repeat(2,1fr);} }
+    @media (max-width:640px){ .vi-grid{ grid-template-columns: 1fr; } }
+    .vi-card{ background:#fff; border:1px solid var(--border); border-radius: var(--radius); padding:16px; box-shadow: var(--shadow); transition: transform .2s ease, box-shadow .2s ease; }
+    .vi-card:hover { transform: translateY(-2px); box-shadow: 0 12px 30px rgba(0,0,0,.12); }
+    .vi-card h3{ margin:10px 0 6px; font-size:18px; color:#111827; }
+    .vi-card p{ margin:0; color:#4b5563; font-size:14px; line-height:1.55; }
+    .vi-icon{ width:40px; height:40px; border-radius:10px; background: rgba(241,89,42,.12); color: var(--brand); display:flex; align-items:center; justify-content:center; }
+    .vi-kpis{ display:flex; gap:10px; flex-wrap:wrap; justify-content:center; margin-top:16px; }
+    .vi-actions{ display:flex; gap:12px; justify-content:center; margin-top:18px; }
+    .value-impact .badge{ background: var(--brand); }
+
+    /* ===== Process ===== */
+    .process{ background:#fff; padding:56px 0; border-top:1px solid var(--border); }
+    .proc-head{ text-align:center; margin-bottom:18px; }
+    .proc-title{ font-size:32px; margin:10px 0 6px; letter-spacing:.02em; }
+    .proc-sub{ max-width:820px; margin:0 auto; color:var(--muted); }
+    .proc-steps{ list-style:none; padding:0; margin:18px 0 0; display:grid; grid-template-columns: repeat(5,1fr); gap:14px; }
+    @media (max-width:1100px){ .proc-steps{ grid-template-columns: repeat(3,1fr);} }
+    @media (max-width:640px){ .proc-steps{ grid-template-columns: 1fr; } }
+    .proc-step{ background:#fff; border:1px solid var(--border); border-radius:var(--radius); padding:16px; box-shadow:var(--shadow); position:relative; transition:transform .2s ease, box-shadow .2s ease; }
+    .proc-step:hover{ transform:translateY(-2px); box-shadow:0 12px 30px rgba(0,0,0,.12); }
+    .proc-index{ position:absolute; top:12px; right:12px; width:28px; height:28px; border-radius:999px; background:rgba(241,89,42,.12); color:var(--brand); display:flex; align-items:center; justify-content:center; font-weight:800; font-size:13px; }
+    .proc-icon{ width:42px; height:42px; border-radius:10px; background:rgba(241,89,42,.12); color:var(--brand); display:flex; align-items:center; justify-content:center; }
+    .proc-step h3{ margin:10px 0 6px; font-size:18px; color:#111827; }
+    .proc-step p{ margin:0; color:#4b5563; font-size:14px; line-height:1.55; }
+    .proc-cta{ display:flex; gap:12px; justify-content:center; margin-top:18px; }
+
+    /* ===== What You Get (dark split) ===== */
+    .included{ background:#0f1624; color:#e5e7eb; padding:64px 0; border-top:1px solid var(--border); }
+    .inc-wrap{ display:grid; grid-template-columns:1.1fr .9fr; gap:22px; }
+    @media (max-width:1100px){ .inc-wrap{ grid-template-columns:1fr; } }
+    .included .badge{ background: var(--brand); }
+    .inc-left h2{ font-size:32px; letter-spacing:.02em; margin:10px 0 6px; color:#fff; }
+    .inc-sub{ color:#c7cbd6; margin:0 0 10px; max-width:720px; }
+    .inc-list{ list-style:none; padding:0; margin:0; display:grid; gap:10px; }
+    .inc-list li{ background: rgba(255,255,255,.03); border: 1px solid rgba(255,255,255,.08); border-radius: var(--radius); padding:12px 12px 12px 38px; position: relative; }
+    .tick{ position:absolute; left:12px; top:12px; width:18px;height:18px;border-radius:4px; background: rgba(241,89,42,.18); border:1px solid rgba(241,89,42,.6); }
+    .tick::after{ content:""; position:absolute; left:4px; top:2px; width:8px; height:12px; border-right:2px solid var(--brand); border-bottom:2px solid var(--brand); transform: rotate(45deg); }
+    .inc-note{ margin-top:12px; font-size:13px; color:#aab1bf; }
+    .inc-actions{ display:flex; gap:12px; margin-top:16px; }
+    .inc-right{ display:flex; align-items:stretch; }
+    .inc-panel{ width:100%; background:#0b1220; border:1px solid rgba(255,255,255,.08); border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,.35); overflow:hidden; }
+    .panel-head{ display:flex; align-items:center; gap:6px; padding:10px 12px; background:#0d1424; border-bottom:1px solid rgba(255,255,255,.06); position:relative; }
+    .dot{ width:8px;height:8px;border-radius:999px;background:#3b4254; display:inline-block; }
+    .panel-title{ position:absolute; left:50%; transform:translateX(-50%); color:#aab1bf; font-size:12px; }
+    .panel-steps{ margin:0; padding:14px 14px 8px 24px; color:#c7cbd6; counter-reset: step; }
+    .panel-steps li{ margin:0 0 10px 0; line-height:1.55; position:relative; }
+    .panel-steps li::before{ counter-increment: step; content: counter(step); position:absolute; left:-24px; top:0; width:18px;height:18px;border-radius:4px; background: rgba(241,89,42,.18); color: var(--brand); display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:800; }
+    .panel-footer{ display:flex; gap:8px; flex-wrap:wrap; padding:10px 12px 14px; border-top:1px solid rgba(255,255,255,.06); }
+    .panel-footer .pill{ background: rgba(255,255,255,.06); color:#c7cbd6; border-color: rgba(255,255,255,.12); }
+
+    /* ===== Availability ===== */
+    .avail{ background:linear-gradient(180deg,#f9fafb 0%,#fff 100%); padding:56px 0; border-top:1px solid var(--border); }
+    .avail-head{ text-align:center; margin-bottom:18px; }
+    .avail-title{ font-size:32px; margin:10px 0 6px; letter-spacing:.02em; }
+    .avail-sub{ max-width:820px; margin:0 auto; color:var(--muted); }
+    .meters{ display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-top:12px; }
+    @media (max-width:1100px){ .meters{ grid-template-columns:1fr 1fr; } }
+    @media (max-width:640px){ .meters{ grid-template-columns:1fr; } }
+    .meter{ background:#fff; border:1px solid var(--border); border-radius:var(--radius); padding:16px; box-shadow:var(--shadow); }
+    .meter-top{ display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:10px; }
+    .meter h3{ margin:0; font-size:18px; color:#111827; }
+    .meter-note{ font-weight:700; color:#111827; }
+    .bar{ position:relative; height:12px; border-radius:999px; background:#eef2f7; overflow:hidden; border:1px solid #e6ebf2; }
+    .bar-alt{ background:#f3f4f6; }
+    .fill{ position:absolute; left:0; top:0; bottom:0; width:0%; background:linear-gradient(90deg, var(--brand) 0%, var(--brand-dark) 100%); border-radius:999px; }
+    .meter .help{ margin:8px 0 0; font-size:12px; color:#6b7280; }
+
+    .avail-strip{ margin-top:18px; }
+    .strip-inner{
+      display:flex; align-items:center; justify-content:space-between; gap:12px;
+      background:#fff; border:2px solid var(--brand); border-radius:12px; padding:12px 14px; box-shadow:var(--shadow);
+    }
+    .strip-copy{ font-size:14px; color:#111827; }
+    .timer{ font-family:Oswald,Inter,sans-serif; font-size:18px; letter-spacing:.04em; margin-left:6px; }
+    .strip-actions{ display:flex; gap:10px; flex-wrap:wrap; }
+  </style>
+</head>
+
 <body>
 
   <!-- ===== Campaign Countdown Bar (1-week) ===== -->
@@ -21,782 +201,283 @@
     <div class="camp-progress"><span id="campProgress"></span></div>
   </div>
 
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Concrete Flatwork — Instant Quote</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <style>
-    :root{
-      --brand:#f1592a; /* construction orange */
-      --brand-dark:#c94722;
-      --ink:#0b1220;
-      --muted:#6b7280;
-      --bg:#ffffff; /* white background */
-      --card:#f9fafb; /* light card */
-      --shadow:0 6px 18px rgba(0,0,0,.1);
-      --radius:12px;
-      --border:#e5e7eb;
-    }
-    *{box-sizing:border-box}
-    body{margin:0;font-family:Inter,system-ui,Segoe UI,Roboto,Arial,sans-serif;color:var(--ink);background:var(--bg)}
-    h1,h2,h3{font-family:Oswald,Inter,system-ui,sans-serif;letter-spacing:.02em;color:#111827}
-    .container{max-width:1200px;margin:0 auto;padding:40px 20px}
-    .hero{display:none} /* legacy hero hidden when video hero present */
-    .hero-video{position:relative;height:520px;border-radius:12px;overflow:hidden;box-shadow:var(--shadow);border:2px solid var(--brand);}
-    .hero-video video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.55);} 
-    .hero-overlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;color:#fff;padding:24px}
-    .hero-overlay h1{font-size:40px;margin:10px 0 8px}
-    .hero-overlay p{max-width:820px;margin:0 auto 18px;color:#e5e7eb}
-    .hero-cta{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
-    .hero-cta .btn-outline{border-color:#fff;color:#fff}
-    @media (max-width:720px){.hero-overlay h1{font-size:30px}}
-    @media (prefers-reduced-motion: reduce){.hero-video video{display:none}.hero-video{background:#111 url('poster.jpg') center/cover no-repeat}}
-    .badge{display:inline-block;background:var(--brand);color:#fff;padding:6px 14px;border-radius:999px;font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.09em}
-    .actions{display:flex;gap:10px}
-    .btn{appearance:none;border:0;border-radius:8px;padding:12px 16px;font-weight:800;cursor:pointer;text-transform:uppercase;letter-spacing:.06em}
-    .btn-primary{background:var(--brand);color:#fff}
-    .btn-outline{background:transparent;border:2px solid var(--brand);color:var(--brand)}
-    .grid{display:grid;grid-template-columns:1.1fr .9fr;gap:22px;margin-top:22px}
-    @media (max-width:1100px){.grid{grid-template-columns:1fr}}
-    .card{background:#fff;border:1px solid var(--border);padding:20px;border-radius:var(--radius);box-shadow:var(--shadow)}
-    .subgrid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-    @media (max-width:780px){.subgrid{grid-template-columns:1fr}}
-    label{font-size:13px;color:#374151;margin-bottom:6px;display:block;font-weight:600}
-    select,input[type=text],input[type=email],input[type=number]{width:100%;padding:10px;border:1px solid #d1d5db;border-radius:8px;font-size:14px}
-    .row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-    @media (max-width:780px){.row{grid-template-columns:1fr}}
-    .help{font-size:12px;color:#6b7280}
-    .summary{background:#fff;border:2px solid var(--brand);border-radius:var(--radius);padding:16px}
-    .summary h2{margin:0 0 6px;color:var(--brand);font-size:24px}
-    table{width:100%;border-collapse:collapse;font-size:13px}
-    th,td{padding:10px;border-bottom:1px solid #eef2f7;text-align:left}
-    th{background:#f3f4f6;font-weight:700}
-    .kpis{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
-    .pill{border:1px solid #e5e7eb;border-radius:999px;padding:6px 10px;background:#fff;color:#374151;font-size:12px}
-    .footer{text-align:center;margin-top:26px;color:#6b7280;font-size:12px}
-    .section-title{margin:10px 0 6px}
-
-/* ===== HERO (polished) ===== */
-.hero-video{
-  position:relative;
-  height:420px;             /* tighter than 520/500 */
-  border-radius:12px;
-  overflow:hidden;
-  box-shadow:var(--shadow);
-  border-bottom:4px solid var(--brand);   /* bottom accent, not full outline */
-}
-.hero-video video{
-  position:absolute; inset:0;
-  width:100%; height:100%; object-fit:cover;
-  filter:brightness(.55);
-  opacity:0; animation:heroFadeIn 1.2s ease-in forwards;
-}
-.hero-video::after{
-  content:""; position:absolute; inset:0;
-  background:linear-gradient(180deg, rgba(0,0,0,.55) 0%, rgba(0,0,0,.35) 45%, rgba(0,0,0,.55) 100%);
-}
-.hero-overlay{
-  position:absolute; inset:0;
-  display:flex; flex-direction:column; align-items:center; justify-content:center;
-  text-align:center; color:#fff; padding:24px;
-}
-.hero-overlay h1{
-  font-family:'Oswald',sans-serif;
-  color:#fff; font-size:40px; letter-spacing:.01em;
-  text-shadow:0 2px 8px rgba(0,0,0,.35);
-  margin:10px 0 8px;
-}
-.hero-overlay p{
-  max-width:840px; margin:0 auto 14px; color:#e5e7eb;
-}
-.hero-cta{ display:flex; gap:12px; margin-top:8px; flex-wrap:wrap; justify-content:center }
-.hero-cta .btn-outline{ border:2px solid #fff; color:#fff }
-
-@media (max-width:720px){
-  .hero-video{ height:360px }
-  .hero-overlay h1{ font-size:30px }
-}
-
-@keyframes heroFadeIn{ to{ opacity:1 } }
-
-/* Optional: white badge style when used over video */
-.hero-overlay .badge{
-  background:rgba(255,255,255,.18);
-  color:#fff; border:1px solid rgba(255,255,255,.35);
-}
-
-    /* ===== Countdown Bar ===== */
-.campaign-bar{
-  position:sticky; top:0; z-index:9999;
-  background:var(--brand); color:#fff;
-  border-bottom:1px solid rgba(255,255,255,.18);
-  box-shadow:0 4px 18px rgba(0,0,0,.15);
-}
-.camp-inner{
-  max-width:1200px; margin:0 auto; padding:8px 12px;
-  display:flex; align-items:center; justify-content:space-between; gap:12px;
-}
-.camp-left{ display:flex; align-items:center; gap:10px; font-size:14px; letter-spacing:.02em }
-.camp-divider{ opacity:.6 }
-.camp-right{ display:flex; gap:8px }
-.btn-sm{ padding:8px 12px; border-radius:6px; font-size:12px; letter-spacing:.05em }
-.camp-progress{ height:3px; background:rgba(255,255,255,.18) }
-.camp-progress span{
-  display:block; height:100%; width:0%;
-  background:linear-gradient(90deg,#fff 0%,rgba(255,255,255,.85) 100%);
-  transition:width .8s ease;
-}
-@media (max-width:640px){
-  .camp-left{ font-size:13px }
-  .btn-sm{ padding:7px 10px; font-size:11px }
-}
-
-
-    
-  </style>
-</head>
-<section class="hero-video" aria-label="Instant Quote Demo">
-  <video autoplay muted playsinline loop id="demoBg">
-    <source src="https://bimlab.netlify.app/instant-quote-demo.mp4" type="video/mp4">
-  </video>
-
-  <div class="hero-overlay">
-    <span class="badge">Concrete Flatwork — Instant Quote</span>
-    <h1>Book Jobs Instantly. Right From Your Website.</h1>
-    <p>See the tool live in action — one-minute quotes, instant PDF generation, and client-ready pricing.</p>
-    <div class="hero-cta">
-      <button class="btn btn-primary" id="scrollToCalc">Try the Live Demo</button>
+  <!-- ===== HERO ===== -->
+  <section class="hero-video" aria-label="Instant Quote Demo">
+    <video autoplay muted playsinline loop id="demoBg">
+      <source src="https://bimlab.netlify.app/instant-quote-demo.mp4" type="video/mp4">
+    </video>
+    <div class="hero-overlay">
+      <span class="badge">Concrete Flatwork — Instant Quote</span>
+      <h1>Book Jobs Instantly. Right From Your Website.</h1>
+      <p>See the tool live in action — one-minute quotes, instant PDF generation, and client-ready pricing.</p>
+      <div class="hero-cta">
+        <a class="btn btn-primary" href="#demo">Try the Live Demo</a>
+        <a class="btn btn-outline" href="#pricing">Get It Installed</a>
+      </div>
+      <p style="font-size:13px;color:#e5e7eb;margin-top:4px">No contracts. 48-hour install or $250 credit.</p>
     </div>
-  </div>
-</section>
+  </section>
 
-
-  <!-- ================================
-Instant Value Section (drop under hero)
-==================================== -->
-<link rel="stylesheet" href="https://unpkg.com/aos@2.3.4/dist/aos.css">
-<section class="value-impact" id="why-this-works">
-  <div class="container">
-    <div class="vi-head" data-aos="fade-up">
-      <span class="badge">Why Contractors Say Yes</span>
-      <h2 class="vi-title">Instant Value, Zero Guesswork</h2>
-      <p class="vi-sub">Your website gives a ballpark price, texts the homeowner, and drops the job in your CRM—while you’re on a pour.</p>
-    </div>
-
-    <div class="vi-grid">
-      <!-- Card 1 -->
-      <article class="vi-card" data-aos="fade-up" data-aos-delay="50">
-        <div class="vi-icon">
-          <!-- Clock / speed -->
-          <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8">
-            <circle cx="12" cy="12" r="9"></circle>
-            <path d="M12 7v5l3 2"></path>
-          </svg>
-        </div>
-        <h3>Built in 48 Hours</h3>
-        <p>Send your logo, colors, and services. We install the quoting + follow-up system in 48 hours or credit you $250.</p>
-      </article>
-
-      <!-- Card 2 -->
-      <article class="vi-card" data-aos="fade-up" data-aos-delay="100">
-        <div class="vi-icon">
-          <!-- Shield / ownership -->
-          <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8">
-            <path d="M12 3l7 4v5c0 5-3.5 9-7 9s-7-4-7-9V7l7-4z"></path>
-            <path d="M9 12l2 2 4-4"></path>
-          </svg>
-        </div>
-        <h3>You Own Everything</h3>
-        <p>Leads route straight to your CRM. No revenue share. No monthly lock-in. It’s your asset once paid.</p>
-      </article>
-
-      <!-- Card 3 -->
-      <article class="vi-card" data-aos="fade-up" data-aos-delay="150">
-        <div class="vi-icon">
-          <!-- Quote / form -->
-          <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8">
-            <rect x="4" y="3" width="16" height="18" rx="2"></rect>
-            <path d="M8 8h8M8 12h8M8 16h5"></path>
-          </svg>
-        </div>
-        <h3>Quotes in 60 Seconds</h3>
-        <p>Homeowners get a clear ballpark estimate and auto-reply. You get structured details to bid faster.</p>
-      </article>
-
-      <!-- Card 4 -->
-      <article class="vi-card" data-aos="fade-up" data-aos-delay="200">
-        <div class="vi-icon">
-          <!-- Plug / integrations -->
-          <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8">
-            <path d="M12 12l6-6M12 12l-6 6"></path>
-            <rect x="3" y="3" width="7" height="7" rx="1.5"></rect>
-            <rect x="14" y="14" width="7" height="7" rx="1.5"></rect>
-          </svg>
-        </div>
-        <h3>Works on Your Site</h3>
-        <p>Shopify, WordPress, Webflow, Squarespace, Wix—or a branded subdomain if your plan blocks scripts.</p>
-      </article>
-    </div>
-
-    <!-- Mini KPI band -->
-    <div class="vi-kpis" data-aos="fade-up" data-aos-delay="250" aria-label="Highlights">
-      <span class="pill">7–10 day payoff on one patio</span>
-      <span class="pill">Auto text + email follow-up</span>
-      <span class="pill">One-per-city option</span>
-    </div>
-
-    <!-- CTA Row -->
-    <div class="vi-actions" data-aos="fade-up" data-aos-delay="300">
-      <a class="btn btn-primary" href="#pricing">Get It Installed</a>
-      <a class="btn btn-outline" href="#demo">Watch the Live Demo</a>
-    </div>
-  </div>
-</section>
-
-<script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
-<script>
-  // Safe init (won’t error if called twice)
-  try { AOS.init({ duration: 650, easing: 'ease-out', once: true }); } catch(e){}
-</script>
-
-<style>
-/* ===== Instant Value Styles (uses your existing tokens) ===== */
-.value-impact { 
-  background: linear-gradient(180deg, #fff 0%, #f9fafb 100%);
-  padding: 48px 0 56px;
-  border-top: 1px solid var(--border);
-}
-.vi-head { text-align:center; margin-bottom: 18px; }
-.vi-title { 
-  font-family: Oswald, Inter, sans-serif; 
-  font-size: 34px; 
-  margin: 10px 0 6px; 
-  letter-spacing: .02em; 
-}
-.vi-sub { 
-  max-width: 820px; 
-  margin: 0 auto 6px; 
-  color: var(--muted);
-}
-.vi-grid { 
-  display:grid; 
-  grid-template-columns: repeat(4,1fr); 
-  gap: 14px; 
-  margin-top: 14px;
-}
-@media (max-width: 1100px){ .vi-grid{ grid-template-columns: repeat(2,1fr);} }
-@media (max-width: 640px){ .vi-grid{ grid-template-columns: 1fr; } }
-
-.vi-card{ 
-  background:#fff; 
-  border:1px solid var(--border); 
-  border-radius: var(--radius); 
-  padding:16px; 
-  box-shadow: var(--shadow);
-  transition: transform .2s ease, box-shadow .2s ease;
-}
-.vi-card:hover { 
-  transform: translateY(-2px); 
-  box-shadow: 0 12px 30px rgba(0,0,0,.12); 
-}
-.vi-card h3{ 
-  margin:10px 0 6px; 
-  font-size:18px; 
-  color:#111827;
-}
-.vi-card p{ 
-  margin:0; 
-  color:#4b5563; 
-  font-size:14px; 
-  line-height:1.55;
-}
-.vi-icon{ 
-  width:40px; height:40px; 
-  border-radius:10px; 
-  background: rgba(241,89,42,.12); 
-  color: var(--brand); 
-  display:flex; align-items:center; justify-content:center; 
-}
-
-.vi-kpis{ 
-  display:flex; gap:10px; flex-wrap:wrap; 
-  justify-content:center; 
-  margin-top:16px;
-}
-.vi-actions{ 
-  display:flex; gap:12px; justify-content:center; 
-  margin-top:18px;
-}
-/* Tighten badge in this context */
-.value-impact .badge{ background: var(--brand); }
-</style>
-
-
-  <!-- ================================
-Process Section — Interest > Talk > Deposit > Install > Completion
-==================================== -->
-<section id="process" class="process">
-  <div class="container">
-    <div class="proc-head" data-aos="fade-up">
-      <span class="badge">How It Works</span>
-      <h2 class="proc-title">From Interest to Live — Simple, Fast, Done Right</h2>
-      <p class="proc-sub">One clear path. No busywork. Most installs are ready within 48 hours of receiving your materials.</p>
-    </div>
-
-    <ol class="proc-steps">
-      <!-- 1. Interest -->
-      <li class="proc-step" data-aos="fade-up" data-aos-delay="0">
-        <div class="proc-index">1</div>
-        <div class="proc-icon" aria-hidden="true">
-          <!-- Eye / view -->
-          <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8">
-            <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z"></path>
-            <circle cx="12" cy="12" r="3"></circle>
-          </svg>
-        </div>
-        <h3>Interest</h3>
-        <p>Watch the live demo or try the calculator. If it fits, click “Get It Installed.”</p>
-      </li>
-
-      <!-- 2. Talk -->
-      <li class="proc-step" data-aos="fade-up" data-aos-delay="75">
-        <div class="proc-index">2</div>
-        <div class="proc-icon" aria-hidden="true">
-          <!-- Phone -->
-          <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8">
-            <path d="M22 16.92v2a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.12 3.2 2 2 0 0 1 4.11 1h2a2 2 0 0 1 2 1.72c.12.86.3 1.7.54 2.5a2 2 0 0 1-.45 2.11L7.09 8.91a16 16 0 0 0 6 6l1.58-1.11a2 2 0 0 1 2.11-.45c.8.24 1.64.42 2.5.54A2 2 0 0 1 22 16.92z"/>
-          </svg>
-        </div>
-        <h3>Talk (10 Minutes)</h3>
-        <p>Confirm services, service area, and CRM. We collect logo and brand colors.</p>
-      </li>
-
-      <!-- 3. Deposit -->
-      <li class="proc-step" data-aos="fade-up" data-aos-delay="150">
-        <div class="proc-index">3</div>
-        <div class="proc-icon" aria-hidden="true">
-          <!-- Shield / lock -->
-          <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8">
-            <path d="M12 3l7 4v5c0 5-3.5 9-7 9s-7-4-7-9V7l7-4z"></path>
-            <path d="M9 12l2 2 4-4"></path>
-          </svg>
-        </div>
-        <h3>Refundable Deposit</h3>
-        <p>$250 reserves your build slot. Fully refundable until production begins; then it’s applied and non-refundable.</p>
-      </li>
-
-      <!-- 4. Install -->
-      <li class="proc-step" data-aos="fade-up" data-aos-delay="225">
-        <div class="proc-index">4</div>
-        <div class="proc-icon" aria-hidden="true">
-          <!-- Tools / build -->
-          <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8">
-            <path d="M14.7 6.3l3 3L7 20H4v-3L14.7 6.3z"></path>
-            <path d="M13 7l4-4 4 4-4 4z"></path>
-          </svg>
-        </div>
-        <h3>Install & Integration</h3>
-        <p>We embed the Instant Quote, connect your CRM, test notifications, and QA the flow. Typical build time: 48 hours.</p>
-      </li>
-
-      <!-- 5. Completion -->
-      <li class="proc-step" data-aos="fade-up" data-aos-delay="300">
-        <div class="proc-index">5</div>
-        <div class="proc-icon" aria-hidden="true">
-          <!-- Check -->
-          <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8">
-            <path d="M20 6L9 17l-5-5"></path>
-          </svg>
-        </div>
-        <h3>Go Live & Handoff</h3>
-        <p>Launch on your site or subdomain, quick walkthrough, one round of edits, and a 14-day functionality fix window.</p>
-      </li>
-    </ol>
-
-    <div class="proc-cta" data-aos="fade-up" data-aos-delay="350">
-      <a class="btn btn-primary" href="#pricing">Start My Install</a>
-      <a class="btn btn-outline" href="#demo">Watch the Demo</a>
-    </div>
-  </div>
-</section>
-
-<style>
-/* ===== Process Section ===== */
-.process{ background:#fff; padding:56px 0; border-top:1px solid var(--border); }
-.proc-head{ text-align:center; margin-bottom:18px; }
-.proc-title{ font-family:Oswald,Inter,sans-serif; font-size:32px; margin:10px 0 6px; letter-spacing:.02em; }
-.proc-sub{ max-width:820px; margin:0 auto; color:var(--muted); }
-
-.proc-steps{
-  list-style:none; padding:0; margin:18px 0 0;
-  display:grid; grid-template-columns: repeat(5,1fr); gap:14px;
-}
-@media (max-width:1100px){ .proc-steps{ grid-template-columns: repeat(3,1fr);} }
-@media (max-width:640px){ .proc-steps{ grid-template-columns: 1fr; } }
-
-.proc-step{
-  background:#fff; border:1px solid var(--border); border-radius:var(--radius);
-  padding:16px; box-shadow:var(--shadow); position:relative;
-  transition:transform .2s ease, box-shadow .2s ease;
-}
-.proc-step:hover{ transform:translateY(-2px); box-shadow:0 12px 30px rgba(0,0,0,.12); }
-
-.proc-index{
-  position:absolute; top:12px; right:12px;
-  width:28px; height:28px; border-radius:999px;
-  background:rgba(241,89,42,.12); color:var(--brand);
-  display:flex; align-items:center; justify-content:center;
-  font-weight:800; font-size:13px;
-}
-.proc-icon{
-  width:42px; height:42px; border-radius:10px;
-  background:rgba(241,89,42,.12); color:var(--brand);
-  display:flex; align-items:center; justify-content:center;
-}
-.proc-step h3{ margin:10px 0 6px; font-size:18px; color:#111827; }
-.proc-step p{ margin:0; color:#4b5563; font-size:14px; line-height:1.55; }
-
-.proc-cta{ display:flex; gap:12px; justify-content:center; margin-top:18px; }
-</style>
-
-<!-- ================================
-What You Get — Split Dark Section
-================================= -->
-<section id="included" class="included">
-  <div class="container inc-wrap">
-    <!-- Left: headline + bullets -->
-    <div class="inc-left" data-aos="fade-right">
-      <span class="badge">What You Get</span>
-      <h2>Everything You Need — Nothing You Don’t</h2>
-      <p class="inc-sub">Built fast, branded to you, wired to your CRM. Own the asset, keep the leads.</p>
-
-      <ul class="inc-list">
-        <li><span class="tick"></span> Custom-branded Instant Quote for concrete (driveway/patio/slab presets)</li>
-        <li><span class="tick"></span> 3 ready-to-run landing campaigns (copy + forms wired to CRM)</li>
-        <li><span class="tick"></span> SMS + Email auto-followup (owner & homeowner) with timing tuned</li>
-        <li><span class="tick"></span> CRM integration (HubSpot / GoHighLevel / Salesforce or via Zapier)</li>
-        <li><span class="tick"></span> One round of edits after install + 14-day functionality fix window</li>
-      </ul>
-
-      <div class="inc-note">
-        <strong>Not included:</strong> paid ads, full site redesign, and third-party platform fees. Ongoing tweaks available hourly.
+  <!-- ===== Instant Value ===== -->
+  <section class="value-impact" id="why-this-works">
+    <div class="container">
+      <div class="vi-head" data-aos="fade-up">
+        <span class="badge">Why Contractors Say Yes</span>
+        <h2 class="vi-title">Instant Value, Zero Guesswork</h2>
+        <p class="vi-sub">Your website gives a ballpark price, texts the homeowner, and drops the job in your CRM—while you’re on a pour.</p>
       </div>
 
-      <div class="inc-actions">
+      <div class="vi-grid">
+        <article class="vi-card" data-aos="fade-up" data-aos-delay="50">
+          <div class="vi-icon">
+            <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+          </div>
+          <h3>Built in 48 Hours</h3>
+          <p>Send your logo, colors, and services. We install the quoting + follow-up system in 48 hours or credit you $250.</p>
+        </article>
+
+        <article class="vi-card" data-aos="fade-up" data-aos-delay="100">
+          <div class="vi-icon">
+            <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3l7 4v5c0 5-3.5 9-7 9s-7-4-7-9V7l7-4z"/><path d="M9 12l2 2 4-4"/></svg>
+          </div>
+          <h3>You Own Everything</h3>
+          <p>Leads route straight to your CRM. No revenue share. No monthly lock-in. It’s your asset once paid.</p>
+        </article>
+
+        <article class="vi-card" data-aos="fade-up" data-aos-delay="150">
+          <div class="vi-icon">
+            <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>
+          </div>
+          <h3>Quotes in 60 Seconds</h3>
+          <p>Homeowners get a clear ballpark estimate and auto-reply. You get structured details to bid faster.</p>
+        </article>
+
+        <article class="vi-card" data-aos="fade-up" data-aos-delay="200">
+          <div class="vi-icon">
+            <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 12l6-6M12 12l-6 6"/><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+          </div>
+          <h3>Works on Your Site</h3>
+          <p>Shopify, WordPress, Webflow, Squarespace, Wix—or a branded subdomain if your plan blocks scripts.</p>
+        </article>
+      </div>
+
+      <div class="vi-kpis" data-aos="fade-up" data-aos-delay="250" aria-label="Highlights">
+        <span class="pill">7–10 day payoff on one patio</span>
+        <span class="pill">Auto text + email follow-up</span>
+        <span class="pill">One-per-city option</span>
+      </div>
+
+      <div class="vi-actions" data-aos="fade-up" data-aos-delay="300">
         <a class="btn btn-primary" href="#pricing">Get It Installed</a>
         <a class="btn btn-outline" href="#demo">Watch the Live Demo</a>
       </div>
     </div>
+  </section>
 
-    <!-- Right: visual proof panel -->
-    <div class="inc-right" data-aos="fade-left">
-      <div class="inc-panel">
-        <div class="panel-head">
-          <span class="dot"></span><span class="dot"></span><span class="dot"></span>
-          <span class="panel-title">Lead Flow Preview</span>
-        </div>
-        <ol class="panel-steps">
-          <li><strong>Site Quote:</strong> Homeowner submits driveway size → gets ballpark instantly.</li>
-          <li><strong>Auto Text:</strong> “Got it — here’s your estimate. Reply with a photo.”</li>
-          <li><strong>CRM Drop:</strong> Lead lands in your pipeline with details + notes.</li>
-          <li><strong>Reminder:</strong> Follow-up nudges if they don’t reply in 24h.</li>
-        </ol>
-        <div class="panel-footer">
-          <span class="pill">48-hour install</span>
-          <span class="pill">You own it</span>
-          <span class="pill">One-per-city option</span>
-        </div>
+  <!-- ===== Process ===== -->
+  <section id="process" class="process">
+    <div class="container">
+      <div class="proc-head" data-aos="fade-up">
+        <span class="badge">How It Works</span>
+        <h2 class="proc-title">From Interest to Live — Simple, Fast, Done Right</h2>
+        <p class="proc-sub">One clear path. No busywork. Most installs are ready within 48 hours of receiving your materials.</p>
+      </div>
+
+      <ol class="proc-steps">
+        <li class="proc-step" data-aos="fade-up" data-aos-delay="0">
+          <div class="proc-index">1</div>
+          <div class="proc-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z"/><circle cx="12" cy="12" r="3"/></svg></div>
+          <h3>Interest</h3><p>Watch the live demo or try the calculator. If it fits, click “Get It Installed.”</p>
+        </li>
+        <li class="proc-step" data-aos="fade-up" data-aos-delay="75">
+          <div class="proc-index">2</div>
+          <div class="proc-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M22 16.92v2a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.12 3.2 2 2 0 0 1 4.11 1h2a2 2 0 0 1 2 1.72c.12.86.3 1.7.54 2.5a2 2 0 0 1-.45 2.11L7.09 8.91a16 16 0 0 0 6 6l1.58-1.11a2 2 0 0 1 2.11-.45c.8.24 1.64.42 2.5.54A2 2 0 0 1 22 16.92z"/></svg></div>
+          <h3>Talk (10 Minutes)</h3><p>Confirm services, service area, and CRM. We collect logo and brand colors.</p>
+        </li>
+        <li class="proc-step" data-aos="fade-up" data-aos-delay="150">
+          <div class="proc-index">3</div>
+          <div class="proc-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3l7 4v5c0 5-3.5 9-7 9s-7-4-7-9V7l7-4z"/><path d="M9 12l2 2 4-4"/></svg></div>
+          <h3>Refundable Deposit</h3><p>$250 reserves your build slot. Fully refundable until production begins; then it’s applied and non-refundable.</p>
+        </li>
+        <li class="proc-step" data-aos="fade-up" data-aos-delay="225">
+          <div class="proc-index">4</div>
+          <div class="proc-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14.7 6.3l3 3L7 20H4v-3L14.7 6.3z"/><path d="M13 7l4-4 4 4-4 4z"/></svg></div>
+          <h3>Install & Integration</h3><p>We embed the Instant Quote, connect your CRM, test notifications, and QA the flow. Typical build time: 48 hours.</p>
+        </li>
+        <li class="proc-step" data-aos="fade-up" data-aos-delay="300">
+          <div class="proc-index">5</div>
+          <div class="proc-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 6L9 17l-5-5"/></svg></div>
+          <h3>Go Live & Handoff</h3><p>Launch on your site or subdomain, quick walkthrough, one round of edits, and a 14-day functionality fix window.</p>
+        </li>
+      </ol>
+
+      <div class="proc-cta" data-aos="fade-up" data-aos-delay="350">
+        <a class="btn btn-primary" href="#pricing">Start My Install</a>
+        <a class="btn btn-outline" href="#demo">Watch the Demo</a>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<style>
-/* ===== What You Get (dark split) ===== */
-.included{
-  background: #0f1624; /* deep ink */
-  color: #e5e7eb;
-  padding: 64px 0;
-  border-top: 1px solid var(--border);
-}
-.inc-wrap{
-  display: grid;
-  grid-template-columns: 1.1fr .9fr;
-  gap: 22px;
-}
-@media (max-width:1100px){ .inc-wrap{ grid-template-columns: 1fr; } }
-
-.included .badge{ background: var(--brand); }
-.inc-left h2{
-  font-family: Oswald, Inter, sans-serif;
-  font-size: 32px; letter-spacing:.02em; margin:10px 0 6px; color:#fff;
-}
-.inc-sub{ color:#c7cbd6; margin:0 0 10px; max-width:720px; }
-
-.inc-list{ list-style:none; padding:0; margin:0; display:grid; gap:10px; }
-.inc-list li{
-  background: rgba(255,255,255,.03);
-  border: 1px solid rgba(255,255,255,.08);
-  border-radius: var(--radius);
-  padding:12px 12px 12px 38px;
-  position: relative;
-}
-.tick{
-  position:absolute; left:12px; top:12px;
-  width:18px;height:18px;border-radius:4px;
-  background: rgba(241,89,42,.18); border:1px solid rgba(241,89,42,.6);
-}
-.tick::after{
-  content:""; position:absolute; left:4px; top:2px; width:8px; height:12px;
-  border-right:2px solid var(--brand); border-bottom:2px solid var(--brand); transform: rotate(45deg);
-}
-
-.inc-note{
-  margin-top:12px; font-size:13px; color:#aab1bf;
-}
-
-.inc-actions{ display:flex; gap:12px; margin-top:16px; }
-
-/* Right panel */
-.inc-right{ display:flex; align-items:stretch; }
-.inc-panel{
-  width:100%;
-  background:#0b1220;
-  border:1px solid rgba(255,255,255,.08);
-  border-radius: 14px;
-  box-shadow: 0 10px 30px rgba(0,0,0,.35);
-  overflow:hidden;
-}
-.panel-head{
-  display:flex; align-items:center; gap:6px;
-  padding:10px 12px; background:#0d1424; border-bottom:1px solid rgba(255,255,255,.06);
-  position:relative;
-}
-.dot{ width:8px;height:8px;border-radius:999px;background:#3b4254; display:inline-block; }
-.panel-title{ position:absolute; left:50%; transform:translateX(-50%); color:#aab1bf; font-size:12px; }
-
-.panel-steps{
-  margin:0; padding:14px 14px 8px 24px; color:#c7cbd6;
-  counter-reset: step;
-}
-.panel-steps li{
-  margin:0 0 10px 0; line-height:1.55; position:relative;
-}
-.panel-steps li::before{
-  counter-increment: step; content: counter(step);
-  position:absolute; left:-24px; top:0;
-  width:18px;height:18px;border-radius:4px;
-  background: rgba(241,89,42,.18); color: var(--brand);
-  display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:800;
-}
-.panel-footer{
-  display:flex; gap:8px; flex-wrap:wrap; padding:10px 12px 14px; border-top:1px solid rgba(255,255,255,.06);
-}
-.panel-footer .pill{
-  background: rgba(255,255,255,.06); color:#c7cbd6; border-color: rgba(255,255,255,.12);
-}
-</style>
-
-  <!-- =========================================
-Availability & Build Queue — animated meters
-Place after the "What You Get" section
-========================================= -->
-<section id="availability" class="avail">
-  <div class="container">
-    <div class="avail-head" data-aos="fade-up">
-      <span class="badge">Availability</span>
-      <h2 class="avail-title">Build Queue & City Availability</h2>
-      <p class="avail-sub">We keep capacity tight so installs ship in 48 hours. If your city is open, lock it with a refundable deposit.</p>
-    </div>
-
-    <!-- Meters Row -->
-    <div class="meters">
-      <!-- Meter 1 -->
-      <article class="meter" data-aos="fade-up" data-aos-delay="50">
-        <header class="meter-top">
-          <h3>Installs This Week</h3>
-          <span class="meter-note"><strong>3 of 5</strong> filled</span>
-        </header>
-        <div class="bar">
-          <div class="fill" data-percent="60" aria-label="Installs filled 60%"></div>
-        </div>
-        <p class="help">We open a small number of build slots to keep turnaround fast.</p>
-      </article>
-
-      <!-- Meter 2 -->
-      <article class="meter" data-aos="fade-up" data-aos-delay="100">
-        <header class="meter-top">
-          <h3>Cities On Hold</h3>
-          <span class="meter-note"><strong>12</strong> pending</span>
-        </header>
-        <div class="bar bar-alt">
-          <div class="fill" data-percent="40" aria-label="Cities on hold 40% of cap"></div>
-        </div>
-        <p class="help">One-per-city option. Holds expire if deposit isn’t placed in 72 hours.</p>
-      </article>
-
-      <!-- Meter 3 -->
-      <article class="meter" data-aos="fade-up" data-aos-delay="150">
-        <header class="meter-top">
-          <h3>Beta Price Slots</h3>
-          <span class="meter-note"><strong>2 left</strong> at $1,500</span>
-        </header>
-        <div class="bar">
-          <div class="fill" data-percent="80" aria-label="Beta slots 80% taken"></div>
-        </div>
-        <p class="help">When beta slots close, pricing returns to standard.</p>
-      </article>
-    </div>
-
-    <!-- Countdown strip (optional) -->
-    <div class="avail-strip" data-aos="fade-up" data-aos-delay="220">
-      <div class="strip-inner">
-        <div class="strip-copy">
-          <strong>City window closes in</strong> <span id="avail-timer" class="timer">—:—:—</span>
-        </div>
-        <div class="strip-actions">
-          <a class="btn btn-primary" href="#pricing">Lock My City — $250 refundable</a>
+  <!-- ===== What You Get (dark split) ===== -->
+  <section id="included" class="included">
+    <div class="container inc-wrap">
+      <div class="inc-left" data-aos="fade-right">
+        <span class="badge">What You Get</span>
+        <h2>Everything You Need — Nothing You Don’t</h2>
+        <p class="inc-sub">Built fast, branded to you, wired to your CRM. Own the asset, keep the leads.</p>
+        <ul class="inc-list">
+          <li><span class="tick"></span> Custom-branded Instant Quote for concrete (driveway/patio/slab presets)</li>
+          <li><span class="tick"></span> 3 ready-to-run landing campaigns (copy + forms wired to CRM)</li>
+          <li><span class="tick"></span> SMS + Email auto-followup (owner & homeowner) with timing tuned</li>
+          <li><span class="tick"></span> CRM integration (HubSpot / GoHighLevel / Salesforce or via Zapier)</li>
+          <li><span class="tick"></span> One round of edits after install + 14-day functionality fix window</li>
+        </ul>
+        <div class="inc-note"><strong>Not included:</strong> paid ads, full site redesign, and third-party platform fees. Ongoing tweaks available hourly.</div>
+        <div class="inc-actions">
+          <a class="btn btn-primary" href="#pricing">Get It Installed</a>
           <a class="btn btn-outline" href="#demo">Watch the Live Demo</a>
         </div>
       </div>
+
+      <div class="inc-right" data-aos="fade-left">
+        <div class="inc-panel">
+          <div class="panel-head">
+            <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+            <span class="panel-title">Lead Flow Preview</span>
+          </div>
+          <ol class="panel-steps">
+            <li><strong>Site Quote:</strong> Homeowner submits driveway size → gets ballpark instantly.</li>
+            <li><strong>Auto Text:</strong> “Got it — here’s your estimate. Reply with a photo.”</li>
+            <li><strong>CRM Drop:</strong> Lead lands in your pipeline with details + notes.</li>
+            <li><strong>Reminder:</strong> Follow-up nudges if they don’t reply in 24h.</li>
+          </ol>
+          <div class="panel-footer">
+            <span class="pill">48-hour install</span>
+            <span class="pill">You own it</span>
+            <span class="pill">One-per-city option</span>
+          </div>
+        </div>
+      </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<style>
-/* ===== Availability & Build Queue ===== */
-.avail{ background:linear-gradient(180deg,#f9fafb 0%,#fff 100%); padding:56px 0; border-top:1px solid var(--border); }
-.avail-head{ text-align:center; margin-bottom:18px; }
-.avail-title{ font-family:Oswald,Inter,sans-serif; font-size:32px; margin:10px 0 6px; letter-spacing:.02em; }
-.avail-sub{ max-width:820px; margin:0 auto; color:var(--muted); }
+  <!-- ===== Availability & Build Queue ===== -->
+  <section id="availability" class="avail">
+    <div class="container">
+      <div class="avail-head" data-aos="fade-up">
+        <span class="badge">Availability</span>
+        <h2 class="avail-title">Build Queue & City Availability</h2>
+        <p class="avail-sub">We keep capacity tight so installs ship in 48 hours. If your city is open, lock it with a refundable deposit.</p>
+      </div>
 
-.meters{ display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-top:12px; }
-@media (max-width:1100px){ .meters{ grid-template-columns:1fr 1fr; } }
-@media (max-width:640px){ .meters{ grid-template-columns:1fr; } }
+      <div class="meters">
+        <article class="meter" data-aos="fade-up" data-aos-delay="50">
+          <header class="meter-top"><h3>Installs This Week</h3><span class="meter-note"><strong>3 of 5</strong> filled</span></header>
+          <div class="bar"><div class="fill" data-percent="60" aria-label="Installs filled 60%"></div></div>
+          <p class="help">We open a small number of build slots to keep turnaround fast.</p>
+        </article>
 
-.meter{ background:#fff; border:1px solid var(--border); border-radius:var(--radius); padding:16px; box-shadow:var(--shadow); }
-.meter-top{ display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:10px; }
-.meter h3{ margin:0; font-size:18px; color:#111827; }
-.meter-note{ font-weight:700; color:#111827; }
-.bar{ position:relative; height:12px; border-radius:999px; background:#eef2f7; overflow:hidden; border:1px solid #e6ebf2; }
-.bar-alt{ background:#f3f4f6; }
-.fill{ position:absolute; left:0; top:0; bottom:0; width:0%; background:linear-gradient(90deg, var(--brand) 0%, var(--brand-dark) 100%); border-radius:999px; }
-.meter .help{ margin:8px 0 0; font-size:12px; color:#6b7280; }
+        <article class="meter" data-aos="fade-up" data-aos-delay="100">
+          <header class="meter-top"><h3>Cities On Hold</h3><span class="meter-note"><strong>12</strong> pending</span></header>
+          <div class="bar bar-alt"><div class="fill" data-percent="40" aria-label="Cities on hold 40% of cap"></div></div>
+          <p class="help">One-per-city option. Holds expire if deposit isn’t placed in 72 hours.</p>
+        </article>
 
-/* Countdown strip */
-.avail-strip{ margin-top:18px; }
-.strip-inner{
-  display:flex; align-items:center; justify-content:space-between; gap:12px;
-  background:#fff; border:2px solid var(--brand); border-radius:12px; padding:12px 14px; box-shadow:var(--shadow);
-}
-.strip-copy{ font-size:14px; color:#111827; }
-.timer{ font-family:Oswald,Inter,sans-serif; font-size:18px; letter-spacing:.04em; margin-left:6px; }
-.strip-actions{ display:flex; gap:10px; flex-wrap:wrap; }
-</style>
+        <article class="meter" data-aos="fade-up" data-aos-delay="150">
+          <header class="meter-top"><h3>Beta Price Slots</h3><span class="meter-note"><strong>2 left</strong> at $1,500</span></header>
+          <div class="bar"><div class="fill" data-percent="80" aria-label="Beta slots 80% taken"></div></div>
+          <p class="help">When beta slots close, pricing returns to standard.</p>
+        </article>
+      </div>
 
-<script>
-/* ===== Animated meters on view ===== */
-(function(){
-  const fills = document.querySelectorAll('#availability .fill');
-  if(!('IntersectionObserver' in window)){ // fallback animate immediately
-    fills.forEach(el => el.style.width = (el.dataset.percent || 0) + '%');
-    return;
-  }
-  const io = new IntersectionObserver((entries, obs)=>{
-    entries.forEach(e=>{
-      if(e.isIntersecting){
-        const el = e.target;
-        const pct = +el.dataset.percent || 0;
-        el.style.transition = 'width 900ms cubic-bezier(.2,.7,.2,1)';
-        requestAnimationFrame(()=>{ el.style.width = pct + '%'; });
-        obs.unobserve(el);
+      <div class="avail-strip" data-aos="fade-up" data-aos-delay="220">
+        <div class="strip-inner">
+          <div class="strip-copy"><strong>City window closes in</strong> <span id="avail-timer" class="timer">—:—:—</span></div>
+          <div class="strip-actions">
+            <a class="btn btn-primary" href="#pricing">Lock My City — $250 refundable</a>
+            <a class="btn btn-outline" href="#demo">Watch the Live Demo</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="footer">© 2025 BIM Labs Studio — Concrete Flatwork Instant Quote</div>
+
+  <!-- AOS JS -->
+  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+  <script> try { AOS.init({ duration: 650, easing: 'ease-out', once: true }); } catch(e){} </script>
+
+  <!-- Availability meters animate on view -->
+  <script>
+    (function(){
+      const fills = document.querySelectorAll('#availability .fill');
+      if(!('IntersectionObserver' in window)){
+        fills.forEach(el => el.style.width = (el.dataset.percent || 0) + '%');
+        return;
       }
-    });
-  }, { threshold: 0.35 });
-  fills.forEach(el=>io.observe(el));
-})();
+      const io = new IntersectionObserver((entries, obs)=>{
+        entries.forEach(e=>{
+          if(e.isIntersecting){
+            const el = e.target;
+            const pct = +el.dataset.percent || 0;
+            el.style.transition = 'width 900ms cubic-bezier(.2,.7,.2,1)';
+            requestAnimationFrame(()=>{ el.style.width = pct + '%'; });
+            obs.unobserve(el);
+          }
+        });
+      }, { threshold: 0.35 });
+      fills.forEach(el=>io.observe(el));
+    })();
+  </script>
 
-/* ===== Simple countdown (2h window). Adjust as needed. ===== */
-(function(){
-  const el = document.getElementById('avail-timer');
-  if(!el) return;
-  const end = Date.now() + 2 * 60 * 60 * 1000; // 2 hours from load
-  const pad = n => String(n).padStart(2,'0');
-  function tick(){
-    const diff = Math.max(0, end - Date.now());
-    const h = Math.floor(diff/3600000);
-    const m = Math.floor((diff%3600000)/60000);
-    const s = Math.floor((diff%60000)/1000);
-    el.textContent = `${pad(h)}:${pad(m)}:${pad(s)}`;
-    if(diff===0) clearInterval(t);
-  }
-  tick();
-  const t = setInterval(tick, 1000);
-})();
+  <!-- 2-hour countdown in Availability strip -->
+  <script>
+    (function(){
+      const el = document.getElementById('avail-timer');
+      if(!el) return;
+      const end = Date.now() + 2*60*60*1000; // 2 hours
+      const pad = n => String(n).padStart(2,'0');
+      function tick(){
+        const diff = Math.max(0, end - Date.now());
+        const h = Math.floor(diff/3600000);
+        const m = Math.floor((diff%3600000)/60000);
+        const s = Math.floor((diff%60000)/1000);
+        el.textContent = `${pad(h)}:${pad(m)}:${pad(s)}`;
+        if(diff===0) clearInterval(t);
+      }
+      tick();
+      const t = setInterval(tick, 1000);
+    })();
+  </script>
 
-/* Safe AOS init if not already called elsewhere */
-try { AOS.init && AOS.init({ duration: 650, easing: 'ease-out', once: true }); } catch(e){}
-</script>
+  <!-- Countdown + progress for 1-week campaign bar -->
+  <script>
+    (function(){
+      const bar = document.getElementById('campaignBar');
+      if(!bar) return;
+      const start = new Date(bar.getAttribute('data-start') || Date.now()).getTime();
+      const end   = new Date(bar.getAttribute('data-end')   || (Date.now()+7*24*60*60*1000)).getTime();
+      const timerEl = document.getElementById('campTimer');
+      const progEl  = document.getElementById('campProgress');
+      const pad = n => String(n).padStart(2,'0');
 
-  
-
-    <div class="footer">© 2025 BIM Labs Studio — Concrete Flatwork Instant Quote</div>
-  </div>
-<script>
-/* Countdown + progress for 1-week campaign */
-(function(){
-  const bar = document.getElementById('campaignBar');
-  if(!bar) return;
-  const startAttr = bar.getAttribute('data-start');
-  const endAttr   = bar.getAttribute('data-end');
-
-  // If you prefer "7 days from first visit", comment the two lines above
-  // and use: const end = Date.now() + 7*24*60*60*1000;
-  const start = startAttr ? new Date(startAttr).getTime() : Date.now();
-  const end   = endAttr ? new Date(endAttr).getTime()   : (Date.now() + 7*24*60*60*1000);
-
-  const timerEl = document.getElementById('campTimer');
-  const progEl  = document.getElementById('campProgress');
-  const pad = n => String(n).padStart(2,'0');
-
-  function render(){
-    const now = Date.now();
-    const total = Math.max(1, end - start);
-    const gone  = Math.min(total, Math.max(0, now - start));
-    const left  = Math.max(0, end - now);
-
-    const d = Math.floor(left/86400000);
-    const h = Math.floor((left%86400000)/3600000);
-    const m = Math.floor((left%3600000)/60000);
-    const s = Math.floor((left%60000)/1000);
-
-    timerEl.textContent = (d>0) ? `${d}d ${pad(h)}:${pad(m)}:${pad(s)}`
-                                : `${pad(h)}:${pad(m)}:${pad(s)}`;
-    progEl.style.width = (gone/total*100).toFixed(2) + '%';
-  }
-  render();
-  const t = setInterval(()=>{
-    render();
-    if(Date.now() >= end) clearInterval(t);
-  }, 1000);
-})();
-</script>
-
-    <!-- ===== Campaign Countdown Bar (1-week) ===== -->
-<div id="campaignBar" class="campaign-bar" data-start="2025-10-19T00:00:00-05:00" data-end="2025-10-26T23:59:59-05:00">
-  <div class="camp-inner">
-    <div class="camp-left">
-      <strong>Launch Pricing Week</strong>
-      <span class="camp-divider">•</span>
-      <span>Ends in <span id="campTimer">—:—:—</span></span>
-    </div>
-    <div class="camp-right">
-      <a class="btn btn-primary btn-sm" href="#pricing">Lock $1,500</a>
-      <a class="btn btn-outline btn-sm" href="#demo">Watch Demo</a>
-    </div>
-  </div>
-  <div class="camp-progress"><span id="campProgress"></span></div>
-</div>
+      function render(){
+        const now = Date.now();
+        const total = Math.max(1, end - start);
+        const gone  = Math.min(total, Math.max(0, now - start));
+        const left  = Math.max(0, end - now);
+        const d = Math.floor(left/86400000);
+        const h = Math.floor((left%86400000)/3600000);
+        const m = Math.floor((left%3600000)/60000);
+        const s = Math.floor((left%60000)/1000);
+        timerEl.textContent = (d>0) ? `${d}d ${pad(h)}:${pad(m)}:${pad(s)}` : `${pad(h)}:${pad(m)}:${pad(s)}`;
+        progEl.style.width = (gone/total*100).toFixed(2) + '%';
+      }
+      render();
+      const t = setInterval(()=>{ render(); if(Date.now()>=end) clearInterval(t); }, 1000);
+    })();
+  </script>
 
 </body>
 </html>
