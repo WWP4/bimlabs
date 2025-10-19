@@ -129,29 +129,6 @@
     .proc-step p{ margin:0; color:#4b5563; font-size:14px; line-height:1.55; }
     .proc-cta{ display:flex; gap:12px; justify-content:center; margin-top:18px; }
 
-    /* ===== What You Get (dark split) ===== */
-    .included{ background:#0f1624; color:#e5e7eb; padding:64px 0; border-top:1px solid var(--border); }
-    .inc-wrap{ display:grid; grid-template-columns:1.1fr .9fr; gap:22px; }
-    @media (max-width:1100px){ .inc-wrap{ grid-template-columns:1fr; } }
-    .included .badge{ background: var(--brand); }
-    .inc-left h2{ font-size:32px; letter-spacing:.02em; margin:10px 0 6px; color:#fff; }
-    .inc-sub{ color:#c7cbd6; margin:0 0 10px; max-width:720px; }
-    .inc-list{ list-style:none; padding:0; margin:0; display:grid; gap:10px; }
-    .inc-list li{ background: rgba(255,255,255,.03); border: 1px solid rgba(255,255,255,.08); border-radius: var(--radius); padding:12px 12px 12px 38px; position: relative; }
-    .tick{ position:absolute; left:12px; top:12px; width:18px;height:18px;border-radius:4px; background: rgba(241,89,42,.18); border:1px solid rgba(241,89,42,.6); }
-    .tick::after{ content:""; position:absolute; left:4px; top:2px; width:8px; height:12px; border-right:2px solid var(--brand); border-bottom:2px solid var(--brand); transform: rotate(45deg); }
-    .inc-note{ margin-top:12px; font-size:13px; color:#aab1bf; }
-    .inc-actions{ display:flex; gap:12px; margin-top:16px; }
-    .inc-right{ display:flex; align-items:stretch; }
-    .inc-panel{ width:100%; background:#0b1220; border:1px solid rgba(255,255,255,.08); border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,.35); overflow:hidden; }
-    .panel-head{ display:flex; align-items:center; gap:6px; padding:10px 12px; background:#0d1424; border-bottom:1px solid rgba(255,255,255,.06); position:relative; }
-    .dot{ width:8px;height:8px;border-radius:999px;background:#3b4254; display:inline-block; }
-    .panel-title{ position:absolute; left:50%; transform:translateX(-50%); color:#aab1bf; font-size:12px; }
-    .panel-steps{ margin:0; padding:14px 14px 8px 24px; color:#c7cbd6; counter-reset: step; }
-    .panel-steps li{ margin:0 0 10px 0; line-height:1.55; position:relative; }
-    .panel-steps li::before{ counter-increment: step; content: counter(step); position:absolute; left:-24px; top:0; width:18px;height:18px;border-radius:4px; background: rgba(241,89,42,.18); color: var(--brand); display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:800; }
-    .panel-footer{ display:flex; gap:8px; flex-wrap:wrap; padding:10px 12px 14px; border-top:1px solid rgba(255,255,255,.06); }
-    .panel-footer .pill{ background: rgba(255,255,255,.06); color:#c7cbd6; border-color: rgba(255,255,255,.12); }
 
     /* ===== Availability ===== */
     .avail{ background:linear-gradient(180deg,#f9fafb 0%,#fff 100%); padding:56px 0; border-top:1px solid var(--border); }
