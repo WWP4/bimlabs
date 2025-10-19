@@ -56,57 +56,81 @@
     .footer{text-align:center;margin-top:26px;color:#6b7280;font-size:12px}
     .section-title{margin:10px 0 6px}
 
-.hero-video {
-  position: relative;
-  height: 500px;
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 10px 30px rgba(0,0,0,.15);
-  border: 2px solid #f1592a;
+/* ===== HERO (polished) ===== */
+.hero-video{
+  position:relative;
+  height:420px;             /* tighter than 520/500 */
+  border-radius:12px;
+  overflow:hidden;
+  box-shadow:var(--shadow);
+  border-bottom:4px solid var(--brand);   /* bottom accent, not full outline */
 }
-.hero-video video {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  filter: brightness(0.55);
+.hero-video video{
+  position:absolute; inset:0;
+  width:100%; height:100%; object-fit:cover;
+  filter:brightness(.55);
+  opacity:0; animation:heroFadeIn 1.2s ease-in forwards;
 }
-.hero-overlay {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  color: #fff;
-  padding: 24px;
+.hero-video::after{
+  content:""; position:absolute; inset:0;
+  background:linear-gradient(180deg, rgba(0,0,0,.55) 0%, rgba(0,0,0,.35) 45%, rgba(0,0,0,.55) 100%);
 }
-.hero-overlay h1 {
-  font-family: 'Oswald', sans-serif;
-  font-size: 42px;
-  margin: 10px 0 8px;
+.hero-overlay{
+  position:absolute; inset:0;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  text-align:center; color:#fff; padding:24px;
 }
-.hero-overlay p {
-  max-width: 720px;
-  color: #e5e7eb;
+.hero-overlay h1{
+  font-family:'Oswald',sans-serif;
+  color:#fff; font-size:40px; letter-spacing:.01em;
+  text-shadow:0 2px 8px rgba(0,0,0,.35);
+  margin:10px 0 8px;
 }
-.hero-cta {
-  display: flex;
-  gap: 12px;
-  margin-top: 20px;
+.hero-overlay p{
+  max-width:840px; margin:0 auto 14px; color:#e5e7eb;
 }
-.hero-cta .btn-outline {
-  border: 2px solid #fff;
-  color: #fff;
+.hero-cta{ display:flex; gap:12px; margin-top:8px; flex-wrap:wrap; justify-content:center }
+.hero-cta .btn-outline{ border:2px solid #fff; color:#fff }
+
+@media (max-width:720px){
+  .hero-video{ height:360px }
+  .hero-overlay h1{ font-size:30px }
 }
-.hero-video video {
-  opacity: 0;
-  animation: fadeIn 2s ease-in forwards;
+
+@keyframes heroFadeIn{ to{ opacity:1 } }
+
+/* Optional: white badge style when used over video */
+.hero-overlay .badge{
+  background:rgba(255,255,255,.18);
+  color:#fff; border:1px solid rgba(255,255,255,.35);
 }
-@keyframes fadeIn {
-  to { opacity: 1; }
+
+    /* ===== Countdown Bar ===== */
+.campaign-bar{
+  position:sticky; top:0; z-index:9999;
+  background:var(--brand); color:#fff;
+  border-bottom:1px solid rgba(255,255,255,.18);
+  box-shadow:0 4px 18px rgba(0,0,0,.15);
 }
+.camp-inner{
+  max-width:1200px; margin:0 auto; padding:8px 12px;
+  display:flex; align-items:center; justify-content:space-between; gap:12px;
+}
+.camp-left{ display:flex; align-items:center; gap:10px; font-size:14px; letter-spacing:.02em }
+.camp-divider{ opacity:.6 }
+.camp-right{ display:flex; gap:8px }
+.btn-sm{ padding:8px 12px; border-radius:6px; font-size:12px; letter-spacing:.05em }
+.camp-progress{ height:3px; background:rgba(255,255,255,.18) }
+.camp-progress span{
+  display:block; height:100%; width:0%;
+  background:linear-gradient(90deg,#fff 0%,rgba(255,255,255,.85) 100%);
+  transition:width .8s ease;
+}
+@media (max-width:640px){
+  .camp-left{ font-size:13px }
+  .btn-sm{ padding:7px 10px; font-size:11px }
+}
+
 
     
   </style>
@@ -698,7 +722,62 @@ try { AOS.init && AOS.init({ duration: 650, easing: 'ease-out', once: true }); }
 
     <div class="footer">© 2025 BIM Labs Studio — Concrete Flatwork Instant Quote</div>
   </div>
+<script>
+/* Countdown + progress for 1-week campaign */
+(function(){
+  const bar = document.getElementById('campaignBar');
+  if(!bar) return;
+  const startAttr = bar.getAttribute('data-start');
+  const endAttr   = bar.getAttribute('data-end');
+
+  // If you prefer "7 days from first visit", comment the two lines above
+  // and use: const end = Date.now() + 7*24*60*60*1000;
+  const start = startAttr ? new Date(startAttr).getTime() : Date.now();
+  const end   = endAttr ? new Date(endAttr).getTime()   : (Date.now() + 7*24*60*60*1000);
+
+  const timerEl = document.getElementById('campTimer');
+  const progEl  = document.getElementById('campProgress');
+  const pad = n => String(n).padStart(2,'0');
+
+  function render(){
+    const now = Date.now();
+    const total = Math.max(1, end - start);
+    const gone  = Math.min(total, Math.max(0, now - start));
+    const left  = Math.max(0, end - now);
+
+    const d = Math.floor(left/86400000);
+    const h = Math.floor((left%86400000)/3600000);
+    const m = Math.floor((left%3600000)/60000);
+    const s = Math.floor((left%60000)/1000);
+
+    timerEl.textContent = (d>0) ? `${d}d ${pad(h)}:${pad(m)}:${pad(s)}`
+                                : `${pad(h)}:${pad(m)}:${pad(s)}`;
+    progEl.style.width = (gone/total*100).toFixed(2) + '%';
+  }
+  render();
+  const t = setInterval(()=>{
+    render();
+    if(Date.now() >= end) clearInterval(t);
+  }, 1000);
+})();
+</script>
 
 
 </body>
+  <!-- ===== Campaign Countdown Bar (1-week) ===== -->
+<div id="campaignBar" class="campaign-bar" data-start="2025-10-19T00:00:00-05:00" data-end="2025-10-26T23:59:59-05:00">
+  <div class="camp-inner">
+    <div class="camp-left">
+      <strong>Launch Pricing Week</strong>
+      <span class="camp-divider">•</span>
+      <span>Ends in <span id="campTimer">—:—:—</span></span>
+    </div>
+    <div class="camp-right">
+      <a class="btn btn-primary btn-sm" href="#pricing">Lock $1,500</a>
+      <a class="btn btn-outline btn-sm" href="#demo">Watch Demo</a>
+    </div>
+  </div>
+  <div class="camp-progress"><span id="campProgress"></span></div>
+</div>
+
 </html>
