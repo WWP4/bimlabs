@@ -178,6 +178,71 @@
     .strip-copy{ font-size:14px; color:#111827; }
     .timer{ font-family:Oswald,Inter,sans-serif; font-size:18px; letter-spacing:.04em; margin-left:6px; }
     .strip-actions{ display:flex; gap:10px; flex-wrap:wrap; }
+
+    /* ===== Beta Explainer ===== */
+.beta{
+  position:relative;
+  background:linear-gradient(180deg,#fff 0%,#f9fafb 50%,#fff 100%);
+  padding:80px 0 90px;
+  overflow:hidden;
+}
+.beta::before{
+  content:""; position:absolute; top:0; left:0; right:0; height:220px;
+  background:radial-gradient(circle at 50% 0%, rgba(241,89,42,.12), transparent 70%);
+}
+.beta-head{text-align:center; margin-bottom:50px; position:relative;}
+.beta-title{font-size:34px;margin:12px 0 10px;letter-spacing:.02em;position:relative;display:inline-block;}
+.beta-underline{position:absolute;bottom:-6px;left:50%;transform:translateX(-50%);
+  width:60%;height:3px;background:var(--brand);border-radius:999px;opacity:.7;animation:growLine 1.8s ease-out forwards;}
+@keyframes growLine{from{width:0;opacity:0}to{width:60%;opacity:.7}}
+.beta-sub{max-width:820px;margin:0 auto;color:var(--muted);line-height:1.6;}
+
+.beta-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:60px;}
+@media(max-width:900px){.beta-grid{grid-template-columns:1fr;}}
+
+.beta-card{
+  background:#fff;border:1px solid var(--border);border-radius:var(--radius);
+  box-shadow:var(--shadow);padding:24px 26px;transition:transform .25s ease,box-shadow .25s ease;
+}
+.beta-card:hover{transform:translateY(-3px);box-shadow:0 12px 40px rgba(0,0,0,.12);}
+.beta-card h3{margin-top:0;margin-bottom:10px;color:var(--brand);}
+.beta-card p{color:#4b5563;font-size:15px;line-height:1.6;}
+.beta-list{margin:14px 0 0;padding-left:20px;color:#374151;font-size:14px;}
+.beta-list li{margin-bottom:6px;}
+.beta-note{margin-top:10px;font-size:13px;color:#6b7280;}
+
+.beta-steps{margin:0;padding-left:20px;font-size:14px;color:#374151;counter-reset:step;}
+.beta-steps li{margin-bottom:8px;position:relative;}
+.beta-steps li::before{
+  counter-increment:step;content:counter(step);
+  position:absolute;left:-26px;top:0;
+  width:18px;height:18px;border-radius:4px;
+  background:rgba(241,89,42,.12);color:var(--brand);
+  display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;
+}
+.beta-band{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px;}
+.beta-band .pill{border-color:var(--brand);color:var(--brand);background:rgba(241,89,42,.06);}
+
+.beta-math{display:flex;gap:20px;justify-content:center;flex-wrap:wrap;margin-bottom:60px;}
+.math-card{display:flex;align-items:center;gap:12px;background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:14px 18px;box-shadow:var(--shadow);}
+.math-num{font-family:Oswald,Inter,sans-serif;font-size:34px;color:var(--brand);font-weight:700;}
+.math-copy{color:#374151;font-size:14px;max-width:220px;line-height:1.5;}
+
+.beta-compare{margin-bottom:60px;}
+.cmp-head{text-align:center;margin-bottom:20px;}
+.cmp-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+@media(max-width:900px){.cmp-grid{grid-template-columns:1fr;}}
+.cmp-col{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow);}
+.cmp-col h4{margin-top:0;margin-bottom:10px;color:#111827;}
+.cmp-col ul{margin:0;padding-left:18px;color:#374151;font-size:14px;line-height:1.55;}
+.cmp-good{border:2px solid var(--brand);}
+
+.beta-price{text-align:center;}
+.price-inner{max-width:720px;margin:0 auto;background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:32px;box-shadow:0 8px 28px rgba(0,0,0,.08);}
+.price-inner h3{color:var(--brand);margin-top:0;}
+.price-inner p{color:#374151;line-height:1.6;}
+.beta-cta{display:flex;justify-content:center;gap:12px;margin-top:16px;}
+
   </style>
 </head>
 
@@ -317,6 +382,127 @@
       </div>
     </div>
   </section>
+
+  <!-- =========================================
+Beta Launch Explainer — Not a Discount. A New Model.
+Place after Availability section
+========================================= -->
+<section id="beta-explainer" class="beta">
+  <div class="container">
+
+    <!-- Headline -->
+    <div class="beta-head" data-aos="fade-up">
+      <span class="badge">Beta Launch</span>
+      <h2 class="beta-title">
+        Not a Discount — a New Way to Quote
+        <span class="beta-underline" aria-hidden="true"></span>
+      </h2>
+      <p class="beta-sub">
+        We’re introducing a quoting system that replaces old-school sales calls with automation. 
+        No reps. No chasing. Leads get accurate pricing data in under a minute, 
+        and you close faster than competitors still waiting to “call them back.”
+      </p>
+    </div>
+
+    <!-- Split: Story & How It Works -->
+    <div class="beta-grid">
+      <!-- Left: Why this exists -->
+      <article class="beta-card" data-aos="fade-right">
+        <h3>Why We Built This</h3>
+        <p>
+          Contractors are tired of wasting hours on calls that don’t convert. 
+          Leads today expect quick answers and transparency — the companies that respond first 
+          win the work. Our Instant Quote System automates that process so you never miss an opportunity.
+        </p>
+        <ul class="beta-list">
+          <li><strong>Speed wins:</strong> 78% of jobs go to the first estimate received.</li>
+          <li><strong>Consistency:</strong> every lead experiences a clean, fast, professional quote flow 24/7.</li>
+          <li><strong>Control:</strong> all leads, data, and automations stay in your CRM — you own it all.</li>
+        </ul>
+        <div class="beta-note">This isn’t theory — it’s the future of quoting. Our beta program is your chance to be first.</div>
+      </article>
+
+      <!-- Right: How it beats reps -->
+      <article class="beta-card" data-aos="fade-left">
+        <h3>How It Outperforms a Sales Rep</h3>
+        <ol class="beta-steps">
+          <li><strong>Instant Quote:</strong> lead inputs details → receives a ballpark estimate instantly.</li>
+          <li><strong>Auto Follow-Up:</strong> system sends text and email with next steps or photo upload link.</li>
+          <li><strong>CRM Drop:</strong> new lead is automatically created with job details and notes.</li>
+          <li><strong>Timed Nudges:</strong> automated reminders re-engage quiet leads without manual effort.</li>
+        </ol>
+        <div class="beta-band">
+          <span class="pill">Quotes in 60s</span>
+          <span class="pill">No Reps Needed</span>
+          <span class="pill">You Own the System</span>
+        </div>
+      </article>
+    </div>
+
+    <!-- Value math strip -->
+    <div class="beta-math" data-aos="fade-up" data-aos-delay="100">
+      <div class="math-card">
+        <div class="math-num">1</div>
+        <div class="math-copy"><strong>extra project/month</strong> typically covers your system cost in week one.</div>
+      </div>
+      <div class="math-card">
+        <div class="math-num">60s</div>
+        <div class="math-copy"><strong>to a live estimate</strong> means you win before competitors even respond.</div>
+      </div>
+      <div class="math-card">
+        <div class="math-num">0</div>
+        <div class="math-copy"><strong>retainers or rev-share</strong> — it’s your tool, your data, your results.</div>
+      </div>
+    </div>
+
+    <!-- Comparison: us vs agencies -->
+    <div class="beta-compare" data-aos="fade-up" data-aos-delay="150">
+      <div class="cmp">
+        <div class="cmp-head">
+          <h3>Why This Beats a Typical “Agency Website”</h3>
+        </div>
+        <div class="cmp-grid">
+          <div class="cmp-col">
+            <h4>Old Way (Agency Site)</h4>
+            <ul>
+              <li>Generic “Request a Quote” forms buried on your site.</li>
+              <li>Manual follow-up, missed calls, and slow response times.</li>
+              <li>Expensive retainers for simple changes.</li>
+              <li>No automation, no ownership, no measurable ROI.</li>
+            </ul>
+          </div>
+          <div class="cmp-col cmp-good">
+            <h4>New Way (Instant Quote System)</h4>
+            <ul>
+              <li>Lead gets an immediate ballpark quote with follow-up automation.</li>
+              <li>Everything syncs to your CRM automatically — no manual entry.</li>
+              <li>No recurring agency fees; you own the system after build.</li>
+              <li>Instant quotes mean faster closes and stronger margins.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Beta price clarification -->
+    <div class="beta-price" data-aos="fade-up" data-aos-delay="200">
+      <div class="price-inner">
+        <h3>About the Beta Price</h3>
+        <p>
+          This isn’t a sale. It’s a partnership opportunity for forward-thinking contractors. 
+          Beta pricing of <strong>$1,500</strong> rewards early adopters who help us refine and showcase results. 
+          You’ll receive the full system and retain full ownership — no strings attached.
+        </p>
+        <div class="beta-cta">
+          <a class="btn btn-primary" href="#pricing">Lock Beta Pricing</a>
+          <a class="btn btn-outline" href="#demo">See the System in Action</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
 
   <!-- ===== What You Get (dark split) ===== -->
   <section id="included" class="included">
