@@ -553,6 +553,147 @@ What You Get — Split Dark Section
 }
 </style>
 
+  <!-- =========================================
+Availability & Build Queue — animated meters
+Place after the "What You Get" section
+========================================= -->
+<section id="availability" class="avail">
+  <div class="container">
+    <div class="avail-head" data-aos="fade-up">
+      <span class="badge">Availability</span>
+      <h2 class="avail-title">Build Queue & City Availability</h2>
+      <p class="avail-sub">We keep capacity tight so installs ship in 48 hours. If your city is open, lock it with a refundable deposit.</p>
+    </div>
+
+    <!-- Meters Row -->
+    <div class="meters">
+      <!-- Meter 1 -->
+      <article class="meter" data-aos="fade-up" data-aos-delay="50">
+        <header class="meter-top">
+          <h3>Installs This Week</h3>
+          <span class="meter-note"><strong>3 of 5</strong> filled</span>
+        </header>
+        <div class="bar">
+          <div class="fill" data-percent="60" aria-label="Installs filled 60%"></div>
+        </div>
+        <p class="help">We open a small number of build slots to keep turnaround fast.</p>
+      </article>
+
+      <!-- Meter 2 -->
+      <article class="meter" data-aos="fade-up" data-aos-delay="100">
+        <header class="meter-top">
+          <h3>Cities On Hold</h3>
+          <span class="meter-note"><strong>12</strong> pending</span>
+        </header>
+        <div class="bar bar-alt">
+          <div class="fill" data-percent="40" aria-label="Cities on hold 40% of cap"></div>
+        </div>
+        <p class="help">One-per-city option. Holds expire if deposit isn’t placed in 72 hours.</p>
+      </article>
+
+      <!-- Meter 3 -->
+      <article class="meter" data-aos="fade-up" data-aos-delay="150">
+        <header class="meter-top">
+          <h3>Beta Price Slots</h3>
+          <span class="meter-note"><strong>2 left</strong> at $1,500</span>
+        </header>
+        <div class="bar">
+          <div class="fill" data-percent="80" aria-label="Beta slots 80% taken"></div>
+        </div>
+        <p class="help">When beta slots close, pricing returns to standard.</p>
+      </article>
+    </div>
+
+    <!-- Countdown strip (optional) -->
+    <div class="avail-strip" data-aos="fade-up" data-aos-delay="220">
+      <div class="strip-inner">
+        <div class="strip-copy">
+          <strong>City window closes in</strong> <span id="avail-timer" class="timer">—:—:—</span>
+        </div>
+        <div class="strip-actions">
+          <a class="btn btn-primary" href="#pricing">Lock My City — $250 refundable</a>
+          <a class="btn btn-outline" href="#demo">Watch the Live Demo</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+/* ===== Availability & Build Queue ===== */
+.avail{ background:linear-gradient(180deg,#f9fafb 0%,#fff 100%); padding:56px 0; border-top:1px solid var(--border); }
+.avail-head{ text-align:center; margin-bottom:18px; }
+.avail-title{ font-family:Oswald,Inter,sans-serif; font-size:32px; margin:10px 0 6px; letter-spacing:.02em; }
+.avail-sub{ max-width:820px; margin:0 auto; color:var(--muted); }
+
+.meters{ display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-top:12px; }
+@media (max-width:1100px){ .meters{ grid-template-columns:1fr 1fr; } }
+@media (max-width:640px){ .meters{ grid-template-columns:1fr; } }
+
+.meter{ background:#fff; border:1px solid var(--border); border-radius:var(--radius); padding:16px; box-shadow:var(--shadow); }
+.meter-top{ display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:10px; }
+.meter h3{ margin:0; font-size:18px; color:#111827; }
+.meter-note{ font-weight:700; color:#111827; }
+.bar{ position:relative; height:12px; border-radius:999px; background:#eef2f7; overflow:hidden; border:1px solid #e6ebf2; }
+.bar-alt{ background:#f3f4f6; }
+.fill{ position:absolute; left:0; top:0; bottom:0; width:0%; background:linear-gradient(90deg, var(--brand) 0%, var(--brand-dark) 100%); border-radius:999px; }
+.meter .help{ margin:8px 0 0; font-size:12px; color:#6b7280; }
+
+/* Countdown strip */
+.avail-strip{ margin-top:18px; }
+.strip-inner{
+  display:flex; align-items:center; justify-content:space-between; gap:12px;
+  background:#fff; border:2px solid var(--brand); border-radius:12px; padding:12px 14px; box-shadow:var(--shadow);
+}
+.strip-copy{ font-size:14px; color:#111827; }
+.timer{ font-family:Oswald,Inter,sans-serif; font-size:18px; letter-spacing:.04em; margin-left:6px; }
+.strip-actions{ display:flex; gap:10px; flex-wrap:wrap; }
+</style>
+
+<script>
+/* ===== Animated meters on view ===== */
+(function(){
+  const fills = document.querySelectorAll('#availability .fill');
+  if(!('IntersectionObserver' in window)){ // fallback animate immediately
+    fills.forEach(el => el.style.width = (el.dataset.percent || 0) + '%');
+    return;
+  }
+  const io = new IntersectionObserver((entries, obs)=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        const el = e.target;
+        const pct = +el.dataset.percent || 0;
+        el.style.transition = 'width 900ms cubic-bezier(.2,.7,.2,1)';
+        requestAnimationFrame(()=>{ el.style.width = pct + '%'; });
+        obs.unobserve(el);
+      }
+    });
+  }, { threshold: 0.35 });
+  fills.forEach(el=>io.observe(el));
+})();
+
+/* ===== Simple countdown (2h window). Adjust as needed. ===== */
+(function(){
+  const el = document.getElementById('avail-timer');
+  if(!el) return;
+  const end = Date.now() + 2 * 60 * 60 * 1000; // 2 hours from load
+  const pad = n => String(n).padStart(2,'0');
+  function tick(){
+    const diff = Math.max(0, end - Date.now());
+    const h = Math.floor(diff/3600000);
+    const m = Math.floor((diff%3600000)/60000);
+    const s = Math.floor((diff%60000)/1000);
+    el.textContent = `${pad(h)}:${pad(m)}:${pad(s)}`;
+    if(diff===0) clearInterval(t);
+  }
+  tick();
+  const t = setInterval(tick, 1000);
+})();
+
+/* Safe AOS init if not already called elsewhere */
+try { AOS.init && AOS.init({ duration: 650, easing: 'ease-out', once: true }); } catch(e){}
+</script>
+
   
 
     <div class="footer">© 2025 BIM Labs Studio — Concrete Flatwork Instant Quote</div>
