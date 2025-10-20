@@ -796,6 +796,45 @@ document.querySelectorAll('a[href^="#apply"]').forEach(link=>{
 });
 </script>
 
+<script>
+/* 1) Make EVERY "APPLY NOW" click go to the form */
+(function () {
+  const form = document.getElementById('apply');
+  if (!form) return;
+
+  // Any anchor or button with text "APPLY NOW"
+  const ctas = Array.from(document.querySelectorAll('a,button'))
+    .filter(el => /^\s*apply\s+now\s*$/i.test(el.textContent || ''));
+
+  ctas.forEach(el => {
+    // If it's a link, point it to #apply
+    if (el.tagName === 'A') el.setAttribute('href', '#apply');
+
+    // Add click handler for both <a> and <button>
+    el.addEventListener('click', function (e) {
+      // if it's an <a> we intercept to avoid jumping
+      if (this.tagName === 'A') e.preventDefault();
+      form.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, { passive: true });
+  });
+
+  // Safety net: any link already targeting #apply will smooth scroll too
+  document.querySelectorAll('a[href^="#apply"]').forEach(a => {
+    a.addEventListener('click', function (e) {
+      e.preventDefault();
+      form.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, { passive: true });
+  });
+})();
+</script>
+
+<style>
+/* 2) Offset so the sticky campaign bar doesn’t cover the form */
+#apply { scroll-margin-top: 80px; }  /* adjust if your top bar is taller/shorter */
+
+/* Optional: also enable native smooth scroll for hash links */
+html { scroll-behavior: smooth; }
+</style>
 
 </body>
 </html>
