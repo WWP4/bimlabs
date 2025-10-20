@@ -545,6 +545,37 @@ Place after Availability section
       const t = setInterval(()=>{ render(); if(Date.now()>=end) clearInterval(t); }, 1000);
     })();
   </script>
+<script type="module">
+  import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+
+  // ✏️ Replace these two lines with your actual values
+  const supabaseUrl = 'https://gdwodqwhjrksjhxazuio.supabase.co';
+  const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imdkd29kcXdoanJrc2poeGF6dWlvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTEzMTU3NzcsImV4cCI6MjA2Njg5MTc3N30.Zq0lZRK6X6vVVwdhqkNVwMLsGPOhDFrYoEyUwtkbG0o';
+
+  const supabase = createClient(supabaseUrl, supabaseAnonKey);
+
+  // Handle the form
+  const form = document.querySelector('.apply-form');
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const fd = new FormData(form);
+    const data = Object.fromEntries(fd.entries());
+
+    const { error } = await supabase.from('applications').insert([data]);
+
+    if (error) {
+      console.error(error);
+      alert('Something went wrong. Please try again.');
+    } else {
+      form.innerHTML = `
+        <div class="card" style="text-align:center;padding:30px;">
+          <h3>Application Received</h3>
+          <p>Thanks for applying! We’ll review your info and reach out shortly.</p>
+        </div>`;
+    }
+  });
+</script>
 
 </body>
 </html>
