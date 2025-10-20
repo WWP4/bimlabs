@@ -247,6 +247,36 @@
 .apply-form .hp{
   position:absolute; left:-9999px; top:auto; width:1px; height:1px; overflow:hidden; opacity:0;
 }
+/* Force every CTA button text to say "Apply Now" */
+.btn-primary::after,
+.btn-outline::after {
+  content: "Apply Now";
+}
+.btn-primary,
+.btn-outline {
+  font-size: 14px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  color: #fff;
+  background: var(--brand);
+  border-color: var(--brand);
+}
+
+/* hide original text so only "Apply Now" shows */
+.btn-primary,
+.btn-outline {
+  color: transparent !important;
+  position: relative;
+}
+.btn-primary::after,
+.btn-outline::after {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #fff;
+}
 
   </style>
 </head>
@@ -708,6 +738,14 @@ Apply for Beta Access
       }
     });
   }
+</script>
+<script>
+document.querySelectorAll('a[href^="#apply"]').forEach(link=>{
+  link.addEventListener('click', e=>{
+    e.preventDefault();
+    document.querySelector('#apply')?.scrollIntoView({behavior:'smooth'});
+  });
+});
 </script>
 
 
