@@ -61,7 +61,7 @@
       .btn-sm{ padding:7px 10px; font-size:11px }
     }
 
-   /* ===== HERO (polished — lighter overlay + readable text) ===== */
+/* ===== HERO (fixed click + lighter overlay) ===== */
 .hero-video{
   position:relative;
   height:420px;
@@ -69,74 +69,80 @@
   overflow:hidden;
   box-shadow:var(--shadow);
   border-bottom:4px solid var(--brand);
+  z-index:1;
 }
-
-/* brighten the background video a bit */
 .hero-video video{
-  position:absolute; inset:0;
-  width:100%; height:100%; object-fit:cover;
-  filter:brightness(.85);
-  opacity:0; animation:heroFadeIn 1.2s ease-in forwards;
+  position:absolute;
+  inset:0;
+  width:100%;height:100%;
+  object-fit:cover;
+  filter:brightness(.9);
+  opacity:0;
+  animation:heroFadeIn 1.2s ease-in forwards;
 }
-
-/* softer gradient so the scene shows through but text still pops */
+/* lighter overlay + no pointer blocking */
 .hero-video::after{
   content:"";
-  position:absolute; inset:0;
+  position:absolute;
+  inset:0;
   background:linear-gradient(
     180deg,
-    rgba(0,0,0,.20) 0%,
-    rgba(0,0,0,.12) 45%,
-    rgba(0,0,0,.20) 100%
+    rgba(0,0,0,.15) 0%,
+    rgba(0,0,0,.08) 50%,
+    rgba(0,0,0,.15) 100%
   );
+  pointer-events:none; /* lets clicks pass through */
 }
-
-/* overlay + text */
 .hero-overlay{
-  position:absolute; inset:0;
-  display:flex; flex-direction:column; align-items:center; justify-content:center;
-  text-align:center; color:#fff; padding:24px;
+  position:absolute;
+  inset:0;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  color:#fff;
+  padding:24px;
+  z-index:2;
 }
-
 .hero-overlay h1{
   color:#fff;
-  font-size:40px; letter-spacing:.01em; line-height:1.15;
+  font-size:40px;
+  letter-spacing:.01em;
+  line-height:1.15;
   margin:10px 0 10px;
-  text-shadow:0 1px 4px rgba(0,0,0,.25); /* lighter shadow than before */
+  text-shadow:0 1px 3px rgba(0,0,0,.25);
 }
-
 .hero-overlay p{
   max-width:840px;
   margin:0 auto 14px;
-  color:#f3f4f6; /* slightly brighter than #e5e7eb */
+  color:#f9fafb;
 }
-
-/* buttons on hero */
 .hero-cta{
-  display:flex; gap:12px; margin-top:8px; flex-wrap:wrap; justify-content:center;
+  display:flex;
+  gap:12px;
+  margin-top:8px;
+  flex-wrap:wrap;
+  justify-content:center;
 }
-.hero-cta .btn-outline{ border:2px solid #fff; color:#fff }
-
-/* badge on dark video */
-.hero-overlay .badge{
-  background:rgba(255,255,255,.18);
+.hero-cta .btn,
+.hero-cta .btn-outline{
+  background:var(--brand);
   color:#fff;
-  border:1px solid rgba(255,255,255,.35)
+  border:none;
+  box-shadow:0 3px 10px rgba(0,0,0,.15);
 }
-
-/* responsive tweak */
+.hero-cta .btn-outline:hover{
+  background:var(--brand-dark);
+}
 @media (max-width:720px){
-  .hero-video{ height:360px }
-  .hero-overlay h1{ font-size:30px }
+  .hero-video{height:360px;}
+  .hero-overlay h1{font-size:30px;}
 }
-
-/* animation */
-@keyframes heroFadeIn{ to { opacity:1 } }
-
-/* reduced motion fallback */
-@media (prefers-reduced-motion: reduce){
-  .hero-video video{ display:none }
-  .hero-video{ background:#111 url('poster.jpg') center/cover no-repeat }
+@keyframes heroFadeIn{to{opacity:1;}}
+@media (prefers-reduced-motion:reduce){
+  .hero-video video{display:none;}
+  .hero-video{background:#111 url('poster.jpg') center/cover no-repeat;}
 }
 
 
