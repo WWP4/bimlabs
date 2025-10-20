@@ -61,31 +61,84 @@
       .btn-sm{ padding:7px 10px; font-size:11px }
     }
 
-    /* ===== HERO (polished) ===== */
-    .hero-video{
-      position:relative; height:420px; border-radius:12px; overflow:hidden;
-      box-shadow:var(--shadow); border-bottom:4px solid var(--brand);
-    }
-    .hero-video video{
-      position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
-      filter:brightness(.55); opacity:0; animation:heroFadeIn 1.2s ease-in forwards;
-    }
-    .hero-video::after{
-      content:""; position:absolute; inset:0;
-      background:linear-gradient(180deg, rgba(0,0,0,.55) 0%, rgba(0,0,0,.35) 45%, rgba(0,0,0,.55) 100%);
-    }
-  
-    }
-    .hero-overlay p{ max-width:840px; margin:0 auto 14px; color:#e5e7eb }
-    .hero-cta{ display:flex; gap:12px; margin-top:8px; flex-wrap:wrap; justify-content:center }
-    .hero-cta .btn-outline{ border:2px solid #fff; color:#fff }
-    @media (max-width:720px){ .hero-video{ height:360px } .hero-overlay h1{ font-size:30px } }
-    @keyframes heroFadeIn{ to { opacity:1 } }
-    .hero-overlay .badge{ background:rgba(255,255,255,.18); color:#fff; border:1px solid rgba(255,255,255,.35) }
-    @media (prefers-reduced-motion: reduce){
-      .hero-video video{ display:none }
-      .hero-video{ background:#111 url('poster.jpg') center/cover no-repeat }
-    }
+   /* ===== HERO (polished — lighter overlay + readable text) ===== */
+.hero-video{
+  position:relative;
+  height:420px;
+  border-radius:12px;
+  overflow:hidden;
+  box-shadow:var(--shadow);
+  border-bottom:4px solid var(--brand);
+}
+
+/* brighten the background video a bit */
+.hero-video video{
+  position:absolute; inset:0;
+  width:100%; height:100%; object-fit:cover;
+  filter:brightness(.85);
+  opacity:0; animation:heroFadeIn 1.2s ease-in forwards;
+}
+
+/* softer gradient so the scene shows through but text still pops */
+.hero-video::after{
+  content:"";
+  position:absolute; inset:0;
+  background:linear-gradient(
+    180deg,
+    rgba(0,0,0,.20) 0%,
+    rgba(0,0,0,.12) 45%,
+    rgba(0,0,0,.20) 100%
+  );
+}
+
+/* overlay + text */
+.hero-overlay{
+  position:absolute; inset:0;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  text-align:center; color:#fff; padding:24px;
+}
+
+.hero-overlay h1{
+  color:#fff;
+  font-size:40px; letter-spacing:.01em; line-height:1.15;
+  margin:10px 0 10px;
+  text-shadow:0 1px 4px rgba(0,0,0,.25); /* lighter shadow than before */
+}
+
+.hero-overlay p{
+  max-width:840px;
+  margin:0 auto 14px;
+  color:#f3f4f6; /* slightly brighter than #e5e7eb */
+}
+
+/* buttons on hero */
+.hero-cta{
+  display:flex; gap:12px; margin-top:8px; flex-wrap:wrap; justify-content:center;
+}
+.hero-cta .btn-outline{ border:2px solid #fff; color:#fff }
+
+/* badge on dark video */
+.hero-overlay .badge{
+  background:rgba(255,255,255,.18);
+  color:#fff;
+  border:1px solid rgba(255,255,255,.35)
+}
+
+/* responsive tweak */
+@media (max-width:720px){
+  .hero-video{ height:360px }
+  .hero-overlay h1{ font-size:30px }
+}
+
+/* animation */
+@keyframes heroFadeIn{ to { opacity:1 } }
+
+/* reduced motion fallback */
+@media (prefers-reduced-motion: reduce){
+  .hero-video video{ display:none }
+  .hero-video{ background:#111 url('poster.jpg') center/cover no-repeat }
+}
+
 
     /* ===== Instant Value ===== */
     .value-impact { 
