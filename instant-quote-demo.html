@@ -219,6 +219,34 @@
 .price-inner h3{color:var(--brand);margin-top:0;}
 .price-inner p{color:#374151;line-height:1.6;}
 .beta-cta{display:flex;justify-content:center;gap:12px;margin-top:16px;}
+/* ===== Apply Section ===== */
+.apply-section{ background:#fff; padding:64px 0; border-top:1px solid var(--border); }
+.apply-head{ text-align:center; margin-bottom:22px; }
+.apply-head h2{ font-family:Oswald,Inter,sans-serif; font-size:32px; margin:10px 0 6px; }
+.apply-sub{ max-width:780px; margin:0 auto; color:var(--muted); }
+
+.apply-form{
+  max-width:820px; margin:0 auto;
+  background:#f9fafb; border:1px solid var(--border); border-radius:var(--radius);
+  padding:28px; box-shadow:var(--shadow);
+}
+.apply-form .row{ display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+@media (max-width:780px){ .apply-form .row{ grid-template-columns:1fr; } }
+
+.apply-form label{ font-weight:600; font-size:13px; color:#374151; margin-bottom:6px; display:block; }
+.apply-form input, .apply-form select, .apply-form textarea{
+  width:100%; padding:10px; border:1px solid #d1d5db; border-radius:8px; font-size:14px; background:#fff;
+}
+.apply-form textarea{ resize:vertical; }
+
+.apply-actions{ display:flex; gap:12px; flex-wrap:wrap; margin-top:14px; }
+.agree{ margin:12px 0 2px; font-size:13px; color:#374151; }
+.agree input{ margin-right:6px; }
+
+/* honeypot: visually hidden but in DOM for bots */
+.apply-form .hp{
+  position:absolute; left:-9999px; top:auto; width:1px; height:1px; overflow:hidden; opacity:0;
+}
 
   </style>
 </head>
@@ -426,6 +454,82 @@ Place after Availability section
 </section>
 
 
+  <!-- ================================
+Apply for Beta Access
+================================ -->
+<section id="apply" class="apply-section">
+  <div class="container">
+    <div class="apply-head" data-aos="fade-up">
+      <span class="badge">Apply for Beta Access</span>
+      <h2>We’re Selecting a Few Contractors Per City</h2>
+      <p class="apply-sub">Tell us about your company. No payment due today—this application helps us confirm fit, city availability, and timeline.</p>
+    </div>
+
+    <form class="apply-form" data-aos="fade-up" data-aos-delay="100">
+      <!-- Honeypot (spam bot trap) -->
+      <input type="text" name="website2" class="hp" autocomplete="off" tabindex="-1" aria-hidden="true">
+
+      <!-- Source -->
+      <input type="hidden" name="source" id="utmSource">
+
+      <div class="row">
+        <div>
+          <label>Full Name</label>
+          <input type="text" name="name" required>
+        </div>
+        <div>
+          <label>Company Name</label>
+          <input type="text" name="company" required>
+        </div>
+      </div>
+
+      <div class="row">
+        <div>
+          <label>Email</label>
+          <input type="email" name="email" required>
+        </div>
+        <div>
+          <label>Phone</label>
+          <input type="text" name="phone" required>
+        </div>
+      </div>
+
+      <div class="row">
+        <div>
+          <label>Trade / Service Type</label>
+          <input type="text" name="trade" placeholder="e.g., Concrete, Roofing, GC">
+        </div>
+        <div>
+          <label>Timeline to Implement</label>
+          <select name="timeline">
+            <option>Immediately</option>
+            <option>Within 30 Days</option>
+            <option>Just Exploring</option>
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <label>Why should we work with your company?</label>
+        <textarea name="why" rows="4" placeholder="Goals, service area, volume, what makes your team strong"></textarea>
+      </div>
+
+      <div class="agree">
+        <label><input type="checkbox" required> I understand this is a Beta application (not a free trial), and spots are limited.</label>
+      </div>
+
+      <div class="apply-actions">
+        <button class="btn btn-primary" type="submit">Apply for Beta Access</button>
+        <a class="btn btn-outline" href="#demo">See the System First</a>
+      </div>
+
+      <p class="help" style="margin-top:8px">We typically accept 1–2 contractors per city. You’ll receive a text/email update after review.</p>
+    </form>
+  </div>
+</section>
+
+
+
 
 
   <!-- ===== Availability & Build Queue ===== -->
@@ -545,37 +649,67 @@ Place after Availability section
       const t = setInterval(()=>{ render(); if(Date.now()>=end) clearInterval(t); }, 1000);
     })();
   </script>
-<script type="module">
+
+  <script type="module">
   import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 
-  // ✏️ Replace these two lines with your actual values
+  // Your real values (already provided in your file)
   const supabaseUrl = 'https://gdwodqwhjrksjhxazuio.supabase.co';
   const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imdkd29kcXdoanJrc2poeGF6dWlvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTEzMTU3NzcsImV4cCI6MjA2Njg5MTc3N30.Zq0lZRK6X6vVVwdhqkNVwMLsGPOhDFrYoEyUwtkbG0o';
 
   const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
-  // Handle the form
   const form = document.querySelector('.apply-form');
-  form.addEventListener('submit', async (e) => {
-    e.preventDefault();
+  if (form) {
+    // set source from UTM/referrer
+    const srcField = form.querySelector('#utmSource');
+    const utm = new URLSearchParams(location.search).toString();
+    if (srcField) srcField.value = utm || document.referrer || 'direct';
 
-    const fd = new FormData(form);
-    const data = Object.fromEntries(fd.entries());
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
 
-    const { error } = await supabase.from('applications').insert([data]);
+      const fd = new FormData(form);
+      // honeypot check
+      if ((fd.get('website2') || '').trim() !== '') {
+        form.innerHTML = '<p class="help">Thanks!</p>'; // quietly ignore bots
+        return;
+      }
 
-    if (error) {
-      console.error(error);
-      alert('Something went wrong. Please try again.');
-    } else {
-      form.innerHTML = `
-        <div class="card" style="text-align:center;padding:30px;">
-          <h3>Application Received</h3>
-          <p>Thanks for applying! We’ll review your info and reach out shortly.</p>
-        </div>`;
-    }
-  });
+      const payload = Object.fromEntries(fd.entries());
+
+      // Only send expected columns (helps avoid accidental columns)
+      const data = {
+        name: payload.name || '',
+        company: payload.company || '',
+        email: payload.email || '',
+        phone: payload.phone || '',
+        trade: payload.trade || '',
+        timeline: payload.timeline || '',
+        why: payload.why || '',
+        source: payload.source || ''
+      };
+
+      const { error } = await supabase.from('applications').insert([data]);
+
+      if (error) {
+        console.error(error);
+        alert('Something went wrong. Please try again.');
+      } else {
+        form.innerHTML = `
+          <div class="card" style="text-align:center;padding:30px;">
+            <h3>Application Received</h3>
+            <p>We’ll review and text/email you shortly about city availability and start time.</p>
+            <div style="margin-top:12px">
+              <a class="btn btn-primary" href="#pricing">Next: Lock Beta Pricing</a>
+              <a class="btn btn-outline" href="#demo">Watch the Demo</a>
+            </div>
+          </div>`;
+      }
+    });
+  }
 </script>
+
 
 </body>
 </html>
