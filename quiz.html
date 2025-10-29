@@ -7,11 +7,11 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
 <style>
   :root{
-    --brand:#f1592a; --brand-dark:#c94722; --ink:#0b1220; --muted:#6b7280; --bg:#ffffff; --card:#f9fafb; --border:#e5e7eb;
+    --brand:#f1592a; --brand-dark:#c94722; --ink:#0b1220; --muted:#6b7280; --border:#e5e7eb;
   }
   *{box-sizing:border-box}
   body{margin:0;font-family:Inter,system-ui,Segoe UI,Roboto,Arial,sans-serif;background:#fff;color:#111}
-  .wrap{max-width:720px;margin:0 auto;padding:28px 18px}
+  .wrap{max-width:760px;margin:0 auto;padding:28px 18px}
   .card{background:#fff;border:1px solid var(--border);border-radius:12px;box-shadow:0 8px 24px rgba(0,0,0,.06);padding:22px}
   h1{margin:0 0 6px;font-size:28px;letter-spacing:.02em}
   p.sub{margin:0 0 14px;color:var(--muted)}
@@ -31,9 +31,21 @@
   .btn{appearance:none;border:0;border-radius:10px;padding:12px 16px;font-weight:800;cursor:pointer;text-transform:uppercase;letter-spacing:.06em}
   .btn-primary{background:var(--brand);color:#fff}
   .btn-outline{background:#fff;color:var(--brand);border:2px solid var(--brand)}
-  .muted{color:var(--muted);font-size:13px;margin-top:10px}
+  .muted{color:#6b7280;font-size:13px;margin-top:10px}
   .center{display:flex;justify-content:center}
   .legal{font-size:12px;color:#6b7280;margin-top:10px}
+  .toast{
+    display:none; margin:18px 0 10px; padding:10px 12px; border:1px solid #ffd5c6;
+    background:#fff3ed; color:#7a2e15; border-radius:10px; font-size:14px;
+  }
+  /* demo section */
+  .demo-preview{margin-top:30px;text-align:center}
+  .demo-wrap{
+    position:relative;max-width:680px;margin:0 auto;border-radius:12px;overflow:hidden;
+    box-shadow:0 6px 18px rgba(0,0,0,.12); background:#000;
+  }
+  .demo-head{display:flex;gap:10px;align-items:center;justify-content:center;margin-bottom:10px}
+  .countdown{font-weight:800}
   /* honeypot */
   .hp{position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden}
 </style>
@@ -165,6 +177,28 @@
           <div class="muted center" id="status"></div>
         </section>
       </form>
+
+      <!-- Post-submit toast lives here -->
+      <div id="postSubmitToast" class="toast">
+        Thanks — your application was received. Watch the 60-second demo below.
+        Redirecting to your beta page in <span class="countdown" id="redirectIn">12</span>s…
+        <a id="continueNow" class="btn btn-outline" style="margin-left:10px;padding:6px 10px">Continue now</a>
+      </div>
+
+      <!-- DEMO PREVIEW -->
+      <section id="demo" class="demo-preview" aria-label="Instant Quote System Demo">
+        <div class="demo-head">
+          <h2 style="font-size:20px;margin:0">See It in Action — 60-Second Demo</h2>
+        </div>
+        <div class="demo-wrap">
+          <video id="demoVideo" controls playsinline muted poster="poster.jpg" style="width:100%;height:auto;display:block;border:0">
+            <source src="instant-quote-demo.mp4" type="video/mp4">
+            Your browser does not support video playback.
+          </video>
+        </div>
+        <p class="muted">Demo: real-time quote → instant PDF → CRM sync in under 1 minute.</p>
+      </section>
+
     </div>
     <p class="muted center">48-hour install or we credit your $250 deposit.</p>
   </div>
@@ -182,6 +216,9 @@
   const steps = Array.from(document.querySelectorAll('.step'));
   const bar = document.getElementById('bar');
   const statusEl = document.getElementById('status');
+  const toast = document.getElementById('postSubmitToast');
+  const redirectInEl = document.getElementById('redirectIn');
+  const continueBtn = document.getElementById('continueNow');
 
   // UTM/referrer
   const srcField = document.getElementById('utmSource');
@@ -203,7 +240,6 @@
     const prev = e.target.closest('[data-prev]');
     if(next){
       e.preventDefault();
-      // basic step validation: require the first input/select in the step to be filled
       const cur = steps[idx];
       const control = cur.querySelector('input[required],select[required],textarea[required]');
       if(control && !control.value){
@@ -218,6 +254,10 @@
     }
   });
 
+  // Redirect helpers
+  const redirectTarget = '/instant-quote-demo.html?stage=thankyou';
+  function goNow(){ location.href = redirectTarget; }
+
   // Submit
   form.addEventListener('submit', async (e)=>{
     e.preventDefault();
@@ -227,22 +267,21 @@
 
     // honeypot
     if ((fd.get('website2')||'').trim() !== '') {
-      // bot: pretend success then redirect
-      location.href = '/instant-quote-demo.html?stage=thankyou';
+      // bot: pretend success and show demo + countdown
+      afterSuccess();
       return;
     }
 
     const payload = Object.fromEntries(fd.entries());
 
-    // Map to your existing `applications` columns.
-    // Extra quiz answers are packed into `why` text so you don't need new columns.
+    // Pack extra answers into `why`
     const whyLines = [
       `Quoting: ${payload.quoting||''}`,
       `Lead response speed: ${payload.speed||''}`,
       `CRM: ${payload.crm||''}`,
       `Quotes/week: ${payload.quotes_per_week||''}`,
       `Wants mockup: ${fd.get('mockup') ? 'Yes' : 'No'}`
-    ].join(' | ');
+    ].filter(Boolean).join(' | ');
 
     const row = {
       name: payload.name || '',
@@ -255,19 +294,31 @@
       source: payload.source || ''
     };
 
-    // Insert
     try{
       const { error } = await supabase.from('applications').insert([row]);
       if(error) throw error;
-      // Redirect to your landing page (adjust path if needed)
-      location.href = '/instant-quote-demo.html?stage=thankyou';
+      afterSuccess();
     }catch(err){
       console.error(err);
       statusEl.textContent = 'Something went wrong. Please try again in a moment.';
     }
   });
 
-  // init progress
+  // After-submit UX: show toast, scroll to video, start countdown
+  function afterSuccess(){
+    toast.style.display = 'block';
+    document.getElementById('demo')?.scrollIntoView({behavior:'smooth', block:'start'});
+    try { document.getElementById('demoVideo')?.play(); } catch(e){}
+    let left = parseInt(redirectInEl.textContent || '12', 10);
+    const t = setInterval(()=>{
+      left = Math.max(0, left-1);
+      redirectInEl.textContent = String(left);
+      if(left<=0){ clearInterval(t); goNow(); }
+    }, 1000);
+    continueBtn.addEventListener('click', (e)=>{ e.preventDefault(); goNow(); }, { once:true });
+  }
+
+  // init
   setStep(0);
 </script>
 </body>
