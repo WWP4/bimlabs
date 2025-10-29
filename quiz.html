@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Beta Access — 60-Second Quiz</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --brand:#f1592a; --brand-dark:#c94722; --ink:#0b1220; --muted:#6b7280; --bg:#ffffff; --card:#f9fafb; --border:#e5e7eb;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:Inter,system-ui,Segoe UI,Roboto,Arial,sans-serif;background:#fff;color:#111}
+  .wrap{max-width:720px;margin:0 auto;padding:28px 18px}
+  .card{background:#fff;border:1px solid var(--border);border-radius:12px;box-shadow:0 8px 24px rgba(0,0,0,.06);padding:22px}
+  h1{margin:0 0 6px;font-size:28px;letter-spacing:.02em}
+  p.sub{margin:0 0 14px;color:var(--muted)}
+  .progress{height:8px;background:#f3f4f6;border-radius:999px;overflow:hidden;margin:10px 0 16px;border:1px solid #eef2f7}
+  .progress span{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--brand),var(--brand-dark));transition:width .25s ease}
+  .step{display:none}
+  .step.active{display:block;animation:fade .25s ease}
+  @keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+  .q{margin:6px 0 10px;font-weight:800}
+  .grid{display:grid;gap:10px}
+  .two{grid-template-columns:1fr 1fr}
+  @media(max-width:640px){.two{grid-template-columns:1fr}}
+  input,select,button,textarea{font-family:inherit;font-size:15px}
+  input,select,textarea{width:100%;padding:11px 12px;border:1px solid #d1d5db;border-radius:10px;background:#fff}
+  .row{display:grid;gap:10px}
+  .actions{display:flex;gap:10px;justify-content:space-between;margin-top:12px}
+  .btn{appearance:none;border:0;border-radius:10px;padding:12px 16px;font-weight:800;cursor:pointer;text-transform:uppercase;letter-spacing:.06em}
+  .btn-primary{background:var(--brand);color:#fff}
+  .btn-outline{background:#fff;color:var(--brand);border:2px solid var(--brand)}
+  .muted{color:var(--muted);font-size:13px;margin-top:10px}
+  .center{display:flex;justify-content:center}
+  .legal{font-size:12px;color:#6b7280;margin-top:10px}
+  /* honeypot */
+  .hp{position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden}
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card">
+      <h1>Beta Access — 60-Second Quiz</h1>
+      <p class="sub">Answer a few quick questions to confirm fit. No payment due today.</p>
+
+      <div class="progress"><span id="bar"></span></div>
+
+      <form id="quiz" novalidate>
+        <!-- Honeypot -->
+        <input type="text" name="website2" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+
+        <!-- UTM / source -->
+        <input type="hidden" name="source" id="utmSource">
+
+        <!-- STEP 1 -->
+        <section class="step active" data-step="1">
+          <div class="q">What type of work do you offer?</div>
+          <input name="trade" placeholder="e.g., Concrete Flatwork, Roofing, Fencing" required>
+          <div class="actions">
+            <span></span>
+            <button class="btn btn-primary" data-next>Next</button>
+          </div>
+        </section>
+
+        <!-- STEP 2 -->
+        <section class="step" data-step="2">
+          <div class="q">How do you currently give quotes?</div>
+          <select name="quoting" required>
+            <option value="" selected disabled>Select one</option>
+            <option>Site visit then estimate</option>
+            <option>Phone call then estimate</option>
+            <option>Email form then estimate</option>
+            <option>Instant/budget estimator on site</option>
+          </select>
+          <div class="actions">
+            <button class="btn btn-outline" data-prev>Back</button>
+            <button class="btn btn-primary" data-next>Next</button>
+          </div>
+        </section>
+
+        <!-- STEP 3 -->
+        <section class="step" data-step="3">
+          <div class="q">How fast do you respond to new leads?</div>
+          <select name="speed" required>
+            <option value="" selected disabled>Select one</option>
+            <option>Within 10 minutes</option>
+            <option>Within 1–2 hours</option>
+            <option>Same day</option>
+            <option>1–2 days</option>
+          </select>
+          <div class="actions">
+            <button class="btn btn-outline" data-prev>Back</button>
+            <button class="btn btn-primary" data-next>Next</button>
+          </div>
+        </section>
+
+        <!-- STEP 4 -->
+        <section class="step" data-step="4">
+          <div class="q">Do you use a CRM?</div>
+          <select name="crm" required>
+            <option value="" selected disabled>Select one</option>
+            <option>Jobber</option>
+            <option>ServiceTitan</option>
+            <option>GoHighLevel</option>
+            <option>HubSpot</option>
+            <option>None / Other</option>
+          </select>
+          <div class="actions">
+            <button class="btn btn-outline" data-prev>Back</button>
+            <button class="btn btn-primary" data-next>Next</button>
+          </div>
+        </section>
+
+        <!-- STEP 5 -->
+        <section class="step" data-step="5">
+          <div class="q">How soon are you looking to launch an instant-quote tool?</div>
+          <select name="timeline" required>
+            <option value="" selected disabled>Select one</option>
+            <option>Immediately</option>
+            <option>Within 30 Days</option>
+            <option>Just Exploring</option>
+          </select>
+          <div class="actions">
+            <button class="btn btn-outline" data-prev>Back</button>
+            <button class="btn btn-primary" data-next>Next</button>
+          </div>
+        </section>
+
+        <!-- STEP 6 -->
+        <section class="step" data-step="6">
+          <div class="q">About how many quotes do you send per week?</div>
+          <select name="quotes_per_week" required>
+            <option value="" selected disabled>Select one</option>
+            <option>0–5</option>
+            <option>6–15</option>
+            <option>16–30</option>
+            <option>31+</option>
+          </select>
+          <label style="display:flex;align-items:center;gap:8px;margin-top:10px">
+            <input type="checkbox" name="mockup" value="yes"> I’d like a free mockup for my company
+          </label>
+          <div class="actions">
+            <button class="btn btn-outline" data-prev>Back</button>
+            <button class="btn btn-primary" data-next>Next</button>
+          </div>
+        </section>
+
+        <!-- STEP 7 (contact) -->
+        <section class="step" data-step="7">
+          <div class="q">Contact details</div>
+          <div class="row two">
+            <input name="name" placeholder="Full Name" required>
+            <input name="company" placeholder="Company" required>
+          </div>
+          <div class="row two">
+            <input type="email" name="email" placeholder="Email" required>
+            <input name="phone" placeholder="Phone" required>
+          </div>
+          <div class="legal">By submitting, you agree to be contacted by email/SMS about your quote tool. Unsubscribe anytime.</div>
+          <div class="actions">
+            <button class="btn btn-outline" data-prev>Back</button>
+            <button class="btn btn-primary" type="submit">Submit Application</button>
+          </div>
+          <div class="muted center" id="status"></div>
+        </section>
+      </form>
+    </div>
+    <p class="muted center">48-hour install or we credit your $250 deposit.</p>
+  </div>
+
+<script type="module">
+  import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+
+  // Supabase (same project as your landing page)
+  const supabaseUrl = 'https://gdwodqwhjrksjhxazuio.supabase.co';
+  const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imdkd29kcXdoanJrc2poeGF6dWlvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTEzMTU3NzcsImV4cCI6MjA2Njg5MTc3N30.Zq0lZRK6X6vVVwdhqkNVwMLsGPOhDFrYoEyUwtkbG0o';
+  const supabase = createClient(supabaseUrl, supabaseAnonKey);
+
+  // Wizard logic
+  const form = document.getElementById('quiz');
+  const steps = Array.from(document.querySelectorAll('.step'));
+  const bar = document.getElementById('bar');
+  const statusEl = document.getElementById('status');
+
+  // UTM/referrer
+  const srcField = document.getElementById('utmSource');
+  const utm = new URLSearchParams(location.search).toString();
+  srcField.value = utm || document.referrer || 'direct';
+
+  let idx = 0;
+  const total = steps.length;
+
+  function setStep(i){
+    steps.forEach((s,k)=>s.classList.toggle('active', k===i));
+    const pct = Math.round(((i+1)/total)*100);
+    bar.style.width = pct+'%';
+    idx = i;
+  }
+
+  document.addEventListener('click', (e)=>{
+    const next = e.target.closest('[data-next]');
+    const prev = e.target.closest('[data-prev]');
+    if(next){
+      e.preventDefault();
+      // basic step validation: require the first input/select in the step to be filled
+      const cur = steps[idx];
+      const control = cur.querySelector('input[required],select[required],textarea[required]');
+      if(control && !control.value){
+        control.reportValidity && control.reportValidity();
+        return;
+      }
+      setStep(Math.min(idx+1, total-1));
+    }
+    if(prev){
+      e.preventDefault();
+      setStep(Math.max(idx-1, 0));
+    }
+  });
+
+  // Submit
+  form.addEventListener('submit', async (e)=>{
+    e.preventDefault();
+    statusEl.textContent = '';
+
+    const fd = new FormData(form);
+
+    // honeypot
+    if ((fd.get('website2')||'').trim() !== '') {
+      // bot: pretend success then redirect
+      location.href = '/instant-quote-demo.html?stage=thankyou';
+      return;
+    }
+
+    const payload = Object.fromEntries(fd.entries());
+
+    // Map to your existing `applications` columns.
+    // Extra quiz answers are packed into `why` text so you don't need new columns.
+    const whyLines = [
+      `Quoting: ${payload.quoting||''}`,
+      `Lead response speed: ${payload.speed||''}`,
+      `CRM: ${payload.crm||''}`,
+      `Quotes/week: ${payload.quotes_per_week||''}`,
+      `Wants mockup: ${fd.get('mockup') ? 'Yes' : 'No'}`
+    ].join(' | ');
+
+    const row = {
+      name: payload.name || '',
+      company: payload.company || '',
+      email: payload.email || '',
+      phone: payload.phone || '',
+      trade: payload.trade || '',
+      timeline: payload.timeline || '',
+      why: whyLines,
+      source: payload.source || ''
+    };
+
+    // Insert
+    try{
+      const { error } = await supabase.from('applications').insert([row]);
+      if(error) throw error;
+      // Redirect to your landing page (adjust path if needed)
+      location.href = '/instant-quote-demo.html?stage=thankyou';
+    }catch(err){
+      console.error(err);
+      statusEl.textContent = 'Something went wrong. Please try again in a moment.';
+    }
+  });
+
+  // init progress
+  setStep(0);
+</script>
+</body>
+</html>
