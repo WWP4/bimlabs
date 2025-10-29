@@ -313,19 +313,13 @@
     }
   });
 
-  // After-submit UX: show toast, scroll to video, start countdown
-  function afterSuccess(){
-    toast.style.display = 'block';
-    document.getElementById('demo')?.scrollIntoView({behavior:'smooth', block:'start'});
-    try { document.getElementById('demoVideo')?.play(); } catch(e){}
-    let left = parseInt(redirectInEl.textContent || '12', 10);
-    const t = setInterval(()=>{
-      left = Math.max(0, left-1);
-      redirectInEl.textContent = String(left);
-      if(left<=0){ clearInterval(t); goNow(); }
-    }, 1000);
-    continueBtn.addEventListener('click', (e)=>{ e.preventDefault(); goNow(); }, { once:true });
-  }
+ function afterSuccess(){
+  toast.style.display = 'block';
+  document.getElementById('demo')?.scrollIntoView({behavior:'smooth', block:'start'});
+  try { document.getElementById('demoVideo')?.play(); } catch(e){}
+  goNow(); // immediate redirect, no countdown
+}
+
 
   // init
   setStep(0);
