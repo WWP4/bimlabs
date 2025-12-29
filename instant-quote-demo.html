@@ -308,8 +308,8 @@
 
   <!-- ===== Campaign Countdown Bar (1-week) ===== -->
   <div id="campaignBar" class="campaign-bar"
-       data-start="2025-10-19T00:00:00-05:00"
-       data-end="2025-10-26T23:59:59-05:00">
+       data-start="2025-12-29T00:00:00-05:00"
+       data-end="2025-2-5T23:59:59-05:00">
     <div class="camp-inner">
       <div class="camp-left">
         <strong>Launch Pricing Week</strong>
@@ -668,25 +668,6 @@ Apply for Beta Access
     })();
   </script>
 
-  <!-- 2-hour countdown in Availability strip -->
-  <script>
-    (function(){
-      const el = document.getElementById('avail-timer');
-      if(!el) return;
-      const end = Date.now() + 2*60*60*1000; // 2 hours
-      const pad = n => String(n).padStart(2,'0');
-      function tick(){
-        const diff = Math.max(0, end - Date.now());
-        const h = Math.floor(diff/3600000);
-        const m = Math.floor((diff%3600000)/60000);
-        const s = Math.floor((diff%60000)/1000);
-        el.textContent = `${pad(h)}:${pad(m)}:${pad(s)}`;
-        if(diff===0) clearInterval(t);
-      }
-      tick();
-      const t = setInterval(tick, 1000);
-    })();
-  </script>
 
   <!-- Countdown + progress for 1-week campaign bar -->
   <script>
