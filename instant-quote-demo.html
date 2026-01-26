@@ -3,770 +3,684 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Concrete Flatwork — Instant Quote</title>
-  
+  <title>BIM Labs — Instant Quote System</title>
+
   <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-  <!-- AOS CSS (for fade animations used below) -->
+  <!-- AOS -->
   <link rel="stylesheet" href="https://unpkg.com/aos@2.3.4/dist/aos.css">
 
   <style>
     :root{
-      --brand:#f1592a; /* construction orange */
-      --brand-dark:#c94722;
-      --ink:#0b1220;
-      --muted:#6b7280;
-      --bg:#ffffff;
-      --card:#f9fafb;
-      --shadow:0 6px 18px rgba(0,0,0,.1);
-      --radius:12px;
-      --border:#e5e7eb;
+      /* Brand variables (overridden via URL params or the brand picker) */
+      --brand:#0b5fff;
+      --brand2:#073b9a;
+
+      /* Neutral system */
+      --bg:#0b0f17;
+      --surface:#0f1624;
+      --card:#121b2c;
+      --ink:#eaf0ff;
+      --muted:rgba(234,240,255,.72);
+      --muted2:rgba(234,240,255,.55);
+      --border:rgba(234,240,255,.12);
+
+      --shadow: 0 14px 50px rgba(0,0,0,.35);
+      --shadow2: 0 10px 30px rgba(0,0,0,.28);
+      --radius:16px;
+
+      --max:1200px;
     }
+
     *{box-sizing:border-box}
-    body{margin:0;font-family:Inter,system-ui,Segoe UI,Roboto,Arial,sans-serif;color:var(--ink);background:var(--bg)}
-    h1,h2,h3{font-family:Oswald,Inter,system-ui,sans-serif;letter-spacing:.02em;color:#111827}
-    .container{max-width:1200px;margin:0 auto;padding:40px 20px}
-    .badge{display:inline-block;background:var(--brand);color:#fff;padding:6px 14px;border-radius:999px;font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.09em}
-    .btn{appearance:none;border:0;border-radius:8px;padding:12px 16px;font-weight:800;cursor:pointer;text-transform:uppercase;letter-spacing:.06em}
-    .btn-primary{background:var(--brand);color:#fff}
-    .btn-outline{background:transparent;border:2px solid var(--brand);color:var(--brand)}
-    .card{background:#fff;border:1px solid var(--border);padding:20px;border-radius:var(--radius);box-shadow:var(--shadow)}
-    .pill{border:1px solid #e5e7eb;border-radius:999px;padding:6px 10px;background:#fff;color:#374151;font-size:12px}
-    .footer{text-align:center;margin:40px 0 26px;color:#6b7280;font-size:12px}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      font-family:Inter,system-ui,Segoe UI,Roboto,Arial,sans-serif;
+      background: radial-gradient(1200px 700px at 70% -10%, rgba(11,95,255,.22), transparent 60%),
+                  radial-gradient(1000px 600px at 10% 0%, rgba(7,59,154,.18), transparent 60%),
+                  var(--bg);
+      color:var(--ink);
+      overflow-x:hidden;
+    }
+    h1,h2,h3{font-family:Oswald,Inter,system-ui,sans-serif; letter-spacing:.02em; margin:0}
+    p{margin:0; line-height:1.6}
+    a{color:inherit; text-decoration:none}
+    .container{max-width:var(--max); margin:0 auto; padding:0 20px}
 
-    /* ===== Countdown Bar ===== */
-    .campaign-bar{
+    /* Buttons */
+    .btn{
+      appearance:none;border:0;cursor:pointer;
+      padding:12px 16px;border-radius:12px;
+      font-weight:800; letter-spacing:.04em; text-transform:uppercase;
+      display:inline-flex; align-items:center; justify-content:center; gap:10px;
+      transition: transform .15s ease, box-shadow .15s ease, background .15s ease, border-color .15s ease;
+      user-select:none;
+      white-space:nowrap;
+    }
+    .btn:active{transform:translateY(1px)}
+    .btn-primary{
+      background: linear-gradient(135deg, var(--brand), var(--brand2));
+      color:#fff;
+      box-shadow: 0 12px 30px rgba(0,0,0,.35);
+    }
+    .btn-primary:hover{box-shadow:0 18px 45px rgba(0,0,0,.45)}
+    .btn-ghost{
+      background: rgba(255,255,255,.06);
+      border: 1px solid var(--border);
+      color:var(--ink);
+    }
+    .btn-ghost:hover{background: rgba(255,255,255,.09)}
+    .btn-outline{
+      background: transparent;
+      border: 2px solid rgba(255,255,255,.18);
+      color:var(--ink);
+    }
+    .btn-outline:hover{border-color: rgba(255,255,255,.32)}
+    .btn-sm{padding:9px 12px; border-radius:11px; font-size:12px}
+
+    /* Pill / badges */
+    .badge{
+      display:inline-flex; align-items:center; gap:8px;
+      padding:7px 12px; border-radius:999px;
+      background: rgba(255,255,255,.06);
+      border:1px solid var(--border);
+      color:rgba(234,240,255,.9);
+      font-size:12px;
+      font-weight:800;
+      text-transform:uppercase;
+      letter-spacing:.09em;
+    }
+    .dot{
+      width:8px;height:8px;border-radius:999px;
+      background: linear-gradient(135deg,var(--brand),var(--brand2));
+      box-shadow: 0 0 0 3px rgba(11,95,255,.16);
+    }
+
+    /* Top bar */
+    .topbar{
       position:sticky; top:0; z-index:9999;
-      background:var(--brand); color:#fff;
-      border-bottom:1px solid rgba(255,255,255,.18);
-      box-shadow:0 4px 18px rgba(0,0,0,.15);
+      backdrop-filter: blur(10px);
+      background: rgba(11,15,23,.72);
+      border-bottom:1px solid var(--border);
     }
-    .camp-inner{
-      max-width:1200px; margin:0 auto; padding:8px 12px;
+    .topbar-inner{
+      max-width:var(--max); margin:0 auto; padding:12px 20px;
       display:flex; align-items:center; justify-content:space-between; gap:12px;
     }
-    .camp-left{ display:flex; align-items:center; gap:10px; font-size:14px; letter-spacing:.02em }
-    .camp-divider{ opacity:.6 }
-    .camp-right{ display:flex; gap:8px }
-    .btn-sm{ padding:8px 12px; border-radius:6px; font-size:12px; letter-spacing:.05em }
-    .camp-progress{ height:3px; background:rgba(255,255,255,.18) }
-    .camp-progress span{
-      display:block; height:100%; width:0%;
-      background:linear-gradient(90deg,#fff 0%,rgba(255,255,255,.85) 100%);
-      transition:width .8s ease;
+    .brandmark{
+      display:flex; align-items:center; gap:10px;
+      font-weight:900; letter-spacing:.02em;
     }
-    @media (max-width:640px){
-      .camp-left{ font-size:13px }
-      .btn-sm{ padding:7px 10px; font-size:11px }
+    .logo-box{
+      width:34px;height:34px;border-radius:12px;
+      background: linear-gradient(135deg,var(--brand),var(--brand2));
+      box-shadow: 0 14px 35px rgba(0,0,0,.3);
+    }
+    .nav-actions{display:flex; gap:10px; flex-wrap:wrap}
+
+    /* Hero */
+    .hero{
+      padding:70px 0 28px;
+    }
+    .hero-grid{
+      display:grid; grid-template-columns: 1.15fr .85fr; gap:22px; align-items:stretch;
+    }
+    @media (max-width:980px){ .hero-grid{grid-template-columns:1fr; } }
+
+    .hero-left{
+      border:1px solid var(--border);
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding:34px;
+      position:relative;
+      overflow:hidden;
+    }
+    .hero-left::before{
+      content:"";
+      position:absolute; inset:-2px;
+      background: radial-gradient(600px 250px at 20% 0%, rgba(11,95,255,.25), transparent 65%),
+                  radial-gradient(500px 250px at 80% 10%, rgba(7,59,154,.20), transparent 65%);
+      pointer-events:none;
+    }
+    .hero-left > *{position:relative}
+    .hero h1{
+      font-size:52px;
+      line-height:1.03;
+      margin-top:14px;
+    }
+    @media (max-width:560px){ .hero h1{font-size:40px} }
+    .hero-sub{
+      margin-top:12px;
+      color:var(--muted);
+      font-size:16px;
+      max-width:62ch;
+    }
+    .hero-ctas{
+      margin-top:18px;
+      display:flex; gap:12px; flex-wrap:wrap;
+    }
+    .hero-kpis{
+      margin-top:18px;
+      display:flex; flex-wrap:wrap; gap:10px;
+    }
+    .kpi{
+      display:inline-flex; align-items:center; gap:10px;
+      padding:10px 12px; border-radius:14px;
+      background: rgba(255,255,255,.05);
+      border:1px solid var(--border);
+      color: rgba(234,240,255,.86);
+      font-size:13px;
+    }
+    .kpi strong{font-family:Oswald,Inter,sans-serif; font-size:18px; letter-spacing:.04em}
+
+    /* Right card (brand matcher + fast explanation) */
+    .hero-right{
+      border:1px solid var(--border);
+      background: rgba(255,255,255,.04);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow2);
+      padding:22px;
+      display:flex; flex-direction:column; gap:14px;
+    }
+    .mini-title{font-size:18px; color: rgba(234,240,255,.92)}
+    .mini-text{color:var(--muted); font-size:14px}
+    .mini-box{
+      background: rgba(0,0,0,.18);
+      border:1px solid var(--border);
+      border-radius:14px;
+      padding:14px;
     }
 
-/* ===== HERO (fixed click + lighter overlay) ===== */
-.hero-video{
-  position:relative;
-  height:420px;
-  border-radius:12px;
-  overflow:hidden;
-  box-shadow:var(--shadow);
-  border-bottom:4px solid var(--brand);
-  z-index:1;
-}
-.hero-video video{
-  position:absolute;
-  inset:0;
-  width:100%;height:100%;
-  object-fit:cover;
-  filter:brightness(.9);
-  opacity:0;
-  animation:heroFadeIn 1.2s ease-in forwards;
-}
-/* lighter overlay + no pointer blocking */
-.hero-video::after{
-  content:"";
-  position:absolute;
-  inset:0;
-  background:linear-gradient(
-    180deg,
-    rgba(0,0,0,.15) 0%,
-    rgba(0,0,0,.08) 50%,
-    rgba(0,0,0,.15) 100%
-  );
-  pointer-events:none; /* lets clicks pass through */
-}
-.hero-overlay{
-  position:absolute;
-  inset:0;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  text-align:center;
-  color:#fff;
-  padding:24px;
-  z-index:2;
-}
-.hero-overlay h1{
-  color:#fff;
-  font-size:40px;
-  letter-spacing:.01em;
-  line-height:1.15;
-  margin:10px 0 10px;
-  text-shadow:0 1px 3px rgba(0,0,0,.25);
-}
-.hero-overlay p{
-  max-width:840px;
-  margin:0 auto 14px;
-  color:#f9fafb;
-}
-.hero-cta{
-  display:flex;
-  gap:12px;
-  margin-top:8px;
-  flex-wrap:wrap;
-  justify-content:center;
-}
-.hero-cta .btn,
-.hero-cta .btn-outline{
-  background:var(--brand);
-  color:#fff;
-  border:none;
-  box-shadow:0 3px 10px rgba(0,0,0,.15);
-}
-.hero-cta .btn-outline:hover{
-  background:var(--brand-dark);
-}
-@media (max-width:720px){
-  .hero-video{height:360px;}
-  .hero-overlay h1{font-size:30px;}
-}
-@keyframes heroFadeIn{to{opacity:1;}}
-@media (prefers-reduced-motion:reduce){
-  .hero-video video{display:none;}
-  .hero-video{background:#111 url('poster.jpg') center/cover no-repeat;}
-}
-
-
-    /* ===== Instant Value ===== */
-    .value-impact { 
-      background: linear-gradient(180deg, #fff 0%, #f9fafb 100%); padding: 48px 0 56px;
-      border-top: 1px solid var(--border);
+    .brand-row{
+      display:grid; grid-template-columns: 1fr 1fr; gap:10px;
     }
-    .vi-head { text-align:center; margin-bottom: 18px; }
-    .vi-title { font-size: 34px; margin: 10px 0 6px; letter-spacing: .02em; }
-    .vi-sub { max-width: 820px; margin: 0 auto 6px; color: var(--muted); }
-    .vi-grid { display:grid; grid-template-columns: repeat(4,1fr); gap: 14px; margin-top: 14px; }
-    @media (max-width:1100px){ .vi-grid{ grid-template-columns: repeat(2,1fr);} }
-    @media (max-width:640px){ .vi-grid{ grid-template-columns: 1fr; } }
-    .vi-card{ background:#fff; border:1px solid var(--border); border-radius: var(--radius); padding:16px; box-shadow: var(--shadow); transition: transform .2s ease, box-shadow .2s ease; }
-    .vi-card:hover { transform: translateY(-2px); box-shadow: 0 12px 30px rgba(0,0,0,.12); }
-    .vi-card h3{ margin:10px 0 6px; font-size:18px; color:#111827; }
-    .vi-card p{ margin:0; color:#4b5563; font-size:14px; line-height:1.55; }
-    .vi-icon{ width:40px; height:40px; border-radius:10px; background: rgba(241,89,42,.12); color: var(--brand); display:flex; align-items:center; justify-content:center; }
-    .vi-kpis{ display:flex; gap:10px; flex-wrap:wrap; justify-content:center; margin-top:16px; }
-    .vi-actions{ display:flex; gap:12px; justify-content:center; margin-top:18px; }
-    .value-impact .badge{ background: var(--brand); }
-
-    /* ===== Process ===== */
-    .process{ background:#fff; padding:56px 0; border-top:1px solid var(--border); }
-    .proc-head{ text-align:center; margin-bottom:18px; }
-    .proc-title{ font-size:32px; margin:10px 0 6px; letter-spacing:.02em; }
-    .proc-sub{ max-width:820px; margin:0 auto; color:var(--muted); }
-    .proc-steps{ list-style:none; padding:0; margin:18px 0 0; display:grid; grid-template-columns: repeat(5,1fr); gap:14px; }
-    @media (max-width:1100px){ .proc-steps{ grid-template-columns: repeat(3,1fr);} }
-    @media (max-width:640px){ .proc-steps{ grid-template-columns: 1fr; } }
-    .proc-step{ background:#fff; border:1px solid var(--border); border-radius:var(--radius); padding:16px; box-shadow:var(--shadow); position:relative; transition:transform .2s ease, box-shadow .2s ease; }
-    .proc-step:hover{ transform:translateY(-2px); box-shadow:0 12px 30px rgba(0,0,0,.12); }
-    .proc-index{ position:absolute; top:12px; right:12px; width:28px; height:28px; border-radius:999px; background:rgba(241,89,42,.12); color:var(--brand); display:flex; align-items:center; justify-content:center; font-weight:800; font-size:13px; }
-    .proc-icon{ width:42px; height:42px; border-radius:10px; background:rgba(241,89,42,.12); color:var(--brand); display:flex; align-items:center; justify-content:center; }
-    .proc-step h3{ margin:10px 0 6px; font-size:18px; color:#111827; }
-    .proc-step p{ margin:0; color:#4b5563; font-size:14px; line-height:1.55; }
-    .proc-cta{ display:flex; gap:12px; justify-content:center; margin-top:18px; }
-
-
-    /* ===== Availability ===== */
-    .avail{ background:linear-gradient(180deg,#f9fafb 0%,#fff 100%); padding:56px 0; border-top:1px solid var(--border); }
-    .avail-head{ text-align:center; margin-bottom:18px; }
-    .avail-title{ font-size:32px; margin:10px 0 6px; letter-spacing:.02em; }
-    .avail-sub{ max-width:820px; margin:0 auto; color:var(--muted); }
-    .meters{ display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-top:12px; }
-    @media (max-width:1100px){ .meters{ grid-template-columns:1fr 1fr; } }
-    @media (max-width:640px){ .meters{ grid-template-columns:1fr; } }
-    .meter{ background:#fff; border:1px solid var(--border); border-radius:var(--radius); padding:16px; box-shadow:var(--shadow); }
-    .meter-top{ display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:10px; }
-    .meter h3{ margin:0; font-size:18px; color:#111827; }
-    .meter-note{ font-weight:700; color:#111827; }
-    .bar{ position:relative; height:12px; border-radius:999px; background:#eef2f7; overflow:hidden; border:1px solid #e6ebf2; }
-    .bar-alt{ background:#f3f4f6; }
-    .fill{ position:absolute; left:0; top:0; bottom:0; width:0%; background:linear-gradient(90deg, var(--brand) 0%, var(--brand-dark) 100%); border-radius:999px; }
-    .meter .help{ margin:8px 0 0; font-size:12px; color:#6b7280; }
-
-    .avail-strip{ margin-top:18px; }
-    .strip-inner{
-      display:flex; align-items:center; justify-content:space-between; gap:12px;
-      background:#fff; border:2px solid var(--brand); border-radius:12px; padding:12px 14px; box-shadow:var(--shadow);
+    @media (max-width:980px){ .brand-row{grid-template-columns:1fr} }
+    .field label{
+      display:block; font-size:12px; color: var(--muted2); margin-bottom:6px;
+      text-transform:uppercase; letter-spacing:.08em; font-weight:800;
     }
-    .strip-copy{ font-size:14px; color:#111827; }
-    .timer{ font-family:Oswald,Inter,sans-serif; font-size:18px; letter-spacing:.04em; margin-left:6px; }
-    .strip-actions{ display:flex; gap:10px; flex-wrap:wrap; }
+    .field input{
+      width:100%; padding:12px 12px;
+      border-radius:12px;
+      border:1px solid rgba(255,255,255,.16);
+      background: rgba(255,255,255,.06);
+      color: var(--ink);
+      outline:none;
+      font-weight:700;
+    }
+    .field input::placeholder{color: rgba(234,240,255,.45)}
+    .field input:focus{border-color: rgba(255,255,255,.30)}
 
-    /* ===== Beta Explainer ===== */
-.beta{
-  position:relative;
-  background:linear-gradient(180deg,#fff 0%,#f9fafb 50%,#fff 100%);
-  padding:80px 0 90px;
-  overflow:hidden;
-}
-.beta::before{
-  content:""; position:absolute; top:0; left:0; right:0; height:220px;
-  background:radial-gradient(circle at 50% 0%, rgba(241,89,42,.12), transparent 70%);
-}
-.beta-head{text-align:center; margin-bottom:50px; position:relative;}
-.beta-title{font-size:34px;margin:12px 0 10px;letter-spacing:.02em;position:relative;display:inline-block;}
-.beta-underline{position:absolute;bottom:-6px;left:50%;transform:translateX(-50%);
-  width:60%;height:3px;background:var(--brand);border-radius:999px;opacity:.7;animation:growLine 1.8s ease-out forwards;}
-@keyframes growLine{from{width:0;opacity:0}to{width:60%;opacity:.7}}
-.beta-sub{max-width:820px;margin:0 auto;color:var(--muted);line-height:1.6;}
+    /* Section shells */
+    section{position:relative}
+    .section{
+      padding:64px 0;
+    }
+    .section-head{
+      display:flex; align-items:flex-end; justify-content:space-between; gap:16px;
+      margin-bottom:16px;
+    }
+    @media (max-width:820px){ .section-head{flex-direction:column; align-items:flex-start} }
+    .section-head h2{font-size:34px}
+    .section-head p{color:var(--muted); max-width:70ch}
 
-.beta-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:60px;}
-@media(max-width:900px){.beta-grid{grid-template-columns:1fr;}}
+    /* Cards grid */
+    .grid-3{display:grid; grid-template-columns:repeat(3,1fr); gap:14px}
+    @media (max-width:980px){.grid-3{grid-template-columns:1fr}}
+    .card{
+      background: rgba(255,255,255,.04);
+      border:1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow2);
+      padding:18px;
+      transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+      overflow:hidden;
+    }
+    .card:hover{
+      transform: translateY(-2px);
+      box-shadow: 0 18px 55px rgba(0,0,0,.42);
+      border-color: rgba(255,255,255,.22);
+    }
+    .icon{
+      width:42px;height:42px;border-radius:14px;
+      background: rgba(255,255,255,.06);
+      border:1px solid var(--border);
+      display:flex; align-items:center; justify-content:center;
+    }
+    .card h3{font-size:20px; margin-top:12px}
+    .card p{color:var(--muted); margin-top:8px; font-size:14px}
 
-.beta-card{
-  background:#fff;border:1px solid var(--border);border-radius:var(--radius);
-  box-shadow:var(--shadow);padding:24px 26px;transition:transform .25s ease,box-shadow .25s ease;
-}
-.beta-card:hover{transform:translateY(-3px);box-shadow:0 12px 40px rgba(0,0,0,.12);}
-.beta-card h3{margin-top:0;margin-bottom:10px;color:var(--brand);}
-.beta-card p{color:#4b5563;font-size:15px;line-height:1.6;}
-.beta-list{margin:14px 0 0;padding-left:20px;color:#374151;font-size:14px;}
-.beta-list li{margin-bottom:6px;}
-.beta-note{margin-top:10px;font-size:13px;color:#6b7280;}
+    /* Live demo */
+    .demo-wrap{
+      border:1px solid rgba(255,255,255,.16);
+      border-radius: 18px;
+      overflow:hidden;
+      box-shadow: var(--shadow);
+      background: rgba(0,0,0,.25);
+    }
+    .demo-top{
+      display:flex; align-items:center; justify-content:space-between; gap:10px;
+      padding:12px 14px;
+      border-bottom:1px solid var(--border);
+      background: rgba(255,255,255,.04);
+      flex-wrap:wrap;
+    }
+    .demo-top .left{display:flex; align-items:center; gap:10px}
+    .lights{display:flex; gap:6px}
+    .light{width:10px;height:10px;border-radius:999px;background:rgba(255,255,255,.2)}
+    .demo-top .meta{color:var(--muted2); font-size:12px}
+    iframe{display:block; width:100%; height:680px; border:0}
+    @media (max-width:560px){ iframe{height:760px} }
 
-.beta-steps{margin:0;padding-left:20px;font-size:14px;color:#374151;counter-reset:step;}
-.beta-steps li{margin-bottom:8px;position:relative;}
-.beta-steps li::before{
-  counter-increment:step;content:counter(step);
-  position:absolute;left:-26px;top:0;
-  width:18px;height:18px;border-radius:4px;
-  background:rgba(241,89,42,.12);color:var(--brand);
-  display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;
-}
-.beta-band{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px;}
-.beta-band .pill{border-color:var(--brand);color:var(--brand);background:rgba(241,89,42,.06);}
+    /* Pricing */
+    .pricing-grid{display:grid; grid-template-columns: 1fr 1fr; gap:14px}
+    @media (max-width:980px){ .pricing-grid{grid-template-columns:1fr} }
+    .price{
+      padding:22px;
+      background: rgba(255,255,255,.04);
+      border:1px solid rgba(255,255,255,.14);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow2);
+      overflow:hidden;
+      position:relative;
+    }
+    .price.primary{
+      border-color: rgba(255,255,255,.22);
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+    }
+    .price .tag{
+      display:inline-flex; align-items:center; gap:8px;
+      padding:6px 10px; border-radius:999px;
+      background: rgba(255,255,255,.06);
+      border:1px solid var(--border);
+      font-size:12px; font-weight:900; letter-spacing:.08em; text-transform:uppercase;
+      color: rgba(234,240,255,.9);
+    }
+    .price h3{font-size:26px; margin-top:12px}
+    .price .num{
+      font-family:Oswald,Inter,sans-serif;
+      font-size:54px; letter-spacing:.03em;
+      margin-top:8px;
+      line-height:1;
+    }
+    .price .num small{
+      font-size:16px; color: var(--muted2); font-family:Inter,system-ui,sans-serif; font-weight:800;
+    }
+    .list{margin:14px 0 0; padding-left:18px; color:var(--muted); font-size:14px}
+    .list li{margin:8px 0}
+    .price .actions{margin-top:16px; display:flex; gap:10px; flex-wrap:wrap}
+    .fine{margin-top:10px; font-size:12px; color: var(--muted2)}
 
-.beta-math{display:flex;gap:20px;justify-content:center;flex-wrap:wrap;margin-bottom:60px;}
-.math-card{display:flex;align-items:center;gap:12px;background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:14px 18px;box-shadow:var(--shadow);}
-.math-num{font-family:Oswald,Inter,sans-serif;font-size:34px;color:var(--brand);font-weight:700;}
-.math-copy{color:#374151;font-size:14px;max-width:220px;line-height:1.5;}
+    /* Footer */
+    .footer{
+      padding:40px 0 55px;
+      border-top:1px solid var(--border);
+      color:var(--muted2);
+      font-size:12px;
+      text-align:center;
+    }
 
-.beta-compare{margin-bottom:60px;}
-.cmp-head{text-align:center;margin-bottom:20px;}
-.cmp-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
-@media(max-width:900px){.cmp-grid{grid-template-columns:1fr;}}
-.cmp-col{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow);}
-.cmp-col h4{margin-top:0;margin-bottom:10px;color:#111827;}
-.cmp-col ul{margin:0;padding-left:18px;color:#374151;font-size:14px;line-height:1.55;}
-.cmp-good{border:2px solid var(--brand);}
-
-.beta-price{text-align:center;}
-.price-inner{max-width:720px;margin:0 auto;background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:32px;box-shadow:0 8px 28px rgba(0,0,0,.08);}
-.price-inner h3{color:var(--brand);margin-top:0;}
-.price-inner p{color:#374151;line-height:1.6;}
-.beta-cta{display:flex;justify-content:center;gap:12px;margin-top:16px;}
-/* ===== Apply Section ===== */
-.apply-section{ background:#fff; padding:64px 0; border-top:1px solid var(--border); }
-.apply-head{ text-align:center; margin-bottom:22px; }
-.apply-head h2{ font-family:Oswald,Inter,sans-serif; font-size:32px; margin:10px 0 6px; }
-.apply-sub{ max-width:780px; margin:0 auto; color:var(--muted); }
-
-.apply-form{
-  max-width:820px; margin:0 auto;
-  background:#f9fafb; border:1px solid var(--border); border-radius:var(--radius);
-  padding:28px; box-shadow:var(--shadow);
-}
-.apply-form .row{ display:grid; grid-template-columns:1fr 1fr; gap:12px; }
-@media (max-width:780px){ .apply-form .row{ grid-template-columns:1fr; } }
-
-.apply-form label{ font-weight:600; font-size:13px; color:#374151; margin-bottom:6px; display:block; }
-.apply-form input, .apply-form select, .apply-form textarea{
-  width:100%; padding:10px; border:1px solid #d1d5db; border-radius:8px; font-size:14px; background:#fff;
-}
-.apply-form textarea{ resize:vertical; }
-
-.apply-actions{ display:flex; gap:12px; flex-wrap:wrap; margin-top:14px; }
-.agree{ margin:12px 0 2px; font-size:13px; color:#374151; }
-.agree input{ margin-right:6px; }
-
-/* honeypot: visually hidden but in DOM for bots */
-.apply-form .hp{
-  position:absolute; left:-9999px; top:auto; width:1px; height:1px; overflow:hidden; opacity:0;
-}
-
+    /* Reduced motion */
+    @media (prefers-reduced-motion:reduce){
+      html{scroll-behavior:auto}
+      .btn,.card{transition:none}
+    }
   </style>
 </head>
 
 <body>
 
-  <!-- ===== Campaign Countdown Bar (1-week) ===== -->
-  <div id="campaignBar" class="campaign-bar"
-       data-start="2025-12-29T00:00:00-05:00"
-       data-end="2026-02-05T23:59:59-05:00"
-    <div class="camp-inner">
-      <div class="camp-left">
-        <strong>Launch Pricing Week</strong>
-        <span class="camp-divider">•</span>
-        <span>Ends in <span id="campTimer">—:—:—</span></span>
+  <!-- Topbar -->
+  <div class="topbar">
+    <div class="topbar-inner">
+      <div class="brandmark">
+        <div class="logo-box" aria-hidden="true"></div>
+        <div>
+          <div style="font-weight:900">BIM Labs</div>
+          <div style="font-size:12px;color:var(--muted2);margin-top:2px">Instant Quote Systems</div>
+        </div>
       </div>
-      <div class="camp-right">
-        <a class="btn btn-primary btn-sm" href="#pricing">APPLY NOW</a>
-        <a class="btn btn-outline" 
-   href="https://buy.stripe.com/cNi7sDcMAbAJeYcgW4bEA00" 
-   target="_blank">
-   Skip Application – Pay $250 Deposit
-</a>
 
+      <div class="nav-actions">
+        <a class="btn btn-ghost btn-sm" href="#live-demo">Try Live Demo</a>
+        <a class="btn btn-primary btn-sm" href="#pricing">Pricing</a>
+        <a class="btn btn-outline btn-sm" href="#get-started">Start Setup</a>
       </div>
     </div>
-    <div class="camp-progress"><span id="campProgress"></span></div>
   </div>
 
-  <!-- ===== HERO ===== -->
-  <section class="hero-video" aria-label="Instant Quote Demo">
-    <video autoplay muted playsinline loop id="demoBg">
-      <source src="https://bimlab.netlify.app/instant-quote-demo.mp4" type="video/mp4">
-    </video>
-    <div class="hero-overlay">
-      <span class="badge">Concrete Flatwork — Instant Quote</span>
-      <h1>Book Jobs Instantly. Right From Your Website.</h1>
-      <p>See the tool live in action — one-minute quotes, instant PDF generation, and client-ready pricing.</p>
-      <div class="hero-cta">
-        <a class="btn btn-outline" href="#pricing">APPLY NOW</a>
-        <a class="btn btn-outline" 
-   href="https://buy.stripe.com/cNi7sDcMAbAJeYcgW4bEA00" 
-   target="_blank">
-   Skip Application – Pay $250 Deposit
-</a>
-
-      </div>
-      <p style="font-size:13px;color:#e5e7eb;margin-top:4px">No contracts. 48-hour install or $250 credit.</p>
-    </div>
-  </section>
-
- 
-  <!-- ===== Process ===== -->
-  <section id="process" class="process">
+  <!-- Hero -->
+  <header class="hero">
     <div class="container">
-      <div class="proc-head" data-aos="fade-up">
-        <span class="badge">How It Works</span>
-        <h2 class="proc-title">From Interest to Live — Simple, Fast, Done Right</h2>
-        <p class="proc-sub">One clear path. No busywork. Most installs are ready within 48 hours of receiving your materials.</p>
+      <div class="hero-grid">
+        <div class="hero-left" data-aos="fade-up">
+          <span class="badge"><span class="dot"></span>Built to match YOUR brand colors</span>
+          <h1>Quotes in 60 seconds.<br/>Leads captured automatically.</h1>
+          <p class="hero-sub">
+            This isn’t a “contact form.” It’s a real instant quote flow that your customers can use right now —
+            and it drops the lead into your CRM with job details so you can close faster.
+          </p>
+
+          <div class="hero-ctas">
+            <a class="btn btn-primary" href="#live-demo">Try The Live Demo</a>
+            <a class="btn btn-ghost" href="#pricing">See Pricing</a>
+          </div>
+
+          <div class="hero-kpis">
+            <div class="kpi"><strong>60s</strong> <span>to a quote</span></div>
+            <div class="kpi"><strong>24/7</strong> <span>lead capture</span></div>
+            <div class="kpi"><strong>48hr</strong> <span>typical setup</span></div>
+          </div>
+        </div>
+
+        <aside class="hero-right" data-aos="fade-up" data-aos-delay="120">
+          <div class="mini-box">
+            <div class="mini-title">Match Your Brand (for demos)</div>
+            <p class="mini-text" style="margin-top:6px">
+              Show contractors that this isn’t “orange agency branding.” Enter their logo colors and the page updates instantly.
+            </p>
+
+            <div class="brand-row" style="margin-top:12px">
+              <div class="field">
+                <label>Primary Brand Color</label>
+                <input id="brandInput" placeholder="#0b5fff" value="#0b5fff" />
+              </div>
+              <div class="field">
+                <label>Secondary Brand Color</label>
+                <input id="brand2Input" placeholder="#073b9a" value="#073b9a" />
+              </div>
+            </div>
+
+            <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:12px">
+              <button class="btn btn-primary btn-sm" id="applyBrandBtn" type="button">Apply Colors</button>
+              <a class="btn btn-ghost btn-sm" id="copyLinkBtn" href="#" role="button">Copy Themed Link</a>
+            </div>
+
+            <div class="fine">Tip: use URL params: <span style="font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace">?brand=%23005BBB&brand2=%23003366</span></div>
+          </div>
+
+          <div class="mini-box">
+            <div class="mini-title">What you’re buying</div>
+            <p class="mini-text" style="margin-top:6px">
+              A working quote tool embedded on your site, branded to your company, with lead capture + automation.
+              No “tech stack headache.”
+            </p>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </header>
+
+  <!-- How it works -->
+  <section class="section" id="how-it-works">
+    <div class="container">
+      <div class="section-head" data-aos="fade-up">
+        <div>
+          <span class="badge"><span class="dot"></span>How it works</span>
+          <h2 style="margin-top:10px">Simple flow. Built for speed.</h2>
+        </div>
+        <p>
+          Your customer gets an instant ballpark quote, you get the lead with details, and the system runs the follow-up
+          until you’re ready to schedule / bid / close.
+        </p>
       </div>
 
-      <ol class="proc-steps">
-        <li class="proc-step" data-aos="fade-up" data-aos-delay="0">
-          <div class="proc-index">1</div>
-          <div class="proc-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z"/><circle cx="12" cy="12" r="3"/></svg></div>
-          <h3>Interest</h3><p>Watch the live demo or try the calculator. If it fits, click “Get It Installed.”</p>
-        </li>
-        <li class="proc-step" data-aos="fade-up" data-aos-delay="75">
-          <div class="proc-index">2</div>
-          <div class="proc-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M22 16.92v2a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.12 3.2 2 2 0 0 1 4.11 1h2a2 2 0 0 1 2 1.72c.12.86.3 1.7.54 2.5a2 2 0 0 1-.45 2.11L7.09 8.91a16 16 0 0 0 6 6l1.58-1.11a2 2 0 0 1 2.11-.45c.8.24 1.64.42 2.5.54A2 2 0 0 1 22 16.92z"/></svg></div>
-          <h3>Talk (10 Minutes)</h3><p>Confirm services, service area, and CRM. We collect logo and brand colors.</p>
-        </li>
-        <li class="proc-step" data-aos="fade-up" data-aos-delay="150">
-          <div class="proc-index">3</div>
-          <div class="proc-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3l7 4v5c0 5-3.5 9-7 9s-7-4-7-9V7l7-4z"/><path d="M9 12l2 2 4-4"/></svg></div>
-          <h3>Refundable Deposit</h3><p>$250 reserves your build slot. Fully refundable until production begins; then it’s applied and non-refundable.</p>
-        </li>
-        <li class="proc-step" data-aos="fade-up" data-aos-delay="225">
-          <div class="proc-index">4</div>
-          <div class="proc-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14.7 6.3l3 3L7 20H4v-3L14.7 6.3z"/><path d="M13 7l4-4 4 4-4 4z"/></svg></div>
-          <h3>Install & Integration</h3><p>We embed the Instant Quote, connect your CRM, test notifications, and QA the flow. Typical build time: 48 hours.</p>
-        </li>
-        <li class="proc-step" data-aos="fade-up" data-aos-delay="300">
-          <div class="proc-index">5</div>
-          <div class="proc-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 6L9 17l-5-5"/></svg></div>
-          <h3>Go Live & Handoff</h3><p>Launch on your site or subdomain, quick walkthrough, one round of edits, and a 14-day functionality fix window.</p>
-        </li>
-      </ol>
+      <div class="grid-3">
+        <div class="card" data-aos="fade-up" data-aos-delay="0">
+          <div class="icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8">
+              <path d="M12 2v4"/><path d="M12 18v4"/><path d="M4.93 4.93l2.83 2.83"/><path d="M16.24 16.24l2.83 2.83"/>
+              <path d="M2 12h4"/><path d="M18 12h4"/><path d="M4.93 19.07l2.83-2.83"/><path d="M16.24 7.76l2.83-2.83"/>
+            </svg>
+          </div>
+          <h3>Instant quote on your site</h3>
+          <p>Customers enter job details and get a fast estimate. No waiting for callbacks.</p>
+        </div>
 
-      <div class="proc-cta" data-aos="fade-up" data-aos-delay="350">
-        <a class="btn btn-primary" href="#pricing">APPLY NOW</a>
+        <div class="card" data-aos="fade-up" data-aos-delay="90">
+          <div class="icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8">
+              <path d="M22 12c0 5.5-4.5 10-10 10S2 17.5 2 12 6.5 2 12 2s10 4.5 10 10z"/>
+              <path d="M8 12l2.5 2.5L16 9"/>
+            </svg>
+          </div>
+          <h3>Lead capture + CRM</h3>
+          <p>Every quote creates a lead with notes so you don’t lose details or miss follow-ups.</p>
+        </div>
+
+        <div class="card" data-aos="fade-up" data-aos-delay="180">
+          <div class="icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8">
+              <path d="M3 12h18"/><path d="M3 6h18"/><path d="M3 18h18"/>
+            </svg>
+          </div>
+          <h3>Automation that closes</h3>
+          <p>Text/email nudges run automatically so you stay top-of-mind without doing the busywork.</p>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- =========================================
-Beta Launch Explainer — Not a Discount. A New Model.
-Place after Availability section
-========================================= -->
-<section id="beta-explainer" class="beta">
-  <div class="container">
-
-    <!-- Headline -->
-    <div class="beta-head" data-aos="fade-up">
-      <span class="badge">Beta Launch</span>
-      <h2 class="beta-title">
-        Not a Discount — a New Way to Quote
-        <span class="beta-underline" aria-hidden="true"></span>
-      </h2>
-      <p class="beta-sub">
-        We’re introducing a quoting system that replaces old-school sales calls with automation. 
-        No reps. No chasing. Leads get accurate pricing data in under a minute, 
-        and you close faster than competitors still waiting to “call them back.”
-      </p>
-    </div>
-
-    <!-- Split: Story & How It Works -->
-    <div class="beta-grid">
-      <!-- Left: Why this exists -->
-      <article class="beta-card" data-aos="fade-right">
-        <h3>Why We Built This</h3>
+  <!-- Live demo -->
+  <section class="section" id="live-demo">
+    <div class="container">
+      <div class="section-head" data-aos="fade-up">
+        <div>
+          <span class="badge"><span class="dot"></span>Try it live</span>
+          <h2 style="margin-top:10px">Click it. Break it. Test it.</h2>
+        </div>
         <p>
-          Contractors are tired of wasting hours on calls that don’t convert. 
-          Leads today expect quick answers and transparency — the companies that respond first 
-          win the work. Our Instant Quote System automates that process so you never miss an opportunity.
+          This is the experience your customers will use. You can embed this on your website branded to your colors.
         </p>
-        <ul class="beta-list">
-          <li><strong>Speed wins:</strong> 78% of jobs go to the first estimate received.</li>
-          <li><strong>Consistency:</strong> every lead experiences a clean, fast, professional quote flow 24/7.</li>
-          <li><strong>Control:</strong> all leads, data, and automations stay in your CRM — you own it all.</li>
-        </ul>
-        <div class="beta-note">This isn’t theory — it’s the future of quoting. Our beta program is your chance to be first.</div>
-      </article>
-
-      <!-- Right: How it beats reps -->
-      <article class="beta-card" data-aos="fade-left">
-        <h3>How It Outperforms a Sales Rep</h3>
-        <ol class="beta-steps">
-          <li><strong>Instant Quote:</strong> lead inputs details → receives a ballpark estimate instantly.</li>
-          <li><strong>Auto Follow-Up:</strong> system sends text and email with next steps or photo upload link.</li>
-          <li><strong>CRM Drop:</strong> new lead is automatically created with job details and notes.</li>
-          <li><strong>Timed Nudges:</strong> automated reminders re-engage quiet leads without manual effort.</li>
-        </ol>
-        <div class="beta-band">
-          <span class="pill">Quotes in 60s</span>
-          <span class="pill">No Reps Needed</span>
-          <span class="pill">You Own the System</span>
-        </div>
-      </article>
-    </div>
-
-    <!-- Value math strip -->
-    <div class="beta-math" data-aos="fade-up" data-aos-delay="100">
-      <div class="math-card">
-        <div class="math-num">1</div>
-        <div class="math-copy"><strong>extra project/month</strong> typically covers your system cost in week one.</div>
       </div>
-      <div class="math-card">
-        <div class="math-num">60s</div>
-        <div class="math-copy"><strong>to a live estimate</strong> means you win before competitors even respond.</div>
-      </div>
-      <div class="math-card">
-        <div class="math-num">0</div>
-        <div class="math-copy"><strong>retainers or rev-share</strong> — it’s your tool, your data, your results.</div>
-      </div>
-    </div>
 
-    <!-- Comparison: us vs agencies -->
-    <div class="beta-compare" data-aos="fade-up" data-aos-delay="150">
-      <div class="cmp">
-        <div class="cmp-head">
-          <h3>Why This Beats a Typical “Agency Website”</h3>
-        </div>
-        <div class="cmp-grid">
-          <div class="cmp-col">
-            <h4>Old Way (Agency Site)</h4>
-            <ul>
-              <li>Generic “Request a Quote” forms buried on your site.</li>
-              <li>Manual follow-up, missed calls, and slow response times.</li>
-              <li>Expensive retainers for simple changes.</li>
-              <li>No automation, no ownership, no measurable ROI.</li>
-            </ul>
+      <div class="demo-wrap" data-aos="fade-up" data-aos-delay="120">
+        <div class="demo-top">
+          <div class="left">
+            <div class="lights" aria-hidden="true">
+              <div class="light"></div><div class="light"></div><div class="light"></div>
+            </div>
+            <div class="meta">Live Demo</div>
           </div>
-          <div class="cmp-col cmp-good">
-            <h4>New Way (Instant Quote System)</h4>
-            <ul>
-              <li>Lead gets an immediate ballpark quote with follow-up automation.</li>
-              <li>Everything syncs to your CRM automatically — no manual entry.</li>
-              <li>No recurring agency fees; you own the system after build.</li>
-              <li>Instant quotes mean faster closes and stronger margins.</li>
-            </ul>
+          <div style="display:flex; gap:10px; flex-wrap:wrap">
+            <a class="btn btn-ghost btn-sm" href="#pricing">Pricing</a>
+            <a class="btn btn-primary btn-sm" href="#get-started">Start Setup</a>
           </div>
         </div>
+
+        <!-- Replace the src with your real demo URL -->
+        <iframe
+          title="Instant Quote Demo"
+          src="https://bimlab.netlify.app/instant-quote-demo.html"
+          loading="lazy"></iframe>
       </div>
     </div>
+  </section>
 
-    <!-- Beta price clarification -->
-    <div class="beta-price" data-aos="fade-up" data-aos-delay="200">
-      <div class="price-inner">
-        <h3>About the Beta Price</h3>
+  <!-- Pricing -->
+  <section class="section" id="pricing">
+    <div class="container">
+      <div class="section-head" data-aos="fade-up">
+        <div>
+          <span class="badge"><span class="dot"></span>Pricing</span>
+          <h2 style="margin-top:10px">Straight pricing. No confusing packages.</h2>
+        </div>
         <p>
-          This isn’t a sale. It’s a partnership opportunity for forward-thinking contractors. 
-          Beta pricing of <strong>$1,500</strong> rewards early adopters who help us refine and showcase results. 
-          You’ll receive the full system and retain full ownership — no strings attached.
+          Most contractors just want the system live fast. Start with base setup. Add extras only if you want them.
         </p>
-        <div class="beta-cta">
-          <a class="btn btn-primary" href="#pricing">APPLY NOW</a>
+      </div>
+
+      <div class="pricing-grid">
+        <div class="price primary" data-aos="fade-up" data-aos-delay="0">
+          <span class="tag"><span class="dot"></span>Base Setup</span>
+          <h3>Instant Quote System</h3>
+          <div class="num">$550 <small>one-time</small></div>
+          <ul class="list">
+            <li>Branded quote tool embedded on your website</li>
+            <li>Lead capture form + job details</li>
+            <li>Basic text/email follow-up automation</li>
+            <li>48-hour typical setup after materials</li>
+            <li>One round of edits after launch</li>
+          </ul>
+          <div class="actions">
+            <a class="btn btn-primary" href="#get-started">Start Setup</a>
+            <a class="btn btn-ghost" href="#live-demo">Try Demo Again</a>
+          </div>
+          <div class="fine">Deposit is applied to setup. You’ll approve branding before launch.</div>
+        </div>
+
+        <div class="price" data-aos="fade-up" data-aos-delay="120">
+          <span class="tag">Ongoing</span>
+          <h3>Hosting + Automation</h3>
+          <div class="num">$79 <small>/month</small></div>
+          <ul class="list">
+            <li>Tool hosting + updates</li>
+            <li>Automation uptime monitoring</li>
+            <li>Small text/copy tweaks included</li>
+            <li>Support for embed + tracking</li>
+          </ul>
+          <div class="actions">
+            <a class="btn btn-ghost" href="#get-started">Start Setup</a>
+            <a class="btn btn-outline" href="#how-it-works">What’s Included</a>
+          </div>
+          <div class="fine">No long-term contracts. Cancel anytime.</div>
         </div>
       </div>
     </div>
+  </section>
 
-  </div>
-</section>
+  <!-- Get started -->
+  <section class="section" id="get-started">
+    <div class="container">
+      <div class="section-head" data-aos="fade-up">
+        <div>
+          <span class="badge"><span class="dot"></span>Start setup</span>
+          <h2 style="margin-top:10px">Lock your build slot with a deposit.</h2>
+        </div>
+        <p>
+          Fastest path: pay the deposit, then we do a 10-minute call to confirm services + pricing logic + branding.
+        </p>
+      </div>
 
+      <div class="card" data-aos="fade-up" data-aos-delay="120">
+        <h3 style="font-size:22px">Step 1: Pay the $250 deposit</h3>
+        <p style="margin-top:8px;color:var(--muted)">
+          Deposit is applied to the $550 setup. You’ll receive a short intake message (logo/colors/services)
+          and we’ll start your build.
+        </p>
 
-  <!-- ================================
-Apply for Beta Access
-================================ -->
-<section id="apply" class="apply-section">
-  <div class="container">
-    <div class="apply-head" data-aos="fade-up">
-      <span class="badge">Apply for Beta Access</span>
-      <a class="btn btn-outline" 
-   href="https://buy.stripe.com/cNi7sDcMAbAJeYcgW4bEA00" 
-   target="_blank">
-   Skip Application – Pay $250 Deposit
-</a>
+        <div style="display:flex; gap:12px; flex-wrap:wrap; margin-top:14px">
+          <!-- Replace with your Stripe link -->
+          <a class="btn btn-primary" href="https://buy.stripe.com/cNi7sDcMAbAJeYcgW4bEA00" target="_blank" rel="noopener">
+            Pay $250 Deposit
+          </a>
+          <a class="btn btn-ghost" href="#live-demo">Try Demo</a>
+        </div>
 
-      <h2>We’re Selecting a Few Contractors Per City</h2>
-      <p class="apply-sub">Tell us about your company. No payment due today—this application helps us confirm fit, city availability, and timeline.</p>
+        <div class="fine" style="margin-top:10px">
+          If you prefer to talk first, reply to your outreach email with: “send calendar” and we’ll book a 10-minute call.
+        </div>
+      </div>
     </div>
+  </section>
 
-    <form class="apply-form" data-aos="fade-up" data-aos-delay="100">
-      <!-- Honeypot (spam bot trap) -->
-      <input type="text" name="website2" class="hp" autocomplete="off" tabindex="-1" aria-hidden="true">
+  <footer class="footer">
+    © 2026 BIM Labs Studio — Instant Quote Systems
+  </footer>
 
-      <!-- Source -->
-      <input type="hidden" name="source" id="utmSource">
-
-      <div class="row">
-        <div>
-          <label>Full Name</label>
-          <input type="text" name="name" required>
-        </div>
-        <div>
-          <label>Company Name</label>
-          <input type="text" name="company" required>
-        </div>
-      </div>
-
-      <div class="row">
-        <div>
-          <label>Email</label>
-          <input type="email" name="email" required>
-        </div>
-        <div>
-          <label>Phone</label>
-          <input type="text" name="phone" required>
-        </div>
-      </div>
-
-      <div class="row">
-        <div>
-          <label>Trade / Service Type</label>
-          <input type="text" name="trade" placeholder="e.g., Concrete, Roofing, GC">
-        </div>
-        <div>
-          <label>Timeline to Implement</label>
-          <select name="timeline">
-            <option>Immediately</option>
-            <option>Within 30 Days</option>
-            <option>Just Exploring</option>
-          </select>
-        </div>
-      </div>
-
-      <div>
-        <label>Why should we work with your company?</label>
-        <textarea name="why" rows="4" placeholder="Goals, service area, volume, what makes your team strong"></textarea>
-      </div>
-
-      <div class="agree">
-        <label><input type="checkbox" required> I understand this is a Beta application (not a free trial), and spots are limited.</label>
-      </div>
-
-      <div class="apply-actions">
-        <button class="btn btn-primary" type="submit">Apply for Beta Access</button>
-        <a class="btn btn-outline" 
-   href="https://buy.stripe.com/cNi7sDcMAbAJeYcgW4bEA00" 
-   target="_blank">
-   Skip Application – Pay $250 Deposit
-</a>
-
-
-      </div>
-
-      <p class="help" style="margin-top:8px">We typically accept 1–2 contractors per city. You’ll receive a text/email update after review.</p>
-    </form>
-  </div>
-</section>
-
-
-  <div class="footer">© 2025 BIM Labs Studio — Concrete Flatwork Instant Quote</div>
-
-  <!-- AOS JS -->
+  <!-- AOS -->
   <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
-  <script> try { AOS.init({ duration: 650, easing: 'ease-out', once: true }); } catch(e){} </script>
+  <script>
+    try { AOS.init({ duration: 650, easing: 'ease-out', once: true }); } catch(e){}
+  </script>
 
-  <!-- Availability meters animate on view -->
+  <!-- Brand theming logic -->
   <script>
     (function(){
-      const fills = document.querySelectorAll('#availability .fill');
-      if(!('IntersectionObserver' in window)){
-        fills.forEach(el => el.style.width = (el.dataset.percent || 0) + '%');
-        return;
+      const root = document.documentElement;
+
+      function normalizeHex(v){
+        if(!v) return '';
+        v = String(v).trim();
+        if(!v) return '';
+        // allow "%23" encoded "#"
+        v = v.replace(/^%23/i,'#');
+        if(v[0] !== '#') v = '#'+v;
+        // basic validation: #RGB or #RRGGBB
+        const ok = /^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/.test(v);
+        return ok ? v : '';
       }
-      const io = new IntersectionObserver((entries, obs)=>{
-        entries.forEach(e=>{
-          if(e.isIntersecting){
-            const el = e.target;
-            const pct = +el.dataset.percent || 0;
-            el.style.transition = 'width 900ms cubic-bezier(.2,.7,.2,1)';
-            requestAnimationFrame(()=>{ el.style.width = pct + '%'; });
-            obs.unobserve(el);
+
+      function setBrand(c1, c2){
+        if(c1) root.style.setProperty('--brand', c1);
+        if(c2) root.style.setProperty('--brand2', c2);
+        // store for repeat visits
+        try{
+          localStorage.setItem('bim_brand', c1 || '');
+          localStorage.setItem('bim_brand2', c2 || '');
+        }catch(e){}
+      }
+
+      // 1) URL params override
+      const qs = new URLSearchParams(location.search);
+      const qBrand  = normalizeHex(qs.get('brand'));
+      const qBrand2 = normalizeHex(qs.get('brand2'));
+
+      // 2) Otherwise localStorage
+      let sBrand='', sBrand2='';
+      try{
+        sBrand  = normalizeHex(localStorage.getItem('bim_brand'));
+        sBrand2 = normalizeHex(localStorage.getItem('bim_brand2'));
+      }catch(e){}
+
+      const brand = qBrand || sBrand || '#0b5fff';
+      const brand2 = qBrand2 || sBrand2 || '#073b9a';
+      setBrand(brand, brand2);
+
+      // Populate inputs
+      const brandInput = document.getElementById('brandInput');
+      const brand2Input = document.getElementById('brand2Input');
+      if(brandInput) brandInput.value = brand;
+      if(brand2Input) brand2Input.value = brand2;
+
+      // Apply button
+      const applyBtn = document.getElementById('applyBrandBtn');
+      if(applyBtn){
+        applyBtn.addEventListener('click', function(){
+          const b1 = normalizeHex(brandInput ? brandInput.value : '');
+          const b2 = normalizeHex(brand2Input ? brand2Input.value : '');
+          if(!b1 || !b2){
+            alert('Please enter valid hex colors like #005BBB');
+            return;
+          }
+          setBrand(b1,b2);
+        });
+      }
+
+      // Copy themed link
+      const copyBtn = document.getElementById('copyLinkBtn');
+      if(copyBtn){
+        copyBtn.addEventListener('click', async function(e){
+          e.preventDefault();
+          const b1 = normalizeHex(brandInput ? brandInput.value : '') || brand;
+          const b2 = normalizeHex(brand2Input ? brand2Input.value : '') || brand2;
+          const url = new URL(location.href);
+          url.searchParams.set('brand', b1);
+          url.searchParams.set('brand2', b2);
+          try{
+            await navigator.clipboard.writeText(url.toString());
+            copyBtn.textContent = 'Copied!';
+            setTimeout(()=> copyBtn.textContent = 'Copy Themed Link', 1200);
+          }catch(err){
+            prompt('Copy this link:', url.toString());
           }
         });
-      }, { threshold: 0.35 });
-      fills.forEach(el=>io.observe(el));
+      }
     })();
   </script>
-
-
-  <!-- Countdown + progress for 1-week campaign bar -->
-  <script>
-    (function(){
-      const bar = document.getElementById('campaignBar');
-      if(!bar) return;
-      const start = new Date(bar.getAttribute('data-start') || Date.now()).getTime();
-      const end   = new Date(bar.getAttribute('data-end')   || (Date.now()+7*24*60*60*1000)).getTime();
-      const timerEl = document.getElementById('campTimer');
-      const progEl  = document.getElementById('campProgress');
-      const pad = n => String(n).padStart(2,'0');
-
-      function render(){
-        const now = Date.now();
-        const total = Math.max(1, end - start);
-        const gone  = Math.min(total, Math.max(0, now - start));
-        const left  = Math.max(0, end - now);
-        const d = Math.floor(left/86400000);
-        const h = Math.floor((left%86400000)/3600000);
-        const m = Math.floor((left%3600000)/60000);
-        const s = Math.floor((left%60000)/1000);
-        timerEl.textContent = (d>0) ? `${d}d ${pad(h)}:${pad(m)}:${pad(s)}` : `${pad(h)}:${pad(m)}:${pad(s)}`;
-        progEl.style.width = (gone/total*100).toFixed(2) + '%';
-      }
-      render();
-      const t = setInterval(()=>{ render(); if(Date.now()>=end) clearInterval(t); }, 1000);
-    })();
-  </script>
-
-  <script type="module">
-  import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
-
-  // Your real values (already provided in your file)
-  const supabaseUrl = 'https://gdwodqwhjrksjhxazuio.supabase.co';
-  const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imdkd29kcXdoanJrc2poeGF6dWlvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTEzMTU3NzcsImV4cCI6MjA2Njg5MTc3N30.Zq0lZRK6X6vVVwdhqkNVwMLsGPOhDFrYoEyUwtkbG0o';
-
-  const supabase = createClient(supabaseUrl, supabaseAnonKey);
-
-  const form = document.querySelector('.apply-form');
-  if (form) {
-    // set source from UTM/referrer
-    const srcField = form.querySelector('#utmSource');
-    const utm = new URLSearchParams(location.search).toString();
-    if (srcField) srcField.value = utm || document.referrer || 'direct';
-
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-
-      const fd = new FormData(form);
-      // honeypot check
-      if ((fd.get('website2') || '').trim() !== '') {
-        form.innerHTML = '<p class="help">Thanks!</p>'; // quietly ignore bots
-        return;
-      }
-
-      const payload = Object.fromEntries(fd.entries());
-
-      // Only send expected columns (helps avoid accidental columns)
-      const data = {
-        name: payload.name || '',
-        company: payload.company || '',
-        email: payload.email || '',
-        phone: payload.phone || '',
-        trade: payload.trade || '',
-        timeline: payload.timeline || '',
-        why: payload.why || '',
-        source: payload.source || ''
-      };
-
-      const { error } = await supabase.from('applications').insert([data]);
-
-      if (error) {
-        console.error(error);
-        alert('Something went wrong. Please try again.');
-      } else {
-        form.innerHTML = `
-          <div class="card" style="text-align:center;padding:30px;">
-            <h3>Application Received</h3>
-            <p>We’ll review and text/email you shortly about city availability and start time.</p>
-            <div style="margin-top:12px">
-              <a class="btn btn-primary" href="#pricing">Next: Lock Beta Pricing</a>
-              <a class="btn btn-outline" href="#demo">Watch the Demo</a>
-            </div>
-          </div>`;
-      }
-    });
-  }
-</script>
-<script>
-document.querySelectorAll('a[href^="#apply"]').forEach(link=>{
-  link.addEventListener('click', e=>{
-    e.preventDefault();
-    document.querySelector('#apply')?.scrollIntoView({behavior:'smooth'});
-  });
-});
-</script>
-
-<script>
-/* 1) Make EVERY "APPLY NOW" click go to the form */
-(function () {
-  const form = document.getElementById('apply');
-  if (!form) return;
-
-  // Any anchor or button with text "APPLY NOW"
-  const ctas = Array.from(document.querySelectorAll('a,button'))
-    .filter(el => /^\s*apply\s+now\s*$/i.test(el.textContent || ''));
-
-  ctas.forEach(el => {
-    // If it's a link, point it to #apply
-    if (el.tagName === 'A') el.setAttribute('href', '#apply');
-
-    // Add click handler for both <a> and <button>
-    el.addEventListener('click', function (e) {
-      // if it's an <a> we intercept to avoid jumping
-      if (this.tagName === 'A') e.preventDefault();
-      form.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }, { passive: true });
-  });
-
-  // Safety net: any link already targeting #apply will smooth scroll too
-  document.querySelectorAll('a[href^="#apply"]').forEach(a => {
-    a.addEventListener('click', function (e) {
-      e.preventDefault();
-      form.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }, { passive: true });
-  });
-})();
-</script>
-
-<style>
-/* 2) Offset so the sticky campaign bar doesn’t cover the form */
-#apply { scroll-margin-top: 80px; }  /* adjust if your top bar is taller/shorter */
-
-/* Optional: also enable native smooth scroll for hash links */
-html { scroll-behavior: smooth; }
-</style>
 
 </body>
 </html>
