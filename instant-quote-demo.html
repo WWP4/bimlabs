@@ -1,686 +1,192 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>BIM Labs — Instant Quote System</title>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
 
-  <!-- Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
+<title>BIM Labs — Instant Quote System</title>
 
-  <!-- AOS -->
-  <link rel="stylesheet" href="https://unpkg.com/aos@2.3.4/dist/aos.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/aos@2.3.4/dist/aos.css">
 
-  <style>
-    :root{
-      /* Brand variables (overridden via URL params or the brand picker) */
-      --brand:#0b5fff;
-      --brand2:#073b9a;
+<link rel="stylesheet" href="./styles.css">
 
-      /* Neutral system */
-      --bg:#0b0f17;
-      --surface:#0f1624;
-      --card:#121b2c;
-      --ink:#eaf0ff;
-      --muted:rgba(234,240,255,.72);
-      --muted2:rgba(234,240,255,.55);
-      --border:rgba(234,240,255,.12);
-
-      --shadow: 0 14px 50px rgba(0,0,0,.35);
-      --shadow2: 0 10px 30px rgba(0,0,0,.28);
-      --radius:16px;
-
-      --max:1200px;
-    }
-
-    *{box-sizing:border-box}
-    html{scroll-behavior:smooth}
-    body{
-      margin:0;
-      font-family:Inter,system-ui,Segoe UI,Roboto,Arial,sans-serif;
-      background: radial-gradient(1200px 700px at 70% -10%, rgba(11,95,255,.22), transparent 60%),
-                  radial-gradient(1000px 600px at 10% 0%, rgba(7,59,154,.18), transparent 60%),
-                  var(--bg);
-      color:var(--ink);
-      overflow-x:hidden;
-    }
-    h1,h2,h3{font-family:Oswald,Inter,system-ui,sans-serif; letter-spacing:.02em; margin:0}
-    p{margin:0; line-height:1.6}
-    a{color:inherit; text-decoration:none}
-    .container{max-width:var(--max); margin:0 auto; padding:0 20px}
-
-    /* Buttons */
-    .btn{
-      appearance:none;border:0;cursor:pointer;
-      padding:12px 16px;border-radius:12px;
-      font-weight:800; letter-spacing:.04em; text-transform:uppercase;
-      display:inline-flex; align-items:center; justify-content:center; gap:10px;
-      transition: transform .15s ease, box-shadow .15s ease, background .15s ease, border-color .15s ease;
-      user-select:none;
-      white-space:nowrap;
-    }
-    .btn:active{transform:translateY(1px)}
-    .btn-primary{
-      background: linear-gradient(135deg, var(--brand), var(--brand2));
-      color:#fff;
-      box-shadow: 0 12px 30px rgba(0,0,0,.35);
-    }
-    .btn-primary:hover{box-shadow:0 18px 45px rgba(0,0,0,.45)}
-    .btn-ghost{
-      background: rgba(255,255,255,.06);
-      border: 1px solid var(--border);
-      color:var(--ink);
-    }
-    .btn-ghost:hover{background: rgba(255,255,255,.09)}
-    .btn-outline{
-      background: transparent;
-      border: 2px solid rgba(255,255,255,.18);
-      color:var(--ink);
-    }
-    .btn-outline:hover{border-color: rgba(255,255,255,.32)}
-    .btn-sm{padding:9px 12px; border-radius:11px; font-size:12px}
-
-    /* Pill / badges */
-    .badge{
-      display:inline-flex; align-items:center; gap:8px;
-      padding:7px 12px; border-radius:999px;
-      background: rgba(255,255,255,.06);
-      border:1px solid var(--border);
-      color:rgba(234,240,255,.9);
-      font-size:12px;
-      font-weight:800;
-      text-transform:uppercase;
-      letter-spacing:.09em;
-    }
-    .dot{
-      width:8px;height:8px;border-radius:999px;
-      background: linear-gradient(135deg,var(--brand),var(--brand2));
-      box-shadow: 0 0 0 3px rgba(11,95,255,.16);
-    }
-
-    /* Top bar */
-    .topbar{
-      position:sticky; top:0; z-index:9999;
-      backdrop-filter: blur(10px);
-      background: rgba(11,15,23,.72);
-      border-bottom:1px solid var(--border);
-    }
-    .topbar-inner{
-      max-width:var(--max); margin:0 auto; padding:12px 20px;
-      display:flex; align-items:center; justify-content:space-between; gap:12px;
-    }
-    .brandmark{
-      display:flex; align-items:center; gap:10px;
-      font-weight:900; letter-spacing:.02em;
-    }
-    .logo-box{
-      width:34px;height:34px;border-radius:12px;
-      background: linear-gradient(135deg,var(--brand),var(--brand2));
-      box-shadow: 0 14px 35px rgba(0,0,0,.3);
-    }
-    .nav-actions{display:flex; gap:10px; flex-wrap:wrap}
-
-    /* Hero */
-    .hero{
-      padding:70px 0 28px;
-    }
-    .hero-grid{
-      display:grid; grid-template-columns: 1.15fr .85fr; gap:22px; align-items:stretch;
-    }
-    @media (max-width:980px){ .hero-grid{grid-template-columns:1fr; } }
-
-    .hero-left{
-      border:1px solid var(--border);
-      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      padding:34px;
-      position:relative;
-      overflow:hidden;
-    }
-    .hero-left::before{
-      content:"";
-      position:absolute; inset:-2px;
-      background: radial-gradient(600px 250px at 20% 0%, rgba(11,95,255,.25), transparent 65%),
-                  radial-gradient(500px 250px at 80% 10%, rgba(7,59,154,.20), transparent 65%);
-      pointer-events:none;
-    }
-    .hero-left > *{position:relative}
-    .hero h1{
-      font-size:52px;
-      line-height:1.03;
-      margin-top:14px;
-    }
-    @media (max-width:560px){ .hero h1{font-size:40px} }
-    .hero-sub{
-      margin-top:12px;
-      color:var(--muted);
-      font-size:16px;
-      max-width:62ch;
-    }
-    .hero-ctas{
-      margin-top:18px;
-      display:flex; gap:12px; flex-wrap:wrap;
-    }
-    .hero-kpis{
-      margin-top:18px;
-      display:flex; flex-wrap:wrap; gap:10px;
-    }
-    .kpi{
-      display:inline-flex; align-items:center; gap:10px;
-      padding:10px 12px; border-radius:14px;
-      background: rgba(255,255,255,.05);
-      border:1px solid var(--border);
-      color: rgba(234,240,255,.86);
-      font-size:13px;
-    }
-    .kpi strong{font-family:Oswald,Inter,sans-serif; font-size:18px; letter-spacing:.04em}
-
-    /* Right card (brand matcher + fast explanation) */
-    .hero-right{
-      border:1px solid var(--border);
-      background: rgba(255,255,255,.04);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow2);
-      padding:22px;
-      display:flex; flex-direction:column; gap:14px;
-    }
-    .mini-title{font-size:18px; color: rgba(234,240,255,.92)}
-    .mini-text{color:var(--muted); font-size:14px}
-    .mini-box{
-      background: rgba(0,0,0,.18);
-      border:1px solid var(--border);
-      border-radius:14px;
-      padding:14px;
-    }
-
-    .brand-row{
-      display:grid; grid-template-columns: 1fr 1fr; gap:10px;
-    }
-    @media (max-width:980px){ .brand-row{grid-template-columns:1fr} }
-    .field label{
-      display:block; font-size:12px; color: var(--muted2); margin-bottom:6px;
-      text-transform:uppercase; letter-spacing:.08em; font-weight:800;
-    }
-    .field input{
-      width:100%; padding:12px 12px;
-      border-radius:12px;
-      border:1px solid rgba(255,255,255,.16);
-      background: rgba(255,255,255,.06);
-      color: var(--ink);
-      outline:none;
-      font-weight:700;
-    }
-    .field input::placeholder{color: rgba(234,240,255,.45)}
-    .field input:focus{border-color: rgba(255,255,255,.30)}
-
-    /* Section shells */
-    section{position:relative}
-    .section{
-      padding:64px 0;
-    }
-    .section-head{
-      display:flex; align-items:flex-end; justify-content:space-between; gap:16px;
-      margin-bottom:16px;
-    }
-    @media (max-width:820px){ .section-head{flex-direction:column; align-items:flex-start} }
-    .section-head h2{font-size:34px}
-    .section-head p{color:var(--muted); max-width:70ch}
-
-    /* Cards grid */
-    .grid-3{display:grid; grid-template-columns:repeat(3,1fr); gap:14px}
-    @media (max-width:980px){.grid-3{grid-template-columns:1fr}}
-    .card{
-      background: rgba(255,255,255,.04);
-      border:1px solid var(--border);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow2);
-      padding:18px;
-      transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
-      overflow:hidden;
-    }
-    .card:hover{
-      transform: translateY(-2px);
-      box-shadow: 0 18px 55px rgba(0,0,0,.42);
-      border-color: rgba(255,255,255,.22);
-    }
-    .icon{
-      width:42px;height:42px;border-radius:14px;
-      background: rgba(255,255,255,.06);
-      border:1px solid var(--border);
-      display:flex; align-items:center; justify-content:center;
-    }
-    .card h3{font-size:20px; margin-top:12px}
-    .card p{color:var(--muted); margin-top:8px; font-size:14px}
-
-    /* Live demo */
-    .demo-wrap{
-      border:1px solid rgba(255,255,255,.16);
-      border-radius: 18px;
-      overflow:hidden;
-      box-shadow: var(--shadow);
-      background: rgba(0,0,0,.25);
-    }
-    .demo-top{
-      display:flex; align-items:center; justify-content:space-between; gap:10px;
-      padding:12px 14px;
-      border-bottom:1px solid var(--border);
-      background: rgba(255,255,255,.04);
-      flex-wrap:wrap;
-    }
-    .demo-top .left{display:flex; align-items:center; gap:10px}
-    .lights{display:flex; gap:6px}
-    .light{width:10px;height:10px;border-radius:999px;background:rgba(255,255,255,.2)}
-    .demo-top .meta{color:var(--muted2); font-size:12px}
-    iframe{display:block; width:100%; height:680px; border:0}
-    @media (max-width:560px){ iframe{height:760px} }
-
-    /* Pricing */
-    .pricing-grid{display:grid; grid-template-columns: 1fr 1fr; gap:14px}
-    @media (max-width:980px){ .pricing-grid{grid-template-columns:1fr} }
-    .price{
-      padding:22px;
-      background: rgba(255,255,255,.04);
-      border:1px solid rgba(255,255,255,.14);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow2);
-      overflow:hidden;
-      position:relative;
-    }
-    .price.primary{
-      border-color: rgba(255,255,255,.22);
-      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
-    }
-    .price .tag{
-      display:inline-flex; align-items:center; gap:8px;
-      padding:6px 10px; border-radius:999px;
-      background: rgba(255,255,255,.06);
-      border:1px solid var(--border);
-      font-size:12px; font-weight:900; letter-spacing:.08em; text-transform:uppercase;
-      color: rgba(234,240,255,.9);
-    }
-    .price h3{font-size:26px; margin-top:12px}
-    .price .num{
-      font-family:Oswald,Inter,sans-serif;
-      font-size:54px; letter-spacing:.03em;
-      margin-top:8px;
-      line-height:1;
-    }
-    .price .num small{
-      font-size:16px; color: var(--muted2); font-family:Inter,system-ui,sans-serif; font-weight:800;
-    }
-    .list{margin:14px 0 0; padding-left:18px; color:var(--muted); font-size:14px}
-    .list li{margin:8px 0}
-    .price .actions{margin-top:16px; display:flex; gap:10px; flex-wrap:wrap}
-    .fine{margin-top:10px; font-size:12px; color: var(--muted2)}
-
-    /* Footer */
-    .footer{
-      padding:40px 0 55px;
-      border-top:1px solid var(--border);
-      color:var(--muted2);
-      font-size:12px;
-      text-align:center;
-    }
-
-    /* Reduced motion */
-    @media (prefers-reduced-motion:reduce){
-      html{scroll-behavior:auto}
-      .btn,.card{transition:none}
-    }
-  </style>
 </head>
-
 <body>
 
-  <!-- Topbar -->
-  <div class="topbar">
-    <div class="topbar-inner">
-      <div class="brandmark">
-        <div class="logo-box" aria-hidden="true"></div>
-        <div>
-          <div style="font-weight:900">BIM Labs</div>
-          <div style="font-size:12px;color:var(--muted2);margin-top:2px">Instant Quote Systems</div>
-        </div>
+<header class="topbar">
+  <div class="container topbar__inner">
+    <div class="brand">
+      <span class="brand__mark"></span>
+      <div class="brand__text">
+        <span class="brand__name">BIM Labs</span>
+        <span class="brand__tag">Instant Quote Systems</span>
       </div>
+    </div>
 
-      <div class="nav-actions">
-        <a class="btn btn-ghost btn-sm" href="#live-demo">Try Live Demo</a>
-        <a class="btn btn-primary btn-sm" href="#pricing">Pricing</a>
-        <a class="btn btn-outline btn-sm" href="#get-started">Start Setup</a>
-      </div>
+    <div class="topbar__actions">
+      <a class="btn btn--ghost" href="#demo">Try Demo</a>
+      <a class="btn btn--primary" href="#pricing">Pricing</a>
+      <a class="btn btn--outline" href="#cta">Start</a>
     </div>
   </div>
+</header>
 
-  <!-- Hero -->
-  <header class="hero">
-    <div class="container">
-      <div class="hero-grid">
-        <div class="hero-left" data-aos="fade-up">
-          <span class="badge"><span class="dot"></span>Built to match YOUR brand colors</span>
-          <h1>Quotes in 60 seconds.<br/>Leads captured automatically.</h1>
-          <p class="hero-sub">
-            This isn’t a “contact form.” It’s a real instant quote flow that your customers can use right now —
-            and it drops the lead into your CRM with job details so you can close faster.
-          </p>
+<!-- ABOUT / WHY -->
 
-          <div class="hero-ctas">
-            <a class="btn btn-primary" href="#live-demo">Try The Live Demo</a>
-            <a class="btn btn-ghost" href="#pricing">See Pricing</a>
-          </div>
+<section class="section">
+  <div class="container" data-aos="fade-up">
 
-          <div class="hero-kpis">
-            <div class="kpi"><strong>60s</strong> <span>to a quote</span></div>
-            <div class="kpi"><strong>24/7</strong> <span>lead capture</span></div>
-            <div class="kpi"><strong>48hr</strong> <span>typical setup</span></div>
-          </div>
-        </div>
+    <h1>We built this to help contractors close faster.</h1>
 
-        <aside class="hero-right" data-aos="fade-up" data-aos-delay="120">
-          <div class="mini-box">
-            <div class="mini-title">Match Your Brand (for demos)</div>
-            <p class="mini-text" style="margin-top:6px">
-              Show contractors that this isn’t “orange agency branding.” Enter their logo colors and the page updates instantly.
-            </p>
+    <p class="lead">
+      Most contractors don’t lose jobs on price — they lose them because the quote goes out too late.
+      BIM Labs installs an instant quote system that captures leads and automatically routes customers
+      to schedule an on-site assessment.
+    </p>
 
-            <div class="brand-row" style="margin-top:12px">
-              <div class="field">
-                <label>Primary Brand Color</label>
-                <input id="brandInput" placeholder="#0b5fff" value="#0b5fff" />
-              </div>
-              <div class="field">
-                <label>Secondary Brand Color</label>
-                <input id="brand2Input" placeholder="#073b9a" value="#073b9a" />
-              </div>
-            </div>
+    <div class="grid3">
+      <div class="card">
+        <h3>Instant Estimates</h3>
+        <p>Customers receive a ballpark quote in under a minute.</p>
+      </div>
 
-            <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:12px">
-              <button class="btn btn-primary btn-sm" id="applyBrandBtn" type="button">Apply Colors</button>
-              <a class="btn btn-ghost btn-sm" id="copyLinkBtn" href="#" role="button">Copy Themed Link</a>
-            </div>
+      <div class="card">
+        <h3>Admin Dashboard</h3>
+        <p>View every quote + lead in one place.</p>
+      </div>
 
-            <div class="fine">Tip: use URL params: <span style="font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace">?brand=%23005BBB&brand2=%23003366</span></div>
-          </div>
-
-          <div class="mini-box">
-            <div class="mini-title">What you’re buying</div>
-            <p class="mini-text" style="margin-top:6px">
-              A working quote tool embedded on your site, branded to your company, with lead capture + automation.
-              No “tech stack headache.”
-            </p>
-          </div>
-        </aside>
+      <div class="card">
+        <h3>Auto Scheduling</h3>
+        <p>Email pushes customers straight into booking on your calendar.</p>
       </div>
     </div>
-  </header>
 
-  <!-- How it works -->
-  <section class="section" id="how-it-works">
-    <div class="container">
-      <div class="section-head" data-aos="fade-up">
-        <div>
-          <span class="badge"><span class="dot"></span>How it works</span>
-          <h2 style="margin-top:10px">Simple flow. Built for speed.</h2>
-        </div>
-        <p>
-          Your customer gets an instant ballpark quote, you get the lead with details, and the system runs the follow-up
-          until you’re ready to schedule / bid / close.
-        </p>
+  </div>
+</section>
+
+<!-- PAIN / FIX -->
+
+<section class="section section--tint">
+  <div class="container" data-aos="fade-up">
+
+    <h2>The problem is speed — here’s how we fix it.</h2>
+
+    <div class="grid3">
+
+      <div class="card">
+        <h3>Pain: Slow responses</h3>
+        <p>You’re on jobs. Leads don’t wait.</p>
+        <div class="divider"></div>
+        <p><strong>Fix:</strong> Instant pricing + captured leads.</p>
       </div>
 
-      <div class="grid-3">
-        <div class="card" data-aos="fade-up" data-aos-delay="0">
-          <div class="icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8">
-              <path d="M12 2v4"/><path d="M12 18v4"/><path d="M4.93 4.93l2.83 2.83"/><path d="M16.24 16.24l2.83 2.83"/>
-              <path d="M2 12h4"/><path d="M18 12h4"/><path d="M4.93 19.07l2.83-2.83"/><path d="M16.24 7.76l2.83-2.83"/>
-            </svg>
-          </div>
-          <h3>Instant quote on your site</h3>
-          <p>Customers enter job details and get a fast estimate. No waiting for callbacks.</p>
-        </div>
-
-        <div class="card" data-aos="fade-up" data-aos-delay="90">
-          <div class="icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8">
-              <path d="M22 12c0 5.5-4.5 10-10 10S2 17.5 2 12 6.5 2 12 2s10 4.5 10 10z"/>
-              <path d="M8 12l2.5 2.5L16 9"/>
-            </svg>
-          </div>
-          <h3>Lead capture + CRM</h3>
-          <p>Every quote creates a lead with notes so you don’t lose details or miss follow-ups.</p>
-        </div>
-
-        <div class="card" data-aos="fade-up" data-aos-delay="180">
-          <div class="icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8">
-              <path d="M3 12h18"/><path d="M3 6h18"/><path d="M3 18h18"/>
-            </svg>
-          </div>
-          <h3>Automation that closes</h3>
-          <p>Text/email nudges run automatically so you stay top-of-mind without doing the busywork.</p>
-        </div>
+      <div class="card">
+        <h3>Pain: Lost quotes</h3>
+        <p>Notes disappear in texts and calls.</p>
+        <div class="divider"></div>
+        <p><strong>Fix:</strong> Everything logged in your admin page.</p>
       </div>
+
+      <div class="card">
+        <h3>Pain: Chasing appointments</h3>
+        <p>Too much back-and-forth.</p>
+        <div class="divider"></div>
+        <p><strong>Fix:</strong> Automated email → scheduling.</p>
+      </div>
+
     </div>
-  </section>
 
-  <!-- Live demo -->
-  <section class="section" id="live-demo">
-    <div class="container">
-      <div class="section-head" data-aos="fade-up">
-        <div>
-          <span class="badge"><span class="dot"></span>Try it live</span>
-          <h2 style="margin-top:10px">Click it. Break it. Test it.</h2>
-        </div>
-        <p>
-          This is the experience your customers will use. You can embed this on your website branded to your colors.
-        </p>
-      </div>
+    <p class="note">
+      This doesn’t replace your final bid — it replaces the delay.
+    </p>
 
-      <div class="demo-wrap" data-aos="fade-up" data-aos-delay="120">
-        <div class="demo-top">
-          <div class="left">
-            <div class="lights" aria-hidden="true">
-              <div class="light"></div><div class="light"></div><div class="light"></div>
-            </div>
-            <div class="meta">Live Demo</div>
-          </div>
-          <div style="display:flex; gap:10px; flex-wrap:wrap">
-            <a class="btn btn-ghost btn-sm" href="#pricing">Pricing</a>
-            <a class="btn btn-primary btn-sm" href="#get-started">Start Setup</a>
-          </div>
-        </div>
+  </div>
+</section>
 
-        <!-- Replace the src with your real demo URL -->
-        <iframe
-          title="Instant Quote Demo"
-          src="https://bimlab.netlify.app/instant-quote-demo.html"
-          loading="lazy"></iframe>
-      </div>
+<!-- LIVE DEMO -->
+
+<section id="demo" class="section">
+  <div class="container" data-aos="fade-up">
+
+    <h2>Try the live estimate tool</h2>
+    <p class="lead">This is what your customers will use.</p>
+
+    <div class="demoWrap">
+      <iframe
+        src="https://bimlab.netlify.app/instant-quote-demo.html"
+        loading="lazy"
+        title="Estimate Demo">
+      </iframe>
     </div>
-  </section>
 
-  <!-- Pricing -->
-  <section class="section" id="pricing">
-    <div class="container">
-      <div class="section-head" data-aos="fade-up">
-        <div>
-          <span class="badge"><span class="dot"></span>Pricing</span>
-          <h2 style="margin-top:10px">Straight pricing. No confusing packages.</h2>
-        </div>
-        <p>
-          Most contractors just want the system live fast. Start with base setup. Add extras only if you want them.
-        </p>
-      </div>
+  </div>
+</section>
 
-      <div class="pricing-grid">
-        <div class="price primary" data-aos="fade-up" data-aos-delay="0">
-          <span class="tag"><span class="dot"></span>Base Setup</span>
-          <h3>Instant Quote System</h3>
-          <div class="num">$550 <small>one-time</small></div>
-          <ul class="list">
-            <li>Branded quote tool embedded on your website</li>
-            <li>Lead capture form + job details</li>
-            <li>Basic text/email follow-up automation</li>
-            <li>48-hour typical setup after materials</li>
-            <li>One round of edits after launch</li>
-          </ul>
-          <div class="actions">
-            <a class="btn btn-primary" href="#get-started">Start Setup</a>
-            <a class="btn btn-ghost" href="#live-demo">Try Demo Again</a>
-          </div>
-          <div class="fine">Deposit is applied to setup. You’ll approve branding before launch.</div>
-        </div>
+<!-- PRICING -->
 
-        <div class="price" data-aos="fade-up" data-aos-delay="120">
-          <span class="tag">Ongoing</span>
-          <h3>Hosting + Automation</h3>
-          <div class="num">$79 <small>/month</small></div>
-          <ul class="list">
-            <li>Tool hosting + updates</li>
-            <li>Automation uptime monitoring</li>
-            <li>Small text/copy tweaks included</li>
-            <li>Support for embed + tracking</li>
-          </ul>
-          <div class="actions">
-            <a class="btn btn-ghost" href="#get-started">Start Setup</a>
-            <a class="btn btn-outline" href="#how-it-works">What’s Included</a>
-          </div>
-          <div class="fine">No long-term contracts. Cancel anytime.</div>
-        </div>
-      </div>
+<section id="pricing" class="section section--tint">
+  <div class="container" data-aos="fade-up">
+
+    <h2>$550 base setup — fully done for you.</h2>
+
+    <p class="lead">
+      We install everything: quote tool, automation, admin page, and scheduling flow.
+    </p>
+
+    <div class="pricingCard">
+
+      <h3>Base System</h3>
+      <div class="price">$550</div>
+
+      <ul>
+        <li>Instant quote embedded on your website</li>
+        <li>Your branding + wording</li>
+        <li>Automation included</li>
+        <li><strong>Custom admin dashboard</strong></li>
+        <li><strong>Email after every quote</strong></li>
+        <li>Email routes customer to schedule on-site assessment</li>
+        <li>Setup + testing + handoff</li>
+      </ul>
+
+      <p class="deposit"><strong>$250 deposit</strong> to begin (applied to setup)</p>
+
     </div>
-  </section>
 
-  <!-- Get started -->
-  <section class="section" id="get-started">
-    <div class="container">
-      <div class="section-head" data-aos="fade-up">
-        <div>
-          <span class="badge"><span class="dot"></span>Start setup</span>
-          <h2 style="margin-top:10px">Lock your build slot with a deposit.</h2>
-        </div>
-        <p>
-          Fastest path: pay the deposit, then we do a 10-minute call to confirm services + pricing logic + branding.
-        </p>
-      </div>
+  </div>
+</section>
 
-      <div class="card" data-aos="fade-up" data-aos-delay="120">
-        <h3 style="font-size:22px">Step 1: Pay the $250 deposit</h3>
-        <p style="margin-top:8px;color:var(--muted)">
-          Deposit is applied to the $550 setup. You’ll receive a short intake message (logo/colors/services)
-          and we’ll start your build.
-        </p>
+<!-- CTA -->
 
-        <div style="display:flex; gap:12px; flex-wrap:wrap; margin-top:14px">
-          <!-- Replace with your Stripe link -->
-          <a class="btn btn-primary" href="https://buy.stripe.com/cNi7sDcMAbAJeYcgW4bEA00" target="_blank" rel="noopener">
-            Pay $250 Deposit
-          </a>
-          <a class="btn btn-ghost" href="#live-demo">Try Demo</a>
-        </div>
+<section id="cta" class="section">
+  <div class="container" data-aos="fade-up">
 
-        <div class="fine" style="margin-top:10px">
-          If you prefer to talk first, reply to your outreach email with: “send calendar” and we’ll book a 10-minute call.
-        </div>
-      </div>
+    <h2>Next step</h2>
+
+    <p class="lead">
+      Schedule a quick call — or place the deposit and we’ll start building.
+    </p>
+
+    <div class="ctaRow">
+      <a class="btn btn--primary" href="YOUR_CALENDLY_LINK" target="_blank">Schedule 10-Minute Call</a>
+      <a class="btn btn--outline" href="YOUR_STRIPE_LINK" target="_blank">Pay $250 Deposit</a>
     </div>
-  </section>
 
-  <footer class="footer">
-    © 2026 BIM Labs Studio — Instant Quote Systems
-  </footer>
+    <p class="note">
+      After deposit, we collect your logo, services, pricing rules, and calendar link — then build.
+    </p>
 
-  <!-- AOS -->
-  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
-  <script>
-    try { AOS.init({ duration: 650, easing: 'ease-out', once: true }); } catch(e){}
-  </script>
+  </div>
+</section>
 
-  <!-- Brand theming logic -->
-  <script>
-    (function(){
-      const root = document.documentElement;
+<footer class="footer">
+© BIM Labs — Instant Quote Systems
+</footer>
 
-      function normalizeHex(v){
-        if(!v) return '';
-        v = String(v).trim();
-        if(!v) return '';
-        // allow "%23" encoded "#"
-        v = v.replace(/^%23/i,'#');
-        if(v[0] !== '#') v = '#'+v;
-        // basic validation: #RGB or #RRGGBB
-        const ok = /^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/.test(v);
-        return ok ? v : '';
-      }
+<script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+<script> AOS.init({duration:600, once:true}); </script>
 
-      function setBrand(c1, c2){
-        if(c1) root.style.setProperty('--brand', c1);
-        if(c2) root.style.setProperty('--brand2', c2);
-        // store for repeat visits
-        try{
-          localStorage.setItem('bim_brand', c1 || '');
-          localStorage.setItem('bim_brand2', c2 || '');
-        }catch(e){}
-      }
-
-      // 1) URL params override
-      const qs = new URLSearchParams(location.search);
-      const qBrand  = normalizeHex(qs.get('brand'));
-      const qBrand2 = normalizeHex(qs.get('brand2'));
-
-      // 2) Otherwise localStorage
-      let sBrand='', sBrand2='';
-      try{
-        sBrand  = normalizeHex(localStorage.getItem('bim_brand'));
-        sBrand2 = normalizeHex(localStorage.getItem('bim_brand2'));
-      }catch(e){}
-
-      const brand = qBrand || sBrand || '#0b5fff';
-      const brand2 = qBrand2 || sBrand2 || '#073b9a';
-      setBrand(brand, brand2);
-
-      // Populate inputs
-      const brandInput = document.getElementById('brandInput');
-      const brand2Input = document.getElementById('brand2Input');
-      if(brandInput) brandInput.value = brand;
-      if(brand2Input) brand2Input.value = brand2;
-
-      // Apply button
-      const applyBtn = document.getElementById('applyBrandBtn');
-      if(applyBtn){
-        applyBtn.addEventListener('click', function(){
-          const b1 = normalizeHex(brandInput ? brandInput.value : '');
-          const b2 = normalizeHex(brand2Input ? brand2Input.value : '');
-          if(!b1 || !b2){
-            alert('Please enter valid hex colors like #005BBB');
-            return;
-          }
-          setBrand(b1,b2);
-        });
-      }
-
-      // Copy themed link
-      const copyBtn = document.getElementById('copyLinkBtn');
-      if(copyBtn){
-        copyBtn.addEventListener('click', async function(e){
-          e.preventDefault();
-          const b1 = normalizeHex(brandInput ? brandInput.value : '') || brand;
-          const b2 = normalizeHex(brand2Input ? brand2Input.value : '') || brand2;
-          const url = new URL(location.href);
-          url.searchParams.set('brand', b1);
-          url.searchParams.set('brand2', b2);
-          try{
-            await navigator.clipboard.writeText(url.toString());
-            copyBtn.textContent = 'Copied!';
-            setTimeout(()=> copyBtn.textContent = 'Copy Themed Link', 1200);
-          }catch(err){
-            prompt('Copy this link:', url.toString());
-          }
-        });
-      }
-    })();
-  </script>
+<script src="./app.js"></script>
 
 </body>
 </html>
