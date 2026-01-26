@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>BIM Labs — Instant Quote Demo</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;600;700&family=Montserrat:wght@700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+
+  <!-- External CSS -->
+  <link rel="stylesheet" href="/instant-quote-demo.css">
+</head>
+
+<body>
+
+<header class="iq-head">
+  <div class="in" role="banner">
+    <!-- Swap this file to your real BIM Labs logo -->
+    <img class="brandlogo" src="/images/bimlabs-logo.png" alt="BIM Labs">
+    <strong class="headtitle">Instant Quote Demo</strong>
+
+    <div class="iq-right">
+      <span class="iq-pill">Built by BIM Labs</span>
+      <span class="iq-pill">Done-for-you setup</span>
+    </div>
+  </div>
+  <div class="iq-progress" aria-hidden="true"><i id="iqProg"></i></div>
+</header>
+
+<main class="iq" role="main">
+
+  <!-- Left -->
+  <section class="iq-card iq-pad" aria-label="Quote steps">
+    <h2 id="iqTitle">Contact</h2>
+    <p class="iq-sub" id="iqDesc">We’ll attach the quote to you. Add an email if you want a copy.</p>
+
+    <form id="iqForm" novalidate>
+
+      <!-- Step 1 -->
+      <div class="iq-step active" data-step="1">
+        <div class="iq-grid">
+          <div class="iq-6">
+            <label for="iqName">Full Name*</label>
+            <input id="iqName" name="name" placeholder="Jane Smith" required autocomplete="name">
+          </div>
+          <div class="iq-6">
+            <label for="iqEmail">Email (optional)</label>
+            <input id="iqEmail" name="email" type="email" placeholder="you@example.com" autocomplete="email">
+          </div>
+          <div class="iq-6">
+            <label for="iqPhone">Phone*</label>
+            <input id="iqPhone" name="phone" placeholder="(555) 123-4567" required inputmode="tel" autocomplete="tel">
+          </div>
+          <div class="iq-6">
+            <label for="iqZip">ZIP Code*</label>
+            <input id="iqZip" name="zip" inputmode="numeric" maxlength="5" placeholder="63101" required autocomplete="postal-code">
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 2 -->
+      <div class="iq-step" data-step="2">
+        <div class="iq-grid">
+          <div class="iq-full">
+            <label>Project Type*</label>
+            <div class="iq-chips" id="iqService" role="group" aria-label="Project Type">
+              <button type="button" class="iq-chip" data-val="Fence Install / Replacement">Fence Install / Replacement</button>
+              <button type="button" class="iq-chip" data-val="Roof Replacement / Repair">Roof Replacement / Repair</button>
+              <button type="button" class="iq-chip" data-val="Concrete / Flatwork">Concrete / Flatwork</button>
+            </div>
+            <div class="iq-tiny">Demo note: This can be replaced with YOUR service list.</div>
+          </div>
+
+          <div class="iq-full">
+            <label>Material / System*</label>
+            <div class="iq-chips" id="iqType" role="group" aria-label="Material / System">
+              <button type="button" class="iq-chip" data-val="Standard">Standard</button>
+              <button type="button" class="iq-chip active" data-val="Premium">Premium</button>
+              <button type="button" class="iq-chip" data-val="High-End">High-End</button>
+              <button type="button" class="iq-chip" data-val="Unsure">Unsure</button>
+            </div>
+          </div>
+
+          <div class="iq-full">
+            <label for="iqArea">Approx. Size (sq ft)*</label>
+            <div class="iq-slider">
+              <input id="iqArea" type="range" min="200" max="8000" step="50" value="2400" aria-label="Approx size">
+              <div class="iq-bubble" id="iqAreaBub">2,400 sf</div>
+            </div>
+            <div class="iq-tiny">This slider is demo-friendly. In production we can use linear feet, square feet, or units.</div>
+          </div>
+
+          <div class="iq-6">
+            <label>Complexity</label>
+            <div class="iq-chips" id="iqPitch" role="group" aria-label="Complexity">
+              <button type="button" class="iq-chip active" data-val="1.00">Simple</button>
+              <button type="button" class="iq-chip" data-val="1.07">Medium</button>
+              <button type="button" class="iq-chip" data-val="1.15">Complex</button>
+            </div>
+          </div>
+
+          <div class="iq-6">
+            <label>Access</label>
+            <div class="iq-chips" id="iqStories" role="group" aria-label="Access">
+              <button type="button" class="iq-chip active" data-val="1.00">Easy</button>
+              <button type="button" class="iq-chip" data-val="1.06">Moderate</button>
+              <button type="button" class="iq-chip" data-val="1.12">Tight</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 3 -->
+      <div class="iq-step" data-step="3">
+        <div class="iq-grid">
+          <div class="iq-full">
+            <label>Work Level*</label>
+            <div class="iq-chips" id="iqGrade" role="group" aria-label="Work Level">
+              <button type="button" class="iq-chip" data-val="standard">Standard</button>
+              <button type="button" class="iq-chip active" data-val="premium">Premium</button>
+              <button type="button" class="iq-chip" data-val="designer">Top Tier</button>
+            </div>
+          </div>
+
+          <div class="iq-full">
+            <label>Included Package</label>
+            <div class="iq-chips" id="iqUnder" role="group" aria-label="Package">
+              <button type="button" class="iq-chip active" data-val="base">Base</button>
+              <button type="button" class="iq-chip" data-val="plus">Plus</button>
+              <button type="button" class="iq-chip" data-val="max">Max</button>
+            </div>
+          </div>
+
+          <div class="iq-full">
+            <label>Options</label>
+            <div class="iq-tiles" id="iqOpts">
+              <label class="iq-tile active" data-key="demo1"><input type="checkbox" checked> <span class="lab">Removal / haul-away</span></label>
+              <label class="iq-tile active" data-key="demo2"><input type="checkbox" checked> <span class="lab">Disposal / dump fees</span></label>
+              <label class="iq-tile active" data-key="demo3"><input type="checkbox" checked> <span class="lab">Permits / admin</span></label>
+              <label class="iq-tile" data-key="finance"><input type="checkbox"> <span class="lab">Show 12-mo finance</span></label>
+            </div>
+            <div class="iq-tiny">Demo note: options match your client’s real upsells in production.</div>
+          </div>
+
+          <div class="iq-full">
+            <label for="iqNotes">Notes (optional)</label>
+            <textarea id="iqNotes" placeholder="Gate location, steep yard, HOA rules, timing..."></textarea>
+          </div>
+
+          <div class="iq-full">
+            <div class="disclaimer">
+              Ballpark estimate only. Final pricing confirmed after an on-site assessment.
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </form>
+  </section>
+
+  <!-- Right summary -->
+  <aside class="iq-card iq-pad iq-sum" aria-label="Quote summary">
+    <h2>Summary</h2>
+    <p class="iq-sub">Updates as you go.</p>
+
+    <div class="iq-rows" id="iqLines"></div>
+
+    <div class="iq-total">
+      <strong>Total</strong>
+      <div class="amt" id="iqGrand">$0</div>
+    </div>
+
+    <div class="iq-note" id="iqFinance" hidden></div>
+
+    <div class="iq-note">
+      Demo only • We brand + wire this to your calendar + build your admin dashboard
+    </div>
+  </aside>
+
+</main>
+
+<!-- Bottom bar -->
+<footer class="iq-bar" aria-label="Actions">
+  <div class="in">
+    <div id="iqStepLabel" class="iq-tiny" style="font-weight:700;color:#3b4b63">Step 1 of 3</div>
+    <div class="iq-spacer"></div>
+
+    <div class="iq-after" id="iqAfter" aria-live="polite">
+      <button class="iq-btn iq-btn-outline" id="iqEmailBtn" type="button">Add/Edit Email</button>
+      <button class="iq-btn iq-btn-outline" id="iqCopyBtn" type="button">Copy Summary</button>
+      <button class="iq-btn iq-btn-outline" id="iqScheduleBtn" type="button">Schedule On-Site Assessment</button>
+      <button class="iq-btn iq-btn-primary" id="iqPdfBtn" type="button">Download PDF</button>
+    </div>
+
+    <div id="iqNav">
+      <button class="iq-btn iq-btn-ghost" id="iqBackBtn" type="button" disabled>Back</button>
+      <button class="iq-btn iq-btn-primary" id="iqNextBtn" type="button">Next</button>
+    </div>
+  </div>
+</footer>
+
+<!-- Email modal -->
+<div id="emailModal" class="iq-modal" role="dialog" aria-modal="true" aria-labelledby="emailTitle">
+  <div class="box">
+    <h3 id="emailTitle">Email this quote</h3>
+    <label for="sendTo">Recipient Email</label>
+    <input id="sendTo" type="email" placeholder="customer@email.com" autocomplete="email">
+    <div class="row">
+      <button id="emailCancel" class="iq-btn iq-btn-outline" type="button">Cancel</button>
+      <button id="emailSave" class="iq-btn iq-btn-primary" type="button">Save Email</button>
+    </div>
+    <div class="iq-tiny" style="margin-top:8px">
+      Demo: this only saves the email to the quote state.
+    </div>
+  </div>
+</div>
+
+<!-- External JS -->
+<script src="/instant-quote-demo.js"></script>
+</body>
+</html>
