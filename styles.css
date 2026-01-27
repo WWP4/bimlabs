@@ -660,3 +660,57 @@ strong{font-weight:800}
   75%  { transform:scaleX(1.03); }
   100% { transform:scaleX(1); }
 }
+
+/* Premium dividers: short, thick, directional (no center-out) */
+.divider-wrap{
+  width:100%;
+  padding: 12px 0;
+  display:flex;
+  justify-content:center;
+  pointer-events:none;
+}
+
+.divider-line{
+  height:3px;
+  width:min(860px, 84vw);
+  background:#0f1116;
+  border-radius:999px;
+  opacity:.9;
+
+  /* hidden by default */
+  clip-path: inset(0 100% 0 0);
+  will-change: clip-path;
+}
+
+/* Left -> Right: reveal from left edge */
+.divider-line.ltr{
+  clip-path: inset(0 100% 0 0);
+}
+
+/* Right -> Left: reveal from right edge */
+.divider-line.rtl{
+  clip-path: inset(0 0 0 100%);
+}
+
+/* AOS reveal triggers */
+[data-aos="line-reveal"].aos-animate.divider-line.ltr{
+  animation: lineLTR 900ms cubic-bezier(.16,1,.3,1) forwards;
+}
+[data-aos="line-reveal"].aos-animate.divider-line.rtl{
+  animation: lineRTL 900ms cubic-bezier(.16,1,.3,1) forwards;
+}
+
+/* Directional keyframes (never center-out) */
+@keyframes lineLTR{
+  0%   { clip-path: inset(0 100% 0 0); }
+  75%  { clip-path: inset(0 -3% 0 0); }  /* tiny overshoot */
+  100% { clip-path: inset(0 0 0 0); }
+}
+
+@keyframes lineRTL{
+  0%   { clip-path: inset(0 0 0 100%); }
+  75%  { clip-path: inset(0 0 0 -3%); }  /* tiny overshoot */
+  100% { clip-path: inset(0 0 0 0); }
+}
+
+
