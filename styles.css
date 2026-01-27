@@ -293,3 +293,53 @@ strong{font-weight:800}
   fill:#2563eb;
 }
 
+.topbar{
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: #0f1116;
+  border-bottom: 1px solid #1e232e;
+}
+
+.brand--logo{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  text-decoration:none;
+}
+
+.nav-letters{
+  display:flex;
+  gap:10px;
+  font-weight:900;
+  letter-spacing:.04em;
+  font-size:1.25rem;
+  line-height:1;
+}
+
+.nav-letters .bim{ color:#ffffff; }
+.nav-letters .labs{ color:#4EC6FF; }
+
+.nav-symbol{ width:26px; height:26px; }
+.nav-outline{
+  fill:none;
+  stroke:#4EC6FF;
+  stroke-width:6;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+}
+.nav-fill{ fill:#4EC6FF; }
+
+.brand__tag{
+  color:#cbd5e1;
+  font-weight:600;
+  font-size:.95rem;
+  white-space:nowrap;
+}
+
+/* Mobile: hide tagline if it crowds */
+@media (max-width:720px){
+  .brand__tag{ display:none; }
+}
+
+
