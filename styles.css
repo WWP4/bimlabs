@@ -621,3 +621,42 @@ strong{font-weight:800}
   margin-top:-10px;
   margin-bottom:-10px;
 }
+
+
+/* ===== Premium section dividers (short + thick + alternating) ===== */
+
+.divider-wrap{
+  width:100%;
+  padding: 10px 0;                 /* breathing room */
+  display:flex;
+  justify-content:center;          /* keeps line centered on page */
+  pointer-events:none;
+}
+
+.divider-line{
+  height:3px;                      /* thicker */
+  width:min(860px, 84vw);          /* NOT full width */
+  background:#0f1116;              /* black */
+  border-radius:999px;
+  opacity:.9;
+
+  transform:scaleX(0);
+  will-change:transform;
+}
+
+/* direction control */
+.divider-line.from-left{ transform-origin:left; }
+.divider-line.from-right{ transform-origin:right; }
+.divider-line.from-center{ transform-origin:center; }
+
+/* AOS reveal */
+[data-aos="line-draw"].aos-animate{
+  animation: dividerDraw 850ms cubic-bezier(.16,1,.3,1) forwards;
+}
+
+/* small overshoot = premium */
+@keyframes dividerDraw{
+  0%   { transform:scaleX(0); }
+  75%  { transform:scaleX(1.03); }
+  100% { transform:scaleX(1); }
+}
