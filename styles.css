@@ -343,3 +343,84 @@ strong{font-weight:800}
 }
 
 
+/* BIGGER BLACK TOPBAR */
+.topbar{
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: #0f1116;
+  border-bottom: 1px solid #1e232e;
+}
+
+/* layout: logo left, buttons right */
+.topbar__inner{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 84px;          /* makes bar bigger */
+  padding: 14px 18px;        /* more breathing room */
+}
+
+/* right side buttons */
+.topbar__actions{
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-left: auto;
+}
+
+/* LOGO */
+.brand--logo{
+  display:flex;
+  align-items:center;
+  gap: 12px;
+  text-decoration:none;
+}
+
+/* force BIM to be WHITE */
+.nav-letters{
+  display:flex;
+  gap: 10px;
+  font-weight: 900;
+  letter-spacing: .04em;
+  font-size: 1.35rem;
+  line-height: 1;
+}
+
+.nav-letters .bim{ color:#ffffff !important; }  /* <-- BIM white */
+.nav-letters .labs{ color:#4EC6FF !important; } /* LABS blue */
+
+.nav-symbol{ width: 28px; height: 28px; }
+
+.nav-outline{
+  fill: none;
+  stroke: #4EC6FF;
+  stroke-width: 6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.nav-fill{ fill:#4EC6FF; }
+
+.brand__tag{
+  color: #cbd5e1;
+  font-weight: 600;
+  font-size: .98rem;
+  white-space: nowrap;
+}
+
+/* make buttons readable on black */
+.topbar .btn--ghost,
+.topbar .btn--outline{
+  color: #e5e7eb;
+  border-color: #334155;
+}
+
+.topbar .btn--outline:hover{
+  border-color:#4EC6FF;
+  color:#ffffff;
+}
+
+/* mobile: hide tagline if needed */
+@media (max-width: 820px){
+  .brand__tag{ display:none; }
+}
