@@ -291,3 +291,41 @@ strong{font-weight:800}
   opacity: 1 !important;
   transform: none !important;
 }
+
+/* NAV LOGO (clean, finished) */
+.brand--logo{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+.nav-letters{
+  display:flex;
+  align-items:baseline;
+  gap:10px;
+  font-weight:800;
+  letter-spacing:.04em;
+  line-height:1;
+  font-size:22px;
+}
+.nav-letters span:first-child{ color:#111827; } /* BIM */
+.nav-letters span:last-child{ color:#2563eb; }  /* LABS (adjust to your blue) */
+
+.nav-symbol{
+  width:26px;
+  height:26px;
+  overflow:visible;
+}
+
+.nav-outline{
+  fill:none;
+  stroke:#2563eb;     /* your blue */
+  stroke-width:6;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+}
+
+.nav-fill{
+  fill:#2563eb;
+}
+
