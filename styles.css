@@ -1032,3 +1032,90 @@ strong{font-weight:800}
     max-width:340px;
   }
 }
+
+
+.speedSection{
+  padding:100px 24px;
+  background:#f8fafc;
+}
+
+.speedWrap{
+  max-width:1100px;
+  margin:auto;
+  text-align:center;
+}
+
+.speedTitle{
+  font-size:clamp(30px,3.6vw,46px);
+  font-weight:900;
+  margin-bottom:50px;
+  color:#0b1220;
+}
+
+.speedTitle span{
+  color:#2aa7ff;
+}
+
+/* GRID */
+
+.speedGrid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:26px;
+  margin-bottom:40px;
+}
+
+/* CARDS */
+
+.speedCard{
+  background:#fff;
+  border-radius:18px;
+  padding:32px 26px;
+  border:1px solid #e5e7eb;
+  text-align:left;
+}
+
+.speedCard h3{
+  color:#2aa7ff;
+  font-weight:900;
+  margin-bottom:8px;
+}
+
+/* TEXT */
+
+.speedPain{
+  color:#4b5563;
+  font-size:15px;
+}
+
+.speedDivider{
+  height:1px;
+  background:#e5e7eb;
+  margin:14px 0;
+}
+
+.speedFix{
+  color:#0b1220;
+  font-size:15px;
+}
+
+.speedFix strong{
+  color:#2aa7ff;
+}
+
+/* NOTE */
+
+.speedNote{
+  color:#6b7280;
+  font-size:14px;
+  margin-top:10px;
+}
+
+/* MOBILE */
+
+@media(max-width:768px){
+  .speedCard{
+    text-align:center;
+  }
+}
+
