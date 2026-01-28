@@ -894,3 +894,141 @@ strong{font-weight:800}
   .hero-video .btn-primary,
   .hero-video .btn-outline{ width:min(360px, 100%); }
 }
+
+
+.heroSection{
+  padding:120px 24px 100px;
+  background:#fff;
+}
+
+.heroWrap{
+  max-width:1100px;
+  margin:auto;
+  text-align:center;
+}
+
+/* TITLE */
+
+.heroTitle{
+  font-size:clamp(38px,4.5vw,60px);
+  font-weight:900;
+  margin-bottom:18px;
+  color:#0b1220;
+}
+
+.heroTitle span{
+  color:#2aa7ff;
+}
+
+/* SUB */
+
+.heroSub{
+  font-size:17px;
+  max-width:720px;
+  margin:0 auto 28px;
+  color:#4b5563;
+}
+
+.heroSub strong{
+  color:#0b1220;
+}
+
+/* BUTTONS */
+
+.heroActions{
+  display:flex;
+  justify-content:center;
+  gap:14px;
+  margin-bottom:14px;
+  flex-wrap:wrap;
+}
+
+.btnPrimary{
+  background:#2aa7ff;
+  color:#07131f;
+  padding:14px 26px;
+  border-radius:12px;
+  font-weight:800;
+  text-decoration:none;
+}
+
+.btnOutline{
+  border:1px solid #cfd7e3;
+  padding:14px 26px;
+  border-radius:12px;
+  font-weight:700;
+  text-decoration:none;
+  color:#0b1220;
+}
+
+/* TRUST LINE */
+
+.heroTrust{
+  font-size:13px;
+  color:#6b7280;
+  margin-bottom:40px;
+}
+
+/* FLOW BOX */
+
+.heroFlow{
+  max-width:520px;
+  margin:0 auto 60px;
+  padding:24px;
+  border-radius:16px;
+  background:#f8fafc;
+}
+
+.flowTitle{
+  font-size:12px;
+  font-weight:900;
+  letter-spacing:.12em;
+  color:#2aa7ff;
+  margin-bottom:8px;
+}
+
+.flowText{
+  font-size:15px;
+  color:#0b1220;
+}
+
+.flowDivider{
+  height:1px;
+  background:#e5e7eb;
+  margin:12px 0;
+}
+
+/* FEATURE GRID */
+
+.heroGrid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:24px;
+}
+
+.heroCard{
+  background:#fff;
+  padding:28px;
+  border-radius:18px;
+  border:1px solid #e5e7eb;
+}
+
+.heroCard h3{
+  color:#2aa7ff;
+  font-weight:800;
+  margin-bottom:6px;
+}
+
+.heroCard p{
+  color:#4b5563;
+  font-size:15px;
+}
+
+/* MOBILE */
+
+@media(max-width:768px){
+  .heroActions a{
+    width:100%;
+    max-width:340px;
+  }
+}
