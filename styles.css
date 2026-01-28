@@ -1003,3 +1003,92 @@ strong{font-weight:800}
   .hero-bg{ display:none; }
   .hero-video{ background:#0b1220 url("/assets/hero-poster.jpg") center/cover no-repeat; }
 }
+
+
+.hero-video{
+  position:relative;
+  height:70vh;
+  min-height:520px;
+  overflow:hidden;
+}
+
+.hero-bg{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  filter: blur(.5px) saturate(1.05) contrast(1.05);
+  transform:scale(1.03);
+}
+
+.hero-overlay{
+  position:absolute;
+  inset:0;
+  background:rgba(0,0,0,.55);
+}
+
+.hero-center{
+  position:relative;
+  z-index:2;
+  height:100%;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  padding:0 24px;
+  color:white;
+}
+
+.hero-badge{
+  font-size:12px;
+  letter-spacing:.15em;
+  opacity:.8;
+  margin-bottom:12px;
+}
+
+.hero-center h1{
+  font-size:clamp(36px,4vw,58px);
+  line-height:1.05;
+  margin:0 0 10px;
+  max-width:900px;
+}
+
+.hero-center p{
+  max-width:700px;
+  opacity:.9;
+  margin-bottom:20px;
+}
+
+.hero-actions{
+  display:flex;
+  gap:12px;
+  margin-bottom:10px;
+}
+
+.btn-primary{
+  background:#2aa7ff;
+  color:#07131f;
+  padding:14px 22px;
+  border-radius:12px;
+  font-weight:800;
+  text-decoration:none;
+}
+
+.btn-outline{
+  border:1px solid rgba(255,255,255,.4);
+  padding:14px 22px;
+  border-radius:12px;
+  color:white;
+  text-decoration:none;
+}
+
+.hero-center small{
+  opacity:.7;
+  font-size:13px;
+}
+
+@media(max-width:768px){
+  .hero-actions{flex-direction:column;}
+}
