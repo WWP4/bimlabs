@@ -1468,3 +1468,72 @@ strong{font-weight:800}
   .demoCtas .btn{ width:100%; }
   .demoIframeWrap iframe{ height: 820px; }
 }
+
+
+/* =========================
+   BIM LABS DEMO COLOR FIX
+   Paste at bottom of styles.css
+========================= */
+
+/* Headings + copy */
+.demoKicker{
+  color:#4EC6FF !important;
+}
+
+.demoTitle{
+  color:#0f1116 !important;
+}
+
+.demoLead{
+  color:#4b5563 !important;
+}
+
+/* Bullets + callout text */
+.demoBullet{
+  color:#0f1116 !important;
+}
+
+.demoCalloutTitle{
+  color:#0f1116 !important;
+}
+
+.demoCalloutText{
+  color:#4b5563 !important;
+}
+
+/* Demo frame header bar */
+.demoFrameTop{
+  background:#0f1116 !important;
+}
+
+/* Primary demo pill */
+.demoPill{
+  background:#4EC6FF !important;
+  color:#0f1116 !important;
+}
+
+/* Mini pills inside frame */
+.demoMiniPill{
+  border-color:rgba(255,255,255,.25) !important;
+  background:rgba(255,255,255,.08) !important;
+}
+
+/* Bullet dots */
+.demoBullet .dot{
+  background:#4EC6FF !important;
+}
+
+/* Right column panel */
+.demoActions{
+  border:1px solid rgba(15,17,22,.12) !important;
+}
+
+/* Demo iframe border polish */
+.demoFrame{
+  border:1px solid rgba(15,17,22,.18) !important;
+}
+
+/* Optional: subtle electric glow on hover buttons */
+.demoCtas .btn--primary:hover{
+  box-shadow:0 12px 28px rgba(78,198,255,.35) !important;
+}
