@@ -1283,3 +1283,188 @@ strong{font-weight:800}
     width:min(360px, 100%);
   }
 }
+
+/* DEMO SECTION (blue/white branded) */
+.demoSection{
+  background: linear-gradient(180deg, #ffffff 0%, #f5f9ff 100%);
+}
+
+.demoHead{
+  display:grid;
+  grid-template-columns: 1.2fr .8fr;
+  gap: 26px;
+  align-items:start;
+  margin-bottom: 18px;
+}
+
+/* left column */
+.demoKicker{
+  font-size:12px;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  font-weight:900;
+  color:#0b2d5b;
+  opacity:.85;
+  margin-bottom:10px;
+}
+
+.demoTitle{
+  margin:0 0 10px;
+  font-size: clamp(28px, 3.2vw, 44px);
+  line-height:1.08;
+  letter-spacing:-.02em;
+  color:#06224a;
+}
+
+.demoLead{
+  margin:0 0 16px;
+  font-size:16px;
+  line-height:1.6;
+  color:#16365f;
+  max-width: 62ch;
+}
+
+.demoBullets{
+  display:grid;
+  gap:10px;
+  margin-top: 10px;
+}
+
+.demoBullet{
+  display:flex;
+  align-items:flex-start;
+  gap:10px;
+  color:#123457;
+  font-weight:700;
+}
+
+.demoBullet .dot{
+  width:10px;
+  height:10px;
+  border-radius:999px;
+  background:#2aa7ff;
+  margin-top:6px;
+  flex:0 0 auto;
+}
+
+/* right column */
+.demoActions{
+  border:1px solid rgba(6,34,74,.10);
+  border-radius:16px;
+  background:#ffffff;
+  padding:18px;
+  box-shadow: 0 14px 34px rgba(10, 30, 60, .08);
+}
+
+.demoCallout{
+  border-left:4px solid #2aa7ff;
+  padding-left:12px;
+  margin-bottom:14px;
+}
+
+.demoCalloutTitle{
+  font-weight:900;
+  color:#06224a;
+  margin-bottom:6px;
+}
+
+.demoCalloutText{
+  color:#14365a;
+  line-height:1.55;
+}
+
+.demoCalloutText strong{
+  color:#06224a;
+}
+
+.demoCtas{
+  display:flex;
+  gap:12px;
+  flex-wrap:wrap;
+  margin: 12px 0 10px;
+}
+
+.demoTip{
+  font-size:13px;
+  color:#21466f;
+  opacity:.9;
+}
+
+/* DEMO FRAME */
+.demoFrame{
+  border-radius:18px;
+  overflow:hidden;
+  border:1px solid rgba(6,34,74,.12);
+  background:#ffffff;
+  box-shadow: 0 18px 50px rgba(10, 30, 60, .10);
+}
+
+.demoFrameTop{
+  display:flex;
+  justify-content:space-between;
+  gap:16px;
+  padding:14px 16px;
+  background: #06224a; /* deep BIM blue */
+  color:#fff;
+}
+
+.demoFrameLeft{
+  display:flex;
+  flex-direction:column;
+  gap:4px;
+}
+
+.demoPill{
+  width:fit-content;
+  padding:6px 10px;
+  border-radius:999px;
+  background:#2aa7ff;
+  color:#061a2f;
+  font-weight:900;
+  font-size:12px;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+}
+
+.demoSub{
+  font-size:13px;
+  opacity:.9;
+}
+
+.demoFrameRight{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  flex-wrap:wrap;
+  justify-content:flex-end;
+}
+
+.demoMiniPill{
+  padding:6px 10px;
+  border-radius:999px;
+  border:1px solid rgba(255,255,255,.20);
+  background: rgba(255,255,255,.08);
+  font-size:12px;
+  font-weight:800;
+  opacity:.95;
+}
+
+.demoIframeWrap{
+  background:#ffffff;
+  padding: 14px;
+}
+
+.demoIframeWrap iframe{
+  width:100%;
+  height: 760px;
+  border:0;
+  border-radius:12px;
+  background:#fff;
+}
+
+/* Mobile */
+@media (max-width: 900px){
+  .demoHead{ grid-template-columns: 1fr; }
+  .demoCtas .btn{ width:100%; }
+  .demoIframeWrap iframe{ height: 820px; }
+}
