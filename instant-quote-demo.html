@@ -3,25 +3,26 @@
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1"/>
-  <title>BIM Labs — Instant Quote Demo</title>
+  <title>BIM Labs — Stop Wasting Site Visits on Price Shoppers</title>
 
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;600;700&family=Montserrat:wght@700;800&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
 
-  <!-- External CSS -->
+  <!-- Keep your existing styling + JS -->
   <link rel="stylesheet" href="/instant-quote-demo.css">
+
+  <meta name="description" content="A ballpark range tool that filters price shoppers before you roll a truck. Done-for-you setup for contractors.">
 </head>
 
 <body>
 
 <header class="iq-head">
   <div class="in" role="banner">
-    <!-- Swap this file to your real BIM Labs logo -->
     <img class="brandlogo" src="/images/bimlabs-logo.png" alt="BIM Labs">
-    <strong class="headtitle">Instant Quote Demo</strong>
+    <strong class="headtitle">Price Shopper Filter</strong>
 
     <div class="iq-right">
-      <span class="iq-pill">Built by BIM Labs</span>
+      <span class="iq-pill">Built for contractors</span>
       <span class="iq-pill">Done-for-you setup</span>
     </div>
   </div>
@@ -30,11 +31,26 @@
 
 <main class="iq" role="main">
 
-  <!-- Left -->
+  <!-- LEFT: Customer-facing demo, but framed as lead filter -->
   <section class="iq-card iq-pad" aria-label="Quote steps">
-    <h2 id="iqTitle">Contact</h2>
-    <p class="iq-sub" id="iqDesc">We’ll attach the quote to you. Add an email if you want a copy.</p>
+    <!-- Reframed headline + subhead -->
+    <h2 id="iqTitle">Stop wasting site visits on price shoppers</h2>
+    <p class="iq-sub" id="iqDesc">
+      This is what your customers see: a fast <strong>ballpark range</strong> using your pricing rules, so you only run appointments for serious buyers.
+      <br><span class="iq-tiny" style="display:inline-block;margin-top:8px;">
+        Ballpark estimate only. Final pricing confirmed after an on-site assessment.
+      </span>
+    </p>
 
+    <!-- Optional: tiny contractor-proof bullets -->
+    <div class="iq-note" style="margin-bottom:14px;">
+      <strong>What this does:</strong>
+      <div class="iq-tiny" style="margin-top:6px;">
+        • Filters low-intent leads • Reduces wasted bids • You control pricing + upsells
+      </div>
+    </div>
+
+    <!-- Keep your existing form + JS hooks intact -->
     <form id="iqForm" novalidate>
 
       <!-- Step 1 -->
@@ -69,7 +85,7 @@
               <button type="button" class="iq-chip" data-val="Roof Replacement / Repair">Roof Replacement / Repair</button>
               <button type="button" class="iq-chip" data-val="Concrete / Flatwork">Concrete / Flatwork</button>
             </div>
-            <div class="iq-tiny">Demo note: This can be replaced with YOUR service list.</div>
+            <div class="iq-tiny">In production: this becomes your exact service list.</div>
           </div>
 
           <div class="iq-full">
@@ -88,7 +104,7 @@
               <input id="iqArea" type="range" min="200" max="8000" step="50" value="2400" aria-label="Approx size">
               <div class="iq-bubble" id="iqAreaBub">2,400 sf</div>
             </div>
-            <div class="iq-tiny">This slider is demo-friendly. In production we can use linear feet, square feet, or units.</div>
+            <div class="iq-tiny">In production: sq ft / linear ft / units — whatever your trade uses.</div>
           </div>
 
           <div class="iq-6">
@@ -140,7 +156,7 @@
               <label class="iq-tile active" data-key="demo3"><input type="checkbox" checked> <span class="lab">Permits / admin</span></label>
               <label class="iq-tile" data-key="finance"><input type="checkbox"> <span class="lab">Show 12-mo finance</span></label>
             </div>
-            <div class="iq-tiny">Demo note: options match your client’s real upsells in production.</div>
+            <div class="iq-tiny">In production: these are your upsells and rules.</div>
           </div>
 
           <div class="iq-full">
@@ -159,28 +175,38 @@
     </form>
   </section>
 
-  <!-- Right summary -->
-  <aside class="iq-card iq-pad iq-sum" aria-label="Quote summary">
-    <h2>Summary</h2>
-    <p class="iq-sub">Updates as you go.</p>
+  <!-- RIGHT: Summary but reframed -->
+  <aside class="iq-card iq-pad iq-sum" aria-label="Summary">
+    <h2>Ballpark Range</h2>
+    <p class="iq-sub">Updates as your customer fills it out.</p>
 
     <div class="iq-rows" id="iqLines"></div>
 
     <div class="iq-total">
-      <strong>Total</strong>
+      <strong>Estimated Total</strong>
       <div class="amt" id="iqGrand">$0</div>
     </div>
 
     <div class="iq-note" id="iqFinance" hidden></div>
 
     <div class="iq-note">
-      Demo only • We brand + wire this to your calendar + build your admin dashboard
+      Contractor note: We brand this to your company, wire it to your calendar, and build your admin view so you can adjust pricing.
+    </div>
+
+    <!-- Single, low-friction CTA -->
+    <div style="margin-top:12px;">
+      <button class="iq-btn iq-btn-primary" type="button" id="fitCtaBtn">
+        See if this fits your trade
+      </button>
+      <div class="iq-tiny" style="margin-top:6px;">
+        3–5 minutes • We’ll generate a Quote Leak Report
+      </div>
     </div>
   </aside>
 
 </main>
 
-<!-- Bottom bar -->
+<!-- Bottom bar: keep your existing buttons, but rename the “Schedule” button copy -->
 <footer class="iq-bar" aria-label="Actions">
   <div class="in">
     <div id="iqStepLabel" class="iq-tiny" style="font-weight:700;color:#3b4b63">Step 1 of 3</div>
@@ -189,7 +215,7 @@
     <div class="iq-after" id="iqAfter" aria-live="polite">
       <button class="iq-btn iq-btn-outline" id="iqEmailBtn" type="button">Add/Edit Email</button>
       <button class="iq-btn iq-btn-outline" id="iqCopyBtn" type="button">Copy Summary</button>
-      <button class="iq-btn iq-btn-outline" id="iqScheduleBtn" type="button">Schedule On-Site Assessment</button>
+      <button class="iq-btn iq-btn-outline" id="iqScheduleBtn" type="button">Check Fit / Get Report</button>
       <button class="iq-btn iq-btn-primary" id="iqPdfBtn" type="button">Download PDF</button>
     </div>
 
@@ -200,10 +226,10 @@
   </div>
 </footer>
 
-<!-- Email modal -->
+<!-- Email modal (unchanged) -->
 <div id="emailModal" class="iq-modal" role="dialog" aria-modal="true" aria-labelledby="emailTitle">
   <div class="box">
-    <h3 id="emailTitle">Email this quote</h3>
+    <h3 id="emailTitle">Email this estimate</h3>
     <label for="sendTo">Recipient Email</label>
     <input id="sendTo" type="email" placeholder="customer@email.com" autocomplete="email">
     <div class="row">
@@ -211,12 +237,26 @@
       <button id="emailSave" class="iq-btn iq-btn-primary" type="button">Save Email</button>
     </div>
     <div class="iq-tiny" style="margin-top:8px">
-      Demo: this only saves the email to the quote state.
+      Demo: this only saves the email to the estimate state.
     </div>
   </div>
 </div>
 
-<!-- External JS -->
+<!-- Keep your existing JS -->
 <script src="/instant-quote-demo.js"></script>
+
+<!-- Minimal “fit CTA” behavior without breaking your demo -->
+<script>
+  // Send them to your fit-check / landing page section (replace with your real URL)
+  document.getElementById('fitCtaBtn')?.addEventListener('click', function () {
+    window.location.href = "/fit";
+  });
+
+  // Reuse schedule button as the same low-friction CTA (optional)
+  document.getElementById('iqScheduleBtn')?.addEventListener('click', function () {
+    window.location.href = "/fit";
+  });
+</script>
+
 </body>
 </html>
