@@ -1537,3 +1537,98 @@ strong{font-weight:800}
 .demoCtas .btn--primary:hover{
   box-shadow:0 12px 28px rgba(78,198,255,.35) !important;
 }
+
+
+
+/* =========================
+   CLEANUP PATCH (paste last)
+   Makes the site feel consistent + finished
+========================= */
+
+/* 1) Global background + section rhythm */
+body { background: #ffffff; }
+.section { padding: 84px 0; }
+.section--tint { background: #f6f8fc; }
+
+/* 2) Consistent heading sizes (stops “random” typography) */
+h1 { font-size: clamp(34px, 4.2vw, 60px); line-height: 1.05; }
+h2 { font-size: clamp(26px, 2.8vw, 40px); line-height: 1.15; }
+h3 { font-size: 20px; line-height: 1.2; }
+
+.lead { font-size: 17px; max-width: 68ch; }
+p { font-size: 16px; }
+.note { font-size: 14px; }
+
+/* 3) One button system only: normalize .btn variants everywhere */
+.btn{
+  height: 46px;
+  padding: 0 18px;
+  border-radius: 14px;
+  font-weight: 800;
+  letter-spacing: .02em;
+  text-transform: none;
+  font-size: 15px;
+}
+.btn--primary{
+  background: #4EC6FF;
+  color: #0b0f16;
+  box-shadow: 0 12px 26px rgba(78,198,255,.24);
+}
+.btn--outline{
+  border-color: rgba(255,255,255,.18);
+  color: #e5e7eb;
+}
+.btn--ghost{
+  background: rgba(255,255,255,.06);
+  border-color: rgba(255,255,255,.12);
+  color: #e5e7eb;
+}
+
+/* If your HTML still uses btnPrimary / btnOutline, map them to .btn */
+.btnPrimary, .btnOutline{
+  display:inline-flex; align-items:center; justify-content:center;
+  height:46px; padding:0 18px; border-radius:14px;
+  font-weight:800; font-size:15px; text-decoration:none;
+}
+.btnPrimary{ background:#4EC6FF; color:#0b0f16; }
+.btnOutline{
+  background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.18);
+  color:#e5e7eb;
+}
+
+/* 4) Topbar: enforce one layout */
+.topbar{
+  background:#0f1116;
+  border-bottom:1px solid #1e232e;
+}
+.topbar__inner{
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: 0 20px;
+  min-height: 78px;
+}
+.topbar__actions{ gap: 10px; }
+
+/* 5) Cards: consistent padding + less “SaaS template” shadow */
+.card{
+  padding: 22px;
+  box-shadow: 0 12px 30px rgba(11,18,32,.07);
+}
+
+/* 6) Demo frame: consistent and clean */
+.demoWrap, .demoFrame{
+  border-radius: 18px;
+  border: 1px solid rgba(11,18,32,.12);
+  box-shadow: 0 18px 50px rgba(0,0,0,.08);
+}
+.demoWrap iframe, .demoFrame iframe{
+  height: 720px;
+}
+
+/* 7) Kill the “multiple hero systems fighting” problem:
+   If you’re using .hero-video, we mute older hero sections */
+.heroSection, .speedSection, .demoSection { padding-top: 0; padding-bottom: 0; }
+
+/* If you are NOT using hero-video, comment the line above and tell me */
+
