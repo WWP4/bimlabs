@@ -2,23 +2,69 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>BIM Labs Studio</title>
 
   <link rel="stylesheet" href="styles.css" />
-
-  <!-- External Libraries -->
-  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
 </head>
-
 <body>
 
-  <header class="hero">
-    <h1>BIM Labs Studio</h1>
-    <p>High-end systems & web builds</p>
-    <button id="ctaBtn">Get Started</button>
-  </header>
+  <section class="hero hero--brand" id="home">
+    <div class="hero-bg">
+      <div class="orb orb-1"></div>
+      <div class="orb orb-2"></div>
+      <div class="grid-overlay"></div>
+    </div>
 
-  <section class="section" data-aos="fade-up">
+    <div class="hero__container hero__container--brand">
+      <div class="hero__top">
+        <div class="logo-container hero-logo">
+          <div class="letters">
+            <span>B</span><span>I</span><span>M</span><span>L</span><span>A</span><span>B</span><span>S</span>
+          </div>
+
+          <svg class="symbol" viewBox="0 0 100 100" aria-label="BIM Labs logo">
+            <path class="outline" d="M50 10 A40 40 0 1 1 50 90 L80 90"></path>
+            <path class="fill-shape" d="M50 30 A20 20 0 1 1 50 70 Z"></path>
+          </svg>
+        </div>
+
+        <div class="hero__badge-wrap">
+          <span class="hero__badge">High-end web builds</span>
+          <span class="hero__badge">CRM systems</span>
+          <span class="hero__badge">Fast launch</span>
+        </div>
+      </div>
+
+      <div class="hero__content">
+        <p class="hero__eyebrow">Built for serious businesses</p>
+
+        <h1 class="hero__title hero__title--brand">
+          Conversion-first websites
+          <span>with systems behind them.</span>
+        </h1>
+
+        <p class="hero__sub hero__sub--brand">
+          Premium design, clean build quality, and CRM-backed execution for businesses
+          that want more than just a pretty homepage.
+        </p>
+
+        <div class="hero__cta-row">
+          <button id="ctaBtn" class="btn btn--primary">Get Started</button>
+          <a href="#services" class="link--accent">See Our Work</a>
+        </div>
+
+        <ul class="hero__proof hero__proof--brand">
+          <li><strong>High-end</strong> visual identity</li>
+          <li><strong>Fast</strong> execution</li>
+          <li><strong>CRM</strong> + automation ready</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="services" class="section" data-aos="fade-up">
     <h2>What We Build</h2>
     <p>Custom systems, automation, and premium websites.</p>
   </section>
@@ -32,9 +78,7 @@
     <p>© BIM Labs Studio</p>
   </footer>
 
-  <!-- Scripts -->
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
   <script src="app.js"></script>
-
 </body>
 </html>
