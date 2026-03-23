@@ -1,7 +1,12 @@
-// Initialize AOS
-AOS.init();
+document.addEventListener("DOMContentLoaded", () => {
+  AOS.init();
 
-// CTA Button
-document.getElementById("ctaBtn").addEventListener("click", () => {
-  alert("Let’s build something.");
+  const ctaBtn = document.getElementById("ctaBtn");
+  const servicesSection = document.getElementById("services");
+
+  if (ctaBtn && servicesSection) {
+    ctaBtn.addEventListener("click", () => {
+      servicesSection.scrollIntoView({ behavior: "smooth" });
+    });
+  }
 });
