@@ -232,7 +232,7 @@ h2 {
 
 .logo img {
   height: 50px;            /* keeps navbar clean */
-  transform: scale(1.8);   /* makes logo LOOK bigger */
+  transform: scale(1.6);   /* makes logo LOOK bigger */
   transform-origin: left center;
 }
 
