@@ -223,3 +223,20 @@ h2 {
     display: flex;
   }
 }
+/* LOGO FIX */
+.logo {
+  display: flex;
+  align-items: center;
+  overflow: visible;
+}
+
+.logo img {
+  height: 50px;            /* keeps navbar clean */
+  transform: scale(1.8);   /* makes logo LOOK bigger */
+  transform-origin: left center;
+}
+
+/* OPTIONAL: tighten navbar height slightly */
+.nav-container {
+  padding: 10px 20px;
+}
