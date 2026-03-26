@@ -56,9 +56,7 @@
   <div class="swami-container">
     <div class="swami-hero-grid">
 
-      <!-- LEFT: CONTENT -->
       <div class="swami-hero-content">
-
         <span class="swami-hero-kicker">Cash Leak Diagnostic</span>
 
         <h1 class="swami-hero-title">
@@ -79,17 +77,17 @@
         <p class="swami-hero-note">
           Takes 2 minutes • No spreadsheets • Instant clarity
         </p>
-
       </div>
 
-      <!-- RIGHT: VISUAL -->
       <div class="swami-hero-visual">
-
-        <div class="swami-hero-card">
+        <div class="swami-hero-card" id="heroCard">
 
           <div class="swami-hero-card-top">
             <span>Cash Flow Signal</span>
-            <span>Live</span>
+
+            <button class="swami-hero-info-btn" id="heroInfoBtn" type="button" aria-expanded="false" aria-controls="heroInfoPanel">
+              ?
+            </button>
           </div>
 
           <div class="swami-hero-chart">
@@ -98,15 +96,31 @@
             <div class="bar c"></div>
             <div class="bar d"></div>
             <div class="bar e"></div>
+            <div class="bar f"></div>
+            <div class="bar g"></div>
           </div>
 
           <div class="swami-hero-card-footer">
-            <span>Leak Detected</span>
-            <span class="alert">−$42,300</span>
+            <div class="swami-hero-card-meta">
+              <span class="swami-hero-card-label">Potential Annual Leakage</span>
+              <span class="alert" id="heroLeakValue">-$0</span>
+            </div>
+          </div>
+
+          <div class="swami-hero-info-panel" id="heroInfoPanel" hidden>
+            <h3>How the diagnostic finds cash leaks</h3>
+            <p>
+              The system looks at patterns tied to collections, margins, visibility,
+              and financial habits to highlight where unnecessary pressure may be building.
+            </p>
+            <ul class="swami-hero-info-list">
+              <li>Collection timing and recovery gaps</li>
+              <li>Margin leakage across delivery or pricing</li>
+              <li>Low visibility into financial patterns</li>
+            </ul>
           </div>
 
         </div>
-
       </div>
 
     </div>
