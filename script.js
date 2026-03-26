@@ -422,3 +422,53 @@ document.addEventListener("DOMContentLoaded", function () {
   visual.classList.add("is-signal");
   progress.style.width = "33.333%";
 })();
+
+document.addEventListener("DOMContentLoaded", function () {
+  const triggers = document.querySelectorAll("[data-clarity-trigger]");
+  const cards = document.querySelectorAll("[data-clarity-card]");
+  const floatingTag = document.getElementById("clarityFloatingTag");
+
+  const floatingLabels = [
+    "Collections lag",
+    "Margin drag",
+    "Action path"
+  ];
+
+  function setActiveCard(index) {
+    triggers.forEach((trigger, i) => {
+      trigger.classList.toggle("is-active", i === index);
+    });
+
+    cards.forEach((card, i) => {
+      card.classList.toggle("is-active", i === index);
+    });
+
+    if (floatingTag) {
+      const strong = floatingTag.querySelector("strong");
+      if (strong) strong.textContent = floatingLabels[index];
+    }
+  }
+
+  triggers.forEach((trigger, index) => {
+    trigger.addEventListener("mouseenter", () => setActiveCard(index));
+    trigger.addEventListener("focus", () => setActiveCard(index));
+    trigger.addEventListener("click", () => setActiveCard(index));
+  });
+
+  let autoIndex = 0;
+  let autoRotate = setInterval(() => {
+    autoIndex = (autoIndex + 1) % cards.length;
+    setActiveCard(autoIndex);
+  }, 3200);
+
+  const stage = document.querySelector(".swami-clarity-visual");
+  if (stage) {
+    stage.addEventListener("mouseenter", () => clearInterval(autoRotate));
+    stage.addEventListener("mouseleave", () => {
+      autoRotate = setInterval(() => {
+        autoIndex = (autoIndex + 1) % cards.length;
+        setActiveCard(autoIndex);
+      }, 3200);
+    });
+  }
+});
