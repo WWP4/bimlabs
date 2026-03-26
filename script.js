@@ -138,41 +138,68 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 
-const detailFrames = document.querySelectorAll(".swami-detail-frame");
+(function () {
+  const triggers = document.querySelectorAll(".swami-detail-trigger");
+  const visual = document.querySelector(".swami-detail-visual");
+  const number = document.getElementById("detailNumber");
+  const label = document.getElementById("detailLabel");
+  const step = document.getElementById("detailStep");
+  const title = document.getElementById("detailTitle");
+  const text = document.getElementById("detailText");
+  const progress = document.querySelector(".swami-detail-progress-line");
 
-if (detailFrames.length) {
-  const detailObserver = new IntersectionObserver(
+  if (!triggers.length || !visual || !number || !label || !step || !title || !text || !progress) return;
+
+  let activeIndex = 0;
+  let isMobile = window.innerWidth <= 960;
+
+  function updateProgress(index) {
+    const value = ((index + 1) / triggers.length) * 100;
+    if (isMobile) {
+      progress.style.width = value + "%";
+    } else {
+      progress.style.height = value + "%";
+    }
+  }
+
+  function setContent(trigger, index) {
+    visual.classList.add("is-changing");
+
+    setTimeout(() => {
+      number.textContent = trigger.dataset.number || "";
+      label.textContent = trigger.dataset.label || "";
+      step.textContent = trigger.dataset.step || "";
+      title.textContent = trigger.dataset.title || "";
+      text.textContent = trigger.dataset.text || "";
+      updateProgress(index);
+      visual.classList.remove("is-changing");
+    }, 220);
+  }
+
+  const observer = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          detailFrames.forEach((frame) => frame.classList.remove("is-active"));
-          entry.target.classList.add("is-visible", "is-active");
-        }
+        if (!entry.isIntersecting) return;
+
+        const index = [...triggers].indexOf(entry.target);
+        if (index === activeIndex) return;
+
+        activeIndex = index;
+        setContent(entry.target, index);
       });
     },
     {
-      threshold: 0.5,
-      rootMargin: "0px 0px -8% 0px"
+      threshold: 0.5
     }
   );
 
-  detailFrames.forEach((frame, index) => {
-    setTimeout(() => frame.classList.add("is-visible"), index * 120);
-    detailObserver.observe(frame);
+  triggers.forEach((trigger, index) => {
+    observer.observe(trigger);
+    if (index === 0) updateProgress(0);
   });
-}
 
-const frames = document.querySelectorAll(".swami-detail-frame");
-
-window.addEventListener("scroll", () => {
-  const trigger = window.innerHeight * 0.45;
-
-  frames.forEach((frame) => {
-    const rect = frame.getBoundingClientRect();
-
-    if (rect.top < trigger && rect.bottom > trigger) {
-      frames.forEach(f => f.classList.remove("active"));
-      frame.classList.add("active");
-    }
+  window.addEventListener("resize", () => {
+    isMobile = window.innerWidth <= 960;
+    updateProgress(activeIndex);
   });
-});
+})();
