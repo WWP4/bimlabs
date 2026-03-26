@@ -136,3 +136,25 @@ document.addEventListener("DOMContentLoaded", function () {
   window.addEventListener("scroll", requestTick, { passive: true });
   window.addEventListener("resize", requestTick);
 });
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const panels = document.querySelectorAll(".swami-detail-panel");
+
+  if (!panels.length) return;
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          panels.forEach((panel) => panel.classList.remove("is-active"));
+          entry.target.classList.add("in-view", "is-active");
+        }
+      });
+    },
+    {
+      threshold: 0.55
+    }
+  );
+
+  panels.forEach((panel) => observer.observe(panel));
+});
