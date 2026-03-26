@@ -51,174 +51,163 @@
   </div>
 </header>
 
-<section class="hero">
-  <div class="container hero-grid">
+<!-- HERO -->
+<section class="swami-hero" id="hero">
+  <div class="swami-hero-bg"></div>
+  <div class="swami-hero-noise"></div>
 
-    <div class="hero-copy" data-aos="fade-up" data-aos-duration="900">
-      <div class="eyebrow">CFO-Built Cash Flow Diagnostic</div>
+  <div class="swami-container">
+    <div class="swami-hero-grid">
 
-      <h1>
-        Find the hidden cash leaks
-        draining your business.
-      </h1>
-
-      <p class="hero-subtext">
-        Built by a CFO with 15+ years of experience helping growing companies improve visibility, reduce financial pressure, and make better cash flow decisions.
-      </p>
-
-      <div class="hero-actions">
-        <a href="#" class="cta">Take the 2-Minute Diagnostic</a>
-        <a href="#" class="hero-link">How it works</a>
-      </div>
-
-      <div class="hero-mini-stats">
-        <div class="mini-stat">
-          <strong>15+</strong>
-          <span>Years Experience</span>
-        </div>
-        <div class="mini-stat">
-          <strong>$1M–$50M</strong>
-          <span>Company Range</span>
-        </div>
-        <div class="mini-stat">
-          <strong>3–5 Min</strong>
-          <span>To Complete</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="hero-visual" data-aos="fade-left" data-aos-duration="1000">
-      <div class="insight-card">
-        <div class="insight-top">
-          <span class="insight-kicker">What you’ll uncover</span>
-          <h3>A clearer view of where cash is slipping away</h3>
+      <!-- LEFT -->
+      <div
+        class="swami-hero-copy"
+        data-aos="fade-up"
+        data-aos-duration="900"
+        data-aos-easing="ease-out-cubic"
+      >
+        <div
+          class="swami-hero-eyebrow"
+          data-aos="fade-up"
+          data-aos-delay="100"
+          data-aos-duration="800"
+        >
+          Cash Leak Diagnostic
         </div>
 
-        <div class="insight-list">
-          <div class="insight-item">
-            <strong>Cash visibility</strong>
-            <p>See where your cash position is actually strong, weak, or unclear.</p>
+        <h1
+          class="swami-hero-title"
+          data-aos="fade-up"
+          data-aos-delay="160"
+          data-aos-duration="900"
+        >
+          Hidden cash leaks could be quietly costing your business thousands.
+        </h1>
+
+        <p
+          class="swami-hero-subtitle"
+          data-aos="fade-up"
+          data-aos-delay="240"
+          data-aos-duration="900"
+        >
+          Take a fast 2-minute diagnostic to uncover where cash is slipping,
+          get your Cash Leak Score, and see what to fix first — without spreadsheets
+          or a long financial review.
+        </p>
+
+        <div
+          class="swami-hero-points"
+          data-aos="fade-up"
+          data-aos-delay="320"
+          data-aos-duration="900"
+        >
+          <div class="swami-point">
+            <span class="swami-point-dot"></span>
+            <span>Find where cash is leaking</span>
           </div>
-
-          <div class="insight-item">
-            <strong>Collections pressure</strong>
-            <p>Spot where delayed receivables are quietly tightening your cash flow.</p>
+          <div class="swami-point">
+            <span class="swami-point-dot"></span>
+            <span>Get a clear score and breakdown</span>
           </div>
-
-          <div class="insight-item">
-            <strong>Forecasting discipline</strong>
-            <p>Identify whether your business is planning ahead or reacting too late.</p>
-          </div>
-        </div>
-
-        <div class="insight-footer">
-          <img src="cfo.jpg" alt="Byron Edmonds - CFO">
-          <div>
-            <strong>Byron Edmonds</strong>
-            <span>CFO & Cash Flow Specialist</span>
+          <div class="swami-point">
+            <span class="swami-point-dot"></span>
+            <span>See the highest-impact fix first</span>
           </div>
         </div>
+
+        <div
+          class="swami-hero-actions"
+          data-aos="fade-up"
+          data-aos-delay="400"
+          data-aos-duration="900"
+        >
+          <a href="#diagnostic" class="swami-btn swami-btn-primary">
+            Get My Cash Leak Score
+          </a>
+        </div>
+
+        <div
+          class="swami-hero-meta"
+          data-aos="fade-up"
+          data-aos-delay="470"
+          data-aos-duration="900"
+        >
+          <span>Takes 2 minutes</span>
+          <span class="swami-meta-sep">•</span>
+          <span>No spreadsheets</span>
+          <span class="swami-meta-sep">•</span>
+          <span>Instant insight</span>
+        </div>
+
+        <div
+          class="swami-hero-trust"
+          data-aos="fade-up"
+          data-aos-delay="540"
+          data-aos-duration="900"
+        >
+          Built from real CFO experience helping businesses uncover hidden cash flow issues.
+        </div>
       </div>
-    </div>
 
-  </div>
-</section>
+      <!-- RIGHT -->
+      <div
+        class="swami-hero-visual"
+        data-aos="fade-left"
+        data-aos-delay="220"
+        data-aos-duration="1000"
+        data-aos-easing="ease-out-cubic"
+      >
+        <div class="swami-score-card">
+          <div class="swami-score-top">
+            <div>
+              <p class="swami-card-label">Diagnostic Preview</p>
+              <h3 class="swami-card-title">Cash Leak Score</h3>
+            </div>
+            <div class="swami-score-badge">72 / 100</div>
+          </div>
 
+          <div class="swami-score-bar-wrap">
+            <div class="swami-score-bar">
+              <div class="swami-score-bar-fill" id="scoreBarFill"></div>
+            </div>
+            <div class="swami-score-caption">Moderate-to-high leakage detected</div>
+          </div>
 
-<!-- FEATURES -->
-<section class="section">
-  <div class="container">
+          <div class="swami-issue-list">
+            <div class="swami-issue-item">
+              <div class="swami-issue-icon">01</div>
+              <div>
+                <div class="swami-issue-title">Collections delay</div>
+                <div class="swami-issue-text">Cash may be stuck in slow receivables.</div>
+              </div>
+            </div>
 
-    <h2 data-aos="fade-up">What You’ll Get Instantly</h2>
+            <div class="swami-issue-item">
+              <div class="swami-issue-icon">02</div>
+              <div>
+                <div class="swami-issue-title">Margin leakage</div>
+                <div class="swami-issue-text">Untracked expenses may be eating profit.</div>
+              </div>
+            </div>
 
-    <div class="feature-grid">
+            <div class="swami-issue-item">
+              <div class="swami-issue-icon">03</div>
+              <div>
+                <div class="swami-issue-title">Forecast blind spots</div>
+                <div class="swami-issue-text">You may be making decisions without visibility.</div>
+              </div>
+            </div>
+          </div>
 
-      <div class="feature" data-aos="fade-up" data-aos-delay="100">
-        <h3>Identify Cash Leaks</h3>
-        <p>Pinpoint exactly where your money is disappearing.</p>
+          <div class="swami-card-footer">
+            Instant score. Clear next step. No long review required.
+          </div>
+        </div>
       </div>
 
-      <div class="feature" data-aos="fade-up" data-aos-delay="200">
-        <h3>Cash Flow Insight</h3>
-        <p>Understand your real financial position in minutes.</p>
-      </div>
-
-      <div class="feature" data-aos="fade-up" data-aos-delay="300">
-        <h3>Action Plan</h3>
-        <p>Get the #1 fix to stabilize your business cash flow.</p>
-      </div>
-
-    </div>
-
-  </div>
-</section>
-
-<!-- STORY -->
-<section class="story">
-  <div class="container story-grid">
-
-    <div data-aos="fade-right">
-      <h2>Built From Real CFO Experience</h2>
-
-      <p>
-        After 15+ years inside growing businesses, one pattern kept showing up:
-        strong companies struggling — not from lack of sales, but hidden financial leaks.
-      </p>
-
-      <p>
-        Unexpected expenses, slow collections, and poor visibility quietly draining cash.
-      </p>
-
-      <p>
-        This diagnostic uses the same framework CFOs use to fix these problems before they escalate.
-      </p>
-    </div>
-
-    <div data-aos="fade-left">
-      <img src="cfo.jpg" alt="Byron Edmonds">
-    </div>
-
-  </div>
-</section>
- <section class="stats-band">
-  <div class="container stats-grid">
-    <div class="stat-card" data-aos="fade-up" data-aos-delay="50">
-      <div class="stat-number" data-count="15" data-prefix="" data-suffix="+">0</div>
-      <div class="stat-label">Years of Experience</div>
-    </div>
-
-    <div class="stat-card" data-aos="fade-up" data-aos-delay="150">
-      <div class="stat-number" data-count="50" data-prefix="$" data-suffix="M">0</div>
-      <div class="stat-label">Upper End of Companies Supported</div>
-    </div>
-
-    <div class="stat-card" data-aos="fade-up" data-aos-delay="250">
-      <div class="stat-number" data-count="15" data-prefix="" data-suffix="%">0</div>
-      <div class="stat-label">Typical Hidden Revenue Leakage</div>
-    </div>
-
-    <div class="stat-card" data-aos="fade-up" data-aos-delay="350">
-      <div class="stat-number" data-count="5" data-prefix="" data-suffix=" Min">0</div>
-      <div class="stat-label">Diagnostic Completion Time</div>
     </div>
   </div>
 </section>
-
-<!-- CTA -->
-<section class="cta-section">
-  <div class="container" data-aos="fade-up">
-
-    <h2>Most Businesses Lose 8–15% Without Realizing It</h2>
-
-    <p>
-      Take the Cash Leak Finder and get your Cash Flow Stress Score in under 2 minutes.
-    </p>
-
-    <a href="#" class="cta">Start Diagnostic Now</a>
-
-  </div>
-</section>
-
 
 
 <!-- AOS -->
