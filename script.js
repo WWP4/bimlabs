@@ -136,24 +136,28 @@ document.addEventListener("DOMContentLoaded", function () {
   window.addEventListener("scroll", requestTick, { passive: true });
   window.addEventListener("resize", requestTick);
 });
-document.addEventListener("DOMContentLoaded", function () {
-  const panels = document.querySelectorAll(".swami-detail-panel");
 
-  if (!panels.length) return;
 
-  const observer = new IntersectionObserver(
+const detailFrames = document.querySelectorAll(".swami-detail-frame");
+
+if (detailFrames.length) {
+  const detailObserver = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
-          panels.forEach((panel) => panel.classList.remove("is-active"));
-          entry.target.classList.add("in-view", "is-active");
+          detailFrames.forEach((frame) => frame.classList.remove("is-active"));
+          entry.target.classList.add("is-visible", "is-active");
         }
       });
     },
     {
-      threshold: 0.55
+      threshold: 0.5,
+      rootMargin: "0px 0px -8% 0px"
     }
   );
 
-  panels.forEach((panel) => observer.observe(panel));
-});
+  detailFrames.forEach((frame, index) => {
+    setTimeout(() => frame.classList.add("is-visible"), index * 120);
+    detailObserver.observe(frame);
+  });
+}
