@@ -140,21 +140,65 @@ document.addEventListener("DOMContentLoaded", function () {
 
 (function () {
   const triggers = document.querySelectorAll(".swami-detail-trigger");
+
   const visual = document.querySelector(".swami-detail-visual");
   const number = document.getElementById("detailNumber");
   const label = document.getElementById("detailLabel");
   const step = document.getElementById("detailStep");
   const title = document.getElementById("detailTitle");
   const text = document.getElementById("detailText");
+  const art = document.getElementById("detailArt");
   const progress = document.querySelector(".swami-detail-progress-line");
 
-  if (!triggers.length || !visual || !number || !label || !step || !title || !text || !progress) return;
+  if (!triggers.length || !visual || !number || !label || !step || !title || !text || !art || !progress) return;
 
   let activeIndex = 0;
   let isMobile = window.innerWidth <= 960;
 
+  /* ---------- VISUAL SYSTEM ---------- */
+  function renderArt(type) {
+    if (type === "input") {
+      art.innerHTML = `
+        <div class="swami-art swami-art-input">
+          <div class="swami-art-input-line one"></div>
+          <div class="swami-art-input-line two"></div>
+          <div class="swami-art-input-line three"></div>
+        </div>
+      `;
+      return;
+    }
+
+    if (type === "insight") {
+      art.innerHTML = `
+        <div class="swami-art swami-art-insight">
+          <div class="swami-art-bar a"></div>
+          <div class="swami-art-bar b"></div>
+          <div class="swami-art-bar c"></div>
+          <div class="swami-art-bar d"></div>
+          <div class="swami-art-bar e"></div>
+        </div>
+      `;
+      return;
+    }
+
+    if (type === "result") {
+      art.innerHTML = `
+        <div class="swami-art swami-art-result">
+          <div class="swami-art-score">78</div>
+          <div class="swami-art-subline"></div>
+          <div class="swami-art-caption">Cash Leak Score</div>
+        </div>
+      `;
+      return;
+    }
+
+    art.innerHTML = "";
+  }
+
+  /* ---------- PROGRESS ---------- */
   function updateProgress(index) {
     const value = ((index + 1) / triggers.length) * 100;
+
     if (isMobile) {
       progress.style.width = value + "%";
     } else {
@@ -162,6 +206,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
+  /* ---------- CONTENT SWITCH ---------- */
   function setContent(trigger, index) {
     visual.classList.add("is-changing");
 
@@ -171,11 +216,15 @@ document.addEventListener("DOMContentLoaded", function () {
       step.textContent = trigger.dataset.step || "";
       title.textContent = trigger.dataset.title || "";
       text.textContent = trigger.dataset.text || "";
+
+      renderArt(trigger.dataset.visual);
       updateProgress(index);
+
       visual.classList.remove("is-changing");
-    }, 220);
+    }, 200);
   }
 
+  /* ---------- SCROLL OBSERVER ---------- */
   const observer = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
@@ -189,14 +238,15 @@ document.addEventListener("DOMContentLoaded", function () {
       });
     },
     {
-      threshold: 0.5
+      threshold: 0.55
     }
   );
 
-  triggers.forEach((trigger, index) => {
-    observer.observe(trigger);
-    if (index === 0) updateProgress(0);
-  });
+  triggers.forEach((trigger) => observer.observe(trigger));
+
+  /* ---------- INIT ---------- */
+  renderArt("input");
+  updateProgress(0);
 
   window.addEventListener("resize", () => {
     isMobile = window.innerWidth <= 960;
