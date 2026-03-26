@@ -80,47 +80,66 @@
       </div>
 
       <div class="swami-hero-visual">
-        <div class="swami-hero-card" id="heroCard">
+       <div class="swami-hero-card" id="heroCard">
 
-          <div class="swami-hero-card-top">
-            <span>Cash Flow Signal</span>
+  <div class="swami-hero-card-top">
+    <span>Cash Flow Signal</span>
 
-            <button class="swami-hero-info-btn" id="heroInfoBtn" type="button" aria-expanded="false" aria-controls="heroInfoPanel">
-              ?
-            </button>
-          </div>
+    <button
+      class="swami-hero-info-btn"
+      id="heroInfoBtn"
+      type="button"
+      aria-expanded="false"
+      aria-controls="heroInfoPanel"
+      aria-label="How the diagnostic works"
+    >
+      ?
+    </button>
+  </div>
 
-          <div class="swami-hero-chart">
-            <div class="bar a"></div>
-            <div class="bar b"></div>
-            <div class="bar c"></div>
-            <div class="bar d"></div>
-            <div class="bar e"></div>
-            <div class="bar f"></div>
-            <div class="bar g"></div>
-          </div>
+  <div class="swami-hero-chart">
+    <div class="bar a"></div>
+    <div class="bar b"></div>
+    <div class="bar c"></div>
+    <div class="bar d"></div>
+    <div class="bar e"></div>
+    <div class="bar f"></div>
+    <div class="bar g"></div>
+  </div>
 
-          <div class="swami-hero-card-footer">
-            <div class="swami-hero-card-meta">
-              <span class="swami-hero-card-label">Potential Annual Leakage</span>
-              <span class="alert" id="heroLeakValue">-$0</span>
-            </div>
-          </div>
+  <div class="swami-hero-card-footer">
+    <div class="swami-hero-card-meta">
+      <span class="swami-hero-card-label">Estimated Cash Leakage</span>
+      <span class="alert" id="heroLeakValue">-$0</span>
+    </div>
+  </div>
 
-          <div class="swami-hero-info-panel" id="heroInfoPanel" hidden>
-            <h3>How the diagnostic finds cash leaks</h3>
-            <p>
-              The system looks at patterns tied to collections, margins, visibility,
-              and financial habits to highlight where unnecessary pressure may be building.
-            </p>
-            <ul class="swami-hero-info-list">
-              <li>Collection timing and recovery gaps</li>
-              <li>Margin leakage across delivery or pricing</li>
-              <li>Low visibility into financial patterns</li>
-            </ul>
-          </div>
+  <div class="swami-hero-info-pop" id="heroInfoPanel" hidden>
+    <div class="swami-hero-info-pop-head">
+      <span>How it works</span>
+      <button
+        class="swami-hero-info-close"
+        id="heroInfoClose"
+        type="button"
+        aria-label="Close"
+      >
+        ×
+      </button>
+    </div>
 
-        </div>
+    <p>
+      The diagnostic looks at patterns tied to collections, margins, visibility,
+      and decision-making habits to flag areas where cash may be quietly slipping.
+    </p>
+
+    <ul class="swami-hero-info-pop-list">
+      <li>Collection timing and follow-up gaps</li>
+      <li>Margin leakage across pricing or delivery</li>
+      <li>Low visibility into financial patterns</li>
+    </ul>
+  </div>
+
+</div>
       </div>
 
     </div>
