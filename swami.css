@@ -666,3 +666,175 @@ section {
     font-size: clamp(1.8rem, 8vw, 2.4rem);
   }
 }
+.swami-detail-section {
+  padding: 120px 0;
+  background: #ffffff;
+  border-top: 1px solid #e6eaf0;
+  border-bottom: 1px solid #e6eaf0;
+}
+
+.swami-detail-shell {
+  display: grid;
+  grid-template-columns: 0.95fr 1.05fr;
+  gap: 64px;
+  align-items: start;
+}
+
+.swami-detail-intro {
+  position: sticky;
+  top: 120px;
+  max-width: 500px;
+}
+
+.swami-section-kicker {
+  display: inline-block;
+  margin-bottom: 18px;
+  color: #3b567c;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.swami-section-title {
+  margin: 0;
+  color: #0b1f3a;
+  font-size: clamp(2.4rem, 4vw, 4.2rem);
+  line-height: 0.98;
+  letter-spacing: -0.07em;
+  font-weight: 700;
+  max-width: 10ch;
+}
+
+.swami-section-text {
+  margin: 24px 0 0;
+  color: #5f6b7a;
+  font-size: 1.04rem;
+  line-height: 1.8;
+  max-width: 56ch;
+}
+
+.swami-detail-mini-line {
+  width: 72px;
+  height: 1px;
+  background: #cad3df;
+  margin: 28px 0 18px;
+}
+
+.swami-detail-small {
+  margin: 0;
+  color: #7b8794;
+  font-size: 0.95rem;
+  line-height: 1.7;
+  max-width: 34ch;
+}
+
+.swami-detail-track {
+  display: grid;
+  gap: 22px;
+}
+
+.swami-detail-panel {
+  padding: 28px 28px 30px;
+  border: 1px solid #e6eaf0;
+  border-radius: 26px;
+  background: #ffffff;
+  transition: transform 0.35s ease, border-color 0.35s ease, background 0.35s ease;
+}
+
+.swami-detail-panel:hover {
+  transform: translateY(-2px);
+  border-color: #cfd8e3;
+}
+
+.swami-detail-panel.is-active {
+  border-color: #0b1f3a;
+}
+
+.swami-detail-panel-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 22px;
+}
+
+.swami-detail-index {
+  color: #0b1f3a;
+  font-size: 0.88rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.swami-detail-label {
+  color: #7b8794;
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.swami-detail-panel h3 {
+  margin: 0 0 14px;
+  color: #0b1f3a;
+  font-size: clamp(1.4rem, 2vw, 1.9rem);
+  line-height: 1.05;
+  letter-spacing: -0.05em;
+  font-weight: 700;
+  max-width: 18ch;
+}
+
+.swami-detail-panel p {
+  margin: 0;
+  color: #5f6b7a;
+  font-size: 1rem;
+  line-height: 1.78;
+  max-width: 54ch;
+}
+
+/* scroll-driven feel */
+.swami-detail-panel {
+  opacity: 0.45;
+  transform: translateY(24px);
+}
+
+.swami-detail-panel.in-view {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (max-width: 960px) {
+  .swami-detail-shell {
+    grid-template-columns: 1fr;
+    gap: 42px;
+  }
+
+  .swami-detail-intro {
+    position: relative;
+    top: auto;
+    max-width: 100%;
+  }
+
+  .swami-section-title {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .swami-detail-section {
+    padding: 82px 0;
+  }
+
+  .swami-detail-panel {
+    padding: 22px 22px 24px;
+    border-radius: 22px;
+  }
+
+  .swami-detail-panel h3 {
+    max-width: 100%;
+  }
+
+  .swami-section-title {
+    font-size: clamp(2rem, 9vw, 3.2rem);
+  }
+}
