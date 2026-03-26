@@ -458,3 +458,281 @@ a {
     max-width: 100%;
   }
 }
+
+
+/* SECTION 3 — ANIMATED SHOWCASE */
+.swami-showcase-section {
+  position: relative;
+  padding: 120px 0 140px;
+  background: #f8fafc;
+  overflow: clip;
+}
+
+.swami-showcase-head {
+  max-width: 760px;
+  margin-bottom: 56px;
+}
+
+.swami-section-kicker {
+  display: inline-block;
+  margin-bottom: 16px;
+  color: #334e75;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.swami-section-title {
+  margin: 0;
+  color: #0b1f3a;
+  font-size: clamp(2.2rem, 4.4vw, 3.7rem);
+  line-height: 1.02;
+  letter-spacing: -0.05em;
+  font-weight: 700;
+  max-width: 11ch;
+}
+
+.swami-section-text {
+  margin-top: 20px;
+  max-width: 680px;
+  color: #667085;
+  font-size: 1.05rem;
+  line-height: 1.78;
+}
+
+.swami-showcase-stage {
+  position: relative;
+  min-height: 760px;
+}
+
+.swami-showcase-shell {
+  position: sticky;
+  top: 110px;
+  height: 620px;
+  border-radius: 34px;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.88), rgba(255,255,255,0.72));
+  border: 1px solid #e4ebf3;
+  box-shadow: 0 24px 70px rgba(15, 23, 42, 0.08);
+  overflow: hidden;
+}
+
+.swami-showcase-shell::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 18% 22%, rgba(34, 197, 94, 0.08), transparent 22%),
+    radial-gradient(circle at 78% 24%, rgba(11, 31, 58, 0.05), transparent 26%),
+    linear-gradient(90deg, rgba(11,31,58,0.03) 1px, transparent 1px),
+    linear-gradient(rgba(11,31,58,0.03) 1px, transparent 1px);
+  background-size: auto, auto, 34px 34px, 34px 34px;
+  mask-image: linear-gradient(to bottom, rgba(0,0,0,0.2), transparent 85%);
+  -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,0.2), transparent 85%);
+}
+
+.swami-showcase-card {
+  position: absolute;
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid #e5ebf2;
+  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.06);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  transition:
+    transform 0.18s linear,
+    opacity 0.18s linear,
+    filter 0.18s linear;
+  will-change: transform, opacity, filter;
+}
+
+.swami-card-main {
+  left: 64px;
+  top: 68px;
+  width: min(46vw, 510px);
+  max-width: 510px;
+  padding: 34px;
+  border-radius: 28px;
+  z-index: 4;
+}
+
+.swami-card-tag {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 32px;
+  padding: 0 12px;
+  border-radius: 999px;
+  background: #eef7f1;
+  color: #15803d;
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.swami-card-main h3 {
+  margin: 18px 0 12px;
+  color: #0b1f3a;
+  font-size: clamp(2rem, 3.2vw, 3rem);
+  line-height: 0.98;
+  letter-spacing: -0.05em;
+  font-weight: 700;
+}
+
+.swami-card-main p {
+  margin: 0;
+  max-width: 32ch;
+  color: #667085;
+  font-size: 1rem;
+  line-height: 1.72;
+}
+
+.swami-card-secondary {
+  width: 290px;
+  padding: 24px;
+  border-radius: 22px;
+  z-index: 3;
+}
+
+.swami-card-secondary h4 {
+  margin: 14px 0 8px;
+  color: #0b1f3a;
+  font-size: 1.18rem;
+  line-height: 1.2;
+  letter-spacing: -0.03em;
+  font-weight: 700;
+}
+
+.swami-card-secondary p {
+  margin: 0;
+  color: #667085;
+  font-size: 0.95rem;
+  line-height: 1.68;
+}
+
+.swami-card-number {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 999px;
+  background: #ffffff;
+  border: 1px solid #dbe5ee;
+  color: #0b1f3a;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.swami-card-secondary-a {
+  right: 72px;
+  top: 88px;
+}
+
+.swami-card-secondary-b {
+  right: 128px;
+  top: 252px;
+}
+
+.swami-card-secondary-c {
+  right: 38px;
+  top: 414px;
+}
+
+/* starting state */
+.swami-showcase-shell.is-animated .swami-card-main {
+  transform: translate3d(0, 0, 0) scale(1);
+  opacity: 1;
+  filter: blur(0px);
+}
+
+.swami-showcase-shell.is-animated .swami-card-secondary-a,
+.swami-showcase-shell.is-animated .swami-card-secondary-b,
+.swami-showcase-shell.is-animated .swami-card-secondary-c {
+  opacity: 1;
+  filter: blur(0px);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .swami-card-main {
+    transform: translate3d(-40px, 40px, 0) scale(0.96);
+    opacity: 0.35;
+    filter: blur(3px);
+  }
+
+  .swami-card-secondary-a {
+    transform: translate3d(120px, -30px, 0) scale(0.94);
+    opacity: 0.15;
+    filter: blur(4px);
+  }
+
+  .swami-card-secondary-b {
+    transform: translate3d(160px, 30px, 0) scale(0.95);
+    opacity: 0.12;
+    filter: blur(4px);
+  }
+
+  .swami-card-secondary-c {
+    transform: translate3d(140px, 70px, 0) scale(0.95);
+    opacity: 0.12;
+    filter: blur(4px);
+  }
+}
+
+@media (max-width: 1100px) {
+  .swami-showcase-stage {
+    min-height: auto;
+  }
+
+  .swami-showcase-shell {
+    position: relative;
+    top: auto;
+    height: auto;
+    padding: 22px;
+    display: grid;
+    gap: 18px;
+  }
+
+  .swami-showcase-card {
+    position: relative;
+    left: auto;
+    right: auto;
+    top: auto;
+    width: 100%;
+    max-width: none;
+    transform: none !important;
+    opacity: 1 !important;
+    filter: none !important;
+  }
+
+  .swami-card-main,
+  .swami-card-secondary {
+    padding: 24px;
+    border-radius: 22px;
+  }
+}
+
+@media (max-width: 768px) {
+  .swami-showcase-section {
+    padding: 82px 0 90px;
+  }
+
+  .swami-showcase-head {
+    margin-bottom: 34px;
+  }
+
+  .swami-section-title {
+    max-width: 100%;
+    font-size: clamp(2rem, 9vw, 3rem);
+  }
+
+  .swami-section-text {
+    font-size: 1rem;
+  }
+
+  .swami-card-main h3 {
+    font-size: clamp(1.7rem, 8vw, 2.3rem);
+  }
+}
