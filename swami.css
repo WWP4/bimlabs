@@ -358,3 +358,103 @@ a {
     padding: 70px 0;
   }
 }
+
+
+/* SECTION 3 — WHY IT MATTERS */
+.swami-trust-section {
+  padding: 110px 0;
+  background: #f8fafc;
+}
+
+.swami-trust-grid {
+  display: grid;
+  grid-template-columns: 0.95fr 1.05fr;
+  gap: 72px;
+  align-items: start;
+}
+
+.swami-trust-copy {
+  max-width: 500px;
+}
+
+.swami-section-kicker {
+  display: inline-block;
+  margin-bottom: 16px;
+  color: #334e75;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.swami-section-title {
+  margin: 0;
+  color: #0b1f3a;
+  font-size: clamp(2.1rem, 4vw, 3.4rem);
+  line-height: 1.02;
+  letter-spacing: -0.05em;
+  font-weight: 700;
+}
+
+.swami-section-text {
+  margin-top: 22px;
+  color: #667085;
+  font-size: 1.04rem;
+  line-height: 1.78;
+}
+
+.swami-trust-panels {
+  display: grid;
+  gap: 18px;
+}
+
+.swami-trust-panel {
+  padding: 26px 0;
+  border-top: 1px solid #dbe3ec;
+}
+
+.swami-trust-panel:first-child {
+  padding-top: 0;
+  border-top: none;
+}
+
+.swami-trust-number {
+  display: inline-block;
+  margin-bottom: 12px;
+  color: #98a2b3;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.swami-trust-panel h3 {
+  margin: 0 0 10px;
+  color: #0b1f3a;
+  font-size: 1.2rem;
+  line-height: 1.25;
+  letter-spacing: -0.025em;
+  font-weight: 700;
+}
+
+.swami-trust-panel p {
+  margin: 0;
+  color: #667085;
+  font-size: 1rem;
+  line-height: 1.75;
+  max-width: 580px;
+}
+
+@media (max-width: 900px) {
+  .swami-trust-section {
+    padding: 78px 0;
+  }
+
+  .swami-trust-grid {
+    grid-template-columns: 1fr;
+    gap: 38px;
+  }
+
+  .swami-trust-copy {
+    max-width: 100%;
+  }
+}
