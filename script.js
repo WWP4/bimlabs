@@ -48,4 +48,89 @@ document.addEventListener("DOMContentLoaded", function () {
     const menu = document.getElementById("mobileMenu");
     if (menu) menu.classList.toggle("active");
   };
+
+  document.addEventListener("DOMContentLoaded", () => {
+  const showcaseStage = document.getElementById("swamiShowcaseStage");
+  const showcaseShell = document.querySelector(".swami-showcase-shell");
+  const cardMain = document.getElementById("cardMain");
+  const cardA = document.getElementById("cardA");
+  const cardB = document.getElementById("cardB");
+  const cardC = document.getElementById("cardC");
+
+  const isDesktop = () => window.innerWidth > 1100;
+
+  function clamp(value, min, max) {
+    return Math.min(Math.max(value, min), max);
+  }
+
+  function lerp(start, end, progress) {
+    return start + (end - start) * progress;
+  }
+
+  function updateShowcase() {
+    if (!showcaseStage || !showcaseShell || !cardMain || !cardA || !cardB || !cardC) return;
+
+    if (!isDesktop()) {
+      showcaseShell.classList.add("is-animated");
+      [cardMain, cardA, cardB, cardC].forEach((card) => {
+        card.style.transform = "none";
+        card.style.opacity = "1";
+        card.style.filter = "blur(0px)";
+      });
+      return;
+    }
+
+    const rect = showcaseStage.getBoundingClientRect();
+    const windowHeight = window.innerHeight;
+    const total = rect.height + windowHeight;
+    const raw = (windowHeight - rect.top) / total;
+    const progress = clamp(raw, 0, 1);
+
+    showcaseShell.classList.add("is-animated");
+
+    const mainProgress = clamp(progress * 1.15, 0, 1);
+    const aProgress = clamp((progress - 0.14) * 1.28, 0, 1);
+    const bProgress = clamp((progress - 0.28) * 1.34, 0, 1);
+    const cProgress = clamp((progress - 0.42) * 1.4, 0, 1);
+
+    const ease = (t) => 1 - Math.pow(1 - t, 3);
+
+    const mp = ease(mainProgress);
+    const ap = ease(aProgress);
+    const bp = ease(bProgress);
+    const cp = ease(cProgress);
+
+    cardMain.style.transform = `translate3d(${lerp(-40, 0, mp)}px, ${lerp(40, 0, mp)}px, 0) scale(${lerp(0.96, 1, mp)})`;
+    cardMain.style.opacity = String(lerp(0.35, 1, mp));
+    cardMain.style.filter = `blur(${lerp(3, 0, mp)}px)`;
+
+    cardA.style.transform = `translate3d(${lerp(120, 0, ap)}px, ${lerp(-30, 0, ap)}px, 0) scale(${lerp(0.94, 1, ap)})`;
+    cardA.style.opacity = String(lerp(0.15, 1, ap));
+    cardA.style.filter = `blur(${lerp(4, 0, ap)}px)`;
+
+    cardB.style.transform = `translate3d(${lerp(160, 0, bp)}px, ${lerp(30, 0, bp)}px, 0) scale(${lerp(0.95, 1, bp)})`;
+    cardB.style.opacity = String(lerp(0.12, 1, bp));
+    cardB.style.filter = `blur(${lerp(4, 0, bp)}px)`;
+
+    cardC.style.transform = `translate3d(${lerp(140, 0, cp)}px, ${lerp(70, 0, cp)}px, 0) scale(${lerp(0.95, 1, cp)})`;
+    cardC.style.opacity = String(lerp(0.12, 1, cp));
+    cardC.style.filter = `blur(${lerp(4, 0, cp)}px)`;
+  }
+
+  let ticking = false;
+
+  function requestTick() {
+    if (!ticking) {
+      window.requestAnimationFrame(() => {
+        updateShowcase();
+        ticking = false;
+      });
+      ticking = true;
+    }
+  }
+
+  updateShowcase();
+  window.addEventListener("scroll", requestTick, { passive: true });
+  window.addEventListener("resize", requestTick);
+});
 });
