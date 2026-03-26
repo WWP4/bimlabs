@@ -190,112 +190,287 @@ section {
   color: #ffffff !important;
 }
 
-
+/* =========================
+   HERO
+========================= */
 .swami-hero {
   background: #0b1f3a;
   color: #ffffff;
-  padding: 140px 0 120px;
+  padding: 148px 0 124px;
+  overflow: hidden;
 }
 
 .swami-hero-grid {
   display: grid;
-  grid-template-columns: 1.1fr 0.9fr;
+  grid-template-columns: minmax(0, 1.05fr) minmax(380px, 0.95fr);
   align-items: center;
-  gap: 80px;
+  gap: 84px;
 }
 
-/* LEFT SIDE */
+.swami-hero-content {
+  max-width: 620px;
+}
+
+.swami-hero-kicker {
+  display: inline-block;
+  margin-bottom: 18px;
+  color: rgba(255, 255, 255, 0.68);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
 
 .swami-hero-title {
-  font-size: clamp(3rem, 4vw, 4.8rem);
-  line-height: 0.95;
-  letter-spacing: -0.06em;
+  margin: 0;
+  color: #ffffff;
+  font-size: clamp(3.3rem, 5vw, 5.4rem);
+  line-height: 0.92;
+  letter-spacing: -0.08em;
+  font-weight: 700;
+  max-width: 9ch;
 }
 
 .swami-hero-subtitle {
-  margin-top: 18px;
-  color: rgba(255,255,255,0.75);
-  font-size: 1.1rem;
-  max-width: 480px;
+  margin: 24px 0 0;
+  max-width: 520px;
+  color: rgba(255, 255, 255, 0.76);
+  font-size: 1.08rem;
+  line-height: 1.8;
 }
 
 .swami-hero-actions {
-  margin-top: 28px;
+  margin-top: 32px;
 }
 
 .swami-hero-note {
-  margin-top: 14px;
-  font-size: 0.9rem;
-  color: rgba(255,255,255,0.5);
+  margin-top: 16px;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 0.92rem;
+  line-height: 1.6;
 }
-
-/* RIGHT SIDE VISUAL */
 
 .swami-hero-visual {
   display: flex;
-  justify-content: center;
+  justify-content: flex-end;
 }
 
 .swami-hero-card {
   width: 100%;
-  max-width: 380px;
-  padding: 28px;
-  border-radius: 24px;
-  background: rgba(255,255,255,0.04);
-  border: 1px solid rgba(255,255,255,0.08);
+  max-width: 520px;
+  padding: 34px;
+  border-radius: 30px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  position: relative;
 }
-
-/* CARD CONTENT */
 
 .swami-hero-card-top {
   display: flex;
+  align-items: center;
   justify-content: space-between;
-  font-size: 0.8rem;
-  color: rgba(255,255,255,0.6);
+  gap: 16px;
 }
 
-/* CHART */
+.swami-hero-card-top span {
+  color: rgba(255, 255, 255, 0.62);
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.swami-hero-info-btn {
+  width: 34px;
+  height: 34px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: transparent;
+  color: #ffffff;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+
+.swami-hero-info-btn:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.28);
+  transform: translateY(-1px);
+}
 
 .swami-hero-chart {
   display: flex;
   align-items: flex-end;
-  gap: 10px;
-  margin: 28px 0;
-  height: 120px;
+  gap: 14px;
+  height: 220px;
+  margin: 34px 0 30px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .swami-hero-chart .bar {
-  width: 14px;
-  border-radius: 6px;
-  background: rgba(255,255,255,0.15);
-  animation: rise 0.9s ease forwards;
+  width: 24px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.14);
+  transform-origin: bottom;
+  transform: scaleY(0);
+  opacity: 0.5;
 }
 
-.bar.a { height: 30%; }
-.bar.b { height: 55%; }
-.bar.c { height: 40%; }
-.bar.d { height: 80%; background: #5aa9ff; }
-.bar.e { height: 60%; }
+.swami-hero-chart .bar.a { height: 28%; }
+.swami-hero-chart .bar.b { height: 42%; }
+.swami-hero-chart .bar.c { height: 56%; }
+.swami-hero-chart .bar.d { height: 38%; }
+.swami-hero-chart .bar.e { height: 74%; background: #7dd3fc; }
+.swami-hero-chart .bar.f { height: 90%; background: #93c5fd; }
+.swami-hero-chart .bar.g { height: 66%; }
 
-@keyframes rise {
+.swami-hero-chart.is-visible .bar {
+  animation: swamiHeroBarRise 0.9s cubic-bezier(.22,1,.36,1) forwards;
+}
+
+.swami-hero-chart.is-visible .bar.a { animation-delay: 0.04s; }
+.swami-hero-chart.is-visible .bar.b { animation-delay: 0.10s; }
+.swami-hero-chart.is-visible .bar.c { animation-delay: 0.16s; }
+.swami-hero-chart.is-visible .bar.d { animation-delay: 0.22s; }
+.swami-hero-chart.is-visible .bar.e { animation-delay: 0.28s; }
+.swami-hero-chart.is-visible .bar.f { animation-delay: 0.34s; }
+.swami-hero-chart.is-visible .bar.g { animation-delay: 0.40s; }
+
+@keyframes swamiHeroBarRise {
   from {
-    height: 0;
-    opacity: 0.3;
+    transform: scaleY(0);
+    opacity: 0.18;
+  }
+  to {
+    transform: scaleY(1);
+    opacity: 1;
   }
 }
 
-/* FOOTER */
-
 .swami-hero-card-footer {
   display: flex;
+  align-items: flex-end;
   justify-content: space-between;
-  font-size: 0.9rem;
+  gap: 16px;
+}
+
+.swami-hero-card-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.swami-hero-card-label {
+  color: rgba(255, 255, 255, 0.58);
+  font-size: 0.84rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
 }
 
 .swami-hero-card-footer .alert {
-  color: #ff6b6b;
-  font-weight: 600;
+  color: #ffffff;
+  font-size: clamp(2rem, 4vw, 3rem);
+  line-height: 0.95;
+  letter-spacing: -0.06em;
+  font-weight: 700;
 }
+
+.swami-hero-info-panel {
+  margin-top: 28px;
+  padding-top: 24px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.swami-hero-info-panel h3 {
+  margin: 0 0 12px;
+  color: #ffffff;
+  font-size: 1.05rem;
+  line-height: 1.2;
+  letter-spacing: -0.03em;
+  font-weight: 700;
+}
+
+.swami-hero-info-panel p {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 0.96rem;
+  line-height: 1.72;
+  max-width: 44ch;
+}
+
+.swami-hero-info-list {
+  margin: 16px 0 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 10px;
+}
+
+.swami-hero-info-list li {
+  color: rgba(255, 255, 255, 0.64);
+  font-size: 0.93rem;
+  line-height: 1.55;
+  position: relative;
+  padding-left: 18px;
+}
+
+.swami-hero-info-list li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.65em;
+  width: 8px;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.45);
+}
+
+@media (max-width: 980px) {
+  .swami-hero {
+    padding: 108px 0 82px;
+  }
+
+  .swami-hero-grid {
+    grid-template-columns: 1fr;
+    gap: 44px;
+  }
+
+  .swami-hero-visual {
+    justify-content: flex-start;
+  }
+
+  .swami-hero-card {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .swami-hero-title {
+    max-width: 100%;
+    font-size: clamp(2.7rem, 12vw, 4.3rem);
+  }
+
+  .swami-hero-subtitle {
+    font-size: 1rem;
+  }
+
+  .swami-hero-chart {
+    height: 170px;
+    gap: 10px;
+  }
+
+  .swami-hero-chart .bar {
+    width: 18px;
+  }
+
+  .swami-hero-card {
+    padding: 24px;
+    border-radius: 24px;
+  }
+}
+
+
 
 /* =========================
    SECTION DEFAULTS
