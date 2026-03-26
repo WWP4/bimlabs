@@ -762,149 +762,79 @@ section {
   max-width: 56ch;
 }
 
-.swami-detail-meta {
-  margin-top: 34px;
-}
-
-.swami-detail-meta-line {
-  width: 76px;
-  height: 1px;
-  background: #cfd7e2;
-  margin-bottom: 16px;
-}
-
-.swami-detail-meta-text {
-  margin: 0;
-  color: #7b8794;
-  font-size: 0.94rem;
-  line-height: 1.72;
-  max-width: 32ch;
-}
-
-.swami-detail-sequence {
-  display: grid;
-  gap: 18px;
-}
-
-.swami-detail-frame {
-  position: relative;
-  padding: 34px 34px 36px;
-  border: 1px solid #e6eaf0;
-  border-radius: 28px;
+.swami-detail-section {
+  padding: 160px 0;
   background: #ffffff;
-  min-height: 220px;
-  opacity: 0.28;
-  transform: translateY(32px) scale(0.985);
+  border-top: 1px solid #e6eaf0;
+  border-bottom: 1px solid #e6eaf0;
+}
+
+.swami-detail-shell {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: start;
+}
+
+/* LEFT SIDE — BIGGER, STRONGER */
+.swami-detail-intro {
+  position: sticky;
+  top: 140px;
+  max-width: 520px;
+}
+
+.swami-section-title {
+  font-size: clamp(3rem, 4vw, 5rem);
+  line-height: 0.92;
+  letter-spacing: -0.08em;
+}
+
+/* RIGHT SIDE — STAGE */
+.swami-detail-sequence {
+  position: relative;
+  height: 160vh;
+}
+
+/* STACKED CARDS */
+.swami-detail-frame {
+  position: sticky;
+  top: 160px;
+
+  padding: 42px;
+  border-radius: 28px;
+  border: 1px solid #e6eaf0;
+  background: #ffffff;
+
+  transform: scale(0.88);
+  opacity: 0.25;
+
   transition:
-    opacity 0.55s ease,
-    transform 0.55s ease,
-    border-color 0.35s ease,
-    background 0.35s ease;
+    transform 0.6s cubic-bezier(.22,1,.36,1),
+    opacity 0.6s ease,
+    border-color 0.4s ease;
 }
 
-.swami-detail-frame::before {
-  content: "";
-  position: absolute;
-  left: 34px;
-  right: 34px;
-  top: 0;
-  height: 1px;
-  background: transparent;
-  transition: background 0.35s ease;
-}
-
-.swami-detail-frame.is-visible {
+/* ACTIVE STATE */
+.swami-detail-frame.active {
+  transform: scale(1);
   opacity: 1;
-  transform: translateY(0) scale(1);
-}
-
-.swami-detail-frame.is-active {
   border-color: #0b1f3a;
 }
 
-.swami-detail-frame.is-active::before {
-  background: #0b1f3a;
-}
+/* DEPTH STACK EFFECT */
+.swami-detail-frame:nth-child(1) { z-index: 3; }
+.swami-detail-frame:nth-child(2) { z-index: 2; }
+.swami-detail-frame:nth-child(3) { z-index: 1; }
 
-.swami-detail-frame-top {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 18px;
-  margin-bottom: 26px;
-}
-
-.swami-detail-frame-number {
-  color: #0b1f3a;
-  font-size: 0.86rem;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-}
-
-.swami-detail-frame-label {
-  color: #7b8794;
-  font-size: 0.8rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
+/* TYPE */
 .swami-detail-frame h3 {
-  margin: 0 0 14px;
-  color: #0b1f3a;
-  font-size: clamp(1.45rem, 2vw, 2rem);
-  line-height: 1.03;
-  letter-spacing: -0.055em;
-  font-weight: 700;
-  max-width: 18ch;
+  font-size: clamp(1.6rem, 2vw, 2.2rem);
+  line-height: 1.05;
+  letter-spacing: -0.05em;
 }
 
 .swami-detail-frame p {
-  margin: 0;
-  color: #5f6b7a;
+  margin-top: 12px;
   font-size: 1rem;
-  line-height: 1.8;
-  max-width: 54ch;
-}
-
-@media (max-width: 960px) {
-  .swami-detail-shell {
-    grid-template-columns: 1fr;
-    gap: 40px;
-  }
-
-  .swami-detail-intro {
-    position: relative;
-    top: auto;
-    max-width: 100%;
-  }
-
-  .swami-section-title {
-    max-width: 100%;
-  }
-}
-
-@media (max-width: 768px) {
-  .swami-detail-section {
-    padding: 82px 0;
-  }
-
-  .swami-detail-frame {
-    padding: 24px 24px 26px;
-    border-radius: 22px;
-    min-height: auto;
-  }
-
-  .swami-detail-frame::before {
-    left: 24px;
-    right: 24px;
-  }
-
-  .swami-section-title {
-    font-size: clamp(2rem, 9vw, 3.2rem);
-  }
-
-  .swami-detail-frame h3 {
-    max-width: 100%;
-  }
+  color: #5f6b7a;
 }
