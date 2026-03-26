@@ -136,7 +136,6 @@ document.addEventListener("DOMContentLoaded", function () {
   window.addEventListener("scroll", requestTick, { passive: true });
   window.addEventListener("resize", requestTick);
 });
-<script>
 document.addEventListener("DOMContentLoaded", function () {
   const panels = document.querySelectorAll(".swami-detail-panel");
 
