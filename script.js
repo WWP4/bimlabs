@@ -260,9 +260,17 @@ document.addEventListener("DOMContentLoaded", function () {
   const heroValue = document.getElementById("heroLeakValue");
   const heroInfoBtn = document.getElementById("heroInfoBtn");
   const heroInfoPanel = document.getElementById("heroInfoPanel");
+  const heroInfoClose = document.getElementById("heroInfoClose");
   const heroCard = document.getElementById("heroCard");
 
-  if (!heroChart || !heroValue || !heroInfoBtn || !heroInfoPanel || !heroCard) return;
+  if (
+    !heroChart ||
+    !heroValue ||
+    !heroInfoBtn ||
+    !heroInfoPanel ||
+    !heroInfoClose ||
+    !heroCard
+  ) return;
 
   let hasAnimated = false;
 
@@ -285,6 +293,35 @@ document.addEventListener("DOMContentLoaded", function () {
     requestAnimationFrame(update);
   }
 
+  function openHeroInfo() {
+    heroInfoPanel.hidden = false;
+    heroInfoPanel.classList.remove("is-opening");
+
+    /* force reflow so animation can replay */
+    void heroInfoPanel.offsetWidth;
+
+    heroInfoPanel.classList.add("is-opening");
+    heroInfoBtn.setAttribute("aria-expanded", "true");
+  }
+
+  function closeHeroInfo() {
+    heroInfoPanel.hidden = true;
+    heroInfoBtn.setAttribute("aria-expanded", "false");
+    heroInfoPanel.classList.remove("is-opening");
+  }
+
+  function toggleHeroInfo(event) {
+    event.stopPropagation();
+
+    const isOpen = !heroInfoPanel.hasAttribute("hidden");
+
+    if (isOpen) {
+      closeHeroInfo();
+    } else {
+      openHeroInfo();
+    }
+  }
+
   const heroObserver = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
@@ -302,16 +339,30 @@ document.addEventListener("DOMContentLoaded", function () {
 
   heroObserver.observe(heroCard);
 
-  heroInfoBtn.addEventListener("click", function () {
-    const isOpen = !heroInfoPanel.hasAttribute("hidden");
+  heroInfoBtn.addEventListener("click", toggleHeroInfo);
 
-    if (isOpen) {
-      heroInfoPanel.setAttribute("hidden", "");
-      heroInfoBtn.setAttribute("aria-expanded", "false");
-      return;
+  heroInfoClose.addEventListener("click", function (event) {
+    event.stopPropagation();
+    closeHeroInfo();
+  });
+
+  heroInfoPanel.addEventListener("click", function (event) {
+    event.stopPropagation();
+  });
+
+  document.addEventListener("click", function (event) {
+    const clickedInsideCard = heroCard.contains(event.target);
+    const clickedButton = heroInfoBtn.contains(event.target);
+    const clickedPanel = heroInfoPanel.contains(event.target);
+
+    if (!clickedInsideCard || (!clickedButton && !clickedPanel)) {
+      closeHeroInfo();
     }
+  });
 
-    heroInfoPanel.removeAttribute("hidden");
-    heroInfoBtn.setAttribute("aria-expanded", "true");
+  document.addEventListener("keydown", function (event) {
+    if (event.key === "Escape" && !heroInfoPanel.hasAttribute("hidden")) {
+      closeHeroInfo();
+    }
   });
 })();
