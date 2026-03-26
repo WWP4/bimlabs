@@ -714,99 +714,163 @@ section {
   max-width: 56ch;
 }
 
-.swami-detail-mini-line {
-  width: 72px;
-  height: 1px;
-  background: #cad3df;
-  margin: 28px 0 18px;
+.swami-detail-section {
+  padding: 120px 0;
+  background: #ffffff;
+  border-top: 1px solid #e6eaf0;
+  border-bottom: 1px solid #e6eaf0;
 }
 
-.swami-detail-small {
+.swami-detail-shell {
+  display: grid;
+  grid-template-columns: minmax(320px, 0.9fr) minmax(420px, 1.1fr);
+  gap: 64px;
+  align-items: start;
+}
+
+.swami-detail-intro {
+  position: sticky;
+  top: 120px;
+  max-width: 500px;
+}
+
+.swami-section-kicker {
+  display: inline-block;
+  margin-bottom: 18px;
+  color: #3a567a;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.swami-section-title {
+  margin: 0;
+  color: #0b1f3a;
+  font-size: clamp(2.4rem, 4vw, 4.5rem);
+  line-height: 0.95;
+  letter-spacing: -0.075em;
+  font-weight: 700;
+  max-width: 10ch;
+}
+
+.swami-section-text {
+  margin: 24px 0 0;
+  color: #5f6b7a;
+  font-size: 1.03rem;
+  line-height: 1.82;
+  max-width: 56ch;
+}
+
+.swami-detail-meta {
+  margin-top: 34px;
+}
+
+.swami-detail-meta-line {
+  width: 76px;
+  height: 1px;
+  background: #cfd7e2;
+  margin-bottom: 16px;
+}
+
+.swami-detail-meta-text {
   margin: 0;
   color: #7b8794;
-  font-size: 0.95rem;
-  line-height: 1.7;
-  max-width: 34ch;
+  font-size: 0.94rem;
+  line-height: 1.72;
+  max-width: 32ch;
 }
 
-.swami-detail-track {
+.swami-detail-sequence {
   display: grid;
-  gap: 22px;
+  gap: 18px;
 }
 
-.swami-detail-panel {
-  padding: 28px 28px 30px;
+.swami-detail-frame {
+  position: relative;
+  padding: 34px 34px 36px;
   border: 1px solid #e6eaf0;
-  border-radius: 26px;
+  border-radius: 28px;
   background: #ffffff;
-  transition: transform 0.35s ease, border-color 0.35s ease, background 0.35s ease;
+  min-height: 220px;
+  opacity: 0.28;
+  transform: translateY(32px) scale(0.985);
+  transition:
+    opacity 0.55s ease,
+    transform 0.55s ease,
+    border-color 0.35s ease,
+    background 0.35s ease;
 }
 
-.swami-detail-panel:hover {
-  transform: translateY(-2px);
-  border-color: #cfd8e3;
+.swami-detail-frame::before {
+  content: "";
+  position: absolute;
+  left: 34px;
+  right: 34px;
+  top: 0;
+  height: 1px;
+  background: transparent;
+  transition: background 0.35s ease;
 }
 
-.swami-detail-panel.is-active {
+.swami-detail-frame.is-visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.swami-detail-frame.is-active {
   border-color: #0b1f3a;
 }
 
-.swami-detail-panel-top {
+.swami-detail-frame.is-active::before {
+  background: #0b1f3a;
+}
+
+.swami-detail-frame-top {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
-  margin-bottom: 22px;
+  gap: 18px;
+  margin-bottom: 26px;
 }
 
-.swami-detail-index {
+.swami-detail-frame-number {
   color: #0b1f3a;
-  font-size: 0.88rem;
+  font-size: 0.86rem;
   font-weight: 700;
   letter-spacing: 0.04em;
 }
 
-.swami-detail-label {
+.swami-detail-frame-label {
   color: #7b8794;
-  font-size: 0.82rem;
-  font-weight: 600;
+  font-size: 0.8rem;
+  font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
 
-.swami-detail-panel h3 {
+.swami-detail-frame h3 {
   margin: 0 0 14px;
   color: #0b1f3a;
-  font-size: clamp(1.4rem, 2vw, 1.9rem);
-  line-height: 1.05;
-  letter-spacing: -0.05em;
+  font-size: clamp(1.45rem, 2vw, 2rem);
+  line-height: 1.03;
+  letter-spacing: -0.055em;
   font-weight: 700;
   max-width: 18ch;
 }
 
-.swami-detail-panel p {
+.swami-detail-frame p {
   margin: 0;
   color: #5f6b7a;
   font-size: 1rem;
-  line-height: 1.78;
+  line-height: 1.8;
   max-width: 54ch;
-}
-
-/* scroll-driven feel */
-.swami-detail-panel {
-  opacity: 0.45;
-  transform: translateY(24px);
-}
-
-.swami-detail-panel.in-view {
-  opacity: 1;
-  transform: translateY(0);
 }
 
 @media (max-width: 960px) {
   .swami-detail-shell {
     grid-template-columns: 1fr;
-    gap: 42px;
+    gap: 40px;
   }
 
   .swami-detail-intro {
@@ -825,16 +889,22 @@ section {
     padding: 82px 0;
   }
 
-  .swami-detail-panel {
-    padding: 22px 22px 24px;
+  .swami-detail-frame {
+    padding: 24px 24px 26px;
     border-radius: 22px;
+    min-height: auto;
   }
 
-  .swami-detail-panel h3 {
-    max-width: 100%;
+  .swami-detail-frame::before {
+    left: 24px;
+    right: 24px;
   }
 
   .swami-section-title {
     font-size: clamp(2rem, 9vw, 3.2rem);
+  }
+
+  .swami-detail-frame h3 {
+    max-width: 100%;
   }
 }
