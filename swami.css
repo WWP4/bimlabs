@@ -14,7 +14,7 @@ html {
 body {
   margin: 0;
   background: #ffffff;
-  color: #111827;
+  color: #0f172a;
   font-family: 'Inter', sans-serif;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
@@ -27,6 +27,7 @@ img {
 
 a {
   color: inherit;
+  text-decoration: none;
 }
 
 /* =========================
@@ -34,24 +35,23 @@ a {
 ========================= */
 :root {
   --bg: #ffffff;
-  --surface: #f8fafc;
-  --surface-2: #f3f6fa;
+  --surface: #f7f8fa;
+  --surface-2: #eef1f5;
   --navy: #0b1f3a;
-  --navy-soft: #1d3557;
-  --text: #111827;
-  --muted: #667085;
-  --muted-2: #98a2b3;
-  --border: #e7ecf2;
-  --border-strong: #d9e2ec;
+  --navy-2: #132a4a;
+  --text: #0f172a;
+  --muted: #5f6b7a;
+  --muted-2: #7b8794;
+  --line: #e6eaf0;
+  --line-strong: #d7dee7;
   --green: #22c55e;
   --green-hover: #16a34a;
-  --green-soft: #ecfdf3;
-  --shadow-sm: 0 8px 24px rgba(15, 23, 42, 0.05);
-  --shadow-md: 0 18px 40px rgba(15, 23, 42, 0.08);
+  --green-soft: #edf9f1;
   --radius-sm: 10px;
   --radius-md: 16px;
-  --radius-lg: 22px;
-  --container: 1180px;
+  --radius-lg: 24px;
+  --container: 1160px;
+  --shadow-soft: 0 18px 45px rgba(15, 23, 42, 0.06);
 }
 
 /* =========================
@@ -63,6 +63,21 @@ a {
   margin: 0 auto;
 }
 
+section {
+  position: relative;
+}
+
+.swami-section-kicker,
+.swami-founder-kicker,
+.swami-hero-kicker {
+  display: inline-block;
+  margin-bottom: 18px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
 /* =========================
    NAVBAR
 ========================= */
@@ -70,10 +85,8 @@ a {
   position: sticky;
   top: 0;
   z-index: 1000;
-  background: rgba(255, 255, 255, 0.9);
-  border-bottom: 1px solid rgba(11, 31, 58, 0.06);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
+  background: rgba(255, 255, 255, 0.96);
+  border-bottom: 1px solid rgba(11, 31, 58, 0.08);
 }
 
 .nav-container {
@@ -81,7 +94,7 @@ a {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 28px;
+  gap: 24px;
 }
 
 .logo {
@@ -102,15 +115,14 @@ a {
 }
 
 .nav-links a {
-  text-decoration: none;
   color: var(--navy);
   font-size: 0.96rem;
   font-weight: 500;
-  transition: opacity 0.2s ease, color 0.2s ease;
+  transition: opacity 0.2s ease;
 }
 
 .nav-links a:hover {
-  opacity: 0.7;
+  opacity: 0.62;
 }
 
 .nav-cta {
@@ -118,23 +130,25 @@ a {
   align-items: center;
 }
 
-.cta-nav {
+.cta-nav,
+.swami-btn-primary {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: 48px;
-  padding: 0 20px;
-  border-radius: 10px;
+  min-height: 52px;
+  padding: 0 24px;
+  border: none;
+  border-radius: 999px;
   background: var(--green);
   color: #ffffff;
-  text-decoration: none;
-  font-size: 0.95rem;
+  font-size: 0.96rem;
   font-weight: 700;
-  transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
-  box-shadow: 0 10px 22px rgba(34, 197, 94, 0.18);
+  letter-spacing: -0.01em;
+  transition: transform 0.2s ease, background 0.2s ease;
 }
 
-.cta-nav:hover {
+.cta-nav:hover,
+.swami-btn-primary:hover {
   background: var(--green-hover);
   transform: translateY(-1px);
 }
@@ -145,8 +159,8 @@ a {
   justify-content: center;
   width: 44px;
   height: 44px;
-  border: 1px solid var(--border);
-  border-radius: 10px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
   font-size: 1.2rem;
   color: var(--navy);
   cursor: pointer;
@@ -159,11 +173,10 @@ a {
   gap: 16px;
   padding: 0 20px 20px;
   background: #ffffff;
-  border-top: 1px solid var(--border);
+  border-top: 1px solid var(--line);
 }
 
 .mobile-menu a {
-  text-decoration: none;
   color: var(--navy);
   font-size: 0.96rem;
   font-weight: 500;
@@ -174,51 +187,41 @@ a {
 }
 
 .mobile-cta {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 46px;
-  padding: 0 18px;
-  border-radius: 10px;
-  background: var(--green);
   color: #ffffff !important;
-  font-weight: 700;
 }
 
+/* =========================
+   HERO
+========================= */
 .swami-hero {
-  padding: 140px 0 110px;
+  padding: 128px 0 104px;
   background: #ffffff;
+  border-bottom: 1px solid var(--line);
 }
 
 .swami-hero-shell {
-  max-width: 760px;
+  max-width: 840px;
 }
 
 .swami-hero-kicker {
-  display: inline-block;
-  margin-bottom: 20px;
-  color: #334e75;
-  font-size: 0.78rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+  color: #38557c;
 }
 
 .swami-hero-title {
   margin: 0;
-  max-width: 8.5ch;
-  color: #0b1f3a;
-  font-size: clamp(3.4rem, 7vw, 6.5rem);
+  max-width: 9ch;
+  color: var(--navy);
+  font-size: clamp(3.3rem, 7vw, 6.2rem);
   line-height: 0.92;
-  letter-spacing: -0.065em;
+  letter-spacing: -0.075em;
   font-weight: 700;
 }
 
 .swami-hero-subtitle {
-  margin: 26px 0 0;
-  max-width: 620px;
-  color: #667085;
-  font-size: 1.12rem;
+  margin: 28px 0 0;
+  max-width: 640px;
+  color: var(--muted);
+  font-size: 1.1rem;
   line-height: 1.75;
 }
 
@@ -226,57 +229,39 @@ a {
   margin-top: 34px;
 }
 
-.swami-btn-primary {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 58px;
-  padding: 0 28px;
-  border-radius: 12px;
-  background: #22c55e;
-  color: #ffffff;
-  text-decoration: none;
-  font-weight: 700;
-  box-shadow: 0 14px 28px rgba(34, 197, 94, 0.16);
-  transition: background 0.2s ease, transform 0.2s ease;
-}
-
-.swami-btn-primary:hover {
-  background: #16a34a;
-  transform: translateY(-1px);
-}
-
 .swami-hero-note {
   margin-top: 18px;
-  color: #98a2b3;
-  font-size: 0.93rem;
-  line-height: 1.6;
+  color: var(--muted-2);
+  font-size: 0.94rem;
+  line-height: 1.65;
 }
 
-@media (max-width: 768px) {
-  .swami-hero {
-    padding: 92px 0 72px;
-  }
-
-  .swami-hero-title {
-    max-width: 100%;
-    font-size: clamp(2.6rem, 12vw, 4.5rem);
-    line-height: 0.96;
-  }
-
-  .swami-hero-subtitle {
-    font-size: 1rem;
-  }
-
-  .swami-btn-primary {
-    width: 100%;
-    max-width: 320px;
-  }
+/* =========================
+   SECTION DEFAULTS
+========================= */
+.swami-section-title,
+.swami-founder-title {
+  margin: 0;
+  color: var(--navy);
+  font-size: clamp(2.15rem, 4vw, 3.8rem);
+  line-height: 1.02;
+  letter-spacing: -0.065em;
+  font-weight: 700;
 }
 
+.swami-section-text,
+.swami-founder-text {
+  margin-top: 22px;
+  color: var(--muted);
+  font-size: 1.03rem;
+  line-height: 1.8;
+}
 
+/* =========================
+   DETAIL SECTION
+========================= */
 .swami-detail-section {
-  padding: 90px 0;
+  padding: 92px 0;
   background: #ffffff;
 }
 
@@ -288,82 +273,267 @@ a {
 }
 
 .swami-detail-intro {
-  max-width: 480px;
+  max-width: 500px;
 }
 
 .swami-section-kicker {
-  display: inline-block;
-  margin-bottom: 16px;
-  color: #334e75;
-  font-size: 0.78rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
-.swami-section-title {
-  margin: 0;
-  color: #0b1f3a;
-  font-size: clamp(2rem, 4vw, 3.2rem);
-  line-height: 1.02;
-  letter-spacing: -0.045em;
-  font-weight: 700;
-}
-
-.swami-section-text {
-  margin-top: 22px;
-  color: #667085;
-  font-size: 1.02rem;
-  line-height: 1.75;
+  color: #38557c;
 }
 
 .swami-detail-content {
   display: grid;
-  gap: 26px;
+  gap: 0;
+  border-top: 1px solid var(--line);
 }
 
 .swami-detail-block {
-  padding: 0 0 26px;
-  border-bottom: 1px solid #e7ecf2;
-}
-
-.swami-detail-block:last-child {
-  border-bottom: none;
-  padding-bottom: 0;
+  padding: 28px 0;
+  border-bottom: 1px solid var(--line);
 }
 
 .swami-detail-block h3 {
-  margin: 0 0 10px;
-  color: #0b1f3a;
-  font-size: 1.2rem;
-  line-height: 1.25;
-  letter-spacing: -0.025em;
+  margin: 0 0 12px;
+  color: var(--navy);
+  font-size: 1.22rem;
+  line-height: 1.2;
+  letter-spacing: -0.035em;
   font-weight: 700;
 }
 
 .swami-detail-block p {
   margin: 0;
-  color: #667085;
+  color: var(--muted);
   font-size: 1rem;
-  line-height: 1.75;
+  line-height: 1.78;
+  max-width: 60ch;
 }
 
-@media (max-width: 900px) {
-  .swami-detail-grid {
-    grid-template-columns: 1fr;
-    gap: 36px;
-  }
-
-  .swami-detail-section {
-    padding: 70px 0;
-  }
-}
-
-
-/* SECTION 3 — WHY IT MATTERS */
-.swami-trust-section {
+/* =========================
+   FOUNDER SECTION
+========================= */
+.swami-founder-section {
   padding: 110px 0;
-  background: #f8fafc;
+  background: var(--surface);
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+
+.swami-founder-shell {
+  display: grid;
+  grid-template-columns: 420px minmax(0, 1fr);
+  gap: 56px;
+  align-items: center;
+}
+
+.swami-founder-image-wrap {
+  position: relative;
+}
+
+.swami-founder-image-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 26px;
+  background: #dde4ec;
+}
+
+.swami-founder-image {
+  width: 100%;
+  height: 560px;
+  object-fit: cover;
+  object-position: center top;
+}
+
+.swami-founder-kicker {
+  color: #38557c;
+}
+
+.swami-founder-title {
+  max-width: 13ch;
+}
+
+.swami-founder-copy {
+  max-width: 640px;
+}
+
+.swami-founder-signoff {
+  margin: 18px 0 0;
+  color: var(--muted-2);
+  font-size: 0.97rem;
+  line-height: 1.74;
+}
+
+.swami-founder-actions {
+  margin-top: 30px;
+}
+
+/* =========================
+   SHOWCASE SECTION
+========================= */
+.swami-showcase-section {
+  padding: 118px 0;
+  background: var(--navy);
+  color: #ffffff;
+}
+
+.swami-showcase-head {
+  max-width: 780px;
+  margin-bottom: 52px;
+}
+
+.swami-showcase-section .swami-section-kicker {
+  color: rgba(255, 255, 255, 0.62);
+}
+
+.swami-showcase-section .swami-section-title {
+  color: #ffffff;
+  max-width: 11ch;
+}
+
+.swami-showcase-section .swami-section-text {
+  color: rgba(255, 255, 255, 0.76);
+  max-width: 690px;
+}
+
+.swami-showcase-stage {
+  position: relative;
+  min-height: auto;
+}
+
+.swami-showcase-shell {
+  position: relative;
+  top: auto;
+  height: auto;
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(280px, 0.8fr);
+  gap: 24px;
+  align-items: stretch;
+}
+
+.swami-showcase-card {
+  position: relative;
+  inset: auto;
+  width: 100%;
+  max-width: none;
+  border-radius: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.04);
+  padding: 28px;
+  transform: none !important;
+  opacity: 1 !important;
+  filter: none !important;
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  transition: border-color 0.2s ease, background 0.2s ease, transform 0.2s ease;
+  will-change: auto;
+}
+
+.swami-showcase-card:hover {
+  transform: translateY(-2px) !important;
+  border-color: rgba(255, 255, 255, 0.22);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.swami-card-main {
+  padding: 34px;
+  min-height: 100%;
+}
+
+.swami-card-tag {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 32px;
+  padding: 0 12px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.82);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.swami-card-main h3 {
+  margin: 18px 0 12px;
+  color: #ffffff;
+  font-size: clamp(2rem, 3vw, 3rem);
+  line-height: 0.98;
+  letter-spacing: -0.055em;
+  font-weight: 700;
+}
+
+.swami-card-main p {
+  margin: 0;
+  max-width: 34ch;
+  color: rgba(255, 255, 255, 0.74);
+  font-size: 1rem;
+  line-height: 1.78;
+}
+
+.swami-card-secondary {
+  min-height: 180px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.swami-card-secondary h4 {
+  margin: 14px 0 8px;
+  color: #ffffff;
+  font-size: 1.16rem;
+  line-height: 1.2;
+  letter-spacing: -0.03em;
+  font-weight: 700;
+}
+
+.swami-card-secondary p {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.97rem;
+  line-height: 1.72;
+}
+
+.swami-card-number {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  color: #ffffff;
+  background: transparent;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.swami-card-secondary-a,
+.swami-card-secondary-b,
+.swami-card-secondary-c {
+  right: auto;
+  top: auto;
+}
+
+.swami-showcase-shell > .swami-card-main {
+  grid-row: span 3;
+}
+
+.swami-showcase-shell.is-animated .swami-card-main,
+.swami-showcase-shell.is-animated .swami-card-secondary-a,
+.swami-showcase-shell.is-animated .swami-card-secondary-b,
+.swami-showcase-shell.is-animated .swami-card-secondary-c {
+  transform: none;
+  opacity: 1;
+  filter: none;
+}
+
+/* =========================
+   TRUST SECTION
+========================= */
+.swami-trust-section {
+  padding: 108px 0;
+  background: #ffffff;
 }
 
 .swami-trust-grid {
@@ -374,491 +544,85 @@ a {
 }
 
 .swami-trust-copy {
-  max-width: 500px;
-}
-
-.swami-section-kicker {
-  display: inline-block;
-  margin-bottom: 16px;
-  color: #334e75;
-  font-size: 0.78rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
-.swami-section-title {
-  margin: 0;
-  color: #0b1f3a;
-  font-size: clamp(2.1rem, 4vw, 3.4rem);
-  line-height: 1.02;
-  letter-spacing: -0.05em;
-  font-weight: 700;
-}
-
-.swami-section-text {
-  margin-top: 22px;
-  color: #667085;
-  font-size: 1.04rem;
-  line-height: 1.78;
+  max-width: 510px;
 }
 
 .swami-trust-panels {
   display: grid;
-  gap: 18px;
+  gap: 0;
+  border-top: 1px solid var(--line);
 }
 
 .swami-trust-panel {
-  padding: 26px 0;
-  border-top: 1px solid #dbe3ec;
-}
-
-.swami-trust-panel:first-child {
-  padding-top: 0;
-  border-top: none;
+  padding: 28px 0;
+  border-bottom: 1px solid var(--line);
 }
 
 .swami-trust-number {
   display: inline-block;
-  margin-bottom: 12px;
-  color: #98a2b3;
-  font-size: 0.85rem;
+  margin-bottom: 10px;
+  color: #8190a3;
+  font-size: 0.84rem;
   font-weight: 700;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.05em;
 }
 
 .swami-trust-panel h3 {
   margin: 0 0 10px;
-  color: #0b1f3a;
-  font-size: 1.2rem;
-  line-height: 1.25;
-  letter-spacing: -0.025em;
-  font-weight: 700;
-}
-
-.swami-trust-panel p {
-  margin: 0;
-  color: #667085;
-  font-size: 1rem;
-  line-height: 1.75;
-  max-width: 580px;
-}
-
-@media (max-width: 900px) {
-  .swami-trust-section {
-    padding: 78px 0;
-  }
-
-  .swami-trust-grid {
-    grid-template-columns: 1fr;
-    gap: 38px;
-  }
-
-  .swami-trust-copy {
-    max-width: 100%;
-  }
-}
-
-
-/* SECTION 3 — ANIMATED SHOWCASE */
-.swami-showcase-section {
-  position: relative;
-  padding: 120px 0 140px;
-  background: #f8fafc;
-  overflow: clip;
-}
-
-.swami-showcase-head {
-  max-width: 760px;
-  margin-bottom: 56px;
-}
-
-.swami-section-kicker {
-  display: inline-block;
-  margin-bottom: 16px;
-  color: #334e75;
-  font-size: 0.78rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
-.swami-section-title {
-  margin: 0;
-  color: #0b1f3a;
-  font-size: clamp(2.2rem, 4.4vw, 3.7rem);
-  line-height: 1.02;
-  letter-spacing: -0.05em;
-  font-weight: 700;
-  max-width: 11ch;
-}
-
-.swami-section-text {
-  margin-top: 20px;
-  max-width: 680px;
-  color: #667085;
-  font-size: 1.05rem;
-  line-height: 1.78;
-}
-
-.swami-showcase-stage {
-  position: relative;
-  min-height: 760px;
-}
-
-.swami-showcase-shell {
-  position: sticky;
-  top: 110px;
-  height: 620px;
-  border-radius: 34px;
-  background:
-    linear-gradient(180deg, rgba(255,255,255,0.88), rgba(255,255,255,0.72));
-  border: 1px solid #e4ebf3;
-  box-shadow: 0 24px 70px rgba(15, 23, 42, 0.08);
-  overflow: hidden;
-}
-
-.swami-showcase-shell::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background:
-    radial-gradient(circle at 18% 22%, rgba(34, 197, 94, 0.08), transparent 22%),
-    radial-gradient(circle at 78% 24%, rgba(11, 31, 58, 0.05), transparent 26%),
-    linear-gradient(90deg, rgba(11,31,58,0.03) 1px, transparent 1px),
-    linear-gradient(rgba(11,31,58,0.03) 1px, transparent 1px);
-  background-size: auto, auto, 34px 34px, 34px 34px;
-  mask-image: linear-gradient(to bottom, rgba(0,0,0,0.2), transparent 85%);
-  -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,0.2), transparent 85%);
-}
-
-.swami-showcase-card {
-  position: absolute;
-  background: rgba(255, 255, 255, 0.92);
-  border: 1px solid #e5ebf2;
-  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.06);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  transition:
-    transform 0.18s linear,
-    opacity 0.18s linear,
-    filter 0.18s linear;
-  will-change: transform, opacity, filter;
-}
-
-.swami-card-main {
-  left: 64px;
-  top: 68px;
-  width: min(46vw, 510px);
-  max-width: 510px;
-  padding: 34px;
-  border-radius: 28px;
-  z-index: 4;
-}
-
-.swami-card-tag {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 32px;
-  padding: 0 12px;
-  border-radius: 999px;
-  background: #eef7f1;
-  color: #15803d;
-  font-size: 0.76rem;
-  font-weight: 700;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-}
-
-.swami-card-main h3 {
-  margin: 18px 0 12px;
-  color: #0b1f3a;
-  font-size: clamp(2rem, 3.2vw, 3rem);
-  line-height: 0.98;
-  letter-spacing: -0.05em;
-  font-weight: 700;
-}
-
-.swami-card-main p {
-  margin: 0;
-  max-width: 32ch;
-  color: #667085;
-  font-size: 1rem;
-  line-height: 1.72;
-}
-
-.swami-card-secondary {
-  width: 290px;
-  padding: 24px;
-  border-radius: 22px;
-  z-index: 3;
-}
-
-.swami-card-secondary h4 {
-  margin: 14px 0 8px;
-  color: #0b1f3a;
-  font-size: 1.18rem;
+  color: var(--navy);
+  font-size: 1.22rem;
   line-height: 1.2;
   letter-spacing: -0.03em;
   font-weight: 700;
 }
 
-.swami-card-secondary p {
+.swami-trust-panel p {
   margin: 0;
-  color: #667085;
-  font-size: 0.95rem;
-  line-height: 1.68;
+  color: var(--muted);
+  font-size: 1rem;
+  line-height: 1.78;
+  max-width: 58ch;
 }
 
-.swami-card-number {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 38px;
-  height: 38px;
-  border-radius: 999px;
-  background: #ffffff;
-  border: 1px solid #dbe5ee;
-  color: #0b1f3a;
-  font-size: 0.8rem;
-  font-weight: 700;
-}
-
-.swami-card-secondary-a {
-  right: 72px;
-  top: 88px;
-}
-
-.swami-card-secondary-b {
-  right: 128px;
-  top: 252px;
-}
-
-.swami-card-secondary-c {
-  right: 38px;
-  top: 414px;
-}
-
-/* starting state */
-.swami-showcase-shell.is-animated .swami-card-main {
-  transform: translate3d(0, 0, 0) scale(1);
-  opacity: 1;
-  filter: blur(0px);
-}
-
-.swami-showcase-shell.is-animated .swami-card-secondary-a,
-.swami-showcase-shell.is-animated .swami-card-secondary-b,
-.swami-showcase-shell.is-animated .swami-card-secondary-c {
-  opacity: 1;
-  filter: blur(0px);
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .swami-card-main {
-    transform: translate3d(-40px, 40px, 0) scale(0.96);
-    opacity: 0.35;
-    filter: blur(3px);
-  }
-
-  .swami-card-secondary-a {
-    transform: translate3d(120px, -30px, 0) scale(0.94);
-    opacity: 0.15;
-    filter: blur(4px);
-  }
-
-  .swami-card-secondary-b {
-    transform: translate3d(160px, 30px, 0) scale(0.95);
-    opacity: 0.12;
-    filter: blur(4px);
-  }
-
-  .swami-card-secondary-c {
-    transform: translate3d(140px, 70px, 0) scale(0.95);
-    opacity: 0.12;
-    filter: blur(4px);
-  }
-}
-
+/* =========================
+   RESPONSIVE
+========================= */
 @media (max-width: 1100px) {
-  .swami-showcase-stage {
-    min-height: auto;
-  }
-
   .swami-showcase-shell {
-    position: relative;
-    top: auto;
-    height: auto;
-    padding: 22px;
-    display: grid;
-    gap: 18px;
+    grid-template-columns: 1fr;
   }
 
-  .swami-showcase-card {
-    position: relative;
-    left: auto;
-    right: auto;
-    top: auto;
-    width: 100%;
-    max-width: none;
-    transform: none !important;
-    opacity: 1 !important;
-    filter: none !important;
-  }
-
-  .swami-card-main,
-  .swami-card-secondary {
-    padding: 24px;
-    border-radius: 22px;
+  .swami-showcase-shell > .swami-card-main {
+    grid-row: auto;
   }
 }
 
-@media (max-width: 768px) {
-  .swami-showcase-section {
-    padding: 82px 0 90px;
+@media (max-width: 900px) {
+  .nav-links,
+  .nav-cta {
+    display: none;
   }
 
-  .swami-showcase-head {
-    margin-bottom: 34px;
+  .menu-toggle {
+    display: inline-flex;
   }
 
-  .swami-section-title {
-    max-width: 100%;
-    font-size: clamp(2rem, 9vw, 3rem);
-  }
-
-  .swami-section-text {
-    font-size: 1rem;
-  }
-
-  .swami-card-main h3 {
-    font-size: clamp(1.7rem, 8vw, 2.3rem);
-  }
-}
-.swami-hero {
-  background:
-    radial-gradient(circle at top center, rgba(11, 31, 58, 0.035), transparent 38%),
-    #ffffff;
-}
-
-.swami-detail-section {
-  background:
-    linear-gradient(180deg, #ffffff 0%, #f8fafc 16%, #f8fafc 100%);
-}
-
-.swami-showcase-section {
-  background: #ffffff;
-}
-
-.swami-trust-section {
-  background: #f8fafc;
-}
-/* FOUNDER SECTION */
-.swami-founder-section {
-  padding: 110px 0;
-  background:
-    linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
-}
-
-.swami-founder-shell {
-  display: grid;
-  grid-template-columns: 440px minmax(0, 1fr);
-  gap: 64px;
-  align-items: center;
-}
-
-.swami-founder-image-wrap {
-  position: relative;
-}
-
-.swami-founder-image-card {
-  position: relative;
-  border-radius: 28px;
-  overflow: hidden;
-  background: #e9eef4;
-  box-shadow: 0 24px 60px rgba(15, 23, 42, 0.08);
-}
-
-.swami-founder-image-card::after {
-  content: "";
-  position: absolute;
-  inset: auto 0 0 0;
-  height: 30%;
-  pointer-events: none;
-  background: linear-gradient(to top, rgba(11, 31, 58, 0.10), transparent);
-}
-
-.swami-founder-image {
-  display: block;
-  width: 100%;
-  height: 560px;
-  object-fit: cover;
-  object-position: center top;
-}
-
-.swami-founder-copy {
-  max-width: 620px;
-}
-
-.swami-founder-kicker {
-  display: inline-block;
-  margin-bottom: 18px;
-  color: #334e75;
-  font-size: 0.78rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
-.swami-founder-title {
-  margin: 0;
-  color: #0b1f3a;
-  font-size: clamp(2.2rem, 4.4vw, 3.7rem);
-  line-height: 1.02;
-  letter-spacing: -0.05em;
-  font-weight: 700;
-  max-width: 13ch;
-}
-
-.swami-founder-text {
-  margin: 24px 0 0;
-  color: #667085;
-  font-size: 1.03rem;
-  line-height: 1.82;
-  max-width: 56ch;
-}
-
-.swami-founder-signoff {
-  margin: 18px 0 0;
-  color: #98a2b3;
-  font-size: 0.96rem;
-  line-height: 1.72;
-}
-
-.swami-founder-actions {
-  margin-top: 30px;
-}
-
-/* optional warm accent detail */
-.swami-founder-shell::before {
-  content: "";
-  position: absolute;
-  display: none;
-}
-
-/* RESPONSIVE */
-@media (max-width: 1024px) {
+  .swami-detail-grid,
+  .swami-trust-grid,
   .swami-founder-shell {
     grid-template-columns: 1fr;
     gap: 36px;
   }
 
-  .swami-founder-copy {
-    max-width: 100%;
+  .swami-detail-section,
+  .swami-founder-section,
+  .swami-showcase-section,
+  .swami-trust-section {
+    padding: 78px 0;
   }
 
-  .swami-founder-title {
+  .swami-founder-title,
+  .swami-section-title {
     max-width: 100%;
   }
 
@@ -867,26 +631,38 @@ a {
   }
 }
 
-@media (max-width: 640px) {
-  .swami-founder-section {
-    padding: 76px 0;
+@media (max-width: 768px) {
+  .swami-hero {
+    padding: 92px 0 72px;
+  }
+
+  .swami-hero-title {
+    max-width: 100%;
+    font-size: clamp(2.6rem, 12vw, 4.4rem);
+    line-height: 0.95;
+  }
+
+  .swami-hero-subtitle,
+  .swami-section-text,
+  .swami-founder-text {
+    font-size: 1rem;
+  }
+
+  .swami-btn-primary {
+    width: 100%;
+    max-width: 320px;
   }
 
   .swami-founder-image {
     height: 420px;
   }
 
-  .swami-founder-title {
-    font-size: clamp(2rem, 10vw, 3rem);
+  .swami-card-main,
+  .swami-showcase-card {
+    padding: 24px;
   }
 
-  .swami-founder-text {
-    font-size: 1rem;
-    line-height: 1.75;
-  }
-
-  .swami-founder-actions .swami-btn {
-    width: 100%;
-    max-width: 320px;
+  .swami-card-main h3 {
+    font-size: clamp(1.8rem, 8vw, 2.4rem);
   }
 }
