@@ -1491,3 +1491,315 @@ section {
     border-radius: 16px;
   }
 }
+.swami-showcase-section {
+  padding: 132px 0;
+  background: #0b1f3a;
+  color: #ffffff;
+  overflow: clip;
+}
+
+.swami-showcase-layout {
+  display: grid;
+  grid-template-columns: minmax(320px, 0.92fr) minmax(420px, 1.08fr);
+  gap: 76px;
+  align-items: start;
+}
+
+.swami-showcase-copy {
+  position: sticky;
+  top: 120px;
+  max-width: 520px;
+}
+
+.swami-showcase-section .swami-section-kicker {
+  color: rgba(255, 255, 255, 0.58);
+}
+
+.swami-showcase-section .swami-section-title {
+  color: #ffffff;
+  max-width: 10ch;
+  font-size: clamp(2.8rem, 4.8vw, 5rem);
+  line-height: 0.93;
+  letter-spacing: -0.085em;
+}
+
+.swami-showcase-section .swami-section-text {
+  margin-top: 22px;
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 1.04rem;
+  line-height: 1.82;
+  max-width: 52ch;
+}
+
+.swami-showcase-stage-wrap {
+  position: relative;
+}
+
+.swami-showcase-stage-card {
+  position: sticky;
+  top: 100px;
+  padding: 28px;
+  border-radius: 30px;
+  background: #09192f;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.swami-showcase-stage-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  margin-bottom: 22px;
+}
+
+.swami-showcase-stage-label {
+  color: rgba(255, 255, 255, 0.84);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.swami-showcase-progress {
+  width: 84px;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 999px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.swami-showcase-progress-line {
+  display: block;
+  width: 33.333%;
+  height: 100%;
+  background: #9cc7ff;
+  transition: width 0.55s cubic-bezier(.22,1,.36,1);
+}
+
+.swami-showcase-visual {
+  position: relative;
+  min-height: 340px;
+  border-radius: 24px;
+  background: #0d203c;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  overflow: hidden;
+}
+
+.swami-showcase-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.045) 1px, transparent 1px);
+  background-size: 42px 42px;
+  mask-image: linear-gradient(to bottom, rgba(0,0,0,0.95), rgba(0,0,0,0.35));
+  -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,0.95), rgba(0,0,0,0.35));
+}
+
+.swami-showcase-line {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+#showcasePathBase {
+  stroke: rgba(255, 255, 255, 0.13);
+  stroke-width: 3;
+}
+
+#showcasePathActive {
+  stroke: #9cc7ff;
+  stroke-width: 4;
+  stroke-linecap: round;
+  stroke-dasharray: 900;
+  stroke-dashoffset: 900;
+  transition: stroke-dashoffset 1s cubic-bezier(.22,1,.36,1);
+}
+
+.swami-showcase-visual.is-signal #showcasePathActive {
+  stroke-dashoffset: 600;
+}
+
+.swami-showcase-visual.is-pressure #showcasePathActive {
+  stroke-dashoffset: 260;
+}
+
+.swami-showcase-visual.is-clarity #showcasePathActive {
+  stroke-dashoffset: 0;
+}
+
+.swami-showcase-point {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  border-radius: 999px;
+  background: #9cc7ff;
+  opacity: 0.16;
+  transform: scale(0.65);
+  transition:
+    opacity 0.45s ease,
+    transform 0.45s ease,
+    box-shadow 0.45s ease;
+}
+
+.swami-showcase-point-a { left: 23%; top: 49%; }
+.swami-showcase-point-b { left: 48%; top: 34%; }
+.swami-showcase-point-c { left: 82%; top: 21%; }
+
+.swami-showcase-visual.is-signal .swami-showcase-point-a,
+.swami-showcase-visual.is-pressure .swami-showcase-point-b,
+.swami-showcase-visual.is-clarity .swami-showcase-point-c {
+  opacity: 1;
+  transform: scale(1);
+  box-shadow: 0 0 0 10px rgba(156, 199, 255, 0.12);
+}
+
+.swami-showcase-float {
+  position: absolute;
+  left: 28px;
+  bottom: 28px;
+  padding: 14px 16px;
+  min-width: 180px;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  transition:
+    transform 0.45s cubic-bezier(.22,1,.36,1),
+    opacity 0.45s ease;
+}
+
+.swami-showcase-float-kicker {
+  display: block;
+  margin-bottom: 6px;
+  color: rgba(255,255,255,0.5);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.swami-showcase-float strong {
+  color: #ffffff;
+  font-size: 1rem;
+  letter-spacing: -0.02em;
+}
+
+.swami-showcase-visual.is-signal .swami-showcase-float {
+  transform: translate(0, 0);
+}
+
+.swami-showcase-visual.is-pressure .swami-showcase-float {
+  transform: translate(70px, -52px);
+}
+
+.swami-showcase-visual.is-clarity .swami-showcase-float {
+  transform: translate(240px, -132px);
+}
+
+.swami-showcase-detail {
+  margin-top: 24px;
+  max-width: 600px;
+}
+
+.swami-showcase-detail h3 {
+  margin: 0 0 12px;
+  color: #ffffff;
+  font-size: clamp(1.7rem, 2.4vw, 2.6rem);
+  line-height: 0.98;
+  letter-spacing: -0.055em;
+  font-weight: 700;
+  transition: opacity 0.28s ease, transform 0.28s ease;
+}
+
+.swami-showcase-detail p {
+  margin: 0;
+  color: rgba(255,255,255,0.68);
+  font-size: 1rem;
+  line-height: 1.8;
+  max-width: 50ch;
+  transition: opacity 0.28s ease, transform 0.28s ease;
+}
+
+.swami-showcase-stage-card.is-changing .swami-showcase-detail h3,
+.swami-showcase-stage-card.is-changing .swami-showcase-detail p,
+.swami-showcase-stage-card.is-changing .swami-showcase-float {
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+.swami-showcase-triggers {
+  position: relative;
+}
+
+.swami-showcase-trigger {
+  height: 72vh;
+}
+
+@media (max-width: 960px) {
+  .swami-showcase-section {
+    padding: 88px 0;
+  }
+
+  .swami-showcase-layout {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+
+  .swami-showcase-copy {
+    position: relative;
+    top: auto;
+    max-width: 100%;
+  }
+
+  .swami-showcase-stage-card {
+    position: relative;
+    top: auto;
+  }
+
+  .swami-showcase-section .swami-section-title {
+    max-width: 100%;
+    font-size: clamp(2.2rem, 9vw, 3.8rem);
+  }
+
+  .swami-showcase-visual {
+    min-height: 280px;
+  }
+
+  .swami-showcase-trigger {
+    height: 44vh;
+  }
+
+  .swami-showcase-visual.is-pressure .swami-showcase-float {
+    transform: translate(28px, -34px);
+  }
+
+  .swami-showcase-visual.is-clarity .swami-showcase-float {
+    transform: translate(120px, -92px);
+  }
+}
+
+@media (max-width: 768px) {
+  .swami-showcase-stage-card {
+    padding: 20px;
+    border-radius: 22px;
+  }
+
+  .swami-showcase-visual {
+    border-radius: 18px;
+    min-height: 240px;
+  }
+
+  .swami-showcase-float {
+    left: 18px;
+    bottom: 18px;
+    min-width: 150px;
+    padding: 12px 13px;
+  }
+
+  .swami-showcase-point {
+    width: 12px;
+    height: 12px;
+  }
+}
