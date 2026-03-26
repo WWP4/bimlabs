@@ -366,3 +366,59 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 })();
+
+(function () {
+  const triggers = document.querySelectorAll(".swami-showcase-trigger");
+  const card = document.getElementById("showcaseCard");
+  const visual = document.getElementById("showcaseVisual");
+  const label = document.getElementById("showcaseLabel");
+  const title = document.getElementById("showcaseTitle");
+  const text = document.getElementById("showcaseText");
+  const metric = document.getElementById("showcaseMetric");
+  const progress = document.getElementById("showcaseProgress");
+
+  if (!triggers.length || !card || !visual || !label || !title || !text || !metric || !progress) return;
+
+  let activeIndex = 0;
+
+  function setState(trigger, index) {
+    card.classList.add("is-changing");
+
+    setTimeout(() => {
+      label.textContent = trigger.dataset.label || "";
+      title.textContent = trigger.dataset.title || "";
+      text.textContent = trigger.dataset.text || "";
+      metric.textContent = trigger.dataset.metric || "";
+
+      visual.classList.remove("is-signal", "is-pressure", "is-clarity");
+      visual.classList.add(`is-${trigger.dataset.state || "signal"}`);
+
+      const value = ((index + 1) / triggers.length) * 100;
+      progress.style.width = value + "%";
+
+      card.classList.remove("is-changing");
+    }, 180);
+  }
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+
+        const index = [...triggers].indexOf(entry.target);
+        if (index === activeIndex) return;
+
+        activeIndex = index;
+        setState(entry.target, index);
+      });
+    },
+    {
+      threshold: 0.52
+    }
+  );
+
+  triggers.forEach((trigger) => observer.observe(trigger));
+
+  visual.classList.add("is-signal");
+  progress.style.width = "33.333%";
+})();
