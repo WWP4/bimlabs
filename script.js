@@ -161,3 +161,18 @@ if (detailFrames.length) {
     detailObserver.observe(frame);
   });
 }
+
+const frames = document.querySelectorAll(".swami-detail-frame");
+
+window.addEventListener("scroll", () => {
+  const trigger = window.innerHeight * 0.45;
+
+  frames.forEach((frame) => {
+    const rect = frame.getBoundingClientRect();
+
+    if (rect.top < trigger && rect.bottom > trigger) {
+      frames.forEach(f => f.classList.remove("active"));
+      frame.classList.add("active");
+    }
+  });
+});
