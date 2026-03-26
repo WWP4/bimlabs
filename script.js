@@ -33,23 +33,24 @@ document.addEventListener("DOMContentLoaded", function () {
     requestAnimationFrame(step);
   };
 
-  const observer = new IntersectionObserver((entries, obs) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        animateCount(entry.target);
-        obs.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.45 });
+  if (statNumbers.length) {
+    const observer = new IntersectionObserver((entries, obs) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          animateCount(entry.target);
+          obs.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.45 });
 
-  statNumbers.forEach((stat) => observer.observe(stat));
+    statNumbers.forEach((stat) => observer.observe(stat));
+  }
 
   window.toggleMenu = function () {
     const menu = document.getElementById("mobileMenu");
     if (menu) menu.classList.toggle("active");
   };
 
-  document.addEventListener("DOMContentLoaded", () => {
   const showcaseStage = document.getElementById("swamiShowcaseStage");
   const showcaseShell = document.querySelector(".swami-showcase-shell");
   const cardMain = document.getElementById("cardMain");
@@ -65,6 +66,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function lerp(start, end, progress) {
     return start + (end - start) * progress;
+  }
+
+  function easeOutCubic(t) {
+    return 1 - Math.pow(1 - t, 3);
   }
 
   function updateShowcase() {
@@ -93,12 +98,10 @@ document.addEventListener("DOMContentLoaded", function () {
     const bProgress = clamp((progress - 0.28) * 1.34, 0, 1);
     const cProgress = clamp((progress - 0.42) * 1.4, 0, 1);
 
-    const ease = (t) => 1 - Math.pow(1 - t, 3);
-
-    const mp = ease(mainProgress);
-    const ap = ease(aProgress);
-    const bp = ease(bProgress);
-    const cp = ease(cProgress);
+    const mp = easeOutCubic(mainProgress);
+    const ap = easeOutCubic(aProgress);
+    const bp = easeOutCubic(bProgress);
+    const cp = easeOutCubic(cProgress);
 
     cardMain.style.transform = `translate3d(${lerp(-40, 0, mp)}px, ${lerp(40, 0, mp)}px, 0) scale(${lerp(0.96, 1, mp)})`;
     cardMain.style.opacity = String(lerp(0.35, 1, mp));
@@ -121,16 +124,15 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function requestTick() {
     if (!ticking) {
+      ticking = true;
       window.requestAnimationFrame(() => {
         updateShowcase();
         ticking = false;
       });
-      ticking = true;
     }
   }
 
   updateShowcase();
   window.addEventListener("scroll", requestTick, { passive: true });
   window.addEventListener("resize", requestTick);
-});
 });
