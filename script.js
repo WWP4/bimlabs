@@ -253,3 +253,65 @@ document.addEventListener("DOMContentLoaded", function () {
     updateProgress(activeIndex);
   });
 })();
+
+
+(function () {
+  const heroChart = document.querySelector(".swami-hero-chart");
+  const heroValue = document.getElementById("heroLeakValue");
+  const heroInfoBtn = document.getElementById("heroInfoBtn");
+  const heroInfoPanel = document.getElementById("heroInfoPanel");
+  const heroCard = document.getElementById("heroCard");
+
+  if (!heroChart || !heroValue || !heroInfoBtn || !heroInfoPanel || !heroCard) return;
+
+  let hasAnimated = false;
+
+  function animateCurrency(element, endValue, duration) {
+    const startTime = performance.now();
+
+    function update(currentTime) {
+      const elapsed = currentTime - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      const value = Math.floor(endValue * eased);
+
+      element.textContent = "-$" + value.toLocaleString();
+
+      if (progress < 1) {
+        requestAnimationFrame(update);
+      }
+    }
+
+    requestAnimationFrame(update);
+  }
+
+  const heroObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting || hasAnimated) return;
+
+        hasAnimated = true;
+        heroChart.classList.add("is-visible");
+        animateCurrency(heroValue, 42300, 1400);
+      });
+    },
+    {
+      threshold: 0.45
+    }
+  );
+
+  heroObserver.observe(heroCard);
+
+  heroInfoBtn.addEventListener("click", function () {
+    const isOpen = !heroInfoPanel.hasAttribute("hidden");
+
+    if (isOpen) {
+      heroInfoPanel.setAttribute("hidden", "");
+      heroInfoBtn.setAttribute("aria-expanded", "false");
+      return;
+    }
+
+    heroInfoPanel.removeAttribute("hidden");
+    heroInfoBtn.setAttribute("aria-expanded", "true");
+  });
+})();
