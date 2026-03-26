@@ -190,50 +190,111 @@ section {
   color: #ffffff !important;
 }
 
-/* =========================
-   HERO
-========================= */
+
 .swami-hero {
-  padding: 128px 0 104px;
-  background: #ffffff;
-  border-bottom: 1px solid var(--line);
+  background: #0b1f3a;
+  color: #ffffff;
+  padding: 140px 0 120px;
 }
 
-.swami-hero-shell {
-  max-width: 840px;
+.swami-hero-grid {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  align-items: center;
+  gap: 80px;
 }
 
-.swami-hero-kicker {
-  color: #38557c;
-}
+/* LEFT SIDE */
 
 .swami-hero-title {
-  margin: 0;
-  max-width: 9ch;
-  color: var(--navy);
-  font-size: clamp(3.3rem, 7vw, 6.2rem);
-  line-height: 0.92;
-  letter-spacing: -0.075em;
-  font-weight: 700;
+  font-size: clamp(3rem, 4vw, 4.8rem);
+  line-height: 0.95;
+  letter-spacing: -0.06em;
 }
 
 .swami-hero-subtitle {
-  margin: 28px 0 0;
-  max-width: 640px;
-  color: var(--muted);
+  margin-top: 18px;
+  color: rgba(255,255,255,0.75);
   font-size: 1.1rem;
-  line-height: 1.75;
+  max-width: 480px;
 }
 
 .swami-hero-actions {
-  margin-top: 34px;
+  margin-top: 28px;
 }
 
 .swami-hero-note {
-  margin-top: 18px;
-  color: var(--muted-2);
-  font-size: 0.94rem;
-  line-height: 1.65;
+  margin-top: 14px;
+  font-size: 0.9rem;
+  color: rgba(255,255,255,0.5);
+}
+
+/* RIGHT SIDE VISUAL */
+
+.swami-hero-visual {
+  display: flex;
+  justify-content: center;
+}
+
+.swami-hero-card {
+  width: 100%;
+  max-width: 380px;
+  padding: 28px;
+  border-radius: 24px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+}
+
+/* CARD CONTENT */
+
+.swami-hero-card-top {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.8rem;
+  color: rgba(255,255,255,0.6);
+}
+
+/* CHART */
+
+.swami-hero-chart {
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+  margin: 28px 0;
+  height: 120px;
+}
+
+.swami-hero-chart .bar {
+  width: 14px;
+  border-radius: 6px;
+  background: rgba(255,255,255,0.15);
+  animation: rise 0.9s ease forwards;
+}
+
+.bar.a { height: 30%; }
+.bar.b { height: 55%; }
+.bar.c { height: 40%; }
+.bar.d { height: 80%; background: #5aa9ff; }
+.bar.e { height: 60%; }
+
+@keyframes rise {
+  from {
+    height: 0;
+    opacity: 0.3;
+  }
+}
+
+/* FOOTER */
+
+.swami-hero-card-footer {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.9rem;
+}
+
+.swami-hero-card-footer .alert {
+  color: #ff6b6b;
+  font-weight: 600;
 }
 
 /* =========================
