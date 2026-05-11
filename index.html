@@ -3,185 +3,297 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>BIM Labs Studio</title>
+  <title>BIM Labs Studio | Systems That Move Businesses Forward</title>
+  <meta
+    name="description"
+    content="BIM Labs Studio designs premium websites, portals, automation tools, and custom business systems."
+  />
 
   <link rel="stylesheet" href="styles.css" />
-  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
 </head>
+
 <body>
+  <header class="site-header">
+    <a href="#" class="brand" aria-label="BIM Labs Studio home">
+      <span class="brand-mark">B</span>
+      <span>BIM Labs</span>
+    </a>
 
-  <nav class="topbar">
-  <div class="topbar-inner">
-    <a href="#contact" class="topbar-link">Get in Touch</a>
-    <a href="#services" class="topbar-link">Services</a>
-    <a href="#testimonials" class="topbar-link">Testimonials</a>
-    <a href="#about" class="topbar-link">About Us</a>
-    <a href="#custom-request" class="topbar-link topbar-link--cta">Custom Request</a>
-  </div>
-</nav>
+    <nav class="nav-links" aria-label="Primary navigation">
+      <a href="#work">Work</a>
+      <a href="#systems">Systems</a>
+      <a href="#process">Process</a>
+      <a href="#contact">Contact</a>
+    </nav>
 
-  <section class="hero-minimal">
+    <a href="#contact" class="nav-cta">Start a Project</a>
+  </header>
 
-  <div class="hero-center">
+  <main>
+    <section class="hero">
+      <div class="hero-bg"></div>
 
-    <div class="logo-container hero-logo">
-      <div class="letters">
-        <span>B</span><span>I</span><span>M</span><span>L</span><span>A</span><span>B</span><span>S</span>
-      </div>
+      <div class="hero-grid">
+        <div class="hero-copy">
+          <p class="eyebrow">Premium websites · portals · automation</p>
 
-      <svg class="symbol" viewBox="0 0 100 100">
-        <path class="outline" d="M50 10 A40 40 0 1 1 50 90 L80 90"></path>
-        <path class="fill-shape" d="M50 30 A20 20 0 1 1 50 70 Z"></path>
-      </svg>
-    </div>
+          <h1>
+            Systems that make your business feel sharper, faster, and easier to run.
+          </h1>
 
-    <h1 class="hero-title">
-      Systems that convert.
-    </h1>
+          <p class="hero-text">
+            BIM Labs Studio designs high-end websites, client portals, workflow tools,
+            and automation systems for businesses that need more than a pretty page.
+          </p>
 
-    <p class="hero-sub">
-      Design. Build. Automate.
-    </p>
+          <div class="hero-actions">
+            <a href="#contact" class="btn btn-primary">Build My System</a>
+            <a href="#work" class="btn btn-secondary">See What We Build</a>
+          </div>
 
-    <button id="ctaBtn" class="hero-btn">Start</button>
-
-  </div>
-
-</section>
-
-<section id="featured-work" class="section section-dark" data-aos="fade-up">
-  <div class="container">
-    <div class="section-heading featured-heading">
-      <span class="section-label">Featured Work</span>
-      <h2>Systems built to help real businesses operate better and close faster.</h2>
-      <p>
-        I do not just build pages that look good. I build custom websites, funnels,
-        portals, CRMs, and automation systems that help businesses stay organized,
-        improve client experience, and reduce manual work.
-      </p>
-    </div>
-
-    <div class="featured-proof-bar">
-      <div class="proof-item">
-        <strong>Custom Built</strong>
-        <span>No bloated templates or generic setups</span>
-      </div>
-      <div class="proof-item">
-        <strong>Business-Focused</strong>
-        <span>Built around sales flow, operations, and user experience</span>
-      </div>
-      <div class="proof-item">
-        <strong>Automation Ready</strong>
-        <span>Designed to save time and reduce friction</span>
-      </div>
-    </div>
-
-    <div class="work-grid">
-      <article class="work-card">
-        <div class="work-card-top">
-          <span class="work-tag">CRM + Sales System</span>
-          <h3>Commercial Playground Sales Platform</h3>
+          <div class="hero-proof">
+            <div>
+              <strong>Websites</strong>
+              <span>Premium front-end experiences</span>
+            </div>
+            <div>
+              <strong>Systems</strong>
+              <span>Portals, dashboards, workflows</span>
+            </div>
+            <div>
+              <strong>Automation</strong>
+              <span>Less manual work, more control</span>
+            </div>
+          </div>
         </div>
-        <p>
-          Built a custom internal sales and project management system for a commercial
-          playground company to organize leads, manage quote flow, track projects,
-          and improve follow-up across the sales cycle.
-        </p>
-        <ul class="work-list">
-          <li>Lead and opportunity tracking</li>
-          <li>Project organization across customers</li>
-          <li>Quote workflow structure</li>
-          <li>Automation support for follow-up</li>
-        </ul>
-        <div class="work-result">
-          <span>Why it mattered</span>
+
+        <div class="hero-visual" aria-label="BIM Labs system preview">
+          <div class="system-window main-window">
+            <div class="window-top">
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+
+            <div class="dashboard-header">
+              <div>
+                <p>Operations System</p>
+                <h3>Project Command Center</h3>
+              </div>
+              <span class="status-pill">Live</span>
+            </div>
+
+            <div class="metric-row">
+              <div class="metric-card">
+                <span>Pipeline</span>
+                <strong>$124K</strong>
+              </div>
+              <div class="metric-card">
+                <span>Tasks Saved</span>
+                <strong>42 hrs</strong>
+              </div>
+            </div>
+
+            <div class="flow-panel">
+              <div class="flow-line active">
+                <span></span>
+                <p>Lead captured</p>
+              </div>
+              <div class="flow-line active">
+                <span></span>
+                <p>Quote generated</p>
+              </div>
+              <div class="flow-line">
+                <span></span>
+                <p>Client portal created</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="floating-card card-one">
+            <span>Automation</span>
+            <strong>Follow-up sequence ready</strong>
+          </div>
+
+          <div class="floating-card card-two">
+            <span>Portal</span>
+            <strong>Client project view generated</strong>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="work" class="section section-dark">
+      <div class="container">
+        <div class="section-heading center">
+          <p class="eyebrow">Featured Work</p>
+          <h2>Real systems built from real business problems.</h2>
           <p>
-            Replaced scattered manual processes with a more organized workflow that made
-            the business easier to manage and more professional to clients.
+            The goal is not to look busy. The goal is to make the business feel
+            organized, premium, and easier to operate.
           </p>
         </div>
-      </article>
 
-      <article class="work-card">
-        <div class="work-card-top">
-          <span class="work-tag">Portal + UX</span>
-          <h3>Client-Facing Project Portal</h3>
-        </div>
-        <p>
-          Designed and developed a polished client portal where customers can review
-          project details, files, product options, quote information, and planning tools
-          in one place.
-        </p>
-        <ul class="work-list">
-          <li>Dashboard-style interface</li>
-          <li>Project and file visibility</li>
-          <li>Clean client experience</li>
-          <li>Built to increase trust and clarity</li>
-        </ul>
-        <div class="work-result">
-          <span>Why it mattered</span>
-          <p>
-            Helped present the company in a more premium, organized way while making it
-            easier for clients to stay informed throughout the process.
-          </p>
-        </div>
-      </article>
+        <div class="work-grid">
+          <article class="work-card">
+            <div class="work-visual mini-dashboard">
+              <div></div>
+              <div></div>
+              <div></div>
+            </div>
+            <span class="work-tag">CRM + Sales Flow</span>
+            <h3>Commercial Playground Sales Platform</h3>
+            <p>
+              A custom sales and project system for managing leads, quotes, client
+              communication, and active projects in one structured workflow.
+            </p>
+          </article>
 
-      <article class="work-card">
-        <div class="work-card-top">
-          <span class="work-tag">Automation + AI</span>
-          <h3>Custom AI and Workflow Tools</h3>
-        </div>
-        <p>
-          Built code-first automation tools that reduce repetitive work, improve speed,
-          and support better communication without relying on clunky off-the-shelf systems.
-        </p>
-        <ul class="work-list">
-          <li>AI-assisted workflow tools</li>
-          <li>Email and follow-up automation</li>
-          <li>Custom forms and funnel logic</li>
-          <li>Tailored internal process systems</li>
-        </ul>
-        <div class="work-result">
-          <span>Why it mattered</span>
-          <p>
-            Saved time, reduced manual steps, and created a smoother operational flow
-            that better matched the way the business actually worked.
-          </p>
-        </div>
-      </article>
-    </div>
+          <article class="work-card featured">
+            <div class="work-visual mini-portal">
+              <div class="portal-sidebar"></div>
+              <div class="portal-main">
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+            </div>
+            <span class="work-tag">Client Portal</span>
+            <h3>Board-ready project portals</h3>
+            <p>
+              A polished customer-facing experience where clients can review files,
+              options, quotes, timelines, and next steps without scattered emails.
+            </p>
+          </article>
 
-    <div class="testimonial-feature">
-      <div class="testimonial-badge">Client Feedback</div>
-      <blockquote>
-        “Ben built systems that made our workflow feel far more organized and professional.
-        The portal, quoting flow, and internal tools gave us a much better way to manage
-        projects and present our business to customers.”
-      </blockquote>
-      <div class="testimonial-meta">
-        <strong>Wonder World Playsets</strong>
-        <span>Custom CRM, portal, quoting, and automation system</span>
+          <article class="work-card">
+            <div class="work-visual mini-ai">
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+            <span class="work-tag">AI + Automation</span>
+            <h3>Workflow tools that reduce manual work</h3>
+            <p>
+              Custom forms, routing logic, AI-assisted workflows, follow-up systems,
+              and internal tools built around the way the business actually works.
+            </p>
+          </article>
+        </div>
       </div>
-    </div>
-  </div>
-</section>
+    </section>
 
-  <section id="services" class="section" data-aos="fade-up">
-    <h2>What We Build</h2>
-    <p>Custom systems, automation, and premium websites.</p>
-  </section>
+    <section id="systems" class="section section-light">
+      <div class="container split-section">
+        <div class="section-heading">
+          <p class="eyebrow">What We Build</p>
+          <h2>Not just websites. Business infrastructure.</h2>
+          <p>
+            A strong website gets attention. A strong system helps the business sell,
+            organize, follow up, and deliver with less friction.
+          </p>
+        </div>
 
-  <section class="section" data-aos="fade-up">
-    <h2>Why It Works</h2>
-    <p>We focus on function, not just design.</p>
-  </section>
+        <div class="system-list">
+          <div class="system-item">
+            <span>01</span>
+            <div>
+              <h3>Premium Websites</h3>
+              <p>High-end landing pages, service sites, and product-style websites.</p>
+            </div>
+          </div>
 
-  <footer>
-    <p>© BIM Labs Studio</p>
+          <div class="system-item">
+            <span>02</span>
+            <div>
+              <h3>Client Portals</h3>
+              <p>Private project hubs for quotes, files, updates, dashboards, and next steps.</p>
+            </div>
+          </div>
+
+          <div class="system-item">
+            <span>03</span>
+            <div>
+              <h3>Automation Systems</h3>
+              <p>Lead routing, follow-up flows, internal tools, CRM logic, and AI-assisted workflows.</p>
+            </div>
+          </div>
+
+          <div class="system-item">
+            <span>04</span>
+            <div>
+              <h3>Custom Dashboards</h3>
+              <p>Clean interfaces that help teams see what matters and act faster.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="process" class="section section-dark">
+      <div class="container">
+        <div class="section-heading center">
+          <p class="eyebrow">Process</p>
+          <h2>Built with strategy before design.</h2>
+          <p>
+            Every section, page, form, and automation should have a job. Pretty is not
+            enough. It has to move the business forward.
+          </p>
+        </div>
+
+        <div class="process-grid">
+          <div class="process-card">
+            <span>01</span>
+            <h3>Map the friction</h3>
+            <p>We identify where leads, clients, tasks, and operations are slowing down.</p>
+          </div>
+
+          <div class="process-card">
+            <span>02</span>
+            <h3>Design the system</h3>
+            <p>We turn messy workflows into a clear user experience and business flow.</p>
+          </div>
+
+          <div class="process-card">
+            <span>03</span>
+            <h3>Build the interface</h3>
+            <p>We create the website, portal, dashboard, or automation tool with clean execution.</p>
+          </div>
+
+          <div class="process-card">
+            <span>04</span>
+            <h3>Refine for trust</h3>
+            <p>We polish the details so the final product feels premium, clear, and credible.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact" class="section contact-section">
+      <div class="container contact-card">
+        <div>
+          <p class="eyebrow">Start Here</p>
+          <h2>Need a site or system that feels high-end and actually works?</h2>
+          <p>
+            Tell us what you are trying to build. We will help shape it into a clear,
+            premium digital system.
+          </p>
+        </div>
+
+        <form class="contact-form">
+          <input type="text" name="name" placeholder="Name" required />
+          <input type="email" name="email" placeholder="Email" required />
+          <textarea name="message" placeholder="What do you want to build?" required></textarea>
+          <button type="submit" class="btn btn-primary">Send Request</button>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>© BIM Labs Studio. Built for businesses that want better systems.</p>
   </footer>
 
-  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
   <script src="app.js"></script>
 </body>
 </html>
