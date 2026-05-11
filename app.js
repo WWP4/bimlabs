@@ -37,62 +37,36 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
-const showcase = document.querySelector(".showcase-scroll");
-const showcaseTexts = document.querySelectorAll("[data-showcase-text]");
-const showcaseFrames = document.querySelectorAll("[data-showcase-frame]");
-const showcaseDots = document.querySelectorAll("[data-showcase-dot]");
-const showcaseTriggers = document.querySelectorAll("[data-showcase-step]");
+const caseSlides = document.querySelectorAll("[data-case-slide]");
+const caseDots = document.querySelectorAll("[data-case-dot]");
+const caseTriggers = document.querySelectorAll("[data-case-step]");
 
-const showcaseThemes = [
-  "",
-  "theme-portal",
-  "theme-install",
-  "theme-momentum"
-];
-
-function setShowcaseStep(index) {
-  if (!showcase) return;
-
-  showcaseTexts.forEach((item) => {
-    item.classList.toggle("active", Number(item.dataset.showcaseText) === index);
+function setCaseSlide(index) {
+  caseSlides.forEach((slide) => {
+    slide.classList.toggle("active", Number(slide.dataset.caseSlide) === index);
   });
 
-  showcaseFrames.forEach((item) => {
-    item.classList.toggle("active", Number(item.dataset.showcaseFrame) === index);
+  caseDots.forEach((dot) => {
+    dot.classList.toggle("active", Number(dot.dataset.caseDot) === index);
   });
-
-  showcaseDots.forEach((item) => {
-    item.classList.toggle("active", Number(item.dataset.showcaseDot) === index);
-  });
-
-  showcase.classList.remove("theme-portal", "theme-install", "theme-momentum");
-
-  if (showcaseThemes[index]) {
-    showcase.classList.add(showcaseThemes[index]);
-  }
 }
 
-if (showcaseTriggers.length) {
-  const observer = new IntersectionObserver(
+if (caseTriggers.length) {
+  const caseObserver = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
         if (!entry.isIntersecting) return;
-
-        const index = Number(entry.target.dataset.showcaseStep);
-        setShowcaseStep(index);
+        setCaseSlide(Number(entry.target.dataset.caseStep));
       });
     },
-    {
-      threshold: 0.45
-    }
+    { threshold: 0.5 }
   );
 
-  showcaseTriggers.forEach((trigger) => observer.observe(trigger));
+  caseTriggers.forEach((trigger) => caseObserver.observe(trigger));
 }
 
-showcaseDots.forEach((dot) => {
+caseDots.forEach((dot) => {
   dot.addEventListener("click", () => {
-    const index = Number(dot.dataset.showcaseDot);
-    setShowcaseStep(index);
+    setCaseSlide(Number(dot.dataset.caseDot));
   });
 });
