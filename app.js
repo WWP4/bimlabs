@@ -36,3 +36,63 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 });
+
+const showcase = document.querySelector(".showcase-scroll");
+const showcaseTexts = document.querySelectorAll("[data-showcase-text]");
+const showcaseFrames = document.querySelectorAll("[data-showcase-frame]");
+const showcaseDots = document.querySelectorAll("[data-showcase-dot]");
+const showcaseTriggers = document.querySelectorAll("[data-showcase-step]");
+
+const showcaseThemes = [
+  "",
+  "theme-portal",
+  "theme-install",
+  "theme-momentum"
+];
+
+function setShowcaseStep(index) {
+  if (!showcase) return;
+
+  showcaseTexts.forEach((item) => {
+    item.classList.toggle("active", Number(item.dataset.showcaseText) === index);
+  });
+
+  showcaseFrames.forEach((item) => {
+    item.classList.toggle("active", Number(item.dataset.showcaseFrame) === index);
+  });
+
+  showcaseDots.forEach((item) => {
+    item.classList.toggle("active", Number(item.dataset.showcaseDot) === index);
+  });
+
+  showcase.classList.remove("theme-portal", "theme-install", "theme-momentum");
+
+  if (showcaseThemes[index]) {
+    showcase.classList.add(showcaseThemes[index]);
+  }
+}
+
+if (showcaseTriggers.length) {
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+
+        const index = Number(entry.target.dataset.showcaseStep);
+        setShowcaseStep(index);
+      });
+    },
+    {
+      threshold: 0.45
+    }
+  );
+
+  showcaseTriggers.forEach((trigger) => observer.observe(trigger));
+}
+
+showcaseDots.forEach((dot) => {
+  dot.addEventListener("click", () => {
+    const index = Number(dot.dataset.showcaseDot);
+    setShowcaseStep(index);
+  });
+});
