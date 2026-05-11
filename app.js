@@ -37,36 +37,56 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
-const caseSlides = document.querySelectorAll("[data-case-slide]");
-const caseDots = document.querySelectorAll("[data-case-dot]");
-const caseTriggers = document.querySelectorAll("[data-case-step]");
 
-function setCaseSlide(index) {
-  caseSlides.forEach((slide) => {
-    slide.classList.toggle("active", Number(slide.dataset.caseSlide) === index);
+
+
+const theatreProjects = [
+  {
+    label: "01 / AI Workspace",
+    title: "Orynd AI",
+    text: "A guided planning workspace for budget, equipment, surfacing, quotes, and next steps."
+  },
+  {
+    label: "02 / Client Portal",
+    title: "Project Portal",
+    text: "A branded client hub for quotes, products, files, timelines, and project clarity."
+  },
+  {
+    label: "03 / Technical System",
+    title: "3D Install System",
+    text: "Interactive install steps, part references, model views, and contractor-ready guidance."
+  },
+  {
+    label: "04 / Launch Experience",
+    title: "Momentum Toolkit",
+    text: "Premium pages and enrollment flows for programs, partners, parents, and schools."
+  }
+];
+
+const theatreLabel = document.getElementById("theatreLabel");
+const theatreTitle = document.getElementById("theatreTitle");
+const theatreText = document.getElementById("theatreText");
+const theatreButtons = document.querySelectorAll("[data-project]");
+const theatreImages = document.querySelectorAll(".screen-img");
+
+function setTheatreProject(index) {
+  const project = theatreProjects[index];
+
+  theatreLabel.textContent = project.label;
+  theatreTitle.textContent = project.title;
+  theatreText.textContent = project.text;
+
+  theatreButtons.forEach((button) => {
+    button.classList.toggle("active", Number(button.dataset.project) === index);
   });
 
-  caseDots.forEach((dot) => {
-    dot.classList.toggle("active", Number(dot.dataset.caseDot) === index);
+  theatreImages.forEach((image, imageIndex) => {
+    image.classList.toggle("active", imageIndex === index);
   });
 }
 
-if (caseTriggers.length) {
-  const caseObserver = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (!entry.isIntersecting) return;
-        setCaseSlide(Number(entry.target.dataset.caseStep));
-      });
-    },
-    { threshold: 0.5 }
-  );
-
-  caseTriggers.forEach((trigger) => caseObserver.observe(trigger));
-}
-
-caseDots.forEach((dot) => {
-  dot.addEventListener("click", () => {
-    setCaseSlide(Number(dot.dataset.caseDot));
+theatreButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    setTheatreProject(Number(button.dataset.project));
   });
 });
