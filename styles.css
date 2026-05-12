@@ -1024,176 +1024,186 @@ body {
 }
 
 
-.testimonial-showcase {
+.cinema-proof {
   position: relative;
-  padding: 160px 24px;
+  padding: 150px 24px;
   background:
-    radial-gradient(circle at 72% 42%, rgba(121,167,255,.22), transparent 34%),
+    radial-gradient(circle at 50% 36%, rgba(121,167,255,.18), transparent 34%),
     linear-gradient(180deg, #050816 0%, #08101f 100%);
   color: #fff;
   overflow: hidden;
 }
 
-.testimonial-shell {
-  width: min(1460px, 100%);
+.cinema-shell {
+  width: min(1440px, 100%);
   margin: 0 auto;
 }
 
-.testimonial-intro {
-  max-width: 1040px;
-  margin-bottom: 78px;
+.cinema-header {
+  text-align: center;
+  max-width: 1050px;
+  margin: 0 auto 70px;
 }
 
-.testimonial-intro h2 {
-  font-size: clamp(4rem, 9vw, 9.5rem);
+.cinema-header h2 {
+  font-size: clamp(4rem, 9vw, 9.2rem);
   line-height: .82;
   letter-spacing: -.09em;
-  max-width: 1120px;
 }
 
-.testimonial-grid {
-  display: grid;
-  grid-template-columns: .72fr 1.28fr;
-  gap: 48px;
-  align-items: center;
-}
-
-.testimonial-copy {
+.cinema-frame {
   position: relative;
-  z-index: 4;
-  padding: 42px 0;
 }
 
-.testimonial-copy > span {
-  display: block;
-  margin-bottom: 30px;
+.cinema-screen {
+  position: relative;
+  width: min(1180px, 100%);
+  height: 720px;
+  margin: 0 auto;
+  border-radius: 46px;
+  overflow: hidden;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.1), rgba(255,255,255,.025));
+  border: 1px solid rgba(255,255,255,.13);
+  box-shadow: 0 60px 180px rgba(0,0,0,.5);
+}
+
+.cinema-screen::before {
+  content: "";
+  position: absolute;
+  inset: 18px;
+  z-index: 1;
+  border-radius: 34px;
+  border: 1px solid rgba(255,255,255,.08);
+  pointer-events: none;
+}
+
+.cinema-screen::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0;
+  height: 46%;
+  z-index: 2;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(5,8,22,0) 0%,
+      rgba(5,8,22,.72) 52%,
+      rgba(5,8,22,.94) 100%
+    );
+  pointer-events: none;
+}
+
+.cinema-screen .screen-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  padding: 34px;
+  object-fit: contain;
+  opacity: 0;
+  transform: scale(.965) translateY(22px);
+  transition:
+    opacity .45s ease,
+    transform .75s cubic-bezier(.16, 1, .3, 1);
+}
+
+.cinema-screen .screen-img.active {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+}
+
+.cinema-caption {
+  position: absolute;
+  left: 42px;
+  right: 42px;
+  bottom: 38px;
+  z-index: 5;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 34px;
+  align-items: end;
+}
+
+.cinema-caption span {
+  grid-column: 1 / -1;
   color: #79a7ff;
-  font-size: .78rem;
+  font-size: .76rem;
   font-weight: 850;
   letter-spacing: .16em;
   text-transform: uppercase;
 }
 
-.testimonial-copy blockquote {
-  margin: 0 0 38px;
-  max-width: 620px;
-  font-size: clamp(2.35rem, 4.3vw, 5.4rem);
-  line-height: .92;
-  letter-spacing: -.075em;
-  color: #fff;
+.cinema-caption blockquote {
+  margin: 0;
+  max-width: 780px;
+  font-size: clamp(1.75rem, 3.2vw, 4.1rem);
+  line-height: .96;
+  letter-spacing: -.065em;
 }
 
-.testimonial-copy h3 {
-  margin-bottom: 12px;
-  font-size: clamp(1.8rem, 3vw, 3.2rem);
-  letter-spacing: -.06em;
+.caption-meta {
+  max-width: 330px;
+  padding: 20px 22px;
+  border-radius: 24px;
+  background: rgba(5,8,22,.72);
+  border: 1px solid rgba(255,255,255,.12);
+  backdrop-filter: blur(18px);
 }
 
-.testimonial-copy p {
-  max-width: 520px;
-  color: rgba(255,255,255,.68);
-  font-size: 1.05rem;
-  line-height: 1.8;
+.caption-meta strong {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 1rem;
 }
 
-.testimonial-tabs {
-  margin-top: 38px;
+.caption-meta p {
+  color: rgba(255,255,255,.66);
+  font-size: .9rem;
+  line-height: 1.55;
 }
 
-.testimonial-media {
-  position: relative;
-  min-height: 760px;
-  display: flex;
-  align-items: center;
+.cinema-tabs {
   justify-content: center;
+  margin-top: 28px;
 }
 
-.giant-screen {
-  position: relative;
-  width: min(1040px, 110%);
-  height: 680px;
-  margin-right: -120px;
-  transform:
-    rotateX(6deg)
-    rotateY(-10deg)
-    rotateZ(1deg);
-  transform-style: preserve-3d;
-  animation: giantDrift 8s ease-in-out infinite;
+.cinema-tabs button {
+  background: rgba(255,255,255,.05);
 }
 
-.giant-screen::before {
-  content: "";
-  position: absolute;
-  inset: 38px;
-  border-radius: 42px;
-  background: rgba(121,167,255,.18);
-  transform: translate3d(54px, 54px, -90px);
-  filter: blur(18px);
-}
-
-.giant-screen::after {
-  content: "";
-  position: absolute;
-  inset: -44px;
-  border-radius: 58px;
-  background:
-    linear-gradient(135deg, rgba(255,255,255,.08), rgba(255,255,255,0));
-  border: 1px solid rgba(255,255,255,.08);
-  transform: translateZ(-120px);
-}
-
-.giant-screen .screen-img {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  padding: 14px;
-  border-radius: 38px;
-  background: rgba(255,255,255,.08);
-  border: 1px solid rgba(255,255,255,.16);
-  box-shadow: 0 70px 180px rgba(0,0,0,.55);
-  opacity: 0;
-  transform: translateY(24px) scale(.96);
-  transition:
-    opacity .45s ease,
-    transform .7s cubic-bezier(.16, 1, .3, 1);
-}
-
-.giant-screen .screen-img.active {
-  opacity: 1;
-  transform: translateY(0) scale(1);
-}
-
-@keyframes giantDrift {
-  0%, 100% {
-    transform: rotateX(6deg) rotateY(-10deg) rotateZ(1deg) translateY(0);
+@media (max-width: 1000px) {
+  .cinema-screen {
+    height: 560px;
   }
 
-  50% {
-    transform: rotateX(4deg) rotateY(-7deg) rotateZ(0deg) translateY(-18px);
-  }
-}
-
-@media (max-width: 1100px) {
-  .testimonial-grid {
+  .cinema-caption {
+    left: 24px;
+    right: 24px;
+    bottom: 24px;
     grid-template-columns: 1fr;
   }
 
-  .testimonial-media {
-    min-height: 520px;
+  .caption-meta {
+    max-width: none;
+  }
+}
+
+@media (max-width: 650px) {
+  .cinema-proof {
+    padding: 110px 18px;
   }
 
-  .giant-screen {
-    width: 100%;
-    height: 470px;
-    margin-right: 0;
-    transform: none;
-    animation: none;
+  .cinema-screen {
+    height: 520px;
+    border-radius: 32px;
   }
 
-  .giant-screen::before,
-  .giant-screen::after {
-    display: none;
+  .cinema-screen .screen-img {
+    padding: 18px;
+  }
+
+  .cinema-caption blockquote {
+    font-size: 1.85rem;
   }
 }
