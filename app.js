@@ -1,253 +1,179 @@
 document.addEventListener("DOMContentLoaded", () => {
-  /* ---------------------- */
-  /* HEADER SCROLL */
-  /* ---------------------- */
+  const header = document.querySelector("[data-site-header]");
+  const canvas = document.getElementById("background-canvas");
+  const ctx = canvas?.getContext("2d");
+  let particles = [];
+  let animationFrame;
 
-  const header = document.querySelector(".site-header");
+  const setHeaderState = () => {
+    header?.classList.toggle("is-scrolled", window.scrollY > 18);
+  };
 
-  window.addEventListener("scroll", () => {
-    if (!header) return;
-    header.classList.toggle("is-scrolled", window.scrollY > 20);
-  });
-
-
-  /* ---------------------- */
-  /* SMOOTH ANCHOR SCROLL */
-  /* ---------------------- */
+  setHeaderState();
+  window.addEventListener("scroll", setHeaderState, { passive: true });
 
   document.querySelectorAll('a[href^="#"]').forEach((link) => {
     link.addEventListener("click", (event) => {
       const targetId = link.getAttribute("href");
-
       if (!targetId || targetId === "#") return;
-
       const target = document.querySelector(targetId);
-
       if (!target) return;
-
       event.preventDefault();
+      target.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+  });
 
-      target.scrollIntoView({
-        behavior: "smooth",
-        block: "start",
+  const setPointerVars = (element, event) => {
+    const rect = element.getBoundingClientRect();
+    element.style.setProperty("--mx", `${event.clientX - rect.left}px`);
+    element.style.setProperty("--my", `${event.clientY - rect.top}px`);
+  };
+
+  document.querySelectorAll(".magnetic, .quadrant").forEach((element) => {
+    element.addEventListener("pointermove", (event) => setPointerVars(element, event));
+  });
+
+  document.querySelectorAll(".media-fallback img").forEach((image) => {
+    const markMissing = () => image.closest(".media-fallback")?.classList.add("is-missing");
+    image.addEventListener("error", markMissing, { once: true });
+    if (image.complete && image.naturalWidth === 0) markMissing();
+  });
+
+  const resizeCanvas = () => {
+    if (!canvas || !ctx) return;
+    const ratio = Math.min(window.devicePixelRatio || 1, 2);
+    canvas.width = Math.floor(window.innerWidth * ratio);
+    canvas.height = Math.floor(window.innerHeight * ratio);
+    canvas.style.width = `${window.innerWidth}px`;
+    canvas.style.height = `${window.innerHeight}px`;
+    ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
+  };
+
+  const createParticles = () => {
+    const count = window.innerWidth < 760 ? 28 : 56;
+    particles = Array.from({ length: count }, () => ({
+      x: Math.random() * window.innerWidth,
+      y: Math.random() * window.innerHeight,
+      vx: (Math.random() - 0.5) * 0.22,
+      vy: (Math.random() - 0.5) * 0.18,
+      r: Math.random() * 1.65 + 0.35,
+      a: Math.random() * 0.28 + 0.06,
+    }));
+  };
+
+  const drawBackground = () => {
+    if (!ctx) return;
+    ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+    const gradient = ctx.createRadialGradient(window.innerWidth * 0.5, window.innerHeight * 0.32, 0, window.innerWidth * 0.5, window.innerHeight * 0.32, window.innerWidth * 0.62);
+    gradient.addColorStop(0, "rgba(47, 107, 255, 0.11)");
+    gradient.addColorStop(0.48, "rgba(0, 213, 255, 0.035)");
+    gradient.addColorStop(1, "rgba(3, 5, 10, 0)");
+    ctx.fillStyle = gradient;
+    ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
+
+    particles.forEach((particle, index) => {
+      particle.x += particle.vx;
+      particle.y += particle.vy;
+      if (particle.x < -30) particle.x = window.innerWidth + 30;
+      if (particle.x > window.innerWidth + 30) particle.x = -30;
+      if (particle.y < -30) particle.y = window.innerHeight + 30;
+      if (particle.y > window.innerHeight + 30) particle.y = -30;
+
+      ctx.beginPath();
+      ctx.arc(particle.x, particle.y, particle.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(0, 213, 255, ${particle.a})`;
+      ctx.fill();
+
+      for (let j = index + 1; j < particles.length; j += 1) {
+        const other = particles[j];
+        const dx = particle.x - other.x;
+        const dy = particle.y - other.y;
+        const distance = Math.hypot(dx, dy);
+        if (distance < 150) {
+          ctx.beginPath();
+          ctx.moveTo(particle.x, particle.y);
+          ctx.lineTo(other.x, other.y);
+          ctx.strokeStyle = `rgba(47, 107, 255, ${(1 - distance / 150) * 0.12})`;
+          ctx.lineWidth = 1;
+          ctx.stroke();
+        }
+      }
+    });
+
+    animationFrame = window.requestAnimationFrame(drawBackground);
+  };
+
+  if (canvas && ctx && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    resizeCanvas();
+    createParticles();
+    drawBackground();
+    window.addEventListener("resize", () => {
+      resizeCanvas();
+      createParticles();
+    });
+  }
+
+  const revealItems = document.querySelectorAll(".reveal");
+  if ("IntersectionObserver" in window) {
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("is-visible");
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.16 });
+    revealItems.forEach((item) => revealObserver.observe(item));
+  } else {
+    revealItems.forEach((item) => item.classList.add("is-visible"));
+  }
+
+  const reel = document.querySelector("[data-showcase-reel]");
+  const showcase = document.querySelector(".HomeShowcase");
+  const cursor = document.querySelector("[data-showcase-cursor]");
+
+  const updateReel = () => {
+    if (!reel || !showcase || window.innerWidth <= 860) return;
+    const rect = showcase.getBoundingClientRect();
+    const distance = Math.max(0, showcase.offsetHeight - window.innerHeight);
+    const progress = Math.min(Math.max(-rect.top / Math.max(distance, 1), 0), 1);
+    const maxShift = Math.max(0, reel.scrollWidth - window.innerWidth + 48);
+    reel.style.transform = `translate3d(${-progress * maxShift}px, 0, 0)`;
+  };
+
+  if (reel && showcase) {
+    window.addEventListener("scroll", () => window.requestAnimationFrame(updateReel), { passive: true });
+    window.addEventListener("resize", updateReel);
+    updateReel();
+  }
+
+  if (showcase && cursor) {
+    showcase.addEventListener("pointerenter", () => cursor.classList.add("is-visible"));
+    showcase.addEventListener("pointerleave", () => cursor.classList.remove("is-visible"));
+    showcase.addEventListener("pointermove", (event) => {
+      cursor.style.left = `${event.clientX}px`;
+      cursor.style.top = `${event.clientY}px`;
+    });
+  }
+
+  const wheelBlocks = Array.from(document.querySelectorAll("[data-wheel-block]"));
+  let activeWheel = 0;
+  if (wheelBlocks.length) {
+    window.setInterval(() => {
+      wheelBlocks[activeWheel]?.classList.remove("is-active");
+      activeWheel = (activeWheel + 1) % wheelBlocks.length;
+      wheelBlocks[activeWheel]?.classList.add("is-active");
+    }, 2200);
+    wheelBlocks.forEach((block, index) => {
+      block.addEventListener("pointerenter", () => {
+        wheelBlocks[activeWheel]?.classList.remove("is-active");
+        activeWheel = index;
+        block.classList.add("is-active");
       });
     });
+  }
+
+  window.addEventListener("beforeunload", () => {
+    if (animationFrame) window.cancelAnimationFrame(animationFrame);
   });
-
-
-  /* ---------------------- */
-  /* CONTACT FORM PLACEHOLDER */
-  /* ---------------------- */
-
-  const contactForm = document.querySelector(".contact-form");
-
-  if (contactForm) {
-    contactForm.addEventListener("submit", (event) => {
-      event.preventDefault();
-
-      alert("Request received. Replace this with your real form handler.");
-      contactForm.reset();
-    });
-  }
-
-
-  /* ---------------------- */
-  /* AOS ANIMATION INIT */
-  /* ---------------------- */
-
-  if (window.AOS) {
-    AOS.init({
-      duration: 850,
-      easing: "ease-out-cubic",
-      once: false,
-      mirror: true,
-      offset: 80,
-    });
-  }
-
-
-  /* ---------------------- */
-  /* PROOF SECTION / THEATRE */
-  /* ---------------------- */
-
-  const theatreProjects = [
-    {
-      label: "01 / AI Workspace",
-      title: "Orynd AI",
-      text: "A guided planning workspace for budget, equipment, surfacing, quotes, and next steps.",
-      screenTitle: "Orynd AI",
-      cards: [
-        {
-          label: "Flow",
-          value: "Guided planning",
-        },
-        {
-          label: "Output",
-          value: "Board-ready assets",
-        },
-        {
-          label: "System",
-          value: "Client-facing workflow",
-        },
-      ],
-    },
-    {
-      label: "02 / Client Portal",
-      title: "Project Portal",
-      text: "A branded client hub for quotes, products, files, timelines, and project clarity.",
-      screenTitle: "Client Portal",
-      cards: [
-        {
-          label: "Flow",
-          value: "Quote to decision",
-        },
-        {
-          label: "Output",
-          value: "Shared project clarity",
-        },
-        {
-          label: "System",
-          value: "Portal-based workflow",
-        },
-      ],
-    },
-    {
-      label: "03 / Technical System",
-      title: "3D Install System",
-      text: "Interactive install steps, part references, model views, and contractor-ready guidance.",
-      screenTitle: "3D Install System",
-      cards: [
-        {
-          label: "Flow",
-          value: "Step-by-step install",
-        },
-        {
-          label: "Output",
-          value: "Contractor guidance",
-        },
-        {
-          label: "System",
-          value: "3D visual reference",
-        },
-      ],
-    },
-    {
-      label: "04 / Launch Experience",
-      title: "Momentum Toolkit",
-      text: "Premium pages and enrollment flows for programs, partners, parents, and schools.",
-      screenTitle: "Momentum Toolkit",
-      cards: [
-        {
-          label: "Flow",
-          value: "Program launch",
-        },
-        {
-          label: "Output",
-          value: "Partner-ready assets",
-        },
-        {
-          label: "System",
-          value: "Enrollment experience",
-        },
-      ],
-    },
-  ];
-
-  const theatreLabel = document.getElementById("theatreLabel");
-  const theatreTitle = document.getElementById("theatreTitle");
-  const theatreText = document.getElementById("theatreText");
-
-  const theatreButtons = document.querySelectorAll("[data-project]");
-  const theatreImages = document.querySelectorAll(".screen-img");
-
-  const proofScreenLabel = document.querySelector(".proof-screen-label strong");
-  const floatingCards = document.querySelectorAll(".proof-floating-card");
-
-  function setTheatreProject(index) {
-    const project = theatreProjects[index];
-
-    if (!project) return;
-
-    if (theatreLabel) theatreLabel.textContent = project.label;
-    if (theatreTitle) theatreTitle.textContent = project.title;
-    if (theatreText) theatreText.textContent = project.text;
-    if (proofScreenLabel) proofScreenLabel.textContent = project.screenTitle;
-
-    theatreButtons.forEach((button) => {
-      const isActive = Number(button.dataset.project) === index;
-      button.classList.toggle("active", isActive);
-      button.setAttribute("aria-selected", isActive ? "true" : "false");
-    });
-
-    theatreImages.forEach((image, imageIndex) => {
-      const isActive = imageIndex === index;
-      image.classList.toggle("active", isActive);
-      image.setAttribute("aria-hidden", isActive ? "false" : "true");
-    });
-
-    floatingCards.forEach((card, cardIndex) => {
-      const cardData = project.cards[cardIndex];
-
-      if (!cardData) return;
-
-      const label = card.querySelector("span");
-      const value = card.querySelector("strong");
-
-      if (label) label.textContent = cardData.label;
-      if (value) value.textContent = cardData.value;
-    });
-
-    if (window.AOS) {
-      AOS.refresh();
-    }
-  }
-
-  theatreButtons.forEach((button) => {
-    button.addEventListener("click", () => {
-      setTheatreProject(Number(button.dataset.project));
-    });
-  });
-
-  if (theatreButtons.length && theatreImages.length) {
-    setTheatreProject(0);
-  }
-});
-
-const proofTabs = document.querySelectorAll(".proof-tabs button");
-const proofImages = document.querySelectorAll(".screen-img");
-
-const proofLabel = document.getElementById("theatreLabel");
-const proofTitle = document.getElementById("theatreTitle");
-const proofText = document.getElementById("theatreText");
-const proofQuote = document.getElementById("theatreQuote");
-
-proofTabs.forEach((tab) => {
-  tab.addEventListener("click", () => {
-    const index = Number(tab.dataset.project);
-
-    proofTabs.forEach((item) => item.classList.remove("active"));
-    tab.classList.add("active");
-
-    proofImages.forEach((img, imgIndex) => {
-      img.classList.toggle("active", imgIndex === index);
-    });
-
-    proofLabel.textContent = tab.dataset.label;
-    proofTitle.textContent = tab.dataset.title;
-    proofText.textContent = tab.dataset.text;
-    proofQuote.textContent = tab.dataset.quote;
-  });
-});
-
-AOS.init({
-  duration: 700,
-  easing: "ease-out-cubic",
-  offset: 90,
-  once: true,
-  mirror: false,
-  anchorPlacement: "top-bottom"
-});
-
-window.addEventListener("load", () => {
-  AOS.refreshHard();
 });

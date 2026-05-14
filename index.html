@@ -3,22 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
   <title>Bim Labs | Websites, AI Systems & Client Portals</title>
-  <meta
-    name="description"
-    content="Bim Labs builds premium websites, AI workflows, client portals, and automation systems for lean teams that need polished digital execution."
-  />
-
-  <!-- Fonts -->
+  <meta name="description" content="Bim Labs builds premium websites, AI workflows, client portals, and automation systems for lean teams that need polished digital execution." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800;900&display=swap"
-    rel="stylesheet"
-  />
-
-  <!-- Your 8 CSS files. Keep this order. Do not also load combined.css. -->
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/variables.css" />
   <link rel="stylesheet" href="css/global.css" />
   <link rel="stylesheet" href="css/hero.css" />
@@ -28,552 +17,196 @@
   <link rel="stylesheet" href="css/contact.css" />
   <link rel="stylesheet" href="css/responsive.css" />
 </head>
-
 <body>
-  <!-- =========================================================
-       01 / FIXED HEADER
-       Salo flow: fixed studio header with simple nav + CTA
-  ========================================================== -->
-  <header class="site-header" id="header">
-    <a href="#top" class="brand" aria-label="Bim Labs home">
-      <span class="brand-mark">B</span>
-      <span>Bim Labs</span>
+  <header class="site-header" data-site-header>
+    <a class="brand" href="#top" aria-label="Bim Labs home">
+      <span class="brand-mark" aria-hidden="true">B</span>
+      <span class="brand-word">Bim Labs</span>
     </a>
-
     <nav class="nav-links" aria-label="Primary navigation">
-      <a href="#services">Services</a>
-      <a href="#proof">Proof</a>
       <a href="#work">Work</a>
-      <a href="#partner">Partner</a>
+      <a href="#services">Services</a>
+      <a href="#about">About</a>
+      <a href="#contact">Contact</a>
     </nav>
-
-    <a href="#contact" class="nav-cta">Start a project</a>
+    <a class="header-cta magnetic" href="#contact"><span>Start a project</span></a>
   </header>
 
-  <main id="top" class="page-home">
+  <main id="top" class="page--home">
+    <div id="background" class="background-logo-wrapper" aria-hidden="true">
+      <canvas id="background-canvas"></canvas>
+      <div class="ambient-orb ambient-orb--one"></div>
+      <div class="ambient-orb ambient-orb--two"></div>
+    </div>
 
-    <!-- =========================================================
-         02 / BACKGROUND CANVAS + CENTERED HERO
-         Salo flow: full-screen atmospheric background, centered copy,
-         one CTA, small reassurance line.
-    ========================================================== -->
-    <section class="hero HomeHero" aria-labelledby="heroTitle">
-      <div id="background" class="hero-bg background-logo-wrapper" aria-hidden="true">
-        <canvas id="background-canvas"></canvas>
-      </div>
-
-      <div
-        class="hero-grid"
-        style="grid-template-columns: 1fr; max-width: 1120px; text-align: center; place-items: center;"
-      >
-        <div class="hero-copy" data-aos="copy-reveal">
-          <p class="eyebrow">Bim Labs</p>
-
-          <h1 id="heroTitle">
-            Websites, AI systems, and portals that feel in-house.
-          </h1>
-
-          <p class="hero-text" style="margin-left: auto; margin-right: auto;">
-            Senior-level design and automation support for businesses that need polished digital systems,
-            not another basic website.
-          </p>
-
-          <div class="hero-actions" style="justify-content: center;">
-            <a href="#contact" class="btn btn-primary">Start a project</a>
-            <a href="#work" class="btn btn-secondary">View the work</a>
-          </div>
-
-          <div
-            class="hero-proof"
-            aria-label="Bim Labs proof points"
-            style="margin-left: auto; margin-right: auto; text-align: left;"
-          >
-            <div>
-              <strong>Websites</strong>
-              <span>Premium pages with clean structure, strong copy, and conversion-focused flow.</span>
-            </div>
-
-            <div>
-              <strong>AI systems</strong>
-              <span>Guided workflows for leads, quotes, customer questions, and next steps.</span>
-            </div>
-
-            <div>
-              <strong>Client portals</strong>
-              <span>Project spaces that make your business feel organized and high-touch.</span>
-            </div>
-          </div>
+    <section class="section HomeHero" aria-labelledby="hero-title">
+      <div class="hero-shell">
+        <div class="ambient-cursor ambient-cursor--ben" aria-hidden="true">
+          <span class="cursor-arrow"></span><strong>Ben</strong>
         </div>
+        <div class="ambient-cursor ambient-cursor--brand" aria-hidden="true">
+          <span class="cursor-arrow"></span><strong>Bim Labs</strong>
+        </div>
+        <p class="eyebrow">Bim Labs</p>
+        <h1 id="hero-title">Websites, AI systems, and portals that feel in-house.</h1>
+        <p class="hero-subline">Senior-level design and automation for businesses that need polished digital systems, not another basic website.</p>
+        <a class="btn btn-primary magnetic" href="#contact"><span>Start a project</span></a>
+        <p class="hero-note">Replies in 24 hours. No obligation.</p>
       </div>
     </section>
 
-    <!-- =========================================================
-         03 / SERVICE QUADRANTS
-         Salo flow: four major service blocks directly after hero.
-    ========================================================== -->
-    <section id="services" class="section systems-section HomeQuadrants" aria-labelledby="servicesTitle">
-      <div class="container">
-        <div class="section-heading split" data-aos="copy-reveal">
-          <div>
-            <p class="eyebrow">Our Services</p>
-            <h2 id="servicesTitle">Four ways we make your business feel sharper.</h2>
+    <section id="services" class="section HomeQuadrants" aria-labelledby="services-title">
+      <div class="section-rule" aria-hidden="true"><span></span><em>services</em><span></span></div>
+      <h2 id="services-title" class="sr-only">Services</h2>
+      <div class="quadrant-grid">
+        <a class="quadrant" href="#contact" data-tilt>
+          <span class="quadrant-number">01</span>
+          <div class="quadrant-preview" aria-hidden="true"><span></span><i></i><b></b></div>
+          <div class="quadrant-copy">
+            <h3>Web Experiences</h3>
+            <p>Editorial pages, conversion flows, and digital products shaped around the way your buyers actually decide.</p>
+            <em>Explore</em>
           </div>
-
-          <p>
-            Bim Labs is built for lean teams that need design, development, AI, and automation
-            moving in the same direction.
-          </p>
-        </div>
-
-        <div class="systems-grid">
-          <article class="system-card" data-aos="visual-rise">
-            <span>01 / Websites</span>
-            <h3>High-performance websites</h3>
-            <p>Premium marketing sites with better hierarchy, clearer offers, and stronger trust.</p>
-          </article>
-
-          <article class="system-card" data-aos="visual-rise" data-aos-delay="80">
-            <span>02 / AI</span>
-            <h3>AI planning workflows</h3>
-            <p>AI tools that guide visitors, qualify leads, answer questions, and move projects forward.</p>
-          </article>
-
-          <article class="system-card" data-aos="visual-rise" data-aos-delay="160">
-            <span>03 / Portals</span>
-            <h3>Client portals</h3>
-            <p>Polished customer workspaces for files, quotes, timelines, forms, and next steps.</p>
-          </article>
-
-          <article class="system-card" data-aos="visual-rise" data-aos-delay="240">
-            <span>04 / Automation</span>
-            <h3>Business systems</h3>
-            <p>Connected forms, CRM steps, follow-ups, dashboards, and internal workflows.</p>
-          </article>
-        </div>
+        </a>
+        <a class="quadrant" href="#contact" data-tilt>
+          <span class="quadrant-number">02</span>
+          <div class="quadrant-preview" aria-hidden="true"><span></span><i></i><b></b></div>
+          <div class="quadrant-copy">
+            <h3>High-Performance Websites</h3>
+            <p>Premium marketing systems with sharp structure, fast pages, clean content, and launch-ready polish.</p>
+            <em>Explore</em>
+          </div>
+        </a>
+        <a class="quadrant" href="#contact" data-tilt>
+          <span class="quadrant-number">03</span>
+          <div class="quadrant-preview" aria-hidden="true"><span></span><i></i><b></b></div>
+          <div class="quadrant-copy">
+            <h3>AI Workflows</h3>
+            <p>Guided assistants and internal automations that qualify, route, summarize, and move work forward.</p>
+            <em>Explore</em>
+          </div>
+        </a>
+        <a class="quadrant" href="#contact" data-tilt>
+          <span class="quadrant-number">04</span>
+          <div class="quadrant-preview" aria-hidden="true"><span></span><i></i><b></b></div>
+          <div class="quadrant-copy">
+            <h3>Client Portals &amp; Automation</h3>
+            <p>Customer hubs for grants, quotes, files, decisions, next steps, and the operational logic behind them.</p>
+            <em>Explore</em>
+          </div>
+        </a>
       </div>
     </section>
 
-    <!-- =========================================================
-         04 / TESTIMONIAL CASE-STUDY BLOCK
-         Salo flow: editorial case block with proof image + quote.
-    ========================================================== -->
-    <section id="proof" class="salo-proof TestimonialCaseStudyBlock" aria-labelledby="proofTitle">
-      <div class="salo-proof-shell">
-        <header class="salo-proof-header" data-aos="soft-fade">
-          <a href="#top" class="salo-proof-mark">Bim Labs</a>
-
-          <nav class="salo-proof-mini-nav" aria-label="Case study navigation">
-            <span>01 / Featured System</span>
-            <span>Client Portal</span>
-          </nav>
-        </header>
-
-        <div class="salo-proof-hero">
-          <div class="salo-proof-copy" data-aos="copy-reveal">
-            <p class="eyebrow">Featured Proof</p>
-
-            <h2 id="proofTitle">
-              Why Wonder World needed more than a website.
-            </h2>
-
-            <p>
-              A connected sales and project flow built around grants, quotes, customer education,
-              internal operations, and project planning.
-            </p>
-
-            <div class="salo-proof-cta-row">
-              <a href="#work" class="salo-proof-cta">View systems</a>
-              <span><strong>Built for:</strong> sales, quoting, project flow</span>
-            </div>
-          </div>
-
-          <div class="salo-proof-feature" data-aos="visual-rise">
-            <div class="salo-proof-image-stage">
-              <!-- Replace these with your real screenshots -->
-              <img
-                class="screen-img active"
-                src="assets/wonder-world-portal.png"
-                alt="Wonder World Playsets project portal preview"
-                data-screen="portal"
-              />
-              <img
-                class="screen-img"
-                src="assets/orynd-ai-preview.png"
-                alt="Orynd AI planning assistant preview"
-                data-screen="ai"
-              />
-              <img
-                class="screen-img"
-                src="assets/quote-system-preview.png"
-                alt="Quote system preview"
-                data-screen="quote"
-              />
-              <img
-                class="screen-img"
-                src="assets/project-dashboard-preview.png"
-                alt="Project dashboard preview"
-                data-screen="dashboard"
-              />
-
-              <div class="salo-proof-caption">
-                <span id="proofCaptionTitle">Wonder World Portal</span>
-                <blockquote id="proofCaptionQuote">
-                  “Everything finally felt connected.”
-                </blockquote>
-              </div>
-            </div>
+    <section id="proof" class="section TestimonialCaseStudyBlock" aria-labelledby="proof-title">
+      <div class="proof-grid">
+        <div class="proof-copy reveal">
+          <p class="eyebrow">Connected proof</p>
+          <h2 id="proof-title">Why Wonder World needed more than a website.</h2>
+          <p>We built a connected sales and project flow around grants, quotes, customer education, internal operations, and project planning.</p>
+          <div class="built-for" aria-label="Built for">
+            <span>Built for</span><strong>Wonder World</strong><strong>Orynd AI</strong><strong>Quote Systems</strong>
           </div>
         </div>
-
-        <div class="salo-work-grid" aria-label="Featured system tabs">
-          <button class="active" type="button" data-target="portal" data-title="Wonder World Portal" data-quote="“Everything finally felt connected.”">
-            <span>01</span>
-            <strong>Client Portal</strong>
-            <small>Project hub for customers, files, quotes, and next steps.</small>
-          </button>
-
-          <button type="button" data-target="ai" data-title="Orynd AI" data-quote="“A guided assistant that keeps the project moving.”">
-            <span>02</span>
-            <strong>Orynd AI</strong>
-            <small>Lead guidance, budget capture, and planning workflow.</small>
-          </button>
-
-          <button type="button" data-target="quote" data-title="Quote System" data-quote="“Board-ready pricing without the messy back and forth.”">
-            <span>03</span>
-            <strong>Quote Flow</strong>
-            <small>Cleaner quote steps, packages, and internal logic.</small>
-          </button>
-
-          <button type="button" data-target="dashboard" data-title="Project Dashboard" data-quote="“Every next step had a place.”">
-            <span>04</span>
-            <strong>Dashboard</strong>
-            <small>Operational visibility for sales and delivery.</small>
-          </button>
+        <div class="proof-stage reveal">
+          <figure class="mockup-card mockup-card--large media-fallback">
+            <img src="assets/wonder-world-portal.png" alt="Wonder World portal preview" loading="lazy" />
+            <figcaption><span>Portal</span><strong>Grant status, project files, and customer next steps.</strong></figcaption>
+          </figure>
+          <figure class="mockup-card mockup-card--small media-fallback">
+            <img src="assets/orynd-ai-preview.png" alt="Orynd AI workflow preview" loading="lazy" />
+            <figcaption><span>AI</span><strong>Guided project planning.</strong></figcaption>
+          </figure>
+          <figure class="mockup-card mockup-card--small media-fallback">
+            <img src="assets/quote-system-preview.png" alt="Quote system preview" loading="lazy" />
+            <figcaption><span>Quotes</span><strong>Clear approvals and routing.</strong></figcaption>
+          </figure>
         </div>
+        <blockquote class="testimonial reveal">
+          <p>“Everything finally felt connected.”</p>
+          <cite>Internal project system / Bim Labs build</cite>
+        </blockquote>
       </div>
     </section>
 
-    <!-- =========================================================
-         05 / DESKTOP WORK SHOWCASE
-         Salo flow: big work showcase after the case/testimonial block.
-    ========================================================== -->
-    <section id="work" class="section work-showcase HomeShowcase" aria-labelledby="workTitle">
-      <div class="container">
-        <div class="section-heading split" data-aos="copy-reveal">
-          <div>
-            <p class="eyebrow">Showcase</p>
-            <h2 id="workTitle">Systems that look good because they work clearly.</h2>
-          </div>
-
-          <p>
-            The work should feel like a product, not a folder of random pages.
-            Each build is designed around the actual business flow.
-          </p>
-        </div>
-
-        <div class="work-grid">
-          <article class="work-card" data-aos="visual-rise">
-            <img src="assets/wonder-world-portal.png" alt="Wonder World project portal" />
-            <div class="work-card-content">
-              <span>Client Portal</span>
-              <h3>Wonder World project system</h3>
-              <p>Grant application, quote planning, customer portal, and internal project flow.</p>
-            </div>
-          </article>
-
-          <article class="work-card" data-aos="visual-rise" data-aos-delay="100">
-            <img src="assets/orynd-ai-preview.png" alt="Orynd AI planning assistant" />
-            <div class="work-card-content">
-              <span>AI Workflow</span>
-              <h3>Orynd AI planning assistant</h3>
-              <p>Budget capture, product direction, surfacing guidance, and quote routing.</p>
-            </div>
-          </article>
-
-          <article class="work-card" data-aos="visual-rise" data-aos-delay="200">
-            <img src="assets/momentum-preview.png" alt="Momentum Athlete partner portal" />
-            <div class="work-card-content">
-              <span>Partner System</span>
-              <h3>Momentum Athlete portal</h3>
-              <p>Premium partner presentation, onboarding flow, and parent-facing pages.</p>
-            </div>
-          </article>
-        </div>
+    <section id="work" class="section HomeShowcase" aria-labelledby="showcase-title">
+      <div class="showcase-cursor" data-showcase-cursor aria-hidden="true">View system</div>
+      <div class="showcase-intro">
+        <p class="eyebrow">What we do</p>
+        <h2 id="showcase-title">Showcase</h2>
+      </div>
+      <div class="showcase-reel" data-showcase-reel>
+        <article class="project-card media-fallback">
+          <img src="assets/wonder-world-portal.png" alt="Wonder World Portal screenshot" loading="lazy" />
+          <div class="project-caption"><span>Client Portal</span><h3>Wonder World Portal</h3><p>Grant applications, quotes, project files, and customer next steps in one place.</p></div>
+        </article>
+        <article class="project-card media-fallback">
+          <img src="assets/orynd-ai-preview.png" alt="Orynd AI screenshot" loading="lazy" />
+          <div class="project-caption"><span>AI Workflow</span><h3>Orynd AI</h3><p>A guided planning assistant for budget, equipment, surfacing, quotes, and project routing.</p></div>
+        </article>
+        <article class="project-card media-fallback">
+          <img src="assets/quote-system-preview.png" alt="Momentum Athlete partner system screenshot" loading="lazy" />
+          <div class="project-caption"><span>Partner System</span><h3>Momentum Athlete</h3><p>A premium partner presentation and portal system for athletic education programs.</p></div>
+        </article>
       </div>
     </section>
 
-    <!-- =========================================================
-         06 / MOBILE SHOWCASE FALLBACK
-         Salo flow: separate mobile version. This keeps mobile simple.
-    ========================================================== -->
-    <section class="section work-showcase HomeShowcaseMobile" aria-labelledby="mobileWorkTitle">
-      <div class="container">
-        <div class="section-heading center" data-aos="copy-reveal">
-          <p class="eyebrow">Mobile View</p>
-          <h2 id="mobileWorkTitle">Clear even on small screens.</h2>
-          <p>
-            Your systems need to feel premium on desktop and simple on mobile.
-            No cramped screenshots. No unreadable UI.
-          </p>
-        </div>
-
-        <div class="work-grid">
-          <article class="work-card" data-aos="visual-rise">
-            <img src="assets/mobile-portal-preview.png" alt="Mobile portal preview" />
-            <div class="work-card-content">
-              <span>Mobile Portal</span>
-              <h3>Project access anywhere</h3>
-              <p>Customers can review progress, files, and next steps without confusion.</p>
-            </div>
-          </article>
-
-          <article class="work-card" data-aos="visual-rise" data-aos-delay="100">
-            <img src="assets/mobile-ai-preview.png" alt="Mobile AI assistant preview" />
-            <div class="work-card-content">
-              <span>Mobile AI</span>
-              <h3>Guided questions</h3>
-              <p>Visitors can move through budget, goals, and options from their phone.</p>
-            </div>
-          </article>
-
-          <article class="work-card" data-aos="visual-rise" data-aos-delay="200">
-            <img src="assets/mobile-quote-preview.png" alt="Mobile quote preview" />
-            <div class="work-card-content">
-              <span>Mobile Quote</span>
-              <h3>Simple review flow</h3>
-              <p>Cleaner project review before calls, approvals, and next steps.</p>
-            </div>
-          </article>
-        </div>
+    <section class="section HomeShowcaseMobile" aria-label="Mobile showcase">
+      <div class="mobile-projects">
+        <article class="mobile-project media-fallback"><img src="assets/wonder-world-portal.png" alt="Wonder World Portal screenshot" loading="lazy" /><span>Client Portal</span><h3>Wonder World Portal</h3><p>Grant applications, quotes, project files, and customer next steps in one place.</p></article>
+        <article class="mobile-project media-fallback"><img src="assets/orynd-ai-preview.png" alt="Orynd AI screenshot" loading="lazy" /><span>AI Workflow</span><h3>Orynd AI</h3><p>A guided planning assistant for budget, equipment, surfacing, quotes, and project routing.</p></article>
+        <article class="mobile-project media-fallback"><img src="assets/quote-system-preview.png" alt="Momentum Athlete partner system screenshot" loading="lazy" /><span>Partner System</span><h3>Momentum Athlete</h3><p>A premium partner presentation and portal system for athletic education programs.</p></article>
       </div>
     </section>
 
-    <!-- =========================================================
-         07 / PARTNER SECTION
-         Salo flow: agency/team partner pitch.
-    ========================================================== -->
-    <section id="partner" class="section editorial-section HomePartner" aria-labelledby="partnerTitle">
-      <div class="container">
-        <div class="editorial-grid" data-aos="copy-reveal">
-          <div>
-            <p class="eyebrow">For Lean Teams</p>
-            <h2 id="partnerTitle">Scale your digital execution without hiring a full team.</h2>
-          </div>
-
-          <div>
-            <p>
-              You do not need five vendors to make one business system work.
-              Bim Labs helps you move strategy, design, development, AI, and automation through one clear build process.
-            </p>
-
-            <div class="hero-actions" style="margin-top: 34px;">
-              <a href="#contact" class="btn btn-primary">Partner with us</a>
-            </div>
-          </div>
-        </div>
+    <section id="partner" class="section HomePartner" aria-labelledby="partner-title">
+      <div class="partner-visual reveal" aria-hidden="true">
+        <div class="measurement-card"><span>execution width</span><strong>site + portal + AI</strong><i></i></div>
+        <div class="blue-measure blue-measure--x"></div>
+        <div class="blue-measure blue-measure--y"></div>
+      </div>
+      <div class="partner-copy reveal">
+        <p class="eyebrow">For founders and lean teams</p>
+        <h2 id="partner-title">Scale your digital execution without hiring a full team.</h2>
+        <p>Bim Labs helps founders and lean teams turn websites, portals, AI workflows, and automations into one polished operating system.</p>
+        <a class="btn btn-secondary magnetic" href="#contact"><span>Partner with Bim Labs</span></a>
       </div>
     </section>
 
-    <!-- =========================================================
-         08 / VALUE WHEEL
-         Salo flow: motion/value section after partner pitch.
-    ========================================================== -->
-    <section class="section process-section HomeWheel" aria-labelledby="wheelTitle">
-      <div class="container">
-        <div class="section-heading center" data-aos="copy-reveal">
-          <p class="eyebrow">How We Work</p>
-          <h2 id="wheelTitle">One system. Four moving parts.</h2>
-          <p>
-            The value is not just the design. It is how the pieces connect into a real operating flow.
-          </p>
-        </div>
-
-        <div class="process-grid">
-          <article class="process-card" data-aos="visual-rise">
-            <span>01</span>
-            <div>
-              <h3>Direct access</h3>
-              <p>You work close to the builder, not through layers of account management.</p>
-            </div>
-          </article>
-
-          <article class="process-card" data-aos="visual-rise" data-aos-delay="100">
-            <span>02</span>
-            <div>
-              <h3>Cleaner thinking</h3>
-              <p>The offer, page flow, visuals, and automation are planned together.</p>
-            </div>
-          </article>
-
-          <article class="process-card" data-aos="visual-rise" data-aos-delay="200">
-            <span>03</span>
-            <div>
-              <h3>Product polish</h3>
-              <p>Every page and portal is treated like part of one product experience.</p>
-            </div>
-          </article>
-
-          <article class="process-card" data-aos="visual-rise" data-aos-delay="300">
-            <span>04</span>
-            <div>
-              <h3>Launch support</h3>
-              <p>You leave with a site or system that is easier to run, update, and sell through.</p>
-            </div>
-          </article>
-        </div>
+    <section id="about" class="section HomeWheel" aria-labelledby="wheel-title">
+      <div class="wheel-shell">
+        <svg class="wheel-path" viewBox="-420 0 1840 520" preserveAspectRatio="none" aria-hidden="true">
+          <path d="M-420,165 C120,470 760,470 1420,165" />
+        </svg>
+        <div class="wheel-center"><p class="eyebrow">Why it works</p><h2 id="wheel-title">Built like a product team, not an agency queue.</h2></div>
+        <div class="wheel-block is-active" data-wheel-block><span>01</span><h3>Direct access to the builder</h3><p>No account-manager maze. The person shaping the system is in the conversation.</p></div>
+        <div class="wheel-block" data-wheel-block><span>02</span><h3>Strategy, design, and build in one flow</h3><p>Positioning, UX, interface, automation, and launch decisions stay connected.</p></div>
+        <div class="wheel-block" data-wheel-block><span>03</span><h3>Systems designed like products</h3><p>Your website, portal, and AI workflow feel consistent because they are planned together.</p></div>
+        <div class="wheel-block" data-wheel-block><span>04</span><h3>Launch support without agency bloat</h3><p>Clean handoff, useful documentation, and practical iteration after the first release.</p></div>
       </div>
     </section>
 
-    <!-- =========================================================
-         09 / FINAL CTA
-         Salo flow: final conversion section.
-    ========================================================== -->
-    <section id="contact" class="contact-section HomeCta" aria-labelledby="contactTitle">
-      <div class="container">
-        <div class="contact-card">
-          <div class="contact-copy" data-aos="copy-reveal">
-            <p class="eyebrow">Start a Project</p>
-            <h2 id="contactTitle">Give your business the system it deserves.</h2>
-            <p>
-              If your business is duct-taping tools together, it is time to make the experience feel polished,
-              clear, and ready to scale.
-            </p>
-          </div>
-
-          <form class="contact-form" action="#" method="post" data-aos="visual-rise">
-            <input type="text" name="name" placeholder="Your name" autocomplete="name" />
-            <input type="email" name="email" placeholder="Email address" autocomplete="email" />
-            <input type="text" name="company" placeholder="Company / project name" />
-            <textarea name="message" placeholder="What do you want to build?"></textarea>
-            <button type="submit">Send project request</button>
-          </form>
-        </div>
+    <section id="contact" class="section HomeCta" aria-labelledby="cta-title">
+      <div class="cta-shell reveal">
+        <p class="eyebrow">Start a project</p>
+        <h2 id="cta-title">Give your business the system it deserves.</h2>
+        <p>Stop duct-taping tools together. Build a website, portal, or AI workflow that feels polished, clear, and ready to scale.</p>
+        <a class="btn btn-primary magnetic" href="mailto:hello@bimlabs.com?subject=Bim%20Labs%20project"><span>Start a project</span></a>
+        <small>Replies in 24 hours. No obligation.</small>
       </div>
     </section>
   </main>
 
   <footer class="site-footer">
-    <p>© <span id="year"></span> Bim Labs. Websites, AI systems, portals, and automation.</p>
+    <a href="#top" class="footer-brand">Bim Labs</a>
+    <div class="footer-links">
+      <a href="mailto:hello@bimlabs.com">hello@bimlabs.com</a>
+      <a href="#work">Work</a>
+      <a href="#services">Services</a>
+      <a href="#contact">Contact</a>
+    </div>
   </footer>
 
-  <script>
-    // =========================================================
-    // Year
-    // =========================================================
-    document.getElementById("year").textContent = new Date().getFullYear();
-
-    // =========================================================
-    // Salo-style background canvas
-    // Lightweight animated field. No dependency.
-    // =========================================================
-    const canvas = document.getElementById("background-canvas");
-    const ctx = canvas ? canvas.getContext("2d") : null;
-
-    function resizeCanvas() {
-      if (!canvas) return;
-      const parent = canvas.parentElement || document.body;
-      canvas.width = parent.offsetWidth * window.devicePixelRatio;
-      canvas.height = parent.offsetHeight * window.devicePixelRatio;
-      canvas.style.width = parent.offsetWidth + "px";
-      canvas.style.height = parent.offsetHeight + "px";
-      if (ctx) ctx.setTransform(window.devicePixelRatio, 0, 0, window.devicePixelRatio, 0, 0);
-    }
-
-    let particles = [];
-
-    function createParticles() {
-      if (!canvas) return;
-      const count = window.innerWidth < 760 ? 18 : 34;
-      particles = Array.from({ length: count }, () => ({
-        x: Math.random() * window.innerWidth,
-        y: Math.random() * window.innerHeight,
-        r: Math.random() * 1.8 + 0.6,
-        vx: (Math.random() - 0.5) * 0.16,
-        vy: (Math.random() - 0.5) * 0.16,
-        alpha: Math.random() * 0.22 + 0.06
-      }));
-    }
-
-    function drawBackground() {
-      if (!ctx || !canvas) return;
-
-      ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
-
-      particles.forEach((p) => {
-        p.x += p.vx;
-        p.y += p.vy;
-
-        if (p.x < -20) p.x = window.innerWidth + 20;
-        if (p.x > window.innerWidth + 20) p.x = -20;
-        if (p.y < -20) p.y = window.innerHeight + 20;
-        if (p.y > window.innerHeight + 20) p.y = -20;
-
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(143, 224, 182, ${p.alpha})`;
-        ctx.fill();
-      });
-
-      requestAnimationFrame(drawBackground);
-    }
-
-    if (canvas && ctx) {
-      resizeCanvas();
-      createParticles();
-      drawBackground();
-
-      window.addEventListener("resize", () => {
-        resizeCanvas();
-        createParticles();
-      });
-    }
-
-    // =========================================================
-    // Proof image switcher
-    // =========================================================
-    const proofButtons = document.querySelectorAll(".salo-work-grid button[data-target]");
-    const proofImages = document.querySelectorAll(".salo-proof-image-stage .screen-img");
-    const captionTitle = document.getElementById("proofCaptionTitle");
-    const captionQuote = document.getElementById("proofCaptionQuote");
-
-    proofButtons.forEach((button) => {
-      button.addEventListener("click", () => {
-        const target = button.dataset.target;
-
-        proofButtons.forEach((btn) => btn.classList.remove("active"));
-        button.classList.add("active");
-
-        proofImages.forEach((img) => {
-          img.classList.toggle("active", img.dataset.screen === target);
-        });
-
-        if (captionTitle) captionTitle.textContent = button.dataset.title || "";
-        if (captionQuote) captionQuote.textContent = button.dataset.quote || "";
-      });
-    });
-
-    // =========================================================
-    // Basic AOS fallback
-    // If you load AOS separately, it will handle these.
-    // This makes the page still reveal cleanly without AOS.
-    // =========================================================
-    const revealItems = document.querySelectorAll("[data-aos]");
-
-    if (!window.AOS && "IntersectionObserver" in window) {
-      const observer = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              entry.target.classList.add("aos-animate");
-              observer.unobserve(entry.target);
-            }
-          });
-        },
-        { threshold: 0.14 }
-      );
-
-      revealItems.forEach((item) => observer.observe(item));
-    }
-  </script>
+  <script src="app.js" defer></script>
 </body>
 </html>
