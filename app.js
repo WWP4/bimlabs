@@ -238,3 +238,12 @@ proofTabs.forEach((tab) => {
     proofQuote.textContent = tab.dataset.quote;
   });
 });
+
+AOS.init({
+  duration: 950,
+  easing: "cubic-bezier(0.16, 1, 0.3, 1)",
+  offset: 140,
+  once: false,
+  mirror: false,
+  anchorPlacement: "top-center"
+});
