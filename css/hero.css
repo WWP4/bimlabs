@@ -300,3 +300,120 @@
   bottom: 10%;
   right: -48px;
 }
+
+/* =========================================================
+   HERO REFINEMENT OVERRIDES
+========================================================= */
+
+.hero {
+  min-height: 100svh;
+}
+
+.hero-grid {
+  width: min(1520px, calc(100% - 56px));
+  min-height: 100svh;
+  padding: 124px 0 72px;
+  gap: clamp(48px, 6vw, 108px);
+}
+
+.hero-copy h1 {
+  max-width: 880px;
+  font-size: clamp(3.7rem, 7.2vw, 7.65rem);
+  line-height: 0.9;
+  letter-spacing: -0.088em;
+}
+
+.hero-text {
+  max-width: 640px;
+  margin-bottom: 38px;
+}
+
+.hero-actions {
+  margin-bottom: 58px;
+}
+
+.hero-visual {
+  height: min(72vh, 700px);
+  min-height: 560px;
+}
+
+.system-window {
+  transform: translateY(-50%) rotate(-2.5deg);
+  border-radius: 34px;
+}
+
+.floating-card {
+  transform: none;
+}
+
+.card-one {
+  top: 8%;
+  left: -12px;
+}
+
+.card-two {
+  bottom: 8%;
+  right: -22px;
+}
+
+@media (max-width: 1100px) {
+  .hero {
+    min-height: auto;
+  }
+
+  .hero-grid {
+    grid-template-columns: 1fr;
+    min-height: auto;
+    padding: 128px 0 86px;
+  }
+
+  .hero-visual {
+    height: auto;
+    min-height: 520px;
+  }
+
+  .system-window {
+    position: relative;
+    top: auto;
+    right: auto;
+    transform: rotate(-1deg);
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+@media (max-width: 720px) {
+  .hero-grid {
+    width: min(100% - 36px, 1520px);
+    padding: 112px 0 72px;
+  }
+
+  .hero-copy h1 {
+    font-size: clamp(3rem, 15vw, 4.8rem);
+    letter-spacing: -0.082em;
+  }
+
+  .hero-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .hero-proof {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+
+  .hero-visual {
+    min-height: auto;
+  }
+
+  .system-window {
+    width: 100%;
+    padding: 20px;
+    border-radius: 26px;
+  }
+
+  .floating-card {
+    display: none;
+  }
+}
