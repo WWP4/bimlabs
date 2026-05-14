@@ -375,47 +375,41 @@ a:focus-visible {
 
 
 /* =========================================================
-   CUSTOM AOS MOTION SYSTEM
-   Makes each section feel like it unlocks
+   CLEAN AOS MOTION SYSTEM
+   Smooth, minimal, no glitchy section movement
 ========================================================= */
-
-[data-aos="section-unlock"] {
-  opacity: 0;
-  transform: translateY(42px) scale(0.985);
-  filter: blur(10px);
-  transition-property: opacity, transform, filter;
-}
-
-[data-aos="section-unlock"].aos-animate {
-  opacity: 1;
-  transform: translateY(0) scale(1);
-  filter: blur(0);
-}
 
 [data-aos="copy-reveal"] {
   opacity: 0;
-  transform: translateY(28px);
-  filter: blur(8px);
-  transition-property: opacity, transform, filter;
+  transform: translateY(24px);
+  transition-property: opacity, transform;
 }
 
 [data-aos="copy-reveal"].aos-animate {
   opacity: 1;
   transform: translateY(0);
-  filter: blur(0);
 }
 
 [data-aos="visual-rise"] {
   opacity: 0;
-  transform: translateY(56px) scale(0.965);
-  filter: blur(12px);
-  transition-property: opacity, transform, filter;
+  transform: translateY(36px) scale(0.985);
+  transition-property: opacity, transform;
 }
 
 [data-aos="visual-rise"].aos-animate {
   opacity: 1;
   transform: translateY(0) scale(1);
-  filter: blur(0);
+}
+
+[data-aos="soft-fade"] {
+  opacity: 0;
+  transform: translateY(14px);
+  transition-property: opacity, transform;
+}
+
+[data-aos="soft-fade"].aos-animate {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 [data-aos="line-draw"] {
@@ -428,13 +422,10 @@ a:focus-visible {
   transform: scaleX(1);
 }
 
-[data-aos="soft-fade"] {
-  opacity: 0;
-  transform: translateY(18px);
-  transition-property: opacity, transform;
-}
-
-[data-aos="soft-fade"].aos-animate {
-  opacity: 1;
-  transform: translateY(0);
+@media (prefers-reduced-motion: reduce) {
+  [data-aos] {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
 }
