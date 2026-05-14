@@ -1,0 +1,113 @@
+/* ---------------------- */
+/* CONTACT */
+/* ---------------------- */
+
+.contact-section {
+  position: relative;
+  background: #ffffff;
+  color: #111111;
+  overflow: hidden;
+}
+
+.contact-section::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+
+  background:
+    radial-gradient(circle at 80% 0%, rgba(121,167,255,0.18), transparent 32%),
+    linear-gradient(180deg, #ffffff, #f7f9ff);
+
+  pointer-events: none;
+}
+
+.contact-card {
+  position: relative;
+  z-index: 2;
+
+  padding: clamp(44px, 7vw, 90px);
+
+  border-radius: 42px;
+
+  background:
+    radial-gradient(circle at 80% 12%, rgba(121,167,255,0.24), transparent 28%),
+    linear-gradient(180deg, #f9fbff, #eef3ff);
+
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(420px, 0.82fr);
+  gap: clamp(38px, 6vw, 90px);
+  align-items: start;
+
+  box-shadow:
+    0 40px 100px rgba(8,18,48,0.10),
+    inset 0 1px 0 rgba(255,255,255,0.8);
+
+  border: 1px solid rgba(8,18,48,0.06);
+}
+
+.contact-card h2 {
+  max-width: 700px;
+  margin-bottom: 24px;
+
+  color: #0d1324;
+  font-size: clamp(2.7rem, 4.8vw, 5.2rem);
+  line-height: 0.94;
+  letter-spacing: -0.075em;
+}
+
+.contact-card p {
+  max-width: 560px;
+
+  color: rgba(17,17,17,0.68);
+  font-size: 1.05rem;
+  line-height: 1.8;
+}
+
+.contact-form {
+  display: grid;
+  gap: 18px;
+}
+
+.contact-form input,
+.contact-form textarea {
+  width: 100%;
+
+  padding: 19px 20px;
+
+  border-radius: 18px;
+  border: 1px solid rgba(0,0,0,0.08);
+
+  background: rgba(255,255,255,0.84);
+
+  color: #111;
+  font-family: inherit;
+  font-size: 1rem;
+
+  outline: none;
+
+  transition:
+    border-color .2s ease,
+    box-shadow .2s ease,
+    background .2s ease;
+}
+
+.contact-form input::placeholder,
+.contact-form textarea::placeholder {
+  color: rgba(17,17,17,0.42);
+}
+
+.contact-form input:focus,
+.contact-form textarea:focus {
+  border-color: rgba(64,112,255,0.36);
+  box-shadow: 0 0 0 4px rgba(64,112,255,0.08);
+  background: #fff;
+}
+
+.contact-form textarea {
+  min-height: 190px;
+  resize: vertical;
+}
+
+.contact-form button {
+  justify-self: start;
+}
