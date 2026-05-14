@@ -1,0 +1,284 @@
+/* =========================================================
+   RESPONSIVE SYSTEM
+========================================================= */
+
+@media (max-width: 1180px) {
+  .hero-grid {
+    grid-template-columns: 1fr;
+    min-height: auto;
+    padding-top: calc(var(--header-height) + 70px);
+  }
+
+  .hero-visual {
+    height: auto;
+    min-height: 520px;
+  }
+
+  .system-window {
+    transform: none;
+    margin-inline: auto;
+  }
+
+  .screen-proof-shell,
+  .salo-proof-hero,
+  .contact-card,
+  .editorial-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .systems-grid,
+  .process-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .system-card:nth-child(2),
+  .system-card:nth-child(4) {
+    border-right: 0;
+  }
+
+  .system-card:nth-child(1),
+  .system-card:nth-child(2) {
+    border-bottom: 1px solid var(--line);
+  }
+
+  .work-grid,
+  .case-grid,
+  .services-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .work-card,
+  .case-card,
+  .service-card {
+    min-height: 560px;
+  }
+
+  .salo-proof-shell {
+    min-height: auto;
+    padding-top: 76px;
+    padding-bottom: 76px;
+  }
+
+  .salo-proof-image-stage {
+    min-height: 58svh;
+  }
+}
+
+@media (max-width: 900px) {
+  :root {
+    --header-height: 72px;
+  }
+
+  .site-header {
+    padding-inline: 20px;
+  }
+
+  .nav-links {
+    display: none;
+  }
+
+  .section {
+    min-height: auto;
+    padding: 96px 0;
+  }
+
+  .section-heading.split {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-grid {
+    width: min(100% - 36px, var(--container-wide));
+    padding-bottom: 70px;
+  }
+
+  .hero-copy h1 {
+    font-size: clamp(3.2rem, 14vw, 5.6rem);
+    line-height: 0.88;
+    letter-spacing: -0.09em;
+  }
+
+  .hero-actions {
+    align-items: stretch;
+    flex-direction: column;
+    max-width: 360px;
+  }
+
+  .hero-proof {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+
+  .hero-visual {
+    min-height: auto;
+  }
+
+  .floating-card {
+    display: none;
+  }
+
+  .metric-row {
+    grid-template-columns: 1fr;
+  }
+
+  .systems-grid,
+  .process-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .system-card,
+  .process-card {
+    min-height: 300px;
+    border-right: 0;
+  }
+
+  .system-card:not(:last-child) {
+    border-bottom: 1px solid var(--line);
+  }
+
+  .salo-work-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .salo-proof-caption {
+    align-items: flex-start;
+    flex-direction: column;
+    border-radius: 24px;
+  }
+
+  .salo-proof-caption blockquote {
+    text-align: left;
+  }
+
+  .screen-frame {
+    height: auto;
+    min-height: 0;
+    aspect-ratio: 1 / 0.9;
+    margin-left: 0;
+  }
+
+  .screen-proof-progress {
+    display: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .container,
+  .container-wide {
+    width: min(100% - 32px, var(--container));
+  }
+
+  .brand {
+    font-size: 0.9rem;
+  }
+
+  .brand-mark {
+    width: 32px;
+    height: 32px;
+  }
+
+  .nav-cta {
+    min-height: 42px;
+    padding-inline: 16px;
+    font-size: 0.82rem;
+  }
+
+  .section-heading h2,
+  .salo-proof-copy h2,
+  .screen-proof-copy h2,
+  .proof-story h2,
+  .contact-copy h2,
+  .contact-card h2,
+  .final-cta h2,
+  .editorial-grid h2 {
+    font-size: clamp(3rem, 15vw, 5rem);
+    line-height: 0.88;
+    letter-spacing: -0.088em;
+  }
+
+  .salo-proof-shell {
+    padding: 64px 18px;
+  }
+
+  .salo-proof-header,
+  .salo-proof-mini-nav {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .salo-proof-image-stage {
+    min-height: auto;
+    aspect-ratio: 1 / 1.08;
+    border-radius: 28px;
+  }
+
+  .salo-work-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .screen-proof-shell {
+    padding: 76px 18px;
+  }
+
+  .screen-frame {
+    border-radius: 28px;
+    aspect-ratio: 1 / 1.1;
+  }
+
+  .screen-frame .screen-img,
+  .screen-img,
+  .salo-proof .screen-img,
+  .salo-proof-image-stage .screen-img {
+    inset: 14px;
+    width: calc(100% - 28px);
+    height: calc(100% - 28px);
+  }
+
+  .work-card,
+  .case-card,
+  .service-card {
+    min-height: 470px;
+    border-radius: 28px;
+  }
+
+  .contact-section {
+    min-height: auto;
+    padding: 86px 0;
+  }
+
+  .contact-card {
+    padding: 28px;
+    border-radius: 30px;
+  }
+
+  .contact-card::before {
+    display: none;
+  }
+}
+
+@media (max-width: 430px) {
+  .hero-copy h1 {
+    font-size: clamp(3rem, 16vw, 4.5rem);
+  }
+
+  .hero-text,
+  .section-heading p,
+  .salo-proof-copy p,
+  .contact-copy p,
+  .contact-card p {
+    font-size: 0.98rem;
+  }
+
+  .btn,
+  .contact-form button {
+    width: 100%;
+  }
+
+  .system-window {
+    padding: 16px;
+    border-radius: 28px;
+  }
+
+  .dashboard-header {
+    flex-direction: column;
+  }
+}
