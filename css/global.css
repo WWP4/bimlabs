@@ -372,3 +372,69 @@ a:focus-visible {
     transition-duration: 0.001ms !important;
   }
 }
+
+
+/* =========================================================
+   CUSTOM AOS MOTION SYSTEM
+   Makes each section feel like it unlocks
+========================================================= */
+
+[data-aos="section-unlock"] {
+  opacity: 0;
+  transform: translateY(42px) scale(0.985);
+  filter: blur(10px);
+  transition-property: opacity, transform, filter;
+}
+
+[data-aos="section-unlock"].aos-animate {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  filter: blur(0);
+}
+
+[data-aos="copy-reveal"] {
+  opacity: 0;
+  transform: translateY(28px);
+  filter: blur(8px);
+  transition-property: opacity, transform, filter;
+}
+
+[data-aos="copy-reveal"].aos-animate {
+  opacity: 1;
+  transform: translateY(0);
+  filter: blur(0);
+}
+
+[data-aos="visual-rise"] {
+  opacity: 0;
+  transform: translateY(56px) scale(0.965);
+  filter: blur(12px);
+  transition-property: opacity, transform, filter;
+}
+
+[data-aos="visual-rise"].aos-animate {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  filter: blur(0);
+}
+
+[data-aos="line-draw"] {
+  transform: scaleX(0);
+  transform-origin: left;
+  transition-property: transform;
+}
+
+[data-aos="line-draw"].aos-animate {
+  transform: scaleX(1);
+}
+
+[data-aos="soft-fade"] {
+  opacity: 0;
+  transform: translateY(18px);
+  transition-property: opacity, transform;
+}
+
+[data-aos="soft-fade"].aos-animate {
+  opacity: 1;
+  transform: translateY(0);
+}
