@@ -1,0 +1,122 @@
+/* ---------------------- */
+/* PROCESS */
+/* ---------------------- */
+
+#process {
+  position: relative;
+  background: #050816;
+  color: #fff;
+  overflow: hidden;
+}
+
+#process::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+
+  background:
+    radial-gradient(circle at 18% 16%, rgba(121,167,255,0.12), transparent 30%),
+    radial-gradient(circle at 80% 84%, rgba(121,167,255,0.08), transparent 32%),
+    linear-gradient(180deg, #050816, #070b1d);
+
+  pointer-events: none;
+}
+
+#process .container {
+  position: relative;
+  z-index: 2;
+}
+
+.process-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+}
+
+.process-card {
+  position: relative;
+  min-height: 300px;
+
+  padding: 38px;
+  border-radius: var(--radius-xl);
+
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.055), rgba(255,255,255,0.025));
+
+  border: 1px solid rgba(255,255,255,0.08);
+
+  overflow: hidden;
+
+  transition:
+    transform .25s ease,
+    border-color .25s ease,
+    background .25s ease;
+}
+
+.process-card::before {
+  content: "";
+  position: absolute;
+  inset: auto -20% -40% 20%;
+
+  height: 180px;
+
+  background: rgba(121,167,255,0.12);
+  filter: blur(70px);
+
+  opacity: 0;
+  transition: opacity .25s ease;
+}
+
+.process-card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(121,167,255,0.26);
+
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.075), rgba(255,255,255,0.032));
+}
+
+.process-card:hover::before {
+  opacity: 1;
+}
+
+.process-card span {
+  position: relative;
+  z-index: 2;
+
+  display: inline-flex;
+  width: 48px;
+  height: 48px;
+
+  margin-bottom: 26px;
+
+  border-radius: 16px;
+
+  align-items: center;
+  justify-content: center;
+
+  background: rgba(121,167,255,0.12);
+  color: var(--blue);
+
+  font-weight: 800;
+}
+
+.process-card h3 {
+  position: relative;
+  z-index: 2;
+
+  margin-bottom: 14px;
+
+  color: #fff;
+  font-size: 1.55rem;
+  letter-spacing: -0.045em;
+}
+
+.process-card p {
+  position: relative;
+  z-index: 2;
+
+  max-width: 520px;
+
+  color: rgba(255,255,255,0.62);
+  line-height: 1.8;
+}
