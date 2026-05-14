@@ -212,3 +212,29 @@ document.addEventListener("DOMContentLoaded", () => {
     setTheatreProject(0);
   }
 });
+
+const proofTabs = document.querySelectorAll(".proof-tabs button");
+const proofImages = document.querySelectorAll(".screen-img");
+
+const proofLabel = document.getElementById("theatreLabel");
+const proofTitle = document.getElementById("theatreTitle");
+const proofText = document.getElementById("theatreText");
+const proofQuote = document.getElementById("theatreQuote");
+
+proofTabs.forEach((tab) => {
+  tab.addEventListener("click", () => {
+    const index = Number(tab.dataset.project);
+
+    proofTabs.forEach((item) => item.classList.remove("active"));
+    tab.classList.add("active");
+
+    proofImages.forEach((img, imgIndex) => {
+      img.classList.toggle("active", imgIndex === index);
+    });
+
+    proofLabel.textContent = tab.dataset.label;
+    proofTitle.textContent = tab.dataset.title;
+    proofText.textContent = tab.dataset.text;
+    proofQuote.textContent = tab.dataset.quote;
+  });
+});
