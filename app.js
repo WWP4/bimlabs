@@ -240,10 +240,14 @@ proofTabs.forEach((tab) => {
 });
 
 AOS.init({
-  duration: 950,
-  easing: "cubic-bezier(0.16, 1, 0.3, 1)",
-  offset: 140,
-  once: false,
+  duration: 700,
+  easing: "ease-out-cubic",
+  offset: 90,
+  once: true,
   mirror: false,
-  anchorPlacement: "top-center"
+  anchorPlacement: "top-bottom"
+});
+
+window.addEventListener("load", () => {
+  AOS.refreshHard();
 });
