@@ -3,27 +3,37 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
   <title>BIM Labs Studio | Systems That Move Businesses Forward</title>
+
   <meta
     name="description"
     content="BIM Labs Studio designs premium websites, portals, automation tools, and custom business systems."
   />
-<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
 
-<link rel="stylesheet" href="css/variables.css" />
-<link rel="stylesheet" href="css/global.css" />
-<link rel="stylesheet" href="css/hero.css" />
-<link rel="stylesheet" href="css/proof.css" />
-<link rel="stylesheet" href="css/process.css" />
-<link rel="stylesheet" href="css/contact.css" />
-<link rel="stylesheet" href="css/responsive.css" />
+  <!-- AOS -->
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet"
+  />
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="css/variables.css" />
+  <link rel="stylesheet" href="css/global.css" />
+  <link rel="stylesheet" href="css/hero.css" />
+  <link rel="stylesheet" href="css/proof.css" />
+  <link rel="stylesheet" href="css/process.css" />
+  <link rel="stylesheet" href="css/contact.css" />
+  <link rel="stylesheet" href="css/responsive.css" />
 </head>
 
 <body>
-  <header class="site-header">
+  <header class="site-header" data-aos="soft-fade" data-aos-delay="100">
     <a href="#" class="brand" aria-label="BIM Labs Studio home">
       <span class="brand-mark">B</span>
       <span>BIM Labs</span>
@@ -40,36 +50,46 @@
   </header>
 
   <main>
-    <section class="hero">
-      <div class="hero-bg"></div>
+
+    <!-- =====================================================
+      HERO
+      Opens the site
+    ====================================================== -->
+    <section class="hero" data-aos="section-unlock">
+      <div class="hero-bg" aria-hidden="true"></div>
 
       <div class="hero-grid">
-        <div class="hero-copy">
-          <p class="eyebrow">Premium websites · portals · automation</p>
 
-          <h1>
+        <div class="hero-copy">
+          <p class="eyebrow" data-aos="soft-fade" data-aos-delay="120">
+            Premium websites · portals · automation
+          </p>
+
+          <h1 data-aos="copy-reveal" data-aos-delay="220">
             Systems that make your business feel sharper, faster, and easier to run.
           </h1>
 
-          <p class="hero-text">
+          <p class="hero-text" data-aos="copy-reveal" data-aos-delay="320">
             BIM Labs Studio designs high-end websites, client portals, workflow tools,
             and automation systems for businesses that need more than a pretty page.
           </p>
 
-          <div class="hero-actions">
+          <div class="hero-actions" data-aos="soft-fade" data-aos-delay="440">
             <a href="#contact" class="btn btn-primary">Build My System</a>
             <a href="#work" class="btn btn-secondary">See What We Build</a>
           </div>
 
-          <div class="hero-proof">
+          <div class="hero-proof" data-aos="soft-fade" data-aos-delay="560">
             <div>
               <strong>Websites</strong>
               <span>Premium front-end experiences</span>
             </div>
+
             <div>
               <strong>Systems</strong>
               <span>Portals, dashboards, workflows</span>
             </div>
+
             <div>
               <strong>Automation</strong>
               <span>Less manual work, more control</span>
@@ -77,9 +97,9 @@
           </div>
         </div>
 
-        <div class="hero-visual" aria-label="BIM Labs system preview">
+        <div class="hero-visual" aria-label="BIM Labs system preview" data-aos="visual-rise" data-aos-delay="360">
           <div class="system-window main-window">
-            <div class="window-top">
+            <div class="window-top" aria-hidden="true">
               <span></span>
               <span></span>
               <span></span>
@@ -90,6 +110,7 @@
                 <p>Operations System</p>
                 <h3>Project Command Center</h3>
               </div>
+
               <span class="status-pill">Live</span>
             </div>
 
@@ -98,6 +119,7 @@
                 <span>Pipeline</span>
                 <strong>$124K</strong>
               </div>
+
               <div class="metric-card">
                 <span>Tasks Saved</span>
                 <strong>42 hrs</strong>
@@ -109,10 +131,12 @@
                 <span></span>
                 <p>Lead captured</p>
               </div>
+
               <div class="flow-line active">
                 <span></span>
                 <p>Quote generated</p>
               </div>
+
               <div class="flow-line">
                 <span></span>
                 <p>Client portal created</p>
@@ -120,217 +144,328 @@
             </div>
           </div>
 
-          <div class="floating-card card-one">
+          <div class="floating-card card-one" data-aos="soft-fade" data-aos-delay="620">
             <span>Automation</span>
             <strong>Follow-up sequence ready</strong>
           </div>
 
-          <div class="floating-card card-two">
+          <div class="floating-card card-two" data-aos="soft-fade" data-aos-delay="720">
             <span>Portal</span>
             <strong>Client project view generated</strong>
           </div>
         </div>
+
       </div>
     </section>
 
-<section id="systems" class="screen-proof" aria-labelledby="proofTitle">
-  <div class="proof-shell">
 
-    <header class="proof-topbar" data-aos="fade-down">
-      <p class="eyebrow">Proof of Execution</p>
+    <!-- =====================================================
+      PROOF / WORK
+      Unlocks the proof section
+    ====================================================== -->
+    <section id="work" class="screen-proof" aria-labelledby="proofTitle" data-aos="section-unlock">
+      <div class="proof-shell">
 
-      <div class="proof-topbar-meta">
-        <span id="theatreLabel">01 / AI Workspace</span>
-        <span>Live Build Preview</span>
-      </div>
-    </header>
+        <header class="proof-topbar" data-aos="soft-fade" data-aos-delay="80">
+          <p class="eyebrow">Proof of Execution</p>
 
-    <div class="proof-showcase">
+          <div class="proof-topbar-meta">
+            <span id="theatreLabel">01 / AI Workspace</span>
+            <span>Live Build Preview</span>
+          </div>
+        </header>
 
-      <div class="proof-copy" data-aos="fade-up" data-aos-delay="80">
-        <span class="proof-number">01</span>
+        <div class="proof-showcase">
 
-        <div>
-          <h2 id="proofTitle">
-            Systems that make a business feel sharper, faster, and already in motion.
-          </h2>
+          <div class="proof-copy" data-aos="copy-reveal" data-aos-delay="180">
+            <span class="proof-number">01</span>
 
-          <p id="theatreText">
-            From AI planning flows to client portals, 3D tools, and launch pages, each build is designed to turn scattered operations into a polished digital experience.
-          </p>
-        </div>
-      </div>
+            <div>
+              <h2 id="proofTitle">
+                Real systems, built to feel polished before the client ever clicks.
+              </h2>
 
-      <div class="proof-device-wrap" data-aos="zoom-out-up" data-aos-delay="160">
-        <div class="proof-device">
-          <div class="proof-device-bar">
-            <div class="proof-dots" aria-hidden="true">
-              <span></span>
-              <span></span>
-              <span></span>
+              <p id="theatreText">
+                From AI planning flows to client portals, 3D tools, and launch pages,
+                each build turns scattered operations into a clean digital experience.
+              </p>
+            </div>
+          </div>
+
+          <div class="proof-device-wrap" data-aos="visual-rise" data-aos-delay="320">
+            <div class="proof-device">
+              <div class="proof-device-bar">
+                <div class="proof-dots" aria-hidden="true">
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                </div>
+
+                <p id="theatreTitle">Orynd AI</p>
+              </div>
+
+              <div class="proof-screen">
+                <img
+                  class="screen-img active"
+                  src="assets/showcase/orynd-ai.png"
+                  alt="Orynd AI planning workspace screenshot"
+                />
+
+                <img
+                  class="screen-img"
+                  src="assets/showcase/project-portal.png"
+                  alt="Client project portal screenshot"
+                />
+
+                <img
+                  class="screen-img"
+                  src="assets/showcase/3d-install-tool.png"
+                  alt="3D install system screenshot"
+                />
+
+                <img
+                  class="screen-img"
+                  src="assets/showcase/momentum.png"
+                  alt="Momentum toolkit launch page screenshot"
+                />
+              </div>
             </div>
 
-            <p id="theatreTitle">Orynd AI</p>
+            <div class="proof-quote" data-aos="soft-fade" data-aos-delay="520">
+              <span>Result</span>
+              <blockquote id="theatreQuote">“Everything finally felt connected.”</blockquote>
+            </div>
           </div>
 
-          <div class="proof-screen">
-            <img
-              class="screen-img active"
-              src="assets/showcase/orynd-ai.png"
-              alt="Orynd AI planning workspace screenshot"
-            />
-
-            <img
-              class="screen-img"
-              src="assets/showcase/project-portal.png"
-              alt="Client project portal screenshot"
-            />
-
-            <img
-              class="screen-img"
-              src="assets/showcase/3d-install-tool.png"
-              alt="3D install system screenshot"
-            />
-
-            <img
-              class="screen-img"
-              src="assets/showcase/momentum.png"
-              alt="Momentum toolkit launch page screenshot"
-            />
-          </div>
         </div>
 
-        <div class="proof-quote">
-          <span>Result</span>
-          <blockquote id="theatreQuote">“Everything finally felt connected.”</blockquote>
-        </div>
+        <nav class="proof-tabs theatre-tabs" aria-label="Proof of execution projects" data-aos="soft-fade" data-aos-delay="620">
+          <button
+            class="active"
+            type="button"
+            data-project="0"
+            data-label="01 / AI Workspace"
+            data-title="Orynd AI"
+            data-text="A guided AI planning workspace for budget, equipment, surfacing, quotes, and next steps."
+            data-quote="“Everything finally felt connected.”"
+          >
+            <span>01</span>
+            <strong>Orynd AI</strong>
+            <small>AI planning workspace</small>
+          </button>
+
+          <button
+            type="button"
+            data-project="1"
+            data-label="02 / Client Portal"
+            data-title="Client Portal"
+            data-text="A clean project hub that keeps quotes, visuals, approvals, and next steps in one place."
+            data-quote="“The whole process felt organized.”"
+          >
+            <span>02</span>
+            <strong>Client Portal</strong>
+            <small>Project workflow system</small>
+          </button>
+
+          <button
+            type="button"
+            data-project="2"
+            data-label="03 / 3D System"
+            data-title="3D Install System"
+            data-text="Interactive install and permit tools designed to make complex equipment easier to understand."
+            data-quote="“The build finally made sense visually.”"
+          >
+            <span>03</span>
+            <strong>3D System</strong>
+            <small>Install and permit tools</small>
+          </button>
+
+          <button
+            type="button"
+            data-project="3"
+            data-label="04 / Launch Toolkit"
+            data-title="Momentum Toolkit"
+            data-text="A polished launch experience with partner pages, conversion flows, and board-ready presentation assets."
+            data-quote="“It looked ready to present.”"
+          >
+            <span>04</span>
+            <strong>Momentum Toolkit</strong>
+            <small>Launch and partner assets</small>
+          </button>
+        </nav>
+
       </div>
+    </section>
 
-    </div>
 
-    <nav class="proof-tabs theatre-tabs" aria-label="Proof of execution projects" data-aos="fade-up" data-aos-delay="220">
-      <button
-        class="active"
-        type="button"
-        data-project="0"
-        data-label="01 / AI Workspace"
-        data-title="Orynd AI"
-        data-text="A guided AI planning workspace for budget, equipment, surfacing, quotes, and next steps."
-        data-quote="“Everything finally felt connected.”"
-      >
-        <span>01</span>
-        <strong>Orynd AI</strong>
-        <small>AI planning workspace</small>
-      </button>
+    <!-- =====================================================
+      SYSTEMS
+      Explains what you actually build
+    ====================================================== -->
+    <section id="systems" class="section-screen systems-unlock" data-aos="section-unlock">
+      <div class="section-shell">
 
-      <button
-        type="button"
-        data-project="1"
-        data-label="02 / Client Portal"
-        data-title="Client Portal"
-        data-text="A clean project hub that keeps quotes, visuals, approvals, and next steps in one place."
-        data-quote="“The whole process felt organized.”"
-      >
-        <span>02</span>
-        <strong>Client Portal</strong>
-        <small>Project workflow system</small>
-      </button>
+        <div class="section-line" data-aos="line-draw" data-aos-delay="100"></div>
 
-      <button
-        type="button"
-        data-project="2"
-        data-label="03 / 3D System"
-        data-title="3D Install System"
-        data-text="Interactive install and permit tools designed to make complex equipment easier to understand."
-        data-quote="“The build finally made sense visually.”"
-      >
-        <span>03</span>
-        <strong>3D System</strong>
-        <small>Install and permit tools</small>
-      </button>
+        <div class="section-heading split">
+          <div data-aos="copy-reveal" data-aos-delay="180">
+            <p class="eyebrow">What We Build</p>
 
-      <button
-        type="button"
-        data-project="3"
-        data-label="04 / Launch Toolkit"
-        data-title="Momentum Toolkit"
-        data-text="A polished launch experience with partner pages, conversion flows, and board-ready presentation assets."
-        data-quote="“It looked ready to present.”"
-      >
-        <span>04</span>
-        <strong>Momentum Toolkit</strong>
-        <small>Launch and partner assets</small>
-      </button>
-    </nav>
+            <h2>
+              Not just a website. A working layer for the business.
+            </h2>
+          </div>
 
-  </div>
-</section>
-    
-    <section id="process" class="section section-dark">
-      <div class="container">
-        <div class="section-heading center">
+          <p data-aos="copy-reveal" data-aos-delay="280">
+            Every build is shaped around the same goal: make the business look sharper,
+            move faster, and feel easier to operate.
+          </p>
+        </div>
+
+        <div class="systems-grid">
+          <article class="system-card" data-aos="visual-rise" data-aos-delay="260">
+            <span>01</span>
+            <h3>Premium Websites</h3>
+            <p>
+              High-end front-end experiences that make the brand feel credible,
+              modern, and ready to sell.
+            </p>
+          </article>
+
+          <article class="system-card" data-aos="visual-rise" data-aos-delay="360">
+            <span>02</span>
+            <h3>Client Portals</h3>
+            <p>
+              Project hubs that organize quotes, files, approvals, visuals,
+              updates, and next steps.
+            </p>
+          </article>
+
+          <article class="system-card" data-aos="visual-rise" data-aos-delay="460">
+            <span>03</span>
+            <h3>Automation Flows</h3>
+            <p>
+              Lead capture, follow-up, intake, quoting, onboarding, and internal
+              workflow systems.
+            </p>
+          </article>
+
+          <article class="system-card" data-aos="visual-rise" data-aos-delay="560">
+            <span>04</span>
+            <h3>Custom Tools</h3>
+            <p>
+              Internal dashboards, AI flows, 3D previews, calculators, generators,
+              and business-specific systems.
+            </p>
+          </article>
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- =====================================================
+      PROCESS
+      Draws in like a sequence
+    ====================================================== -->
+    <section id="process" class="section-screen process-section" data-aos="section-unlock">
+      <div class="section-shell">
+
+        <div class="section-line" data-aos="line-draw" data-aos-delay="100"></div>
+
+        <div class="section-heading center" data-aos="copy-reveal" data-aos-delay="180">
           <p class="eyebrow">Process</p>
-          <h2>Built with strategy before design.</h2>
+
+          <h2>
+            Built with strategy before design.
+          </h2>
+
           <p>
-            Every section, page, form, and automation should have a job. Pretty is not
-            enough. It has to move the business forward.
+            Every section, page, form, and automation should have a job.
+            Pretty is not enough. It has to move the business forward.
           </p>
         </div>
 
         <div class="process-grid">
-          <div class="process-card">
+          <article class="process-card" data-aos="visual-rise" data-aos-delay="260">
             <span>01</span>
             <h3>Map the friction</h3>
-            <p>We identify where leads, clients, tasks, and operations are slowing down.</p>
-          </div>
+            <p>
+              We identify where leads, clients, tasks, and operations are slowing down.
+            </p>
+          </article>
 
-          <div class="process-card">
+          <article class="process-card" data-aos="visual-rise" data-aos-delay="360">
             <span>02</span>
             <h3>Design the system</h3>
-            <p>We turn messy workflows into a clear user experience and business flow.</p>
-          </div>
+            <p>
+              We turn messy workflows into a clear user experience and business flow.
+            </p>
+          </article>
 
-          <div class="process-card">
+          <article class="process-card" data-aos="visual-rise" data-aos-delay="460">
             <span>03</span>
             <h3>Build the interface</h3>
-            <p>We create the website, portal, dashboard, or automation tool with clean execution.</p>
-          </div>
+            <p>
+              We create the website, portal, dashboard, or automation tool with clean execution.
+            </p>
+          </article>
 
-          <div class="process-card">
+          <article class="process-card" data-aos="visual-rise" data-aos-delay="560">
             <span>04</span>
             <h3>Refine for trust</h3>
-            <p>We polish the details so the final product feels premium, clear, and credible.</p>
+            <p>
+              We polish the details so the final product feels premium, clear, and credible.
+            </p>
+          </article>
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- =====================================================
+      CONTACT
+      Lands clean
+    ====================================================== -->
+    <section id="contact" class="section-screen contact-section" data-aos="section-unlock">
+      <div class="section-shell contact-shell">
+
+        <div class="section-line" data-aos="line-draw" data-aos-delay="100"></div>
+
+        <div class="contact-card" data-aos="visual-rise" data-aos-delay="220">
+          <div class="contact-copy">
+            <p class="eyebrow">Start Here</p>
+
+            <h2>
+              Need a site or system that feels high-end and actually works?
+            </h2>
+
+            <p>
+              Tell us what you are trying to build. We will help shape it into a clear,
+              premium digital system.
+            </p>
           </div>
+
+          <form class="contact-form">
+            <input type="text" name="name" placeholder="Name" required />
+            <input type="email" name="email" placeholder="Email" required />
+            <textarea name="message" placeholder="What do you want to build?" required></textarea>
+            <button type="submit" class="btn btn-primary">Send Request</button>
+          </form>
         </div>
+
       </div>
     </section>
 
-    <section id="contact" class="section contact-section">
-      <div class="container contact-card">
-        <div>
-          <p class="eyebrow">Start Here</p>
-          <h2>Need a site or system that feels high-end and actually works?</h2>
-          <p>
-            Tell us what you are trying to build. We will help shape it into a clear,
-            premium digital system.
-          </p>
-        </div>
-
-        <form class="contact-form">
-          <input type="text" name="name" placeholder="Name" required />
-          <input type="email" name="email" placeholder="Email" required />
-          <textarea name="message" placeholder="What do you want to build?" required></textarea>
-          <button type="submit" class="btn btn-primary">Send Request</button>
-        </form>
-      </div>
-    </section>
   </main>
 
-  <footer class="site-footer">
+  <footer class="site-footer" data-aos="soft-fade">
     <p>© BIM Labs Studio. Built for businesses that want better systems.</p>
   </footer>
 
+  <!-- Scripts -->
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-<script src="app.js"></script>
+  <script src="app.js"></script>
 </body>
 </html>
