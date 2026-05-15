@@ -8,6 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let rafId = 0;
 
   const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
+  const body = document.body;
 
   const updateHeaderAndHero = () => {
     const scrollY = window.scrollY || 0;
@@ -20,9 +21,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
-  updateHeaderAndHero();
-  window.addEventListener("scroll", () => window.requestAnimationFrame(updateHeaderAndHero), { passive: true });
-
   // ambient cursor drift
   document.addEventListener("pointermove", (event) => {
     const x = (event.clientX / window.innerWidth - 0.5) * 18;
@@ -32,6 +30,57 @@ document.addEventListener("DOMContentLoaded", () => {
       label.style.setProperty("--cursor-y", `${y * (index ? -1 : 1)}px`);
     });
   }, { passive: true });
+
+  const setOrbState = (state) => {
+    if (!state) return;
+    Array.from(body.classList).forEach((cls) => {
+      if (cls.startsWith("orb-")) body.classList.remove(cls);
+    });
+    body.classList.add(`orb-${state}`);
+  };
+
+  const sections = document.querySelectorAll("[data-orb-state]");
+  const orbObserver = "IntersectionObserver" in window
+    ? new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        setOrbState(entry.target.dataset.orbState);
+      });
+    }, { threshold: 0.45 })
+    : null;
+
+  sections.forEach((section) => orbObserver?.observe(section));
+  setOrbState(document.querySelector("[data-orb-state]")?.dataset.orbState || "hero");
+
+  const updateOrbScroll = () => {
+    const doc = document.documentElement;
+    const scrollable = Math.max(doc.scrollHeight - window.innerHeight, 1);
+    const progress = clamp((window.scrollY || 0) / scrollable, 0, 1);
+    doc.style.setProperty("--orb-scroll", String(progress));
+    doc.style.setProperty("--orb-scroll-18", `${progress * 18}deg`);
+    doc.style.setProperty("--orb-scroll-24", `${progress * 24}deg`);
+    doc.style.setProperty("--orb-scroll-38", `${progress * 38}deg`);
+    doc.style.setProperty("--orb-scroll-50", `${progress * 50}deg`);
+    doc.style.setProperty("--orb-scroll-neg-24", `${progress * -24}deg`);
+    doc.style.setProperty("--orb-scroll-neg-30", `${progress * -30}deg`);
+
+    const wheel = document.querySelector("[data-wheel]");
+    const cards = Array.from(document.querySelectorAll("[data-wheel-card]"));
+    if (!wheel || !cards.length || !body.classList.contains("orb-wheel")) return;
+
+    const rect = wheel.getBoundingClientRect();
+    const wheelProgress = clamp((window.innerHeight * 0.58 - rect.top) / Math.max(rect.height, 1), 0, 1);
+    const index = Math.round(wheelProgress * (cards.length - 1));
+    setWheel(index);
+  };
+
+  updateHeaderAndHero();
+  updateOrbScroll();
+  window.addEventListener("scroll", () => window.requestAnimationFrame(() => {
+    updateHeaderAndHero();
+    updateOrbScroll();
+  }), { passive: true });
+  window.addEventListener("resize", updateOrbScroll);
 
   document.querySelectorAll('a[href^="#"]').forEach((link) => {
     link.addEventListener("click", (event) => {
@@ -61,6 +110,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const activate = () => {
       quadrants.forEach((item) => item.classList.remove("is-active"));
       quadrant.classList.add("is-active");
+      body.dataset.orbQuadrant = quadrant.dataset.index || "01";
       if (quadrantOrb) quadrantOrb.textContent = quadrant.dataset.index || "01";
       if (quadrantPreview) {
         const title = quadrant.querySelector("h3")?.textContent || "Bim Labs";
@@ -71,6 +121,19 @@ document.addEventListener("DOMContentLoaded", () => {
     };
     quadrant.addEventListener("pointerenter", activate);
     quadrant.addEventListener("focus", activate);
+  });
+
+  const quadrantStage = document.querySelector("[data-quadrant-stage]");
+  quadrantStage?.addEventListener("pointermove", (event) => {
+    const rect = quadrantStage.getBoundingClientRect();
+    const x = ((event.clientX - rect.left) / rect.width - 0.5) * 18;
+    const y = ((event.clientY - rect.top) / rect.height - 0.5) * 18;
+    document.documentElement.style.setProperty("--orb-nudge-x", `${x}px`);
+    document.documentElement.style.setProperty("--orb-nudge-y", `${y}px`);
+  }, { passive: true });
+  quadrantStage?.addEventListener("pointerleave", () => {
+    document.documentElement.style.setProperty("--orb-nudge-x", "0px");
+    document.documentElement.style.setProperty("--orb-nudge-y", "0px");
   });
 
   document.querySelectorAll(".bim-media img").forEach((image) => {
@@ -212,14 +275,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const wheelCards = Array.from(document.querySelectorAll("[data-wheel-card]"));
   let wheelIndex = 0;
-  const setWheel = (index) => {
+  function setWheel(index) {
     wheelCards[wheelIndex]?.classList.remove("is-active");
     wheelIndex = index;
     wheelCards[wheelIndex]?.classList.add("is-active");
+    document.documentElement.style.setProperty("--wheel-rotation", `${wheelIndex * 46}deg`);
     document.querySelectorAll(".bim-wheel__tabs span").forEach((tab, tabIndex) => {
       tab.classList.toggle("is-active", tabIndex === wheelIndex);
     });
-  };
+  }
 
   wheelCards.forEach((card, index) => {
     card.addEventListener("pointerenter", () => setWheel(index));
