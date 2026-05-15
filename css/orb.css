@@ -1,10 +1,7 @@
-:root {
-  --signal-blue: var(--blue, #00d5ff);
-  --signal-blue-2: var(--blue-2, #2f6bff);
-  --signal-white: #f6f8ff;
-  --signal-bg: #03050a;
-  --signal-ease: cubic-bezier(.16, 1, .3, 1);
-}
+/* =========================================================
+   BIM LABS SIGNAL CORE — OVERRIDE OLD ORB CSS
+   Paste this at the very bottom of css/orb.css
+========================================================= */
 
 .bim-orb-layer {
   position: fixed;
@@ -15,28 +12,36 @@
   contain: layout paint;
 }
 
+.bim-background {
+  z-index: 0;
+}
+
+.bim-home > section,
+.bim-header,
+.bim-footer {
+  position: relative;
+  z-index: 2;
+}
+
 .bim-signal-core {
   position: fixed;
   left: 50%;
   top: 46%;
-  width: 760px;
-  height: 760px;
-  opacity: .78;
-  transform:
-    translate(-50%, -50%)
-    scale(1)
-    rotate(var(--signal-section-rotation, 0deg));
+  width: 820px;
+  height: 820px;
+  opacity: 0.78;
+  transform: translate(-50%, -50%) scale(1) rotate(var(--orb-scroll-18, 0deg));
   transform-origin: center;
   filter:
-    drop-shadow(0 0 42px rgba(0, 213, 255, .12))
-    drop-shadow(0 0 88px rgba(47, 107, 255, .08));
+    drop-shadow(0 0 34px rgba(0, 213, 255, 0.18))
+    drop-shadow(0 0 90px rgba(47, 107, 255, 0.12));
   transition:
-    width 950ms var(--signal-ease),
-    height 950ms var(--signal-ease),
-    left 950ms var(--signal-ease),
-    top 950ms var(--signal-ease),
+    width 950ms cubic-bezier(.16,1,.3,1),
+    height 950ms cubic-bezier(.16,1,.3,1),
+    left 950ms cubic-bezier(.16,1,.3,1),
+    top 950ms cubic-bezier(.16,1,.3,1),
     opacity 700ms ease,
-    transform 950ms var(--signal-ease),
+    transform 950ms cubic-bezier(.16,1,.3,1),
     filter 700ms ease;
   will-change: width, height, transform, opacity;
 }
@@ -51,207 +56,222 @@
   vector-effect: non-scaling-stroke;
 }
 
+/* Core glow */
+
 .signal-core-glow {
   fill: url(#signalCoreGlow);
-  opacity: .9;
+  opacity: 0.95;
 }
 
+/* Technical grid */
+
 .signal-grid {
-  opacity: .28;
-  animation: signalGridCounter 54s linear infinite;
+  opacity: 0.35;
   transform-origin: center;
+  animation: signalGridCounter 56s linear infinite;
 }
 
 .signal-grid path {
   fill: none;
-  stroke: rgba(246, 248, 255, .16);
-  stroke-width: .75;
+  stroke: rgba(246, 248, 255, 0.18);
+  stroke-width: 0.85;
   stroke-dasharray: 2 14;
 }
 
+/* Main rotating rings */
+
 .signal-orbits {
-  animation: signalCoreRotate 42s linear infinite;
   transform-origin: center;
+  animation: signalCoreRotate 42s linear infinite;
 }
 
 .signal-orbit {
   fill: none;
-  stroke-width: .9;
+  stroke-width: 1;
 }
 
 .signal-orbit--outer {
-  stroke: rgba(246, 248, 255, .18);
+  stroke: rgba(246, 248, 255, 0.20);
   stroke-dasharray: 180 34 12 70;
 }
 
 .signal-orbit--main {
-  stroke: rgba(246, 248, 255, .56);
-  stroke-width: 1;
+  stroke: rgba(246, 248, 255, 0.62);
+  stroke-width: 1.1;
   stroke-dasharray: 420 44 90 22;
 }
 
 .signal-orbit--mid {
-  stroke: rgba(0, 213, 255, .30);
+  stroke: rgba(0, 213, 255, 0.36);
   stroke-dasharray: 90 22 14 52;
 }
 
 .signal-orbit--inner {
-  stroke: rgba(246, 248, 255, .22);
+  stroke: rgba(246, 248, 255, 0.28);
   stroke-dasharray: 24 16;
 }
 
+/* Square interface brackets */
+
 .signal-brackets {
-  opacity: .58;
+  opacity: 0.62;
   transform-origin: center;
-  animation: signalBracketDrift 18s var(--signal-ease) infinite alternate;
+  animation: signalBracketDrift 20s cubic-bezier(.16,1,.3,1) infinite alternate;
 }
 
 .signal-brackets path {
   fill: none;
-  stroke: rgba(246, 248, 255, .34);
-  stroke-width: 1.1;
+  stroke: rgba(246, 248, 255, 0.38);
+  stroke-width: 1.15;
   stroke-linecap: square;
   stroke-linejoin: round;
 }
 
+/* Electric-blue circuit paths */
+
 .signal-circuits path {
   fill: none;
-  stroke: rgba(0, 213, 255, .46);
-  stroke-width: 1.05;
+  stroke: rgba(0, 213, 255, 0.58);
+  stroke-width: 1.15;
   stroke-linecap: round;
   stroke-linejoin: round;
   stroke-dasharray: 100;
-  stroke-dashoffset: 58;
-  opacity: .48;
+  stroke-dashoffset: 54;
+  opacity: 0.58;
   filter: url(#signalBlueGlow);
   transition:
-    stroke-dashoffset 900ms var(--signal-ease),
+    stroke-dashoffset 900ms cubic-bezier(.16,1,.3,1),
     opacity 500ms ease,
     stroke 500ms ease;
 }
 
+/* Ticks */
+
 .signal-ticks {
-  opacity: .62;
+  opacity: 0.68;
 }
 
 .signal-ticks path {
   fill: none;
-  stroke: rgba(246, 248, 255, .34);
+  stroke: rgba(246, 248, 255, 0.38);
   stroke-width: 1;
   stroke-linecap: square;
 }
 
+/* Nodes */
+
 .signal-node {
-  fill: var(--signal-blue);
-  opacity: .66;
+  fill: #00d5ff;
+  opacity: 0.72;
   filter: url(#signalBlueGlow);
   transform-origin: center;
-  animation: signalNodePulse 2.6s ease-in-out infinite;
+  animation: signalNodePulse 2.8s ease-in-out infinite;
 }
 
 .signal-node--ghost {
-  fill: rgba(246, 248, 255, .52);
-  opacity: .24;
+  fill: rgba(246, 248, 255, 0.55);
+  opacity: 0.28;
   filter: none;
   animation: none;
 }
 
 .signal-node--02 {
-  animation-delay: .25s;
+  animation-delay: 0.25s;
 }
 
 .signal-node--03 {
-  animation-delay: .5s;
+  animation-delay: 0.5s;
 }
 
 .signal-node--04 {
-  animation-delay: .75s;
+  animation-delay: 0.75s;
 }
 
+/* Center mark */
+
 .signal-center rect {
-  fill: rgba(3, 5, 10, .72);
-  stroke: rgba(246, 248, 255, .24);
+  fill: rgba(3, 5, 10, 0.78);
+  stroke: rgba(246, 248, 255, 0.28);
   stroke-width: 1;
 }
 
 .signal-center path:first-of-type {
-  fill: rgba(246, 248, 255, .88);
+  fill: rgba(246, 248, 255, 0.92);
 }
 
 .signal-center path:last-of-type {
   fill: none;
-  stroke: rgba(0, 213, 255, .35);
-  stroke-width: .9;
+  stroke: rgba(0, 213, 255, 0.42);
+  stroke-width: 0.9;
   stroke-dasharray: 2 8;
 }
 
-/* Section states */
+/* =========================================================
+   SECTION FLOW STATES
+========================================================= */
 
 body.orb-hero .bim-signal-core {
-  width: min(82vw, 860px);
-  height: min(82vw, 860px);
+  width: min(86vw, 920px);
+  height: min(86vw, 920px);
   left: 50%;
   top: 47%;
-  opacity: .82;
-  transform:
-    translate(-50%, -50%)
-    scale(1)
-    rotate(var(--orb-scroll-18, 0deg));
+  opacity: 0.82;
+  transform: translate(-50%, -50%) scale(1) rotate(var(--orb-scroll-18, 0deg));
 }
 
 body.orb-hero .bim-orb-layer {
-  -webkit-mask-image: radial-gradient(circle at 50% 47%, #000 0 34%, rgba(0,0,0,.86) 52%, transparent 82%);
-  mask-image: radial-gradient(circle at 50% 47%, #000 0 34%, rgba(0,0,0,.86) 52%, transparent 82%);
+  -webkit-mask-image: radial-gradient(circle at 50% 47%, #000 0 36%, rgba(0,0,0,.86) 56%, transparent 84%);
+  mask-image: radial-gradient(circle at 50% 47%, #000 0 36%, rgba(0,0,0,.86) 56%, transparent 84%);
 }
 
 body.orb-hero .signal-circuits path {
   stroke-dashoffset: 18;
-  opacity: .44;
+  opacity: 0.5;
 }
 
 body.orb-quadrants .bim-signal-core {
-  width: 250px;
-  height: 250px;
+  width: 260px;
+  height: 260px;
   left: calc(50% + var(--orb-nudge-x, 0px));
   top: calc(50% + var(--orb-nudge-y, 0px));
   opacity: 1;
   transform:
     translate(-50%, -50%)
-    scale(.92)
+    scale(0.95)
     rotate(calc(var(--orb-quadrant-rotate, 0deg) + var(--orb-scroll-24, 0deg)));
   filter:
-    drop-shadow(0 0 30px rgba(0, 213, 255, .24))
-    drop-shadow(0 0 74px var(--orb-active-glow, rgba(47, 107, 255, .22)));
-}
-
-body.orb-quadrants .signal-grid,
-body.orb-quadrants .signal-brackets {
-  opacity: .72;
+    drop-shadow(0 0 34px rgba(0, 213, 255, 0.34))
+    drop-shadow(0 0 90px var(--orb-active-glow, rgba(47, 107, 255, 0.24)));
 }
 
 body.orb-quadrants .signal-circuits path {
   stroke-dashoffset: 0;
-  opacity: .72;
+  opacity: 0.82;
+}
+
+body.orb-quadrants .signal-grid,
+body.orb-quadrants .signal-brackets {
+  opacity: 0.78;
 }
 
 body[data-orb-quadrant="01"] {
   --orb-quadrant-rotate: 0deg;
-  --orb-active-glow: rgba(0, 213, 255, .42);
+  --orb-active-glow: rgba(0, 213, 255, 0.44);
 }
 
 body[data-orb-quadrant="02"] {
-  --orb-quadrant-rotate: 24deg;
-  --orb-active-glow: rgba(47, 107, 255, .48);
+  --orb-quadrant-rotate: 26deg;
+  --orb-active-glow: rgba(47, 107, 255, 0.5);
 }
 
 body[data-orb-quadrant="03"] {
-  --orb-quadrant-rotate: 48deg;
-  --orb-active-glow: rgba(0, 213, 255, .38);
+  --orb-quadrant-rotate: 52deg;
+  --orb-active-glow: rgba(0, 213, 255, 0.42);
 }
 
 body[data-orb-quadrant="04"] {
-  --orb-quadrant-rotate: -28deg;
-  --orb-active-glow: rgba(47, 107, 255, .46);
+  --orb-quadrant-rotate: -30deg;
+  --orb-active-glow: rgba(47, 107, 255, 0.5);
 }
 
 body[data-orb-quadrant="01"] .signal-node--01,
@@ -263,100 +283,69 @@ body[data-orb-quadrant="04"] .signal-node--04 {
 }
 
 body.orb-case .bim-signal-core {
-  width: min(58vw, 650px);
-  height: min(58vw, 650px);
+  width: min(62vw, 680px);
+  height: min(62vw, 680px);
   left: 82%;
   top: 42%;
-  opacity: .34;
-  transform:
-    translate(-50%, -50%)
-    scale(.96)
-    rotate(var(--orb-scroll-neg-24, 0deg));
-}
-
-body.orb-case .signal-brackets {
-  opacity: .32;
+  opacity: 0.36;
+  transform: translate(-50%, -50%) scale(0.96) rotate(var(--orb-scroll-neg-24, 0deg));
 }
 
 body.orb-showcase .bim-signal-core {
-  width: min(98vw, 1040px);
-  height: min(98vw, 1040px);
+  width: min(102vw, 1080px);
+  height: min(102vw, 1080px);
   left: 50%;
   top: -12%;
-  opacity: .32;
-  transform:
-    translate(-50%, 0)
-    scale(1.14)
-    rotate(var(--orb-scroll-38, 0deg));
+  opacity: 0.34;
+  transform: translate(-50%, 0) scale(1.14) rotate(var(--orb-scroll-38, 0deg));
 }
 
-body.orb-showcase .bim-orb-layer {
+body.orb-showcase .bim-orb-layer,
+body.orb-wheel .bim-orb-layer {
   -webkit-mask-image: linear-gradient(180deg, transparent 0, #000 12%, #000 82%, transparent 100%);
   mask-image: linear-gradient(180deg, transparent 0, #000 12%, #000 82%, transparent 100%);
 }
 
 body.orb-partner .bim-signal-core {
-  width: min(62vw, 700px);
-  height: min(62vw, 700px);
+  width: min(64vw, 720px);
+  height: min(64vw, 720px);
   left: 18%;
   top: 56%;
-  opacity: .26;
-  transform:
-    translate(-50%, -50%)
-    scale(.92)
-    rotate(var(--orb-scroll-neg-30, 0deg));
+  opacity: 0.28;
+  transform: translate(-50%, -50%) scale(0.92) rotate(var(--orb-scroll-neg-30, 0deg));
 }
 
 body.orb-wheel .bim-signal-core {
-  width: min(76vw, 800px);
-  height: min(76vw, 800px);
+  width: min(78vw, 820px);
+  height: min(78vw, 820px);
   left: 50%;
   top: 6%;
-  opacity: .46;
-  transform:
-    translate(-50%, 0)
-    scale(1)
-    rotate(var(--wheel-rotation, 0deg));
-}
-
-body.orb-wheel .bim-orb-layer {
-  -webkit-mask-image: linear-gradient(180deg, transparent 0, #000 10%, #000 74%, transparent 100%);
-  mask-image: linear-gradient(180deg, transparent 0, #000 10%, #000 74%, transparent 100%);
+  opacity: 0.5;
+  transform: translate(-50%, 0) scale(1) rotate(var(--wheel-rotation, 0deg));
 }
 
 body.orb-wheel .signal-circuits path {
   stroke-dashoffset: 8;
-  opacity: .58;
+  opacity: 0.62;
 }
 
 body.orb-cta .bim-signal-core {
-  width: min(92vw, 960px);
-  height: min(92vw, 960px);
+  width: min(94vw, 980px);
+  height: min(94vw, 980px);
   left: 50%;
   top: 50%;
-  opacity: .24;
-  transform:
-    translate(-50%, -50%)
-    scale(1.08)
-    rotate(var(--orb-scroll-50, 0deg));
+  opacity: 0.26;
+  transform: translate(-50%, -50%) scale(1.08) rotate(var(--orb-scroll-50, 0deg));
 }
 
-body.orb-cta .signal-core-glow {
-  opacity: .58;
-}
-
-/* Hook existing quadrant visual lines into the signal system */
-
-body.orb-quadrants .bim-quadrant:is(.is-active, :hover, :focus-within) .bim-quadrant__line {
-  opacity: 1;
-  box-shadow: 0 0 22px rgba(0, 213, 255, .65);
-}
-
+/* Hide the old fake quadrant mini-orb since the global one now becomes the controller */
 body.orb-quadrants .bim-quadrant-orb {
-  opacity: 0;
+  opacity: 0 !important;
 }
 
-/* Motion */
+/* =========================================================
+   MOTION
+========================================================= */
 
 @keyframes signalCoreRotate {
   from {
@@ -391,7 +380,7 @@ body.orb-quadrants .bim-quadrant-orb {
 @keyframes signalNodePulse {
   0%, 100% {
     transform: scale(1);
-    opacity: .52;
+    opacity: 0.58;
   }
 
   50% {
@@ -400,24 +389,9 @@ body.orb-quadrants .bim-quadrant-orb {
   }
 }
 
-/* Responsive */
-
-@media (max-width: 1180px) {
-  body.orb-hero .bim-signal-core {
-    width: 760px;
-    height: 760px;
-  }
-
-  body.orb-showcase .bim-signal-core {
-    width: 860px;
-    height: 860px;
-  }
-
-  body.orb-wheel .bim-signal-core {
-    width: 700px;
-    height: 700px;
-  }
-}
+/* =========================================================
+   MOBILE
+========================================================= */
 
 @media (max-width: 860px) {
   .bim-signal-core {
@@ -431,10 +405,10 @@ body.orb-quadrants .bim-quadrant-orb {
   }
 
   body.orb-hero .bim-signal-core {
-    width: 124vw;
-    height: 124vw;
+    width: 128vw;
+    height: 128vw;
     top: 42%;
-    opacity: .42;
+    opacity: 0.42;
   }
 
   body.orb-quadrants .bim-signal-core {
@@ -442,7 +416,7 @@ body.orb-quadrants .bim-quadrant-orb {
     height: 460px;
     left: 90%;
     top: 30%;
-    opacity: .18;
+    opacity: 0.18;
     transform: translate(-50%, -50%) scale(1);
   }
 
@@ -453,7 +427,7 @@ body.orb-quadrants .bim-quadrant-orb {
     height: 114vw;
     left: 72%;
     top: 42%;
-    opacity: .18;
+    opacity: 0.18;
   }
 
   body.orb-showcase .bim-signal-core,
@@ -462,7 +436,7 @@ body.orb-quadrants .bim-quadrant-orb {
     height: 116vw;
     left: 50%;
     top: -6%;
-    opacity: .16;
+    opacity: 0.16;
   }
 }
 
@@ -475,8 +449,8 @@ body.orb-quadrants .bim-quadrant-orb {
   }
 
   body.orb-hero .bim-signal-core {
-    width: 140vw;
-    height: 140vw;
+    width: 142vw;
+    height: 142vw;
   }
 }
 
