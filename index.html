@@ -25,16 +25,16 @@
 
 
 <div class="bim-orb-layer" aria-hidden="true">
-  <div class="bim-signal-core bim-orb-main">
-    <svg viewBox="-400 -400 800 800" class="bim-signal-core__svg">
+  <div class="bim-globe-orb">
+    <svg class="bim-globe-orb__svg" viewBox="0 0 800 800">
       <defs>
-        <radialGradient id="signalCoreGlow" cx="50%" cy="50%" r="50%">
-          <stop offset="0%" stop-color="#00d5ff" stop-opacity="0.24" />
-          <stop offset="36%" stop-color="#2f6bff" stop-opacity="0.10" />
+        <radialGradient id="globeCoreGlow" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="#00d5ff" stop-opacity="0.22" />
+          <stop offset="42%" stop-color="#2f6bff" stop-opacity="0.10" />
           <stop offset="100%" stop-color="#03050a" stop-opacity="0" />
         </radialGradient>
 
-        <filter id="signalBlueGlow" x="-80%" y="-80%" width="260%" height="260%">
+        <filter id="globeGlow" x="-60%" y="-60%" width="220%" height="220%">
           <feGaussianBlur stdDeviation="4" result="blur" />
           <feColorMatrix
             in="blur"
@@ -42,7 +42,7 @@
             values="0 0 0 0 0
                     0 0 0 0 .72
                     0 0 0 0 1
-                    0 0 0 .72 0"
+                    0 0 0 .55 0"
           />
           <feMerge>
             <feMergeNode />
@@ -51,63 +51,36 @@
         </filter>
       </defs>
 
-      <circle class="signal-core-glow" cx="0" cy="0" r="265" />
+      <circle class="globe-core-glow" cx="400" cy="400" r="310" />
 
-      <g class="signal-grid">
-        <path d="M-260 -80 H-120 M120 -80 H260" />
-        <path d="M-260 80 H-120 M120 80 H260" />
-        <path d="M-80 -260 V-120 M-80 120 V260" />
-        <path d="M80 -260 V-120 M80 120 V260" />
-        <path d="M-180 -180 L-115 -115 M180 -180 L115 -115 M-180 180 L-115 115 M180 180 L115 115" />
+      <g class="globe-shell">
+        <circle class="globe-ring globe-ring--outer" cx="400" cy="400" r="310" />
+        <circle class="globe-ring globe-ring--middle" cx="400" cy="400" r="246" />
+        <circle class="globe-ring globe-ring--inner" cx="400" cy="400" r="172" />
       </g>
 
-      <g class="signal-orbits">
-        <circle class="signal-orbit signal-orbit--outer" cx="0" cy="0" r="318" />
-        <circle class="signal-orbit signal-orbit--main" cx="0" cy="0" r="282" />
-        <circle class="signal-orbit signal-orbit--mid" cx="0" cy="0" r="214" />
-        <circle class="signal-orbit signal-orbit--inner" cx="0" cy="0" r="92" />
+      <g class="globe-lines">
+        <ellipse class="globe-line globe-line--equator" cx="400" cy="400" rx="310" ry="76" />
+        <ellipse class="globe-line globe-line--latitude-top" cx="400" cy="342" rx="258" ry="54" />
+        <ellipse class="globe-line globe-line--latitude-bottom" cx="400" cy="458" rx="258" ry="54" />
+
+        <ellipse class="globe-line globe-line--longitude" cx="400" cy="400" rx="92" ry="310" />
+        <ellipse class="globe-line globe-line--longitude globe-line--tilt-left" cx="400" cy="400" rx="92" ry="310" />
+        <ellipse class="globe-line globe-line--longitude globe-line--tilt-right" cx="400" cy="400" rx="92" ry="310" />
       </g>
 
-      <g class="signal-brackets">
-        <path d="M-302 -190 V-302 H-190" />
-        <path d="M190 -302 H302 V-190" />
-        <path d="M302 190 V302 H190" />
-        <path d="M-190 302 H-302 V190" />
+      <g class="globe-accent">
+        <path d="M400 90 A310 310 0 0 1 620 180" />
+        <path d="M710 400 A310 310 0 0 1 618 622" />
+        <path d="M400 710 A310 310 0 0 1 178 620" />
+        <path d="M90 400 A310 310 0 0 1 182 178" />
       </g>
 
-      <g class="signal-circuits">
-        <path class="signal-circuit signal-circuit--one" pathLength="100" d="M0 -282 V-338 H92 L116 -362 H184" />
-        <path class="signal-circuit signal-circuit--two" pathLength="100" d="M282 0 H338 V82 L366 110 V174" />
-        <path class="signal-circuit signal-circuit--three" pathLength="100" d="M0 282 V338 H-88 L-116 366 H-176" />
-        <path class="signal-circuit signal-circuit--four" pathLength="100" d="M-282 0 H-338 V-82 L-366 -110 V-174" />
-      </g>
-
-      <g class="signal-ticks">
-        <path d="M0 -352 V-318" />
-        <path d="M352 0 H318" />
-        <path d="M0 352 V318" />
-        <path d="M-352 0 H-318" />
-        <path d="M249 -249 L226 -226" />
-        <path d="M249 249 L226 226" />
-        <path d="M-249 249 L-226 226" />
-        <path d="M-249 -249 L-226 -226" />
-      </g>
-
-      <g class="signal-nodes">
-        <circle class="signal-node signal-node--01" cx="0" cy="-282" r="7" />
-        <circle class="signal-node signal-node--02" cx="282" cy="0" r="7" />
-        <circle class="signal-node signal-node--03" cx="0" cy="282" r="7" />
-        <circle class="signal-node signal-node--04" cx="-282" cy="0" r="7" />
-        <circle class="signal-node signal-node--ghost" cx="199" cy="-199" r="4" />
-        <circle class="signal-node signal-node--ghost" cx="199" cy="199" r="4" />
-        <circle class="signal-node signal-node--ghost" cx="-199" cy="199" r="4" />
-        <circle class="signal-node signal-node--ghost" cx="-199" cy="-199" r="4" />
-      </g>
-
-      <g class="signal-center">
-        <rect x="-46" y="-46" width="92" height="92" rx="22" />
-        <path d="M-13 -24 H10 C27 -24 36 -16 36 -3 C36 8 30 15 20 18 C32 21 39 30 39 42 C39 57 27 66 8 66 H-13 V-24 Z" transform="translate(-10 -22) scale(.72)" />
-        <path d="M-18 0 H18 M0 -18 V18" />
+      <g class="globe-dots">
+        <circle cx="400" cy="90" r="5" />
+        <circle cx="710" cy="400" r="5" />
+        <circle cx="400" cy="710" r="5" />
+        <circle cx="90" cy="400" r="5" />
       </g>
     </svg>
   </div>
