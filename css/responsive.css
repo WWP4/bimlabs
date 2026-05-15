@@ -1,284 +1,64 @@
-/* =========================================================
-   RESPONSIVE SYSTEM
-========================================================= */
-
 @media (max-width: 1180px) {
-  .hero-grid {
-    grid-template-columns: 1fr;
-    min-height: auto;
-    padding-top: calc(var(--header-height) + 70px);
-  }
-
-  .hero-visual {
-    height: auto;
-    min-height: 520px;
-  }
-
-  .system-window {
-    transform: none;
-    margin-inline: auto;
-  }
-
-  .screen-proof-shell,
-  .salo-proof-hero,
-  .contact-card,
-  .editorial-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .systems-grid,
-  .process-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .system-card:nth-child(2),
-  .system-card:nth-child(4) {
-    border-right: 0;
-  }
-
-  .system-card:nth-child(1),
-  .system-card:nth-child(2) {
-    border-bottom: 1px solid var(--line);
-  }
-
-  .work-grid,
-  .case-grid,
-  .services-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .work-card,
-  .case-card,
-  .service-card {
-    min-height: 560px;
-  }
-
-  .salo-proof-shell {
-    min-height: auto;
-    padding-top: 76px;
-    padding-bottom: 76px;
-  }
-
-  .salo-proof-image-stage {
-    min-height: 58svh;
-  }
+  :root { --header-h: 74px; --container: min(100% - 36px, 1480px); }
+  .bim-header { grid-template-columns: auto 1fr auto; }
+  .bim-nav { gap: 18px; }
+  .bim-case-study, .bim-partner { grid-template-columns: 1fr; }
+  .bim-case-study__stage { min-height: 620px; }
+  .bim-partner__visual { min-height: 480px; order: 2; }
+  .bim-wheel-card { width: min(360px, 42vw); }
 }
-
-@media (max-width: 900px) {
-  :root {
-    --header-height: 72px;
-  }
-
-  .site-header {
-    padding-inline: 20px;
-  }
-
-  .nav-links {
-    display: none;
-  }
-
-  .section {
-    min-height: auto;
-    padding: 96px 0;
-  }
-
-  .section-heading.split {
-    grid-template-columns: 1fr;
-  }
-
-  .hero-grid {
-    width: min(100% - 36px, var(--container-wide));
-    padding-bottom: 70px;
-  }
-
-  .hero-copy h1 {
-    font-size: clamp(3.2rem, 14vw, 5.6rem);
-    line-height: 0.88;
-    letter-spacing: -0.09em;
-  }
-
-  .hero-actions {
-    align-items: stretch;
-    flex-direction: column;
-    max-width: 360px;
-  }
-
-  .hero-proof {
-    grid-template-columns: 1fr;
-    gap: 18px;
-  }
-
-  .hero-visual {
-    min-height: auto;
-  }
-
-  .floating-card {
-    display: none;
-  }
-
-  .metric-row {
-    grid-template-columns: 1fr;
-  }
-
-  .systems-grid,
-  .process-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .system-card,
-  .process-card {
-    min-height: 300px;
-    border-right: 0;
-  }
-
-  .system-card:not(:last-child) {
-    border-bottom: 1px solid var(--line);
-  }
-
-  .salo-work-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .salo-proof-caption {
-    align-items: flex-start;
-    flex-direction: column;
-    border-radius: 24px;
-  }
-
-  .salo-proof-caption blockquote {
-    text-align: left;
-  }
-
-  .screen-frame {
-    height: auto;
-    min-height: 0;
-    aspect-ratio: 1 / 0.9;
-    margin-left: 0;
-  }
-
-  .screen-proof-progress {
-    display: none;
-  }
+@media (max-width: 860px) {
+  .bim-header { height: 68px; grid-template-columns: 1fr auto; padding-inline: 18px; }
+  .bim-header.is-scrolled { height: 62px; }
+  .bim-nav { display: none; }
+  .bim-brand__mark { width: 32px; height: 32px; }
+  .bim-button--small { min-height: 40px; padding-inline: 14px; }
+  .bim-hero { padding-top: 112px; }
+  .bim-hero h1 { font-size: clamp(3.45rem, 16vw, 6.8rem); letter-spacing: -.086em; }
+  .bim-hero__text { font-size: 1.04rem; }
+  .bim-cursor-label { display: none; }
+  .bim-quadrants__intro { grid-template-columns: 1fr; }
+  .bim-quadrants__intro h2 { font-size: clamp(3rem, 13vw, 6rem); }
+  .bim-quadrants__grid { grid-template-columns: 1fr; }
+  .bim-quadrant, .bim-quadrant:nth-child(2n), .bim-quadrant:nth-child(-n+2) { min-height: 430px; border-right: 0; border-bottom: 1px solid var(--line); }
+  .bim-quadrant__copy { transform: none; }
+  .bim-quadrant__copy h3 { font-size: clamp(2.55rem, 12vw, 5.5rem); }
+  .bim-quadrant__copy p, .bim-quadrant__copy a { opacity: 1; transform: none; }
+  .bim-quadrant__preview { width: 48%; opacity: .42; }
+  .bim-case-study { padding-block: 104px; gap: 34px; }
+  .bim-case-study__copy h2 { font-size: clamp(3rem, 13vw, 5.9rem); }
+  .bim-case-study__stage { min-height: 560px; }
+  .bim-media--hero { inset: 2% 0 18% 0; }
+  .bim-media--float { width: 58%; height: 28%; }
+  .bim-showcase { display: none; }
+  .bim-showcase-mobile { width: var(--container); margin: 0 auto; padding: 96px 0; display: grid; gap: 22px; }
+  .bim-mobile-project { min-height: 520px; padding: 24px; display: flex; flex-direction: column; justify-content: flex-end; border: 1px solid var(--line); border-radius: 30px; }
+  .bim-mobile-project img { position: absolute; inset: 0; }
+  .bim-mobile-project span, .bim-mobile-project h3, .bim-mobile-project p { position: relative; z-index: 3; }
+  .bim-mobile-project h3 { margin: 10px 0; font-size: clamp(2.1rem, 10vw, 4rem); line-height: .88; letter-spacing: -.08em; }
+  .bim-mobile-project p { margin: 0; color: var(--muted); line-height: 1.55; }
+  .bim-partner { padding-block: 104px; }
+  .bim-partner__copy h2, .bim-cta h2 { font-size: clamp(3.15rem, 14vw, 6.6rem); }
+  .bim-wheel { display: block; min-height: auto; padding-block: 104px; }
+  .bim-wheel__path { display: none; }
+  .bim-wheel__center { margin: 0 auto 30px; }
+  .bim-wheel__values { position: relative; inset: auto; display: grid; gap: 14px; }
+  .bim-wheel-card, .bim-wheel-card:nth-child(1), .bim-wheel-card:nth-child(2), .bim-wheel-card:nth-child(3), .bim-wheel-card:nth-child(4) { position: relative; inset: auto; width: 100%; opacity: 1; transform: none; }
+  .bim-footer { flex-direction: column; align-items: flex-start; }
+  .bim-footer__links { justify-content: flex-start; }
 }
-
-@media (max-width: 640px) {
-  .container,
-  .container-wide {
-    width: min(100% - 32px, var(--container));
-  }
-
-  .brand {
-    font-size: 0.9rem;
-  }
-
-  .brand-mark {
-    width: 32px;
-    height: 32px;
-  }
-
-  .nav-cta {
-    min-height: 42px;
-    padding-inline: 16px;
-    font-size: 0.82rem;
-  }
-
-  .section-heading h2,
-  .salo-proof-copy h2,
-  .screen-proof-copy h2,
-  .proof-story h2,
-  .contact-copy h2,
-  .contact-card h2,
-  .final-cta h2,
-  .editorial-grid h2 {
-    font-size: clamp(3rem, 15vw, 5rem);
-    line-height: 0.88;
-    letter-spacing: -0.088em;
-  }
-
-  .salo-proof-shell {
-    padding: 64px 18px;
-  }
-
-  .salo-proof-header,
-  .salo-proof-mini-nav {
-    align-items: flex-start;
-    flex-direction: column;
-  }
-
-  .salo-proof-image-stage {
-    min-height: auto;
-    aspect-ratio: 1 / 1.08;
-    border-radius: 28px;
-  }
-
-  .salo-work-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .screen-proof-shell {
-    padding: 76px 18px;
-  }
-
-  .screen-frame {
-    border-radius: 28px;
-    aspect-ratio: 1 / 1.1;
-  }
-
-  .screen-frame .screen-img,
-  .screen-img,
-  .salo-proof .screen-img,
-  .salo-proof-image-stage .screen-img {
-    inset: 14px;
-    width: calc(100% - 28px);
-    height: calc(100% - 28px);
-  }
-
-  .work-card,
-  .case-card,
-  .service-card {
-    min-height: 470px;
-    border-radius: 28px;
-  }
-
-  .contact-section {
-    min-height: auto;
-    padding: 86px 0;
-  }
-
-  .contact-card {
-    padding: 28px;
-    border-radius: 30px;
-  }
-
-  .contact-card::before {
-    display: none;
-  }
+@media (max-width: 540px) {
+  :root { --container: min(100% - 28px, 1480px); }
+  .bim-brand__name { display: none; }
+  .bim-header__cta { font-size: .78rem; }
+  .bim-hero__actions { align-items: stretch; flex-direction: column; }
+  .bim-button { width: 100%; max-width: 320px; margin-inline: auto; }
+  .bim-case-study__stage { min-height: 500px; }
+  .bim-case-study figcaption { left: 12px; right: 12px; bottom: 12px; padding: 14px; }
+  .bim-testimonial { padding-inline: 0; }
+  .bim-partner__visual { min-height: 390px; }
+  .bim-partner__panel { left: 7%; right: 7%; }
 }
-
-@media (max-width: 430px) {
-  .hero-copy h1 {
-    font-size: clamp(3rem, 16vw, 4.5rem);
-  }
-
-  .hero-text,
-  .section-heading p,
-  .salo-proof-copy p,
-  .contact-copy p,
-  .contact-card p {
-    font-size: 0.98rem;
-  }
-
-  .btn,
-  .contact-form button {
-    width: 100%;
-  }
-
-  .system-window {
-    padding: 16px;
-    border-radius: 28px;
-  }
-
-  .dashboard-header {
-    flex-direction: column;
-  }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; transition-duration: .01ms !important; }
 }
