@@ -16,3 +16,13 @@
 .bim-testimonial { grid-column: 1 / -1; max-width: 1050px; margin: 16px auto 0; padding: clamp(32px, 4vw, 64px) 0; border-block: 1px solid var(--line); text-align: center; }
 .bim-testimonial p { margin: 0; font-size: clamp(2.2rem, 4.4vw, 5.6rem); font-weight: 780; line-height: .94; letter-spacing: -.08em; }
 .bim-testimonial cite { display: block; margin-top: 18px; color: var(--muted); font-style: normal; }
+/* Editorial proof block closer to Salo's testimonial/case-study cadence. */
+.bim-case-study { grid-template-columns: .95fr .75fr 1.05fr; align-items: stretch; }
+.bim-client-mark { display: inline-flex; min-height: 42px; align-items: center; padding: 0 16px; margin-bottom: 28px; border: 1px solid rgba(0,213,255,.28); border-radius: 999px; background: rgba(47,107,255,.08); color: var(--white); font-weight: 850; letter-spacing: -.04em; }
+.bim-delivered-row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 38px; }
+.bim-delivered-row span, .bim-delivered-row strong { display: inline-flex; min-height: 38px; align-items: center; padding: 0 14px; border: 1px solid var(--line); border-radius: 999px; background: rgba(255,255,255,.035); font-size: .72rem; font-weight: 850; letter-spacing: .12em; text-transform: uppercase; }
+.bim-delivered-row span { color: var(--muted-2); }
+.bim-case-study__quote { align-self: center; padding: clamp(28px, 4vw, 54px); border: 1px solid var(--line); border-radius: var(--radius-lg); background: rgba(11,18,32,.42); box-shadow: 0 34px 110px rgba(0,0,0,.28); }
+.bim-case-study__quote blockquote { margin: 0; font-size: clamp(2.2rem, 3.8vw, 5.2rem); font-weight: 800; line-height: .9; letter-spacing: -.085em; }
+.bim-case-study__quote cite { display: block; margin-top: 22px; color: var(--muted); font-style: normal; }
+.bim-case-study__image { min-height: 690px; margin: 0; border: 1px solid var(--line); border-radius: var(--radius-lg); box-shadow: 0 44px 130px rgba(0,0,0,.52); }

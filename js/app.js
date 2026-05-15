@@ -23,6 +23,16 @@ document.addEventListener("DOMContentLoaded", () => {
   updateHeaderAndHero();
   window.addEventListener("scroll", () => window.requestAnimationFrame(updateHeaderAndHero), { passive: true });
 
+  // ambient cursor drift
+  document.addEventListener("pointermove", (event) => {
+    const x = (event.clientX / window.innerWidth - 0.5) * 18;
+    const y = (event.clientY / window.innerHeight - 0.5) * 18;
+    document.querySelectorAll(".bim-cursor-label").forEach((label, index) => {
+      label.style.setProperty("--cursor-x", `${x * (index ? -1 : 1)}px`);
+      label.style.setProperty("--cursor-y", `${y * (index ? -1 : 1)}px`);
+    });
+  }, { passive: true });
+
   document.querySelectorAll('a[href^="#"]').forEach((link) => {
     link.addEventListener("click", (event) => {
       const id = link.getAttribute("href");
@@ -45,10 +55,19 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   const quadrants = Array.from(document.querySelectorAll("[data-quadrant]"));
+  const quadrantOrb = document.querySelector("[data-quadrant-orb] strong");
+  const quadrantPreview = document.querySelector("[data-quadrant-preview]");
   quadrants.forEach((quadrant) => {
     const activate = () => {
       quadrants.forEach((item) => item.classList.remove("is-active"));
       quadrant.classList.add("is-active");
+      if (quadrantOrb) quadrantOrb.textContent = quadrant.dataset.index || "01";
+      if (quadrantPreview) {
+        const title = quadrant.querySelector("h3")?.textContent || "Bim Labs";
+        const text = quadrant.querySelector("p")?.textContent || "";
+        quadrantPreview.querySelector("strong").textContent = title;
+        quadrantPreview.querySelector("p").textContent = text;
+      }
     };
     quadrant.addEventListener("pointerenter", activate);
     quadrant.addEventListener("focus", activate);
@@ -161,15 +180,22 @@ document.addEventListener("DOMContentLoaded", () => {
   const cursor = document.querySelector("[data-showcase-cursor]");
 
   const updateShowcase = () => {
-    if (!showcase || !track || window.innerWidth <= 860) return;
+    if (!showcase || window.innerWidth <= 860) return;
     const rect = showcase.getBoundingClientRect();
     const scrollable = Math.max(showcase.offsetHeight - window.innerHeight, 1);
     const progress = clamp(-rect.top / scrollable, 0, 1);
-    const maxShift = Math.max(track.scrollWidth - window.innerWidth + 64, 0);
-    track.style.transform = `translate3d(${-progress * maxShift}px, 0, 0)`;
+    if (track) {
+      const maxShift = Math.max(track.scrollWidth - window.innerWidth + 64, 0);
+      track.style.transform = `translate3d(${-progress * maxShift}px, 0, 0)`;
+    }
+    showcase.querySelectorAll("[data-parallax]").forEach((item) => {
+      const amount = Number(item.dataset.parallax || 0);
+      item.style.transform = `translate3d(0, ${amount * (progress - 0.5)}px, 0) scale(${0.96 + progress * 0.04})`;
+      item.style.opacity = String(0.55 + progress * 0.45);
+    });
   };
 
-  if (showcase && track) {
+  if (showcase) {
     updateShowcase();
     window.addEventListener("scroll", () => window.requestAnimationFrame(updateShowcase), { passive: true });
     window.addEventListener("resize", updateShowcase);
@@ -190,6 +216,9 @@ document.addEventListener("DOMContentLoaded", () => {
     wheelCards[wheelIndex]?.classList.remove("is-active");
     wheelIndex = index;
     wheelCards[wheelIndex]?.classList.add("is-active");
+    document.querySelectorAll(".bim-wheel__tabs span").forEach((tab, tabIndex) => {
+      tab.classList.toggle("is-active", tabIndex === wheelIndex);
+    });
   };
 
   wheelCards.forEach((card, index) => {

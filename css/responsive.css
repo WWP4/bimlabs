@@ -62,3 +62,23 @@
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; transition-duration: .01ms !important; }
 }
+@media (max-width: 1180px) {
+  .bim-case-study { grid-template-columns: 1fr; }
+  .bim-case-study__image { min-height: 560px; }
+  .bim-showcase__scene { min-height: 1650px; }
+  .bim-project-shot { width: min(52vw, 620px); }
+  .bim-project-card { width: min(42vw, 480px); }
+}
+@media (max-width: 860px) {
+  .bim-hero__orb { width: 118vw; opacity: .45; }
+  .bim-quadrants__radial { min-height: auto; display: grid; gap: 0; border-top: 1px solid var(--line); }
+  .bim-quadrant-orb, .bim-quadrant-preview { display: none; }
+  .bim-quadrants__radial .bim-quadrant, .bim-quadrant--one, .bim-quadrant--two, .bim-quadrant--three, .bim-quadrant--four { position: relative; inset: auto; width: 100%; min-height: 390px; padding: 26px; text-align: left; border-bottom: 1px solid var(--line); }
+  .bim-quadrants__radial .bim-quadrant__line { display: none; }
+  .bim-quadrants__radial .bim-quadrant__copy p, .bim-quadrants__radial .bim-quadrant__copy a { opacity: 1; transform: none; }
+  .bim-case-study__quote blockquote { font-size: clamp(2.6rem, 12vw, 4.6rem); }
+  .bim-showcase { display: none; }
+  .bim-wheel__orb, .bim-wheel__tabs { display: none; }
+  .bim-footer__top, .bim-footer__bottom { flex-direction: column; }
+  .bim-footer__grid { grid-template-columns: 1fr; }
+}

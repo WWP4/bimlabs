@@ -31,3 +31,30 @@
 .bim-footer__links { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 18px 28px; font-size: .9rem; font-weight: 730; }
 .bim-footer a { transition: color .25s ease; }
 .bim-footer a:hover { color: var(--blue-2); }
+/* Salo-like editorial showcase, partner and footer rhythm. */
+.bim-showcase { min-height: 250svh; padding-block: clamp(130px, 16vw, 250px); overflow: hidden; }
+.bim-showcase__axis { position: sticky; top: 17svh; z-index: 2; width: 1px; height: 66svh; margin-inline: auto; background: linear-gradient(180deg, transparent, rgba(0,213,255,.4), transparent); box-shadow: 0 0 24px rgba(0,213,255,.35); }
+.bim-showcase__axis span { position: absolute; left: 50%; top: 50%; width: 9px; height: 9px; border-radius: 50%; background: var(--blue-2); transform: translate(-50%,-50%); box-shadow: 0 0 24px rgba(0,213,255,.8); }
+.bim-showcase__title { position: sticky; top: 38svh; z-index: 3; width: min(100%, 620px); margin: -52svh auto 0; text-align: center; pointer-events: none; }
+.bim-showcase__title h2 { margin: 0; font-size: clamp(4.2rem, 10vw, 13rem); line-height: .78; letter-spacing: -.105em; }
+.bim-showcase__title > span { display: inline-grid; place-items: center; width: 46px; height: 46px; margin-top: 22px; border: 1px solid rgba(0,213,255,.34); border-radius: 50%; color: var(--blue-2); }
+.bim-showcase__scene { position: relative; min-height: 1900px; margin-top: 8svh; }
+.bim-showcase__connectors { position: absolute; z-index: 1; inset: 18% max(24px, calc((100vw - 1480px)/2)) auto; width: min(100% - 48px, 1480px); height: 1180px; pointer-events: none; }
+.bim-showcase__connectors path { fill: none; stroke: rgba(0,213,255,.28); stroke-width: 1.25; stroke-dasharray: 8 14; filter: drop-shadow(0 0 12px rgba(0,213,255,.36)); }
+.bim-project-shot { position: absolute; z-index: 2; margin: 0; width: min(42vw, 610px); min-height: 430px; border: 1px solid var(--line); border-radius: 36px; box-shadow: 0 42px 120px rgba(0,0,0,.46); will-change: transform, opacity; }
+.bim-project-shot--one { left: 4%; top: 8%; }.bim-project-shot--two { left: 12%; top: 40%; }.bim-project-shot--three { left: 3%; top: 72%; }
+.bim-project-card { position: absolute; z-index: 3; right: 5%; width: min(34vw, 480px); padding: 26px; border: 1px solid var(--line); border-radius: 30px; background: rgba(3,5,10,.72); backdrop-filter: blur(20px); box-shadow: 0 28px 90px rgba(0,0,0,.35); will-change: transform, opacity; }
+.bim-project-card--one { top: 11%; }.bim-project-card--two { top: 43%; }.bim-project-card--three { top: 75%; }
+.bim-project-card span { color: var(--blue-2); font-size: .72rem; font-weight: 850; letter-spacing: .16em; text-transform: uppercase; }
+.bim-project-card h3 { margin: 12px 0; font-size: clamp(2rem, 3vw, 3.8rem); line-height: .88; letter-spacing: -.08em; }
+.bim-project-card p { color: var(--muted); line-height: 1.58; }.bim-project-card a { color: var(--white); font-weight: 850; }
+.bim-partner__visual img { position: absolute; inset: 0; z-index: 1; width: 100%; height: 100%; object-fit: cover; opacity: .45; }
+.bim-partner__visual::after { content: ""; position: absolute; inset: 0; z-index: 2; background: radial-gradient(circle at 55% 45%, transparent, rgba(3,5,10,.72)); }
+.bim-partner__panel, .bim-measure { z-index: 3; }
+.bim-footer { display: block; overflow: hidden; padding: clamp(54px, 7vw, 96px) clamp(22px, 4vw, 58px) 32px; }
+.bim-footer__big { position: absolute; left: 50%; bottom: -7vw; z-index: -1; transform: translateX(-50%); color: rgba(246,248,255,.035); font-size: clamp(9rem, 28vw, 32rem); font-weight: 850; letter-spacing: -.12em; line-height: .75; }
+.bim-footer__top { display: flex; justify-content: space-between; gap: 30px; padding-bottom: 38px; border-bottom: 1px solid var(--line); }
+.bim-footer__top p { max-width: 360px; margin: 0; color: var(--muted); font-size: 1.05rem; line-height: 1.55; }
+.bim-footer__grid { display: grid; grid-template-columns: 1.2fr 1fr 1.2fr 1fr; gap: 28px; padding: 38px 0; }
+.bim-footer__grid div { display: grid; align-content: start; gap: 10px; }.bim-footer__grid h3 { margin: 0 0 10px; color: var(--blue-2); font-size: .72rem; letter-spacing: .16em; text-transform: uppercase; }.bim-footer__grid a, .bim-footer__grid span { color: rgba(246,248,255,.7); }
+.bim-footer__bottom { display: flex; justify-content: space-between; gap: 20px; padding-top: 22px; border-top: 1px solid var(--line); color: var(--muted-2); font-size: .86rem; }
