@@ -22,61 +22,97 @@
   <link rel="stylesheet" href="css/responsive.css" />
 </head>
 <body class="orb-hero">
-  <div class="bim-orb-layer" aria-hidden="true">
-    <div class="bim-orb bim-orb-main">
-      <svg viewBox="0 0 800 800" class="bim-orb-svg" role="img">
-        <defs>
-          <radialGradient id="bimOrbCore" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stop-color="#00D5FF" stop-opacity="0.42" />
-            <stop offset="42%" stop-color="#2F6BFF" stop-opacity="0.16" />
-            <stop offset="100%" stop-color="#03050A" stop-opacity="0" />
-          </radialGradient>
-          <filter id="bimOrbGlow" x="-40%" y="-40%" width="180%" height="180%">
-            <feGaussianBlur stdDeviation="5" result="blur" />
-            <feColorMatrix in="blur" type="matrix" values="0 0 0 0 0  0 0 0 0 0.65  0 0 0 0 1  0 0 0 .55 0" />
-            <feMerge><feMergeNode /><feMergeNode in="SourceGraphic" /></feMerge>
-          </filter>
-        </defs>
-        <rect class="bim-orb-fade" x="160" y="160" width="480" height="480" rx="240" />
-        <g class="bim-orb-ring bim-orb-ring--outer">
-          <circle cx="400" cy="400" r="362" />
-          <circle cx="400" cy="400" r="338" />
-        </g>
-        <g class="bim-orb-ring bim-orb-ring--mid">
-          <circle cx="400" cy="400" r="292" />
-          <circle cx="400" cy="400" r="246" />
-        </g>
-        <g class="bim-orb-ring bim-orb-ring--inner">
-          <circle cx="400" cy="400" r="184" />
-          <circle cx="400" cy="400" r="112" />
-        </g>
-        <g class="bim-orb-segments">
-          <path d="M400 62 A338 338 0 0 1 632 154" />
-          <path d="M742 400 A342 342 0 0 1 640 642" />
-          <path d="M400 707 A307 307 0 0 1 175 610" />
-          <path d="M103 400 A297 297 0 0 1 194 188" />
-          <path d="M400 154 A246 246 0 0 1 573 226" />
-          <path d="M600 505 A224 224 0 0 1 415 624" />
-          <path d="M240 520 A206 206 0 0 1 220 320" />
-        </g>
-        <g class="bim-orb-notches">
-          <path d="M400 26 L400 72" />
-          <path d="M400 728 L400 774" />
-          <path d="M26 400 L72 400" />
-          <path d="M728 400 L774 400" />
-          <path d="M620 130 L648 102" />
-          <path d="M152 648 L180 620" />
-          <path d="M152 152 L184 184" />
-          <path d="M618 618 L650 650" />
-        </g>
-        <g class="bim-orb-crosshair">
-          <path d="M296 400 H504" />
-          <path d="M400 296 V504" />
-          <circle cx="400" cy="400" r="38" />
-        </g>
-      </svg>
-    </div>
+
+
+<div class="bim-orb-layer" aria-hidden="true">
+  <div class="bim-signal-core bim-orb-main">
+    <svg viewBox="-400 -400 800 800" class="bim-signal-core__svg">
+      <defs>
+        <radialGradient id="signalCoreGlow" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="#00d5ff" stop-opacity="0.24" />
+          <stop offset="36%" stop-color="#2f6bff" stop-opacity="0.10" />
+          <stop offset="100%" stop-color="#03050a" stop-opacity="0" />
+        </radialGradient>
+
+        <filter id="signalBlueGlow" x="-80%" y="-80%" width="260%" height="260%">
+          <feGaussianBlur stdDeviation="4" result="blur" />
+          <feColorMatrix
+            in="blur"
+            type="matrix"
+            values="0 0 0 0 0
+                    0 0 0 0 .72
+                    0 0 0 0 1
+                    0 0 0 .72 0"
+          />
+          <feMerge>
+            <feMergeNode />
+            <feMergeNode in="SourceGraphic" />
+          </feMerge>
+        </filter>
+      </defs>
+
+      <circle class="signal-core-glow" cx="0" cy="0" r="265" />
+
+      <g class="signal-grid">
+        <path d="M-260 -80 H-120 M120 -80 H260" />
+        <path d="M-260 80 H-120 M120 80 H260" />
+        <path d="M-80 -260 V-120 M-80 120 V260" />
+        <path d="M80 -260 V-120 M80 120 V260" />
+        <path d="M-180 -180 L-115 -115 M180 -180 L115 -115 M-180 180 L-115 115 M180 180 L115 115" />
+      </g>
+
+      <g class="signal-orbits">
+        <circle class="signal-orbit signal-orbit--outer" cx="0" cy="0" r="318" />
+        <circle class="signal-orbit signal-orbit--main" cx="0" cy="0" r="282" />
+        <circle class="signal-orbit signal-orbit--mid" cx="0" cy="0" r="214" />
+        <circle class="signal-orbit signal-orbit--inner" cx="0" cy="0" r="92" />
+      </g>
+
+      <g class="signal-brackets">
+        <path d="M-302 -190 V-302 H-190" />
+        <path d="M190 -302 H302 V-190" />
+        <path d="M302 190 V302 H190" />
+        <path d="M-190 302 H-302 V190" />
+      </g>
+
+      <g class="signal-circuits">
+        <path class="signal-circuit signal-circuit--one" pathLength="100" d="M0 -282 V-338 H92 L116 -362 H184" />
+        <path class="signal-circuit signal-circuit--two" pathLength="100" d="M282 0 H338 V82 L366 110 V174" />
+        <path class="signal-circuit signal-circuit--three" pathLength="100" d="M0 282 V338 H-88 L-116 366 H-176" />
+        <path class="signal-circuit signal-circuit--four" pathLength="100" d="M-282 0 H-338 V-82 L-366 -110 V-174" />
+      </g>
+
+      <g class="signal-ticks">
+        <path d="M0 -352 V-318" />
+        <path d="M352 0 H318" />
+        <path d="M0 352 V318" />
+        <path d="M-352 0 H-318" />
+        <path d="M249 -249 L226 -226" />
+        <path d="M249 249 L226 226" />
+        <path d="M-249 249 L-226 226" />
+        <path d="M-249 -249 L-226 -226" />
+      </g>
+
+      <g class="signal-nodes">
+        <circle class="signal-node signal-node--01" cx="0" cy="-282" r="7" />
+        <circle class="signal-node signal-node--02" cx="282" cy="0" r="7" />
+        <circle class="signal-node signal-node--03" cx="0" cy="282" r="7" />
+        <circle class="signal-node signal-node--04" cx="-282" cy="0" r="7" />
+        <circle class="signal-node signal-node--ghost" cx="199" cy="-199" r="4" />
+        <circle class="signal-node signal-node--ghost" cx="199" cy="199" r="4" />
+        <circle class="signal-node signal-node--ghost" cx="-199" cy="199" r="4" />
+        <circle class="signal-node signal-node--ghost" cx="-199" cy="-199" r="4" />
+      </g>
+
+      <g class="signal-center">
+        <rect x="-46" y="-46" width="92" height="92" rx="22" />
+        <path d="M-13 -24 H10 C27 -24 36 -16 36 -3 C36 8 30 15 20 18 C32 21 39 30 39 42 C39 57 27 66 8 66 H-13 V-24 Z" transform="translate(-10 -22) scale(.72)" />
+        <path d="M-18 0 H18 M0 -18 V18" />
+      </g>
+    </svg>
   </div>
+</div>
+  
   <header class="bim-header" data-header>
     <a class="bim-brand" href="#top" aria-label="Bim Labs home">
       <span class="bim-brand__mark" aria-hidden="true">B</span>
