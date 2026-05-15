@@ -60,6 +60,18 @@ document.addEventListener("DOMContentLoaded", () => {
     if (image.complete && image.naturalWidth === 0) markMissing();
   });
 
+  const updateDividers = () => {
+    document.querySelectorAll("[data-divider]").forEach((divider) => {
+      const line = divider.querySelector(".bim-divider__line");
+      const value = divider.querySelector(".bim-divider__value");
+      if (!line || !value) return;
+      value.textContent = `${Math.round(line.getBoundingClientRect().width)}px`;
+    });
+  };
+
+  updateDividers();
+  window.addEventListener("resize", updateDividers);
+
   const resizeCanvas = () => {
     if (!canvas || !ctx) return;
     const ratio = Math.min(window.devicePixelRatio || 1, 2);

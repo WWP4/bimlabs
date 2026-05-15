@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Bim Labs | Websites, AI Systems & Client Portals</title>
   <meta name="description" content="Bim Labs builds premium websites, AI workflows, client portals, and automation systems for lean teams that need polished digital execution." />
+  <meta name="theme-color" content="#03050A" />
+  <meta property="og:title" content="Bim Labs | Websites, AI Systems & Client Portals" />
+  <meta property="og:description" content="Premium websites, AI workflows, client portals, and automation systems for lean teams." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
@@ -18,114 +21,113 @@
   <link rel="stylesheet" href="css/responsive.css" />
 </head>
 <body>
-  <header class="site-header" data-site-header>
-    <a class="brand" href="#top" aria-label="Bim Labs home">
-      <span class="brand-mark" aria-hidden="true">B</span>
-      <span class="brand-word">Bim Labs</span>
+  <header class="bim-header" data-header>
+    <a class="bim-brand" href="#top" aria-label="Bim Labs home">
+      <span class="bim-brand__mark" aria-hidden="true">B</span>
+      <span class="bim-brand__name">Bim Labs</span>
     </a>
-    <nav class="nav-links" aria-label="Primary navigation">
+    <nav class="bim-nav" aria-label="Primary navigation">
       <a href="#work">Work</a>
       <a href="#services">Services</a>
-      <a href="#about">About</a>
+      <a href="#process">Process</a>
       <a href="#contact">Contact</a>
     </nav>
-    <a class="header-cta magnetic" href="#contact"><span>Start a project</span></a>
+    <a class="bim-header__cta bim-button bim-button--small" href="#contact" data-glow-button>Start a project</a>
   </header>
 
-  <main id="top" class="page--home">
-    <div id="background" class="background-logo-wrapper" aria-hidden="true">
+  <main id="top" class="bim-home">
+    <div class="bim-background" aria-hidden="true">
       <canvas id="background-canvas"></canvas>
-      <div class="ambient-orb ambient-orb--one"></div>
-      <div class="ambient-orb ambient-orb--two"></div>
+      <div class="bim-background__wash bim-background__wash--left"></div>
+      <div class="bim-background__wash bim-background__wash--right"></div>
     </div>
 
-    <section class="section HomeHero" aria-labelledby="hero-title">
-      <div class="hero-shell">
-        <div class="ambient-cursor ambient-cursor--ben" aria-hidden="true">
-          <span class="cursor-arrow"></span><strong>Ben</strong>
-        </div>
-        <div class="ambient-cursor ambient-cursor--brand" aria-hidden="true">
-          <span class="cursor-arrow"></span><strong>Bim Labs</strong>
-        </div>
-        <p class="eyebrow">Bim Labs</p>
+    <section class="bim-hero HomeHero" aria-labelledby="hero-title" data-hero>
+      <div class="bim-hero__center" data-hero-content>
+        <div class="bim-cursor-label bim-cursor-label--one" aria-hidden="true"><span></span>Ben</div>
+        <div class="bim-cursor-label bim-cursor-label--two" aria-hidden="true"><span></span>Bim Labs</div>
+        <p class="bim-eyebrow">Bim Labs</p>
         <h1 id="hero-title">Websites, AI systems, and portals that feel in-house.</h1>
-        <p class="hero-subline">Senior-level design and automation for businesses that need polished digital systems, not another basic website.</p>
-        <a class="btn btn-primary magnetic" href="#contact"><span>Start a project</span></a>
-        <p class="hero-note">Replies in 24 hours. No obligation.</p>
+        <p class="bim-hero__text">Senior-level design and automation for businesses that need polished digital systems, not another basic website.</p>
+        <div class="bim-hero__actions">
+          <a class="bim-button bim-button--primary" href="#contact" data-glow-button>Start a project</a>
+          <a class="bim-button bim-button--ghost" href="#work" data-glow-button>View work</a>
+        </div>
+        <p class="bim-note">Replies in 24 hours. No obligation.</p>
       </div>
     </section>
 
-    <section id="services" class="section HomeQuadrants" aria-labelledby="services-title">
-      <div class="section-rule" aria-hidden="true"><span></span><em>services</em><span></span></div>
+    <section id="services" class="bim-quadrants HomeQuadrants" aria-labelledby="services-title">
+      <div class="bim-reactive-divider bim-reactive-divider--top" data-divider aria-hidden="true">
+        <span class="bim-divider__anchor"></span>
+        <span class="bim-divider__line"><em class="bim-divider__value">0px</em></span>
+        <span class="bim-divider__anchor"></span>
+      </div>
       <h2 id="services-title" class="sr-only">Services</h2>
-      <div class="quadrant-grid">
-        <a class="quadrant" href="#contact" data-tilt>
-          <span class="quadrant-number">01</span>
-          <div class="quadrant-preview" aria-hidden="true"><span></span><i></i><b></b></div>
-          <div class="quadrant-copy">
+      <div class="bim-quadrants__grid" data-quadrants>
+        <article class="bim-quadrant is-active" tabindex="0" data-quadrant>
+          <div class="bim-quadrant__bg" aria-hidden="true"></div>
+          <span class="bim-quadrant__number">01</span>
+          <div class="bim-quadrant__preview" aria-hidden="true"><i></i><i></i><i></i></div>
+          <div class="bim-quadrant__copy">
             <h3>Web Experiences</h3>
-            <p>Editorial pages, conversion flows, and digital products shaped around the way your buyers actually decide.</p>
-            <em>Explore</em>
+            <p>Premium websites built around trust, clarity, and conversion.</p>
+            <a href="#contact">Explore</a>
           </div>
-        </a>
-        <a class="quadrant" href="#contact" data-tilt>
-          <span class="quadrant-number">02</span>
-          <div class="quadrant-preview" aria-hidden="true"><span></span><i></i><b></b></div>
-          <div class="quadrant-copy">
+        </article>
+        <article class="bim-quadrant" tabindex="0" data-quadrant>
+          <div class="bim-quadrant__bg" aria-hidden="true"></div>
+          <span class="bim-quadrant__number">02</span>
+          <div class="bim-quadrant__preview" aria-hidden="true"><i></i><i></i><i></i></div>
+          <div class="bim-quadrant__copy">
             <h3>High-Performance Websites</h3>
-            <p>Premium marketing systems with sharp structure, fast pages, clean content, and launch-ready polish.</p>
-            <em>Explore</em>
+            <p>Fast, polished pages that make the offer easier to understand and act on.</p>
+            <a href="#contact">Explore</a>
           </div>
-        </a>
-        <a class="quadrant" href="#contact" data-tilt>
-          <span class="quadrant-number">03</span>
-          <div class="quadrant-preview" aria-hidden="true"><span></span><i></i><b></b></div>
-          <div class="quadrant-copy">
+        </article>
+        <article class="bim-quadrant" tabindex="0" data-quadrant>
+          <div class="bim-quadrant__bg" aria-hidden="true"></div>
+          <span class="bim-quadrant__number">03</span>
+          <div class="bim-quadrant__preview" aria-hidden="true"><i></i><i></i><i></i></div>
+          <div class="bim-quadrant__copy">
             <h3>AI Workflows</h3>
-            <p>Guided assistants and internal automations that qualify, route, summarize, and move work forward.</p>
-            <em>Explore</em>
+            <p>Guided AI systems that qualify leads, answer questions, and move projects forward.</p>
+            <a href="#contact">Explore</a>
           </div>
-        </a>
-        <a class="quadrant" href="#contact" data-tilt>
-          <span class="quadrant-number">04</span>
-          <div class="quadrant-preview" aria-hidden="true"><span></span><i></i><b></b></div>
-          <div class="quadrant-copy">
+        </article>
+        <article class="bim-quadrant" tabindex="0" data-quadrant>
+          <div class="bim-quadrant__bg" aria-hidden="true"></div>
+          <span class="bim-quadrant__number">04</span>
+          <div class="bim-quadrant__preview" aria-hidden="true"><i></i><i></i><i></i></div>
+          <div class="bim-quadrant__copy">
             <h3>Client Portals &amp; Automation</h3>
-            <p>Customer hubs for grants, quotes, files, decisions, next steps, and the operational logic behind them.</p>
-            <em>Explore</em>
+            <p>Customer portals and internal flows that make the business feel organized.</p>
+            <a href="#contact">Explore</a>
           </div>
-        </a>
+        </article>
       </div>
     </section>
 
-    <section id="proof" class="section TestimonialCaseStudyBlock" aria-labelledby="proof-title">
-      <div class="proof-grid">
-        <div class="proof-copy reveal">
-          <p class="eyebrow">Connected proof</p>
-          <h2 id="proof-title">Why Wonder World needed more than a website.</h2>
-          <p>We built a connected sales and project flow around grants, quotes, customer education, internal operations, and project planning.</p>
-          <div class="built-for" aria-label="Built for">
-            <span>Built for</span><strong>Wonder World</strong><strong>Orynd AI</strong><strong>Quote Systems</strong>
-          </div>
-        </div>
-        <div class="proof-stage reveal">
-          <figure class="mockup-card mockup-card--large media-fallback">
-            <img src="assets/wonder-world-portal.png" alt="Wonder World portal preview" loading="lazy" />
-            <figcaption><span>Portal</span><strong>Grant status, project files, and customer next steps.</strong></figcaption>
-          </figure>
-          <figure class="mockup-card mockup-card--small media-fallback">
-            <img src="assets/orynd-ai-preview.png" alt="Orynd AI workflow preview" loading="lazy" />
-            <figcaption><span>AI</span><strong>Guided project planning.</strong></figcaption>
-          </figure>
-          <figure class="mockup-card mockup-card--small media-fallback">
-            <img src="assets/quote-system-preview.png" alt="Quote system preview" loading="lazy" />
-            <figcaption><span>Quotes</span><strong>Clear approvals and routing.</strong></figcaption>
-          </figure>
-        </div>
-        <blockquote class="testimonial reveal">
-          <p>“Everything finally felt connected.”</p>
-          <cite>Internal project system / Bim Labs build</cite>
-        </blockquote>
+    <section class="bim-case-study TestimonialCaseStudyBlock" aria-labelledby="case-title">
+      <div class="bim-case-study__copy" data-reveal>
+        <p class="bim-eyebrow">Featured System</p>
+        <h2 id="case-title">Why Wonder World needed more than a website.</h2>
+        <p>We built a connected sales and project flow around grants, quotes, customer education, internal operations, and project planning.</p>
+        <div class="bim-built-row" aria-label="Built for"><span>Built for</span><strong>Wonder World</strong><strong>Orynd AI</strong><strong>Quote System</strong></div>
+      </div>
+      <div class="bim-case-study__stage" data-reveal>
+        <figure class="bim-media bim-media--hero" data-fallback-label="Wonder World" data-fallback-title="Portal system">
+          <img src="assets/wonder-world-portal.png" alt="Wonder World portal preview" loading="lazy" />
+          <figcaption><span>Portal</span><strong>Grant status, quotes, customer education, and next steps.</strong></figcaption>
+        </figure>
+        <figure class="bim-media bim-media--float bim-media--float-one" data-fallback-label="Orynd AI" data-fallback-title="Planning workflow">
+          <img src="assets/orynd-ai-preview.png" alt="Orynd AI preview" loading="lazy" />
+          <figcaption><span>AI</span><strong>Guided project routing.</strong></figcaption>
+        </figure>
+        <figure class="bim-media bim-media--float bim-media--float-two" data-fallback-label="Quotes" data-fallback-title="Approval flow">
+          <img src="assets/quote-system-preview.png" alt="Quote system preview" loading="lazy" />
+          <figcaption><span>Quotes</span><strong>Clear approvals.</strong></figcaption>
+        </figure>
       </div>
       <blockquote class="bim-testimonial" data-reveal>
         <p>“Everything finally felt connected.”</p>
@@ -133,84 +135,90 @@
       </blockquote>
     </section>
 
-    <section id="work" class="section HomeShowcase" aria-labelledby="showcase-title">
-      <div class="showcase-cursor" data-showcase-cursor aria-hidden="true">View system</div>
-      <div class="showcase-intro">
-        <p class="eyebrow">What we do</p>
+    <section id="work" class="bim-showcase HomeShowcase" aria-labelledby="showcase-title" data-showcase>
+      <div class="bim-showcase__cursor" data-showcase-cursor aria-hidden="true">View system</div>
+      <div class="bim-showcase__intro">
+        <p class="bim-eyebrow">What we do</p>
         <h2 id="showcase-title">Showcase</h2>
       </div>
-      <div class="showcase-reel" data-showcase-reel>
-        <article class="project-card media-fallback">
+      <div class="bim-showcase__track" data-showcase-track>
+        <article class="bim-project bim-media" data-fallback-label="Client Portal" data-fallback-title="Wonder World Portal">
           <img src="assets/wonder-world-portal.png" alt="Wonder World Portal screenshot" loading="lazy" />
-          <div class="project-caption"><span>Client Portal</span><h3>Wonder World Portal</h3><p>Grant applications, quotes, project files, and customer next steps in one place.</p></div>
+          <div class="bim-project__caption"><span>Client Portal</span><h3>Wonder World Portal</h3><p>Grant applications, quotes, project files, and customer next steps in one place.</p></div>
         </article>
-        <article class="project-card media-fallback">
+        <article class="bim-project bim-media" data-fallback-label="AI Workflow" data-fallback-title="Orynd AI">
           <img src="assets/orynd-ai-preview.png" alt="Orynd AI screenshot" loading="lazy" />
-          <div class="project-caption"><span>AI Workflow</span><h3>Orynd AI</h3><p>A guided planning assistant for budget, equipment, surfacing, quotes, and project routing.</p></div>
+          <div class="bim-project__caption"><span>AI Workflow</span><h3>Orynd AI</h3><p>A guided planning assistant for budget, equipment, surfacing, quotes, and project routing.</p></div>
         </article>
-        <article class="project-card media-fallback">
+        <article class="bim-project bim-media" data-fallback-label="Partner System" data-fallback-title="Momentum Athlete">
           <img src="assets/quote-system-preview.png" alt="Momentum Athlete partner system screenshot" loading="lazy" />
-          <div class="project-caption"><span>Partner System</span><h3>Momentum Athlete</h3><p>A premium partner presentation and portal system for athletic education programs.</p></div>
+          <div class="bim-project__caption"><span>Partner System</span><h3>Momentum Athlete</h3><p>A premium partner presentation and portal system for athletic education programs.</p></div>
         </article>
       </div>
     </section>
 
-    <section class="section HomeShowcaseMobile" aria-label="Mobile showcase">
-      <div class="mobile-projects">
-        <article class="mobile-project media-fallback"><img src="assets/wonder-world-portal.png" alt="Wonder World Portal screenshot" loading="lazy" /><span>Client Portal</span><h3>Wonder World Portal</h3><p>Grant applications, quotes, project files, and customer next steps in one place.</p></article>
-        <article class="mobile-project media-fallback"><img src="assets/orynd-ai-preview.png" alt="Orynd AI screenshot" loading="lazy" /><span>AI Workflow</span><h3>Orynd AI</h3><p>A guided planning assistant for budget, equipment, surfacing, quotes, and project routing.</p></article>
-        <article class="mobile-project media-fallback"><img src="assets/quote-system-preview.png" alt="Momentum Athlete partner system screenshot" loading="lazy" /><span>Partner System</span><h3>Momentum Athlete</h3><p>A premium partner presentation and portal system for athletic education programs.</p></article>
-      </div>
+    <section class="bim-showcase-mobile HomeShowcaseMobile" aria-label="Mobile showcase">
+      <article class="bim-mobile-project bim-media" data-fallback-label="Client Portal" data-fallback-title="Wonder World Portal"><img src="assets/wonder-world-portal.png" alt="Wonder World Portal screenshot" loading="lazy" /><span>Client Portal</span><h3>Wonder World Portal</h3><p>Grant applications, quotes, project files, and customer next steps in one place.</p></article>
+      <article class="bim-mobile-project bim-media" data-fallback-label="AI Workflow" data-fallback-title="Orynd AI"><img src="assets/orynd-ai-preview.png" alt="Orynd AI screenshot" loading="lazy" /><span>AI Workflow</span><h3>Orynd AI</h3><p>A guided planning assistant for budget, equipment, surfacing, quotes, and project routing.</p></article>
+      <article class="bim-mobile-project bim-media" data-fallback-label="Partner System" data-fallback-title="Momentum Athlete"><img src="assets/quote-system-preview.png" alt="Momentum Athlete partner system screenshot" loading="lazy" /><span>Partner System</span><h3>Momentum Athlete</h3><p>A premium partner presentation and portal system for athletic education programs.</p></article>
     </section>
 
-    <section id="partner" class="section HomePartner" aria-labelledby="partner-title">
-      <div class="partner-visual reveal" aria-hidden="true">
-        <div class="measurement-card"><span>execution width</span><strong>site + portal + AI</strong><i></i></div>
-        <div class="blue-measure blue-measure--x"></div>
-        <div class="blue-measure blue-measure--y"></div>
+    <section class="bim-partner HomePartner" aria-labelledby="partner-title">
+      <div class="bim-partner__visual" aria-hidden="true" data-reveal>
+        <div class="bim-measure bim-measure--top"></div>
+        <div class="bim-measure bim-measure--side"></div>
+        <div class="bim-partner__panel"><span>execution stack</span><strong>website + portal + AI</strong><i></i></div>
       </div>
-      <div class="partner-copy reveal">
-        <p class="eyebrow">For founders and lean teams</p>
+      <div class="bim-partner__copy" data-reveal>
+        <p class="bim-eyebrow">For Lean Teams</p>
         <h2 id="partner-title">Scale your digital execution without hiring a full team.</h2>
         <p>Bim Labs helps founders and lean teams turn websites, portals, AI workflows, and automations into one polished operating system.</p>
-        <a class="btn btn-secondary magnetic" href="#contact"><span>Partner with Bim Labs</span></a>
+        <a class="bim-button bim-button--ghost" href="#contact" data-glow-button>Partner with Bim Labs</a>
       </div>
     </section>
 
-    <section id="about" class="section HomeWheel" aria-labelledby="wheel-title">
-      <div class="wheel-shell">
-        <svg class="wheel-path" viewBox="-420 0 1840 520" preserveAspectRatio="none" aria-hidden="true">
-          <path d="M-420,165 C120,470 760,470 1420,165" />
-        </svg>
-        <div class="wheel-center"><p class="eyebrow">Why it works</p><h2 id="wheel-title">Built like a product team, not an agency queue.</h2></div>
-        <div class="wheel-block is-active" data-wheel-block><span>01</span><h3>Direct access to the builder</h3><p>No account-manager maze. The person shaping the system is in the conversation.</p></div>
-        <div class="wheel-block" data-wheel-block><span>02</span><h3>Strategy, design, and build in one flow</h3><p>Positioning, UX, interface, automation, and launch decisions stay connected.</p></div>
-        <div class="wheel-block" data-wheel-block><span>03</span><h3>Systems designed like products</h3><p>Your website, portal, and AI workflow feel consistent because they are planned together.</p></div>
-        <div class="wheel-block" data-wheel-block><span>04</span><h3>Launch support without agency bloat</h3><p>Clean handoff, useful documentation, and practical iteration after the first release.</p></div>
+    <section id="process" class="bim-wheel HomeWheel" aria-labelledby="process-title" data-wheel>
+      <svg class="bim-wheel__path" viewBox="0 0 1200 520" preserveAspectRatio="none" aria-hidden="true">
+        <path d="M40 360 C260 80 520 80 710 260 C875 420 1045 400 1160 160" />
+      </svg>
+      <div class="bim-wheel__center" data-reveal>
+        <p class="bim-eyebrow">Process</p>
+        <h2 id="process-title">A product-minded build rhythm.</h2>
+      </div>
+      <div class="bim-wheel__values">
+        <article class="bim-wheel-card is-active" data-wheel-card><span>01</span><h3>Direct access to the builder</h3><p>You work with the person designing and building the system, not a handoff chain.</p></article>
+        <article class="bim-wheel-card" data-wheel-card><span>02</span><h3>Strategy, design, and build in one flow</h3><p>Offer clarity, UX, interface, automation, and launch logic stay connected.</p></article>
+        <article class="bim-wheel-card" data-wheel-card><span>03</span><h3>Systems designed like products</h3><p>Your site, portal, and workflows share one experience language.</p></article>
+        <article class="bim-wheel-card" data-wheel-card><span>04</span><h3>Launch support without agency bloat</h3><p>You get practical support, clear documentation, and iteration after launch.</p></article>
       </div>
     </section>
 
-    <section id="contact" class="section HomeCta" aria-labelledby="cta-title">
-      <div class="cta-shell reveal">
-        <p class="eyebrow">Start a project</p>
+    <section id="contact" class="bim-cta HomeCta" aria-labelledby="cta-title">
+      <div class="bim-cta__inner" data-reveal>
+        <p class="bim-eyebrow">Start a Project</p>
         <h2 id="cta-title">Give your business the system it deserves.</h2>
+        <div class="bim-reactive-divider bim-reactive-divider--cta" data-divider aria-hidden="true">
+          <span class="bim-divider__anchor"></span>
+          <span class="bim-divider__line"><em class="bim-divider__value">0px</em></span>
+          <span class="bim-divider__anchor"></span>
+        </div>
         <p>Stop duct-taping tools together. Build a website, portal, or AI workflow that feels polished, clear, and ready to scale.</p>
-        <a class="btn btn-primary magnetic" href="mailto:hello@bimlabs.com?subject=Bim%20Labs%20project"><span>Start a project</span></a>
+        <a class="bim-button bim-button--primary" href="mailto:bimlabsstudio@gmail.com?subject=Bim%20Labs%20project" aria-label="Email Bim Labs to start a project" data-glow-button>Start a project</a>
         <small>Replies in 24 hours. No obligation.</small>
       </div>
     </section>
   </main>
 
-  <footer class="site-footer">
-    <a href="#top" class="footer-brand">Bim Labs</a>
-    <div class="footer-links">
-      <a href="mailto:hello@bimlabs.com">hello@bimlabs.com</a>
+  <footer class="bim-footer">
+    <a href="#top" class="bim-footer__brand">Bim Labs</a>
+    <nav class="bim-footer__links" aria-label="Footer navigation">
+      <a href="mailto:bimlabsstudio@gmail.com" aria-label="Email Bim Labs">bimlabsstudio@gmail.com</a>
       <a href="#work">Work</a>
       <a href="#services">Services</a>
       <a href="#contact">Contact</a>
-    </div>
+    </nav>
   </footer>
 
-  <script src="app.js" defer></script>
+  <script src="js/app.js" defer></script>
 </body>
 </html>

@@ -1,16 +1,40 @@
-.HomeWheel { width: 100%; padding-inline: max(24px, calc((100vw - 1440px) / 2)); overflow: hidden; }
-.wheel-shell { position: relative; min-height: 820px; display: grid; place-items: center; border-block: 1px solid var(--line); }
-.wheel-path { position: absolute; inset: 6% -8% auto; width: 116%; height: 58%; }
-.wheel-path path { fill: none; stroke: var(--blue); stroke-width: 2; stroke-dasharray: 10 18; opacity: .55; filter: drop-shadow(0 0 18px rgba(47,107,255,.8)); animation: dash 18s linear infinite; }
-@keyframes dash { to { stroke-dashoffset: -500; } }
-.wheel-center { max-width: 760px; text-align: center; }
-.wheel-center h2 { margin: 0; font-size: clamp(2.8rem, 5vw, 6.7rem); font-weight: 800; line-height: .9; letter-spacing: -.08em; text-wrap: balance; }
-.wheel-block { position: absolute; width: min(330px, 24vw); padding: 22px; border: 1px solid var(--line); border-radius: 26px; background: rgba(11,18,32,.58); backdrop-filter: blur(18px); opacity: .55; transform: translateY(16px); transition: opacity .5s var(--ease), transform .5s var(--ease), border-color .5s var(--ease), box-shadow .5s var(--ease); }
-.wheel-block.is-active, .wheel-block:hover { opacity: 1; transform: none; border-color: rgba(0,213,255,.32); box-shadow: 0 28px 90px rgba(47,107,255,.16); }
-.wheel-block:nth-of-type(2) { left: 3%; right: auto; top: 17%; bottom: auto; }
-.wheel-block:nth-of-type(3) { right: 8%; left: auto; top: 15%; bottom: auto; }
-.wheel-block:nth-of-type(4) { left: 10%; right: auto; bottom: 12%; top: auto; }
-.wheel-block:nth-of-type(5) { right: 3%; left: auto; bottom: 16%; top: auto; }
-.wheel-block span { color: var(--blue-2); font-size: .78rem; font-weight: 850; }
-.wheel-block h3 { margin: 10px 0 10px; font-size: clamp(1.22rem, 1.5vw, 1.7rem); line-height: 1; letter-spacing: -.05em; }
-.wheel-block p { margin: 0; color: var(--muted); font-size: .95rem; line-height: 1.55; }
+.bim-quadrants { position: relative; width: 100%; padding: 0; background: linear-gradient(180deg, rgba(3,5,10,0), rgba(3,5,10,.82) 20%, var(--bg)); }
+.bim-quadrants__intro { width: var(--container); margin: 0 auto clamp(28px, 4vw, 60px); display: grid; grid-template-columns: minmax(0, 1fr) minmax(260px, .45fr); align-items: end; gap: 32px; }
+.bim-quadrants__intro h2 { max-width: 900px; margin: 0; font-size: clamp(3rem, 7vw, 9rem); font-weight: 800; line-height: .84; letter-spacing: -.09em; text-wrap: balance; }
+.bim-quadrants__grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); width: 100%; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.bim-quadrant { --mx: 50%; --my: 50%; position: relative; min-height: clamp(480px, 45vw, 690px); display: flex; flex-direction: column; justify-content: space-between; padding: clamp(30px, 4.4vw, 74px); overflow: hidden; border-right: 1px solid var(--line); background: rgba(3,5,10,.7); outline: 0; transition: background .55s var(--ease), box-shadow .55s var(--ease); }
+.bim-quadrant:nth-child(2n) { border-right: 0; }
+.bim-quadrant:nth-child(-n+2) { border-bottom: 1px solid var(--line); }
+.bim-quadrant__bg { position: absolute; inset: 0; opacity: 0; background: radial-gradient(circle at var(--mx) var(--my), rgba(0,213,255,.18), transparent 34%), linear-gradient(135deg, rgba(47,107,255,.12), transparent 48%); transition: opacity .55s var(--ease); }
+.bim-quadrant__number { position: relative; z-index: 2; color: var(--blue-2); font-size: .86rem; font-weight: 850; letter-spacing: .14em; }
+.bim-quadrant__preview { position: absolute; top: 12%; right: 8%; width: min(44%, 360px); aspect-ratio: 1.18; border: 1px solid rgba(246,248,255,.1); border-radius: 28px; background: linear-gradient(180deg, rgba(16,26,46,.76), rgba(3,5,10,.42)); opacity: .42; transform: translate3d(14px, 18px, 0) rotate(-5deg) scale(.96); transition: opacity .65s var(--ease), transform .65s var(--ease); }
+.bim-quadrant__preview i { position: absolute; left: 13%; height: 10px; border-radius: 999px; background: linear-gradient(90deg, var(--blue-2), rgba(47,107,255,.1)); box-shadow: 0 0 24px rgba(0,213,255,.28); }
+.bim-quadrant__preview i:nth-child(1) { top: 25%; right: 16%; }
+.bim-quadrant__preview i:nth-child(2) { top: 45%; right: 32%; }
+.bim-quadrant__preview i:nth-child(3) { bottom: 24%; width: 38%; }
+.bim-quadrant__copy { position: relative; z-index: 2; max-width: 650px; margin-top: auto; transform: translateY(34px); transition: transform .55s var(--ease); }
+.bim-quadrant__copy h3 { margin: 0; font-size: clamp(2.55rem, 4.9vw, 7rem); font-weight: 790; line-height: .84; letter-spacing: -.086em; text-wrap: balance; }
+.bim-quadrant__copy p { max-width: 560px; margin: 20px 0 24px; color: var(--muted); font-size: clamp(1rem, 1.12vw, 1.18rem); line-height: 1.62; opacity: .25; transform: translateY(18px); transition: opacity .5s var(--ease), transform .5s var(--ease); }
+.bim-quadrant__copy a { color: var(--text); font-size: .82rem; font-weight: 850; letter-spacing: .14em; text-transform: uppercase; opacity: .35; transition: opacity .45s var(--ease), color .45s var(--ease); }
+.bim-quadrant:is(:hover, :focus-within, .is-active) { background: rgba(6,11,20,.82); box-shadow: inset 0 0 0 1px rgba(0,213,255,.12); }
+.bim-quadrant:is(:hover, :focus-within, .is-active) .bim-quadrant__bg { opacity: 1; }
+.bim-quadrant:is(:hover, :focus-within, .is-active) .bim-quadrant__preview { opacity: 1; transform: translate3d(0, -8px, 0) rotate(-1deg) scale(1); }
+.bim-quadrant:is(:hover, :focus-within, .is-active) .bim-quadrant__copy { transform: none; }
+.bim-quadrant:is(:hover, :focus-within, .is-active) .bim-quadrant__copy p, .bim-quadrant:is(:hover, :focus-within, .is-active) .bim-quadrant__copy a { opacity: 1; transform: none; }
+.bim-quadrant__copy a:hover { color: var(--blue-2); }
+.bim-wheel { position: relative; width: 100%; min-height: 100svh; padding: clamp(120px, 14vw, 220px) max(24px, calc((100vw - 1480px) / 2)); overflow: hidden; display: grid; place-items: center; border-block: 1px solid var(--line); background: linear-gradient(180deg, rgba(3,5,10,.4), rgba(6,11,20,.74), rgba(3,5,10,.5)); }
+.bim-wheel__path { position: absolute; inset: 8% -4% auto; width: 108%; height: 58%; opacity: .7; }
+.bim-wheel__path path { fill: none; stroke: var(--blue); stroke-width: 2; stroke-dasharray: 10 18; filter: drop-shadow(0 0 16px rgba(47,107,255,.85)); animation: wheelDash 18s linear infinite; }
+@keyframes wheelDash { to { stroke-dashoffset: -520; } }
+.bim-wheel__center { max-width: 740px; text-align: center; }
+.bim-wheel__center h2 { margin: 0; font-size: clamp(3rem, 5.7vw, 7.6rem); font-weight: 800; line-height: .86; letter-spacing: -.09em; text-wrap: balance; }
+.bim-wheel__values { position: absolute; inset: 0; }
+.bim-wheel-card { position: absolute; width: min(360px, 25vw); padding: 24px; border: 1px solid var(--line); border-radius: 28px; background: rgba(11,18,32,.6); backdrop-filter: blur(18px); opacity: .52; transform: translateY(18px); transition: opacity .5s var(--ease), transform .5s var(--ease), border-color .5s var(--ease), box-shadow .5s var(--ease); }
+.bim-wheel-card:nth-child(1) { left: 6%; top: 18%; }
+.bim-wheel-card:nth-child(2) { right: 7%; top: 17%; }
+.bim-wheel-card:nth-child(3) { left: 12%; bottom: 14%; }
+.bim-wheel-card:nth-child(4) { right: 4%; bottom: 16%; }
+.bim-wheel-card.is-active, .bim-wheel-card:hover { opacity: 1; transform: none; border-color: rgba(0,213,255,.36); box-shadow: 0 26px 90px rgba(47,107,255,.18); }
+.bim-wheel-card span { color: var(--blue-2); font-size: .78rem; font-weight: 850; }
+.bim-wheel-card h3 { margin: 10px 0; font-size: clamp(1.2rem, 1.55vw, 1.8rem); line-height: 1; letter-spacing: -.055em; }
+.bim-wheel-card p { margin: 0; color: var(--muted); font-size: .96rem; line-height: 1.55; }

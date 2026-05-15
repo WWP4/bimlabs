@@ -1,10 +1,1 @@
-.HomeCta { min-height: 100svh; display: grid; place-items: center; text-align: center; }
-.cta-shell { width: min(100%, 1120px); margin-inline: auto; }
-.cta-shell h2 { margin: 0; font-size: clamp(4rem, 9.2vw, 12rem); font-weight: 800; line-height: .82; letter-spacing: -.1em; text-wrap: balance; }
-.cta-shell p:not(.eyebrow) { max-width: 760px; margin: 30px auto 34px; color: var(--muted); font-size: clamp(1.06rem, 1.5vw, 1.42rem); line-height: 1.6; }
-.cta-shell small { display: block; margin-top: 16px; color: rgba(246,248,255,.48); font-weight: 750; }
-.site-footer { position: relative; z-index: 2; min-height: 96px; display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 28px clamp(22px, 4vw, 56px); border-top: 1px solid var(--line); background: #020308; color: rgba(246,248,255,.72); }
-.footer-brand { color: var(--text); font-weight: 850; letter-spacing: -.04em; }
-.footer-links { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 18px 28px; font-size: .9rem; font-weight: 720; }
-.footer-links a { transition: color .25s ease; }
-.footer-links a:hover { color: var(--blue-2); }
+/* The current homepage uses a mailto CTA instead of a full contact form. */
