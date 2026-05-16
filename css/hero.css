@@ -1,44 +1,185 @@
-.bim-hero {
-  position: relative;
+.hero {
   min-height: 100svh;
-  width: var(--container);
-  margin-inline: auto;
   display: grid;
-  place-items: center;
-  padding: calc(var(--header-h) + 54px) 0 80px;
+  align-items: center;
+  padding-top: calc(var(--header-h) + 68px);
+  overflow: hidden;
 }
 
-.bim-hero__center {
+.hero::after {
+  content: "";
+  position: absolute;
+  right: max(-12vw, -180px);
+  top: 12%;
+  width: min(46vw, 680px);
+  aspect-ratio: 1;
+  border: 1px solid rgba(64, 199, 255, 0.18);
+  border-radius: 42% 58% 55% 45%;
+  background: radial-gradient(circle at 36% 34%, rgba(64, 199, 255, 0.16), rgba(31, 143, 255, 0.05) 42%, transparent 68%);
+  filter: blur(0.2px);
+  opacity: 0.68;
+  transform: rotate(-8deg);
+}
+
+.hero__inner {
   position: relative;
-  z-index: 3;
-  width: min(100%, 1180px);
-  text-align: center;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 1.04fr) minmax(420px, 0.86fr);
+  gap: clamp(48px, 6vw, 100px);
+  align-items: end;
 }
 
-.bim-hero h1 {
-  max-width: 1160px;
-  margin: 0 auto;
-  font-size: clamp(4.2rem, 10.2vw, 12.2rem);
-  font-weight: 800;
-  line-height: 0.8;
-  letter-spacing: -0.1em;
-  text-wrap: balance;
+.hero h1 {
+  max-width: 980px;
+  margin-bottom: 28px;
+  font-size: clamp(4rem, 8.7vw, 11.4rem);
+  line-height: 0.86;
 }
 
-.bim-hero__text {
-  max-width: 780px;
-  margin: clamp(24px, 3vw, 40px) auto 30px;
-  color: var(--muted);
-  font-size: clamp(1.08rem, 1.5vw, 1.45rem);
-  font-weight: 520;
-  line-height: 1.56;
-  letter-spacing: -0.035em;
-  text-wrap: balance;
+.hero__lead {
+  max-width: 690px;
+  margin-bottom: 34px;
+  color: rgba(218, 226, 241, 0.78);
+  font-size: clamp(1rem, 1.3vw, 1.24rem);
 }
 
-.bim-hero__actions {
+.hero__actions {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
+  gap: 14px;
+}
+
+.hero__visual {
+  align-self: center;
+}
+
+.studio-frame {
+  position: relative;
+  padding: 12px;
+  border: 1px solid rgba(232, 239, 255, 0.14);
+  border-radius: 34px;
+  background: linear-gradient(145deg, rgba(247, 249, 255, 0.09), rgba(247, 249, 255, 0.025));
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+
+.studio-frame::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  pointer-events: none;
+  background: linear-gradient(130deg, rgba(64, 199, 255, 0.3), transparent 28%, transparent 70%, rgba(255, 255, 255, 0.12));
+  opacity: 0.45;
+}
+
+.studio-frame__bar {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 52px;
+  padding: 0 18px;
+  border-bottom: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+}
+
+.studio-frame__bar span {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(247, 249, 255, 0.24);
+}
+
+.studio-frame__bar strong {
+  margin-left: auto;
+  color: rgba(247, 249, 255, 0.62);
+}
+
+.studio-frame__grid {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
   gap: 12px;
+  min-height: 560px;
+  padding: 12px;
+}
+
+.studio-panel {
+  position: relative;
+  min-height: 160px;
+  padding: 22px;
+  border: 1px solid rgba(232, 239, 255, 0.12);
+  border-radius: 24px;
+  background: rgba(3, 7, 18, 0.74);
+  overflow: hidden;
+}
+
+.studio-panel--large {
+  grid-row: span 2;
+  background:
+    linear-gradient(160deg, rgba(31, 143, 255, 0.16), transparent 46%),
+    rgba(3, 7, 18, 0.84);
+}
+
+.studio-panel--blue {
+  background: linear-gradient(145deg, rgba(31, 143, 255, 0.72), rgba(6, 20, 44, 0.94));
+}
+
+.studio-panel--wide {
+  grid-column: 1 / -1;
+}
+
+.panel-label {
+  display: block;
+  margin-bottom: 12px;
+  color: var(--blue-hot);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.studio-panel strong {
+  display: block;
+  max-width: 18ch;
+  color: var(--text);
+  font-size: clamp(1.25rem, 2vw, 2.1rem);
+  line-height: 1.05;
+  letter-spacing: -0.05em;
+}
+
+.panel-line {
+  height: 10px;
+  max-width: 68%;
+  margin-top: 18px;
+  border-radius: 999px;
+  background: rgba(247, 249, 255, 0.12);
+}
+
+.panel-line--wide {
+  max-width: 88%;
+  margin-top: 38px;
+}
+
+.flow-rail {
+  position: absolute;
+  left: 22px;
+  right: 22px;
+  bottom: 26px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+
+.flow-rail i {
+  height: 8px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, rgba(64, 199, 255, 0.82), rgba(247, 249, 255, 0.18));
 }
