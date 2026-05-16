@@ -1,0 +1,44 @@
+.bim-hero {
+  position: relative;
+  min-height: 100svh;
+  width: var(--container);
+  margin-inline: auto;
+  display: grid;
+  place-items: center;
+  padding: calc(var(--header-h) + 54px) 0 80px;
+}
+
+.bim-hero__center {
+  position: relative;
+  z-index: 3;
+  width: min(100%, 1180px);
+  text-align: center;
+}
+
+.bim-hero h1 {
+  max-width: 1160px;
+  margin: 0 auto;
+  font-size: clamp(4.2rem, 10.2vw, 12.2rem);
+  font-weight: 800;
+  line-height: 0.8;
+  letter-spacing: -0.1em;
+  text-wrap: balance;
+}
+
+.bim-hero__text {
+  max-width: 780px;
+  margin: clamp(24px, 3vw, 40px) auto 30px;
+  color: var(--muted);
+  font-size: clamp(1.08rem, 1.5vw, 1.45rem);
+  font-weight: 520;
+  line-height: 1.56;
+  letter-spacing: -0.035em;
+  text-wrap: balance;
+}
+
+.bim-hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+}

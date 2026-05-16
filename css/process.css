@@ -1,0 +1,248 @@
+/* =========================================================
+   SERVICES / ORB CONTROL TEST
+   Only second section while the flow is being built.
+========================================================= */
+
+.bim-quadrants {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  min-height: 100svh;
+  padding: clamp(98px, 12vw, 170px) 0 clamp(80px, 10vw, 140px);
+  overflow: hidden;
+  background:
+    linear-gradient(180deg, rgba(3, 5, 10, 0.08), rgba(3, 5, 10, 0.82) 22%, var(--bg));
+}
+
+.bim-quadrants__intro {
+  width: var(--container);
+  margin: 0 auto clamp(34px, 5vw, 70px);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(260px, 0.48fr);
+  align-items: end;
+  gap: 32px;
+}
+
+.bim-quadrants__intro h2 {
+  max-width: 980px;
+  margin: 0;
+  font-size: clamp(3rem, 7vw, 8.8rem);
+  font-weight: 800;
+  line-height: 0.84;
+  letter-spacing: -0.09em;
+  text-wrap: balance;
+}
+
+.bim-quadrants__intro p:not(.bim-eyebrow) {
+  max-width: 520px;
+  margin: 0;
+  color: var(--muted);
+  font-size: clamp(1rem, 1.18vw, 1.18rem);
+  line-height: 1.65;
+}
+
+.bim-quadrants__radial {
+  position: relative;
+  min-height: 92svh;
+  width: 100%;
+  border-block: 1px solid var(--line);
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 50% 50%, rgba(47, 107, 255, 0.12), transparent 30%),
+    rgba(3, 5, 10, 0.68);
+}
+
+.bim-quadrants__radial::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(246, 248, 255, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(246, 248, 255, 0.035) 1px, transparent 1px);
+  background-size: 72px 72px;
+  mask-image: radial-gradient(circle at 50% 50%, #000 0 42%, transparent 76%);
+  -webkit-mask-image: radial-gradient(circle at 50% 50%, #000 0 42%, transparent 76%);
+  pointer-events: none;
+}
+
+.bim-quadrants__radial::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: min(38vw, 430px);
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+  border: 1px solid rgba(0, 213, 255, 0.2);
+  border-radius: 50%;
+  box-shadow:
+    inset 0 0 40px rgba(0, 213, 255, 0.055),
+    0 0 50px rgba(47, 107, 255, 0.09);
+  pointer-events: none;
+}
+
+.bim-quadrant {
+  position: absolute;
+  z-index: 3;
+  width: min(38vw, 540px);
+  min-height: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  outline: 0;
+  overflow: visible;
+}
+
+.bim-quadrant--one {
+  left: 7%;
+  top: 13%;
+}
+
+.bim-quadrant--two {
+  right: 7%;
+  top: 13%;
+  text-align: right;
+}
+
+.bim-quadrant--three {
+  left: 7%;
+  bottom: 13%;
+}
+
+.bim-quadrant--four {
+  right: 7%;
+  bottom: 13%;
+  text-align: right;
+}
+
+.bim-quadrant__line {
+  position: absolute;
+  top: 31px;
+  width: clamp(150px, 20vw, 340px);
+  height: 1px;
+  opacity: 0.36;
+  background: linear-gradient(90deg, rgba(0, 213, 255, 0.18), rgba(246, 248, 255, 0.18));
+  transition:
+    opacity 360ms var(--ease),
+    box-shadow 360ms var(--ease),
+    transform 520ms var(--ease);
+}
+
+.bim-quadrant--one .bim-quadrant__line {
+  left: 100%;
+  transform: rotate(24deg);
+}
+
+.bim-quadrant--two .bim-quadrant__line {
+  right: 100%;
+  transform: rotate(-24deg);
+}
+
+.bim-quadrant--three .bim-quadrant__line {
+  left: 100%;
+  transform: rotate(-24deg);
+}
+
+.bim-quadrant--four .bim-quadrant__line {
+  right: 100%;
+  transform: rotate(24deg);
+}
+
+.bim-quadrant__number {
+  display: block;
+  margin-bottom: 18px;
+  color: var(--blue-2);
+  font-size: 0.82rem;
+  font-weight: 850;
+  letter-spacing: 0.14em;
+}
+
+.bim-quadrant__copy {
+  max-width: 560px;
+}
+
+.bim-quadrant__copy h3 {
+  margin: 0;
+  font-size: clamp(2.4rem, 4vw, 5.8rem);
+  font-weight: 790;
+  line-height: 0.84;
+  letter-spacing: -0.086em;
+  text-wrap: balance;
+}
+
+.bim-quadrant__copy p {
+  max-width: 540px;
+  margin: 20px 0 24px;
+  color: var(--muted);
+  font-size: clamp(1rem, 1.12vw, 1.18rem);
+  line-height: 1.62;
+  opacity: 0.28;
+  transform: translateY(14px);
+  transition:
+    opacity 420ms var(--ease),
+    transform 420ms var(--ease);
+}
+
+.bim-quadrant__copy a {
+  color: var(--text);
+  font-size: 0.82rem;
+  font-weight: 850;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  opacity: 0.34;
+  transition:
+    opacity 360ms var(--ease),
+    color 360ms var(--ease);
+}
+
+.bim-quadrant:is(.is-active, :hover, :focus-within) .bim-quadrant__line {
+  opacity: 1;
+  box-shadow: 0 0 22px rgba(0, 213, 255, 0.58);
+}
+
+.bim-quadrant:is(.is-active, :hover, :focus-within) .bim-quadrant__copy p,
+.bim-quadrant:is(.is-active, :hover, :focus-within) .bim-quadrant__copy a {
+  opacity: 1;
+  transform: none;
+}
+
+.bim-quadrant__copy a:hover {
+  color: var(--blue-2);
+}
+
+.bim-quadrant-preview {
+  position: absolute;
+  left: 50%;
+  bottom: 7%;
+  z-index: 4;
+  width: min(420px, calc(100% - 48px));
+  transform: translateX(-50%);
+  padding: 20px;
+  border: 1px solid rgba(0, 213, 255, 0.24);
+  border-radius: 26px;
+  background: rgba(3, 5, 10, 0.68);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  text-align: center;
+  box-shadow: 0 24px 90px rgba(47, 107, 255, 0.15);
+}
+
+.bim-quadrant-preview span {
+  color: var(--blue-2);
+  font-size: 0.7rem;
+  font-weight: 850;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.bim-quadrant-preview strong {
+  display: block;
+  margin-top: 8px;
+  font-size: 1.35rem;
+}
+
+.bim-quadrant-preview p {
+  margin: 8px 0 0;
+  color: var(--muted);
+  line-height: 1.5;
+}

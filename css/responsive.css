@@ -1,0 +1,189 @@
+@media (max-width: 1180px) {
+  :root {
+    --header-h: 74px;
+    --container: min(100% - 36px, 1480px);
+  }
+
+  .bim-header {
+    grid-template-columns: auto 1fr auto;
+  }
+
+  .bim-nav {
+    gap: 18px;
+  }
+
+  .bim-quadrant {
+    width: min(42vw, 520px);
+  }
+
+  .bim-quadrant__line {
+    width: clamp(120px, 16vw, 260px);
+  }
+}
+
+@media (max-width: 860px) {
+  :root {
+    --header-h: 68px;
+  }
+
+  .bim-header {
+    height: 68px;
+    grid-template-columns: 1fr auto;
+    padding-inline: 18px;
+  }
+
+  .bim-header.is-scrolled {
+    height: 62px;
+  }
+
+  .bim-nav {
+    display: none;
+  }
+
+  .bim-brand__mark {
+    width: 32px;
+    height: 32px;
+  }
+
+  .bim-button--small {
+    min-height: 40px;
+    padding-inline: 14px;
+  }
+
+  .bim-hero {
+    padding-top: 112px;
+  }
+
+  .bim-hero h1 {
+    font-size: clamp(3.45rem, 16vw, 6.8rem);
+    letter-spacing: -0.086em;
+  }
+
+  .bim-hero__text {
+    font-size: 1.04rem;
+  }
+
+  .bim-globe-orb {
+    width: 118vw;
+    height: 118vw;
+    opacity: 0.3;
+  }
+
+  .bim-orb-status {
+    top: auto;
+    bottom: 24px;
+    font-size: 0.64rem;
+    opacity: 0.54;
+  }
+
+  .globe-ring--inner,
+  .globe-line--latitude-top,
+  .globe-line--latitude-bottom {
+    display: none;
+  }
+
+  .bim-quadrants {
+    padding-top: 96px;
+  }
+
+  .bim-quadrants__intro {
+    grid-template-columns: 1fr;
+  }
+
+  .bim-quadrants__intro h2 {
+    font-size: clamp(3rem, 13vw, 6rem);
+  }
+
+  .bim-quadrants__radial {
+    min-height: auto;
+    display: grid;
+    border-top: 1px solid var(--line);
+  }
+
+  .bim-quadrants__radial::after {
+    display: none;
+  }
+
+  .bim-quadrant-preview {
+    display: none;
+  }
+
+  .bim-quadrant,
+  .bim-quadrant--one,
+  .bim-quadrant--two,
+  .bim-quadrant--three,
+  .bim-quadrant--four {
+    position: relative;
+    inset: auto;
+    width: 100%;
+    min-height: 360px;
+    padding: 26px;
+    text-align: left;
+    border-bottom: 1px solid var(--line);
+    background: rgba(3, 5, 10, 0.52);
+  }
+
+  .bim-quadrant__line {
+    display: none;
+  }
+
+  .bim-quadrant__copy h3 {
+    font-size: clamp(2.55rem, 12vw, 5.5rem);
+  }
+
+  .bim-quadrant__copy p,
+  .bim-quadrant__copy a {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (max-width: 540px) {
+  :root {
+    --container: min(100% - 28px, 1480px);
+  }
+
+  .bim-brand__name {
+    display: none;
+  }
+
+  .bim-header__cta {
+    font-size: 0.78rem;
+  }
+
+  .bim-hero__actions {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .bim-button {
+    width: 100%;
+    max-width: 320px;
+    margin-inline: auto;
+  }
+
+  .bim-globe-orb {
+    width: 136vw;
+    height: 136vw;
+  }
+
+  .globe-ring--outer,
+  .globe-node {
+    opacity: 0.55;
+  }
+
+  .bim-quadrant {
+    min-height: 330px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}
