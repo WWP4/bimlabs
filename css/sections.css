@@ -1,2 +1,457 @@
-/* Not used in the stripped Hero + Services build.
-   Keep this file empty for now so showcase/partner/footer styles cannot fight the page. */
+.services {
+  border-top: 1px solid var(--line);
+}
+
+.service-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  border-top: 1px solid var(--line);
+  border-left: 1px solid var(--line);
+}
+
+.service-card {
+  position: relative;
+  min-height: 430px;
+  display: flex;
+  flex-direction: column;
+  padding: clamp(24px, 2.8vw, 42px);
+  border-right: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  background: rgba(247, 249, 255, 0.02);
+  transition: transform 260ms var(--ease), background 260ms ease, border-color 260ms ease;
+}
+
+.service-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  background: radial-gradient(circle at 50% 0%, rgba(31, 143, 255, 0.18), transparent 46%);
+  transition: opacity 260ms ease;
+}
+
+.service-card:hover {
+  transform: translateY(-8px);
+  border-color: rgba(64, 199, 255, 0.28);
+  background: rgba(247, 249, 255, 0.045);
+}
+
+.service-card:hover::before {
+  opacity: 1;
+}
+
+.service-card > * {
+  position: relative;
+  z-index: 1;
+}
+
+.service-card span {
+  color: var(--blue-hot);
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+}
+
+.service-card h3 {
+  margin: auto 0 20px;
+  font-size: clamp(1.7rem, 2.8vw, 3.25rem);
+  line-height: 0.96;
+}
+
+.service-card p {
+  min-height: 112px;
+  margin-bottom: 28px;
+  color: rgba(218, 226, 241, 0.72);
+}
+
+.service-card a {
+  width: max-content;
+  color: var(--text);
+  font-size: 0.82rem;
+  font-weight: 800;
+}
+
+.service-card a span {
+  display: inline-block;
+  margin-left: 8px;
+  color: var(--blue-hot);
+  transition: transform 180ms var(--ease);
+}
+
+.service-card:hover a span {
+  transform: translateX(4px);
+}
+
+.proof {
+  background: linear-gradient(180deg, transparent, rgba(247, 249, 255, 0.025), transparent);
+}
+
+.proof__grid {
+  display: grid;
+  grid-template-columns: minmax(280px, 0.9fr) minmax(0, 1.1fr);
+  gap: clamp(42px, 7vw, 120px);
+  align-items: start;
+}
+
+.proof-logos {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  border-top: 1px solid var(--line);
+  border-left: 1px solid var(--line);
+}
+
+.proof-logos span {
+  min-height: 112px;
+  display: grid;
+  place-items: center;
+  padding: 22px;
+  border-right: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  color: rgba(247, 249, 255, 0.72);
+  font-size: clamp(0.88rem, 1.2vw, 1.08rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  text-align: center;
+}
+
+.quote-panel {
+  margin: 26px 0 0;
+  padding: clamp(30px, 4vw, 58px);
+  border: 1px solid rgba(64, 199, 255, 0.22);
+  border-radius: var(--radius-lg);
+  background:
+    linear-gradient(135deg, rgba(31, 143, 255, 0.12), transparent 44%),
+    rgba(247, 249, 255, 0.035);
+}
+
+.quote-panel blockquote {
+  margin: 0;
+  color: var(--text);
+  font-size: clamp(1.55rem, 3vw, 3.55rem);
+  line-height: 1.08;
+  letter-spacing: -0.055em;
+  text-wrap: balance;
+}
+
+.quote-panel figcaption {
+  margin-top: 28px;
+  color: var(--muted);
+  font-size: 0.82rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.showcase__top {
+  max-width: 1100px;
+  margin-bottom: clamp(42px, 6vw, 84px);
+}
+
+.work-grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: clamp(18px, 2vw, 28px);
+  align-items: start;
+}
+
+.work-card {
+  grid-column: span 6;
+  position: relative;
+  min-height: 620px;
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  background: rgba(247, 249, 255, 0.035);
+  overflow: hidden;
+  transition: transform 260ms var(--ease), border-color 260ms ease, background 260ms ease;
+}
+
+.work-card--tall {
+  grid-row: span 2;
+  min-height: 820px;
+}
+
+.work-card--wide {
+  grid-column: span 12;
+  min-height: 520px;
+}
+
+.work-card:hover {
+  transform: translateY(-8px);
+  border-color: rgba(64, 199, 255, 0.3);
+  background: rgba(247, 249, 255, 0.055);
+}
+
+.mockup {
+  position: relative;
+  min-height: 430px;
+  border-radius: 30px;
+  overflow: hidden;
+  background: linear-gradient(145deg, #07111f, #111d2d);
+}
+
+.work-card--tall .mockup {
+  min-height: 610px;
+}
+
+.work-card--wide .mockup {
+  min-height: 320px;
+}
+
+.mockup::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 25% 15%, rgba(64, 199, 255, 0.28), transparent 32%),
+    linear-gradient(120deg, rgba(255, 255, 255, 0.08), transparent 48%);
+}
+
+.work-card__copy {
+  padding: clamp(24px, 3vw, 38px) 12px 12px;
+}
+
+.work-card__copy p {
+  margin-bottom: 14px;
+  color: var(--blue-hot);
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.work-card__copy h3 {
+  max-width: 780px;
+  margin-bottom: 0;
+  font-size: clamp(1.75rem, 3vw, 3.75rem);
+  line-height: 0.98;
+}
+
+.mockup-window {
+  position: absolute;
+  left: 26px;
+  right: 26px;
+  top: 26px;
+  z-index: 1;
+  display: flex;
+  gap: 8px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid rgba(247, 249, 255, 0.12);
+}
+
+.mockup-window span {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: rgba(247, 249, 255, 0.32);
+}
+
+.planning-board {
+  position: absolute;
+  inset: 92px 26px 26px;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 0.75fr 1fr;
+  grid-auto-rows: 1fr;
+  gap: 16px;
+}
+
+.planning-board i,
+.portal-main i,
+.website-lines i,
+.automation-path i {
+  display: block;
+  border: 1px solid rgba(247, 249, 255, 0.12);
+  border-radius: 20px;
+  background: rgba(3, 7, 18, 0.52);
+}
+
+.planning-board i:first-child {
+  grid-row: span 2;
+}
+
+.mockup--portal {
+  display: grid;
+  grid-template-columns: 0.35fr 1fr;
+  gap: 16px;
+  padding: 24px;
+}
+
+.portal-sidebar,
+.portal-main {
+  position: relative;
+  z-index: 1;
+  border: 1px solid rgba(247, 249, 255, 0.12);
+  border-radius: 24px;
+  background: rgba(3, 7, 18, 0.56);
+}
+
+.portal-main {
+  display: grid;
+  gap: 14px;
+  padding: 18px;
+}
+
+.mockup--website {
+  padding: 24px;
+}
+
+.website-hero,
+.website-lines {
+  position: relative;
+  z-index: 1;
+}
+
+.website-hero {
+  min-height: 210px;
+  border-radius: 26px;
+  background: linear-gradient(135deg, rgba(247, 249, 255, 0.82), rgba(64, 199, 255, 0.42));
+}
+
+.website-lines {
+  display: grid;
+  gap: 12px;
+  margin-top: 18px;
+}
+
+.website-lines i {
+  height: 44px;
+}
+
+.automation-path {
+  position: absolute;
+  inset: 40px;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+  align-items: center;
+}
+
+.automation-path i {
+  height: clamp(120px, 18vw, 220px);
+}
+
+.automation-path i:nth-child(even) {
+  transform: translateY(34px);
+}
+
+.support {
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  background: rgba(247, 249, 255, 0.018);
+}
+
+.support__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(360px, 0.58fr);
+  gap: clamp(42px, 7vw, 118px);
+  align-items: center;
+}
+
+.support__copy p {
+  max-width: 760px;
+  margin: 28px 0 34px;
+  font-size: clamp(1rem, 1.35vw, 1.22rem);
+}
+
+.metric-panel {
+  display: grid;
+  gap: 1px;
+  padding: 1px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  background: var(--line);
+  overflow: hidden;
+}
+
+.metric-panel div {
+  padding: clamp(26px, 3vw, 42px);
+  background: linear-gradient(135deg, rgba(247, 249, 255, 0.055), rgba(247, 249, 255, 0.02));
+}
+
+.metric-panel span {
+  display: block;
+  margin-bottom: 36px;
+  color: var(--blue-hot);
+  font-size: 0.76rem;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+}
+
+.metric-panel strong {
+  display: block;
+  margin-bottom: 10px;
+  font-size: clamp(1.25rem, 1.7vw, 1.65rem);
+  letter-spacing: -0.04em;
+}
+
+.metric-panel p {
+  margin-bottom: 0;
+}
+
+.value-list {
+  border-top: 1px solid var(--line);
+}
+
+.value-row {
+  display: grid;
+  grid-template-columns: 96px minmax(0, 1fr);
+  gap: clamp(22px, 4vw, 76px);
+  align-items: center;
+  padding: clamp(30px, 4.5vw, 64px) 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.value-mark {
+  width: 54px;
+  height: 54px;
+  border: 1px solid rgba(64, 199, 255, 0.42);
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgba(31, 143, 255, 0.22), transparent);
+}
+
+.value-mark--angle {
+  border-radius: 16px;
+  transform: rotate(45deg);
+}
+
+.value-mark--stack {
+  border-radius: 18px;
+  box-shadow: 12px 12px 0 rgba(64, 199, 255, 0.11), 24px 24px 0 rgba(64, 199, 255, 0.055);
+}
+
+.value-row h3 {
+  margin-bottom: 12px;
+  font-size: clamp(2rem, 4vw, 4.8rem);
+  line-height: 0.95;
+}
+
+.value-row p {
+  max-width: 780px;
+  margin-bottom: 0;
+  font-size: clamp(1rem, 1.24vw, 1.16rem);
+}
+
+.final-cta {
+  padding-top: clamp(112px, 14vw, 220px);
+}
+
+.final-cta__inner {
+  min-height: 560px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  padding: clamp(34px, 6vw, 82px);
+  border: 1px solid rgba(64, 199, 255, 0.22);
+  border-radius: clamp(30px, 5vw, 64px);
+  background:
+    radial-gradient(circle at 78% 24%, rgba(64, 199, 255, 0.22), transparent 30%),
+    linear-gradient(145deg, rgba(247, 249, 255, 0.07), rgba(247, 249, 255, 0.025));
+}
+
+.final-cta h2 {
+  max-width: 1120px;
+  margin-bottom: 34px;
+}
