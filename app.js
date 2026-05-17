@@ -8,9 +8,9 @@ const showcase = document.querySelector('.showcase');
 const showcaseTrack = document.getElementById('showcaseTrack');
 
 function updateHeader() {
+  if (!header) return;
   header.classList.toggle('is-scrolled', window.scrollY > 24);
 }
-
 function updateOrbMode() {
   const center = window.scrollY + window.innerHeight * 0.5;
   let active = sections[0]?.dataset.orb || 'hero';
