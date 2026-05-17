@@ -20,36 +20,36 @@
     <div class="orb-shell">
       <svg class="orb-svg" viewBox="0 0 520 520" aria-hidden="true" focusable="false">
         <defs>
-          <!-- This cuts the middle out so the text has breathing room -->
-          <mask id="orbTextWindow">
-            <rect width="520" height="520" fill="white" />
-            <circle cx="260" cy="260" r="154" fill="black" />
+          <!-- This removes the center of the line system -->
+          <mask id="orbHollowCenter">
+            <rect width="520" height="520" fill="white"></rect>
+            <circle cx="260" cy="260" r="148" fill="black"></circle>
           </mask>
         </defs>
 
         <g
-          class="orb-lines"
-          mask="url(#orbTextWindow)"
+          mask="url(#orbHollowCenter)"
           fill="none"
           stroke="currentColor"
           stroke-linecap="round"
         >
-          <circle cx="260" cy="260" r="224" stroke-width="1.5" opacity="0.92" />
-          <circle cx="260" cy="260" r="198" stroke-width="0.85" opacity="0.34" />
-          <circle cx="260" cy="260" r="170" stroke-width="0.7" opacity="0.18" />
+          <circle cx="260" cy="260" r="226" stroke-width="1.5" opacity="0.95"></circle>
+          <circle cx="260" cy="260" r="202" stroke-width="0.9" opacity="0.38"></circle>
+          <circle cx="260" cy="260" r="176" stroke-width="0.75" opacity="0.2"></circle>
 
-          <ellipse cx="260" cy="260" rx="84" ry="224" stroke-width="1.05" opacity="0.7" />
-          <ellipse cx="260" cy="260" rx="132" ry="224" stroke-width="0.85" opacity="0.42" />
-          <ellipse cx="260" cy="260" rx="186" ry="224" stroke-width="0.7" opacity="0.24" />
+          <ellipse cx="260" cy="260" rx="76" ry="226" stroke-width="1.05" opacity="0.68"></ellipse>
+          <ellipse cx="260" cy="260" rx="124" ry="226" stroke-width="0.85" opacity="0.42"></ellipse>
+          <ellipse cx="260" cy="260" rx="176" ry="226" stroke-width="0.72" opacity="0.24"></ellipse>
 
-          <ellipse cx="260" cy="260" rx="224" ry="54" stroke-width="0.95" opacity="0.46" />
-          <ellipse cx="260" cy="260" rx="224" ry="104" stroke-width="0.75" opacity="0.26" />
-          <ellipse cx="260" cy="260" rx="224" ry="154" stroke-width="0.65" opacity="0.16" />
+          <ellipse cx="260" cy="260" rx="226" ry="48" stroke-width="0.95" opacity="0.45"></ellipse>
+          <ellipse cx="260" cy="260" rx="226" ry="94" stroke-width="0.8" opacity="0.28"></ellipse>
+          <ellipse cx="260" cy="260" rx="226" ry="142" stroke-width="0.68" opacity="0.16"></ellipse>
 
-          <path d="M88 116C150 154 370 154 432 116" stroke-width="0.75" opacity="0.22" />
-          <path d="M88 404C150 366 370 366 432 404" stroke-width="0.75" opacity="0.22" />
-          <path d="M116 88C156 164 156 356 116 432" stroke-width="0.65" opacity="0.15" />
-          <path d="M404 88C364 164 364 356 404 432" stroke-width="0.65" opacity="0.15" />
+          <path d="M88 116C150 154 370 154 432 116" stroke-width="0.75" opacity="0.22"></path>
+          <path d="M88 404C150 366 370 366 432 404" stroke-width="0.75" opacity="0.22"></path>
+
+          <path d="M116 88C158 164 158 356 116 432" stroke-width="0.65" opacity="0.14"></path>
+          <path d="M404 88C362 164 362 356 404 432" stroke-width="0.65" opacity="0.14"></path>
         </g>
       </svg>
     </div>
