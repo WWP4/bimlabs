@@ -1828,3 +1828,216 @@ p {
     --orb-opacity: 0.3;
   }
 }
+
+/* =========================================================
+   BIM LABS — GLOBAL ORB FLOW FIX
+   Orb stays present and moves smoothly through sections
+========================================================= */
+
+/* Kill the random white center blob in the service grid */
+.board-center {
+  display: none !important;
+}
+
+/* Body owns the black site background */
+html,
+body {
+  background: #020205 !important;
+  color: #ffffff !important;
+  overflow-x: hidden;
+}
+
+body {
+  background:
+    radial-gradient(circle at 50% 40%, rgba(255, 255, 255, 0.045), transparent 36rem),
+    linear-gradient(180deg, #020205 0%, #050509 48%, #020205 100%) !important;
+}
+
+/* Header above everything */
+.site-header {
+  z-index: 100 !important;
+}
+
+/* Orb must be global and fixed */
+.orb-stage {
+  position: fixed !important;
+  inset: 0 !important;
+  z-index: 35 !important;
+  display: grid !important;
+  place-items: center !important;
+  pointer-events: none !important;
+
+  transform:
+    translate3d(var(--orb-x, 0px), var(--orb-y, 0px), 0)
+    scale(var(--orb-scale, 1)) !important;
+
+  opacity: var(--orb-opacity, 1) !important;
+  filter: blur(var(--orb-blur, 0px)) !important;
+
+  transition: none !important;
+  will-change: transform, opacity, filter;
+}
+
+/* Make sure old section rules cannot turn this into page content */
+.orb-stage,
+.orb-stage * {
+  pointer-events: none !important;
+}
+
+.story-orb {
+  position: relative !important;
+  width: clamp(660px, 78vw, 1180px) !important;
+  aspect-ratio: 1 !important;
+  color: #ffffff !important;
+
+  transform: rotate(var(--orb-rotate, 0deg)) !important;
+  transition: none !important;
+  will-change: transform;
+}
+
+.orb-shell {
+  position: absolute !important;
+  inset: 0 !important;
+  display: grid !important;
+  place-items: center !important;
+  border-radius: 50% !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.orb-svg {
+  width: 100% !important;
+  height: 100% !important;
+  color: #ffffff !important;
+  opacity: 0.9 !important;
+  animation: globeDrift 34s linear infinite !important;
+}
+
+.orb-svg circle,
+.orb-svg ellipse,
+.orb-svg path {
+  fill: none !important;
+  stroke: currentColor !important;
+}
+
+/* Soft presence around orb */
+.orb-glow {
+  position: absolute !important;
+  inset: -16% !important;
+  border-radius: 50% !important;
+  background:
+    radial-gradient(
+      circle,
+      rgba(255, 255, 255, 0.15),
+      rgba(255, 255, 255, 0.045) 38%,
+      transparent 70%
+    ) !important;
+  filter: blur(34px) !important;
+  opacity: 0.72 !important;
+  animation: orbPulse 6s ease-in-out infinite !important;
+}
+
+/* Sections should not hide the orb with hard background walls */
+.hero,
+.quadrants,
+.showcase,
+.agency,
+.process,
+.cta {
+  background: transparent !important;
+}
+
+/* Keep cards dark but let the orb feel part of the section */
+.quadrant-board,
+.work-card,
+.agency-media,
+.agency-grid div,
+.step,
+.cta-inner {
+  background: rgba(255, 255, 255, 0.035) !important;
+  border-color: rgba(255, 255, 255, 0.1) !important;
+  box-shadow: 0 40px 140px rgba(0, 0, 0, 0.35);
+}
+
+/* Make grid section cleaner with orb as the true center object */
+.quadrant-board {
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.04), transparent 34rem),
+    rgba(255, 255, 255, 0.025) !important;
+}
+
+.quadrant-board::before {
+  opacity: 0.35 !important;
+}
+
+/* Dark typography cleanup */
+p {
+  color: rgba(255, 255, 255, 0.66);
+}
+
+.eyebrow,
+.card-index,
+.step span,
+.work-card p {
+  color: rgba(255, 255, 255, 0.54);
+}
+
+.work-card span,
+.agency-grid span,
+.step p {
+  color: rgba(255, 255, 255, 0.58);
+}
+
+/* Hero text still stays readable */
+.hero-copy {
+  position: relative;
+  z-index: 45 !important;
+}
+
+/* Header and marquee above orb when needed */
+.hero-bottom {
+  z-index: 50 !important;
+  background: rgba(2, 2, 5, 0.54) !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+  backdrop-filter: blur(14px);
+}
+
+.marquee span {
+  color: rgba(255, 255, 255, 0.34) !important;
+}
+
+/* Animations */
+@keyframes orbPulse {
+  0%,
+  100% {
+    opacity: 0.66;
+    transform: scale(0.98);
+  }
+
+  50% {
+    opacity: 0.94;
+    transform: scale(1.03);
+  }
+}
+
+@keyframes globeDrift {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Mobile */
+@media (max-width: 980px) {
+  .story-orb {
+    width: clamp(560px, 122vw, 820px) !important;
+  }
+}
+
+@media (max-width: 560px) {
+  .story-orb {
+    width: 158vw !important;
+  }
+}
