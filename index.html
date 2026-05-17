@@ -13,37 +13,48 @@
 <body data-orb-mode="hero">
   <div class="site-grain" aria-hidden="true"></div>
 
-  <div class="orb-stage" aria-hidden="true">
-    <div class="story-orb" id="storyOrb">
-      <div class="orb-glow"></div>
-      <div class="orb-shell">
-        <svg class="orb-svg" viewBox="0 0 320 320" role="img" aria-label="Abstract electric blue globe">
-          <defs>
-            <linearGradient id="orbStroke" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0" stop-color="#9bdcff" />
-              <stop offset="0.45" stop-color="#1e8cff" />
-              <stop offset="1" stop-color="#063a88" />
-            </linearGradient>
-            <radialGradient id="orbFill" cx="50%" cy="42%" r="60%">
-              <stop offset="0" stop-color="#ffffff" stop-opacity="0.94" />
-              <stop offset="0.45" stop-color="#dff3ff" stop-opacity="0.52" />
-              <stop offset="1" stop-color="#0a7cff" stop-opacity="0.12" />
-            </radialGradient>
-          </defs>
-          <circle cx="160" cy="160" r="118" fill="url(#orbFill)" />
-          <circle cx="160" cy="160" r="119" fill="none" stroke="url(#orbStroke)" stroke-width="2" />
-          <ellipse cx="160" cy="160" rx="63" ry="118" fill="none" stroke="url(#orbStroke)" stroke-width="1.4" opacity="0.72" />
-          <ellipse cx="160" cy="160" rx="96" ry="118" fill="none" stroke="url(#orbStroke)" stroke-width="1" opacity="0.36" />
-          <ellipse cx="160" cy="160" rx="118" ry="38" fill="none" stroke="url(#orbStroke)" stroke-width="1.2" opacity="0.54" />
-          <ellipse cx="160" cy="160" rx="118" ry="74" fill="none" stroke="url(#orbStroke)" stroke-width="1" opacity="0.28" />
-          <path d="M68 88C110 118 210 118 252 88" fill="none" stroke="url(#orbStroke)" stroke-width="1" opacity="0.28" />
-          <path d="M68 232C110 202 210 202 252 232" fill="none" stroke="url(#orbStroke)" stroke-width="1" opacity="0.28" />
-          <path d="M160 42V278" fill="none" stroke="url(#orbStroke)" stroke-width="1" opacity="0.26" />
-          <circle cx="160" cy="160" r="7" fill="#0a7cff" opacity="0.9" />
-        </svg>
-      </div>
+<div class="orb-stage" aria-hidden="true">
+  <div class="story-orb" id="storyOrb">
+    <div class="orb-glow"></div>
+
+    <div class="orb-shell">
+      <svg class="orb-svg" viewBox="0 0 520 520" aria-hidden="true" focusable="false">
+        <defs>
+          <!-- This cuts the middle out so the text has breathing room -->
+          <mask id="orbTextWindow">
+            <rect width="520" height="520" fill="white" />
+            <circle cx="260" cy="260" r="154" fill="black" />
+          </mask>
+        </defs>
+
+        <g
+          class="orb-lines"
+          mask="url(#orbTextWindow)"
+          fill="none"
+          stroke="currentColor"
+          stroke-linecap="round"
+        >
+          <circle cx="260" cy="260" r="224" stroke-width="1.5" opacity="0.92" />
+          <circle cx="260" cy="260" r="198" stroke-width="0.85" opacity="0.34" />
+          <circle cx="260" cy="260" r="170" stroke-width="0.7" opacity="0.18" />
+
+          <ellipse cx="260" cy="260" rx="84" ry="224" stroke-width="1.05" opacity="0.7" />
+          <ellipse cx="260" cy="260" rx="132" ry="224" stroke-width="0.85" opacity="0.42" />
+          <ellipse cx="260" cy="260" rx="186" ry="224" stroke-width="0.7" opacity="0.24" />
+
+          <ellipse cx="260" cy="260" rx="224" ry="54" stroke-width="0.95" opacity="0.46" />
+          <ellipse cx="260" cy="260" rx="224" ry="104" stroke-width="0.75" opacity="0.26" />
+          <ellipse cx="260" cy="260" rx="224" ry="154" stroke-width="0.65" opacity="0.16" />
+
+          <path d="M88 116C150 154 370 154 432 116" stroke-width="0.75" opacity="0.22" />
+          <path d="M88 404C150 366 370 366 432 404" stroke-width="0.75" opacity="0.22" />
+          <path d="M116 88C156 164 156 356 116 432" stroke-width="0.65" opacity="0.15" />
+          <path d="M404 88C364 164 364 356 404 432" stroke-width="0.65" opacity="0.15" />
+        </g>
+      </svg>
     </div>
   </div>
+</div>
 
   <header class="site-header" id="siteHeader">
     <a href="#top" class="brand" aria-label="Bim Labs home">
