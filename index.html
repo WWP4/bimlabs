@@ -13,10 +13,10 @@
 
 <!-- GLOBAL ORB -->
 <div class="orb-stage" aria-hidden="true">
-  <div class="bim-orb" id="storyOrb">
-    <svg class="bim-orb-svg" viewBox="0 0 720 720" aria-hidden="true" focusable="false">
+  <div class="salo-orb" id="storyOrb">
+    <svg class="salo-orb-svg" viewBox="0 0 900 900" aria-hidden="true" focusable="false">
       <defs>
-        <filter id="orbSoftGlow" x="-60%" y="-60%" width="220%" height="220%">
+        <filter id="saloGlow" x="-80%" y="-80%" width="260%" height="260%">
           <feGaussianBlur stdDeviation="2.2" result="blur" />
           <feMerge>
             <feMergeNode in="blur" />
@@ -24,7 +24,7 @@
           </feMerge>
         </filter>
 
-        <filter id="orbAccentGlow" x="-80%" y="-80%" width="260%" height="260%">
+        <filter id="saloAccentGlow" x="-80%" y="-80%" width="260%" height="260%">
           <feGaussianBlur stdDeviation="5" result="blur" />
           <feMerge>
             <feMergeNode in="blur" />
@@ -32,112 +32,86 @@
           </feMerge>
         </filter>
 
-        <linearGradient id="orbAccent" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stop-color="#8b5cf6" />
-          <stop offset="45%" stop-color="#5b7cff" />
-          <stop offset="100%" stop-color="#ffffff" />
+        <linearGradient id="saloAccent" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#ffffff" />
+          <stop offset="55%" stop-color="#7c8cff" />
+          <stop offset="100%" stop-color="#6d38ff" />
         </linearGradient>
       </defs>
 
-      <g class="orb-root" fill="none" stroke-linejoin="miter" stroke-linecap="round">
+      <g class="salo-orb-group" fill="none" stroke-linecap="round" stroke-linejoin="miter">
 
-        <!-- OUTER GROUP: 4 layers -->
-        <path
-          class="orb-line orb-ghost layer-1"
-          d="M222 103
-             L238 130
-             C300 94 384 78 462 96
-             C594 126 690 244 690 380
-             C690 534 565 660 410 660
-             C255 660 130 534 130 380
-             C130 253 215 145 333 112"
-        />
+        <!-- OUTER 4 LAYERS -->
+        <path class="salo-ring ring-1" d="
+          M 552 78
+          A 386 386 0 1 1 246 130
+          L 272 174
+          L 315 138
+          A 324 324 0 1 0 552 78
+        " />
 
-        <path
-          class="orb-line orb-ghost layer-2"
-          d="M212 122
-             L230 150
-             C291 116 374 101 452 119
-             C572 147 660 254 660 380
-             C660 518 548 630 410 630
-             C272 630 160 518 160 380
-             C160 265 236 168 343 138"
-        />
+        <path class="salo-ring ring-2" d="
+          M 566 103
+          A 360 360 0 1 1 258 157
+          L 282 198
+          L 322 164
+          A 299 299 0 1 0 566 103
+        " />
 
-        <path
-          class="orb-line orb-mid layer-3"
-          d="M202 142
-             L222 172
-             C283 139 364 126 441 144
-             C550 170 630 268 630 380
-             C630 501 531 600 410 600
-             C289 600 190 501 190 380
-             C190 278 257 192 353 165"
-        />
+        <path class="salo-ring ring-3" d="
+          M 580 130
+          A 333 333 0 1 1 273 185
+          L 294 223
+          L 331 191
+          A 272 272 0 1 0 580 130
+        " />
 
-        <path
-          class="orb-line orb-main layer-4"
-          d="M194 164
-             L215 194
-             C274 164 354 151 430 169
-             C528 193 600 281 600 380
-             C600 485 515 570 410 570
-             C305 570 220 485 220 380
-             C220 292 278 217 363 194"
-        />
+        <path class="salo-ring ring-4 strong" d="
+          M 594 158
+          A 305 305 0 1 1 292 216
+          L 309 250
+          L 343 220
+          A 244 244 0 1 0 594 158
+        " />
 
-        <!-- INNER GROUP: 4 layers -->
-        <path
-          class="orb-line orb-inner-main layer-5"
-          d="M292 228
-             L310 256
-             C344 237 386 228 427 236
-             C507 252 568 322 568 406
-             C568 503 489 582 392 582
-             C295 582 216 503 216 406
-             C216 333 261 270 324 244"
-        />
+        <!-- INNER 4 LAYERS -->
+        <path class="salo-ring ring-5 inner-strong" d="
+          M 541 289
+          A 171 171 0 1 1 382 255
+          L 398 286
+          L 429 260
+          A 128 128 0 1 0 541 289
+        " />
 
-        <path
-          class="orb-line orb-inner-mid layer-6"
-          d="M303 248
-             L321 276
-             C352 259 390 252 427 260
-             C495 275 546 335 546 406
-             C546 491 477 560 392 560
-             C307 560 238 491 238 406
-             C238 342 276 287 331 264"
-        />
+        <path class="salo-ring ring-6" d="
+          M 560 306
+          A 193 193 0 1 1 363 244
+          L 381 279
+          L 414 251
+          A 149 149 0 1 0 560 306
+        " />
 
-        <path
-          class="orb-line orb-inner-ghost layer-7"
-          d="M314 268
-             L332 296
-             C359 282 392 276 424 283
-             C483 296 524 347 524 406
-             C524 479 465 538 392 538
-             C319 538 260 479 260 406
-             C260 351 292 305 340 286"
-        />
+        <path class="salo-ring ring-7" d="
+          M 578 324
+          A 216 216 0 1 1 343 236
+          L 363 274
+          L 399 244
+          A 171 171 0 1 0 578 324
+        " />
 
-        <path
-          class="orb-line orb-inner-ghost layer-8"
-          d="M326 288
-             L343 315
-             C366 304 394 300 421 306
-             C469 317 502 358 502 406
-             C502 466 452 516 392 516
-             C332 516 282 466 282 406
-             C282 361 308 323 348 308"
-        />
+        <path class="salo-ring ring-8" d="
+          M 596 343
+          A 239 239 0 1 1 322 231
+          L 345 272
+          L 384 239
+          A 194 194 0 1 0 596 343
+        " />
 
-        <!-- small accent only, not counted as a layer -->
-        <path
-          class="orb-accent"
-          d="M204 142
-             L222 172
-             C247 158 274 147 303 140"
-        />
+        <!-- tiny accent stroke, not a layer -->
+        <path class="salo-accent" d="
+          M 552 78
+          A 386 386 0 0 1 642 112
+        " />
 
       </g>
     </svg>
