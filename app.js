@@ -26,7 +26,7 @@ const pointerTarget = new THREE.Vector2();
 const screenPosition = new THREE.Vector3();
 const labelOpacity = { value: 0 };
 const workLabelOpacity = { value: 0 };
-const sceneState = { progress: 0, work: 0 };
+const sceneState = { progress: 0, work: 0, depth: 0 };
 
 let width = window.innerWidth;
 let height = window.innerHeight;
@@ -218,45 +218,60 @@ function makeFrameGeometry(widthValue, heightValue) {
 }
 
 function buildWorkArchive() {
-  workGroup.position.set(0.4, -2.7, -0.75);
-  workGroup.rotation.set(-0.08, -0.28, 0.03);
+  workGroup.position.set(0.2, -3.35, -0.85);
+  workGroup.rotation.set(-0.12, -0.08, 0.015);
 
-  const archiveLine = registerWorkMaterial(new THREE.LineBasicMaterial({ color: 0x07101d, transparent: true, opacity: 0.2 }));
-  const archiveBlue = registerWorkMaterial(new THREE.LineBasicMaterial({ color: 0x0077ff, transparent: true, opacity: 0.44 }));
+  const archiveLine = registerWorkMaterial(new THREE.LineBasicMaterial({ color: 0x07101d, transparent: true, opacity: 0.18 }));
+  const archiveBlue = registerWorkMaterial(new THREE.LineBasicMaterial({ color: 0x0077ff, transparent: true, opacity: 0.42 }));
   const archiveSurface = registerWorkMaterial(new THREE.MeshBasicMaterial({
     color: 0xffffff,
     transparent: true,
-    opacity: 0.13,
+    opacity: 0.11,
     depthWrite: false,
     side: THREE.DoubleSide
   }));
 
   const frames = [
-    { position: [-1.15, 0.85, 0.18], size: [1.45, 0.92], rotation: [0.02, 0.22, -0.04] },
-    { position: [0.55, 0.08, -0.12], size: [1.75, 1.05], rotation: [-0.04, -0.14, 0.03] },
-    { position: [-0.42, -0.86, 0.12], size: [1.26, 0.82], rotation: [0.08, 0.18, 0.05] }
+    { position: [-0.16, 1.55, 0.12], size: [1.92, 1.02], rotation: [0.01, 0.08, -0.015] },
+    { position: [0.1, 0, -0.06], size: [2.18, 1.12], rotation: [-0.02, -0.06, 0.012] },
+    { position: [-0.08, -1.55, 0.06], size: [1.82, 0.96], rotation: [0.025, 0.05, 0.018] }
   ];
 
   frames.forEach(({ position, size, rotation }, index) => {
     const frame = new THREE.Group();
     const surface = new THREE.Mesh(new THREE.PlaneGeometry(size[0], size[1], 1, 1), archiveSurface);
     const outline = new THREE.Line(makeFrameGeometry(size[0], size[1]), index === 1 ? archiveBlue : archiveLine);
-    const divider = lineFromPoints([
-      new THREE.Vector3(-size[0] * 0.38, size[1] * 0.22, 0.01),
-      new THREE.Vector3(size[0] * 0.38, size[1] * 0.22, 0.01)
+    const header = lineFromPoints([
+      new THREE.Vector3(-size[0] * 0.38, size[1] * 0.24, 0.01),
+      new THREE.Vector3(size[0] * 0.38, size[1] * 0.24, 0.01)
+    ], index === 1 ? archiveBlue : archiveLine);
+    const metric = lineFromPoints([
+      new THREE.Vector3(-size[0] * 0.38, -size[1] * 0.12, 0.01),
+      new THREE.Vector3(size[0] * (0.08 + index * 0.09), -size[1] * 0.12, 0.01)
     ], archiveLine);
 
     frame.position.set(...position);
     frame.rotation.set(...rotation);
-    frame.add(surface, outline, divider);
+    frame.userData.baseY = position[1];
+    frame.userData.floatOffset = index * 0.85;
+    frame.add(surface, outline, header, metric);
     workGroup.add(frame);
   });
 
-  const spine = lineFromPoints([
-    new THREE.Vector3(-1.7, 1.35, 0),
-    new THREE.Vector3(1.6, -1.25, 0)
+  const descentRail = lineFromPoints([
+    new THREE.Vector3(-1.34, 2.1, 0),
+    new THREE.Vector3(-1.34, -2.1, 0)
   ], archiveBlue);
-  workGroup.add(spine);
+  const crossLinks = new THREE.Group();
+
+  frames.forEach(({ position }, index) => {
+    crossLinks.add(lineFromPoints([
+      new THREE.Vector3(-1.34, position[1], 0),
+      new THREE.Vector3(position[0] - 1.02, position[1], position[2])
+    ], index === 1 ? archiveBlue : archiveLine));
+  });
+
+  workGroup.add(descentRail, crossLinks);
 }
 
 orb.add(buildOuterWireSphere());
@@ -301,6 +316,7 @@ function updateProgress(progress) {
 
   sceneState.progress = progress;
   sceneState.work = workReveal;
+  sceneState.depth = workDepth;
   root.style.setProperty("--section-progress", progress.toFixed(4));
   root.style.setProperty("--hero-out", heroOut.toFixed(4));
   root.style.setProperty("--build-reveal", buildReveal.toFixed(4));
@@ -317,9 +333,9 @@ function createScrollTimeline() {
     labelOpacity.value = 0.5;
     workLabelOpacity.value = 0.8;
     updateProgress(1);
-    orb.position.set(-0.25, 0.72, -0.2);
-    workGroup.position.set(0.5, -0.2, -0.8);
-    camera.position.set(0, -0.25, 5.4);
+    orb.position.set(0.4, 1.25, -0.25);
+    workGroup.position.set(0.25, 0.15, -0.85);
+    camera.position.set(0, -0.7, 5.15);
     radialGroup.scale.setScalar(1.2);
     rings.scale.setScalar(1.15);
     return;
@@ -345,17 +361,18 @@ function createScrollTimeline() {
     .to(radialGroup.scale, { x: 1.85, y: 1.85, z: 1.85 }, 0.08)
     .to(innerFrame.scale, { x: 1.18, y: 1.18, z: 1.18 }, 0)
     .to(labelOpacity, { value: 1 }, 0.32)
-    .to(camera.position, { z: 3.55, y: -0.58, x: -0.08 }, 0.58)
-    .to(camera.rotation, { z: 0.045, x: -0.08 }, 0.58)
-    .to(orb.position, { x: -0.22, y: 1.18, z: -0.25 }, 0.58)
-    .to(orb.rotation, { y: Math.PI * 1.15, x: -0.16, z: 0.2 }, 0.58)
-    .to(rings.scale, { x: 1.72, y: 1.72, z: 1.72 }, 0.58)
-    .to(workGroup.position, { x: 0.5, y: -0.38, z: -0.85 }, 0.58)
-    .to(workGroup.rotation, { x: -0.16, y: -0.08, z: 0.02 }, 0.58)
+    .to(camera.position, { z: 3.75, y: -0.38, x: -0.06 }, 0.58)
+    .to(camera.rotation, { z: 0.025, x: -0.045 }, 0.58)
+    .to(orb.position, { x: 0.58, y: 1.25, z: -0.28 }, 0.58)
+    .to(orb.rotation, { y: Math.PI * 1.08, x: -0.14, z: 0.12 }, 0.58)
+    .to(rings.scale, { x: 1.58, y: 1.58, z: 1.58 }, 0.58)
+    .to(workGroup.position, { x: 0.26, y: -0.85, z: -0.86 }, 0.58)
+    .to(workGroup.rotation, { x: -0.12, y: -0.05, z: 0.01 }, 0.58)
     .to(workLabelOpacity, { value: 1 }, 0.66)
-    .to(camera.position, { z: 2.95, y: -1.18, x: 0.12 }, 0.86)
-    .to(workGroup.position, { y: 0.78, z: -0.62 }, 0.86)
-    .to(orb.position, { y: 1.72, z: -0.55 }, 0.86);
+    .to(camera.position, { z: 3.18, y: -1.08, x: 0.02 }, 0.86)
+    .to(camera.rotation, { z: 0.01, x: -0.075 }, 0.86)
+    .to(workGroup.position, { y: 0.55, z: -0.72 }, 0.86)
+    .to(orb.position, { y: 1.88, z: -0.58 }, 0.86);
 }
 
 function onPointerMove(event) {
@@ -404,13 +421,13 @@ function animate() {
   });
 
   innerFrame.rotation.y += delta * 0.045 * motionScale;
-  workGroup.children.forEach((child, index) => {
-    if (child.isGroup) {
-      child.position.y += Math.sin(elapsed * 0.5 + index) * 0.00045 * motionScale;
+  workGroup.children.forEach((child) => {
+    if (child.isGroup && Number.isFinite(child.userData.baseY)) {
+      child.position.y = child.userData.baseY + Math.sin(elapsed * 0.5 + child.userData.floatOffset) * 0.012 * motionScale;
     }
   });
   workMaterials.forEach(({ material, target }) => {
-    material.opacity = target * sceneState.work;
+    material.opacity = target * THREE.MathUtils.lerp(sceneState.work, 1, sceneState.depth * 0.35);
   });
   updateLabels();
   renderer.render(scene, camera);
