@@ -247,273 +247,82 @@ p {
    BIM LABS ORB — TRUE SVG VERSION
 ========================================================= */
 
+/* ORB WRAPPER */
 .orb-stage {
   position: fixed;
   inset: 0;
   z-index: 2;
+  pointer-events: none;
   display: grid;
   place-items: center;
-  pointer-events: none;
-
-  transform:
-    translate3d(var(--orb-x, 0px), var(--orb-y, 0px), 0)
-    scale(var(--orb-scale, 1));
-
-  opacity: var(--orb-opacity, 1);
-  filter: blur(var(--orb-blur, 0px));
-
-  transition:
-    transform 950ms cubic-bezier(.19, 1, .22, 1),
-    opacity 500ms ease,
-    filter 500ms ease;
-
-  will-change: transform, opacity, filter;
+  overflow: hidden;
 }
 
 .bim-orb {
-  position: relative;
-  width: clamp(620px, 68vw, 980px);
+  width: min(92vw, 920px);
   aspect-ratio: 1;
-  transform:
-    rotate(var(--orb-rotate, 0deg))
-    rotateX(var(--orb-tilt-y, 0deg))
-    rotateY(var(--orb-tilt-x, 0deg));
-  transform-style: preserve-3d;
-  transition: transform 220ms cubic-bezier(.19, 1, .22, 1);
-}
-
-.bim-orb::before {
-  content: "";
-  position: absolute;
-  inset: 7%;
-  border-radius: 50%;
-  background:
-    radial-gradient(circle,
-      rgba(255,255,255,0.055) 0%,
-      rgba(255,255,255,0.022) 38%,
-      transparent 66%);
-  filter: blur(26px);
-  opacity: 0.8;
-  animation: orbBreath 8s ease-in-out infinite;
+  display: grid;
+  place-items: center;
+  opacity: 0.96;
+  transform: translateZ(0);
 }
 
 .bim-orb-svg {
-  position: relative;
-  z-index: 1;
   width: 100%;
   height: 100%;
-  display: block;
   overflow: visible;
-  mix-blend-mode: screen;
 }
 
-.orb-layer,
-.ghost-ring,
-.light-ring,
-.inner-ring {
+/* SVG LINES */
+.orb-root {
   transform-origin: 360px 360px;
+  animation: orbDrift 38s linear infinite;
 }
 
-.ghost-ring {
-  stroke: rgba(255,255,255,0.13);
-  stroke-width: 0.72;
+.orb-line {
   vector-effect: non-scaling-stroke;
+  stroke-width: 1.05;
+  filter: url(#orbSoftGlow);
 }
 
-.ghost-1 {
-  stroke-dasharray: 760 1160;
-  stroke-dashoffset: -80;
-  opacity: 0.34;
-  animation: slowRotate 36s linear infinite;
+.orb-main,
+.orb-inner-main {
+  stroke: rgba(255, 255, 255, 0.82);
 }
 
-.ghost-2 {
-  stroke-dasharray: 520 180 300 900;
-  stroke-dashoffset: -140;
-  opacity: 0.28;
-  animation: slowRotateReverse 44s linear infinite;
+.orb-mid,
+.orb-inner-mid {
+  stroke: rgba(255, 255, 255, 0.42);
 }
 
-.ghost-3 {
-  stroke-dasharray: 640 980;
-  stroke-dashoffset: -250;
-  opacity: 0.22;
-  animation: slowRotate 52s linear infinite;
+.orb-ghost,
+.orb-inner-ghost {
+  stroke: rgba(255, 255, 255, 0.16);
 }
 
-.ghost-4 {
-  stroke-dasharray: 360 220 280 900;
-  stroke-dashoffset: -100;
-  opacity: 0.18;
-  animation: slowRotateReverse 58s linear infinite;
-}
+.layer-1 { opacity: 0.28; }
+.layer-2 { opacity: 0.38; }
+.layer-3 { opacity: 0.62; }
+.layer-4 { opacity: 0.95; }
 
-.light-ring {
-  stroke: rgba(255,255,255,0.86);
+.layer-5 { opacity: 0.82; }
+.layer-6 { opacity: 0.55; }
+.layer-7 { opacity: 0.35; }
+.layer-8 { opacity: 0.24; }
+
+.orb-accent {
+  vector-effect: non-scaling-stroke;
+  stroke: url(#orbAccent);
   stroke-width: 1.35;
-  vector-effect: non-scaling-stroke;
-  filter: url(#orbGlow);
+  opacity: 0.9;
+  filter: url(#orbAccentGlow);
+  stroke-dasharray: 78 480;
+  stroke-dashoffset: 0;
+  animation: orbAccentPulse 5.5s ease-in-out infinite;
 }
 
-.light-1 {
-  stroke-dasharray: 455 965;
-  stroke-dashoffset: -70;
-  transform: rotate(-28deg);
-  opacity: 0.98;
-}
-
-.light-2 {
-  stroke-dasharray: 330 160 240 880;
-  stroke-dashoffset: -285;
-  transform: rotate(118deg);
-  opacity: 0.78;
-}
-
-.light-3 {
-  stroke-dasharray: 120 280 90 970;
-  stroke-dashoffset: -40;
-  transform: rotate(228deg);
-  opacity: 0.52;
-}
-
-.inner-ring {
-  stroke: rgba(255,255,255,0.23);
-  stroke-width: 0.82;
-  vector-effect: non-scaling-stroke;
-}
-
-.inner-1 {
-  stroke-dasharray: 310 920;
-  stroke-dashoffset: -90;
-  transform: rotate(-52deg);
-  opacity: 0.55;
-}
-
-.inner-2 {
-  stroke-dasharray: 240 120 300 820;
-  stroke-dashoffset: -230;
-  transform: rotate(134deg);
-  opacity: 0.4;
-}
-
-.inner-3 {
-  stroke-dasharray: 420 1080;
-  stroke-dashoffset: -170;
-  transform: rotate(28deg);
-  opacity: 0.24;
-}
-
-.fan-line {
-  stroke: rgba(255,255,255,0.18);
-  stroke-width: 0.72;
-  vector-effect: non-scaling-stroke;
-  opacity: 0.56;
-}
-
-.fan-line:nth-of-type(1) { opacity: 0.62; }
-.fan-line:nth-of-type(2) { opacity: 0.52; }
-.fan-line:nth-of-type(3) { opacity: 0.43; }
-.fan-line:nth-of-type(4) { opacity: 0.34; }
-.fan-line:nth-of-type(5) { opacity: 0.26; }
-.fan-line:nth-of-type(6) { opacity: 0.18; }
-
-.fan-soft {
-  opacity: 0.24;
-}
-
-.cut-line {
-  stroke: rgba(255,255,255,0.24);
-  stroke-width: 0.72;
-  vector-effect: non-scaling-stroke;
-  opacity: 0.5;
-  filter: url(#softGlow);
-}
-
-.cut-line.faint {
-  opacity: 0.2;
-}
-
-.micro-dot {
-  stroke: rgba(255,255,255,0.2);
-  stroke-width: 0.75;
-  stroke-dasharray: 1 8;
-  vector-effect: non-scaling-stroke;
-  opacity: 0.38;
-}
-
-/* hero interaction */
-body[data-orb-mode="hero"].orb-interacting .bim-orb {
-  transform:
-    rotate(calc(var(--orb-rotate, 0deg) + 3deg))
-    rotateX(var(--orb-tilt-y, 0deg))
-    rotateY(var(--orb-tilt-x, 0deg))
-    scale(1.012);
-}
-
-body[data-orb-mode="hero"].orb-interacting .light-1 {
-  transform: rotate(-36deg) scale(1.006);
-}
-
-body[data-orb-mode="hero"].orb-interacting .light-2 {
-  transform: rotate(126deg) scale(1.004);
-}
-
-body[data-orb-mode="hero"].orb-interacting .light-3 {
-  transform: rotate(238deg) scale(0.998);
-}
-
-/* placement */
-body[data-orb-mode="hero"] {
-  --orb-x: 0vw;
-  --orb-y: -2vh;
-  --orb-scale: 1;
-  --orb-opacity: 0.9;
-  --orb-rotate: 0deg;
-  --orb-blur: 0px;
-}
-
-body[data-orb-mode="grid"] {
-  --orb-x: 0vw;
-  --orb-y: 0vh;
-  --orb-scale: 0.54;
-  --orb-opacity: 0.42;
-  --orb-rotate: 86deg;
-}
-
-body[data-orb-mode="showcase"] {
-  --orb-x: -30vw;
-  --orb-y: -1vh;
-  --orb-scale: 0.56;
-  --orb-opacity: 0.36;
-  --orb-rotate: 145deg;
-}
-
-body[data-orb-mode="support"] {
-  --orb-x: 28vw;
-  --orb-y: 2vh;
-  --orb-scale: 0.58;
-  --orb-opacity: 0.32;
-  --orb-rotate: 220deg;
-}
-
-body[data-orb-mode="process"] {
-  --orb-x: 0vw;
-  --orb-y: -24vh;
-  --orb-scale: 0.46;
-  --orb-opacity: 0.28;
-  --orb-rotate: 300deg;
-}
-
-body[data-orb-mode="cta"] {
-  --orb-x: 0vw;
-  --orb-y: -2vh;
-  --orb-scale: 1.02;
-  --orb-opacity: 0.18;
-  --orb-rotate: 360deg;
-  --orb-blur: 1px;
-}
-
-@keyframes slowRotate {
+/* MOTION */
+@keyframes orbDrift {
   from {
     transform: rotate(0deg);
   }
@@ -523,47 +332,32 @@ body[data-orb-mode="cta"] {
   }
 }
 
-@keyframes slowRotateReverse {
-  from {
-    transform: rotate(360deg);
-  }
-
-  to {
-    transform: rotate(0deg);
-  }
-}
-
-@keyframes orbBreath {
+@keyframes orbAccentPulse {
   0%, 100% {
-    opacity: 0.46;
-    transform: scale(0.985);
+    opacity: 0.35;
+    stroke-dashoffset: 0;
   }
 
-  50% {
-    opacity: 0.76;
-    transform: scale(1.018);
-  }
-}
-
-@media (max-width: 980px) {
-  .bim-orb {
-    width: clamp(560px, 120vw, 860px);
-  }
-
-  body[data-orb-mode] {
-    --orb-scale: 0.94;
-    --orb-opacity: 0.34;
+  45% {
+    opacity: 1;
+    stroke-dashoffset: -22;
   }
 }
 
-@media (max-width: 560px) {
+/* OPTIONAL: if the orb feels too sharp behind text */
+.hero .orb-stage,
+.orb-stage.is-hero {
+  opacity: 0.95;
+}
+
+/* MOBILE */
+@media (max-width: 768px) {
   .bim-orb {
-    width: 156vw;
+    width: 130vw;
   }
 
-  body[data-orb-mode] {
-    --orb-scale: 0.9;
-    --orb-opacity: 0.25;
+  .orb-line {
+    stroke-width: 0.9;
   }
 }
 
