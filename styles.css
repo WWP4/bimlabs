@@ -247,14 +247,18 @@ p {
    This is the only orb layer. Do not add old orb overrides.
 ========================================================= */
 
+
 /* =========================================================
-   BIM LABS HERO ORB — BLACK / WHITE / ELECTRIC BLUE
+   BIM LABS ORB — SEGMENTED / PRECISE / HERO HOVER
 ========================================================= */
 
 :root {
   --bim-black: #020205;
   --bim-blue: #2f8cff;
-  --bim-blue-bright: #64b7ff;
+  --bim-blue-bright: #6ab8ff;
+  --bim-white: rgba(255, 255, 255, 0.92);
+  --bim-white-soft: rgba(255, 255, 255, 0.22);
+  --bim-white-faint: rgba(255, 255, 255, 0.1);
 }
 
 .orb-stage {
@@ -271,18 +275,23 @@ p {
 
   opacity: var(--orb-opacity, 1);
   filter: blur(var(--orb-blur, 0px));
+  transition:
+    transform 900ms cubic-bezier(.19, 1, .22, 1),
+    opacity 420ms ease,
+    filter 420ms ease;
   will-change: transform, opacity, filter;
 }
 
 .bim-orb {
   position: relative;
-  width: clamp(640px, 76vw, 1120px);
+  width: clamp(640px, 76vw, 1080px);
   aspect-ratio: 1;
   transform:
     rotate(var(--orb-rotate, 0deg))
     rotateX(var(--orb-tilt-y, 0deg))
     rotateY(var(--orb-tilt-x, 0deg));
   transform-style: preserve-3d;
+  transition: transform 180ms cubic-bezier(.19, 1, .22, 1);
   will-change: transform;
 }
 
@@ -292,164 +301,254 @@ p {
   border-radius: 50%;
   background:
     radial-gradient(circle,
-      rgba(47, 140, 255, 0.16) 0%,
-      rgba(47, 140, 255, 0.07) 28%,
-      rgba(255, 255, 255, 0.035) 48%,
+      rgba(47, 140, 255, 0.10) 0%,
+      rgba(47, 140, 255, 0.05) 28%,
+      rgba(255, 255, 255, 0.02) 48%,
       transparent 72%);
-  filter: blur(38px);
-  opacity: 0.75;
+  filter: blur(24px);
+  opacity: 0.58;
   animation: orbBreath 7s ease-in-out infinite;
 }
 
 .bim-orb-svg {
-  position: relative;
   width: 100%;
   height: 100%;
+  display: block;
   overflow: visible;
-  filter:
-    drop-shadow(0 0 18px rgba(255, 255, 255, 0.07))
-    drop-shadow(0 0 28px rgba(47, 140, 255, 0.08));
+  filter: drop-shadow(0 0 16px rgba(255,255,255,0.04));
 }
 
-/* thin outer slinky rings */
-.slinky-ring {
+.orb-root,
+.guide-ring,
+.main-arc,
+.inner-arc,
+.fan-group,
+.micro-arc,
+.blue-arc,
+.crosshair {
+  transform-origin: 360px 360px;
+}
+
+/* faint construction rings */
+.guide-ring {
   fill: none;
-  stroke: rgba(255, 255, 255, 0.34);
+  stroke: rgba(255, 255, 255, 0.14);
   stroke-width: 0.9;
   vector-effect: non-scaling-stroke;
-  transform-origin: 360px 360px;
-  transition:
-    transform 700ms cubic-bezier(.19, 1, .22, 1),
-    opacity 500ms ease;
+  transition: transform 700ms cubic-bezier(.19, 1, .22, 1), opacity 500ms ease;
 }
 
-.ring-01 { opacity: 0.42; }
-.ring-02 { opacity: 0.52; }
-.ring-03 { opacity: 0.72; }
-.ring-04 { opacity: 0.44; }
-
-/* dark metal body rings */
-.body-ring {
-  fill: none;
-  stroke: rgba(255, 255, 255, 0.1);
-  stroke-width: 16;
-  vector-effect: non-scaling-stroke;
-  transform-origin: 360px 360px;
-  filter: drop-shadow(0 0 16px rgba(255,255,255,0.035));
-  transition:
-    transform 800ms cubic-bezier(.19, 1, .22, 1),
-    opacity 500ms ease;
-}
-
-.body-01 { opacity: 0.25; }
-.body-02 { opacity: 0.2; }
-.body-03 { opacity: 0.16; }
-
-/* bright white edges */
-.edge-ring {
-  fill: none;
-  stroke: rgba(255, 255, 255, 0.88);
-  stroke-width: 1.35;
-  vector-effect: non-scaling-stroke;
-  transform-origin: 360px 360px;
-  filter: url(#bimGlow);
-  transition:
-    transform 750ms cubic-bezier(.19, 1, .22, 1),
-    opacity 500ms ease;
-}
-
-.edge-outer {
-  opacity: 0.9;
-  stroke-dasharray: 840 90 260 140;
-  animation: slowOrbit 48s linear infinite;
-}
-
-.edge-inner {
-  opacity: 0.82;
-  stroke-dasharray: 620 110 260 90;
-  animation: slowOrbitReverse 54s linear infinite;
-}
-
-/* electric blue brand arcs */
-.blue-arc {
-  fill: none;
-  stroke: var(--bim-blue-bright);
-  stroke-width: 1.55;
-  vector-effect: non-scaling-stroke;
-  opacity: 0.82;
-  filter:
-    drop-shadow(0 0 8px rgba(47, 140, 255, 0.65))
-    drop-shadow(0 0 18px rgba(47, 140, 255, 0.32));
-  stroke-dasharray: 80 260;
-  animation: blueSignal 5.8s ease-in-out infinite;
-}
-
-.blue-right { animation-delay: 0.8s; opacity: 0.54; }
-.blue-bottom { animation-delay: 1.6s; opacity: 0.7; }
-.blue-left { animation-delay: 2.4s; opacity: 0.42; }
-
-.orb-notch {
-  fill: none;
-  stroke: rgba(255, 255, 255, 0.22);
-  stroke-width: 0.9;
-  vector-effect: non-scaling-stroke;
-  opacity: 0.45;
-}
-
-/* =========================================================
-   HERO ONLY HOVER / SLINKY MOTION
-   This only activates when body is in hero mode.
-========================================================= */
-
-body[data-orb-mode="hero"].orb-interacting .ring-01 {
-  transform: rotate(-8deg) scale(1.035);
-  opacity: 0.7;
-}
-
-body[data-orb-mode="hero"].orb-interacting .ring-02 {
-  transform: rotate(6deg) scale(1.02);
-  opacity: 0.78;
-}
-
-body[data-orb-mode="hero"].orb-interacting .ring-03 {
-  transform: rotate(-4deg) scale(1.012);
-  opacity: 0.92;
-}
-
-body[data-orb-mode="hero"].orb-interacting .ring-04 {
-  transform: rotate(10deg) scale(0.992);
-  opacity: 0.62;
-}
-
-body[data-orb-mode="hero"].orb-interacting .body-01 {
-  transform: rotate(3deg) scale(1.018);
+.guide-1 {
+  stroke-dasharray: 760 1200;
+  transform: rotate(-16deg);
   opacity: 0.34;
 }
 
-body[data-orb-mode="hero"].orb-interacting .body-02 {
-  transform: rotate(-5deg) scale(1.006);
+.guide-2 {
+  stroke-dasharray: 680 1200;
+  transform: rotate(8deg);
   opacity: 0.28;
 }
 
-body[data-orb-mode="hero"].orb-interacting .body-03 {
-  transform: rotate(7deg) scale(0.994);
+.guide-3 {
+  stroke-dasharray: 540 1200;
+  transform: rotate(52deg);
   opacity: 0.24;
 }
 
-body[data-orb-mode="hero"].orb-interacting .edge-outer {
-  transform: rotate(6deg) scale(1.006);
+.guide-4 {
+  stroke-dasharray: 460 1200;
+  transform: rotate(122deg);
+  opacity: 0.18;
 }
 
-body[data-orb-mode="hero"].orb-interacting .edge-inner {
-  transform: rotate(-7deg) scale(0.995);
+/* primary luminous segments */
+.main-arc,
+.inner-arc {
+  fill: none;
+  vector-effect: non-scaling-stroke;
+  transition: transform 760ms cubic-bezier(.19, 1, .22, 1), opacity 500ms ease;
+}
+
+.main-arc {
+  stroke: rgba(255, 255, 255, 0.92);
+  stroke-width: 1.45;
+  filter: drop-shadow(0 0 8px rgba(255,255,255,0.15));
+}
+
+.main-arc-1 {
+  stroke-dasharray: 455 1308;
+  transform: rotate(-40deg);
+  opacity: 0.96;
+}
+
+.main-arc-2 {
+  stroke-dasharray: 360 1403;
+  transform: rotate(124deg);
+  opacity: 0.88;
+}
+
+.main-arc-3 {
+  stroke-dasharray: 182 1581;
+  transform: rotate(210deg);
+  opacity: 0.72;
+}
+
+.inner-arc {
+  stroke: rgba(255, 255, 255, 0.26);
+  stroke-width: 1.05;
+}
+
+.inner-arc-1 {
+  stroke-dasharray: 308 1200;
+  transform: rotate(-62deg);
+  opacity: 0.45;
+}
+
+.inner-arc-2 {
+  stroke-dasharray: 264 1200;
+  transform: rotate(172deg);
+  opacity: 0.32;
+}
+
+/* fan line clusters */
+.fan-group {
+  transition: transform 800ms cubic-bezier(.19, 1, .22, 1), opacity 500ms ease;
+}
+
+.fan-line {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.26);
+  stroke-width: 0.9;
+  vector-effect: non-scaling-stroke;
+}
+
+.fan-top-left .fan-line:nth-child(1) { opacity: 0.88; }
+.fan-top-left .fan-line:nth-child(2) { opacity: 0.74; }
+.fan-top-left .fan-line:nth-child(3) { opacity: 0.62; }
+.fan-top-left .fan-line:nth-child(4) { opacity: 0.48; }
+.fan-top-left .fan-line:nth-child(5) { opacity: 0.36; }
+.fan-top-left .fan-line:nth-child(6) { opacity: 0.28; }
+
+.fan-bottom .fan-line:nth-child(1) { opacity: 0.78; }
+.fan-bottom .fan-line:nth-child(2) { opacity: 0.66; }
+.fan-bottom .fan-line:nth-child(3) { opacity: 0.54; }
+.fan-bottom .fan-line:nth-child(4) { opacity: 0.42; }
+.fan-bottom .fan-line:nth-child(5) { opacity: 0.30; }
+
+.fan-right .fan-line:nth-child(1) { opacity: 0.52; }
+.fan-right .fan-line:nth-child(2) { opacity: 0.42; }
+.fan-right .fan-line:nth-child(3) { opacity: 0.34; }
+.fan-right .fan-line:nth-child(4) { opacity: 0.24; }
+
+/* micro details */
+.micro-arc {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.18);
+  stroke-width: 0.95;
+  stroke-dasharray: 1 7;
+  vector-effect: non-scaling-stroke;
+  opacity: 0.42;
+  transition: opacity 400ms ease;
+}
+
+/* blue brand accents */
+.blue-arc {
+  fill: none;
+  stroke: var(--bim-blue-bright);
+  stroke-width: 1.5;
+  vector-effect: non-scaling-stroke;
+  opacity: 0.72;
+  filter:
+    drop-shadow(0 0 7px rgba(47,140,255,0.42))
+    drop-shadow(0 0 14px rgba(47,140,255,0.18));
+  transition:
+    transform 760ms cubic-bezier(.19, 1, .22, 1),
+    opacity 500ms ease,
+    stroke-width 400ms ease;
+  stroke-dasharray: 70 220;
+  animation: blueSignal 7s ease-in-out infinite;
+}
+
+.blue-2 {
+  animation-delay: 1.8s;
+  opacity: 0.54;
+}
+
+/* crosshair / calibration */
+.crosshair {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.14);
+  stroke-width: 0.9;
+  vector-effect: non-scaling-stroke;
+  opacity: 0.38;
+}
+
+.faint-left {
+  opacity: 0.18;
+}
+
+/* hero hover slinky motion only */
+body[data-orb-mode="hero"].orb-interacting .guide-1 {
+  transform: rotate(-22deg) scale(1.01);
+  opacity: 0.42;
+}
+
+body[data-orb-mode="hero"].orb-interacting .guide-2 {
+  transform: rotate(14deg) scale(1.015);
+  opacity: 0.38;
+}
+
+body[data-orb-mode="hero"].orb-interacting .guide-3 {
+  transform: rotate(58deg) scale(1.008);
+  opacity: 0.32;
+}
+
+body[data-orb-mode="hero"].orb-interacting .guide-4 {
+  transform: rotate(128deg) scale(0.996);
+  opacity: 0.24;
+}
+
+body[data-orb-mode="hero"].orb-interacting .main-arc-1 {
+  transform: rotate(-48deg) scale(1.012);
+}
+
+body[data-orb-mode="hero"].orb-interacting .main-arc-2 {
+  transform: rotate(132deg) scale(1.006);
+}
+
+body[data-orb-mode="hero"].orb-interacting .main-arc-3 {
+  transform: rotate(218deg) scale(0.996);
+}
+
+body[data-orb-mode="hero"].orb-interacting .inner-arc-1 {
+  transform: rotate(-68deg) scale(1.01);
+  opacity: 0.58;
+}
+
+body[data-orb-mode="hero"].orb-interacting .inner-arc-2 {
+  transform: rotate(178deg) scale(0.998);
+  opacity: 0.46;
+}
+
+body[data-orb-mode="hero"].orb-interacting .fan-top-left {
+  transform: rotate(-4deg) translate(-6px, -4px);
+}
+
+body[data-orb-mode="hero"].orb-interacting .fan-bottom {
+  transform: rotate(5deg) translate(4px, 6px);
+}
+
+body[data-orb-mode="hero"].orb-interacting .fan-right {
+  transform: rotate(3deg) translate(4px, -2px);
 }
 
 body[data-orb-mode="hero"].orb-interacting .blue-arc {
   opacity: 1;
-  stroke-width: 1.85;
+  stroke-width: 1.7;
 }
 
-/* Orb placement states */
+/* orb placement states */
 body[data-orb-mode="hero"] {
   --orb-x: 0vw;
   --orb-y: -2vh;
@@ -459,27 +558,31 @@ body[data-orb-mode="hero"] {
   --orb-blur: 0px;
 }
 
+body[data-orb-mode="hero-to-grid"] {
+  --orb-blur: 0px;
+}
+
 body[data-orb-mode="grid"] {
   --orb-x: 0vw;
   --orb-y: 0vh;
   --orb-scale: 0.5;
   --orb-opacity: 0.42;
-  --orb-rotate: 85deg;
+  --orb-rotate: 86deg;
 }
 
 body[data-orb-mode="showcase"] {
   --orb-x: -30vw;
   --orb-y: -1vh;
   --orb-scale: 0.56;
-  --orb-opacity: 0.38;
+  --orb-opacity: 0.36;
   --orb-rotate: 145deg;
 }
 
 body[data-orb-mode="support"] {
   --orb-x: 28vw;
   --orb-y: 2vh;
-  --orb-scale: 0.6;
-  --orb-opacity: 0.34;
+  --orb-scale: 0.58;
+  --orb-opacity: 0.32;
   --orb-rotate: 220deg;
 }
 
@@ -487,58 +590,55 @@ body[data-orb-mode="process"] {
   --orb-x: 0vw;
   --orb-y: -24vh;
   --orb-scale: 0.46;
-  --orb-opacity: 0.3;
+  --orb-opacity: 0.28;
   --orb-rotate: 300deg;
 }
 
 body[data-orb-mode="cta"] {
   --orb-x: 0vw;
   --orb-y: -2vh;
-  --orb-scale: 1.04;
-  --orb-opacity: 0.22;
+  --orb-scale: 1.02;
+  --orb-opacity: 0.2;
   --orb-rotate: 360deg;
   --orb-blur: 1px;
-}
-
-/* animations */
-@keyframes slowOrbit {
-  to { transform: rotate(360deg); }
-}
-
-@keyframes slowOrbitReverse {
-  to { transform: rotate(-360deg); }
 }
 
 @keyframes blueSignal {
   0%, 100% {
     stroke-dashoffset: 0;
-    opacity: 0.36;
+    opacity: 0.34;
   }
-
   45% {
     opacity: 1;
   }
-
   100% {
-    stroke-dashoffset: -260;
+    stroke-dashoffset: -190;
   }
 }
 
 @keyframes orbBreath {
   0%, 100% {
-    opacity: 0.58;
-    transform: scale(0.98);
+    opacity: 0.48;
+    transform: scale(0.985);
   }
-
   50% {
-    opacity: 0.88;
-    transform: scale(1.035);
+    opacity: 0.72;
+    transform: scale(1.02);
   }
 }
 
 @media (max-width: 980px) {
   .bim-orb {
-    width: clamp(560px, 120vw, 820px);
+    width: clamp(560px, 118vw, 820px);
+  }
+
+  .bim-orb-aura {
+    filter: blur(16px);
+    opacity: 0.42;
+  }
+
+  .bim-orb-svg {
+    filter: none;
   }
 
   body[data-orb-mode] {
@@ -559,6 +659,7 @@ body[data-orb-mode="cta"] {
     --orb-opacity: 0.28;
   }
 }
+
 
 /* =========================================================
    04. HERO
