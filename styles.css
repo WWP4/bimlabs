@@ -247,6 +247,21 @@ p {
    This is the only orb layer. Do not add old orb overrides.
 ========================================================= */
 
+/* =========================================================
+   BIM LABS ORB — BLACK + ELECTRIC BLUE
+========================================================= */
+
+:root {
+  --bg: #020205;
+  --ink: #ffffff;
+  --electric-blue: #2f8cff;
+  --electric-blue-bright: #63b2ff;
+  --electric-blue-soft: rgba(47, 140, 255, 0.42);
+  --orb-white: rgba(255, 255, 255, 0.84);
+  --orb-white-soft: rgba(255, 255, 255, 0.22);
+  --orb-white-faint: rgba(255, 255, 255, 0.12);
+}
+
 .orb-stage {
   position: fixed;
   inset: 0;
@@ -254,115 +269,95 @@ p {
   display: grid;
   place-items: center;
   pointer-events: none;
-
   transform:
     translate3d(var(--orb-x, 0px), var(--orb-y, 0px), 0)
     scale(var(--orb-scale, 1));
-
   opacity: var(--orb-opacity, 1);
   filter: blur(var(--orb-blur, 0px));
   will-change: transform, opacity, filter;
-  transition: none;
 }
 
-.orb-stage,
-.orb-stage * {
-  pointer-events: none;
-}
-
-.story-orb,
 .story-orb-premium {
   position: relative;
-  width: clamp(660px, 78vw, 1180px);
+  width: clamp(620px, 74vw, 1040px);
   aspect-ratio: 1;
-  color: #ffffff;
   transform: rotate(var(--orb-rotate, 0deg));
   will-change: transform;
-  transition: none;
 }
 
-/* Works with the old HTML */
-.orb-glow,
 .orb-aura {
   position: absolute;
-  inset: -16%;
+  inset: -14%;
   border-radius: 50%;
   background:
     radial-gradient(
       circle,
-      rgba(255, 255, 255, 0.15),
-      rgba(255, 255, 255, 0.045) 38%,
-      transparent 70%
+      rgba(47, 140, 255, 0.18) 0%,
+      rgba(47, 140, 255, 0.08) 34%,
+      rgba(255, 255, 255, 0.03) 52%,
+      transparent 72%
     );
   filter: blur(34px);
-  opacity: 0.72;
-  animation: orbAuraBreath 6s ease-in-out infinite;
+  opacity: 0.85;
+  animation: orbAuraBreath 7s ease-in-out infinite;
 }
 
-.orb-shell {
-  position: absolute;
-  inset: 0;
-  display: grid;
-  place-items: center;
-  border-radius: 50%;
-  background: transparent;
-  box-shadow: none;
-}
-
-.orb-svg,
 .bim-signature-orb {
   width: 100%;
   height: 100%;
-  color: #ffffff;
-  opacity: 0.9;
-  filter: drop-shadow(0 0 26px rgba(255, 255, 255, 0.06));
+  display: block;
+  overflow: visible;
+  filter:
+    drop-shadow(0 0 16px rgba(47, 140, 255, 0.08))
+    drop-shadow(0 0 26px rgba(255, 255, 255, 0.04));
   animation: orbFloat 14s ease-in-out infinite;
 }
 
-.orb-svg circle,
-.orb-svg ellipse,
-.orb-svg path {
-  fill: none;
-  stroke: currentColor;
-}
-
-/* Premium orb classes if you use the newer SVG */
+/* outer ring system */
 .orb-ring {
-  stroke: rgba(255, 255, 255, 0.34);
-  stroke-width: 1;
+  fill: none;
   vector-effect: non-scaling-stroke;
   transform-origin: 320px 320px;
 }
 
 .ring-a {
-  stroke-dasharray: 460 74 180 92 280 120;
+  stroke: rgba(255, 255, 255, 0.78);
+  stroke-width: 1.15;
   opacity: 0.74;
-  animation: orbitSlow 38s linear infinite;
+  stroke-dasharray: 460 74 180 92 280 120;
+  animation: orbitSlow 42s linear infinite;
 }
 
 .ring-b {
+  stroke: rgba(47, 140, 255, 0.42);
+  stroke-width: 0.95;
+  opacity: 0.5;
   stroke-dasharray: 260 120 420 80 160 90;
-  opacity: 0.34;
-  animation: orbitReverse 46s linear infinite;
+  animation: orbitReverse 52s linear infinite;
 }
 
 .ring-c {
+  stroke: rgba(255, 255, 255, 0.18);
+  stroke-width: 0.8;
+  opacity: 0.28;
   stroke-dasharray: 180 90 340 110 220 130;
-  opacity: 0.22;
-  animation: orbitSlow 58s linear infinite;
+  animation: orbitSlow 60s linear infinite;
 }
 
+/* main rails */
 .orb-rail {
+  fill: none;
   vector-effect: non-scaling-stroke;
   transform-origin: 320px 320px;
 }
 
 .rail-main {
+  stroke: rgba(255, 255, 255, 0.88);
   stroke-width: 1.35;
   opacity: 0.88;
-  filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.18));
   stroke-dasharray: 720;
   stroke-dashoffset: 720;
+  filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.12));
   animation: railReveal 4.2s ease forwards, railDrift 18s ease-in-out infinite;
 }
 
@@ -371,8 +366,8 @@ p {
 }
 
 .rail-soft {
-  stroke: rgba(255, 255, 255, 0.22);
-  stroke-width: 0.85;
+  stroke: rgba(47, 140, 255, 0.2);
+  stroke-width: 0.9;
   opacity: 0.72;
   animation: railDriftSoft 22s ease-in-out infinite;
 }
@@ -384,28 +379,34 @@ p {
   animation: railDriftSoft 26s ease-in-out infinite reverse;
 }
 
+/* signature BIM LABS electric blue pulse */
 .orb-blue {
-  stroke: var(--blue);
-  stroke-width: 1.2;
-  opacity: 0.78;
-  filter: drop-shadow(0 0 10px rgba(74, 144, 255, 0.42));
+  fill: none;
+  stroke: var(--electric-blue);
+  stroke-width: 1.35;
+  opacity: 0.92;
   stroke-dasharray: 120 540;
+  filter:
+    drop-shadow(0 0 8px rgba(47, 140, 255, 0.55))
+    drop-shadow(0 0 18px rgba(47, 140, 255, 0.32));
   animation: bluePulse 6.5s ease-in-out infinite;
 }
 
+/* small precision ticks */
 .orb-tick {
-  stroke: rgba(255, 255, 255, 0.28);
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.24);
   stroke-width: 0.8;
-  opacity: 0.5;
+  opacity: 0.58;
   vector-effect: non-scaling-stroke;
 }
 
-/* Orb states controlled by body data-orb-mode */
+/* orb states */
 body[data-orb-mode="hero"] {
   --orb-x: 0vw;
   --orb-y: -2vh;
   --orb-scale: 1;
-  --orb-opacity: 0.95;
+  --orb-opacity: 0.98;
   --orb-rotate: 0deg;
   --orb-blur: 0px;
 }
@@ -413,34 +414,34 @@ body[data-orb-mode="hero"] {
 body[data-orb-mode="grid"] {
   --orb-x: 0vw;
   --orb-y: 0vh;
-  --orb-scale: 0.52;
-  --orb-opacity: 0.55;
-  --orb-rotate: 80deg;
+  --orb-scale: 0.5;
+  --orb-opacity: 0.62;
+  --orb-rotate: 85deg;
   --orb-blur: 0px;
 }
 
 body[data-orb-mode="showcase"] {
-  --orb-x: -32vw;
+  --orb-x: -30vw;
   --orb-y: -1vh;
-  --orb-scale: 0.58;
-  --orb-opacity: 0.5;
+  --orb-scale: 0.56;
+  --orb-opacity: 0.52;
   --orb-rotate: 145deg;
   --orb-blur: 0px;
 }
 
 body[data-orb-mode="support"] {
-  --orb-x: 30vw;
-  --orb-y: 1vh;
-  --orb-scale: 0.62;
-  --orb-opacity: 0.48;
+  --orb-x: 28vw;
+  --orb-y: 2vh;
+  --orb-scale: 0.6;
+  --orb-opacity: 0.5;
   --orb-rotate: 220deg;
   --orb-blur: 0px;
 }
 
 body[data-orb-mode="process"] {
   --orb-x: 0vw;
-  --orb-y: -26vh;
-  --orb-scale: 0.48;
+  --orb-y: -24vh;
+  --orb-scale: 0.46;
   --orb-opacity: 0.42;
   --orb-rotate: 300deg;
   --orb-blur: 0px;
@@ -449,10 +450,98 @@ body[data-orb-mode="process"] {
 body[data-orb-mode="cta"] {
   --orb-x: 0vw;
   --orb-y: -2vh;
-  --orb-scale: 1.05;
-  --orb-opacity: 0.28;
+  --orb-scale: 1.04;
+  --orb-opacity: 0.24;
   --orb-rotate: 360deg;
   --orb-blur: 1px;
+}
+
+/* animations */
+@keyframes orbitSlow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes orbitReverse {
+  from { transform: rotate(360deg); }
+  to { transform: rotate(0deg); }
+}
+
+@keyframes railReveal {
+  to { stroke-dashoffset: 0; }
+}
+
+@keyframes railDrift {
+  0%, 100% {
+    transform: rotate(0deg) scale(1);
+    opacity: 0.82;
+  }
+  50% {
+    transform: rotate(4deg) scale(1.018);
+    opacity: 1;
+  }
+}
+
+@keyframes railDriftSoft {
+  0%, 100% { transform: rotate(0deg); }
+  50% { transform: rotate(-3deg); }
+}
+
+@keyframes bluePulse {
+  0%, 100% {
+    stroke-dashoffset: 0;
+    opacity: 0.3;
+  }
+  45% {
+    opacity: 1;
+  }
+  100% {
+    stroke-dashoffset: -520;
+  }
+}
+
+@keyframes orbFloat {
+  0%, 100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(0, -10px, 0) scale(1.015);
+  }
+}
+
+@keyframes orbAuraBreath {
+  0%, 100% {
+    opacity: 0.62;
+    transform: scale(0.97);
+  }
+  50% {
+    opacity: 0.92;
+    transform: scale(1.04);
+  }
+}
+
+@media (max-width: 980px) {
+  .story-orb-premium {
+    width: clamp(540px, 118vw, 780px);
+  }
+
+  body[data-orb-mode] {
+    --orb-x: 0vw;
+    --orb-y: -2vh;
+    --orb-scale: 0.94;
+    --orb-opacity: 0.36;
+  }
+}
+
+@media (max-width: 560px) {
+  .story-orb-premium {
+    width: 154vw;
+  }
+
+  body[data-orb-mode] {
+    --orb-scale: 0.9;
+    --orb-opacity: 0.3;
+  }
 }
 
 /* =========================================================
