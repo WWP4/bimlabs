@@ -3,348 +3,165 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Bim Labs — Digital Systems Studio</title>
-  <meta name="description" content="Bim Labs designs premium websites, AI workspaces, client portals, and automated business systems for modern founders." />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css" />
+
+  <title>BIM Labs — Immersive Preview</title>
+
+  <link rel="stylesheet" href="immersive.css" />
 </head>
 
-<!-- GLOBAL ORB -->
-<div class="orb-stage" aria-hidden="true">
-  <div class="bim-orb" id="storyOrb">
-    <svg class="bim-orb-svg" viewBox="0 0 900 900" aria-hidden="true" focusable="false">
-      <defs>
-        <filter id="orbGlow" x="-70%" y="-70%" width="240%" height="240%">
-          <feGaussianBlur stdDeviation="2.1" result="blur" />
-          <feMerge>
-            <feMergeNode in="blur" />
-            <feMergeNode in="SourceGraphic" />
-          </feMerge>
-        </filter>
+<body>
+  <main class="bim-experience" id="top">
 
-        <filter id="orbAccentGlow" x="-80%" y="-80%" width="260%" height="260%">
-          <feGaussianBlur stdDeviation="5" result="blur" />
-          <feMerge>
-            <feMergeNode in="blur" />
-            <feMergeNode in="SourceGraphic" />
-          </feMerge>
-        </filter>
+    <!-- FIXED WORLD LAYER -->
+    <div class="world-layer" aria-hidden="true">
+      <div class="world-bg"></div>
+      <div class="world-grid"></div>
 
-        <linearGradient id="orbAccent" x1="180" y1="130" x2="360" y2="230" gradientUnits="userSpaceOnUse">
-          <stop offset="0%" stop-color="#ffffff" />
-          <stop offset="45%" stop-color="#7d8cff" />
-          <stop offset="100%" stop-color="#6a35ff" />
-        </linearGradient>
-      </defs>
+      <div class="world-lines">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
 
-      <g class="orb-rotate" fill="none" stroke-linecap="round" stroke-linejoin="miter">
+      <div class="organic-form">
+        <div class="organic-head"></div>
+        <div class="organic-tendrils">
+          <i></i>
+          <i></i>
+          <i></i>
+          <i></i>
+          <i></i>
+          <i></i>
+          <i></i>
+          <i></i>
+        </div>
+      </div>
 
-        <!-- OUTER ORB: 3 clean layers -->
-        <path class="orb-line outer outer-1" d="
-          M 279 111
-          L 304 154
-          L 352 118
-          A 348 348 0 1 1 636 764
-          L 611 721
-          L 563 757
-          A 348 348 0 0 1 279 111
-        " />
+      <div class="orb-system">
+        <div class="orb-glow"></div>
+        <div class="orb-ring orb-ring-main"></div>
+        <div class="orb-ring orb-ring-secondary"></div>
+        <div class="orb-ring orb-ring-grid"></div>
+        <div class="orb-core"></div>
+      </div>
 
-        <path class="orb-line outer outer-2" d="
-          M 292 138
-          L 315 178
-          L 359 145
-          A 318 318 0 1 1 621 736
-          L 598 696
-          L 554 729
-          A 318 318 0 0 1 292 138
-        " />
+      <div class="floating-chip chip-one">
+        <span>Input</span>
+        <strong>Brief</strong>
+      </div>
 
-        <path class="orb-line outer outer-3" d="
-          M 306 166
-          L 326 202
-          L 367 172
-          A 288 288 0 1 1 606 708
-          L 586 672
-          L 545 702
-          A 288 288 0 0 1 306 166
-        " />
+      <div class="floating-chip chip-two">
+        <span>Engine</span>
+        <strong>Logic</strong>
+      </div>
 
-        <!-- INNER ORB: 3 clean layers -->
-        <path class="orb-line inner inner-1" d="
-          M 361 260
-          L 379 292
-          L 417 264
-          A 178 178 0 1 1 534 630
-          L 516 598
-          L 478 626
-          A 178 178 0 0 1 361 260
-        " />
+      <div class="floating-chip chip-three">
+        <span>Output</span>
+        <strong>System</strong>
+      </div>
+    </div>
 
-        <path class="orb-line inner inner-2" d="
-          M 374 287
-          L 390 316
-          L 423 291
-          A 148 148 0 1 1 520 603
-          L 504 574
-          L 471 599
-          A 148 148 0 0 1 374 287
-        " />
+    <!-- FIXED HUD -->
+    <header class="site-hud">
+      <a href="#top" class="hud-brand">BIM Labs</a>
 
-        <path class="orb-line inner inner-3" d="
-          M 388 315
-          L 402 341
-          L 430 320
-          A 118 118 0 1 1 506 575
-          L 492 549
-          L 464 570
-          A 118 118 0 0 1 388 315
-        " />
+      <div class="hud-center">
+        <span id="sceneLabel">00 / Identity</span>
+        <i></i>
+        <span>Immersive Web System</span>
+      </div>
 
-        <!-- Accent only. Not counted as one of the 6 layers. -->
-        <path class="orb-accent" d="
-          M 279 111
-          L 304 154
-          L 352 118
-          A 348 348 0 0 1 430 104
-        " />
+      <div class="hud-progress">
+        <span id="progressText">00%</span>
+        <div class="progress-line">
+          <b id="progressFill"></b>
+        </div>
+      </div>
+    </header>
 
-      </g>
-    </svg>
-  </div>
-</div>
-  
-</body>
-  <header class="site-header" id="siteHeader">
-    <a href="#top" class="brand" aria-label="Bim Labs home">
-      <span class="brand-mark"></span>
-      <span>Bim Labs</span>
-    </a>
+    <!-- SCENE 01 -->
+    <section class="scene scene-hero" data-scene="identity">
+      <div class="scene-content hero-content">
+        <p class="scene-kicker">00 / Identity Chamber</p>
 
-    <nav class="site-nav" aria-label="Main navigation">
-      <a href="#services">Systems</a>
-      <a href="#work">Work</a>
-      <a href="#process">Process</a>
-      <a href="#contact">Contact</a>
-    </nav>
+        <h1 class="hero-logo" aria-label="BIM Labs">
+          <span>B</span>
+          <span>I</span>
+          <span class="pixel-mark"></span>
+          <span>L</span>
+          <span>A</span>
+          <span>B</span>
+          <span>S</span>
+        </h1>
 
-    <a href="#contact" class="header-cta">Start a build</a>
-  </header>
-
-  <main id="top">
-    <section class="hero screen" data-orb="hero" aria-labelledby="heroTitle">
-      <div class="hero-copy reveal">
-        <p class="eyebrow">Bim Labs / AI, Web, Automation</p>
-        <h1 id="heroTitle">Digital systems that make your business feel inevitable.</h1>
-        <p class="hero-lede">
-          We build high-end websites, AI workspaces, client portals, and revenue systems for founders who need their brand to look calm, premium, and already in motion.
+        <p class="hero-copy">
+          Interactive websites, AI systems, and digital showrooms that feel alive before the client ever clicks.
         </p>
-        <div class="hero-actions">
-          <a class="btn primary" href="#contact"><span>Start a project</span></a>
-          <a class="btn ghost" href="#work"><span>See the flow</span></a>
-        </div>
-        <p class="microcopy">Built for operators. Designed like a product. No template energy.</p>
       </div>
 
-      <div class="hero-bottom" aria-label="Bim Labs capabilities">
-        <div class="marquee" data-marquee>
-          <div class="marquee-track">
-            <span>AI Workspaces</span>
-            <span>Premium Websites</span>
-            <span>Client Portals</span>
-            <span>3D Product Tools</span>
-            <span>Sales Automation</span>
-            <span>Brand Systems</span>
-            <span>AI Workspaces</span>
-            <span>Premium Websites</span>
-            <span>Client Portals</span>
-            <span>3D Product Tools</span>
-            <span>Sales Automation</span>
-            <span>Brand Systems</span>
-          </div>
-        </div>
-      </div>
+      <a href="#scene-two" class="scroll-cue">
+        <span>Scroll the world</span>
+        <i></i>
+      </a>
     </section>
 
-    <section id="services" class="quadrants screen" data-orb="grid" aria-labelledby="servicesTitle">
-      <div class="section-topline reveal">
-        <p class="eyebrow">What we build</p>
-        <h2 id="servicesTitle">One studio. Four operating lanes.</h2>
-      </div>
+    <!-- SCENE 02 -->
+    <section class="scene scene-system" id="scene-two" data-scene="system">
+      <div class="scene-content system-content">
+        <div class="system-copy">
+          <p class="scene-kicker">01 / System Activation</p>
 
-      <div class="quadrant-board" data-ready="false">
-        <div class="board-divider horizontal top"></div>
-        <div class="board-divider vertical middle"></div>
-        <div class="board-divider horizontal middle"></div>
-        <div class="board-center" aria-hidden="true">
-          <span></span>
-        </div>
+          <h2>
+            Not stacked sections.
+            <span>One living interface.</span>
+          </h2>
 
-        <article class="quadrant-card q1 reveal">
-          <div>
-            <p class="card-index">01</p>
-            <h3>AI workspaces</h3>
-            <p class="hidden-text">Guided assistants, planning flows, intake logic, knowledge vaults, and internal tools that move people to the next step.</p>
-          </div>
-          <div class="mini-stack" aria-hidden="true">
-            <span></span><span></span><span></span>
-          </div>
-        </article>
-
-        <article class="quadrant-card q2 reveal">
-          <div>
-            <p class="card-index">02</p>
-            <h3>Premium web design</h3>
-            <p class="hidden-text">Polished landing pages, high-ticket funnels, brand systems, and full-screen scroll stories built to feel intentional.</p>
-          </div>
-          <div class="mock-browser" aria-hidden="true">
-            <i></i><i></i><i></i>
-            <strong></strong>
-          </div>
-        </article>
-
-        <article class="quadrant-card q3 reveal">
-          <div>
-            <p class="card-index">03</p>
-            <h3>Client portals</h3>
-            <p class="hidden-text">Board-ready quote portals, project rooms, customer status pages, document hubs, and private client dashboards.</p>
-          </div>
-          <div class="portal-card" aria-hidden="true">
-            <span></span><span></span><span></span>
-          </div>
-        </article>
-
-        <article class="quadrant-card q4 reveal">
-          <div>
-            <p class="card-index">04</p>
-            <h3>Revenue systems</h3>
-            <p class="hidden-text">Follow-up automations, lead-routing, sales scripts, quote logic, and CRM flows designed around real operator pressure.</p>
-          </div>
-          <div class="metric-card" aria-hidden="true">
-            <b>+42%</b>
-            <span>lead movement</span>
-          </div>
-        </article>
-      </div>
-    </section>
-
-    <section id="work" class="showcase" data-orb="showcase" aria-labelledby="workTitle">
-      <div class="showcase-sticky">
-        <div class="showcase-heading reveal">
-          <p class="eyebrow">Proof of execution</p>
-          <h2 id="workTitle">Systems that feel like finished products before the client ever clicks.</h2>
           <p>
-            The goal is not decoration. The goal is controlled motion, clear hierarchy, and a story that makes every section feel unlocked by the one before it.
+            The orb becomes the story device. It moves, opens, and pulls the page into a system instead of letting each section feel disconnected.
           </p>
         </div>
 
-        <div class="showcase-window">
-          <div class="showcase-track" id="showcaseTrack">
-            <article class="work-card large">
-              <p>AI Planning Flow</p>
-              <h3>Orynd AI workspace</h3>
-              <span>Budget → scope → quote → next step</span>
-              <div class="interface-lines"></div>
-            </article>
-            <article class="work-card tall">
-              <p>Client Portal</p>
-              <h3>Board-ready quote room</h3>
-              <span>Shared notes, docs, visuals, and project state</span>
-              <div class="phone-frame"></div>
-            </article>
-            <article class="work-card wide dark-card">
-              <p>3D Product Tool</p>
-              <h3>Install viewer</h3>
-              <span>Step-based model viewer for complex sales and permitting</span>
-              <div class="blueprint-grid"></div>
-            </article>
-            <article class="work-card large">
-              <p>Revenue System</p>
-              <h3>Pipeline operating layer</h3>
-              <span>Lead intake, follow-up, quote logic, and sales tasks</span>
-              <div class="interface-lines alt"></div>
-            </article>
+        <div class="system-panel">
+          <div class="panel-top">
+            <span>Live Build Preview</span>
+            <div>
+              <i></i>
+              <i></i>
+              <i></i>
+            </div>
           </div>
+
+          <h3>Digital showroom engine</h3>
+
+          <div class="panel-grid">
+            <button type="button" data-mode="strategy" class="active">
+              <span>01</span>
+              <strong>Strategy</strong>
+            </button>
+
+            <button type="button" data-mode="interface">
+              <span>02</span>
+              <strong>Interface</strong>
+            </button>
+
+            <button type="button" data-mode="automation">
+              <span>03</span>
+              <strong>Automation</strong>
+            </button>
+          </div>
+
+          <p id="panelDescription">
+            Turn messy business ideas into a clean interactive experience that explains, sells, and guides the user.
+          </p>
         </div>
       </div>
     </section>
 
-    <section class="agency screen" data-orb="support" aria-labelledby="supportTitle">
-      <div class="agency-media reveal" aria-hidden="true">
-        <div class="team-orbits">
-          <span></span><span></span><span></span><span></span><span></span><span></span>
-        </div>
-      </div>
-
-      <div class="agency-copy reveal">
-        <p class="eyebrow">For founders and small teams</p>
-        <h2 id="supportTitle">The creative firepower of an in-house product team, without the payroll.</h2>
-        <p>
-          Bim Labs plugs into messy business ideas and turns them into clean digital experiences: websites, automations, portals, dashboards, and launch systems that work together.
-        </p>
-        <div class="agency-grid">
-          <div>
-            <strong>Direct builder access</strong>
-            <span>No account-manager fog. You talk to the people shaping the system.</span>
-          </div>
-          <div>
-            <strong>Strategy baked in</strong>
-            <span>Design choices are tied to sales, operations, and the next business move.</span>
-          </div>
-          <div>
-            <strong>Premium by restraint</strong>
-            <span>Less noise, cleaner sections, better motion, stronger trust.</span>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section id="process" class="process screen" data-orb="process" aria-labelledby="processTitle">
-      <div class="process-header reveal">
-        <p class="eyebrow">The Bim Labs standard</p>
-        <h2 id="processTitle">Simple process. Serious execution.</h2>
-      </div>
-      <div class="process-steps">
-        <article class="step reveal">
-          <span>01</span>
-          <h3>Map the pressure</h3>
-          <p>We identify what is actually slowing the business down: poor perception, messy intake, scattered follow-up, or weak systems.</p>
-        </article>
-        <article class="step reveal">
-          <span>02</span>
-          <h3>Design the flow</h3>
-          <p>We turn the business logic into a clean user journey with strong hierarchy, minimal copy, and purposeful motion.</p>
-        </article>
-        <article class="step reveal">
-          <span>03</span>
-          <h3>Build the system</h3>
-          <p>We ship the site, portal, AI flow, or automation layer with structure that can keep scaling after launch.</p>
-        </article>
-      </div>
-    </section>
-
-    <section id="contact" class="cta screen" data-orb="cta" aria-labelledby="ctaTitle">
-      <div class="cta-inner reveal">
-        <p class="eyebrow">Got a build in mind?</p>
-        <h2 id="ctaTitle">Let’s make your brand feel sharper than the business behind it.</h2>
-        <p>
-          Send the messy version. The idea, the funnel, the portal, the AI flow, the thing that almost works. We’ll turn it into something clean enough to sell from.
-        </p>
-        <a class="btn primary" href="mailto:bimlabsstudio@gmail.com"><span>Email Bim Labs</span></a>
-      </div>
-    </section>
   </main>
 
-  <footer class="site-footer">
-    <div>
-      <a class="brand" href="#top"><span class="brand-mark"></span><span>Bim Labs</span></a>
-      <p>AI, web, automation, and premium digital systems.</p>
-    </div>
-    <a href="mailto:bimlabsstudio@gmail.com">bimlabsstudio@gmail.com</a>
-  </footer>
-
-  <script src="app.js"></script>
+  <script src="immersive.js"></script>
 </body>
 </html>
