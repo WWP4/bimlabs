@@ -15,7 +15,8 @@ const progressFill = document.querySelector("#progressFill");
 const labels = {
   ai: document.querySelector('[data-label="ai"]'),
   portal: document.querySelector('[data-label="portal"]'),
-  viewer: document.querySelector('[data-label="viewer"]')
+  viewer: document.querySelector('[data-label="viewer"]'),
+  archive: document.querySelector('[data-label="archive"]')
 };
 
 const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -24,7 +25,8 @@ const pointer = new THREE.Vector2();
 const pointerTarget = new THREE.Vector2();
 const screenPosition = new THREE.Vector3();
 const labelOpacity = { value: 0 };
-const sceneState = { progress: 0, bg: 0 };
+const workLabelOpacity = { value: 0 };
+const sceneState = { progress: 0, work: 0 };
 
 let width = window.innerWidth;
 let height = window.innerHeight;
@@ -46,15 +48,19 @@ const rings = new THREE.Group();
 const nodeGroup = new THREE.Group();
 const radialGroup = new THREE.Group();
 const innerFrame = new THREE.Group();
+const workGroup = new THREE.Group();
+const workMaterials = [];
 const labelAnchors = {
   ai: new THREE.Object3D(),
   portal: new THREE.Object3D(),
-  viewer: new THREE.Object3D()
+  viewer: new THREE.Object3D(),
+  archive: new THREE.Object3D()
 };
 
 scene.add(world);
 world.add(orb);
 orb.add(rings, nodeGroup, radialGroup, innerFrame);
+world.add(workGroup);
 
 const deepLine = new THREE.LineBasicMaterial({ color: 0x07101d, transparent: true, opacity: 0.28 });
 const softLine = new THREE.LineBasicMaterial({ color: 0x07101d, transparent: true, opacity: 0.15 });
@@ -173,7 +179,14 @@ function addLabelAnchors() {
   labelAnchors.ai.position.set(1.32, 0.78, 0.25);
   labelAnchors.portal.position.set(-1.12, -0.12, 0.38);
   labelAnchors.viewer.position.set(0.88, -0.86, -0.1);
-  Object.values(labelAnchors).forEach((anchor) => orb.add(anchor));
+  labelAnchors.archive.position.set(-0.68, -1.7, 0.52);
+  Object.entries(labelAnchors).forEach(([key, anchor]) => {
+    if (key === "archive") {
+      workGroup.add(anchor);
+    } else {
+      orb.add(anchor);
+    }
+  });
 }
 
 function buildAtmosphere() {
@@ -186,6 +199,66 @@ function buildAtmosphere() {
   }
 }
 
+function registerWorkMaterial(material) {
+  workMaterials.push({ material, target: material.opacity });
+  material.opacity = 0;
+  return material;
+}
+
+function makeFrameGeometry(widthValue, heightValue) {
+  const w = widthValue / 2;
+  const h = heightValue / 2;
+  return new THREE.BufferGeometry().setFromPoints([
+    new THREE.Vector3(-w, -h, 0),
+    new THREE.Vector3(w, -h, 0),
+    new THREE.Vector3(w, h, 0),
+    new THREE.Vector3(-w, h, 0),
+    new THREE.Vector3(-w, -h, 0)
+  ]);
+}
+
+function buildWorkArchive() {
+  workGroup.position.set(0.4, -2.7, -0.75);
+  workGroup.rotation.set(-0.08, -0.28, 0.03);
+
+  const archiveLine = registerWorkMaterial(new THREE.LineBasicMaterial({ color: 0x07101d, transparent: true, opacity: 0.2 }));
+  const archiveBlue = registerWorkMaterial(new THREE.LineBasicMaterial({ color: 0x0077ff, transparent: true, opacity: 0.44 }));
+  const archiveSurface = registerWorkMaterial(new THREE.MeshBasicMaterial({
+    color: 0xffffff,
+    transparent: true,
+    opacity: 0.13,
+    depthWrite: false,
+    side: THREE.DoubleSide
+  }));
+
+  const frames = [
+    { position: [-1.15, 0.85, 0.18], size: [1.45, 0.92], rotation: [0.02, 0.22, -0.04] },
+    { position: [0.55, 0.08, -0.12], size: [1.75, 1.05], rotation: [-0.04, -0.14, 0.03] },
+    { position: [-0.42, -0.86, 0.12], size: [1.26, 0.82], rotation: [0.08, 0.18, 0.05] }
+  ];
+
+  frames.forEach(({ position, size, rotation }, index) => {
+    const frame = new THREE.Group();
+    const surface = new THREE.Mesh(new THREE.PlaneGeometry(size[0], size[1], 1, 1), archiveSurface);
+    const outline = new THREE.Line(makeFrameGeometry(size[0], size[1]), index === 1 ? archiveBlue : archiveLine);
+    const divider = lineFromPoints([
+      new THREE.Vector3(-size[0] * 0.38, size[1] * 0.22, 0.01),
+      new THREE.Vector3(size[0] * 0.38, size[1] * 0.22, 0.01)
+    ], archiveLine);
+
+    frame.position.set(...position);
+    frame.rotation.set(...rotation);
+    frame.add(surface, outline, divider);
+    workGroup.add(frame);
+  });
+
+  const spine = lineFromPoints([
+    new THREE.Vector3(-1.7, 1.35, 0),
+    new THREE.Vector3(1.6, -1.25, 0)
+  ], archiveBlue);
+  workGroup.add(spine);
+}
+
 orb.add(buildOuterWireSphere());
 buildRings();
 buildRadials();
@@ -193,6 +266,7 @@ buildNodes();
 buildInnerFrame();
 addLabelAnchors();
 buildAtmosphere();
+buildWorkArchive();
 
 function setBackground(progress) {
   const start = new THREE.Color(0xe7f0fb);
@@ -203,8 +277,8 @@ function setBackground(progress) {
 }
 
 function updateLabels() {
-  const opacity = labelOpacity.value;
   Object.entries(labelAnchors).forEach(([key, anchor]) => {
+    const opacity = key === "archive" ? workLabelOpacity.value : labelOpacity.value * (1 - sceneState.work * 0.5);
     anchor.getWorldPosition(screenPosition);
     screenPosition.project(camera);
     const x = (screenPosition.x * 0.5 + 0.5) * width;
@@ -215,9 +289,23 @@ function updateLabels() {
   });
 }
 
+function mapRange(value, inMin, inMax) {
+  return THREE.MathUtils.clamp((value - inMin) / (inMax - inMin), 0, 1);
+}
+
 function updateProgress(progress) {
+  const heroOut = mapRange(progress, 0.05, 0.25);
+  const buildReveal = mapRange(progress, 0.18, 0.42);
+  const workReveal = mapRange(progress, 0.53, 0.72);
+  const workDepth = mapRange(progress, 0.76, 0.98);
+
   sceneState.progress = progress;
+  sceneState.work = workReveal;
   root.style.setProperty("--section-progress", progress.toFixed(4));
+  root.style.setProperty("--hero-out", heroOut.toFixed(4));
+  root.style.setProperty("--build-reveal", buildReveal.toFixed(4));
+  root.style.setProperty("--work-reveal", workReveal.toFixed(4));
+  root.style.setProperty("--work-depth", workDepth.toFixed(4));
   progressFill.style.width = `${Math.round(progress * 100)}%`;
   setBackground(progress);
 }
@@ -226,12 +314,14 @@ function createScrollTimeline() {
   updateProgress(0);
 
   if (reduceMotion) {
-    labelOpacity.value = 0.82;
+    labelOpacity.value = 0.5;
+    workLabelOpacity.value = 0.8;
     updateProgress(1);
-    orb.position.set(0.75, 0, 0);
-    camera.position.set(0, 0.06, 6.35);
-    radialGroup.scale.setScalar(1.12);
-    rings.scale.setScalar(1.08);
+    orb.position.set(-0.25, 0.72, -0.2);
+    workGroup.position.set(0.5, -0.2, -0.8);
+    camera.position.set(0, -0.25, 5.4);
+    radialGroup.scale.setScalar(1.2);
+    rings.scale.setScalar(1.15);
     return;
   }
 
@@ -254,7 +344,18 @@ function createScrollTimeline() {
     .to(rings.scale, { x: 1.38, y: 1.38, z: 1.38 }, 0)
     .to(radialGroup.scale, { x: 1.85, y: 1.85, z: 1.85 }, 0.08)
     .to(innerFrame.scale, { x: 1.18, y: 1.18, z: 1.18 }, 0)
-    .to(labelOpacity, { value: 1 }, 0.32);
+    .to(labelOpacity, { value: 1 }, 0.32)
+    .to(camera.position, { z: 3.55, y: -0.58, x: -0.08 }, 0.58)
+    .to(camera.rotation, { z: 0.045, x: -0.08 }, 0.58)
+    .to(orb.position, { x: -0.22, y: 1.18, z: -0.25 }, 0.58)
+    .to(orb.rotation, { y: Math.PI * 1.15, x: -0.16, z: 0.2 }, 0.58)
+    .to(rings.scale, { x: 1.72, y: 1.72, z: 1.72 }, 0.58)
+    .to(workGroup.position, { x: 0.5, y: -0.38, z: -0.85 }, 0.58)
+    .to(workGroup.rotation, { x: -0.16, y: -0.08, z: 0.02 }, 0.58)
+    .to(workLabelOpacity, { value: 1 }, 0.66)
+    .to(camera.position, { z: 2.95, y: -1.18, x: 0.12 }, 0.86)
+    .to(workGroup.position, { y: 0.78, z: -0.62 }, 0.86)
+    .to(orb.position, { y: 1.72, z: -0.55 }, 0.86);
 }
 
 function onPointerMove(event) {
@@ -303,6 +404,14 @@ function animate() {
   });
 
   innerFrame.rotation.y += delta * 0.045 * motionScale;
+  workGroup.children.forEach((child, index) => {
+    if (child.isGroup) {
+      child.position.y += Math.sin(elapsed * 0.5 + index) * 0.00045 * motionScale;
+    }
+  });
+  workMaterials.forEach(({ material, target }) => {
+    material.opacity = target * sceneState.work;
+  });
   updateLabels();
   renderer.render(scene, camera);
   requestAnimationFrame(animate);
