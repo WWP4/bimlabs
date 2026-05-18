@@ -10,13 +10,48 @@
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css" />
 </head>
+
 <!-- GLOBAL ORB -->
 <div class="orb-stage" aria-hidden="true">
   <div class="bim-orb" id="storyOrb">
-    <img src="assets/showcase/orb.svg" alt="" class="bim-orb-img" />
+
+    <!-- Base reference orb image -->
+    <img
+      src="assets/showcase/orb.svg"
+      alt=""
+      class="orb-base"
+    />
+
+    <!-- Real editable SVG overlay -->
+    <svg class="orb-overlay" viewBox="0 0 720 720" aria-hidden="true" focusable="false">
+      <g fill="none" stroke-linecap="round">
+
+        <!-- clean animated technical rings -->
+        <circle class="orb-ring ring-1" cx="360" cy="360" r="270" />
+        <circle class="orb-ring ring-2" cx="360" cy="360" r="245" />
+        <circle class="orb-ring ring-3" cx="360" cy="360" r="218" />
+
+        <!-- brighter animated arcs -->
+        <path class="orb-arc arc-1" d="M190 360 A170 170 0 0 1 500 260" />
+        <path class="orb-arc arc-2" d="M520 365 A170 170 0 0 1 310 525" />
+        <path class="orb-arc arc-3" d="M240 235 A215 215 0 0 1 590 330" />
+
+        <!-- subtle BIM fan lines -->
+        <path class="orb-fan" d="M205 350 C250 245 310 195 385 165" />
+        <path class="orb-fan" d="M215 360 C260 260 320 210 395 178" />
+        <path class="orb-fan" d="M225 370 C275 275 335 225 405 192" />
+
+        <!-- calibration marks -->
+        <path class="orb-mark" d="M360 90 L360 140" />
+        <path class="orb-mark" d="M585 360 L635 360" />
+        <path class="orb-mark" d="M360 585 L360 635" />
+
+      </g>
+    </svg>
+
   </div>
 </div>
-
+  
 </body>
   <header class="site-header" id="siteHeader">
     <a href="#top" class="brand" aria-label="Bim Labs home">
