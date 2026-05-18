@@ -244,7 +244,7 @@ p {
 
 
 /* =========================================================
-   BIM LABS ORB — IMAGE BASE + REAL SVG OVERLAY
+   BIM LABS ORB — TRUE SVG VERSION
 ========================================================= */
 
 .orb-stage {
@@ -272,128 +272,202 @@ p {
 
 .bim-orb {
   position: relative;
-  width: clamp(620px, 72vw, 1060px);
+  width: clamp(620px, 68vw, 980px);
   aspect-ratio: 1;
-  isolation: isolate;
-
   transform:
     rotate(var(--orb-rotate, 0deg))
     rotateX(var(--orb-tilt-y, 0deg))
     rotateY(var(--orb-tilt-x, 0deg));
-
   transform-style: preserve-3d;
   transition: transform 220ms cubic-bezier(.19, 1, .22, 1);
-  will-change: transform;
 }
 
-/* The fake SVG / image orb */
-.orb-base {
+.bim-orb::before {
+  content: "";
   position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-
-  opacity: 0.82;
-  mix-blend-mode: screen;
-
-  filter:
-    drop-shadow(0 0 10px rgba(255, 255, 255, 0.08))
-    drop-shadow(0 0 32px rgba(255, 255, 255, 0.04));
-
-  animation: orbBaseBreath 9s ease-in-out infinite;
+  inset: 7%;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle,
+      rgba(255,255,255,0.055) 0%,
+      rgba(255,255,255,0.022) 38%,
+      transparent 66%);
+  filter: blur(26px);
+  opacity: 0.8;
+  animation: orbBreath 8s ease-in-out infinite;
 }
 
-/* Real SVG overlay */
-.orb-overlay {
-  position: absolute;
-  inset: 0;
+.bim-orb-svg {
+  position: relative;
+  z-index: 1;
   width: 100%;
   height: 100%;
+  display: block;
   overflow: visible;
   mix-blend-mode: screen;
-
-  filter:
-    drop-shadow(0 0 8px rgba(255, 255, 255, 0.14))
-    drop-shadow(0 0 22px rgba(255, 255, 255, 0.05));
 }
 
-/* Rings */
-.orb-ring {
+.orb-layer,
+.ghost-ring,
+.light-ring,
+.inner-ring {
   transform-origin: 360px 360px;
-  stroke: rgba(255, 255, 255, 0.16);
-  stroke-width: 0.75;
+}
+
+.ghost-ring {
+  stroke: rgba(255,255,255,0.13);
+  stroke-width: 0.72;
   vector-effect: non-scaling-stroke;
 }
 
-.ring-1 {
-  stroke-dasharray: 720 980;
-  animation: ringDrift 22s linear infinite;
+.ghost-1 {
+  stroke-dasharray: 760 1160;
+  stroke-dashoffset: -80;
+  opacity: 0.34;
+  animation: slowRotate 36s linear infinite;
 }
 
-.ring-2 {
-  stroke-dasharray: 520 1010;
-  opacity: 0.75;
-  animation: ringDriftReverse 28s linear infinite;
+.ghost-2 {
+  stroke-dasharray: 520 180 300 900;
+  stroke-dashoffset: -140;
+  opacity: 0.28;
+  animation: slowRotateReverse 44s linear infinite;
 }
 
-.ring-3 {
-  stroke-dasharray: 390 980;
+.ghost-3 {
+  stroke-dasharray: 640 980;
+  stroke-dashoffset: -250;
+  opacity: 0.22;
+  animation: slowRotate 52s linear infinite;
+}
+
+.ghost-4 {
+  stroke-dasharray: 360 220 280 900;
+  stroke-dashoffset: -100;
+  opacity: 0.18;
+  animation: slowRotateReverse 58s linear infinite;
+}
+
+.light-ring {
+  stroke: rgba(255,255,255,0.86);
+  stroke-width: 1.35;
+  vector-effect: non-scaling-stroke;
+  filter: url(#orbGlow);
+}
+
+.light-1 {
+  stroke-dasharray: 455 965;
+  stroke-dashoffset: -70;
+  transform: rotate(-28deg);
+  opacity: 0.98;
+}
+
+.light-2 {
+  stroke-dasharray: 330 160 240 880;
+  stroke-dashoffset: -285;
+  transform: rotate(118deg);
+  opacity: 0.78;
+}
+
+.light-3 {
+  stroke-dasharray: 120 280 90 970;
+  stroke-dashoffset: -40;
+  transform: rotate(228deg);
+  opacity: 0.52;
+}
+
+.inner-ring {
+  stroke: rgba(255,255,255,0.23);
+  stroke-width: 0.82;
+  vector-effect: non-scaling-stroke;
+}
+
+.inner-1 {
+  stroke-dasharray: 310 920;
+  stroke-dashoffset: -90;
+  transform: rotate(-52deg);
   opacity: 0.55;
-  animation: ringDrift 34s linear infinite;
 }
 
-/* Main bright arcs */
-.orb-arc {
-  transform-origin: 360px 360px;
-  stroke: rgba(255, 255, 255, 0.9);
-  stroke-width: 1.15;
+.inner-2 {
+  stroke-dasharray: 240 120 300 820;
+  stroke-dashoffset: -230;
+  transform: rotate(134deg);
+  opacity: 0.4;
+}
+
+.inner-3 {
+  stroke-dasharray: 420 1080;
+  stroke-dashoffset: -170;
+  transform: rotate(28deg);
+  opacity: 0.24;
+}
+
+.fan-line {
+  stroke: rgba(255,255,255,0.18);
+  stroke-width: 0.72;
   vector-effect: non-scaling-stroke;
-  filter:
-    drop-shadow(0 0 5px rgba(255, 255, 255, 0.38))
-    drop-shadow(0 0 14px rgba(255, 255, 255, 0.12));
+  opacity: 0.56;
 }
 
-.arc-1 {
-  opacity: 0.9;
-  stroke-dasharray: 320 720;
-  animation: arcPulse 7s ease-in-out infinite;
+.fan-line:nth-of-type(1) { opacity: 0.62; }
+.fan-line:nth-of-type(2) { opacity: 0.52; }
+.fan-line:nth-of-type(3) { opacity: 0.43; }
+.fan-line:nth-of-type(4) { opacity: 0.34; }
+.fan-line:nth-of-type(5) { opacity: 0.26; }
+.fan-line:nth-of-type(6) { opacity: 0.18; }
+
+.fan-soft {
+  opacity: 0.24;
 }
 
-.arc-2 {
-  opacity: 0.7;
-  stroke-dasharray: 250 720;
-  animation: arcPulse 8.5s ease-in-out infinite reverse;
-}
-
-.arc-3 {
-  opacity: 0.42;
-  stroke-dasharray: 180 780;
-  animation: arcPulse 10s ease-in-out infinite;
-}
-
-/* Fan detail */
-.orb-fan {
-  stroke: rgba(255, 255, 255, 0.16);
-  stroke-width: 0.65;
-  vector-effect: non-scaling-stroke;
-  opacity: 0.55;
-}
-
-/* Calibration marks */
-.orb-mark {
-  stroke: rgba(255, 255, 255, 0.24);
-  stroke-width: 0.7;
+.cut-line {
+  stroke: rgba(255,255,255,0.24);
+  stroke-width: 0.72;
   vector-effect: non-scaling-stroke;
   opacity: 0.5;
+  filter: url(#softGlow);
 }
 
-/* Placement */
+.cut-line.faint {
+  opacity: 0.2;
+}
+
+.micro-dot {
+  stroke: rgba(255,255,255,0.2);
+  stroke-width: 0.75;
+  stroke-dasharray: 1 8;
+  vector-effect: non-scaling-stroke;
+  opacity: 0.38;
+}
+
+/* hero interaction */
+body[data-orb-mode="hero"].orb-interacting .bim-orb {
+  transform:
+    rotate(calc(var(--orb-rotate, 0deg) + 3deg))
+    rotateX(var(--orb-tilt-y, 0deg))
+    rotateY(var(--orb-tilt-x, 0deg))
+    scale(1.012);
+}
+
+body[data-orb-mode="hero"].orb-interacting .light-1 {
+  transform: rotate(-36deg) scale(1.006);
+}
+
+body[data-orb-mode="hero"].orb-interacting .light-2 {
+  transform: rotate(126deg) scale(1.004);
+}
+
+body[data-orb-mode="hero"].orb-interacting .light-3 {
+  transform: rotate(238deg) scale(0.998);
+}
+
+/* placement */
 body[data-orb-mode="hero"] {
   --orb-x: 0vw;
   --orb-y: -2vh;
   --orb-scale: 1;
-  --orb-opacity: 0.82;
+  --orb-opacity: 0.9;
   --orb-rotate: 0deg;
   --orb-blur: 0px;
 }
@@ -439,60 +513,36 @@ body[data-orb-mode="cta"] {
   --orb-blur: 1px;
 }
 
-/* Animations */
-@keyframes orbBaseBreath {
+@keyframes slowRotate {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes slowRotateReverse {
+  from {
+    transform: rotate(360deg);
+  }
+
+  to {
+    transform: rotate(0deg);
+  }
+}
+
+@keyframes orbBreath {
   0%, 100% {
-    opacity: 0.72;
-    transform: scale(0.992);
+    opacity: 0.46;
+    transform: scale(0.985);
   }
 
   50% {
-    opacity: 0.92;
-    transform: scale(1.01);
+    opacity: 0.76;
+    transform: scale(1.018);
   }
-}
-
-@keyframes ringDrift {
-  from {
-    transform: rotate(0deg);
-  }
-
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@keyframes ringDriftReverse {
-  from {
-    transform: rotate(360deg);
-  }
-
-  to {
-    transform: rotate(0deg);
-  }
-}
-
-@keyframes arcPulse {
-  0%, 100% {
-    opacity: 0.35;
-    stroke-dashoffset: 0;
-  }
-
-  45% {
-    opacity: 0.95;
-  }
-
-  100% {
-    stroke-dashoffset: -220;
-  }
-}
-
-/* Keep hero content readable */
-.hero,
-.hero-content,
-.hero-copy {
-  position: relative;
-  z-index: 5;
 }
 
 @media (max-width: 980px) {
