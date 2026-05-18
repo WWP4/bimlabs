@@ -15,36 +15,71 @@
 <div class="orb-stage" aria-hidden="true">
   <div class="bim-orb" id="storyOrb">
 
-    <!-- Base reference orb image -->
-    <img
-      src="assets/showcase/orb.svg"
-      alt=""
-      class="orb-base"
-    />
+    <svg class="bim-orb-svg" viewBox="0 0 720 720" aria-hidden="true" focusable="false">
+      <defs>
+        <filter id="orbGlow" x="-50%" y="-50%" width="200%" height="200%">
+          <feGaussianBlur stdDeviation="2.4" result="blur" />
+          <feMerge>
+            <feMergeNode in="blur" />
+            <feMergeNode in="SourceGraphic" />
+          </feMerge>
+        </filter>
 
-    <!-- Real editable SVG overlay -->
-    <svg class="orb-overlay" viewBox="0 0 720 720" aria-hidden="true" focusable="false">
-      <g fill="none" stroke-linecap="round">
+        <filter id="softGlow" x="-50%" y="-50%" width="200%" height="200%">
+          <feGaussianBlur stdDeviation="7" result="blur" />
+          <feMerge>
+            <feMergeNode in="blur" />
+            <feMergeNode in="SourceGraphic" />
+          </feMerge>
+        </filter>
 
-        <!-- clean animated technical rings -->
-        <circle class="orb-ring ring-1" cx="360" cy="360" r="270" />
-        <circle class="orb-ring ring-2" cx="360" cy="360" r="245" />
-        <circle class="orb-ring ring-3" cx="360" cy="360" r="218" />
+        <mask id="orbCenterCut">
+          <rect width="720" height="720" fill="white" />
+          <circle cx="360" cy="360" r="178" fill="black" />
+        </mask>
+      </defs>
 
-        <!-- brighter animated arcs -->
-        <path class="orb-arc arc-1" d="M190 360 A170 170 0 0 1 500 260" />
-        <path class="orb-arc arc-2" d="M520 365 A170 170 0 0 1 310 525" />
-        <path class="orb-arc arc-3" d="M240 235 A215 215 0 0 1 590 330" />
+      <g class="orb-layer" mask="url(#orbCenterCut)" fill="none" stroke-linecap="round">
 
-        <!-- subtle BIM fan lines -->
-        <path class="orb-fan" d="M205 350 C250 245 310 195 385 165" />
-        <path class="orb-fan" d="M215 360 C260 260 320 210 395 178" />
-        <path class="orb-fan" d="M225 370 C275 275 335 225 405 192" />
+        <!-- outer ghost rings -->
+        <circle class="ghost-ring ghost-1" cx="360" cy="360" r="306" />
+        <circle class="ghost-ring ghost-2" cx="360" cy="360" r="292" />
+        <circle class="ghost-ring ghost-3" cx="360" cy="360" r="276" />
+        <circle class="ghost-ring ghost-4" cx="360" cy="360" r="258" />
 
-        <!-- calibration marks -->
-        <path class="orb-mark" d="M360 90 L360 140" />
-        <path class="orb-mark" d="M585 360 L635 360" />
-        <path class="orb-mark" d="M360 585 L360 635" />
+        <!-- main white arcs -->
+        <circle class="light-ring light-1" cx="360" cy="360" r="226" />
+        <circle class="light-ring light-2" cx="360" cy="360" r="226" />
+        <circle class="light-ring light-3" cx="360" cy="360" r="226" />
+
+        <!-- inner structure arcs -->
+        <circle class="inner-ring inner-1" cx="360" cy="360" r="196" />
+        <circle class="inner-ring inner-2" cx="360" cy="360" r="206" />
+        <circle class="inner-ring inner-3" cx="360" cy="360" r="238" />
+
+        <!-- top left BIM fan -->
+        <path class="fan-line" d="M196 348 C223 250 282 180 370 132" />
+        <path class="fan-line" d="M208 354 C236 263 293 197 374 150" />
+        <path class="fan-line" d="M220 360 C248 276 304 214 378 168" />
+        <path class="fan-line" d="M232 366 C260 290 315 231 382 186" />
+        <path class="fan-line" d="M244 372 C272 304 326 248 386 204" />
+        <path class="fan-line" d="M256 378 C284 318 337 265 390 222" />
+
+        <!-- bottom right BIM fan -->
+        <path class="fan-line fan-soft" d="M350 548 C414 536 468 496 512 438" />
+        <path class="fan-line fan-soft" d="M335 558 C405 550 462 512 514 456" />
+        <path class="fan-line fan-soft" d="M320 568 C397 564 456 528 516 474" />
+        <path class="fan-line fan-soft" d="M305 578 C389 578 450 544 518 492" />
+
+        <!-- calibration cuts -->
+        <path class="cut-line" d="M360 80 L360 142" />
+        <path class="cut-line" d="M360 578 L360 644" />
+        <path class="cut-line" d="M580 360 L644 360" />
+        <path class="cut-line faint" d="M76 360 L138 360" />
+
+        <!-- small segmented details -->
+        <path class="micro-dot" d="M500 190 A255 255 0 0 1 610 355" />
+        <path class="micro-dot" d="M170 455 A245 245 0 0 0 325 600" />
 
       </g>
     </svg>
