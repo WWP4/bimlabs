@@ -59,6 +59,7 @@ const labelAnchors = {
 
 scene.add(world);
 world.add(orb);
+orb.scale.setScalar(0.001);
 orb.add(rings, nodeGroup, radialGroup, innerFrame);
 world.add(workGroup);
 
@@ -126,13 +127,13 @@ function buildRings() {
 }
 
 function buildRadials() {
-  for (let i = 0; i < 18; i += 1) {
-    const angle = (i / 18) * Math.PI * 2;
+  for (let i = 0; i < 10; i += 1) {
+    const angle = (i / 10) * Math.PI * 2;
     const start = new THREE.Vector3(Math.cos(angle) * 0.44, Math.sin(angle) * 0.44, 0);
-    const end = new THREE.Vector3(Math.cos(angle) * (1.05 + (i % 4) * 0.16), Math.sin(angle) * (1.05 + (i % 4) * 0.16), 0);
+    const end = new THREE.Vector3(Math.cos(angle) * (0.92 + (i % 3) * 0.12), Math.sin(angle) * (0.92 + (i % 3) * 0.12), 0);
     const line = lineFromPoints([start, end], i % 5 === 0 ? blueSoft : softLine);
     line.rotation.set((i % 3) * 0.34, (i % 4) * 0.22, 0);
-    line.userData.baseScale = 0.62 + (i % 5) * 0.08;
+    line.userData.baseScale = 0.48 + (i % 4) * 0.07;
     radialGroup.add(line);
   }
 }
@@ -143,9 +144,12 @@ function buildNodes() {
   const geometry = new THREE.SphereGeometry(0.025, 12, 12);
 
   const positions = [
-    [-0.9, 0.6, 0.42], [0.78, 0.72, -0.22], [0.95, -0.36, 0.28], [-0.62, -0.78, -0.36],
-    [0.28, 1.02, 0.08], [-1.02, -0.08, 0.22], [0.45, -0.94, 0.48], [1.12, 0.05, -0.18],
-    [-0.22, 0.32, 0.78], [0.08, -0.24, -0.92]
+    [-0.72, 0.52, 0.28],
+    [0.72, 0.48, -0.2],
+    [0.62, -0.58, 0.22],
+    [-0.58, -0.62, -0.24],
+    [0, 0.86, 0.06],
+    [0, -0.86, -0.06]
   ];
 
   positions.forEach((position, index) => {
@@ -218,7 +222,8 @@ function makeFrameGeometry(widthValue, heightValue) {
 }
 
 function buildWorkArchive() {
-  workGroup.position.set(0.2, -3.35, -0.85);
+  workGroup.position.set(0.18, -3.6, -0.85);
+  workGroup.scale.setScalar(1.16);
   workGroup.rotation.set(-0.12, -0.08, 0.015);
 
   const archiveLine = registerWorkMaterial(new THREE.LineBasicMaterial({ color: 0x07101d, transparent: true, opacity: 0.18 }));
@@ -309,10 +314,10 @@ function mapRange(value, inMin, inMax) {
 }
 
 function updateProgress(progress) {
-  const heroOut = mapRange(progress, 0.05, 0.25);
-  const buildReveal = mapRange(progress, 0.18, 0.42);
-  const workReveal = mapRange(progress, 0.53, 0.72);
-  const workDepth = mapRange(progress, 0.76, 0.98);
+  const heroOut = mapRange(progress, 0.08, 0.22);
+  const buildReveal = mapRange(progress, 0.18, 0.38);
+  const workReveal = mapRange(progress, 0.42, 0.58);
+  const workDepth = mapRange(progress, 0.64, 0.94);
 
   sceneState.progress = progress;
   sceneState.work = workReveal;
@@ -333,6 +338,7 @@ function createScrollTimeline() {
     labelOpacity.value = 0.5;
     workLabelOpacity.value = 0.8;
     updateProgress(1);
+    orb.scale.setScalar(1);
     orb.position.set(0.4, 1.25, -0.25);
     workGroup.position.set(0.25, 0.15, -0.85);
     camera.position.set(0, -0.7, 5.15);
@@ -353,12 +359,13 @@ function createScrollTimeline() {
   });
 
   timeline
+    .to(orb.scale, { x: 1, y: 1, z: 1 }, 0.14)
     .to(camera.position, { z: 4.15, y: 0.03 }, 0)
     .to(camera.rotation, { z: -0.035 }, 0)
     .to(orb.position, { x: 1.08, y: -0.03, z: 0.18 }, 0)
     .to(orb.rotation, { y: Math.PI * 0.58, x: 0.25 }, 0)
     .to(rings.scale, { x: 1.38, y: 1.38, z: 1.38 }, 0)
-    .to(radialGroup.scale, { x: 1.85, y: 1.85, z: 1.85 }, 0.08)
+    .to(radialGroup.scale, { x: 1.35, y: 1.35, z: 1.35 }, 0.08)
     .to(innerFrame.scale, { x: 1.18, y: 1.18, z: 1.18 }, 0)
     .to(labelOpacity, { value: 1 }, 0.32)
     .to(camera.position, { z: 3.75, y: -0.38, x: -0.06 }, 0.58)
@@ -366,12 +373,12 @@ function createScrollTimeline() {
     .to(orb.position, { x: 0.58, y: 1.25, z: -0.28 }, 0.58)
     .to(orb.rotation, { y: Math.PI * 1.08, x: -0.14, z: 0.12 }, 0.58)
     .to(rings.scale, { x: 1.58, y: 1.58, z: 1.58 }, 0.58)
-    .to(workGroup.position, { x: 0.26, y: -0.85, z: -0.86 }, 0.58)
+    .to(workGroup.position, { x: 0.18, y: -1.05, z: -0.86 }, 0.58)
     .to(workGroup.rotation, { x: -0.12, y: -0.05, z: 0.01 }, 0.58)
     .to(workLabelOpacity, { value: 1 }, 0.66)
     .to(camera.position, { z: 3.18, y: -1.08, x: 0.02 }, 0.86)
     .to(camera.rotation, { z: 0.01, x: -0.075 }, 0.86)
-    .to(workGroup.position, { y: 0.55, z: -0.72 }, 0.86)
+    .to(workGroup.position, { y: 1.18, z: -0.72 }, 0.86)
     .to(orb.position, { y: 1.88, z: -0.58 }, 0.86);
 }
 
