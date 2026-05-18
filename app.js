@@ -10,6 +10,7 @@ const header = document.getElementById('siteHeader');
 const sections = [...document.querySelectorAll('[data-orb]')];
 const revealItems = [...document.querySelectorAll('.reveal')];
 const quadrantBoard = document.querySelector('.quadrant-board');
+const servicesSection = document.getElementById('services');
 const showcase = document.querySelector('.showcase');
 const showcaseTrack = document.getElementById('showcaseTrack');
 const orbStage = document.querySelector('.orb-stage');
@@ -31,9 +32,9 @@ function updateShowcase() {
   showcaseTrack.style.transform = `translate3d(${-maxTranslate * progress}px, 0, 0)`;
 }
 
-/* =========================
-   REVEALS
-========================= */
+/* ---------------------------------
+   reveal observer
+--------------------------------- */
 
 const revealObserver = new IntersectionObserver((entries) => {
   for (const entry of entries) {
@@ -54,14 +55,14 @@ if (quadrantBoard) {
         entry.target.dataset.ready = 'true';
       }
     }
-  }, { threshold: 0.36 });
+  }, { threshold: 0.2 });
 
   boardObserver.observe(quadrantBoard);
 }
 
-/* =========================
-   BUTTON HOVER
-========================= */
+/* ---------------------------------
+   button hover
+--------------------------------- */
 
 for (const btn of document.querySelectorAll('.btn')) {
   btn.addEventListener('pointermove', (event) => {
@@ -71,9 +72,9 @@ for (const btn of document.querySelectorAll('.btn')) {
   });
 }
 
-/* =========================
-   SMOOTH GLOBAL ORB SYSTEM
-========================= */
+/* ---------------------------------
+   orb system
+--------------------------------- */
 
 let currentOrb = {
   x: 0,
@@ -97,80 +98,7 @@ function getElementCenterOffset(element) {
   };
 }
 
-function getOrbStateForMode(mode) {
-  const vw = window.innerWidth;
-  const vh = window.innerHeight;
-
-  const isMobile = vw < 781;
-
-  if (mode === 'grid') {
-    const boardCenter = getElementCenterOffset(quadrantBoard);
-
-    return {
-      x: boardCenter.x,
-      y: boardCenter.y,
-      scale: isMobile ? 0.86 : 0.54,
-      opacity: isMobile ? 0.34 : 0.58,
-      rotate: 82,
-      blur: 0
-    };
-  }
-
-  if (mode === 'showcase') {
-    return {
-      x: -vw * 0.32,
-      y: -vh * 0.01,
-      scale: isMobile ? 0.74 : 0.58,
-      opacity: isMobile ? 0.24 : 0.5,
-      rotate: 145,
-      blur: 0
-    };
-  }
-
-  if (mode === 'support') {
-    return {
-      x: vw * 0.3,
-      y: vh * 0.01,
-      scale: isMobile ? 0.72 : 0.62,
-      opacity: isMobile ? 0.22 : 0.48,
-      rotate: 220,
-      blur: 0
-    };
-  }
-
-  if (mode === 'process') {
-    return {
-      x: 0,
-      y: -vh * 0.26,
-      scale: isMobile ? 0.72 : 0.48,
-      opacity: isMobile ? 0.2 : 0.42,
-      rotate: 300,
-      blur: 0
-    };
-  }
-
-  if (mode === 'cta') {
-    return {
-      x: 0,
-      y: -vh * 0.02,
-      scale: isMobile ? 0.9 : 1.05,
-      opacity: isMobile ? 0.18 : 0.28,
-      rotate: 360,
-      blur: 1
-    };
-  }
-
-  return {
-    x: 0,
-    y: -vh * 0.02,
-    scale: isMobile ? 0.94 : 1,
-    opacity: isMobile ? 0.5 : 0.95,
-    rotate: 0,
-    blur: 0
-  };
-}
-
-function mixOrbStates(a, b, progress) {
+function mixStates(a, b, progress) {
   return {
     x: lerp(a.x, b.x, progress),
     y: lerp(a.y, b.y, progress),
@@ -179,6 +107,17 @@ function mixOrbStates(a, b, progress) {
     rotate: lerp(a.rotate, b.rotate, progress),
     blur: lerp(a.blur, b.blur, progress)
   };
+}
+
+function getSectionProgress(section, startOffset = 0, endOffset = 0) {
+  if (!section) return 0;
+
+  const start = section.offsetTop - window.innerHeight * startOffset;
+  const end = section.offsetTop + section.offsetHeight - window.innerHeight * endOffset;
+
+  return smoothStep(
+    clamp((window.scrollY - start) / Math.max(end - start, 1), 0, 1)
+  );
 }
 
 function getActiveMode() {
@@ -198,39 +137,142 @@ function getActiveMode() {
   return active;
 }
 
+function getHeroState() {
+  const isMobile = window.innerWidth < 781;
+
+  return {
+    x: 0,
+    y: -window.innerHeight * 0.02,
+    scale: isMobile ? 0.94 : 1,
+    opacity: isMobile ? 0.5 : 0.95,
+    rotate: 0,
+    blur: 0
+  };
+}
+
+function getGridState() {
+  const isMobile = window.innerWidth < 781;
+  const center = getElementCenterOffset(quadrantBoard);
+
+  /* progress while inside the services section */
+  const innerProgress = getSectionProgress(servicesSection, -0.05, 0.55);
+
+  return {
+    x: center.x,
+    y: center.y,
+    scale: lerp(isMobile ? 0.8 : 0.58, isMobile ? 0.62 : 0.4, innerProgress),
+    opacity: lerp(isMobile ? 0.34 : 0.62, isMobile ? 0.26 : 0.46, innerProgress),
+    rotate: lerp(12, 84, innerProgress),
+    blur: 0
+  };
+}
+
+function getShowcaseState() {
+  const isMobile = window.innerWidth < 781;
+
+  return {
+    x: -window.innerWidth * 0.32,
+    y: -window.innerHeight * 0.01,
+    scale: isMobile ? 0.72 : 0.56,
+    opacity: isMobile ? 0.2 : 0.42,
+    rotate: 145,
+    blur: 0
+  };
+}
+
+function getSupportState() {
+  const isMobile = window.innerWidth < 781;
+
+  return {
+    x: window.innerWidth * 0.28,
+    y: window.innerHeight * 0.01,
+    scale: isMobile ? 0.72 : 0.58,
+    opacity: isMobile ? 0.18 : 0.38,
+    rotate: 220,
+    blur: 0
+  };
+}
+
+function getProcessState() {
+  const isMobile = window.innerWidth < 781;
+
+  return {
+    x: 0,
+    y: -window.innerHeight * 0.24,
+    scale: isMobile ? 0.68 : 0.46,
+    opacity: isMobile ? 0.16 : 0.34,
+    rotate: 300,
+    blur: 0
+  };
+}
+
+function getCtaState() {
+  const isMobile = window.innerWidth < 781;
+
+  return {
+    x: 0,
+    y: -window.innerHeight * 0.02,
+    scale: isMobile ? 0.86 : 1.02,
+    opacity: isMobile ? 0.12 : 0.22,
+    rotate: 360,
+    blur: 1
+  };
+}
+
 function getTargetOrbState() {
-  const heroState = getOrbStateForMode('hero');
-  const gridState = getOrbStateForMode('grid');
+  const heroState = getHeroState();
+  const gridState = getGridState();
 
-  const services = document.getElementById('services');
+  /*
+    Start the travel before services fully arrives.
+    This is the key to making it feel continuous.
+  */
+  if (servicesSection) {
+    const transitionStart = servicesSection.offsetTop - window.innerHeight * 0.92;
+    const transitionEnd = servicesSection.offsetTop + window.innerHeight * 0.14;
 
-  if (services) {
-    const servicesTop = services.offsetTop;
+    const transitionProgress = smoothStep(
+      clamp(
+        (window.scrollY - transitionStart) /
+          Math.max(transitionEnd - transitionStart, 1),
+        0,
+        1
+      )
+    );
 
-    /*
-      This is the key:
-      start moving the orb BEFORE the grid fully arrives.
-      That makes it feel like one continuous story object.
-    */
-    const transitionStart = servicesTop - window.innerHeight * 0.92;
-    const transitionEnd = servicesTop + window.innerHeight * 0.08;
-
-    const rawProgress =
-      (window.scrollY - transitionStart) /
-      Math.max(transitionEnd - transitionStart, 1);
-
-    const progress = smoothStep(rawProgress);
-
-    if (progress > 0 && progress < 1) {
+    if (transitionProgress > 0 && transitionProgress < 1) {
       document.body.dataset.orbMode = 'hero-to-grid';
-      return mixOrbStates(heroState, gridState, progress);
+      return mixStates(heroState, gridState, transitionProgress);
     }
   }
 
   const activeMode = getActiveMode();
   document.body.dataset.orbMode = activeMode;
 
-  return getOrbStateForMode(activeMode);
+  if (activeMode === 'grid') return gridState;
+  if (activeMode === 'showcase') return getShowcaseState();
+  if (activeMode === 'support') return getSupportState();
+  if (activeMode === 'process') return getProcessState();
+  if (activeMode === 'cta') return getCtaState();
+
+  return heroState;
+}
+
+function updateServicesLines() {
+  if (!quadrantBoard || !servicesSection) return;
+
+  /*
+    This drives the divider-line expansion from the center.
+    It begins while the section is entering, not after.
+  */
+  const start = servicesSection.offsetTop - window.innerHeight * 0.45;
+  const end = servicesSection.offsetTop + window.innerHeight * 0.55;
+
+  const progress = smoothStep(
+    clamp((window.scrollY - start) / Math.max(end - start, 1), 0, 1)
+  );
+
+  quadrantBoard.style.setProperty('--services-progress', progress.toFixed(4));
 }
 
 function applyOrbState(state) {
@@ -248,9 +290,8 @@ function animateOrb() {
   const targetOrb = getTargetOrbState();
 
   /*
-    Lower = slower / smoother.
-    Higher = faster / snappier.
-    0.055 is smooth without feeling delayed.
+    lower = smoother / slower
+    higher = quicker / snappier
   */
   const followSpeed = 0.055;
 
@@ -264,17 +305,19 @@ function animateOrb() {
   };
 
   applyOrbState(currentOrb);
+  updateServicesLines();
 
   requestAnimationFrame(animateOrb);
 }
 
-/* =========================
-   EVENTS
-========================= */
+/* ---------------------------------
+   events
+--------------------------------- */
 
 function onScrollOrResize() {
   updateHeader();
   updateShowcase();
+  updateServicesLines();
 }
 
 window.addEventListener('scroll', onScrollOrResize, { passive: true });
@@ -283,6 +326,7 @@ window.addEventListener('resize', onScrollOrResize);
 window.addEventListener('load', () => {
   updateHeader();
   updateShowcase();
+  updateServicesLines();
 
   currentOrb = getTargetOrbState();
   applyOrbState(currentOrb);
@@ -292,6 +336,7 @@ window.addEventListener('load', () => {
 
 updateHeader();
 updateShowcase();
+updateServicesLines();
 currentOrb = getTargetOrbState();
 applyOrbState(currentOrb);
 requestAnimationFrame(animateOrb);
