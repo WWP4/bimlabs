@@ -243,24 +243,14 @@ p {
 }
 
 
-
 /* =========================================================
-   BIM LABS ORB — BLACK / WHITE / TECHNICAL / REFERENCE STYLE
+   BIM LABS ORB — IMAGE BASE + REAL SVG OVERLAY
 ========================================================= */
 
-:root {
-  --bim-black: #020205;
-  --bim-white: rgba(255, 255, 255, 0.92);
-  --bim-white-soft: rgba(255, 255, 255, 0.28);
-  --bim-white-faint: rgba(255, 255, 255, 0.095);
-  --bim-blue: #57a8ff;
-}
-
-/* GLOBAL ORB LAYER */
 .orb-stage {
   position: fixed;
   inset: 0;
-  z-index: 35;
+  z-index: 2;
   display: grid;
   place-items: center;
   pointer-events: none;
@@ -271,352 +261,140 @@ p {
 
   opacity: var(--orb-opacity, 1);
   filter: blur(var(--orb-blur, 0px));
+
   transition:
     transform 950ms cubic-bezier(.19, 1, .22, 1),
     opacity 500ms ease,
     filter 500ms ease;
+
   will-change: transform, opacity, filter;
 }
 
-/* ORB SIZE */
 .bim-orb {
   position: relative;
-  width: clamp(640px, 72vw, 1040px);
+  width: clamp(620px, 72vw, 1060px);
   aspect-ratio: 1;
+  isolation: isolate;
+
   transform:
     rotate(var(--orb-rotate, 0deg))
     rotateX(var(--orb-tilt-y, 0deg))
     rotateY(var(--orb-tilt-x, 0deg));
+
   transform-style: preserve-3d;
   transition: transform 220ms cubic-bezier(.19, 1, .22, 1);
   will-change: transform;
 }
 
-/* SUBTLE OUTER ATMOSPHERE — NOT BLUE FLUFF */
-.bim-orb-aura {
+/* The fake SVG / image orb */
+.orb-base {
   position: absolute;
-  inset: 3%;
-  border-radius: 50%;
-  background:
-    radial-gradient(circle,
-      rgba(255, 255, 255, 0.055) 0%,
-      rgba(255, 255, 255, 0.025) 34%,
-      rgba(87, 168, 255, 0.035) 48%,
-      transparent 68%);
-  filter: blur(26px);
-  opacity: 0.58;
-  animation: orbBreath 8s ease-in-out infinite;
-}
-
-/* SVG BASE */
-.bim-orb-svg {
+  inset: 0;
   width: 100%;
   height: 100%;
-  display: block;
-  overflow: visible;
+  object-fit: contain;
+
+  opacity: 0.82;
   mix-blend-mode: screen;
+
   filter:
     drop-shadow(0 0 10px rgba(255, 255, 255, 0.08))
-    drop-shadow(0 0 26px rgba(255, 255, 255, 0.035));
+    drop-shadow(0 0 32px rgba(255, 255, 255, 0.04));
+
+  animation: orbBaseBreath 9s ease-in-out infinite;
 }
 
-.orb-root,
-.guide-ring,
-.main-arc,
-.inner-arc,
-.fan-group,
-.micro-arc,
-.blue-arc,
-.crosshair {
+/* Real SVG overlay */
+.orb-overlay {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  mix-blend-mode: screen;
+
+  filter:
+    drop-shadow(0 0 8px rgba(255, 255, 255, 0.14))
+    drop-shadow(0 0 22px rgba(255, 255, 255, 0.05));
+}
+
+/* Rings */
+.orb-ring {
   transform-origin: 360px 360px;
-}
-
-/* =========================================================
-   OUTER CONSTRUCTION RINGS
-========================================================= */
-
-.guide-ring {
-  fill: none;
-  stroke: rgba(255, 255, 255, 0.13);
-  stroke-width: 0.72;
+  stroke: rgba(255, 255, 255, 0.16);
+  stroke-width: 0.75;
   vector-effect: non-scaling-stroke;
-  opacity: 0.28;
-  transition:
-    transform 900ms cubic-bezier(.19, 1, .22, 1),
-    opacity 500ms ease;
 }
 
-.guide-1 {
-  stroke-dasharray: 1060 790;
-  stroke-dashoffset: -120;
-  transform: rotate(-8deg);
-  opacity: 0.26;
+.ring-1 {
+  stroke-dasharray: 720 980;
+  animation: ringDrift 22s linear infinite;
 }
 
-.guide-2 {
-  stroke-dasharray: 780 120 340 520;
-  stroke-dashoffset: 40;
-  transform: rotate(12deg);
-  opacity: 0.32;
+.ring-2 {
+  stroke-dasharray: 520 1010;
+  opacity: 0.75;
+  animation: ringDriftReverse 28s linear infinite;
 }
 
-.guide-3 {
-  stroke-dasharray: 520 170 460 470;
-  stroke-dashoffset: -70;
-  transform: rotate(38deg);
-  opacity: 0.24;
+.ring-3 {
+  stroke-dasharray: 390 980;
+  opacity: 0.55;
+  animation: ringDrift 34s linear infinite;
 }
 
-.guide-4 {
-  stroke-dasharray: 420 200 300 610;
-  stroke-dashoffset: -180;
-  transform: rotate(118deg);
-  opacity: 0.18;
-}
-
-/* =========================================================
-   PRIMARY WHITE SEGMENTED RINGS
-========================================================= */
-
-.main-arc,
-.inner-arc {
-  fill: none;
-  vector-effect: non-scaling-stroke;
-  transition:
-    transform 850ms cubic-bezier(.19, 1, .22, 1),
-    opacity 500ms ease;
-}
-
-.main-arc {
-  stroke: rgba(255, 255, 255, 0.88);
-  stroke-width: 1.28;
-  filter:
-    drop-shadow(0 0 5px rgba(255, 255, 255, 0.34))
-    drop-shadow(0 0 14px rgba(255, 255, 255, 0.10));
-}
-
-.main-arc-1 {
-  stroke-dasharray: 470 837;
-  stroke-dashoffset: -44;
-  transform: rotate(-28deg);
-  opacity: 0.98;
-}
-
-.main-arc-2 {
-  stroke-dasharray: 360 150 280 517;
-  stroke-dashoffset: -210;
-  transform: rotate(126deg);
-  opacity: 0.9;
-}
-
-.main-arc-3 {
-  stroke-dasharray: 112 250 70 875;
-  stroke-dashoffset: -40;
-  transform: rotate(226deg);
-  opacity: 0.58;
-}
-
-.inner-arc {
-  stroke: rgba(255, 255, 255, 0.24);
-  stroke-width: 0.86;
-  filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.08));
-}
-
-.inner-arc-1 {
-  stroke-dasharray: 430 776;
-  stroke-dashoffset: -70;
-  transform: rotate(-52deg);
-  opacity: 0.46;
-}
-
-.inner-arc-2 {
-  stroke-dasharray: 260 170 210 566;
-  stroke-dashoffset: -185;
-  transform: rotate(154deg);
-  opacity: 0.36;
-}
-
-/* =========================================================
-   FAN / BIM LINE DETAILS
-========================================================= */
-
-.fan-group {
-  opacity: 0.78;
-  transition:
-    transform 900ms cubic-bezier(.19, 1, .22, 1),
-    opacity 500ms ease;
-}
-
-.fan-line {
-  fill: none;
-  stroke: rgba(255, 255, 255, 0.18);
-  stroke-width: 0.72;
-  vector-effect: non-scaling-stroke;
-  filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.08));
-}
-
-.fan-top-left {
-  transform: rotate(-5deg) translate(-3px, 0px);
-}
-
-.fan-bottom {
-  transform: rotate(3deg) translate(0px, 4px);
-}
-
-.fan-right {
-  transform: rotate(2deg) translate(4px, -2px);
-}
-
-.fan-top-left .fan-line:nth-child(1) { opacity: 0.72; }
-.fan-top-left .fan-line:nth-child(2) { opacity: 0.62; }
-.fan-top-left .fan-line:nth-child(3) { opacity: 0.52; }
-.fan-top-left .fan-line:nth-child(4) { opacity: 0.40; }
-.fan-top-left .fan-line:nth-child(5) { opacity: 0.30; }
-.fan-top-left .fan-line:nth-child(6) { opacity: 0.20; }
-
-.fan-bottom .fan-line:nth-child(1) { opacity: 0.64; }
-.fan-bottom .fan-line:nth-child(2) { opacity: 0.54; }
-.fan-bottom .fan-line:nth-child(3) { opacity: 0.42; }
-.fan-bottom .fan-line:nth-child(4) { opacity: 0.30; }
-.fan-bottom .fan-line:nth-child(5) { opacity: 0.20; }
-
-.fan-right .fan-line:nth-child(1) { opacity: 0.46; }
-.fan-right .fan-line:nth-child(2) { opacity: 0.34; }
-.fan-right .fan-line:nth-child(3) { opacity: 0.24; }
-.fan-right .fan-line:nth-child(4) { opacity: 0.16; }
-
-/* =========================================================
-   MICRO DOTTED DETAILS
-========================================================= */
-
-.micro-arc {
-  fill: none;
-  stroke: rgba(255, 255, 255, 0.18);
-  stroke-width: 0.72;
-  stroke-dasharray: 1 8;
-  vector-effect: non-scaling-stroke;
-  opacity: 0.38;
-}
-
-/* Turn blue arcs into subtle white/blue signal accents */
-.blue-arc {
-  fill: none;
-  stroke: rgba(180, 220, 255, 0.72);
-  stroke-width: 1.05;
-  vector-effect: non-scaling-stroke;
-  opacity: 0.38;
-  stroke-dasharray: 58 260;
-  filter:
-    drop-shadow(0 0 6px rgba(87, 168, 255, 0.28))
-    drop-shadow(0 0 14px rgba(87, 168, 255, 0.10));
-  animation: blueSignal 8s ease-in-out infinite;
-}
-
-.blue-2 {
-  opacity: 0.24;
-  animation-delay: 2.4s;
-}
-
-/* =========================================================
-   CALIBRATION MARKS
-========================================================= */
-
-.crosshair {
-  fill: none;
-  stroke: rgba(255, 255, 255, 0.20);
-  stroke-width: 0.72;
-  vector-effect: non-scaling-stroke;
-  opacity: 0.42;
-  filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.10));
-}
-
-.faint-left {
-  opacity: 0.16;
-}
-
-/* =========================================================
-   HOVER / INTERACTION MOTION
-========================================================= */
-
-body[data-orb-mode="hero"].orb-interacting .guide-1 {
-  transform: rotate(-14deg) scale(1.006);
-  opacity: 0.34;
-}
-
-body[data-orb-mode="hero"].orb-interacting .guide-2 {
-  transform: rotate(18deg) scale(1.012);
-  opacity: 0.42;
-}
-
-body[data-orb-mode="hero"].orb-interacting .guide-3 {
-  transform: rotate(44deg) scale(1.006);
-  opacity: 0.31;
-}
-
-body[data-orb-mode="hero"].orb-interacting .guide-4 {
-  transform: rotate(124deg) scale(0.998);
-  opacity: 0.22;
-}
-
-body[data-orb-mode="hero"].orb-interacting .main-arc-1 {
-  transform: rotate(-36deg) scale(1.006);
-}
-
-body[data-orb-mode="hero"].orb-interacting .main-arc-2 {
-  transform: rotate(134deg) scale(1.004);
-}
-
-body[data-orb-mode="hero"].orb-interacting .main-arc-3 {
-  transform: rotate(236deg) scale(0.998);
-  opacity: 0.7;
-}
-
-body[data-orb-mode="hero"].orb-interacting .inner-arc-1 {
-  transform: rotate(-60deg) scale(1.006);
-  opacity: 0.58;
-}
-
-body[data-orb-mode="hero"].orb-interacting .inner-arc-2 {
-  transform: rotate(160deg) scale(1.004);
-  opacity: 0.46;
-}
-
-body[data-orb-mode="hero"].orb-interacting .fan-top-left {
-  transform: rotate(-8deg) translate(-6px, -3px);
-}
-
-body[data-orb-mode="hero"].orb-interacting .fan-bottom {
-  transform: rotate(6deg) translate(4px, 7px);
-}
-
-body[data-orb-mode="hero"].orb-interacting .fan-right {
-  transform: rotate(5deg) translate(6px, -2px);
-}
-
-body[data-orb-mode="hero"].orb-interacting .blue-arc {
-  opacity: 0.62;
+/* Main bright arcs */
+.orb-arc {
+  transform-origin: 360px 360px;
+  stroke: rgba(255, 255, 255, 0.9);
   stroke-width: 1.15;
+  vector-effect: non-scaling-stroke;
+  filter:
+    drop-shadow(0 0 5px rgba(255, 255, 255, 0.38))
+    drop-shadow(0 0 14px rgba(255, 255, 255, 0.12));
 }
 
-/* =========================================================
-   ORB PLACEMENT STATES
-========================================================= */
+.arc-1 {
+  opacity: 0.9;
+  stroke-dasharray: 320 720;
+  animation: arcPulse 7s ease-in-out infinite;
+}
 
+.arc-2 {
+  opacity: 0.7;
+  stroke-dasharray: 250 720;
+  animation: arcPulse 8.5s ease-in-out infinite reverse;
+}
+
+.arc-3 {
+  opacity: 0.42;
+  stroke-dasharray: 180 780;
+  animation: arcPulse 10s ease-in-out infinite;
+}
+
+/* Fan detail */
+.orb-fan {
+  stroke: rgba(255, 255, 255, 0.16);
+  stroke-width: 0.65;
+  vector-effect: non-scaling-stroke;
+  opacity: 0.55;
+}
+
+/* Calibration marks */
+.orb-mark {
+  stroke: rgba(255, 255, 255, 0.24);
+  stroke-width: 0.7;
+  vector-effect: non-scaling-stroke;
+  opacity: 0.5;
+}
+
+/* Placement */
 body[data-orb-mode="hero"] {
   --orb-x: 0vw;
   --orb-y: -2vh;
   --orb-scale: 1;
-  --orb-opacity: 0.98;
+  --orb-opacity: 0.82;
   --orb-rotate: 0deg;
-  --orb-blur: 0px;
-}
-
-body[data-orb-mode="hero-to-grid"] {
-  --orb-x: 0vw;
-  --orb-y: 0vh;
-  --orb-scale: 0.72;
-  --orb-opacity: 0.72;
-  --orb-rotate: 38deg;
   --orb-blur: 0px;
 }
 
@@ -624,101 +402,105 @@ body[data-orb-mode="grid"] {
   --orb-x: 0vw;
   --orb-y: 0vh;
   --orb-scale: 0.54;
-  --orb-opacity: 0.46;
+  --orb-opacity: 0.42;
   --orb-rotate: 86deg;
-  --orb-blur: 0px;
 }
 
 body[data-orb-mode="showcase"] {
   --orb-x: -30vw;
   --orb-y: -1vh;
   --orb-scale: 0.56;
-  --orb-opacity: 0.38;
+  --orb-opacity: 0.36;
   --orb-rotate: 145deg;
-  --orb-blur: 0px;
 }
 
 body[data-orb-mode="support"] {
   --orb-x: 28vw;
   --orb-y: 2vh;
   --orb-scale: 0.58;
-  --orb-opacity: 0.34;
+  --orb-opacity: 0.32;
   --orb-rotate: 220deg;
-  --orb-blur: 0px;
 }
 
 body[data-orb-mode="process"] {
   --orb-x: 0vw;
   --orb-y: -24vh;
   --orb-scale: 0.46;
-  --orb-opacity: 0.30;
+  --orb-opacity: 0.28;
   --orb-rotate: 300deg;
-  --orb-blur: 0px;
 }
 
 body[data-orb-mode="cta"] {
   --orb-x: 0vw;
   --orb-y: -2vh;
   --orb-scale: 1.02;
-  --orb-opacity: 0.22;
+  --orb-opacity: 0.18;
   --orb-rotate: 360deg;
   --orb-blur: 1px;
 }
 
-/* =========================================================
-   ANIMATIONS
-========================================================= */
-
-@keyframes blueSignal {
+/* Animations */
+@keyframes orbBaseBreath {
   0%, 100% {
-    stroke-dashoffset: 0;
-    opacity: 0.18;
-  }
-
-  42% {
-    opacity: 0.58;
-  }
-
-  100% {
-    stroke-dashoffset: -210;
-  }
-}
-
-@keyframes orbBreath {
-  0%, 100% {
-    opacity: 0.42;
-    transform: scale(0.985);
+    opacity: 0.72;
+    transform: scale(0.992);
   }
 
   50% {
-    opacity: 0.68;
-    transform: scale(1.018);
+    opacity: 0.92;
+    transform: scale(1.01);
   }
 }
 
-/* =========================================================
-   RESPONSIVE
-========================================================= */
+@keyframes ringDrift {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes ringDriftReverse {
+  from {
+    transform: rotate(360deg);
+  }
+
+  to {
+    transform: rotate(0deg);
+  }
+}
+
+@keyframes arcPulse {
+  0%, 100% {
+    opacity: 0.35;
+    stroke-dashoffset: 0;
+  }
+
+  45% {
+    opacity: 0.95;
+  }
+
+  100% {
+    stroke-dashoffset: -220;
+  }
+}
+
+/* Keep hero content readable */
+.hero,
+.hero-content,
+.hero-copy {
+  position: relative;
+  z-index: 5;
+}
 
 @media (max-width: 980px) {
   .bim-orb {
-    width: clamp(560px, 118vw, 820px);
-  }
-
-  .bim-orb-aura {
-    filter: blur(18px);
-    opacity: 0.42;
-  }
-
-  .bim-orb-svg {
-    filter:
-      drop-shadow(0 0 8px rgba(255, 255, 255, 0.07))
-      drop-shadow(0 0 18px rgba(255, 255, 255, 0.035));
+    width: clamp(560px, 120vw, 860px);
   }
 
   body[data-orb-mode] {
-    --orb-x: 0vw;
-    --orb-y: -2vh;
     --orb-scale: 0.94;
     --orb-opacity: 0.34;
   }
@@ -726,14 +508,15 @@ body[data-orb-mode="cta"] {
 
 @media (max-width: 560px) {
   .bim-orb {
-    width: 154vw;
+    width: 156vw;
   }
 
   body[data-orb-mode] {
     --orb-scale: 0.9;
-    --orb-opacity: 0.28;
+    --orb-opacity: 0.25;
   }
 }
+
 
 /* =========================================================
    04. HERO
