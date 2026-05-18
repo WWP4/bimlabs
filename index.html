@@ -14,76 +14,133 @@
 <!-- GLOBAL ORB -->
 <div class="orb-stage" aria-hidden="true">
   <div class="bim-orb" id="storyOrb">
-
     <svg class="bim-orb-svg" viewBox="0 0 720 720" aria-hidden="true" focusable="false">
       <defs>
-        <filter id="orbGlow" x="-50%" y="-50%" width="200%" height="200%">
-          <feGaussianBlur stdDeviation="2.4" result="blur" />
+        <filter id="orbSoftGlow" x="-60%" y="-60%" width="220%" height="220%">
+          <feGaussianBlur stdDeviation="2.2" result="blur" />
           <feMerge>
             <feMergeNode in="blur" />
             <feMergeNode in="SourceGraphic" />
           </feMerge>
         </filter>
 
-        <filter id="softGlow" x="-50%" y="-50%" width="200%" height="200%">
-          <feGaussianBlur stdDeviation="7" result="blur" />
+        <filter id="orbAccentGlow" x="-80%" y="-80%" width="260%" height="260%">
+          <feGaussianBlur stdDeviation="5" result="blur" />
           <feMerge>
             <feMergeNode in="blur" />
             <feMergeNode in="SourceGraphic" />
           </feMerge>
         </filter>
 
-        <mask id="orbCenterCut">
-          <rect width="720" height="720" fill="white" />
-          <circle cx="360" cy="360" r="178" fill="black" />
-        </mask>
+        <linearGradient id="orbAccent" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#8b5cf6" />
+          <stop offset="45%" stop-color="#5b7cff" />
+          <stop offset="100%" stop-color="#ffffff" />
+        </linearGradient>
       </defs>
 
-      <g class="orb-layer" mask="url(#orbCenterCut)" fill="none" stroke-linecap="round">
+      <g class="orb-root" fill="none" stroke-linejoin="miter" stroke-linecap="round">
 
-        <!-- outer ghost rings -->
-        <circle class="ghost-ring ghost-1" cx="360" cy="360" r="306" />
-        <circle class="ghost-ring ghost-2" cx="360" cy="360" r="292" />
-        <circle class="ghost-ring ghost-3" cx="360" cy="360" r="276" />
-        <circle class="ghost-ring ghost-4" cx="360" cy="360" r="258" />
+        <!-- OUTER GROUP: 4 layers -->
+        <path
+          class="orb-line orb-ghost layer-1"
+          d="M222 103
+             L238 130
+             C300 94 384 78 462 96
+             C594 126 690 244 690 380
+             C690 534 565 660 410 660
+             C255 660 130 534 130 380
+             C130 253 215 145 333 112"
+        />
 
-        <!-- main white arcs -->
-        <circle class="light-ring light-1" cx="360" cy="360" r="226" />
-        <circle class="light-ring light-2" cx="360" cy="360" r="226" />
-        <circle class="light-ring light-3" cx="360" cy="360" r="226" />
+        <path
+          class="orb-line orb-ghost layer-2"
+          d="M212 122
+             L230 150
+             C291 116 374 101 452 119
+             C572 147 660 254 660 380
+             C660 518 548 630 410 630
+             C272 630 160 518 160 380
+             C160 265 236 168 343 138"
+        />
 
-        <!-- inner structure arcs -->
-        <circle class="inner-ring inner-1" cx="360" cy="360" r="196" />
-        <circle class="inner-ring inner-2" cx="360" cy="360" r="206" />
-        <circle class="inner-ring inner-3" cx="360" cy="360" r="238" />
+        <path
+          class="orb-line orb-mid layer-3"
+          d="M202 142
+             L222 172
+             C283 139 364 126 441 144
+             C550 170 630 268 630 380
+             C630 501 531 600 410 600
+             C289 600 190 501 190 380
+             C190 278 257 192 353 165"
+        />
 
-        <!-- top left BIM fan -->
-        <path class="fan-line" d="M196 348 C223 250 282 180 370 132" />
-        <path class="fan-line" d="M208 354 C236 263 293 197 374 150" />
-        <path class="fan-line" d="M220 360 C248 276 304 214 378 168" />
-        <path class="fan-line" d="M232 366 C260 290 315 231 382 186" />
-        <path class="fan-line" d="M244 372 C272 304 326 248 386 204" />
-        <path class="fan-line" d="M256 378 C284 318 337 265 390 222" />
+        <path
+          class="orb-line orb-main layer-4"
+          d="M194 164
+             L215 194
+             C274 164 354 151 430 169
+             C528 193 600 281 600 380
+             C600 485 515 570 410 570
+             C305 570 220 485 220 380
+             C220 292 278 217 363 194"
+        />
 
-        <!-- bottom right BIM fan -->
-        <path class="fan-line fan-soft" d="M350 548 C414 536 468 496 512 438" />
-        <path class="fan-line fan-soft" d="M335 558 C405 550 462 512 514 456" />
-        <path class="fan-line fan-soft" d="M320 568 C397 564 456 528 516 474" />
-        <path class="fan-line fan-soft" d="M305 578 C389 578 450 544 518 492" />
+        <!-- INNER GROUP: 4 layers -->
+        <path
+          class="orb-line orb-inner-main layer-5"
+          d="M292 228
+             L310 256
+             C344 237 386 228 427 236
+             C507 252 568 322 568 406
+             C568 503 489 582 392 582
+             C295 582 216 503 216 406
+             C216 333 261 270 324 244"
+        />
 
-        <!-- calibration cuts -->
-        <path class="cut-line" d="M360 80 L360 142" />
-        <path class="cut-line" d="M360 578 L360 644" />
-        <path class="cut-line" d="M580 360 L644 360" />
-        <path class="cut-line faint" d="M76 360 L138 360" />
+        <path
+          class="orb-line orb-inner-mid layer-6"
+          d="M303 248
+             L321 276
+             C352 259 390 252 427 260
+             C495 275 546 335 546 406
+             C546 491 477 560 392 560
+             C307 560 238 491 238 406
+             C238 342 276 287 331 264"
+        />
 
-        <!-- small segmented details -->
-        <path class="micro-dot" d="M500 190 A255 255 0 0 1 610 355" />
-        <path class="micro-dot" d="M170 455 A245 245 0 0 0 325 600" />
+        <path
+          class="orb-line orb-inner-ghost layer-7"
+          d="M314 268
+             L332 296
+             C359 282 392 276 424 283
+             C483 296 524 347 524 406
+             C524 479 465 538 392 538
+             C319 538 260 479 260 406
+             C260 351 292 305 340 286"
+        />
+
+        <path
+          class="orb-line orb-inner-ghost layer-8"
+          d="M326 288
+             L343 315
+             C366 304 394 300 421 306
+             C469 317 502 358 502 406
+             C502 466 452 516 392 516
+             C332 516 282 466 282 406
+             C282 361 308 323 348 308"
+        />
+
+        <!-- small accent only, not counted as a layer -->
+        <path
+          class="orb-accent"
+          d="M204 142
+             L222 172
+             C247 158 274 147 303 140"
+        />
 
       </g>
     </svg>
-
   </div>
 </div>
   
