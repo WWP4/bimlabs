@@ -14,45 +14,76 @@
   <div class="site-grain" aria-hidden="true"></div>
 
 <div class="orb-stage" aria-hidden="true">
-  <div class="story-orb" id="storyOrb">
-    <div class="orb-glow"></div>
+  <div class="story-orb story-orb-premium" id="storyOrb">
 
-    <div class="orb-shell">
-      <svg class="orb-svg" viewBox="0 0 520 520" aria-hidden="true" focusable="false">
-        <defs>
-          <!-- This removes the center of the line system -->
-          <mask id="orbHollowCenter">
-            <rect width="520" height="520" fill="white"></rect>
-            <circle cx="260" cy="260" r="148" fill="black"></circle>
-          </mask>
-        </defs>
+    <div class="orb-aura"></div>
 
-        <g
-          mask="url(#orbHollowCenter)"
-          fill="none"
-          stroke="currentColor"
-          stroke-linecap="round"
-        >
-          <circle cx="260" cy="260" r="226" stroke-width="1.5" opacity="0.95"></circle>
-          <circle cx="260" cy="260" r="202" stroke-width="0.9" opacity="0.38"></circle>
-          <circle cx="260" cy="260" r="176" stroke-width="0.75" opacity="0.2"></circle>
+    <svg class="bim-signature-orb" viewBox="0 0 640 640" aria-hidden="true" focusable="false">
+      <defs>
+        <radialGradient id="orbSoftFade" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="rgba(255,255,255,0)" />
+          <stop offset="54%" stop-color="rgba(255,255,255,0)" />
+          <stop offset="73%" stop-color="rgba(255,255,255,0.08)" />
+          <stop offset="100%" stop-color="rgba(255,255,255,0)" />
+        </radialGradient>
 
-          <ellipse cx="260" cy="260" rx="76" ry="226" stroke-width="1.05" opacity="0.68"></ellipse>
-          <ellipse cx="260" cy="260" rx="124" ry="226" stroke-width="0.85" opacity="0.42"></ellipse>
-          <ellipse cx="260" cy="260" rx="176" ry="226" stroke-width="0.72" opacity="0.24"></ellipse>
+        <linearGradient id="orbWhiteLine" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="rgba(255,255,255,0.16)" />
+          <stop offset="45%" stop-color="rgba(255,255,255,0.95)" />
+          <stop offset="100%" stop-color="rgba(255,255,255,0.2)" />
+        </linearGradient>
 
-          <ellipse cx="260" cy="260" rx="226" ry="48" stroke-width="0.95" opacity="0.45"></ellipse>
-          <ellipse cx="260" cy="260" rx="226" ry="94" stroke-width="0.8" opacity="0.28"></ellipse>
-          <ellipse cx="260" cy="260" rx="226" ry="142" stroke-width="0.68" opacity="0.16"></ellipse>
+        <linearGradient id="orbBlueLine" x1="0%" y1="20%" x2="100%" y2="80%">
+          <stop offset="0%" stop-color="rgba(74,144,255,0)" />
+          <stop offset="48%" stop-color="rgba(74,144,255,0.95)" />
+          <stop offset="100%" stop-color="rgba(74,144,255,0)" />
+        </linearGradient>
 
-          <path d="M88 116C150 154 370 154 432 116" stroke-width="0.75" opacity="0.22"></path>
-          <path d="M88 404C150 366 370 366 432 404" stroke-width="0.75" opacity="0.22"></path>
+        <filter id="orbGlow">
+          <feGaussianBlur stdDeviation="2.5" result="blur" />
+          <feMerge>
+            <feMergeNode in="blur" />
+            <feMergeNode in="SourceGraphic" />
+          </feMerge>
+        </filter>
 
-          <path d="M116 88C158 164 158 356 116 432" stroke-width="0.65" opacity="0.14"></path>
-          <path d="M404 88C362 164 362 356 404 432" stroke-width="0.65" opacity="0.14"></path>
-        </g>
-      </svg>
-    </div>
+        <mask id="premiumOrbHollow">
+          <rect width="640" height="640" fill="white"></rect>
+          <circle cx="320" cy="320" r="170" fill="black"></circle>
+        </mask>
+      </defs>
+
+      <circle cx="320" cy="320" r="260" fill="url(#orbSoftFade)" opacity="0.9"></circle>
+
+      <g mask="url(#premiumOrbHollow)" fill="none" stroke-linecap="round">
+
+        <!-- quiet structural outer arcs -->
+        <circle class="orb-ring ring-a" cx="320" cy="320" r="252"></circle>
+        <circle class="orb-ring ring-b" cx="320" cy="320" r="226"></circle>
+        <circle class="orb-ring ring-c" cx="320" cy="320" r="198"></circle>
+
+        <!-- original asymmetrical contour rails -->
+        <path class="orb-rail rail-main" d="M108 358 C164 206 296 122 456 152 C540 168 574 226 560 300" />
+        <path class="orb-rail rail-main rail-delay" d="M530 250 C482 410 338 506 172 458 C96 436 70 376 92 304" />
+
+        <path class="orb-rail rail-soft" d="M156 180 C260 132 422 176 496 276 C558 360 518 462 408 506" />
+        <path class="orb-rail rail-soft" d="M476 138 C356 164 238 252 168 388 C134 454 152 506 218 534" />
+
+        <!-- inner precision arcs, not globe lines -->
+        <path class="orb-rail rail-thin" d="M186 246 C266 190 402 202 474 286" />
+        <path class="orb-rail rail-thin" d="M460 374 C382 444 248 440 174 354" />
+
+        <!-- Bim Labs signature blue pulse -->
+        <path class="orb-blue" d="M130 398 C200 500 386 540 510 416" />
+
+        <!-- small calibration ticks -->
+        <path class="orb-tick" d="M318 62 L318 108" />
+        <path class="orb-tick" d="M318 532 L318 578" />
+        <path class="orb-tick" d="M82 318 L128 318" />
+        <path class="orb-tick" d="M512 318 L558 318" />
+
+      </g>
+    </svg>
   </div>
 </div>
 
