@@ -248,18 +248,13 @@ p {
 ========================================================= */
 
 /* =========================================================
-   BIM LABS ORB — BLACK + ELECTRIC BLUE
+   BIM LABS HERO ORB — BLACK / WHITE / ELECTRIC BLUE
 ========================================================= */
 
 :root {
-  --bg: #020205;
-  --ink: #ffffff;
-  --electric-blue: #2f8cff;
-  --electric-blue-bright: #63b2ff;
-  --electric-blue-soft: rgba(47, 140, 255, 0.42);
-  --orb-white: rgba(255, 255, 255, 0.84);
-  --orb-white-soft: rgba(255, 255, 255, 0.22);
-  --orb-white-faint: rgba(255, 255, 255, 0.12);
+  --bim-black: #020205;
+  --bim-blue: #2f8cff;
+  --bim-blue-bright: #64b7ff;
 }
 
 .orb-stage {
@@ -269,139 +264,192 @@ p {
   display: grid;
   place-items: center;
   pointer-events: none;
+
   transform:
     translate3d(var(--orb-x, 0px), var(--orb-y, 0px), 0)
     scale(var(--orb-scale, 1));
+
   opacity: var(--orb-opacity, 1);
   filter: blur(var(--orb-blur, 0px));
   will-change: transform, opacity, filter;
 }
 
-.story-orb-premium {
+.bim-orb {
   position: relative;
-  width: clamp(620px, 74vw, 1040px);
+  width: clamp(640px, 76vw, 1120px);
   aspect-ratio: 1;
-  transform: rotate(var(--orb-rotate, 0deg));
+  transform:
+    rotate(var(--orb-rotate, 0deg))
+    rotateX(var(--orb-tilt-y, 0deg))
+    rotateY(var(--orb-tilt-x, 0deg));
+  transform-style: preserve-3d;
   will-change: transform;
 }
 
-.orb-aura {
+.bim-orb-aura {
   position: absolute;
-  inset: -14%;
+  inset: -10%;
   border-radius: 50%;
   background:
-    radial-gradient(
-      circle,
-      rgba(47, 140, 255, 0.18) 0%,
-      rgba(47, 140, 255, 0.08) 34%,
-      rgba(255, 255, 255, 0.03) 52%,
-      transparent 72%
-    );
-  filter: blur(34px);
-  opacity: 0.85;
-  animation: orbAuraBreath 7s ease-in-out infinite;
+    radial-gradient(circle,
+      rgba(47, 140, 255, 0.16) 0%,
+      rgba(47, 140, 255, 0.07) 28%,
+      rgba(255, 255, 255, 0.035) 48%,
+      transparent 72%);
+  filter: blur(38px);
+  opacity: 0.75;
+  animation: orbBreath 7s ease-in-out infinite;
 }
 
-.bim-signature-orb {
+.bim-orb-svg {
+  position: relative;
   width: 100%;
   height: 100%;
-  display: block;
   overflow: visible;
   filter:
-    drop-shadow(0 0 16px rgba(47, 140, 255, 0.08))
-    drop-shadow(0 0 26px rgba(255, 255, 255, 0.04));
-  animation: orbFloat 14s ease-in-out infinite;
+    drop-shadow(0 0 18px rgba(255, 255, 255, 0.07))
+    drop-shadow(0 0 28px rgba(47, 140, 255, 0.08));
 }
 
-/* outer ring system */
-.orb-ring {
+/* thin outer slinky rings */
+.slinky-ring {
   fill: none;
+  stroke: rgba(255, 255, 255, 0.34);
+  stroke-width: 0.9;
   vector-effect: non-scaling-stroke;
-  transform-origin: 320px 320px;
+  transform-origin: 360px 360px;
+  transition:
+    transform 700ms cubic-bezier(.19, 1, .22, 1),
+    opacity 500ms ease;
 }
 
-.ring-a {
-  stroke: rgba(255, 255, 255, 0.78);
-  stroke-width: 1.15;
-  opacity: 0.74;
-  stroke-dasharray: 460 74 180 92 280 120;
-  animation: orbitSlow 42s linear infinite;
-}
+.ring-01 { opacity: 0.42; }
+.ring-02 { opacity: 0.52; }
+.ring-03 { opacity: 0.72; }
+.ring-04 { opacity: 0.44; }
 
-.ring-b {
-  stroke: rgba(47, 140, 255, 0.42);
-  stroke-width: 0.95;
-  opacity: 0.5;
-  stroke-dasharray: 260 120 420 80 160 90;
-  animation: orbitReverse 52s linear infinite;
-}
-
-.ring-c {
-  stroke: rgba(255, 255, 255, 0.18);
-  stroke-width: 0.8;
-  opacity: 0.28;
-  stroke-dasharray: 180 90 340 110 220 130;
-  animation: orbitSlow 60s linear infinite;
-}
-
-/* main rails */
-.orb-rail {
+/* dark metal body rings */
+.body-ring {
   fill: none;
+  stroke: rgba(255, 255, 255, 0.1);
+  stroke-width: 16;
   vector-effect: non-scaling-stroke;
-  transform-origin: 320px 320px;
+  transform-origin: 360px 360px;
+  filter: drop-shadow(0 0 16px rgba(255,255,255,0.035));
+  transition:
+    transform 800ms cubic-bezier(.19, 1, .22, 1),
+    opacity 500ms ease;
 }
 
-.rail-main {
+.body-01 { opacity: 0.25; }
+.body-02 { opacity: 0.2; }
+.body-03 { opacity: 0.16; }
+
+/* bright white edges */
+.edge-ring {
+  fill: none;
   stroke: rgba(255, 255, 255, 0.88);
   stroke-width: 1.35;
-  opacity: 0.88;
-  stroke-dasharray: 720;
-  stroke-dashoffset: 720;
-  filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.12));
-  animation: railReveal 4.2s ease forwards, railDrift 18s ease-in-out infinite;
-}
-
-.rail-delay {
-  animation-delay: 0.4s, 0s;
-}
-
-.rail-soft {
-  stroke: rgba(47, 140, 255, 0.2);
-  stroke-width: 0.9;
-  opacity: 0.72;
-  animation: railDriftSoft 22s ease-in-out infinite;
-}
-
-.rail-thin {
-  stroke: rgba(255, 255, 255, 0.16);
-  stroke-width: 0.7;
-  opacity: 0.8;
-  animation: railDriftSoft 26s ease-in-out infinite reverse;
-}
-
-/* signature BIM LABS electric blue pulse */
-.orb-blue {
-  fill: none;
-  stroke: var(--electric-blue);
-  stroke-width: 1.35;
-  opacity: 0.92;
-  stroke-dasharray: 120 540;
-  filter:
-    drop-shadow(0 0 8px rgba(47, 140, 255, 0.55))
-    drop-shadow(0 0 18px rgba(47, 140, 255, 0.32));
-  animation: bluePulse 6.5s ease-in-out infinite;
-}
-
-/* small precision ticks */
-.orb-tick {
-  fill: none;
-  stroke: rgba(255, 255, 255, 0.24);
-  stroke-width: 0.8;
-  opacity: 0.58;
   vector-effect: non-scaling-stroke;
+  transform-origin: 360px 360px;
+  filter: url(#bimGlow);
+  transition:
+    transform 750ms cubic-bezier(.19, 1, .22, 1),
+    opacity 500ms ease;
 }
 
-/* orb states */
+.edge-outer {
+  opacity: 0.9;
+  stroke-dasharray: 840 90 260 140;
+  animation: slowOrbit 48s linear infinite;
+}
+
+.edge-inner {
+  opacity: 0.82;
+  stroke-dasharray: 620 110 260 90;
+  animation: slowOrbitReverse 54s linear infinite;
+}
+
+/* electric blue brand arcs */
+.blue-arc {
+  fill: none;
+  stroke: var(--bim-blue-bright);
+  stroke-width: 1.55;
+  vector-effect: non-scaling-stroke;
+  opacity: 0.82;
+  filter:
+    drop-shadow(0 0 8px rgba(47, 140, 255, 0.65))
+    drop-shadow(0 0 18px rgba(47, 140, 255, 0.32));
+  stroke-dasharray: 80 260;
+  animation: blueSignal 5.8s ease-in-out infinite;
+}
+
+.blue-right { animation-delay: 0.8s; opacity: 0.54; }
+.blue-bottom { animation-delay: 1.6s; opacity: 0.7; }
+.blue-left { animation-delay: 2.4s; opacity: 0.42; }
+
+.orb-notch {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.22);
+  stroke-width: 0.9;
+  vector-effect: non-scaling-stroke;
+  opacity: 0.45;
+}
+
+/* =========================================================
+   HERO ONLY HOVER / SLINKY MOTION
+   This only activates when body is in hero mode.
+========================================================= */
+
+body[data-orb-mode="hero"].orb-interacting .ring-01 {
+  transform: rotate(-8deg) scale(1.035);
+  opacity: 0.7;
+}
+
+body[data-orb-mode="hero"].orb-interacting .ring-02 {
+  transform: rotate(6deg) scale(1.02);
+  opacity: 0.78;
+}
+
+body[data-orb-mode="hero"].orb-interacting .ring-03 {
+  transform: rotate(-4deg) scale(1.012);
+  opacity: 0.92;
+}
+
+body[data-orb-mode="hero"].orb-interacting .ring-04 {
+  transform: rotate(10deg) scale(0.992);
+  opacity: 0.62;
+}
+
+body[data-orb-mode="hero"].orb-interacting .body-01 {
+  transform: rotate(3deg) scale(1.018);
+  opacity: 0.34;
+}
+
+body[data-orb-mode="hero"].orb-interacting .body-02 {
+  transform: rotate(-5deg) scale(1.006);
+  opacity: 0.28;
+}
+
+body[data-orb-mode="hero"].orb-interacting .body-03 {
+  transform: rotate(7deg) scale(0.994);
+  opacity: 0.24;
+}
+
+body[data-orb-mode="hero"].orb-interacting .edge-outer {
+  transform: rotate(6deg) scale(1.006);
+}
+
+body[data-orb-mode="hero"].orb-interacting .edge-inner {
+  transform: rotate(-7deg) scale(0.995);
+}
+
+body[data-orb-mode="hero"].orb-interacting .blue-arc {
+  opacity: 1;
+  stroke-width: 1.85;
+}
+
+/* Orb placement states */
 body[data-orb-mode="hero"] {
   --orb-x: 0vw;
   --orb-y: -2vh;
@@ -415,132 +463,100 @@ body[data-orb-mode="grid"] {
   --orb-x: 0vw;
   --orb-y: 0vh;
   --orb-scale: 0.5;
-  --orb-opacity: 0.62;
+  --orb-opacity: 0.42;
   --orb-rotate: 85deg;
-  --orb-blur: 0px;
 }
 
 body[data-orb-mode="showcase"] {
   --orb-x: -30vw;
   --orb-y: -1vh;
   --orb-scale: 0.56;
-  --orb-opacity: 0.52;
+  --orb-opacity: 0.38;
   --orb-rotate: 145deg;
-  --orb-blur: 0px;
 }
 
 body[data-orb-mode="support"] {
   --orb-x: 28vw;
   --orb-y: 2vh;
   --orb-scale: 0.6;
-  --orb-opacity: 0.5;
+  --orb-opacity: 0.34;
   --orb-rotate: 220deg;
-  --orb-blur: 0px;
 }
 
 body[data-orb-mode="process"] {
   --orb-x: 0vw;
   --orb-y: -24vh;
   --orb-scale: 0.46;
-  --orb-opacity: 0.42;
+  --orb-opacity: 0.3;
   --orb-rotate: 300deg;
-  --orb-blur: 0px;
 }
 
 body[data-orb-mode="cta"] {
   --orb-x: 0vw;
   --orb-y: -2vh;
   --orb-scale: 1.04;
-  --orb-opacity: 0.24;
+  --orb-opacity: 0.22;
   --orb-rotate: 360deg;
   --orb-blur: 1px;
 }
 
 /* animations */
-@keyframes orbitSlow {
-  from { transform: rotate(0deg); }
+@keyframes slowOrbit {
   to { transform: rotate(360deg); }
 }
 
-@keyframes orbitReverse {
-  from { transform: rotate(360deg); }
-  to { transform: rotate(0deg); }
+@keyframes slowOrbitReverse {
+  to { transform: rotate(-360deg); }
 }
 
-@keyframes railReveal {
-  to { stroke-dashoffset: 0; }
-}
-
-@keyframes railDrift {
-  0%, 100% {
-    transform: rotate(0deg) scale(1);
-    opacity: 0.82;
-  }
-  50% {
-    transform: rotate(4deg) scale(1.018);
-    opacity: 1;
-  }
-}
-
-@keyframes railDriftSoft {
-  0%, 100% { transform: rotate(0deg); }
-  50% { transform: rotate(-3deg); }
-}
-
-@keyframes bluePulse {
+@keyframes blueSignal {
   0%, 100% {
     stroke-dashoffset: 0;
-    opacity: 0.3;
+    opacity: 0.36;
   }
+
   45% {
     opacity: 1;
   }
+
   100% {
-    stroke-dashoffset: -520;
+    stroke-dashoffset: -260;
   }
 }
 
-@keyframes orbFloat {
+@keyframes orbBreath {
   0%, 100% {
-    transform: translate3d(0, 0, 0) scale(1);
+    opacity: 0.58;
+    transform: scale(0.98);
   }
-  50% {
-    transform: translate3d(0, -10px, 0) scale(1.015);
-  }
-}
 
-@keyframes orbAuraBreath {
-  0%, 100% {
-    opacity: 0.62;
-    transform: scale(0.97);
-  }
   50% {
-    opacity: 0.92;
-    transform: scale(1.04);
+    opacity: 0.88;
+    transform: scale(1.035);
   }
 }
 
 @media (max-width: 980px) {
-  .story-orb-premium {
-    width: clamp(540px, 118vw, 780px);
+  .bim-orb {
+    width: clamp(560px, 120vw, 820px);
   }
 
   body[data-orb-mode] {
     --orb-x: 0vw;
     --orb-y: -2vh;
     --orb-scale: 0.94;
-    --orb-opacity: 0.36;
+    --orb-opacity: 0.34;
   }
 }
 
 @media (max-width: 560px) {
-  .story-orb-premium {
+  .bim-orb {
     width: 154vw;
   }
 
   body[data-orb-mode] {
     --orb-scale: 0.9;
-    --orb-opacity: 0.3;
+    --orb-opacity: 0.28;
   }
 }
 
