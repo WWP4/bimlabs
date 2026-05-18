@@ -340,3 +340,33 @@ updateServicesLines();
 currentOrb = getTargetOrbState();
 applyOrbState(currentOrb);
 requestAnimationFrame(animateOrb);
+
+const hero = document.querySelector(".hero");
+const orb = document.querySelector(".bim-orb");
+
+if (hero && orb) {
+  let leaveTimer;
+
+  hero.addEventListener("pointermove", (event) => {
+    if (document.body.dataset.orbMode !== "hero") return;
+
+    clearTimeout(leaveTimer);
+
+    const rect = hero.getBoundingClientRect();
+    const x = (event.clientX - rect.left) / rect.width - 0.5;
+    const y = (event.clientY - rect.top) / rect.height - 0.5;
+
+    document.body.classList.add("orb-interacting");
+
+    orb.style.setProperty("--orb-tilt-x", `${x * 7}deg`);
+    orb.style.setProperty("--orb-tilt-y", `${y * -7}deg`);
+  });
+
+  hero.addEventListener("pointerleave", () => {
+    leaveTimer = setTimeout(() => {
+      document.body.classList.remove("orb-interacting");
+      orb.style.setProperty("--orb-tilt-x", "0deg");
+      orb.style.setProperty("--orb-tilt-y", "0deg");
+    }, 120);
+  });
+}
