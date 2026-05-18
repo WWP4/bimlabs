@@ -315,10 +315,13 @@ function mapRange(value, inMin, inMax) {
 }
 
 function updateProgress(progress) {
-  const heroOut = mapRange(progress, 0.08, 0.22);
-  const buildReveal = mapRange(progress, 0.18, 0.38);
-  const workReveal = mapRange(progress, 0.34, 0.48);
-  const workDepth = mapRange(progress, 0.52, 0.96);
+  const page = window.scrollY / Math.max(1, window.innerHeight);
+  const heroOut = mapRange(page, 0.68, 0.96);
+  const buildReveal = mapRange(page, 0.98, 1.18);
+  const buildOut = mapRange(page, 1.72, 2.02);
+  const workReveal = mapRange(page, 2.02, 2.28);
+  const workDepth = mapRange(page, 2.34, 2.74);
+  const workUiOut = mapRange(page, 3.08, 3.46);
 
   sceneState.progress = progress;
   sceneState.work = workReveal;
@@ -326,8 +329,10 @@ function updateProgress(progress) {
   root.style.setProperty("--section-progress", progress.toFixed(4));
   root.style.setProperty("--hero-out", heroOut.toFixed(4));
   root.style.setProperty("--build-reveal", buildReveal.toFixed(4));
+  root.style.setProperty("--build-out", buildOut.toFixed(4));
   root.style.setProperty("--work-reveal", workReveal.toFixed(4));
   root.style.setProperty("--work-depth", workDepth.toFixed(4));
+  root.style.setProperty("--work-ui-out", workUiOut.toFixed(4));
   progressFill.style.width = `${Math.round(progress * 100)}%`;
   setBackground(progress);
 }
@@ -349,7 +354,7 @@ function createScrollTimeline() {
   }
 
   const timeline = gsap.timeline({
-    defaults: { ease: "none" },
+    defaults: { ease: "none", duration: 0.14 },
     scrollTrigger: {
       trigger: document.body,
       start: "top top",
@@ -360,27 +365,27 @@ function createScrollTimeline() {
   });
 
   timeline
-    .to(orb.scale, { x: 1, y: 1, z: 1 }, 0.14)
-    .to(camera.position, { z: 4.15, y: 0.03 }, 0)
-    .to(camera.rotation, { z: -0.035 }, 0)
-    .to(orb.position, { x: 1.08, y: -0.03, z: 0.18 }, 0)
-    .to(orb.rotation, { y: Math.PI * 0.58, x: 0.25 }, 0)
-    .to(rings.scale, { x: 1.38, y: 1.38, z: 1.38 }, 0)
-    .to(radialGroup.scale, { x: 1.35, y: 1.35, z: 1.35 }, 0.08)
-    .to(innerFrame.scale, { x: 1.18, y: 1.18, z: 1.18 }, 0)
-    .to(labelOpacity, { value: 1 }, 0.32)
-    .to(camera.position, { z: 3.75, y: -0.38, x: -0.06 }, 0.58)
-    .to(camera.rotation, { z: 0.025, x: -0.045 }, 0.58)
-    .to(orb.position, { x: 0.58, y: 1.25, z: -0.28 }, 0.58)
-    .to(orb.rotation, { y: Math.PI * 1.08, x: -0.14, z: 0.12 }, 0.58)
-    .to(rings.scale, { x: 1.58, y: 1.58, z: 1.58 }, 0.58)
-    .to(workGroup.position, { x: 0.1, y: -2.05, z: -0.88 }, 0.48)
-    .to(workGroup.rotation, { x: -0.1, y: -0.04, z: 0.006 }, 0.48)
-    .to(workLabelOpacity, { value: 1 }, 0.54)
-    .to(camera.position, { z: 2.9, y: -1.22, x: 0.02 }, 0.86)
-    .to(camera.rotation, { z: 0.01, x: -0.08 }, 0.86)
-    .to(workGroup.position, { y: 2.35, z: -0.72 }, 0.86)
-    .to(orb.position, { y: 1.88, z: -0.58 }, 0.86);
+    .to(orb.scale, { x: 1, y: 1, z: 1 }, 0.12)
+    .to(camera.position, { z: 4.15, y: 0.03 }, 0.12)
+    .to(camera.rotation, { z: -0.035 }, 0.12)
+    .to(orb.position, { x: 1.08, y: -0.03, z: 0.18 }, 0.12)
+    .to(orb.rotation, { y: Math.PI * 0.58, x: 0.25 }, 0.12)
+    .to(rings.scale, { x: 1.38, y: 1.38, z: 1.38 }, 0.12)
+    .to(radialGroup.scale, { x: 1.35, y: 1.35, z: 1.35 }, 0.14)
+    .to(innerFrame.scale, { x: 1.18, y: 1.18, z: 1.18 }, 0.12)
+    .to(labelOpacity, { value: 1 }, 0.18)
+    .to(camera.position, { z: 3.75, y: -0.38, x: -0.06 }, 0.32)
+    .to(camera.rotation, { z: 0.025, x: -0.045 }, 0.32)
+    .to(orb.position, { x: 0.58, y: 1.25, z: -0.28 }, 0.32)
+    .to(orb.rotation, { y: Math.PI * 1.08, x: -0.14, z: 0.12 }, 0.32)
+    .to(rings.scale, { x: 1.58, y: 1.58, z: 1.58 }, 0.32)
+    .to(workGroup.position, { x: 0.1, y: -2.05, z: -0.88 }, 0.32)
+    .to(workGroup.rotation, { x: -0.1, y: -0.04, z: 0.006 }, 0.32)
+    .to(workLabelOpacity, { value: 1 }, 0.38)
+    .to(camera.position, { z: 2.9, y: -1.22, x: 0.02, duration: 0.34 }, 0.58)
+    .to(camera.rotation, { z: 0.01, x: -0.08, duration: 0.34 }, 0.58)
+    .to(workGroup.position, { y: 2.35, z: -0.72, duration: 0.34 }, 0.58)
+    .to(orb.position, { y: 1.88, z: -0.58, duration: 0.34 }, 0.58);
 }
 
 function onPointerMove(event) {
