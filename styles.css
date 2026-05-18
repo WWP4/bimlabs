@@ -1594,3 +1594,143 @@ h1,
     align-items: flex-start;
   }
 }
+
+/* =========================================================
+   BIM LABS — STABILITY / PERFORMANCE PATCH
+   Put at the VERY bottom if you use it as a patch.
+   This version is already appended inside styles-fixed.css.
+========================================================= */
+
+/* Smooth section-to-section orb movement instead of snapping */
+.orb-stage {
+  transition:
+    transform 900ms var(--ease),
+    opacity 420ms ease,
+    filter 520ms ease !important;
+  contain: layout paint style;
+  backface-visibility: hidden;
+}
+
+/* Smooth tilt, but do not over-transition every internal SVG ring */
+.bim-orb {
+  transition: transform 180ms cubic-bezier(.19, 1, .22, 1) !important;
+  backface-visibility: hidden;
+}
+
+/* Reduce the most expensive paint effects */
+.bim-orb-aura {
+  filter: blur(24px) !important;
+  opacity: 0.68 !important;
+}
+
+.bim-orb-svg {
+  filter: drop-shadow(0 0 18px rgba(47, 140, 255, 0.08)) !important;
+}
+
+/* SVG url filters are expensive on a huge fixed hero object */
+.edge-ring {
+  filter: drop-shadow(0 0 7px rgba(255,255,255,0.16)) !important;
+}
+
+/* IMPORTANT:
+   The original file animated transform on edge rings,
+   then also tried to transform those same rings on hover.
+   That creates janky fighting. Keep the premium static edge rings. */
+.edge-outer,
+.edge-inner {
+  animation: none !important;
+}
+
+/* Keep slinky effect, but make it less violent */
+body[data-orb-mode="hero"].orb-interacting .ring-01 {
+  transform: rotate(-4deg) scale(1.018) !important;
+}
+
+body[data-orb-mode="hero"].orb-interacting .ring-02 {
+  transform: rotate(3deg) scale(1.012) !important;
+}
+
+body[data-orb-mode="hero"].orb-interacting .ring-03 {
+  transform: rotate(-2deg) scale(1.008) !important;
+}
+
+body[data-orb-mode="hero"].orb-interacting .ring-04 {
+  transform: rotate(5deg) scale(0.996) !important;
+}
+
+body[data-orb-mode="hero"].orb-interacting .body-01 {
+  transform: rotate(2deg) scale(1.01) !important;
+}
+
+body[data-orb-mode="hero"].orb-interacting .body-02 {
+  transform: rotate(-3deg) scale(1.004) !important;
+}
+
+body[data-orb-mode="hero"].orb-interacting .body-03 {
+  transform: rotate(4deg) scale(0.998) !important;
+}
+
+/* Do not transform the same edge rings that had orbit animation */
+body[data-orb-mode="hero"].orb-interacting .edge-outer,
+body[data-orb-mode="hero"].orb-interacting .edge-inner {
+  transform: none !important;
+}
+
+/* Backdrop blur is one of the biggest browser repaint costs */
+.hero-bottom,
+.site-header.is-scrolled,
+.btn.ghost,
+.quadrant-board {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+/* The big service cards can keep depth without 140px shadows */
+.quadrant-board,
+.work-card,
+.agency-media,
+.step,
+.cta-inner {
+  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.28) !important;
+}
+
+/* Reduce constant marquee repaint cost slightly */
+.marquee-track {
+  animation-duration: 42s !important;
+  will-change: transform;
+}
+
+/* Respect devices/browsers that struggle with motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+  }
+
+  .orb-stage,
+  .bim-orb,
+  .slinky-ring,
+  .body-ring,
+  .edge-ring {
+    transition: none !important;
+  }
+}
+
+/* Mobile: make the orb much cheaper */
+@media (max-width: 980px) {
+  .bim-orb-aura {
+    filter: blur(16px) !important;
+    opacity: 0.42 !important;
+  }
+
+  .bim-orb-svg {
+    filter: none !important;
+  }
+
+  .blue-arc {
+    filter: drop-shadow(0 0 8px rgba(47, 140, 255, 0.28)) !important;
+  }
+}
