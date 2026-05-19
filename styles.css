@@ -417,24 +417,7 @@ h2 { font-size: clamp(50px, 7.2vw, 118px); max-width: 760px; }
   box-shadow: 0 0 28px rgba(0,119,255,0.52);
 }
 
-.pixel-transition {
-  position: fixed;
-  inset: 0;
-  z-index: 8;
-  pointer-events: none;
-  overflow: hidden;
-  opacity: 0;
-}
 
-.pixel-cell {
-  position: absolute;
-  display: block;
-  opacity: 0;
-  transform: translate3d(0, 0, 0) scale(0.4);
-  transform-origin: center center;
-  will-change: transform, opacity;
-  background: rgba(0, 119, 255, 0.74);
-}
 
 .next-section {
   min-height: 100vh;
