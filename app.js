@@ -1,9 +1,9 @@
-(async () => {
-  const THREE = await import("https://unpkg.com/three@0.164.1/build/three.module.js");
-  const { gsap, ScrollTrigger } = window;
+(() => {
+  const gsap = window.gsap;
+  const ScrollTrigger = window.ScrollTrigger;
 
   if (!gsap || !ScrollTrigger) {
-    console.error("GSAP and ScrollTrigger are required for the BIM Labs immersive scroll experience.");
+    console.error("GSAP and ScrollTrigger are required.");
     return;
   }
 
@@ -13,507 +13,286 @@
   const canvas = document.querySelector("#bim-world");
   const progressFill = document.querySelector("#progressFill");
 
-  const labels = {
-    ai: document.querySelector('[data-label="ai"]'),
-    portal: document.querySelector('[data-label="portal"]'),
-    viewer: document.querySelector('[data-label="viewer"]'),
-    archive: document.querySelector('[data-label="archive"]')
-  };
+  const heroCopy = document.querySelector('[data-copy="hero"]');
+  const buildCopy = document.querySelector('[data-copy="build"]');
+  const workCopy = document.querySelector('[data-copy="work"]');
+  const workDetailCopy = document.querySelector('[data-copy="work-detail"]');
 
-  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const clock = new THREE.Clock();
-  const pointer = new THREE.Vector2();
-  const pointerTarget = new THREE.Vector2();
-  const screenPosition = new THREE.Vector3();
+  const scrollIndicator = document.querySelector(".scroll-indicator");
+  const workIndex = document.querySelector(".work-index");
 
-  const labelOpacity = { value: 0 };
-  const workLabelOpacity = { value: 0 };
+  const labels = document.querySelectorAll(".object-label");
+  const archive = document.querySelector(".work-archive");
+  const archiveContent = document.querySelector(".archive-content");
+  const intro = document.querySelector(".work-scroll__intro");
+  const workCards = gsap.utils.toArray(".work-card");
+  const nextInner = document.querySelector(".next-section-inner");
 
-  const sceneState = {
-    progress: 0,
-    work: 0,
-    depth: 0,
-    buildPhase: 0,
-    archivePhase: 0
-  };
+  const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   let width = window.innerWidth;
   let height = window.innerHeight;
 
-  const scene = new THREE.Scene();
-  scene.fog = new THREE.Fog(0xe7f0fb, 7, 16);
+  /*
+    IMPORTANT:
+    This version removes the confusing 3D label system.
+    The site should feel like one clean scroll story:
+    1. Hero
+    2. Build explanation
+    3. Work archive cards
+    4. Final CTA
+  */
 
-  const camera = new THREE.PerspectiveCamera(36, width / height, 0.1, 100);
-  camera.position.set(0, 0.1, 7.2);
-
-  const renderer = new THREE.WebGLRenderer({
-    canvas,
-    antialias: true,
-    alpha: true
+  labels.forEach((label) => {
+    label.style.display = "none";
   });
 
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.7));
-  renderer.setSize(width, height);
-  renderer.outputColorSpace = THREE.SRGBColorSpace;
-
-  const world = new THREE.Group();
-  const orb = new THREE.Group();
-  const rings = new THREE.Group();
-  const nodeGroup = new THREE.Group();
-  const radialGroup = new THREE.Group();
-  const innerFrame = new THREE.Group();
-  const workGroup = new THREE.Group();
-  const workMaterials = [];
-
-  const labelAnchors = {
-    ai: new THREE.Object3D(),
-    portal: new THREE.Object3D(),
-    viewer: new THREE.Object3D(),
-    archive: new THREE.Object3D()
-  };
-
-  scene.add(world);
-  world.add(orb);
-  world.add(workGroup);
-
-  orb.scale.setScalar(0.001);
-  orb.add(rings, nodeGroup, radialGroup, innerFrame);
-
-  const deepLine = new THREE.LineBasicMaterial({
-    color: 0x07101d,
-    transparent: true,
-    opacity: 0.28
-  });
-
-  const softLine = new THREE.LineBasicMaterial({
-    color: 0x07101d,
-    transparent: true,
-    opacity: 0.15
-  });
-
-  const blueLine = new THREE.LineBasicMaterial({
-    color: 0x0077ff,
-    transparent: true,
-    opacity: 0.72
-  });
-
-  const blueSoft = new THREE.LineBasicMaterial({
-    color: 0x0077ff,
-    transparent: true,
-    opacity: 0.34
-  });
-
-  const surfaceMaterial = new THREE.MeshBasicMaterial({
-    color: 0xffffff,
-    transparent: true,
-    opacity: 0.075,
-    depthWrite: false,
-    side: THREE.DoubleSide
-  });
-
-  function lineFromPoints(points, material) {
-    const geometry = new THREE.BufferGeometry().setFromPoints(points);
-    return new THREE.Line(geometry, material);
-  }
-
-  function makeCircle(radius, segments = 160, arc = Math.PI * 2, offset = 0) {
-    const points = [];
-
-    for (let i = 0; i <= segments; i += 1) {
-      const angle = offset + (i / segments) * arc;
-      points.push(
-        new THREE.Vector3(
-          Math.cos(angle) * radius,
-          Math.sin(angle) * radius,
-          0
-        )
-      );
-    }
-
-    return points;
-  }
-
-  function buildOuterWireSphere() {
-    const sphere = new THREE.Group();
-
-    [-0.92, -0.56, -0.24, 0.24, 0.56, 0.92].forEach((y, index) => {
-      const radius = Math.sqrt(Math.max(0, 1.44 - y * y));
-      const line = lineFromPoints(makeCircle(radius, 128), index % 2 ? softLine : deepLine);
-      line.position.y = y;
-      line.rotation.x = Math.PI / 2;
-      sphere.add(line);
-    });
-
-    for (let i = 0; i < 9; i += 1) {
-      const meridian = lineFromPoints(makeCircle(1.2, 128), i % 3 === 0 ? blueSoft : softLine);
-      meridian.rotation.y = (i / 9) * Math.PI;
-      meridian.rotation.z = Math.PI / 2;
-      sphere.add(meridian);
-    }
-
-    return sphere;
-  }
-
-  function buildRings() {
-    const ringData = [
-      [1.76, 0.35, 0.1, 0.22, blueLine],
-      [1.5, -0.58, 0.38, -0.16, deepLine],
-      [1.28, 0.94, -0.22, 0.42, blueSoft],
-      [1.05, -0.3, -0.75, 0.78, softLine],
-      [1.9, 0.12, 1.05, -0.55, softLine]
-    ];
-
-    ringData.forEach(([radius, rx, ry, rz, material]) => {
-      const ring = lineFromPoints(makeCircle(radius, 192), material);
-      ring.rotation.set(rx, ry, rz);
-      rings.add(ring);
-    });
-  }
-
-  function buildRadials() {
-    for (let i = 0; i < 10; i += 1) {
-      const angle = (i / 10) * Math.PI * 2;
-
-      const start = new THREE.Vector3(
-        Math.cos(angle) * 0.44,
-        Math.sin(angle) * 0.44,
-        0
-      );
-
-      const end = new THREE.Vector3(
-        Math.cos(angle) * (0.92 + (i % 3) * 0.12),
-        Math.sin(angle) * (0.92 + (i % 3) * 0.12),
-        0
-      );
-
-      const line = lineFromPoints([start, end], i % 5 === 0 ? blueSoft : softLine);
-      line.rotation.set((i % 3) * 0.34, (i % 4) * 0.22, 0);
-      line.userData.baseScale = 0.48 + (i % 4) * 0.07;
-
-      radialGroup.add(line);
-    }
-  }
-
-  function buildNodes() {
-    const nodeMaterial = new THREE.MeshBasicMaterial({
-      color: 0x0077ff,
-      transparent: true,
-      opacity: 0.86
-    });
-
-    const darkNodeMaterial = new THREE.MeshBasicMaterial({
-      color: 0x07101d,
-      transparent: true,
-      opacity: 0.56
-    });
-
-    const geometry = new THREE.SphereGeometry(0.025, 12, 12);
-
-    const positions = [
-      [-0.72, 0.52, 0.28],
-      [0.72, 0.48, -0.2],
-      [0.62, -0.58, 0.22],
-      [-0.58, -0.62, -0.24],
-      [0, 0.86, 0.06],
-      [0, -0.86, -0.06]
-    ];
-
-    positions.forEach((position, index) => {
-      const node = new THREE.Mesh(
-        geometry,
-        index % 3 === 0 ? nodeMaterial : darkNodeMaterial
-      );
-
-      node.position.set(...position);
-      node.userData.pulse = 0.7 + index * 0.17;
-      nodeGroup.add(node);
-    });
-  }
-
-  function buildInnerFrame() {
-    const cube = new THREE.BoxGeometry(0.98, 0.98, 0.98);
-    const edges = new THREE.EdgesGeometry(cube);
-    const edgeMesh = new THREE.LineSegments(edges, blueSoft);
-    const surface = new THREE.Mesh(cube, surfaceMaterial);
-    const gridLines = new THREE.Group();
-
-    for (let i = -1; i <= 1; i += 1) {
-      const offset = i * 0.24;
-
-      gridLines.add(lineFromPoints([
-        new THREE.Vector3(-0.5, offset, 0.5),
-        new THREE.Vector3(0.5, offset, 0.5)
-      ], softLine));
-
-      gridLines.add(lineFromPoints([
-        new THREE.Vector3(offset, -0.5, 0.5),
-        new THREE.Vector3(offset, 0.5, 0.5)
-      ], softLine));
-
-      gridLines.add(lineFromPoints([
-        new THREE.Vector3(-0.5, offset, -0.5),
-        new THREE.Vector3(0.5, offset, -0.5)
-      ], softLine));
-
-      gridLines.add(lineFromPoints([
-        new THREE.Vector3(offset, -0.5, -0.5),
-        new THREE.Vector3(offset, 0.5, -0.5)
-      ], softLine));
-    }
-
-    innerFrame.add(surface, edgeMesh, gridLines);
-    innerFrame.rotation.set(0.72, 0.44, 0.18);
-  }
-
-  function addLabelAnchors() {
-    labelAnchors.ai.position.set(1.32, 0.78, 0.25);
-    labelAnchors.portal.position.set(-1.12, -0.12, 0.38);
-    labelAnchors.viewer.position.set(0.88, -0.86, -0.1);
-    labelAnchors.archive.position.set(-0.68, -1.7, 0.52);
-
-    Object.entries(labelAnchors).forEach(([key, anchor]) => {
-      if (key === "archive") {
-        workGroup.add(anchor);
-      } else {
-        orb.add(anchor);
-      }
-    });
-  }
-
-  function buildAtmosphere() {
-    const planeMaterial = new THREE.MeshBasicMaterial({
-      color: 0x0077ff,
-      transparent: true,
-      opacity: 0.025,
-      depthWrite: false,
-      side: THREE.DoubleSide
-    });
-
-    for (let i = 0; i < 3; i += 1) {
-      const plane = new THREE.Mesh(
-        new THREE.PlaneGeometry(4.2 + i * 0.8, 2.2 + i * 0.34, 1, 1),
-        planeMaterial.clone()
-      );
-
-      plane.position.set(0.2 - i * 0.2, 0.04 + i * 0.18, -0.5 - i * 0.32);
-      plane.rotation.set(0.35 + i * 0.2, -0.22, 0.18 - i * 0.12);
-
-      world.add(plane);
-    }
-  }
-
-  function registerWorkMaterial(material) {
-    workMaterials.push({
-      material,
-      target: material.opacity
-    });
-
-    material.opacity = 0;
-    return material;
-  }
-
-  function makeFrameGeometry(widthValue, heightValue) {
-    const w = widthValue / 2;
-    const h = heightValue / 2;
-
-    return new THREE.BufferGeometry().setFromPoints([
-      new THREE.Vector3(-w, -h, 0),
-      new THREE.Vector3(w, -h, 0),
-      new THREE.Vector3(w, h, 0),
-      new THREE.Vector3(-w, h, 0),
-      new THREE.Vector3(-w, -h, 0)
-    ]);
-  }
-
-  function buildWorkArchive() {
-    workGroup.position.set(0.18, -3.6, -0.85);
-    workGroup.scale.setScalar(1.42);
-    workGroup.rotation.set(-0.12, -0.08, 0.015);
-
-    const archiveLine = registerWorkMaterial(new THREE.LineBasicMaterial({
-      color: 0x07101d,
-      transparent: true,
-      opacity: 0.18
-    }));
-
-    const archiveBlue = registerWorkMaterial(new THREE.LineBasicMaterial({
-      color: 0x0077ff,
-      transparent: true,
-      opacity: 0.42
-    }));
-
-    const archiveSurface = registerWorkMaterial(new THREE.MeshBasicMaterial({
-      color: 0xffffff,
-      transparent: true,
-      opacity: 0.11,
-      depthWrite: false,
-      side: THREE.DoubleSide
-    }));
-
-    const frames = [
-      {
-        position: [-0.22, 2.4, 0.12],
-        size: [2.35, 1.28],
-        rotation: [0.01, 0.06, -0.012]
-      },
-      {
-        position: [0.18, 0.8, -0.06],
-        size: [2.7, 1.38],
-        rotation: [-0.018, -0.045, 0.01]
-      },
-      {
-        position: [-0.12, -0.8, 0.06],
-        size: [2.32, 1.22],
-        rotation: [0.02, 0.04, 0.014]
-      },
-      {
-        position: [0.2, -2.38, -0.02],
-        size: [2.5, 1.3],
-        rotation: [-0.012, -0.035, -0.01]
-      }
-    ];
-
-    frames.forEach(({ position, size, rotation }, index) => {
-      const frame = new THREE.Group();
-
-      const surface = new THREE.Mesh(
-        new THREE.PlaneGeometry(size[0], size[1], 1, 1),
-        archiveSurface
-      );
-
-      const outline = new THREE.Line(
-        makeFrameGeometry(size[0], size[1]),
-        index === 1 ? archiveBlue : archiveLine
-      );
-
-      const header = lineFromPoints([
-        new THREE.Vector3(-size[0] * 0.38, size[1] * 0.24, 0.01),
-        new THREE.Vector3(size[0] * 0.38, size[1] * 0.24, 0.01)
-      ], index === 1 ? archiveBlue : archiveLine);
-
-      const metric = lineFromPoints([
-        new THREE.Vector3(-size[0] * 0.38, -size[1] * 0.12, 0.01),
-        new THREE.Vector3(size[0] * (0.08 + index * 0.09), -size[1] * 0.12, 0.01)
-      ], archiveLine);
-
-      frame.position.set(...position);
-      frame.rotation.set(...rotation);
-      frame.userData.baseY = position[1];
-      frame.userData.floatOffset = index * 0.85;
-
-      frame.add(surface, outline, header, metric);
-      workGroup.add(frame);
-    });
-
-    const descentRail = lineFromPoints([
-      new THREE.Vector3(-1.58, 3.18, 0),
-      new THREE.Vector3(-1.58, -3.18, 0)
-    ], archiveBlue);
-
-    const crossLinks = new THREE.Group();
-
-    frames.forEach(({ position }, index) => {
-      crossLinks.add(lineFromPoints([
-        new THREE.Vector3(-1.58, position[1], 0),
-        new THREE.Vector3(position[0] - 1.18, position[1], position[2])
-      ], index === 1 ? archiveBlue : archiveLine));
-    });
-
-    workGroup.add(descentRail, crossLinks);
-  }
-
-  orb.add(buildOuterWireSphere());
-  buildRings();
-  buildRadials();
-  buildNodes();
-  buildInnerFrame();
-  addLabelAnchors();
-  buildAtmosphere();
-  buildWorkArchive();
-
-  function setBackground(progress) {
-    const start = new THREE.Color(0xe7f0fb);
-    const end = new THREE.Color(0xfbfdff);
-    const current = start.lerp(end, progress);
-
-    scene.fog.color.copy(current);
-    document.body.style.background = `linear-gradient(180deg, #${current.getHexString()} 0%, #fbfdff 100%)`;
+  function clamp(value, min = 0, max = 1) {
+    return Math.min(max, Math.max(min, value));
   }
 
   function mapRange(value, inMin, inMax) {
-    return THREE.MathUtils.clamp((value - inMin) / (inMax - inMin), 0, 1);
+    return clamp((value - inMin) / (inMax - inMin));
   }
 
-  function updateLabels() {
-    Object.entries(labelAnchors).forEach(([key, anchor]) => {
-      const label = labels[key];
-      if (!label) return;
-
-      const opacity =
-        key === "archive"
-          ? workLabelOpacity.value * sceneState.archivePhase
-          : labelOpacity.value * sceneState.buildPhase;
-
-      anchor.getWorldPosition(screenPosition);
-      screenPosition.project(camera);
-
-      const x = (screenPosition.x * 0.5 + 0.5) * width;
-      const y = (-screenPosition.y * 0.5 + 0.5) * height;
-      const drift = Math.sin(clock.elapsedTime * 0.9 + x * 0.01) * 5;
-
-      label.style.transform = `translate3d(${x + drift}px, ${y}px, 0) translate(-50%, -50%)`;
-      label.style.opacity = Math.max(0, opacity * (screenPosition.z < 1 ? 1 : 0)).toFixed(3);
-    });
+  function setVar(name, value) {
+    root.style.setProperty(name, Number(value).toFixed(4));
   }
 
-  function createArchiveTransition() {
-    const archive = document.querySelector(".work-archive");
-    const archiveContent = document.querySelector(".archive-content");
-    const workCards = gsap.utils.toArray(".work-card");
-    const intro = document.querySelector(".work-scroll__intro");
-    const nextInner = document.querySelector(".next-section-inner");
+  function updateBaseProgress() {
+    const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+    const progress = maxScroll > 0 ? window.scrollY / maxScroll : 0;
 
-    if (!archive || !archiveContent || !workCards.length) return;
+    setVar("--section-progress", progress);
 
-    gsap.set(workCards, {
-      opacity: 0,
-      y: "70vh",
-      scale: 0.96,
-      filter: "blur(6px)"
-    });
+    if (progressFill) {
+      progressFill.style.width = `${Math.round(progress * 100)}%`;
+    }
+  }
 
-    if (nextInner) {
-      gsap.set(nextInner, {
-        opacity: 0,
-        y: 70,
-        filter: "blur(10px)"
+  function resetVisualState() {
+    setVar("--hero-out", 0);
+    setVar("--build-reveal", 0);
+    setVar("--build-out", 0);
+    setVar("--work-reveal", 0);
+    setVar("--work-depth", 0);
+    setVar("--work-ui-out", 0);
+
+    if (heroCopy) {
+      gsap.set(heroCopy, {
+        autoAlpha: 1,
+        y: 0,
+        filter: "blur(0px)"
       });
     }
 
-    const archiveTl = gsap.timeline({
+    if (buildCopy) {
+      gsap.set(buildCopy, {
+        autoAlpha: 0,
+        y: 28,
+        filter: "blur(8px)"
+      });
+    }
+
+    if (workCopy) {
+      gsap.set(workCopy, {
+        autoAlpha: 0,
+        y: 28,
+        filter: "blur(8px)"
+      });
+    }
+
+    if (workDetailCopy) {
+      gsap.set(workDetailCopy, {
+        autoAlpha: 0,
+        y: 28,
+        filter: "blur(8px)"
+      });
+    }
+
+    if (workIndex) {
+      gsap.set(workIndex, {
+        autoAlpha: 0,
+        y: 28
+      });
+    }
+
+    if (scrollIndicator) {
+      gsap.set(scrollIndicator, {
+        autoAlpha: 1
+      });
+    }
+
+    if (nextInner) {
+      gsap.set(nextInner, {
+        autoAlpha: 0,
+        y: 70,
+        filter: "blur(10px)",
+        pointerEvents: "none"
+      });
+    }
+
+    if (intro) {
+      gsap.set(intro, {
+        autoAlpha: 1,
+        y: 0,
+        filter: "blur(0px)"
+      });
+    }
+
+    if (archiveContent) {
+      gsap.set(archiveContent, {
+        autoAlpha: 1,
+        scale: 1,
+        filter: "blur(0px)"
+      });
+    }
+
+    workCards.forEach((card) => {
+      gsap.set(card, {
+        autoAlpha: 0,
+        y: "64vh",
+        scale: 0.96,
+        filter: "blur(8px)"
+      });
+    });
+  }
+
+  function createMainStory() {
+    const story = gsap.timeline({
+      defaults: {
+        ease: "power2.out"
+      },
+      scrollTrigger: {
+        trigger: document.body,
+        start: "top top",
+        end: () => `${window.innerHeight * 2.15}px`,
+        scrub: 0.9,
+        onUpdate: updateBaseProgress
+      }
+    });
+
+    story
+      .to(scrollIndicator, {
+        autoAlpha: 0,
+        duration: 0.18
+      }, 0)
+
+      .to(heroCopy, {
+        autoAlpha: 0,
+        y: -34,
+        filter: "blur(8px)",
+        duration: 0.32
+      }, 0.12)
+
+      .to(root, {
+        "--hero-out": 1,
+        duration: 0.32
+      }, 0.12)
+
+      .to(buildCopy, {
+        autoAlpha: 1,
+        y: 0,
+        filter: "blur(0px)",
+        duration: 0.34
+      }, 0.28)
+
+      .to(root, {
+        "--build-reveal": 1,
+        duration: 0.34
+      }, 0.28)
+
+      .to(buildCopy, {
+        autoAlpha: 0,
+        y: -28,
+        filter: "blur(8px)",
+        duration: 0.28
+      }, 0.66)
+
+      .to(root, {
+        "--build-out": 1,
+        duration: 0.28
+      }, 0.66)
+
+      .to(workCopy, {
+        autoAlpha: 1,
+        y: 0,
+        filter: "blur(0px)",
+        duration: 0.34
+      }, 0.78)
+
+      .to(root, {
+        "--work-reveal": 1,
+        duration: 0.34
+      }, 0.78)
+
+      .to(workCopy, {
+        autoAlpha: 0,
+        y: -24,
+        filter: "blur(8px)",
+        duration: 0.24
+      }, 1.05)
+
+      .to(workDetailCopy, {
+        autoAlpha: 1,
+        y: 0,
+        filter: "blur(0px)",
+        duration: 0.32
+      }, 1.08)
+
+      .to(workIndex, {
+        autoAlpha: 1,
+        y: 0,
+        duration: 0.32
+      }, 1.1)
+
+      .to(root, {
+        "--work-depth": 1,
+        duration: 0.32
+      }, 1.08);
+  }
+
+  function createArchiveStory() {
+    if (!archive || !archiveContent || !workCards.length) return;
+
+    const archiveTimeline = gsap.timeline({
       defaults: {
         ease: "none"
       },
       scrollTrigger: {
         trigger: archive,
         start: "top top",
-        end: "+=360%",
-        scrub: true,
+        end: () => `+=${window.innerHeight * 4}`,
+        scrub: 0.8,
         pin: true,
-        anticipatePin: 1
+        anticipatePin: 1,
+        onUpdate: updateBaseProgress
       }
     });
 
-    archiveTl
+    archiveTimeline
+      .to(workDetailCopy, {
+        autoAlpha: 0,
+        y: -24,
+        filter: "blur(8px)",
+        duration: 0.08
+      }, 0)
+
+      .to(workIndex, {
+        autoAlpha: 0,
+        y: -20,
+        duration: 0.08
+      }, 0)
+
       .to(intro, {
-        opacity: 0,
-        y: -70,
+        autoAlpha: 0,
+        y: -60,
         filter: "blur(8px)",
         duration: 0.1
-      }, 0.08)
+      }, 0.05)
 
       .to(workCards[0], {
-        opacity: 1,
+        autoAlpha: 1,
         y: 0,
         scale: 1,
         filter: "blur(0px)",
@@ -521,244 +300,261 @@
       }, 0.1)
 
       .to(workCards[0], {
-        opacity: 0,
-        y: "-70vh",
+        autoAlpha: 0,
+        y: "-62vh",
         scale: 0.97,
-        filter: "blur(6px)",
+        filter: "blur(8px)",
         duration: 0.14
-      }, 0.25)
+      }, 0.27)
 
       .to(workCards[1], {
-        opacity: 1,
+        autoAlpha: 1,
         y: 0,
         scale: 1,
         filter: "blur(0px)",
         duration: 0.14
-      }, 0.25)
+      }, 0.28)
 
       .to(workCards[1], {
-        opacity: 0,
-        y: "-70vh",
+        autoAlpha: 0,
+        y: "-62vh",
         scale: 0.97,
-        filter: "blur(6px)",
+        filter: "blur(8px)",
         duration: 0.14
-      }, 0.42)
+      }, 0.45)
 
       .to(workCards[2], {
-        opacity: 1,
+        autoAlpha: 1,
         y: 0,
         scale: 1,
         filter: "blur(0px)",
         duration: 0.14
-      }, 0.42)
+      }, 0.46)
 
       .to(workCards[2], {
-        opacity: 0,
-        y: "-70vh",
+        autoAlpha: 0,
+        y: "-62vh",
         scale: 0.97,
-        filter: "blur(6px)",
+        filter: "blur(8px)",
         duration: 0.14
-      }, 0.59)
+      }, 0.63)
 
       .to(workCards[3], {
-        opacity: 1,
+        autoAlpha: 1,
         y: 0,
         scale: 1,
         filter: "blur(0px)",
         duration: 0.14
-      }, 0.59)
+      }, 0.64)
 
       .to(workCards[3], {
-        opacity: 0,
-        y: -90,
+        autoAlpha: 0,
+        y: -70,
         scale: 0.98,
         filter: "blur(8px)",
-        duration: 0.16
-      }, 0.76)
+        duration: 0.14
+      }, 0.81)
 
       .to(archiveContent, {
-        opacity: 0,
-        filter: "blur(10px)",
+        autoAlpha: 0,
         scale: 0.97,
-        duration: 0.18
-      }, 0.78);
+        filter: "blur(10px)",
+        duration: 0.15
+      }, 0.84)
+
+      .to(root, {
+        "--work-ui-out": 1,
+        duration: 0.16
+      }, 0.84);
 
     if (nextInner) {
-      archiveTl.to(nextInner, {
-        opacity: 1,
+      archiveTimeline.to(nextInner, {
+        autoAlpha: 1,
         y: 0,
         filter: "blur(0px)",
-        duration: 0.22
-      }, 0.82);
+        pointerEvents: "auto",
+        duration: 0.18
+      }, 0.88);
     }
   }
 
-  function updateProgress(progress) {
-    const page = window.scrollY / Math.max(1, window.innerHeight);
+  /*
+    Lightweight orb background.
+    This keeps the premium motion without the old 3D timing mess.
+  */
 
-    const heroOut = mapRange(page, 0.68, 0.96);
-    const buildReveal = mapRange(page, 0.98, 1.18);
-    const buildOut = mapRange(page, 1.72, 2.02);
-    const workReveal = mapRange(page, 2.02, 2.28);
-    const workDepth = mapRange(page, 2.34, 2.74);
-    const workUiOut = mapRange(page, 3.08, 3.46);
+  const ctx = canvas ? canvas.getContext("2d") : null;
+  const orbState = {
+    x: 0,
+    y: 0,
+    targetX: 0,
+    targetY: 0,
+    scroll: 0,
+    time: 0
+  };
 
-    sceneState.progress = progress;
-    sceneState.work = workReveal;
-    sceneState.depth = workDepth;
-    sceneState.buildPhase = buildReveal * (1 - buildOut);
-    sceneState.archivePhase = workReveal * (1 - workUiOut);
-
-    root.style.setProperty("--section-progress", progress.toFixed(4));
-    root.style.setProperty("--hero-out", heroOut.toFixed(4));
-    root.style.setProperty("--build-reveal", buildReveal.toFixed(4));
-    root.style.setProperty("--build-out", buildOut.toFixed(4));
-    root.style.setProperty("--work-reveal", workReveal.toFixed(4));
-    root.style.setProperty("--work-depth", workDepth.toFixed(4));
-    root.style.setProperty("--work-ui-out", workUiOut.toFixed(4));
-
-    if (progressFill) {
-      progressFill.style.width = `${Math.round(progress * 100)}%`;
-    }
-
-    setBackground(progress);
-  }
-
-  function createScrollTimeline() {
-    updateProgress(0);
-
-    if (reduceMotion) {
-      labelOpacity.value = 0.5;
-      workLabelOpacity.value = 0.8;
-
-      updateProgress(1);
-
-      orb.scale.setScalar(1);
-      orb.position.set(0.4, 1.25, -0.25);
-      workGroup.position.set(0.25, 0.15, -0.85);
-      camera.position.set(0, -0.7, 5.15);
-      radialGroup.scale.setScalar(1.2);
-      rings.scale.setScalar(1.15);
-
-      return;
-    }
-
-    const timeline = gsap.timeline({
-      defaults: {
-        ease: "none",
-        duration: 0.14
-      },
-      scrollTrigger: {
-        trigger: document.body,
-        start: "top top",
-        end: "bottom bottom",
-        scrub: 1.15,
-        onUpdate: (self) => updateProgress(self.progress)
-      }
-    });
-
-    timeline
-      .to(orb.scale, { x: 1, y: 1, z: 1 }, 0.12)
-      .to(camera.position, { z: 4.15, y: 0.03 }, 0.12)
-      .to(camera.rotation, { z: -0.035 }, 0.12)
-      .to(orb.position, { x: 1.08, y: -0.03, z: 0.18 }, 0.12)
-      .to(orb.rotation, { y: Math.PI * 0.58, x: 0.25 }, 0.12)
-      .to(rings.scale, { x: 1.38, y: 1.38, z: 1.38 }, 0.12)
-      .to(radialGroup.scale, { x: 1.35, y: 1.35, z: 1.35 }, 0.14)
-      .to(innerFrame.scale, { x: 1.18, y: 1.18, z: 1.18 }, 0.12)
-      .to(labelOpacity, { value: 1 }, 0.18)
-
-      .to(camera.position, { z: 3.75, y: -0.38, x: -0.06 }, 0.32)
-      .to(camera.rotation, { z: 0.025, x: -0.045 }, 0.32)
-      .to(orb.position, { x: 0.58, y: 1.25, z: -0.28 }, 0.32)
-      .to(orb.rotation, { y: Math.PI * 1.08, x: -0.14, z: 0.12 }, 0.32)
-      .to(rings.scale, { x: 1.58, y: 1.58, z: 1.58 }, 0.32)
-      .to(workGroup.position, { x: 0.1, y: -2.05, z: -0.88 }, 0.32)
-      .to(workGroup.rotation, { x: -0.1, y: -0.04, z: 0.006 }, 0.32)
-      .to(workLabelOpacity, { value: 1 }, 0.38)
-
-      .to(camera.position, { z: 2.9, y: -1.22, x: 0.02, duration: 0.34 }, 0.58)
-      .to(camera.rotation, { z: 0.01, x: -0.08, duration: 0.34 }, 0.58)
-      .to(workGroup.position, { y: 2.35, z: -0.72, duration: 0.34 }, 0.58)
-      .to(orb.position, { y: 1.88, z: -0.58, duration: 0.34 }, 0.58);
-  }
-
-  function onPointerMove(event) {
-    pointerTarget.x = (event.clientX / width - 0.5) * 2;
-    pointerTarget.y = (event.clientY / height - 0.5) * 2;
-  }
-
-  function onResize() {
+  function resizeCanvas() {
     width = window.innerWidth;
     height = window.innerHeight;
 
-    camera.aspect = width / height;
-    camera.updateProjectionMatrix();
+    if (!canvas || !ctx) return;
 
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.7));
-    renderer.setSize(width, height);
+    const dpr = Math.min(window.devicePixelRatio || 1, 1.7);
+    canvas.width = Math.floor(width * dpr);
+    canvas.height = Math.floor(height * dpr);
+    canvas.style.width = `${width}px`;
+    canvas.style.height = `${height}px`;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
     ScrollTrigger.refresh();
   }
 
-  function animate() {
-    const elapsed = clock.getElapsedTime();
-    const delta = clock.getDelta();
+  function drawOrb() {
+    if (!canvas || !ctx) return;
 
-    pointer.x += (pointerTarget.x - pointer.x) * 0.055;
-    pointer.y += (pointerTarget.y - pointer.y) * 0.055;
+    orbState.time += 0.01;
+    orbState.scroll = clamp(window.scrollY / Math.max(1, document.body.scrollHeight - height));
 
-    const motionScale = reduceMotion ? 0.22 : 1;
+    orbState.x += (orbState.targetX - orbState.x) * 0.05;
+    orbState.y += (orbState.targetY - orbState.y) * 0.05;
 
-    orb.rotation.y += delta * 0.08 * motionScale;
-    orb.rotation.x += delta * 0.025 * motionScale;
+    ctx.clearRect(0, 0, width, height);
 
-    world.rotation.y = pointer.x * 0.055;
-    world.rotation.x = -pointer.y * 0.04;
-    world.position.x = pointer.x * 0.08;
-    world.position.y = -pointer.y * 0.055;
+    const centerX = width * (0.52 + orbState.x * 0.025);
+    const centerY = height * (0.48 + orbState.y * 0.025 - orbState.scroll * 0.08);
+    const baseRadius = Math.min(width, height) * 0.22;
+    const radius = baseRadius * (1 + orbState.scroll * 0.18);
 
-    rings.children.forEach((ring, index) => {
-      ring.rotation.z += delta * (0.035 + index * 0.006) * motionScale;
-    });
+    const glow = ctx.createRadialGradient(centerX, centerY, radius * 0.1, centerX, centerY, radius * 1.85);
+    glow.addColorStop(0, "rgba(0, 119, 255, 0.18)");
+    glow.addColorStop(0.42, "rgba(0, 119, 255, 0.07)");
+    glow.addColorStop(1, "rgba(0, 119, 255, 0)");
 
-    radialGroup.children.forEach((line, index) => {
-      const extension = THREE.MathUtils.lerp(line.userData.baseScale, 1.25, sceneState.progress);
-      const pulse = Math.sin(elapsed * 0.65 + index) * 0.018;
-      line.scale.setScalar(extension + pulse * motionScale);
-    });
+    ctx.fillStyle = glow;
+    ctx.beginPath();
+    ctx.arc(centerX, centerY, radius * 1.85, 0, Math.PI * 2);
+    ctx.fill();
 
-    nodeGroup.children.forEach((node) => {
-      const pulse = 1 + Math.sin(elapsed * 1.7 + node.userData.pulse) * 0.18 * motionScale;
-      node.scale.setScalar(pulse * THREE.MathUtils.lerp(1, 1.35, sceneState.progress));
-    });
+    ctx.save();
+    ctx.translate(centerX, centerY);
+    ctx.rotate(orbState.time * 0.12);
 
-    innerFrame.rotation.y += delta * 0.045 * motionScale;
+    for (let i = 0; i < 9; i += 1) {
+      const lineRadius = radius * (0.45 + i * 0.07);
+      const alpha = i % 3 === 0 ? 0.32 : 0.14;
 
-    workGroup.children.forEach((child) => {
-      if (child.isGroup && Number.isFinite(child.userData.baseY)) {
-        child.position.y =
-          child.userData.baseY +
-          Math.sin(elapsed * 0.5 + child.userData.floatOffset) * 0.012 * motionScale;
-      }
-    });
+      ctx.strokeStyle = i % 3 === 0
+        ? `rgba(0, 119, 255, ${alpha})`
+        : `rgba(7, 16, 29, ${alpha})`;
 
-    workMaterials.forEach(({ material, target }) => {
-      material.opacity = target * THREE.MathUtils.lerp(sceneState.work, 1, sceneState.depth * 0.35);
-    });
+      ctx.lineWidth = i % 3 === 0 ? 1.2 : 0.8;
 
-    updateLabels();
-    renderer.render(scene, camera);
+      ctx.beginPath();
+      ctx.ellipse(
+        0,
+        0,
+        lineRadius,
+        lineRadius * (0.22 + (i % 4) * 0.08),
+        i * 0.34 + orbState.time * 0.08,
+        0,
+        Math.PI * 2
+      );
+      ctx.stroke();
+    }
 
-    requestAnimationFrame(animate);
+    for (let i = 0; i < 14; i += 1) {
+      const angle = (i / 14) * Math.PI * 2 + orbState.time * 0.18;
+      const inner = radius * 0.18;
+      const outer = radius * (0.46 + (i % 4) * 0.05);
+
+      const x1 = Math.cos(angle) * inner;
+      const y1 = Math.sin(angle) * inner;
+      const x2 = Math.cos(angle) * outer;
+      const y2 = Math.sin(angle) * outer;
+
+      ctx.strokeStyle = i % 5 === 0
+        ? "rgba(0, 119, 255, 0.32)"
+        : "rgba(7, 16, 29, 0.12)";
+
+      ctx.lineWidth = 0.8;
+      ctx.beginPath();
+      ctx.moveTo(x1, y1);
+      ctx.lineTo(x2, y2);
+      ctx.stroke();
+    }
+
+    ctx.restore();
+
+    requestAnimationFrame(drawOrb);
   }
 
-  window.addEventListener("pointermove", onPointerMove, { passive: true });
-  window.addEventListener("resize", onResize);
+  function handlePointerMove(event) {
+    orbState.targetX = (event.clientX / width - 0.5) * 2;
+    orbState.targetY = (event.clientY / height - 0.5) * 2;
+  }
 
-  createArchiveTransition();
-  createScrollTimeline();
+  function initReducedMotion() {
+    resetVisualState();
 
-  ScrollTrigger.refresh();
-  animate();
+    setVar("--hero-out", 0);
+    setVar("--build-reveal", 1);
+    setVar("--build-out", 0);
+    setVar("--work-reveal", 1);
+    setVar("--work-depth", 1);
+    setVar("--work-ui-out", 0);
+
+    if (heroCopy) gsap.set(heroCopy, { autoAlpha: 1, filter: "none" });
+    if (buildCopy) gsap.set(buildCopy, { autoAlpha: 1, filter: "none" });
+    if (workCopy) gsap.set(workCopy, { autoAlpha: 1, filter: "none" });
+    if (workDetailCopy) gsap.set(workDetailCopy, { autoAlpha: 1, filter: "none" });
+    if (workIndex) gsap.set(workIndex, { autoAlpha: 1 });
+    if (scrollIndicator) gsap.set(scrollIndicator, { autoAlpha: 0 });
+
+    workCards.forEach((card) => {
+      gsap.set(card, {
+        autoAlpha: 1,
+        y: 0,
+        scale: 1,
+        filter: "none",
+        position: "relative",
+        margin: "24px auto"
+      });
+    });
+
+    if (archive) {
+      archive.style.height = "auto";
+      archive.style.minHeight = "100vh";
+      archive.style.overflow = "visible";
+    }
+
+    if (archiveContent) {
+      archiveContent.style.position = "relative";
+      archiveContent.style.inset = "auto";
+    }
+
+    updateBaseProgress();
+  }
+
+  function init() {
+    resetVisualState();
+    resizeCanvas();
+
+    if (prefersReducedMotion) {
+      initReducedMotion();
+    } else {
+      createMainStory();
+      createArchiveStory();
+    }
+
+    updateBaseProgress();
+    drawOrb();
+
+    window.addEventListener("resize", resizeCanvas);
+    window.addEventListener("scroll", updateBaseProgress, { passive: true });
+    window.addEventListener("pointermove", handlePointerMove, { passive: true });
+
+    ScrollTrigger.refresh();
+  }
+
+  init();
 })();
