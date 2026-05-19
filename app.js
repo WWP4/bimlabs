@@ -41,6 +41,7 @@
   const labelOpacity = { value: 0 };
   const workLabelOpacity = { value: 0 };
   const sceneState = { progress: 0, work: 0, depth: 0, buildPhase: 0, archivePhase: 0 };
+  const labelState = Object.fromEntries(Object.keys(labels).map((key) => [key, { x: width * 0.5, y: height * 0.5, opacity: 0 }]));
   let animationFrameId = null;
 
   const archivePixelBreak = window.PixelBreak
@@ -349,22 +350,26 @@
 
   function updateLabels() {
     Object.entries(labelAnchors).forEach(([key, anchor]) => {
-      const opacity = key === "archive"
+      const targetOpacity = key === "archive"
         ? workLabelOpacity.value * sceneState.archivePhase
         : labelOpacity.value * sceneState.buildPhase;
 
       anchor.getWorldPosition(screenPosition);
       screenPosition.project(camera);
 
-      const x = (screenPosition.x * 0.5 + 0.5) * width;
-      const y = (-screenPosition.y * 0.5 + 0.5) * height;
-      const drift = Math.sin(clock.elapsedTime * 0.9 + x * 0.01) * 5;
+      const targetX = (screenPosition.x * 0.5 + 0.5) * width;
+      const targetY = (-screenPosition.y * 0.5 + 0.5) * height;
+      const state = labelState[key];
       const label = labels[key];
 
-      if (!label) return;
+      if (!label || !state) return;
 
-      label.style.transform = `translate3d(${x + drift}px, ${y}px, 0) translate(-50%, -50%)`;
-      label.style.opacity = Math.max(0, opacity * (screenPosition.z < 1 ? 1 : 0)).toFixed(3);
+      state.x = THREE.MathUtils.lerp(state.x, targetX, 0.18);
+      state.y = THREE.MathUtils.lerp(state.y, targetY, 0.18);
+      state.opacity = THREE.MathUtils.lerp(state.opacity, Math.max(0, targetOpacity * (screenPosition.z < 1 ? 1 : 0)), 0.2);
+
+      label.style.transform = `translate3d(${state.x}px, ${state.y}px, 0) translate(-50%, -50%)`;
+      label.style.opacity = state.opacity.toFixed(3);
     });
   }
 
@@ -412,8 +417,11 @@
         trigger: archive,
         start: "top top",
         end: "+=760%",
-        scrub: 0.9,
+        scrub: 0.7,
         pin: true,
+        pinSpacing: true,
+        invalidateOnRefresh: true,
+        fastScrollEnd: true,
         anticipatePin: 1
       }
     });
@@ -500,7 +508,9 @@
         trigger: document.body,
         start: "top top",
         end: "bottom bottom",
-        scrub: 1.65,
+        scrub: 1.2,
+        invalidateOnRefresh: true,
+        fastScrollEnd: true,
         onUpdate: (self) => updateProgress(self.progress)
       }
     });
@@ -534,18 +544,30 @@
     pointerTarget.y = (event.clientY / height - 0.5) * 2;
   }
 
+  let resizeRaf = null;
+
   function onResize() {
-    width = window.innerWidth;
-    height = window.innerHeight;
+    if (resizeRaf) cancelAnimationFrame(resizeRaf);
 
-    camera.aspect = width / height;
-    camera.updateProjectionMatrix();
+    resizeRaf = requestAnimationFrame(() => {
+      width = window.innerWidth;
+      height = window.innerHeight;
 
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.7));
-    renderer.setSize(width, height);
+      camera.aspect = width / height;
+      camera.updateProjectionMatrix();
 
-    if (archivePixelBreak) archivePixelBreak.captured = false;
-    ScrollTrigger.refresh();
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.7));
+      renderer.setSize(width, height);
+
+      Object.values(labelState).forEach((state) => {
+        state.x = width * 0.5;
+        state.y = height * 0.5;
+      });
+
+      if (archivePixelBreak) archivePixelBreak.captured = false;
+      ScrollTrigger.refresh();
+      resizeRaf = null;
+    });
   }
 
   function animate() {
@@ -557,15 +579,16 @@
 
     const motionScale = reduceMotion ? 0.22 : 1;
 
-    orb.rotation.y += delta * 0.08 * motionScale;
-    orb.rotation.x += delta * 0.025 * motionScale;
+    const idleBlend = 1 - THREE.MathUtils.smoothstep(sceneState.progress, 0.2, 0.78);
+    orb.rotation.y += delta * 0.035 * motionScale * idleBlend;
+    orb.rotation.x += delta * 0.012 * motionScale * idleBlend;
     world.rotation.y = pointer.x * 0.055;
     world.rotation.x = -pointer.y * 0.04;
     world.position.x = pointer.x * 0.08;
     world.position.y = -pointer.y * 0.055;
 
     rings.children.forEach((ring, index) => {
-      ring.rotation.z += delta * (0.035 + index * 0.006) * motionScale;
+      ring.rotation.z += delta * (0.02 + index * 0.004) * motionScale * (0.65 + idleBlend * 0.35);
     });
 
     radialGroup.children.forEach((line, index) => {
