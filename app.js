@@ -138,6 +138,23 @@ function buildRadials() {
     line.userData.baseScale = 0.48 + (i % 4) * 0.07;
     radialGroup.add(line);
   }
+
+  innerFrame.add(surface, edgeMesh, gridLines);
+  innerFrame.rotation.set(0.72, 0.44, 0.18);
+}
+
+function addLabelAnchors() {
+  labelAnchors.ai.position.set(1.32, 0.78, 0.25);
+  labelAnchors.portal.position.set(-1.12, -0.12, 0.38);
+  labelAnchors.viewer.position.set(0.88, -0.86, -0.1);
+  labelAnchors.archive.position.set(-0.68, -1.7, 0.52);
+  Object.entries(labelAnchors).forEach(([key, anchor]) => {
+    if (key === "archive") {
+      workGroup.add(anchor);
+    } else {
+      orb.add(anchor);
+    }
+  });
 }
 
 function buildNodes() {
@@ -324,32 +341,39 @@ function createPixelCells() {
   pixelLayer.innerHTML = "";
   pixelCells = [];
 
-  const columns = width < 760 ? 16 : 26;
-  const rows = width < 760 ? 12 : 15;
-  const cellWidth = Math.ceil(width / columns);
-  const cellHeight = Math.ceil(height / rows);
-  const colors = ["rgba(0,119,255,0.86)", "rgba(7,16,29,0.72)", "rgba(255,255,255,0.78)", "rgba(180,213,244,0.82)"];
+  const pixelSize = width < 760 ? 10 : 8;
+  const columns = Math.ceil(width / pixelSize);
+  const rows = Math.ceil(height / pixelSize);
+  const colors = ["#0077ff", "#07101d", "#fafdff", "#b9d9f8", "#dfeaf6"];
+  const fragment = document.createDocumentFragment();
 
   for (let y = 0; y < rows; y += 1) {
     for (let x = 0; x < columns; x += 1) {
       const cell = document.createElement("span");
       const centerX = x - columns / 2;
       const centerY = y - rows / 2;
-      const spread = 34 + Math.random() * 42;
+      const distance = Math.hypot(centerX, centerY) || 1;
+      const normalizedX = centerX / distance;
+      const normalizedY = centerY / distance;
+      const scatter = gsap.utils.random(80, 320);
 
       cell.className = "pixel-cell";
-      cell.style.left = `${x * cellWidth}px`;
-      cell.style.top = `${y * cellHeight}px`;
-      cell.style.width = `${cellWidth + 1}px`;
-      cell.style.height = `${cellHeight + 1}px`;
-      cell.style.background = colors[(x + y) % colors.length];
-      cell.dataset.dx = `${centerX * spread + (Math.random() - 0.5) * 180}`;
-      cell.dataset.dy = `${centerY * spread + (Math.random() - 0.5) * 180}`;
-      cell.dataset.rotate = `${gsap.utils.random(-22, 22)}`;
-      pixelLayer.appendChild(cell);
+      cell.style.left = `${x * pixelSize}px`;
+      cell.style.top = `${y * pixelSize}px`;
+      cell.style.width = `${pixelSize}px`;
+      cell.style.height = `${pixelSize}px`;
+      cell.style.background = colors[(x * 3 + y * 5) % colors.length];
+      cell.style.opacity = "0";
+      cell.dataset.dx = `${normalizedX * scatter + gsap.utils.random(-90, 90)}`;
+      cell.dataset.dy = `${normalizedY * scatter + gsap.utils.random(-90, 90)}`;
+      cell.dataset.rotate = `${gsap.utils.random(-16, 16)}`;
+      cell.dataset.scale = `${gsap.utils.random(0.55, 1.18)}`;
+      fragment.appendChild(cell);
       pixelCells.push(cell);
     }
   }
+
+  pixelLayer.appendChild(fragment);
 }
 
 function createArchiveTransition() {
@@ -395,15 +419,16 @@ function createArchiveTransition() {
     .to(workCards[2], { opacity: 1, y: 0, scale: 1, filter: "blur(0px)", duration: 0.12 }, 0.39)
     .to(workCards[2], { opacity: 0, y: "-76vh", scale: 0.96, filter: "blur(5px)", duration: 0.12 }, 0.54)
     .to(workCards[3], { opacity: 1, y: 0, scale: 1, filter: "blur(0px)", duration: 0.12 }, 0.54)
-    .to(archiveContent, { opacity: 0.34, filter: "blur(4px)", scale: 0.985, duration: 0.12 }, 0.68)
-    .to(workCards[3], { opacity: 0.18, scale: 0.98, filter: "blur(7px)", duration: 0.12 }, 0.7)
-    .to(pixelLayer, { opacity: 1, duration: 0.01 }, 0.69)
+    .to(archiveContent, { opacity: 0.42, filter: "blur(2px)", scale: 0.992, duration: 0.12 }, 0.66)
+    .to(workCards[3], { opacity: 0.24, scale: 0.99, filter: "blur(4px)", duration: 0.12 }, 0.68)
+    .to(pixelLayer, { opacity: 1, duration: 0.01 }, 0.68)
     .to(pixelCells, {
-      opacity: 1,
+      opacity: 0.92,
       scale: 1,
-      duration: 0.12,
-      stagger: { each: 0.0015, from: "center" }
-    }, 0.71)
+      duration: 0.16,
+      stagger: { amount: 0.22, grid: "auto", from: "center" }
+    }, 0.69)
+    .to(archiveContent, { opacity: 0, filter: "blur(10px)", scale: 0.965, duration: 0.14 }, 0.76)
     .fromTo(nextInner, {
       opacity: 0,
       y: 70,
@@ -412,18 +437,18 @@ function createArchiveTransition() {
       opacity: 1,
       y: 0,
       filter: "blur(0px)",
-      duration: 0.16
-    }, 0.78)
+      duration: 0.18
+    }, 0.8)
     .to(pixelCells, {
       x: (_, cell) => Number(cell.dataset.dx),
       y: (_, cell) => Number(cell.dataset.dy),
       rotate: (_, cell) => Number(cell.dataset.rotate),
       opacity: 0,
-      scale: () => gsap.utils.random(0.72, 1.48),
-      duration: 0.18,
-      stagger: { each: 0.002, from: "center" }
+      scale: (_, cell) => Number(cell.dataset.scale),
+      duration: 0.2,
+      stagger: { amount: 0.26, grid: "auto", from: "center" }
     }, 0.82)
-    .to(pixelLayer, { opacity: 0, duration: 0.08 }, 0.94);
+    .to(pixelLayer, { opacity: 0, duration: 0.08 }, 0.96);
 }
 
 function updateProgress(progress) {

@@ -430,10 +430,10 @@ h2 { font-size: clamp(50px, 7.2vw, 118px); max-width: 760px; }
   position: absolute;
   display: block;
   opacity: 0;
-  transform: scale(0.2);
+  transform: translate3d(0, 0, 0) scale(0.4);
+  transform-origin: center center;
   will-change: transform, opacity;
   background: rgba(0, 119, 255, 0.74);
-  box-shadow: 0 0 18px rgba(0,119,255,0.16);
 }
 
 .next-section {
