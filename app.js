@@ -19,7 +19,6 @@
   const root = document.documentElement;
   const canvas = document.querySelector("#bim-world");
   const progressFill = document.querySelector("#progressFill");
-  const pixelLayer = document.querySelector(".pixel-transition");
 
   if (!canvas) {
     console.warn("BIM Labs immersive experience skipped: #bim-world canvas was not found.");
@@ -44,20 +43,19 @@
   const sceneState = { progress: 0, work: 0, depth: 0, buildPhase: 0, archivePhase: 0 };
   let animationFrameId = null;
 
-  const archivePixel = {
-    canvas: document.querySelector("#archivePixelCanvas"),
-    ctx: null,
-    particles: [],
-    captured: false,
-    capturing: false,
-    progress: 0,
-    target: 0,
-    state: "formed",
-    raf: null,
-    lastTime: 0,
-    dpr: 1,
-    source: null
-  };
+  const archivePixelBreak = window.PixelBreak
+    ? new window.PixelBreak({
+      section: ".work-archive",
+      source: ".archive-content",
+      layer: ".pixel-transition",
+      canvas: "#archivePixelCanvas",
+      triggerBreakAt: 0.69,
+      triggerReformAt: 0.62,
+      breakSpeed: 0.86,
+      reformSpeed: 1.18,
+      debug: false
+    })
+    : null;
 
   let width = window.innerWidth;
   let height = window.innerHeight;
@@ -373,312 +371,12 @@
     return THREE.MathUtils.clamp((value - inMin) / (inMax - inMin), 0, 1);
   }
 
-  function createArchivePixelLayer() {
-    if (!pixelLayer || !archivePixel.canvas) return;
-
-    archivePixel.ctx = archivePixel.canvas.getContext("2d", { alpha: true });
-    resizeArchivePixelCanvas();
-  }
-
-  function resizeArchivePixelCanvas() {
-    if (!archivePixel.canvas || !archivePixel.ctx) return;
-
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
-
-    archivePixel.dpr = dpr;
-    archivePixel.canvas.width = Math.round(window.innerWidth * dpr);
-    archivePixel.canvas.height = Math.round(window.innerHeight * dpr);
-    archivePixel.canvas.style.width = `${window.innerWidth}px`;
-    archivePixel.canvas.style.height = `${window.innerHeight}px`;
-
-    archivePixel.ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    archivePixel.ctx.imageSmoothingEnabled = false;
-  }
-
-  function archiveClamp(value, min = 0, max = 1) {
-    return Math.min(Math.max(value, min), max);
-  }
-
-  function archiveEaseOutQuart(value) {
-    return 1 - Math.pow(1 - value, 4);
-  }
-
-  function archiveSeedRandom(seed) {
-    const value = Math.sin(seed) * 10000;
-    return value - Math.floor(value);
-  }
-
-  async function captureArchivePixels(sourceElement) {
-    if (!window.html2canvas || !pixelLayer || !archivePixel.ctx || !sourceElement || archivePixel.capturing) {
-      return false;
-    }
-
-    archivePixel.capturing = true;
-    archivePixel.source = sourceElement;
-    resizeArchivePixelCanvas();
-
-    const sourceRect = sourceElement.getBoundingClientRect();
-    const captureScale = window.innerWidth < 760 ? 1.35 : 1.7;
-    const sampleGap = window.innerWidth < 760 ? 4.2 : 3.45;
-    const maxParticles = window.innerWidth < 760 ? 7200 : 13500;
-    const alphaCutoff = 34;
-
-    try {
-      const shot = await window.html2canvas(sourceElement, {
-        backgroundColor: null,
-        scale: captureScale,
-        useCORS: true,
-        logging: false,
-        removeContainer: true
-      });
-
-      const temp = document.createElement("canvas");
-      const tempCtx = temp.getContext("2d", { willReadFrequently: true });
-
-      temp.width = shot.width;
-      temp.height = shot.height;
-      tempCtx.imageSmoothingEnabled = false;
-      tempCtx.drawImage(shot, 0, 0);
-
-      const image = tempCtx.getImageData(0, 0, temp.width, temp.height);
-      const data = image.data;
-      const scaleX = sourceRect.width / temp.width;
-      const scaleY = sourceRect.height / temp.height;
-      const centerX = sourceRect.left + sourceRect.width / 2;
-      const centerY = sourceRect.top + sourceRect.height / 2;
-
-      archivePixel.particles = [];
-
-      for (let y = 0; y < temp.height; y += sampleGap) {
-        for (let x = 0; x < temp.width; x += sampleGap) {
-          if (archivePixel.particles.length >= maxParticles) break;
-
-          const ix = Math.floor(x);
-          const iy = Math.floor(y);
-          const index = (iy * temp.width + ix) * 4;
-          const alpha = data[index + 3];
-
-          if (alpha < alphaCutoff) continue;
-
-          const r = data[index];
-          const g = data[index + 1];
-          const b = data[index + 2];
-          const brightness = (r + g + b) / 765;
-
-          if (brightness < 0.045 && alpha < 220) continue;
-
-          const ox = sourceRect.left + x * scaleX;
-          const oy = sourceRect.top + y * scaleY;
-          const dx = ox - centerX;
-          const dy = oy - centerY;
-          const distance = Math.hypot(dx, dy) || 1;
-
-          const rx = archiveSeedRandom(x * 13.13 + y * 91.7);
-          const ry = archiveSeedRandom(x * 71.2 + y * 22.6);
-          const rz = archiveSeedRandom(x * 9.9 + y * 37.4);
-          const side = ox < centerX ? -1 : 1;
-
-          archivePixel.particles.push({
-            ox,
-            oy,
-            dirX: dx / distance,
-            dirY: dy / distance,
-            size: window.innerWidth < 760 ? 1 : 1.25,
-            color: `rgb(${r}, ${g}, ${b})`,
-            alpha: alpha / 255,
-            brightness,
-            rx,
-            ry,
-            rz,
-            side,
-            delay: rx * 0.24,
-            speed: 0.58 + ry * 1.04,
-            isBar: rx > 0.94,
-            isBlock: ry > 0.96,
-            hasGlow: brightness > 0.74 && rz > 0.92,
-            hasSplit: brightness > 0.78 && rx < 0.05,
-            flickerSeed: archiveSeedRandom(x * 99.2 + y * 4.4)
-          });
-        }
-      }
-
-      archivePixel.captured = true;
-      archivePixel.capturing = false;
-      drawArchivePixels();
-      return true;
-    } catch (error) {
-      console.warn("Archive pixel capture failed:", error);
-      archivePixel.capturing = false;
-      return false;
-    }
-  }
-
-  function playArchivePixels(direction = "break") {
-    if (!archivePixel.captured || !archivePixel.ctx) return;
-
-    archivePixel.target = direction === "break" ? 1 : 0;
-    archivePixel.state = direction === "break" ? "breaking" : "reforming";
-
-    if (archivePixel.raf) return;
-
-    archivePixel.lastTime = performance.now();
-    archivePixel.raf = requestAnimationFrame(stepArchivePixels);
-  }
-
-  function stepArchivePixels(now) {
-    const delta = Math.min(64, now - archivePixel.lastTime) / 1000;
-    archivePixel.lastTime = now;
-
-    const direction = archivePixel.target > archivePixel.progress ? 1 : -1;
-    const speed = archivePixel.state === "breaking" ? 0.86 : 1.18;
-
-    archivePixel.progress = archiveClamp(archivePixel.progress + direction * speed * delta);
-
-    drawArchivePixels();
-
-    const doneBreaking = archivePixel.target === 1 && archivePixel.progress >= 0.999;
-    const doneReforming = archivePixel.target === 0 && archivePixel.progress <= 0.001;
-
-    if (doneBreaking || doneReforming) {
-      archivePixel.progress = archivePixel.target;
-      archivePixel.state = doneBreaking ? "broken" : "formed";
-      archivePixel.raf = null;
-      drawArchivePixels();
-      return;
-    }
-
-    archivePixel.raf = requestAnimationFrame(stepArchivePixels);
-  }
-
-  function drawArchivePixel(px, py, size, alpha, particle) {
-    const ctx = archivePixel.ctx;
-    const s = Math.max(1, Math.round(size));
-
-    if (particle.hasGlow) {
-      ctx.globalAlpha = alpha * 0.11;
-      ctx.fillStyle = "rgba(255,255,255,0.86)";
-      ctx.fillRect(px - s, py - s, s * 3, s * 3);
-    }
-
-    ctx.globalAlpha = alpha;
-    ctx.fillStyle = particle.color;
-    ctx.fillRect(px, py, s, s);
-
-    if (s >= 2 && particle.brightness > 0.25) {
-      ctx.globalAlpha = alpha * 0.3;
-      ctx.fillStyle = "rgba(255,255,255,0.9)";
-      ctx.fillRect(px, py, 1, 1);
-
-      ctx.globalAlpha = alpha * 0.2;
-      ctx.fillStyle = "rgba(0,0,0,0.72)";
-      ctx.fillRect(px + s - 1, py, 1, s);
-      ctx.fillRect(px, py + s - 1, s, 1);
-    }
-  }
-
-  function drawArchivePixels() {
-    if (!archivePixel.ctx) return;
-
-    const ctx = archivePixel.ctx;
-    const p = archivePixel.progress;
-    const eased = archiveEaseOutQuart(p);
-    const w = archivePixel.canvas.width / archivePixel.dpr;
-    const h = archivePixel.canvas.height / archivePixel.dpr;
-
-    ctx.clearRect(0, 0, w, h);
-    ctx.imageSmoothingEnabled = false;
-
-    if (pixelLayer) {
-      pixelLayer.style.opacity = p > 0.006 ? "1" : "0";
-    }
-
-    if (archivePixel.source) {
-      archivePixel.source.classList.toggle("is-pixel-breaking", p > 0.012);
-    }
-
-    if (p <= 0.006 || !archivePixel.particles.length) return;
-
-    ctx.save();
-    ctx.globalCompositeOperation = "source-over";
-
-    archivePixel.particles.forEach((particle) => {
-      const local = archiveClamp((p - particle.delay) / (1 - particle.delay));
-      const le = archiveEaseOutQuart(local);
-
-      if (le <= 0.002) return;
-
-      const waveX = Math.sin(particle.oy * 0.038 + p * 8) * 72 * eased * particle.rx;
-      const waveY = Math.cos(particle.ox * 0.026 + p * 7) * 24 * eased * particle.ry;
-
-      const x = particle.ox
-        + particle.side * 315 * le * particle.speed
-        + particle.dirX * 38 * le
-        + waveX;
-
-      const y = particle.oy
-        + (particle.ry - 0.5) * 105 * le
-        - 48 * le
-        + waveY;
-
-      const flicker = Math.sin(particle.flickerSeed * 22 + p * 22);
-      const alpha = particle.alpha * Math.pow(1 - p, 1.02) * (1 - Math.abs(flicker) * 0.055);
-
-      if (alpha <= 0.01) return;
-
-      const px = Math.round(x);
-      const py = Math.round(y);
-      const size = particle.size * (particle.isBlock ? 1.65 : 1);
-
-      if (particle.hasSplit && p > 0.12) {
-        const split = 0.8 * le;
-        ctx.globalAlpha = alpha * 0.1;
-        ctx.fillStyle = "rgba(255,70,70,0.72)";
-        ctx.fillRect(Math.round(px - split), py, 1, 1);
-        ctx.fillStyle = "rgba(70,185,255,0.72)";
-        ctx.fillRect(Math.round(px + split), py, 1, 1);
-      }
-
-      if (particle.isBar && p > 0.18) {
-        const length = Math.max(2, Math.round(size * (3.5 + particle.ry * 8) * le));
-        const height = Math.max(1, Math.round(size));
-
-        ctx.globalAlpha = alpha;
-        ctx.fillStyle = particle.color;
-        ctx.fillRect(Math.round(px - length * 0.18), py, length, height);
-
-        if (particle.brightness > 0.45) {
-          ctx.globalAlpha = alpha * 0.26;
-          ctx.fillStyle = "rgba(255,255,255,0.9)";
-          ctx.fillRect(Math.round(px - length * 0.18), py, Math.max(1, Math.round(length * 0.32)), 1);
-        }
-      } else {
-        drawArchivePixel(px, py, size, alpha, particle);
-      }
-    });
-
-    ctx.restore();
-  }
-
-  function resetArchivePixels() {
-    archivePixel.captured = false;
-    archivePixel.capturing = false;
-    archivePixel.particles = [];
-    archivePixel.progress = 0;
-    archivePixel.target = 0;
-    archivePixel.state = "formed";
-
-    if (archivePixel.raf) {
-      cancelAnimationFrame(archivePixel.raf);
-      archivePixel.raf = null;
-    }
-
-    if (archivePixel.ctx && archivePixel.canvas) {
-      resizeArchivePixelCanvas();
-      archivePixel.ctx.clearRect(0, 0, archivePixel.canvas.width, archivePixel.canvas.height);
-    }
-
-    if (pixelLayer) pixelLayer.style.opacity = "0";
-    if (archivePixel.source) archivePixel.source.classList.remove("is-pixel-breaking");
+  function sectionPhase(progress, enterStart, enterEnd, exitStart, exitEnd) {
+    const enter = mapRange(progress, enterStart, enterEnd);
+    const exit = mapRange(progress, exitStart, exitEnd);
+    const active = enter * (1 - exit);
+
+    return { enter, exit, active };
   }
 
   function createArchiveTransition() {
@@ -690,7 +388,7 @@
     const intro = document.querySelector(".work-scroll__intro");
     const nextInner = document.querySelector(".next-section-inner");
 
-    if (!archive || !archiveContent || !workCards.length || !intro || !nextInner || !pixelLayer) {
+    if (!archive || !archiveContent || !workCards.length || !intro || !nextInner) {
       return;
     }
 
@@ -707,36 +405,15 @@
       filter: "blur(10px)"
     });
 
-    let breakRequested = false;
-    let reformRequested = false;
-
     const archiveTl = gsap.timeline({
       defaults: { ease: "none" },
       scrollTrigger: {
         trigger: archive,
         start: "top top",
-        end: "+=420%",
+        end: "+=560%",
         scrub: true,
         pin: true,
-        anticipatePin: 1,
-        onUpdate: async (self) => {
-          if (self.progress > 0.69 && !breakRequested) {
-            breakRequested = true;
-            reformRequested = false;
-
-            if (!archivePixel.captured) {
-              await captureArchivePixels(archiveContent);
-            }
-
-            playArchivePixels("break");
-          }
-
-          if (self.progress < 0.62 && !reformRequested) {
-            reformRequested = true;
-            breakRequested = false;
-            playArchivePixels("reform");
-          }
-        }
+        anticipatePin: 1
       }
     });
 
@@ -762,31 +439,28 @@
         filter: "blur(0px)",
         duration: 0.18
       }, 0.8)
-      .to(pixelLayer, { opacity: 0, duration: 0.08 }, 0.96);
+      ;
   }
 
   function updateProgress(progress) {
-    const page = window.scrollY / Math.max(1, window.innerHeight);
-    const heroOut = mapRange(page, 0.68, 0.96);
-    const buildReveal = mapRange(page, 0.98, 1.18);
-    const buildOut = mapRange(page, 1.72, 2.02);
-    const workReveal = mapRange(page, 2.02, 2.28);
-    const workDepth = mapRange(page, 2.34, 2.74);
-    const workUiOut = mapRange(page, 3.08, 3.46);
+    const hero = sectionPhase(progress, 0.02, 0.08, 0.2, 0.31);
+    const build = sectionPhase(progress, 0.24, 0.34, 0.48, 0.58);
+    const work = sectionPhase(progress, 0.52, 0.64, 0.84, 0.93);
+    const workDepth = mapRange(progress, 0.64, 0.79);
 
     sceneState.progress = progress;
-    sceneState.work = workReveal;
+    sceneState.work = work.enter;
     sceneState.depth = workDepth;
-    sceneState.buildPhase = buildReveal * (1 - buildOut);
-    sceneState.archivePhase = workReveal * (1 - workUiOut);
+    sceneState.buildPhase = build.active;
+    sceneState.archivePhase = work.active;
 
     root.style.setProperty("--section-progress", progress.toFixed(4));
-    root.style.setProperty("--hero-out", heroOut.toFixed(4));
-    root.style.setProperty("--build-reveal", buildReveal.toFixed(4));
-    root.style.setProperty("--build-out", buildOut.toFixed(4));
-    root.style.setProperty("--work-reveal", workReveal.toFixed(4));
+    root.style.setProperty("--hero-out", hero.exit.toFixed(4));
+    root.style.setProperty("--build-reveal", build.enter.toFixed(4));
+    root.style.setProperty("--build-out", build.exit.toFixed(4));
+    root.style.setProperty("--work-reveal", work.enter.toFixed(4));
     root.style.setProperty("--work-depth", workDepth.toFixed(4));
-    root.style.setProperty("--work-ui-out", workUiOut.toFixed(4));
+    root.style.setProperty("--work-ui-out", work.exit.toFixed(4));
 
     if (progressFill) {
       progressFill.style.width = `${Math.round(progress * 100)}%`;
@@ -817,7 +491,7 @@
         trigger: document.body,
         start: "top top",
         end: "bottom bottom",
-        scrub: 1.15,
+        scrub: 1.35,
         onUpdate: (self) => updateProgress(self.progress)
       }
     });
@@ -861,7 +535,7 @@
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.7));
     renderer.setSize(width, height);
 
-    resetArchivePixels();
+    if (archivePixelBreak) archivePixelBreak.captured = false;
     ScrollTrigger.refresh();
   }
 
@@ -916,7 +590,9 @@
   window.addEventListener("pointermove", onPointerMove, { passive: true });
   window.addEventListener("resize", onResize);
 
-  createArchivePixelLayer();
+  if (archivePixelBreak) {
+    archivePixelBreak.init();
+  }
   createArchiveTransition();
   createScrollTimeline();
   ScrollTrigger.refresh();

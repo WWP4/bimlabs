@@ -81,12 +81,12 @@ a {
 }
 
 .chapter {
-  height: 100vh;
+  height: 140vh;
   position: relative;
 }
 
 .chapter--work {
-  height: 100vh;
+  height: 170vh;
   z-index: 5;
   overflow: hidden;
 }
@@ -168,7 +168,7 @@ a {
   text-align: center;
   transform: translate(-50%, -45%);
   opacity: calc(1 - var(--hero-out));
-  filter: blur(calc(var(--hero-out) * 8px));
+  filter: blur(calc(var(--hero-out) * 4px));
 }
 
 .copy--build {
@@ -176,7 +176,7 @@ a {
   top: 50%;
   transform: translate3d(calc((1 - var(--build-reveal)) * -42px + var(--work-reveal) * -26px), -44%, 0);
   opacity: calc(var(--build-reveal) * (1 - var(--build-out)));
-  filter: blur(calc((1 - var(--build-reveal) + var(--build-out)) * 8px));
+  filter: blur(calc((1 - var(--build-reveal) + var(--build-out)) * 4px));
 }
 
 .copy--work {
@@ -185,7 +185,7 @@ a {
   max-width: min(600px, calc(100vw - 44px));
   transform: translate3d(calc((1 - var(--work-reveal)) * -34px), calc(-50% + var(--work-depth) * -42px), 0);
   opacity: calc(var(--work-reveal) * (1 - var(--work-depth)) * (1 - var(--work-ui-out)));
-  filter: blur(calc((1 - var(--work-reveal) + var(--work-depth)) * 6px));
+  filter: blur(calc((1 - var(--work-reveal) + var(--work-depth)) * 3px));
 }
 
 .copy--work-detail {
@@ -194,7 +194,7 @@ a {
   max-width: min(610px, calc(100vw - 44px));
   transform: translate3d(calc((1 - var(--work-depth)) * -24px), -50%, 0);
   opacity: calc(var(--work-depth) * (1 - var(--work-ui-out)));
-  filter: blur(calc((1 - var(--work-depth)) * 6px));
+  filter: blur(calc((1 - var(--work-depth)) * 3px));
 }
 
 .eyebrow {
@@ -453,7 +453,7 @@ h2 {
 }
 
 .next-section {
-  min-height: 100vh;
+  min-height: 140vh;
   position: relative;
   z-index: 4;
 }
