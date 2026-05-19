@@ -5,142 +5,220 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description" content="BIM Labs immersive 3D web experience prototype." />
   <title>BIM Labs — Immersive 3D Preview</title>
+
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Manrope:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+
   <link rel="stylesheet" href="styles.css" />
 </head>
+
 <body>
   <canvas id="bim-world" aria-hidden="true"></canvas>
 
   <main class="experience" id="top">
-<section class="chapter chapter--work work-archive noomo-work-stage" id="work" aria-label="Our Work">
+    <section class="chapter chapter--hero" aria-label="The System Comes Online"></section>
 
-  <div class="noomo-case-meta" aria-hidden="true">
-    <div class="case-meta-item is-active" data-case-meta="0">
-      <div class="case-meta-left">
-        <span class="case-year">2026</span>
-        <span>Immersive Website</span>
-        <span>3D Storytelling</span>
+    <section class="chapter chapter--build" aria-label="Inside the Build"></section>
+
+    <section class="chapter chapter--work work-archive noomo-work-stage" id="work" aria-label="Our Work">
+      <div class="noomo-case-meta" aria-hidden="true">
+        <div class="case-meta-item is-active" data-case-meta="0">
+          <div class="case-meta-left">
+            <span class="case-year">2026</span>
+            <span>Immersive Website</span>
+            <span>3D Storytelling</span>
+          </div>
+
+          <div class="case-meta-center">
+            <span>01 / 04</span>
+          </div>
+
+          <div class="case-meta-right">
+            <h3>Premium web experiences</h3>
+            <p>Editorial storytelling, 3D motion, and conversion strategy built into one guided brand system.</p>
+          </div>
+        </div>
+
+        <div class="case-meta-item" data-case-meta="1">
+          <div class="case-meta-left">
+            <span class="case-year">2026</span>
+            <span>Client Portal</span>
+            <span>Private System</span>
+          </div>
+
+          <div class="case-meta-center">
+            <span>02 / 04</span>
+          </div>
+
+          <div class="case-meta-right">
+            <h3>Private client systems</h3>
+            <p>Secure-feeling dashboards and project spaces that make onboarding, files, and communication feel polished.</p>
+          </div>
+        </div>
+
+        <div class="case-meta-item" data-case-meta="2">
+          <div class="case-meta-left">
+            <span class="case-year">2026</span>
+            <span>AI Workflow</span>
+            <span>Automation Layer</span>
+          </div>
+
+          <div class="case-meta-center">
+            <span>03 / 04</span>
+          </div>
+
+          <div class="case-meta-right">
+            <h3>AI-powered operations</h3>
+            <p>Automation layers that qualify leads, guide users, and keep the business moving after the first click.</p>
+          </div>
+        </div>
+
+        <div class="case-meta-item" data-case-meta="3">
+          <div class="case-meta-left">
+            <span class="case-year">2026</span>
+            <span>Interactive Tool</span>
+            <span>Conversion System</span>
+          </div>
+
+          <div class="case-meta-center">
+            <span>04 / 04</span>
+          </div>
+
+          <div class="case-meta-right">
+            <h3>Tools people want to explore</h3>
+            <p>Calculators, quote flows, 3D viewers, and product demos that turn attention into action.</p>
+          </div>
+        </div>
       </div>
 
-      <div class="case-meta-center">
-        <span>01 / 04</span>
-      </div>
+      <div class="work-scroll archive-content noomo-archive-content" aria-label="Selected BIM Labs work systems">
+        <div class="work-scroll__intro noomo-work-intro">
+          <span>WORK ARCHIVE / CASE DESCENT</span>
+          <p>Selected systems move through the screen like a cinematic case reel — clear, focused, and scroll-led.</p>
+        </div>
 
-      <div class="case-meta-right">
-        <h3>Premium web experiences</h3>
-        <p>Editorial storytelling, 3D motion, and conversion strategy built into one guided brand system.</p>
-      </div>
-    </div>
+        <article class="work-card work-card--one noomo-case-card" data-case-card="0">
+          <div class="work-card__copy">
+            <span>01 / Immersive Site</span>
+            <h3>Premium web experiences</h3>
+            <p>Editorial storytelling, 3D motion, and conversion strategy built into one guided brand system.</p>
+          </div>
 
-    <div class="case-meta-item" data-case-meta="1">
-      <div class="case-meta-left">
-        <span class="case-year">2026</span>
-        <span>Client Portal</span>
-        <span>Private System</span>
-      </div>
+          <div class="work-card__visual" aria-hidden="true">
+            <i></i><i></i><i></i>
+          </div>
+        </article>
 
-      <div class="case-meta-center">
-        <span>02 / 04</span>
-      </div>
+        <article class="work-card work-card--two noomo-case-card" data-case-card="1">
+          <div class="work-card__copy">
+            <span>02 / Client Portal</span>
+            <h3>Private client systems</h3>
+            <p>Secure-feeling dashboards and project spaces that make onboarding, files, and communication feel polished.</p>
+          </div>
 
-      <div class="case-meta-right">
-        <h3>Private client systems</h3>
-        <p>Secure-feeling dashboards and project spaces that make onboarding, files, and communication feel polished.</p>
-      </div>
-    </div>
+          <div class="work-card__visual" aria-hidden="true">
+            <i></i><i></i><i></i>
+          </div>
+        </article>
 
-    <div class="case-meta-item" data-case-meta="2">
-      <div class="case-meta-left">
-        <span class="case-year">2026</span>
-        <span>AI Workflow</span>
-        <span>Automation Layer</span>
-      </div>
+        <article class="work-card work-card--three noomo-case-card" data-case-card="2">
+          <div class="work-card__copy">
+            <span>03 / AI Workflow</span>
+            <h3>AI-powered operations</h3>
+            <p>Automation layers that qualify leads, guide users, and keep the business moving after the first click.</p>
+          </div>
 
-      <div class="case-meta-center">
-        <span>03 / 04</span>
-      </div>
+          <div class="work-card__visual" aria-hidden="true">
+            <i></i><i></i><i></i>
+          </div>
+        </article>
 
-      <div class="case-meta-right">
-        <h3>AI-powered operations</h3>
-        <p>Automation layers that qualify leads, guide users, and keep the business moving after the first click.</p>
-      </div>
-    </div>
+        <article class="work-card work-card--four noomo-case-card" data-case-card="3">
+          <div class="work-card__copy">
+            <span>04 / Interactive Tool</span>
+            <h3>Tools people want to explore</h3>
+            <p>Calculators, quote flows, 3D viewers, and product demos that turn attention into action.</p>
+          </div>
 
-    <div class="case-meta-item" data-case-meta="3">
-      <div class="case-meta-left">
-        <span class="case-year">2026</span>
-        <span>Interactive Tool</span>
-        <span>Conversion System</span>
+          <div class="work-card__visual" aria-hidden="true">
+            <i></i><i></i><i></i>
+          </div>
+        </article>
       </div>
+    </section>
 
-      <div class="case-meta-center">
-        <span>04 / 04</span>
+    <section class="chapter chapter--unlock next-section" aria-label="Unlocked BIM Labs layer">
+      <div class="next-section-inner">
+        <p class="eyebrow">UNLOCKED / NEXT SYSTEM</p>
+        <h2>The archive becomes the brief.</h2>
+        <p class="lede">
+          Once the work resolves, what remains is the next layer: a focused path for building your own immersive website,
+          portal, or AI-powered tool with BIM Labs.
+        </p>
+        <a class="next-action" href="mailto:hello@bimlabs.com">Start a build</a>
       </div>
+    </section>
+  </main>
 
-      <div class="case-meta-right">
-        <h3>Tools people want to explore</h3>
-        <p>Calculators, quote flows, 3D viewers, and product demos that turn attention into action.</p>
-      </div>
-    </div>
-  </div>
+  <div class="interface" aria-live="polite">
+    <header class="brand-lockup">
+      <a href="#top" class="brand">BIM LABS</a>
+      <span class="meta-pill">IMMERSIVE SYSTEM / 03 CHAPTERS</span>
+    </header>
 
-  <div class="work-scroll archive-content noomo-archive-content" aria-label="Selected BIM Labs work systems">
-    <div class="work-scroll__intro noomo-work-intro">
-      <span>WORK ARCHIVE / CASE DESCENT</span>
-      <p>Selected systems move through the screen like a cinematic case reel — clear, focused, and scroll-led.</p>
-    </div>
+    <section class="copy copy--hero" data-copy="hero">
+      <p class="eyebrow">BIM LABS / IMMERSIVE WEB STUDIO</p>
+      <h1>We build high-end websites and digital systems for modern brands.</h1>
+      <p class="lede">
+        BIM Labs designs immersive websites, client portals, AI workflows, and interactive tools that make your business
+        feel premium, clear, and alive online.
+      </p>
 
-    <article class="work-card work-card--one noomo-case-card" data-case-card="0">
-      <div class="work-card__copy">
-        <span>01 / Immersive Site</span>
-        <h3>Premium web experiences</h3>
-        <p>Editorial storytelling, 3D motion, and conversion strategy built into one guided brand system.</p>
+      <div class="hero-services" aria-hidden="true">
+        <span>Immersive Websites</span>
+        <span>Client Portals</span>
+        <span>AI Workflows</span>
       </div>
-      <div class="work-card__visual" aria-hidden="true">
-        <i></i><i></i><i></i>
-      </div>
-    </article>
+    </section>
 
-    <article class="work-card work-card--two noomo-case-card" data-case-card="1">
-      <div class="work-card__copy">
-        <span>02 / Client Portal</span>
-        <h3>Private client systems</h3>
-        <p>Secure-feeling dashboards and project spaces that make onboarding, files, and communication feel polished.</p>
-      </div>
-      <div class="work-card__visual" aria-hidden="true">
-        <i></i><i></i><i></i>
-      </div>
-    </article>
+    <section class="copy copy--build" data-copy="build">
+      <p class="eyebrow">SYSTEM LAYER 01</p>
+      <h2>Every section has a job.</h2>
+      <p class="lede">
+        The interface, motion, and 3D system work together so the site feels discovered — not scrolled.
+      </p>
+    </section>
 
-    <article class="work-card work-card--three noomo-case-card" data-case-card="2">
-      <div class="work-card__copy">
-        <span>03 / AI Workflow</span>
-        <h3>AI-powered operations</h3>
-        <p>Automation layers that qualify leads, guide users, and keep the business moving after the first click.</p>
-      </div>
-      <div class="work-card__visual" aria-hidden="true">
-        <i></i><i></i><i></i>
-      </div>
-    </article>
+    <div class="object-label label--ai" data-label="ai">AI WORKFLOW</div>
+    <div class="object-label label--portal" data-label="portal">CLIENT PORTAL</div>
 
-    <article class="work-card work-card--four noomo-case-card" data-case-card="3">
-      <div class="work-card__copy">
-        <span>04 / Interactive Tool</span>
-        <h3>Tools people want to explore</h3>
-        <p>Calculators, quote flows, 3D viewers, and product demos that turn attention into action.</p>
-      </div>
-      <div class="work-card__visual" aria-hidden="true">
-        <i></i><i></i><i></i>
-      </div>
-    </article>
-  </div>
-</section>
+    <section class="copy copy--work" data-copy="work">
+      <p class="eyebrow">OUR WORK / DESCENT</p>
+      <h2>Scroll down through real build layers.</h2>
+      <p class="lede">
+        This part is intentionally long: a cinematic scroll through larger work panels, architectural frames, and capability
+        layers that feel like one continuous BIM Labs archive.
+      </p>
+    </section>
+
+    <section class="copy copy--work-detail" data-copy="work-detail">
+      <p class="eyebrow">WORK LAYERS 01—04</p>
+      <h2>A cleaner way to show capability.</h2>
+      <p class="lede">
+        Websites, portals, automations, and tools sit in one guided story so visitors understand what BIM Labs does without
+        being dropped into a messy portfolio grid.
+      </p>
+    </section>
+
     <div class="work-index" aria-hidden="true">
       <div><span>01</span><strong>Premium web experiences</strong></div>
       <div><span>02</span><strong>Private client systems</strong></div>
       <div><span>03</span><strong>AI-powered operations</strong></div>
+      <div><span>04</span><strong>Interactive tools</strong></div>
     </div>
 
     <div class="object-label label--viewer" data-label="viewer">3D VIEWER</div>
