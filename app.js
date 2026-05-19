@@ -411,7 +411,7 @@
         trigger: archive,
         start: "top top",
         end: "+=560%",
-        scrub: true,
+        scrub: 1.1,
         pin: true,
         anticipatePin: 1
       }
@@ -443,10 +443,10 @@
   }
 
   function updateProgress(progress) {
-    const hero = sectionPhase(progress, 0.02, 0.08, 0.2, 0.31);
-    const build = sectionPhase(progress, 0.24, 0.34, 0.48, 0.58);
-    const work = sectionPhase(progress, 0.52, 0.64, 0.84, 0.93);
-    const workDepth = mapRange(progress, 0.64, 0.79);
+    const hero = sectionPhase(progress, 0.02, 0.1, 0.28, 0.4);
+    const build = sectionPhase(progress, 0.36, 0.46, 0.6, 0.72);
+    const work = sectionPhase(progress, 0.68, 0.78, 0.9, 0.98);
+    const workDepth = mapRange(progress, 0.8, 0.92);
 
     sceneState.progress = progress;
     sceneState.work = work.enter;
@@ -491,7 +491,7 @@
         trigger: document.body,
         start: "top top",
         end: "bottom bottom",
-        scrub: 1.35,
+        scrub: 1.65,
         onUpdate: (self) => updateProgress(self.progress)
       }
     });
