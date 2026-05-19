@@ -5,6 +5,8 @@
   --line: rgba(7, 16, 29, 0.14);
   --blue: #0077ff;
   --blue-soft: rgba(0, 119, 255, 0.14);
+  --accent-glow: rgba(0, 119, 255, 0.22);
+  --panel: rgba(255,255,255,0.52);
   --paper-start: #e7f0fb;
   --paper-end: #fbfdff;
   --section-progress: 0;
@@ -55,7 +57,7 @@ body::after {
   background:
     linear-gradient(90deg, rgba(7,16,29,0.045) 1px, transparent 1px),
     linear-gradient(0deg, rgba(7,16,29,0.035) 1px, transparent 1px),
-    radial-gradient(circle at 68% 42%, rgba(0,119,255,0.13), transparent 34vw),
+    radial-gradient(circle at 68% 42%, var(--accent-glow), transparent 34vw),
     radial-gradient(circle at 22% 18%, rgba(255,255,255,0.86), transparent 26vw);
   background-size: 72px 72px, 72px 72px, auto, auto;
   opacity: calc(0.78 - var(--section-progress) * 0.22 - var(--work-reveal) * 0.18);
@@ -89,6 +91,19 @@ a {
   height: 220vh;
   z-index: 5;
   overflow: hidden;
+}
+
+
+.chapter:not(.chapter--hero)::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: -8vh;
+  width: 1px;
+  height: 16vh;
+  transform: translateX(-50%);
+  background: linear-gradient(180deg, transparent, rgba(0,119,255,0.4), transparent);
+  opacity: 0.9;
 }
 
 .chapter::after {
@@ -158,6 +173,11 @@ a {
   pointer-events: none;
   max-width: min(640px, calc(100vw - 44px));
   transition: opacity 0.65s var(--ease), transform 0.65s var(--ease), filter 0.65s var(--ease);
+  padding: clamp(20px, 2.5vw, 28px);
+  border-radius: 18px;
+  background: linear-gradient(140deg, var(--panel), rgba(255,255,255,0.2));
+  border: 1px solid rgba(7,16,29,0.08);
+  backdrop-filter: blur(10px);
 }
 
 .copy--hero {
@@ -224,7 +244,7 @@ h2 {
 
 .lede {
   margin: 30px 0 0;
-  max-width: 520px;
+  max-width: 58ch;
   color: var(--ink-soft);
   font-size: clamp(17px, 1.45vw, 22px);
   line-height: 1.62;
@@ -330,7 +350,7 @@ h2 {
     radial-gradient(circle at 82% 18%, rgba(0,119,255,0.13), transparent 32%),
     linear-gradient(180deg, rgba(0,119,255,0.055), transparent 58%);
   border: 1px solid rgba(7,16,29,0.15);
-  border-top-color: rgba(0,119,255,0.42);
+  border-top-color: rgba(0,119,255,0.58);
   box-shadow: 0 58px 140px rgba(7,16,29,0.14);
   backdrop-filter: blur(22px);
   transform: translate(-50%, -50%);
@@ -625,6 +645,18 @@ h2 {
   }
 }
 
+
+.next-action {
+  pointer-events: auto;
+  transition: transform 0.3s var(--ease), background-color 0.3s var(--ease), border-color 0.3s var(--ease);
+}
+
+.next-action:hover {
+  transform: translateY(-2px);
+  background: rgba(0,119,255,0.12);
+  border-color: rgba(0,119,255,0.42);
+}
+
 @media (max-width: 760px) {
   .meta-pill {
     display: none;
@@ -635,6 +667,7 @@ h2 {
   .copy--work,
   .copy--work-detail {
     top: auto;
+    background: rgba(255,255,255,0.4);
     bottom: 18vh;
     transform: translateY(0);
   }
