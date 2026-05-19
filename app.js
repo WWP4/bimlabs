@@ -402,7 +402,7 @@
       scrollTrigger: {
         trigger: archive,
         start: "top top",
-        end: "+=420%",
+        end: "+=560%",
         scrub: true,
         pin: true,
         anticipatePin: 1
@@ -486,7 +486,7 @@
         trigger: document.body,
         start: "top top",
         end: "bottom bottom",
-        scrub: 1.15,
+        scrub: 1.35,
         onUpdate: (self) => updateProgress(self.progress)
       }
     });

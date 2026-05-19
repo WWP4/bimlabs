@@ -81,12 +81,12 @@ a {
 }
 
 .chapter {
-  height: 100vh;
+  height: 140vh;
   position: relative;
 }
 
 .chapter--work {
-  height: 100vh;
+  height: 170vh;
   z-index: 5;
   overflow: hidden;
 }
@@ -453,7 +453,7 @@ h2 {
 }
 
 .next-section {
-  min-height: 100vh;
+  min-height: 140vh;
   position: relative;
   z-index: 4;
 }
