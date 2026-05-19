@@ -672,3 +672,227 @@ h2 {
     animation: none;
   }
 }
+
+
+/* ==========================================================
+   NOOMO-INSPIRED WORK ARCHIVE PATCH
+   Keeps your current site, but makes the work section feel
+   like a cinematic case-stage instead of a normal card stack.
+   ========================================================== */
+
+.noomo-work-stage {
+  height: 100vh;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.noomo-archive-content {
+  z-index: 7;
+}
+
+.noomo-work-intro {
+  max-width: min(720px, 86vw);
+}
+
+.noomo-work-intro p {
+  font-size: clamp(24px, 3vw, 52px);
+  line-height: 0.98;
+  letter-spacing: -0.06em;
+  color: var(--ink);
+}
+
+.noomo-case-meta {
+  position: absolute;
+  inset: auto 0 0 0;
+  z-index: 12;
+  height: 29vh;
+  min-height: 230px;
+  pointer-events: none;
+  color: var(--ink);
+}
+
+.case-meta-item {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: minmax(220px, 0.9fr) auto minmax(260px, 0.9fr);
+  align-items: end;
+  gap: clamp(22px, 4vw, 70px);
+  padding: 0 clamp(22px, 4.2vw, 64px) clamp(38px, 5vw, 70px);
+  opacity: 0;
+  transform: translateY(28px);
+  filter: blur(8px);
+}
+
+.case-meta-left,
+.case-meta-center,
+.case-meta-right {
+  min-width: 0;
+}
+
+.case-meta-left {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 9px;
+  font-family: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(7, 16, 29, 0.66);
+}
+
+.case-meta-left span {
+  display: inline-flex;
+  align-items: center;
+  min-height: 26px;
+}
+
+.case-meta-left span:not(.case-year)::before {
+  content: "/";
+  margin-right: 9px;
+  color: rgba(7, 16, 29, 0.28);
+}
+
+.case-year {
+  border: 1px solid rgba(7, 16, 29, 0.22);
+  border-radius: 999px;
+  padding: 4px 9px;
+  color: var(--ink);
+  background: rgba(255, 255, 255, 0.28);
+  backdrop-filter: blur(10px);
+}
+
+.case-meta-center {
+  align-self: end;
+  justify-self: center;
+  font-family: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 11px;
+  letter-spacing: 0.13em;
+  color: var(--blue);
+}
+
+.case-meta-right {
+  justify-self: end;
+  width: min(380px, 100%);
+}
+
+.case-meta-right h3 {
+  margin: 0 0 14px;
+  font-size: clamp(18px, 1.45vw, 24px);
+  line-height: 1.05;
+  letter-spacing: -0.035em;
+  font-weight: 600;
+}
+
+.case-meta-right p {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: clamp(14px, 1.05vw, 17px);
+  line-height: 1.42;
+  letter-spacing: -0.015em;
+}
+
+.noomo-case-card {
+  width: min(940px, 78vw);
+  min-height: min(62vh, 660px);
+  grid-template-columns: minmax(0, 1fr);
+  align-items: end;
+  overflow: hidden;
+  border-radius: 0;
+  box-shadow:
+    0 60px 160px rgba(7, 16, 29, 0.16),
+    0 0 0 1px rgba(255, 255, 255, 0.22) inset;
+}
+
+.noomo-case-card::before {
+  inset: 16px;
+  border-color: rgba(7, 16, 29, 0.07);
+}
+
+.noomo-case-card .work-card__copy {
+  position: relative;
+  z-index: 2;
+  max-width: 720px;
+}
+
+.noomo-case-card .work-card__copy span {
+  color: var(--blue);
+}
+
+.noomo-case-card .work-card__copy h3 {
+  max-width: 760px;
+  font-size: clamp(54px, 7vw, 118px);
+}
+
+.noomo-case-card .work-card__copy p {
+  max-width: 560px;
+}
+
+.noomo-case-card .work-card__visual {
+  position: absolute;
+  inset: auto clamp(28px, 4vw, 58px) clamp(28px, 4vw, 58px) auto;
+  width: min(310px, 28vw);
+  min-height: min(280px, 32vh);
+  opacity: 0.72;
+}
+
+.noomo-case-card:nth-of-type(2) {
+  transform-origin: center center;
+}
+
+.noomo-case-card:nth-of-type(3) {
+  width: min(980px, 80vw);
+}
+
+.noomo-case-card:nth-of-type(4) {
+  width: min(900px, 76vw);
+}
+
+.noomo-case-card:nth-of-type(5) {
+  width: min(1010px, 82vw);
+}
+
+@media (max-width: 900px) {
+  .noomo-case-meta {
+    height: 42vh;
+    min-height: 310px;
+  }
+
+  .case-meta-item {
+    grid-template-columns: 1fr;
+    align-content: end;
+    gap: 18px;
+    padding: 0 20px 44px;
+    text-align: center;
+  }
+
+  .case-meta-left {
+    justify-content: center;
+    order: 2;
+  }
+
+  .case-meta-center {
+    order: 3;
+  }
+
+  .case-meta-right {
+    justify-self: center;
+    order: 1;
+    width: min(430px, 100%);
+  }
+
+  .noomo-case-card {
+    width: min(92vw, 680px);
+    min-height: 58vh;
+    padding: 30px;
+  }
+
+  .noomo-case-card .work-card__copy h3 {
+    font-size: clamp(42px, 12vw, 76px);
+  }
+
+  .noomo-case-card .work-card__visual {
+    display: none;
+  }
+}
