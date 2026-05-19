@@ -629,36 +629,48 @@
   }
 }
  
-  function updateProgress(progress) {
-    const page = window.scrollY / Math.max(1, window.innerHeight);
+function updateProgress(progress) {
+  const page = window.scrollY / Math.max(1, window.innerHeight);
 
-    const heroOut = mapRange(page, 0.68, 0.96);
-    const buildReveal = mapRange(page, 0.98, 1.18);
-    const buildOut = mapRange(page, 1.72, 2.02);
-    const workReveal = mapRange(page, 2.02, 2.28);
-    const workDepth = mapRange(page, 2.34, 2.74);
-    const workUiOut = mapRange(page, 5.55, 6.25);
+  /*
+    Slower section pacing.
+    This keeps each section readable before it fades.
+  */
 
-    sceneState.progress = progress;
-    sceneState.work = workReveal;
-    sceneState.depth = workDepth;
-    sceneState.buildPhase = buildReveal * (1 - buildOut);
-    sceneState.archivePhase = workReveal * (1 - workUiOut);
+  const heroOut = mapRange(page, 0.82, 1.22);
 
-    root.style.setProperty("--section-progress", progress.toFixed(4));
-    root.style.setProperty("--hero-out", heroOut.toFixed(4));
-    root.style.setProperty("--build-reveal", buildReveal.toFixed(4));
-    root.style.setProperty("--build-out", buildOut.toFixed(4));
-    root.style.setProperty("--work-reveal", workReveal.toFixed(4));
-    root.style.setProperty("--work-depth", workDepth.toFixed(4));
-    root.style.setProperty("--work-ui-out", workUiOut.toFixed(4));
+  const buildReveal = mapRange(page, 1.08, 1.42);
+  const buildOut = mapRange(page, 1.92, 2.3);
 
-    if (progressFill) {
-      progressFill.style.width = `${Math.round(progress * 100)}%`;
-    }
+  const workReveal = mapRange(page, 2.18, 2.5);
+  const workDepth = mapRange(page, 2.72, 3.22);
 
-    setBackground(progress);
+  /*
+    The work archive is pinned for a long time.
+    This must fade out late, not near the beginning.
+  */
+  const workUiOut = mapRange(page, 6.25, 7.05);
+
+  sceneState.progress = progress;
+  sceneState.work = workReveal;
+  sceneState.depth = workDepth;
+  sceneState.buildPhase = buildReveal * (1 - buildOut);
+  sceneState.archivePhase = workReveal * (1 - workUiOut);
+
+  root.style.setProperty("--section-progress", progress.toFixed(4));
+  root.style.setProperty("--hero-out", heroOut.toFixed(4));
+  root.style.setProperty("--build-reveal", buildReveal.toFixed(4));
+  root.style.setProperty("--build-out", buildOut.toFixed(4));
+  root.style.setProperty("--work-reveal", workReveal.toFixed(4));
+  root.style.setProperty("--work-depth", workDepth.toFixed(4));
+  root.style.setProperty("--work-ui-out", workUiOut.toFixed(4));
+
+  if (progressFill) {
+    progressFill.style.width = `${Math.round(progress * 100)}%`;
   }
+
+  setBackground(progress);
+}
 
   function createScrollTimeline() {
     updateProgress(0);
