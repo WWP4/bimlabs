@@ -632,7 +632,7 @@
     const buildOut = mapRange(page, 1.72, 2.02);
     const workReveal = mapRange(page, 2.02, 2.28);
     const workDepth = mapRange(page, 2.34, 2.74);
-    const workUiOut = mapRange(page, 3.08, 3.46);
+    const workUiOut = mapRange(page, 5.55, 6.25);
 
     sceneState.progress = progress;
     sceneState.work = workReveal;
