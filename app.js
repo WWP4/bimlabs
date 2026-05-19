@@ -26,7 +26,7 @@ const pointerTarget = new THREE.Vector2();
 const screenPosition = new THREE.Vector3();
 const labelOpacity = { value: 0 };
 const workLabelOpacity = { value: 0 };
-const sceneState = { progress: 0, work: 0, depth: 0 };
+const sceneState = { progress: 0, work: 0, depth: 0, buildPhase: 0, archivePhase: 0 };
 
 let width = window.innerWidth;
 let height = window.innerHeight;
@@ -299,7 +299,9 @@ function setBackground(progress) {
 
 function updateLabels() {
   Object.entries(labelAnchors).forEach(([key, anchor]) => {
-    const opacity = key === "archive" ? workLabelOpacity.value : labelOpacity.value * (1 - sceneState.work * 0.5);
+    const opacity = key === "archive"
+      ? workLabelOpacity.value * sceneState.archivePhase
+      : labelOpacity.value * sceneState.buildPhase;
     anchor.getWorldPosition(screenPosition);
     screenPosition.project(camera);
     const x = (screenPosition.x * 0.5 + 0.5) * width;
@@ -326,6 +328,8 @@ function updateProgress(progress) {
   sceneState.progress = progress;
   sceneState.work = workReveal;
   sceneState.depth = workDepth;
+  sceneState.buildPhase = buildReveal * (1 - buildOut);
+  sceneState.archivePhase = workReveal * (1 - workUiOut);
   root.style.setProperty("--section-progress", progress.toFixed(4));
   root.style.setProperty("--hero-out", heroOut.toFixed(4));
   root.style.setProperty("--build-reveal", buildReveal.toFixed(4));
