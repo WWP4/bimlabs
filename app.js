@@ -49,10 +49,11 @@
       source: ".archive-content",
       layer: ".pixel-transition",
       canvas: "#archivePixelCanvas",
-      triggerBreakAt: 0.69,
-      triggerReformAt: 0.62,
-      breakSpeed: 0.86,
-      reformSpeed: 1.18,
+      triggerBreakAt: 0.88,
+      triggerReformAt: 0.78,
+      timelineEnd: "+=760%",
+      breakSpeed: 0.62,
+      reformSpeed: 0.92,
       debug: false
     })
     : null;
@@ -394,63 +395,67 @@
 
     gsap.set(workCards, {
       opacity: 0,
-      y: "74vh",
-      scale: 0.94,
-      filter: "blur(2px)"
+      y: "58vh",
+      scale: 0.985,
+      filter: "blur(1.5px)"
     });
 
     gsap.set(nextInner, {
       opacity: 0,
-      y: 70,
-      filter: "blur(10px)"
+      y: 52,
+      filter: "blur(3px)"
     });
 
     const archiveTl = gsap.timeline({
-      defaults: { ease: "none" },
+      defaults: { ease: "power2.out" },
       scrollTrigger: {
         trigger: archive,
         start: "top top",
-        end: "+=560%",
-        scrub: 1.1,
+        end: "+=760%",
+        scrub: 0.9,
         pin: true,
         anticipatePin: 1
       }
     });
 
     archiveTl
-      .to(intro, { opacity: 0, y: -56, filter: "blur(2px)", duration: 0.1 }, 0.06)
-      .to(workCards[0], { opacity: 1, y: 0, scale: 1, filter: "blur(0px)", duration: 0.09 }, 0.14)
-      .to(workCards[0], { opacity: 1, y: 0, scale: 1, filter: "blur(0px)", duration: 0.11 }, 0.23)
-      .to(workCards[0], { opacity: 0, y: "-56vh", scale: 0.985, filter: "blur(1.5px)", duration: 0.09 }, 0.34)
-      .to(workCards[1], { opacity: 1, y: 0, scale: 1, filter: "blur(0px)", duration: 0.09 }, 0.39)
-      .to(workCards[1], { opacity: 1, y: 0, scale: 1, filter: "blur(0px)", duration: 0.11 }, 0.48)
-      .to(workCards[1], { opacity: 0, y: "-56vh", scale: 0.985, filter: "blur(1.5px)", duration: 0.09 }, 0.59)
-      .to(workCards[2], { opacity: 1, y: 0, scale: 1, filter: "blur(0px)", duration: 0.09 }, 0.64)
-      .to(workCards[2], { opacity: 1, y: 0, scale: 1, filter: "blur(0px)", duration: 0.11 }, 0.73)
-      .to(workCards[2], { opacity: 0, y: "-56vh", scale: 0.985, filter: "blur(1.5px)", duration: 0.09 }, 0.84)
-      .to(workCards[3], { opacity: 1, y: 0, scale: 1, filter: "blur(0px)", duration: 0.09 }, 0.89)
-      .to(workCards[3], { opacity: 1, y: 0, scale: 1, filter: "blur(0px)", duration: 0.1 }, 0.98)
-      .to(archiveContent, { opacity: 1, filter: "blur(0px)", scale: 1, duration: 0.05 }, 1.02)
-      .to(workCards[3], { opacity: 0.52, y: "-14vh", scale: 0.99, filter: "blur(1px)", duration: 0.08 }, 1.06)
-      .to(archiveContent, { opacity: 0, filter: "blur(3px)", scale: 0.975, duration: 0.12 }, 1.12)
+      .to(intro, { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.4 }, 0)
+      .to(intro, { opacity: 0, y: -46, filter: "blur(1.5px)", duration: 0.65 }, 0.65)
+
+      .to(workCards[0], { opacity: 1, y: 0, scale: 1, filter: "blur(0px)", duration: 0.8 }, 1.35)
+      .to(workCards[0], { opacity: 1, y: 0, scale: 1, filter: "blur(0px)", duration: 1.15 }, 2.15)
+      .to(workCards[0], { opacity: 0, y: "-48vh", scale: 0.985, filter: "blur(1.5px)", duration: 0.75 }, 3.3)
+
+      .to(workCards[1], { opacity: 1, y: 0, scale: 1, filter: "blur(0px)", duration: 0.8 }, 4.15)
+      .to(workCards[1], { opacity: 1, y: 0, scale: 1, filter: "blur(0px)", duration: 1.15 }, 4.95)
+      .to(workCards[1], { opacity: 0, y: "-48vh", scale: 0.985, filter: "blur(1.5px)", duration: 0.75 }, 6.1)
+
+      .to(workCards[2], { opacity: 1, y: 0, scale: 1, filter: "blur(0px)", duration: 0.8 }, 6.95)
+      .to(workCards[2], { opacity: 1, y: 0, scale: 1, filter: "blur(0px)", duration: 1.15 }, 7.75)
+      .to(workCards[2], { opacity: 0, y: "-48vh", scale: 0.985, filter: "blur(1.5px)", duration: 0.75 }, 8.9)
+
+      .to(workCards[3], { opacity: 1, y: 0, scale: 1, filter: "blur(0px)", duration: 0.8 }, 9.75)
+      .to(workCards[3], { opacity: 1, y: 0, scale: 1, filter: "blur(0px)", duration: 1.35 }, 10.55)
+      .to(workCards[3], { opacity: 0.55, y: -18, scale: 0.995, filter: "blur(0.75px)", duration: 0.7 }, 11.95)
+
+      .to(archiveContent, { opacity: 0, filter: "blur(2px)", scale: 0.985, duration: 0.85 }, 12.55)
       .fromTo(nextInner, {
         opacity: 0,
-        y: 70,
-        filter: "blur(4px)"
+        y: 52,
+        filter: "blur(3px)"
       }, {
         opacity: 1,
         y: 0,
         filter: "blur(0px)",
-        duration: 0.16
-      }, 1.18)
-      ;
+        duration: 1.0
+      }, 13.25);
   }
 
   function updateProgress(progress) {
-    const hero = sectionPhase(progress, 0.02, 0.1, 0.28, 0.4);
-    const build = sectionPhase(progress, 0.36, 0.46, 0.6, 0.72);
-    const work = sectionPhase(progress, 0.68, 0.78, 0.9, 0.98);
-    const workDepth = mapRange(progress, 0.8, 0.92);
+    const hero = sectionPhase(progress, 0.02, 0.12, 0.34, 0.48);
+    const build = sectionPhase(progress, 0.34, 0.46, 0.68, 0.82);
+    const work = sectionPhase(progress, 0.72, 0.84, 0.94, 1.0);
+    const workDepth = mapRange(progress, 0.84, 0.94);
 
     sceneState.progress = progress;
     sceneState.work = work.enter;
@@ -550,14 +555,14 @@
     pointer.x += (pointerTarget.x - pointer.x) * 0.055;
     pointer.y += (pointerTarget.y - pointer.y) * 0.055;
 
-    const motionScale = reduceMotion ? 0.22 : 0.8;
+    const motionScale = reduceMotion ? 0.22 : 1;
 
     orb.rotation.y += delta * 0.08 * motionScale;
     orb.rotation.x += delta * 0.025 * motionScale;
-    world.rotation.y = pointer.x * 0.04;
-    world.rotation.x = -pointer.y * 0.03;
-    world.position.x = pointer.x * 0.055;
-    world.position.y = -pointer.y * 0.04;
+    world.rotation.y = pointer.x * 0.055;
+    world.rotation.x = -pointer.y * 0.04;
+    world.position.x = pointer.x * 0.08;
+    world.position.y = -pointer.y * 0.055;
 
     rings.children.forEach((ring, index) => {
       ring.rotation.z += delta * (0.035 + index * 0.006) * motionScale;
@@ -597,6 +602,7 @@
   if (archivePixelBreak) {
     archivePixelBreak.init();
   }
+
   createArchiveTransition();
   createScrollTimeline();
   ScrollTrigger.refresh();
