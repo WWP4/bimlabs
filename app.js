@@ -195,6 +195,8 @@
     .to(camera.position, { z: 3.0, y: -1.15, x: 0.02 }, 0.66)
     .to(workGroup.position, { y: 2.2, z: -0.72 }, 0.72);
 
+  let resizeRaf = null;
+
   function onResize() {
     width = window.innerWidth;
     height = window.innerHeight;
