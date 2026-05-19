@@ -396,7 +396,7 @@
       opacity: 0,
       y: "74vh",
       scale: 0.94,
-      filter: "blur(6px)"
+      filter: "blur(2px)"
     });
 
     gsap.set(nextInner, {
@@ -418,27 +418,31 @@
     });
 
     archiveTl
-      .to(intro, { opacity: 0, y: -80, filter: "blur(8px)", duration: 0.08 }, 0.08)
-      .to(workCards[0], { opacity: 1, y: 0, scale: 1, filter: "blur(0px)", duration: 0.12 }, 0.1)
-      .to(workCards[0], { opacity: 0, y: "-76vh", scale: 0.96, filter: "blur(5px)", duration: 0.12 }, 0.24)
-      .to(workCards[1], { opacity: 1, y: 0, scale: 1, filter: "blur(0px)", duration: 0.12 }, 0.24)
-      .to(workCards[1], { opacity: 0, y: "-76vh", scale: 0.96, filter: "blur(5px)", duration: 0.12 }, 0.39)
-      .to(workCards[2], { opacity: 1, y: 0, scale: 1, filter: "blur(0px)", duration: 0.12 }, 0.39)
-      .to(workCards[2], { opacity: 0, y: "-76vh", scale: 0.96, filter: "blur(5px)", duration: 0.12 }, 0.54)
-      .to(workCards[3], { opacity: 1, y: 0, scale: 1, filter: "blur(0px)", duration: 0.12 }, 0.54)
-      .to(archiveContent, { opacity: 0.98, filter: "blur(0px)", scale: 1, duration: 0.05 }, 0.68)
-      .to(workCards[3], { opacity: 0.24, scale: 0.99, filter: "blur(4px)", duration: 0.12 }, 0.7)
-      .to(archiveContent, { opacity: 0, filter: "blur(10px)", scale: 0.965, duration: 0.14 }, 0.76)
+      .to(intro, { opacity: 0, y: -56, filter: "blur(2px)", duration: 0.1 }, 0.06)
+      .to(workCards[0], { opacity: 1, y: 0, scale: 1, filter: "blur(0px)", duration: 0.09 }, 0.14)
+      .to(workCards[0], { opacity: 1, y: 0, scale: 1, filter: "blur(0px)", duration: 0.11 }, 0.23)
+      .to(workCards[0], { opacity: 0, y: "-56vh", scale: 0.985, filter: "blur(1.5px)", duration: 0.09 }, 0.34)
+      .to(workCards[1], { opacity: 1, y: 0, scale: 1, filter: "blur(0px)", duration: 0.09 }, 0.39)
+      .to(workCards[1], { opacity: 1, y: 0, scale: 1, filter: "blur(0px)", duration: 0.11 }, 0.48)
+      .to(workCards[1], { opacity: 0, y: "-56vh", scale: 0.985, filter: "blur(1.5px)", duration: 0.09 }, 0.59)
+      .to(workCards[2], { opacity: 1, y: 0, scale: 1, filter: "blur(0px)", duration: 0.09 }, 0.64)
+      .to(workCards[2], { opacity: 1, y: 0, scale: 1, filter: "blur(0px)", duration: 0.11 }, 0.73)
+      .to(workCards[2], { opacity: 0, y: "-56vh", scale: 0.985, filter: "blur(1.5px)", duration: 0.09 }, 0.84)
+      .to(workCards[3], { opacity: 1, y: 0, scale: 1, filter: "blur(0px)", duration: 0.09 }, 0.89)
+      .to(workCards[3], { opacity: 1, y: 0, scale: 1, filter: "blur(0px)", duration: 0.1 }, 0.98)
+      .to(archiveContent, { opacity: 1, filter: "blur(0px)", scale: 1, duration: 0.05 }, 1.02)
+      .to(workCards[3], { opacity: 0.52, y: "-14vh", scale: 0.99, filter: "blur(1px)", duration: 0.08 }, 1.06)
+      .to(archiveContent, { opacity: 0, filter: "blur(3px)", scale: 0.975, duration: 0.12 }, 1.12)
       .fromTo(nextInner, {
         opacity: 0,
         y: 70,
-        filter: "blur(10px)"
+        filter: "blur(4px)"
       }, {
         opacity: 1,
         y: 0,
         filter: "blur(0px)",
-        duration: 0.18
-      }, 0.8)
+        duration: 0.16
+      }, 1.18)
       ;
   }
 
@@ -546,14 +550,14 @@
     pointer.x += (pointerTarget.x - pointer.x) * 0.055;
     pointer.y += (pointerTarget.y - pointer.y) * 0.055;
 
-    const motionScale = reduceMotion ? 0.22 : 1;
+    const motionScale = reduceMotion ? 0.22 : 0.8;
 
     orb.rotation.y += delta * 0.08 * motionScale;
     orb.rotation.x += delta * 0.025 * motionScale;
-    world.rotation.y = pointer.x * 0.055;
-    world.rotation.x = -pointer.y * 0.04;
-    world.position.x = pointer.x * 0.08;
-    world.position.y = -pointer.y * 0.055;
+    world.rotation.y = pointer.x * 0.04;
+    world.rotation.x = -pointer.y * 0.03;
+    world.position.x = pointer.x * 0.055;
+    world.position.y = -pointer.y * 0.04;
 
     rings.children.forEach((ring, index) => {
       ring.rotation.z += delta * (0.035 + index * 0.006) * motionScale;
