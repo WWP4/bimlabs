@@ -240,45 +240,25 @@
     for (let i = -1; i <= 1; i += 1) {
       const offset = i * 0.24;
 
-      gridLines.add(
-        lineFromPoints(
-          [
-            new THREE.Vector3(-0.5, offset, 0.5),
-            new THREE.Vector3(0.5, offset, 0.5)
-          ],
-          softLine
-        )
-      );
+      gridLines.add(lineFromPoints([
+        new THREE.Vector3(-0.5, offset, 0.5),
+        new THREE.Vector3(0.5, offset, 0.5)
+      ], softLine));
 
-      gridLines.add(
-        lineFromPoints(
-          [
-            new THREE.Vector3(offset, -0.5, 0.5),
-            new THREE.Vector3(offset, 0.5, 0.5)
-          ],
-          softLine
-        )
-      );
+      gridLines.add(lineFromPoints([
+        new THREE.Vector3(offset, -0.5, 0.5),
+        new THREE.Vector3(offset, 0.5, 0.5)
+      ], softLine));
 
-      gridLines.add(
-        lineFromPoints(
-          [
-            new THREE.Vector3(-0.5, offset, -0.5),
-            new THREE.Vector3(0.5, offset, -0.5)
-          ],
-          softLine
-        )
-      );
+      gridLines.add(lineFromPoints([
+        new THREE.Vector3(-0.5, offset, -0.5),
+        new THREE.Vector3(0.5, offset, -0.5)
+      ], softLine));
 
-      gridLines.add(
-        lineFromPoints(
-          [
-            new THREE.Vector3(offset, -0.5, -0.5),
-            new THREE.Vector3(offset, 0.5, -0.5)
-          ],
-          softLine
-        )
-      );
+      gridLines.add(lineFromPoints([
+        new THREE.Vector3(offset, -0.5, -0.5),
+        new THREE.Vector3(offset, 0.5, -0.5)
+      ], softLine));
     }
 
     innerFrame.add(surface, edgeMesh, gridLines);
@@ -350,31 +330,25 @@
     workGroup.scale.setScalar(1.42);
     workGroup.rotation.set(-0.12, -0.08, 0.015);
 
-    const archiveLine = registerWorkMaterial(
-      new THREE.LineBasicMaterial({
-        color: 0x07101d,
-        transparent: true,
-        opacity: 0.18
-      })
-    );
+    const archiveLine = registerWorkMaterial(new THREE.LineBasicMaterial({
+      color: 0x07101d,
+      transparent: true,
+      opacity: 0.18
+    }));
 
-    const archiveBlue = registerWorkMaterial(
-      new THREE.LineBasicMaterial({
-        color: 0x0077ff,
-        transparent: true,
-        opacity: 0.42
-      })
-    );
+    const archiveBlue = registerWorkMaterial(new THREE.LineBasicMaterial({
+      color: 0x0077ff,
+      transparent: true,
+      opacity: 0.42
+    }));
 
-    const archiveSurface = registerWorkMaterial(
-      new THREE.MeshBasicMaterial({
-        color: 0xffffff,
-        transparent: true,
-        opacity: 0.11,
-        depthWrite: false,
-        side: THREE.DoubleSide
-      })
-    );
+    const archiveSurface = registerWorkMaterial(new THREE.MeshBasicMaterial({
+      color: 0xffffff,
+      transparent: true,
+      opacity: 0.11,
+      depthWrite: false,
+      side: THREE.DoubleSide
+    }));
 
     const frames = [
       {
@@ -412,21 +386,15 @@
         index === 1 ? archiveBlue : archiveLine
       );
 
-      const header = lineFromPoints(
-        [
-          new THREE.Vector3(-size[0] * 0.38, size[1] * 0.24, 0.01),
-          new THREE.Vector3(size[0] * 0.38, size[1] * 0.24, 0.01)
-        ],
-        index === 1 ? archiveBlue : archiveLine
-      );
+      const header = lineFromPoints([
+        new THREE.Vector3(-size[0] * 0.38, size[1] * 0.24, 0.01),
+        new THREE.Vector3(size[0] * 0.38, size[1] * 0.24, 0.01)
+      ], index === 1 ? archiveBlue : archiveLine);
 
-      const metric = lineFromPoints(
-        [
-          new THREE.Vector3(-size[0] * 0.38, -size[1] * 0.12, 0.01),
-          new THREE.Vector3(size[0] * (0.08 + index * 0.09), -size[1] * 0.12, 0.01)
-        ],
-        archiveLine
-      );
+      const metric = lineFromPoints([
+        new THREE.Vector3(-size[0] * 0.38, -size[1] * 0.12, 0.01),
+        new THREE.Vector3(size[0] * (0.08 + index * 0.09), -size[1] * 0.12, 0.01)
+      ], archiveLine);
 
       frame.position.set(...position);
       frame.rotation.set(...rotation);
@@ -437,26 +405,18 @@
       workGroup.add(frame);
     });
 
-    const descentRail = lineFromPoints(
-      [
-        new THREE.Vector3(-1.58, 3.18, 0),
-        new THREE.Vector3(-1.58, -3.18, 0)
-      ],
-      archiveBlue
-    );
+    const descentRail = lineFromPoints([
+      new THREE.Vector3(-1.58, 3.18, 0),
+      new THREE.Vector3(-1.58, -3.18, 0)
+    ], archiveBlue);
 
     const crossLinks = new THREE.Group();
 
     frames.forEach(({ position }, index) => {
-      crossLinks.add(
-        lineFromPoints(
-          [
-            new THREE.Vector3(-1.58, position[1], 0),
-            new THREE.Vector3(position[0] - 1.18, position[1], position[2])
-          ],
-          index === 1 ? archiveBlue : archiveLine
-        )
-      );
+      crossLinks.add(lineFromPoints([
+        new THREE.Vector3(-1.58, position[1], 0),
+        new THREE.Vector3(position[0] - 1.18, position[1], position[2])
+      ], index === 1 ? archiveBlue : archiveLine));
     });
 
     workGroup.add(descentRail, crossLinks);
