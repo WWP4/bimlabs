@@ -896,3 +896,264 @@ h2 {
     display: none;
   }
 }
+
+
+/* ==========================================================
+   NOOMO-STYLE CASE SCROLL PATCH FOR BIM LABS
+   Adds fixed bottom case text, cinematic pinned cards,
+   smoother archive pacing, and premium editorial movement.
+   ========================================================== */
+
+.noomo-case-stage {
+  height: 100vh;
+  overflow: hidden;
+  isolation: isolate;
+  perspective: 1200px;
+}
+
+.noomo-archive-content {
+  z-index: 8;
+  transform-style: preserve-3d;
+}
+
+.noomo-work-intro {
+  max-width: min(780px, 88vw);
+}
+
+.noomo-work-intro span {
+  color: var(--blue);
+}
+
+.noomo-work-intro p {
+  margin-top: 20px;
+  color: var(--ink);
+  font-size: clamp(34px, 5vw, 84px);
+  line-height: 0.92;
+  letter-spacing: -0.075em;
+}
+
+.noomo-case-texts {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 29vh;
+  min-height: 230px;
+  z-index: 16;
+  pointer-events: none;
+}
+
+.noomo-case-text {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: minmax(220px, 1fr) auto minmax(280px, 1fr);
+  align-items: end;
+  gap: clamp(22px, 4vw, 72px);
+  padding: 0 clamp(22px, 4.2vw, 64px) clamp(36px, 5vw, 68px);
+  opacity: 0;
+  transform: translateY(28px);
+  filter: blur(8px);
+}
+
+.noomo-case-tags {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 9px;
+  color: rgba(7, 16, 29, 0.66);
+  font-family: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 11px;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+}
+
+.noomo-case-tags span {
+  display: inline-flex;
+  align-items: center;
+  min-height: 26px;
+}
+
+.noomo-case-tags span:not(.noomo-year)::before {
+  content: "/";
+  margin-right: 9px;
+  color: rgba(7, 16, 29, 0.28);
+}
+
+.noomo-year {
+  padding: 4px 9px;
+  border: 1px solid rgba(7, 16, 29, 0.24);
+  border-radius: 999px;
+  color: var(--ink);
+  background: rgba(255, 255, 255, 0.32);
+  backdrop-filter: blur(10px);
+}
+
+.noomo-case-count {
+  justify-self: center;
+  color: var(--blue);
+  font-family: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.noomo-case-desc {
+  justify-self: end;
+  width: min(390px, 100%);
+}
+
+.noomo-case-desc h3 {
+  margin: 0 0 14px;
+  color: var(--ink);
+  font-size: clamp(18px, 1.45vw, 24px);
+  line-height: 1.05;
+  letter-spacing: -0.035em;
+  font-weight: 600;
+}
+
+.noomo-case-desc p {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: clamp(14px, 1.05vw, 17px);
+  line-height: 1.42;
+  letter-spacing: -0.015em;
+}
+
+.noomo-case-card {
+  width: min(940px, 78vw);
+  min-height: min(62vh, 650px);
+  grid-template-columns: minmax(0, 1fr);
+  align-items: end;
+  overflow: hidden;
+  transform-style: preserve-3d;
+  will-change: transform, opacity, filter;
+  border-radius: 0;
+  box-shadow:
+    0 70px 160px rgba(7, 16, 29, 0.16),
+    0 0 0 1px rgba(255, 255, 255, 0.28) inset;
+}
+
+.noomo-case-card::before {
+  inset: 16px;
+  border-color: rgba(7, 16, 29, 0.075);
+}
+
+.noomo-case-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(120deg, rgba(255, 255, 255, 0.18), transparent 34%),
+    radial-gradient(circle at 82% 20%, rgba(0, 119, 255, 0.15), transparent 36%);
+  opacity: 0.9;
+}
+
+.noomo-case-card .work-card__copy {
+  position: relative;
+  z-index: 3;
+  max-width: 760px;
+}
+
+.noomo-case-card .work-card__copy h3 {
+  max-width: 780px;
+  font-size: clamp(54px, 7vw, 118px);
+}
+
+.noomo-case-card .work-card__visual {
+  position: absolute;
+  right: clamp(28px, 4vw, 58px);
+  bottom: clamp(28px, 4vw, 58px);
+  width: min(310px, 28vw);
+  min-height: min(280px, 32vh);
+  opacity: 0.72;
+  z-index: 2;
+}
+
+.noomo-case-card[data-case-card="1"] {
+  width: min(980px, 80vw);
+}
+
+.noomo-case-card[data-case-card="2"] {
+  width: min(900px, 76vw);
+}
+
+.noomo-case-card[data-case-card="3"] {
+  width: min(1010px, 82vw);
+}
+
+.noomo-case-card[data-case-card="0"] .work-card__visual {
+  transform: rotate(-4deg);
+}
+
+.noomo-case-card[data-case-card="1"] .work-card__visual {
+  transform: rotate(3deg);
+}
+
+.noomo-case-card[data-case-card="2"] .work-card__visual {
+  transform: rotate(-2deg);
+}
+
+.noomo-case-card[data-case-card="3"] .work-card__visual {
+  transform: rotate(5deg);
+}
+
+.noomo-case-stage .work-scroll::before {
+  opacity: 0.75;
+  background: linear-gradient(
+    180deg,
+    transparent,
+    rgba(0, 119, 255, 0.5),
+    rgba(7, 16, 29, 0.12),
+    transparent
+  );
+}
+
+.noomo-case-stage .work-index {
+  display: none;
+}
+
+@media (max-width: 900px) {
+  .noomo-case-texts {
+    height: 44vh;
+    min-height: 330px;
+  }
+
+  .noomo-case-text {
+    grid-template-columns: 1fr;
+    align-content: end;
+    gap: 18px;
+    padding: 0 20px 44px;
+    text-align: center;
+  }
+
+  .noomo-case-tags {
+    justify-content: center;
+    order: 2;
+  }
+
+  .noomo-case-count {
+    order: 3;
+  }
+
+  .noomo-case-desc {
+    order: 1;
+    justify-self: center;
+    width: min(430px, 100%);
+  }
+
+  .noomo-case-card {
+    width: min(92vw, 680px);
+    min-height: 58vh;
+    padding: 30px;
+  }
+
+  .noomo-case-card .work-card__copy h3 {
+    font-size: clamp(42px, 12vw, 76px);
+  }
+
+  .noomo-case-card .work-card__visual {
+    display: none;
+  }
+}
