@@ -41,6 +41,8 @@
   const labelOpacity = { value: 0 };
   const workLabelOpacity = { value: 0 };
   const sceneState = { progress: 0, work: 0, depth: 0, buildPhase: 0, archivePhase: 0 };
+  let width = window.innerWidth;
+  let height = window.innerHeight;
   const labelState = Object.fromEntries(Object.keys(labels).map((key) => [key, { x: width * 0.5, y: height * 0.5, opacity: 0 }]));
   let animationFrameId = null;
 
@@ -58,9 +60,6 @@
       debug: false
     })
     : null;
-
-  let width = window.innerWidth;
-  let height = window.innerHeight;
 
   const scene = new THREE.Scene();
   scene.fog = new THREE.Fog(0xe7f0fb, 7, 16);
