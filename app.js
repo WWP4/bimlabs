@@ -133,10 +133,11 @@ function buildRadials() {
     const angle = (i / 10) * Math.PI * 2;
     const start = new THREE.Vector3(Math.cos(angle) * 0.44, Math.sin(angle) * 0.44, 0);
     const end = new THREE.Vector3(Math.cos(angle) * (0.92 + (i % 3) * 0.12), Math.sin(angle) * (0.92 + (i % 3) * 0.12), 0);
-    const line = lineFromPoints([start, end], i % 5 === 0 ? blueSoft : softLine);
-    line.rotation.set((i % 3) * 0.34, (i % 4) * 0.22, 0);
-    line.userData.baseScale = 0.48 + (i % 4) * 0.07;
-    radialGroup.add(line);
+    const material = i % 5 === 0 ? blueSoft : softLine;
+    const radialLine = lineFromPoints([start, end], material);
+    radialLine.rotation.set((i % 3) * 0.34, (i % 4) * 0.22, 0);
+    radialLine.userData.baseScale = 0.48 + (i % 4) * 0.07;
+    radialGroup.add(radialLine);
   }
 
   innerFrame.add(surface, edgeMesh, gridLines);
