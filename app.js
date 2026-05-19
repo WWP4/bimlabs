@@ -467,132 +467,163 @@
   }
 
   function createArchiveTransition() {
-    const archive = document.querySelector(".work-archive");
-    const archiveContent = document.querySelector(".archive-content");
-    const workCards = gsap.utils.toArray(".work-card");
-    const intro = document.querySelector(".work-scroll__intro");
-    const nextInner = document.querySelector(".next-section-inner");
+  const archive = document.querySelector(".work-archive");
+  const archiveContent = document.querySelector(".archive-content");
+  const workCards = gsap.utils.toArray(".work-card");
+  const intro = document.querySelector(".work-scroll__intro");
+  const nextInner = document.querySelector(".next-section-inner");
+  const caseMetaItems = gsap.utils.toArray(".case-meta-item");
 
-    if (!archive || !archiveContent || !workCards.length) return;
+  if (!archive || !archiveContent || !workCards.length) return;
 
-    gsap.set(workCards, {
+  gsap.set(workCards, {
+    opacity: 0,
+    y: "76vh",
+    scale: 0.92,
+    rotateX: 8,
+    filter: "blur(10px)"
+  });
+
+  gsap.set(caseMetaItems, {
+    opacity: 0,
+    y: 28,
+    filter: "blur(8px)"
+  });
+
+  if (intro) {
+    gsap.set(intro, {
+      opacity: 1,
+      y: 0,
+      filter: "blur(0px)"
+    });
+  }
+
+  if (archiveContent) {
+    gsap.set(archiveContent, {
+      opacity: 1,
+      scale: 1,
+      filter: "blur(0px)"
+    });
+  }
+
+  if (nextInner) {
+    gsap.set(nextInner, {
       opacity: 0,
-      y: "70vh",
-      scale: 0.96,
-      filter: "blur(6px)"
+      y: 80,
+      filter: "blur(12px)",
+      pointerEvents: "none"
     });
+  }
 
-    if (nextInner) {
-      gsap.set(nextInner, {
+  function showCase(tl, index, start) {
+    const card = workCards[index];
+    const meta = caseMetaItems[index];
+
+    if (!card) return;
+
+    tl.to(card, {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      rotateX: 0,
+      filter: "blur(0px)",
+      duration: 0.13
+    }, start);
+
+    tl.to(card, {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      rotateX: 0,
+      filter: "blur(0px)",
+      duration: 0.1
+    }, start + 0.13);
+
+    tl.to(card, {
+      opacity: 0,
+      y: "-72vh",
+      scale: 0.94,
+      rotateX: -7,
+      filter: "blur(10px)",
+      duration: 0.13
+    }, start + 0.25);
+
+    if (meta) {
+      tl.to(meta, {
+        opacity: 1,
+        y: 0,
+        filter: "blur(0px)",
+        duration: 0.1
+      }, start + 0.04);
+
+      tl.to(meta, {
+        opacity: 1,
+        y: 0,
+        filter: "blur(0px)",
+        duration: 0.16
+      }, start + 0.13);
+
+      tl.to(meta, {
         opacity: 0,
-        y: 70,
-        filter: "blur(10px)"
-      });
-    }
-
-    const archiveTl = gsap.timeline({
-      defaults: {
-        ease: "none"
-      },
-      scrollTrigger: {
-        trigger: archive,
-        start: "top top",
-        end: "+=360%",
-        scrub: true,
-        pin: true,
-        anticipatePin: 1
-      }
-    });
-
-    archiveTl
-      .to(intro, {
-        opacity: 0,
-        y: -70,
+        y: -22,
         filter: "blur(8px)",
         duration: 0.1
-      }, 0.08)
-
-      .to(workCards[0], {
-        opacity: 1,
-        y: 0,
-        scale: 1,
-        filter: "blur(0px)",
-        duration: 0.14
-      }, 0.1)
-
-      .to(workCards[0], {
-        opacity: 0,
-        y: "-70vh",
-        scale: 0.97,
-        filter: "blur(6px)",
-        duration: 0.14
-      }, 0.25)
-
-      .to(workCards[1], {
-        opacity: 1,
-        y: 0,
-        scale: 1,
-        filter: "blur(0px)",
-        duration: 0.14
-      }, 0.25)
-
-      .to(workCards[1], {
-        opacity: 0,
-        y: "-70vh",
-        scale: 0.97,
-        filter: "blur(6px)",
-        duration: 0.14
-      }, 0.42)
-
-      .to(workCards[2], {
-        opacity: 1,
-        y: 0,
-        scale: 1,
-        filter: "blur(0px)",
-        duration: 0.14
-      }, 0.42)
-
-      .to(workCards[2], {
-        opacity: 0,
-        y: "-70vh",
-        scale: 0.97,
-        filter: "blur(6px)",
-        duration: 0.14
-      }, 0.59)
-
-      .to(workCards[3], {
-        opacity: 1,
-        y: 0,
-        scale: 1,
-        filter: "blur(0px)",
-        duration: 0.14
-      }, 0.59)
-
-      .to(workCards[3], {
-        opacity: 0,
-        y: -90,
-        scale: 0.98,
-        filter: "blur(8px)",
-        duration: 0.16
-      }, 0.76)
-
-      .to(archiveContent, {
-        opacity: 0,
-        filter: "blur(10px)",
-        scale: 0.97,
-        duration: 0.18
-      }, 0.78);
-
-    if (nextInner) {
-      archiveTl.to(nextInner, {
-        opacity: 1,
-        y: 0,
-        filter: "blur(0px)",
-        duration: 0.22
-      }, 0.82);
+      }, start + 0.29);
     }
   }
 
+  const archiveTl = gsap.timeline({
+    defaults: {
+      ease: "none"
+    },
+    scrollTrigger: {
+      trigger: archive,
+      start: "top top",
+      end: "+=520%",
+      scrub: 1.15,
+      pin: true,
+      anticipatePin: 1
+    }
+  });
+
+  archiveTl
+    .to(intro, {
+      opacity: 1,
+      y: 0,
+      filter: "blur(0px)",
+      duration: 0.08
+    }, 0)
+
+    .to(intro, {
+      opacity: 0,
+      y: -60,
+      filter: "blur(10px)",
+      duration: 0.11
+    }, 0.1);
+
+  showCase(archiveTl, 0, 0.18);
+  showCase(archiveTl, 1, 0.42);
+  showCase(archiveTl, 2, 0.66);
+  showCase(archiveTl, 3, 0.9);
+
+  archiveTl.to(archiveContent, {
+    opacity: 0,
+    filter: "blur(12px)",
+    scale: 0.96,
+    duration: 0.14
+  }, 1.18);
+
+  if (nextInner) {
+    archiveTl.to(nextInner, {
+      opacity: 1,
+      y: 0,
+      filter: "blur(0px)",
+      pointerEvents: "auto",
+      duration: 0.18
+    }, 1.25);
+  }
+}
+ 
   function updateProgress(progress) {
     const page = window.scrollY / Math.max(1, window.innerHeight);
 
