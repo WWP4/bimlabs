@@ -466,22 +466,27 @@
     });
   }
 
+
   function createArchiveTransition() {
   const archive = document.querySelector(".work-archive");
   const archiveContent = document.querySelector(".archive-content");
   const workCards = gsap.utils.toArray(".work-card");
   const intro = document.querySelector(".work-scroll__intro");
   const nextInner = document.querySelector(".next-section-inner");
-  const caseMetaItems = gsap.utils.toArray(".case-meta-item");
+  const caseMetaItems = gsap.utils.toArray(".noomo-case-text");
 
   if (!archive || !archiveContent || !workCards.length) return;
 
   gsap.set(workCards, {
+    xPercent: -50,
+    yPercent: -50,
     opacity: 0,
-    y: "76vh",
-    scale: 0.92,
-    rotateX: 8,
-    filter: "blur(10px)"
+    y: "78vh",
+    scale: 0.9,
+    rotationX: 8,
+    filter: "blur(10px)",
+    transformPerspective: 1200,
+    transformOrigin: "50% 50%"
   });
 
   gsap.set(caseMetaItems, {
@@ -509,67 +514,67 @@
   if (nextInner) {
     gsap.set(nextInner, {
       opacity: 0,
-      y: 80,
+      y: 90,
       filter: "blur(12px)",
       pointerEvents: "none"
     });
   }
 
-  function showCase(tl, index, start) {
+  function showCase(timeline, index, start) {
     const card = workCards[index];
     const meta = caseMetaItems[index];
 
     if (!card) return;
 
-    tl.to(card, {
+    timeline.to(card, {
       opacity: 1,
       y: 0,
       scale: 1,
-      rotateX: 0,
+      rotationX: 0,
       filter: "blur(0px)",
-      duration: 0.13
+      duration: 0.12
     }, start);
 
-    tl.to(card, {
+    timeline.to(card, {
       opacity: 1,
       y: 0,
       scale: 1,
-      rotateX: 0,
+      rotationX: 0,
       filter: "blur(0px)",
-      duration: 0.1
-    }, start + 0.13);
+      duration: 0.13
+    }, start + 0.12);
 
-    tl.to(card, {
+    timeline.to(card, {
       opacity: 0,
-      y: "-72vh",
+      y: "-76vh",
       scale: 0.94,
-      rotateX: -7,
+      rotationX: -7,
       filter: "blur(10px)",
       duration: 0.13
-    }, start + 0.25);
+    }, start + 0.29);
 
-    if (meta) {
-      tl.to(meta, {
-        opacity: 1,
-        y: 0,
-        filter: "blur(0px)",
-        duration: 0.1
-      }, start + 0.04);
+    if (!meta) return;
 
-      tl.to(meta, {
-        opacity: 1,
-        y: 0,
-        filter: "blur(0px)",
-        duration: 0.16
-      }, start + 0.13);
+    timeline.to(meta, {
+      opacity: 1,
+      y: 0,
+      filter: "blur(0px)",
+      duration: 0.1
+    }, start + 0.04);
 
-      tl.to(meta, {
-        opacity: 0,
-        y: -22,
-        filter: "blur(8px)",
-        duration: 0.1
-      }, start + 0.29);
-    }
+    timeline.to(meta, {
+      opacity: 1,
+      y: 0,
+      filter: "blur(0px)",
+      duration: 0.16
+    }, start + 0.13);
+
+    timeline.to(meta, {
+      opacity: 0,
+      y: -22,
+      filter: "blur(8px)",
+      duration: 0.1
+    }, start + 0.32);
   }
 
   const archiveTl = gsap.timeline({
@@ -579,8 +584,8 @@
     scrollTrigger: {
       trigger: archive,
       start: "top top",
-      end: "+=520%",
-      scrub: 1.15,
+      end: "+=540%",
+      scrub: 1.2,
       pin: true,
       anticipatePin: 1
     }
@@ -596,22 +601,22 @@
 
     .to(intro, {
       opacity: 0,
-      y: -60,
+      y: -64,
       filter: "blur(10px)",
       duration: 0.11
     }, 0.1);
 
   showCase(archiveTl, 0, 0.18);
-  showCase(archiveTl, 1, 0.42);
-  showCase(archiveTl, 2, 0.66);
-  showCase(archiveTl, 3, 0.9);
+  showCase(archiveTl, 1, 0.43);
+  showCase(archiveTl, 2, 0.68);
+  showCase(archiveTl, 3, 0.93);
 
   archiveTl.to(archiveContent, {
     opacity: 0,
     filter: "blur(12px)",
     scale: 0.96,
     duration: 0.14
-  }, 1.18);
+  }, 1.22);
 
   if (nextInner) {
     archiveTl.to(nextInner, {
@@ -620,7 +625,7 @@
       filter: "blur(0px)",
       pointerEvents: "auto",
       duration: 0.18
-    }, 1.25);
+    }, 1.3);
   }
 }
  
