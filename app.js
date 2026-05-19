@@ -138,6 +138,23 @@ function buildRadials() {
     line.userData.baseScale = 0.48 + (i % 4) * 0.07;
     radialGroup.add(line);
   }
+
+  innerFrame.add(surface, edgeMesh, gridLines);
+  innerFrame.rotation.set(0.72, 0.44, 0.18);
+}
+
+function addLabelAnchors() {
+  labelAnchors.ai.position.set(1.32, 0.78, 0.25);
+  labelAnchors.portal.position.set(-1.12, -0.12, 0.38);
+  labelAnchors.viewer.position.set(0.88, -0.86, -0.1);
+  labelAnchors.archive.position.set(-0.68, -1.7, 0.52);
+  Object.entries(labelAnchors).forEach(([key, anchor]) => {
+    if (key === "archive") {
+      workGroup.add(anchor);
+    } else {
+      orb.add(anchor);
+    }
+  });
 }
 
 function buildNodes() {
