@@ -12,6 +12,7 @@
 const root = document.documentElement;
 const canvas = document.querySelector("#bim-world");
 const progressFill = document.querySelector("#progressFill");
+const pixelLayer = document.querySelector(".pixel-transition");
 const labels = {
   ai: document.querySelector('[data-label="ai"]'),
   portal: document.querySelector('[data-label="portal"]'),
@@ -27,6 +28,7 @@ const screenPosition = new THREE.Vector3();
 const labelOpacity = { value: 0 };
 const workLabelOpacity = { value: 0 };
 const sceneState = { progress: 0, work: 0, depth: 0, buildPhase: 0, archivePhase: 0 };
+let pixelCells = [];
 
 let width = window.innerWidth;
 let height = window.innerHeight;
@@ -316,6 +318,114 @@ function mapRange(value, inMin, inMax) {
   return THREE.MathUtils.clamp((value - inMin) / (inMax - inMin), 0, 1);
 }
 
+function createPixelCells() {
+  if (!pixelLayer) return;
+
+  pixelLayer.innerHTML = "";
+  pixelCells = [];
+
+  const columns = width < 760 ? 16 : 26;
+  const rows = width < 760 ? 12 : 15;
+  const cellWidth = Math.ceil(width / columns);
+  const cellHeight = Math.ceil(height / rows);
+  const colors = ["rgba(0,119,255,0.86)", "rgba(7,16,29,0.72)", "rgba(255,255,255,0.78)", "rgba(180,213,244,0.82)"];
+
+  for (let y = 0; y < rows; y += 1) {
+    for (let x = 0; x < columns; x += 1) {
+      const cell = document.createElement("span");
+      const centerX = x - columns / 2;
+      const centerY = y - rows / 2;
+      const spread = 34 + Math.random() * 42;
+
+      cell.className = "pixel-cell";
+      cell.style.left = `${x * cellWidth}px`;
+      cell.style.top = `${y * cellHeight}px`;
+      cell.style.width = `${cellWidth + 1}px`;
+      cell.style.height = `${cellHeight + 1}px`;
+      cell.style.background = colors[(x + y) % colors.length];
+      cell.dataset.dx = `${centerX * spread + (Math.random() - 0.5) * 180}`;
+      cell.dataset.dy = `${centerY * spread + (Math.random() - 0.5) * 180}`;
+      cell.dataset.rotate = `${gsap.utils.random(-22, 22)}`;
+      pixelLayer.appendChild(cell);
+      pixelCells.push(cell);
+    }
+  }
+}
+
+function createArchiveTransition() {
+  const archive = document.querySelector(".work-archive");
+  const archiveContent = document.querySelector(".archive-content");
+  const workCards = gsap.utils.toArray(".work-card");
+  const intro = document.querySelector(".work-scroll__intro");
+  const nextInner = document.querySelector(".next-section-inner");
+
+  if (!archive || !archiveContent || !workCards.length || !pixelCells.length) return;
+
+  gsap.set(workCards, {
+    opacity: 0,
+    y: "74vh",
+    scale: 0.94,
+    filter: "blur(6px)"
+  });
+
+  gsap.set(nextInner, {
+    opacity: 0,
+    y: 70,
+    filter: "blur(10px)"
+  });
+
+  const archiveTl = gsap.timeline({
+    defaults: { ease: "none" },
+    scrollTrigger: {
+      trigger: archive,
+      start: "top top",
+      end: "+=420%",
+      scrub: true,
+      pin: true,
+      anticipatePin: 1
+    }
+  });
+
+  archiveTl
+    .to(intro, { opacity: 0, y: -80, filter: "blur(8px)", duration: 0.08 }, 0.08)
+    .to(workCards[0], { opacity: 1, y: 0, scale: 1, filter: "blur(0px)", duration: 0.12 }, 0.1)
+    .to(workCards[0], { opacity: 0, y: "-76vh", scale: 0.96, filter: "blur(5px)", duration: 0.12 }, 0.24)
+    .to(workCards[1], { opacity: 1, y: 0, scale: 1, filter: "blur(0px)", duration: 0.12 }, 0.24)
+    .to(workCards[1], { opacity: 0, y: "-76vh", scale: 0.96, filter: "blur(5px)", duration: 0.12 }, 0.39)
+    .to(workCards[2], { opacity: 1, y: 0, scale: 1, filter: "blur(0px)", duration: 0.12 }, 0.39)
+    .to(workCards[2], { opacity: 0, y: "-76vh", scale: 0.96, filter: "blur(5px)", duration: 0.12 }, 0.54)
+    .to(workCards[3], { opacity: 1, y: 0, scale: 1, filter: "blur(0px)", duration: 0.12 }, 0.54)
+    .to(archiveContent, { opacity: 0.34, filter: "blur(4px)", scale: 0.985, duration: 0.12 }, 0.68)
+    .to(workCards[3], { opacity: 0.18, scale: 0.98, filter: "blur(7px)", duration: 0.12 }, 0.7)
+    .to(pixelLayer, { opacity: 1, duration: 0.01 }, 0.69)
+    .to(pixelCells, {
+      opacity: 1,
+      scale: 1,
+      duration: 0.12,
+      stagger: { each: 0.0015, from: "center" }
+    }, 0.71)
+    .fromTo(nextInner, {
+      opacity: 0,
+      y: 70,
+      filter: "blur(10px)"
+    }, {
+      opacity: 1,
+      y: 0,
+      filter: "blur(0px)",
+      duration: 0.16
+    }, 0.78)
+    .to(pixelCells, {
+      x: (_, cell) => Number(cell.dataset.dx),
+      y: (_, cell) => Number(cell.dataset.dy),
+      rotate: (_, cell) => Number(cell.dataset.rotate),
+      opacity: 0,
+      scale: () => gsap.utils.random(0.72, 1.48),
+      duration: 0.18,
+      stagger: { each: 0.002, from: "center" }
+    }, 0.82)
+    .to(pixelLayer, { opacity: 0, duration: 0.08 }, 0.94);
+}
+
 function updateProgress(progress) {
   const page = window.scrollY / Math.max(1, window.innerHeight);
   const heroOut = mapRange(page, 0.68, 0.96);
@@ -453,7 +563,10 @@ function animate() {
 
 window.addEventListener("pointermove", onPointerMove, { passive: true });
 window.addEventListener("resize", onResize);
+createPixelCells();
+createArchiveTransition();
 createScrollTimeline();
+ScrollTrigger.refresh();
 animate();
 
 })();
