@@ -371,6 +371,14 @@
     return THREE.MathUtils.clamp((value - inMin) / (inMax - inMin), 0, 1);
   }
 
+  function sectionPhase(progress, enterStart, enterEnd, exitStart, exitEnd) {
+    const enter = mapRange(progress, enterStart, enterEnd);
+    const exit = mapRange(progress, exitStart, exitEnd);
+    const active = enter * (1 - exit);
+
+    return { enter, exit, active };
+  }
+
   function createArchiveTransition() {
     if (reduceMotion) return;
 
@@ -435,27 +443,24 @@
   }
 
   function updateProgress(progress) {
-    const page = window.scrollY / Math.max(1, window.innerHeight);
-    const heroOut = mapRange(page, 0.68, 0.96);
-    const buildReveal = mapRange(page, 0.98, 1.18);
-    const buildOut = mapRange(page, 1.72, 2.02);
-    const workReveal = mapRange(page, 2.02, 2.28);
-    const workDepth = mapRange(page, 2.34, 2.74);
-    const workUiOut = mapRange(page, 3.08, 3.46);
+    const hero = sectionPhase(progress, 0.02, 0.08, 0.2, 0.31);
+    const build = sectionPhase(progress, 0.24, 0.34, 0.48, 0.58);
+    const work = sectionPhase(progress, 0.52, 0.64, 0.84, 0.93);
+    const workDepth = mapRange(progress, 0.64, 0.79);
 
     sceneState.progress = progress;
-    sceneState.work = workReveal;
+    sceneState.work = work.enter;
     sceneState.depth = workDepth;
-    sceneState.buildPhase = buildReveal * (1 - buildOut);
-    sceneState.archivePhase = workReveal * (1 - workUiOut);
+    sceneState.buildPhase = build.active;
+    sceneState.archivePhase = work.active;
 
     root.style.setProperty("--section-progress", progress.toFixed(4));
-    root.style.setProperty("--hero-out", heroOut.toFixed(4));
-    root.style.setProperty("--build-reveal", buildReveal.toFixed(4));
-    root.style.setProperty("--build-out", buildOut.toFixed(4));
-    root.style.setProperty("--work-reveal", workReveal.toFixed(4));
+    root.style.setProperty("--hero-out", hero.exit.toFixed(4));
+    root.style.setProperty("--build-reveal", build.enter.toFixed(4));
+    root.style.setProperty("--build-out", build.exit.toFixed(4));
+    root.style.setProperty("--work-reveal", work.enter.toFixed(4));
     root.style.setProperty("--work-depth", workDepth.toFixed(4));
-    root.style.setProperty("--work-ui-out", workUiOut.toFixed(4));
+    root.style.setProperty("--work-ui-out", work.exit.toFixed(4));
 
     if (progressFill) {
       progressFill.style.width = `${Math.round(progress * 100)}%`;
