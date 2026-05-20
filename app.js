@@ -97,11 +97,78 @@
     opacity: 0.72
   });
 
-  const blueSoft = new THREE.LineBasicMaterial({
-    color: 0x0077ff,
-    transparent: true,
-    opacity: 0.34
-  });
+const labels = {
+  ai: document.querySelector('[data-label="ai"]'),
+  portal: document.querySelector('[data-label="portal"]'),
+  viewer: document.querySelector('[data-label="viewer"]'),
+  archive: document.querySelector('[data-label="archive"]')
+};
+
+const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+const clock = new THREE.Clock();
+const pointer = new THREE.Vector2();
+const pointerTarget = new THREE.Vector2();
+const screenPosition = new THREE.Vector3();
+const labelOpacity = { value: 0 };
+const workLabelOpacity = { value: 0 };
+const sceneState = { progress: 0, work: 0, depth: 0, buildPhase: 0, archivePhase: 0 };
+let pixelCells = [];
+let animationFrameId = null;
+
+let width = window.innerWidth;
+let height = window.innerHeight;
+
+const scene = new THREE.Scene();
+scene.fog = new THREE.Fog(0xe7f0fb, 7, 16);
+
+const camera = new THREE.PerspectiveCamera(36, width / height, 0.1, 100);
+camera.position.set(0, 0.1, 7.2);
+
+const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.7));
+renderer.setSize(width, height);
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+
+const world = new THREE.Group();
+const orb = new THREE.Group();
+const rings = new THREE.Group();
+const nodeGroup = new THREE.Group();
+const radialGroup = new THREE.Group();
+const innerFrame = new THREE.Group();
+const workGroup = new THREE.Group();
+const haloGroup = new THREE.Group();
+const dustGroup = new THREE.Group();
+const workMaterials = [];
+const labelAnchors = {
+  ai: new THREE.Object3D(),
+  portal: new THREE.Object3D(),
+  viewer: new THREE.Object3D(),
+  archive: new THREE.Object3D()
+};
+
+scene.add(world);
+world.add(orb);
+orb.scale.setScalar(0.001);
+orb.add(rings, nodeGroup, radialGroup, innerFrame);
+world.add(workGroup);
+world.add(haloGroup, dustGroup);
+
+const deepLine = new THREE.LineBasicMaterial({ color: 0x07101d, transparent: true, opacity: 0.28 });
+const softLine = new THREE.LineBasicMaterial({ color: 0x07101d, transparent: true, opacity: 0.15 });
+const blueLine = new THREE.LineBasicMaterial({ color: 0x0077ff, transparent: true, opacity: 0.72 });
+const blueSoft = new THREE.LineBasicMaterial({ color: 0x0077ff, transparent: true, opacity: 0.34 });
+const surfaceMaterial = new THREE.MeshBasicMaterial({
+  color: 0xffffff,
+  transparent: true,
+  opacity: 0.075,
+  depthWrite: false,
+  side: THREE.DoubleSide
+});
+
+function lineFromPoints(points, material) {
+  const geometry = new THREE.BufferGeometry().setFromPoints(points);
+  return new THREE.Line(geometry, material);
+}
 
   const surfaceMaterial = new THREE.MeshBasicMaterial({
     color: 0xffffff,
@@ -230,36 +297,48 @@
     });
   }
 
-  function buildInnerFrame() {
-    const cube = new THREE.BoxGeometry(0.98, 0.98, 0.98);
-    const edges = new THREE.EdgesGeometry(cube);
-    const edgeMesh = new THREE.LineSegments(edges, blueSoft);
-    const surface = new THREE.Mesh(cube, surfaceMaterial);
-    const gridLines = new THREE.Group();
+function buildHaloField() {
+  const haloMaterial = new THREE.LineBasicMaterial({ color: 0x74b4ff, transparent: true, opacity: 0.24 });
+  const haloSoft = new THREE.LineBasicMaterial({ color: 0xb7d8ff, transparent: true, opacity: 0.12 });
+  for (let i = 0; i < 6; i += 1) {
+    const radius = 2.3 + i * 0.34;
+    const halo = lineFromPoints(makeCircle(radius, 220), i % 2 ? haloMaterial : haloSoft);
+    halo.rotation.set(0.22 + i * 0.08, -0.34 + i * 0.09, i * 0.1);
+    halo.userData.spin = 0.01 + i * 0.003;
+    halo.userData.wobble = 0.06 + i * 0.012;
+    haloGroup.add(halo);
+  }
+}
 
-    for (let i = -1; i <= 1; i += 1) {
-      const offset = i * 0.24;
+function buildDustField() {
+  const dustGeometry = new THREE.BufferGeometry();
+  const particleCount = 720;
+  const positions = new Float32Array(particleCount * 3);
+  for (let i = 0; i < particleCount; i += 1) {
+    const radius = 1.8 + Math.random() * 8.4;
+    const theta = Math.random() * Math.PI * 2;
+    const phi = Math.acos(2 * Math.random() - 1);
+    positions[i * 3] = radius * Math.sin(phi) * Math.cos(theta);
+    positions[i * 3 + 1] = radius * Math.sin(phi) * Math.sin(theta) * 0.6;
+    positions[i * 3 + 2] = radius * Math.cos(phi);
+  }
+  dustGeometry.setAttribute("position", new THREE.BufferAttribute(positions, 3));
+  const dustMaterial = new THREE.PointsMaterial({
+    color: 0xbad9ff,
+    size: 0.018,
+    transparent: true,
+    opacity: 0.56,
+    depthWrite: false
+  });
+  const dust = new THREE.Points(dustGeometry, dustMaterial);
+  dustGroup.add(dust);
+}
 
-      gridLines.add(lineFromPoints([
-        new THREE.Vector3(-0.5, offset, 0.5),
-        new THREE.Vector3(0.5, offset, 0.5)
-      ], softLine));
-
-      gridLines.add(lineFromPoints([
-        new THREE.Vector3(offset, -0.5, 0.5),
-        new THREE.Vector3(offset, 0.5, 0.5)
-      ], softLine));
-
-      gridLines.add(lineFromPoints([
-        new THREE.Vector3(-0.5, offset, -0.5),
-        new THREE.Vector3(0.5, offset, -0.5)
-      ], softLine));
-
-      gridLines.add(lineFromPoints([
-        new THREE.Vector3(offset, -0.5, -0.5),
-        new THREE.Vector3(offset, 0.5, -0.5)
-      ], softLine));
-    }
+function registerWorkMaterial(material) {
+  workMaterials.push({ material, target: material.opacity });
+  material.opacity = 0;
+  return material;
+}
 
     innerFrame.add(surface, edgeMesh, gridLines);
     innerFrame.rotation.set(0.72, 0.44, 0.18);
@@ -312,18 +391,24 @@
     return material;
   }
 
-  function makeFrameGeometry(widthValue, heightValue) {
-    const w = widthValue / 2;
-    const h = heightValue / 2;
+orb.add(buildOuterWireSphere());
+buildRings();
+buildRadials();
+buildNodes();
+buildInnerFrame();
+addLabelAnchors();
+buildAtmosphere();
+buildHaloField();
+buildDustField();
+buildWorkArchive();
 
-    return new THREE.BufferGeometry().setFromPoints([
-      new THREE.Vector3(-w, -h, 0),
-      new THREE.Vector3(w, -h, 0),
-      new THREE.Vector3(w, h, 0),
-      new THREE.Vector3(-w, h, 0),
-      new THREE.Vector3(-w, -h, 0)
-    ]);
-  }
+function setBackground(progress) {
+  const start = new THREE.Color(0xe7f0fb);
+  const end = new THREE.Color(0xfbfdff);
+  const current = start.lerp(end, progress);
+  scene.fog.color.copy(current);
+  document.body.style.background = `linear-gradient(180deg, #${current.getHexString()} 0%, #fbfdff 100%)`;
+}
 
   function buildWorkArchive() {
     workGroup.position.set(0.18, -3.6, -0.85);
@@ -693,54 +778,43 @@ function updateProgress(progress) {
     updateProgress(0);
 
   const timeline = gsap.timeline({
-    defaults: { ease: "power2.inOut", duration: 0.24 },
+    defaults: { ease: "power3.inOut", duration: 0.34 },
     scrollTrigger: {
       trigger: document.body,
       start: "top top",
       end: "bottom bottom",
-      scrub: 2.2,
+      scrub: 2.8,
       onUpdate: (self) => updateProgress(self.progress)
     }
 
-    const timeline = gsap.timeline({
-      defaults: {
-        ease: "none",
-        duration: 0.14
-      },
-      scrollTrigger: {
-        trigger: document.body,
-        start: "top top",
-        end: "bottom bottom",
-        scrub: 1.15,
-        onUpdate: (self) => updateProgress(self.progress)
-      }
-    });
+  timeline
+    .to(orb.scale, { x: 1, y: 1, z: 1 }, 0.12)
+    .to(camera.position, { z: 4.15, y: 0.03 }, 0.12)
+    .to(camera.rotation, { z: -0.035 }, 0.12)
+    .to(orb.position, { x: 1.08, y: -0.03, z: 0.18 }, 0.12)
+    .to(orb.rotation, { y: Math.PI * 0.58, x: 0.25 }, 0.12)
+    .to(rings.scale, { x: 1.38, y: 1.38, z: 1.38 }, 0.12)
+    .to(radialGroup.scale, { x: 1.35, y: 1.35, z: 1.35 }, 0.14)
+    .to(innerFrame.scale, { x: 1.18, y: 1.18, z: 1.18 }, 0.12)
+    .to(labelOpacity, { value: 1 }, 0.18)
+    .to(camera.position, { z: 3.75, y: -0.38, x: -0.06 }, 0.32)
+    .to(camera.rotation, { z: 0.025, x: -0.045 }, 0.32)
+    .to(orb.position, { x: 0.58, y: 1.25, z: -0.28 }, 0.32)
+    .to(orb.rotation, { y: Math.PI * 1.08, x: -0.14, z: 0.12 }, 0.32)
+    .to(rings.scale, { x: 1.58, y: 1.58, z: 1.58 }, 0.32)
+    .to(workGroup.position, { x: 0.1, y: -2.05, z: -0.88 }, 0.32)
+    .to(workGroup.rotation, { x: -0.1, y: -0.04, z: 0.006 }, 0.32)
+    .to(workLabelOpacity, { value: 1 }, 0.38)
+    .to(camera.position, { z: 2.9, y: -1.22, x: 0.02, duration: 0.34 }, 0.58)
+    .to(camera.rotation, { z: 0.01, x: -0.08, duration: 0.34 }, 0.58)
+    .to(workGroup.position, { y: 2.35, z: -0.72, duration: 0.34 }, 0.58)
+    .to(orb.position, { y: 1.88, z: -0.58, duration: 0.34 }, 0.58);
 
-    timeline
-      .to(orb.scale, { x: 1, y: 1, z: 1 }, 0.12)
-      .to(camera.position, { z: 4.15, y: 0.03 }, 0.12)
-      .to(camera.rotation, { z: -0.035 }, 0.12)
-      .to(orb.position, { x: 1.08, y: -0.03, z: 0.18 }, 0.12)
-      .to(orb.rotation, { y: Math.PI * 0.58, x: 0.25 }, 0.12)
-      .to(rings.scale, { x: 1.38, y: 1.38, z: 1.38 }, 0.12)
-      .to(radialGroup.scale, { x: 1.35, y: 1.35, z: 1.35 }, 0.14)
-      .to(innerFrame.scale, { x: 1.18, y: 1.18, z: 1.18 }, 0.12)
-      .to(labelOpacity, { value: 1 }, 0.18)
-
-      .to(camera.position, { z: 3.75, y: -0.38, x: -0.06 }, 0.32)
-      .to(camera.rotation, { z: 0.025, x: -0.045 }, 0.32)
-      .to(orb.position, { x: 0.58, y: 1.25, z: -0.28 }, 0.32)
-      .to(orb.rotation, { y: Math.PI * 1.08, x: -0.14, z: 0.12 }, 0.32)
-      .to(rings.scale, { x: 1.58, y: 1.58, z: 1.58 }, 0.32)
-      .to(workGroup.position, { x: 0.1, y: -2.05, z: -0.88 }, 0.32)
-      .to(workGroup.rotation, { x: -0.1, y: -0.04, z: 0.006 }, 0.32)
-      .to(workLabelOpacity, { value: 1 }, 0.38)
-
-      .to(camera.position, { z: 2.9, y: -1.22, x: 0.02, duration: 0.34 }, 0.58)
-      .to(camera.rotation, { z: 0.01, x: -0.08, duration: 0.34 }, 0.58)
-      .to(workGroup.position, { y: 2.35, z: -0.72, duration: 0.34 }, 0.58)
-      .to(orb.position, { y: 1.88, z: -0.58, duration: 0.34 }, 0.58);
-  }
+  timeline
+    .to(haloGroup.rotation, { y: Math.PI * 0.9, x: 0.25, duration: 0.42 }, 0.22)
+    .to(haloGroup.scale, { x: 1.18, y: 1.18, z: 1.18, duration: 0.44 }, 0.46)
+    .to(dustGroup.rotation, { y: Math.PI * 0.36, x: -0.08, duration: 0.46 }, 0.52);
+}
 
   function onPointerMove(event) {
     pointerTarget.x = (event.clientX / width - 0.5) * 2;
@@ -769,8 +843,26 @@ function updateProgress(progress) {
 
     const motionScale = reduceMotion ? 0.22 : 1;
 
-    orb.rotation.y += delta * 0.08 * motionScale;
-    orb.rotation.x += delta * 0.025 * motionScale;
+  innerFrame.rotation.y += delta * 0.045 * motionScale;
+  haloGroup.children.forEach((halo, index) => {
+    halo.rotation.z += delta * halo.userData.spin * motionScale;
+    halo.position.y = Math.sin(elapsed * (0.25 + index * 0.05)) * halo.userData.wobble * motionScale;
+  });
+  dustGroup.rotation.y += delta * 0.018 * motionScale;
+  dustGroup.rotation.x = Math.sin(elapsed * 0.24) * 0.06 * motionScale;
+  dustGroup.position.z = Math.sin(elapsed * 0.28) * 0.18 * motionScale;
+  workGroup.children.forEach((child) => {
+    if (child.isGroup && Number.isFinite(child.userData.baseY)) {
+      child.position.y = child.userData.baseY + Math.sin(elapsed * 0.5 + child.userData.floatOffset) * 0.012 * motionScale;
+    }
+  });
+  workMaterials.forEach(({ material, target }) => {
+    material.opacity = target * THREE.MathUtils.lerp(sceneState.work, 1, sceneState.depth * 0.35);
+  });
+  updateLabels();
+  renderer.render(scene, camera);
+  animationFrameId = requestAnimationFrame(animate);
+}
 
     world.rotation.y = pointer.x * 0.055;
     world.rotation.x = -pointer.y * 0.04;
