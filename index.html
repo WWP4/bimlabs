@@ -3,118 +3,210 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="BIM Labs immersive 3D web experience prototype." />
-  <title>BIM Labs — Immersive 3D Preview</title>
+  <meta
+    name="description"
+    content="BIM Labs builds premium websites, client portals, AI workflows, and interactive digital systems for modern brands."
+  />
+  <title>BIM Labs — Premium Digital Systems</title>
+
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Manrope:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+
   <link rel="stylesheet" href="styles.css" />
 </head>
+
 <body>
+  <!-- Fixed Three.js canvas. Do not remove. -->
   <canvas id="bim-world" aria-hidden="true"></canvas>
 
+  <!-- Scroll structure that drives the 3D timeline. -->
   <main class="experience" id="top">
-    <section class="chapter chapter--hero" aria-label="The System Comes Online"></section>
-    <section class="chapter chapter--build" aria-label="Inside the Build"></section>
-    <section class="chapter chapter--work" id="work" aria-label="Our Work">
-      <div class="work-scroll" aria-label="Selected BIM Labs work systems">
+    <section
+      class="chapter chapter--hero"
+      aria-label="BIM Labs introduction"
+    ></section>
+
+    <section
+      class="chapter chapter--build"
+      aria-label="Layered digital system explanation"
+    ></section>
+
+    <section
+      class="chapter chapter--work"
+      id="work"
+      aria-label="BIM Labs build archive"
+    >
+      <div class="work-scroll" aria-label="BIM Labs digital system layers">
         <div class="work-scroll__intro">
-          <span>WORK ARCHIVE / CONTINUOUS DESCENT</span>
-          <p>Keep scrolling. The work opens like a technical gallery instead of a normal portfolio grid.</p>
+          <span>BUILD ARCHIVE / SYSTEM DESCENT</span>
+          <p>
+            Explore the layers BIM Labs can build around a brand: website,
+            client portal, AI workflow, and interactive sales tools.
+          </p>
         </div>
 
         <article class="work-card work-card--one">
           <div class="work-card__copy">
-            <span>01 / Immersive Site</span>
+            <span>01 / Website Layer</span>
             <h3>Premium web experiences</h3>
-            <p>Editorial storytelling, 3D motion, and conversion strategy built into one guided brand system.</p>
+            <p>
+              High-end websites designed to make small brands look sharper,
+              clearer, and more established from the first click.
+            </p>
           </div>
+
           <div class="work-card__visual" aria-hidden="true">
-            <i></i><i></i><i></i>
+            <i></i>
+            <i></i>
+            <i></i>
           </div>
         </article>
 
         <article class="work-card work-card--two">
           <div class="work-card__copy">
-            <span>02 / Client Portal</span>
-            <h3>Private client systems</h3>
-            <p>Secure-feeling dashboards and project spaces that make onboarding, files, and communication feel polished.</p>
+            <span>02 / Portal Layer</span>
+            <h3>Client-facing systems</h3>
+            <p>
+              Private portals and dashboards that replace messy back-and-forth
+              with a polished, organized client experience.
+            </p>
           </div>
+
           <div class="work-card__visual" aria-hidden="true">
-            <i></i><i></i><i></i>
+            <i></i>
+            <i></i>
+            <i></i>
           </div>
         </article>
 
         <article class="work-card work-card--three">
           <div class="work-card__copy">
-            <span>03 / AI Workflow</span>
+            <span>03 / Automation Layer</span>
             <h3>AI-powered operations</h3>
-            <p>Automation layers that qualify leads, guide users, and keep the business moving after the first click.</p>
+            <p>
+              Lead qualification, follow-up, onboarding, and workflow automation
+              built into the customer journey.
+            </p>
           </div>
+
           <div class="work-card__visual" aria-hidden="true">
-            <i></i><i></i><i></i>
+            <i></i>
+            <i></i>
+            <i></i>
           </div>
         </article>
 
         <article class="work-card work-card--four">
           <div class="work-card__copy">
-            <span>04 / Interactive Tool</span>
-            <h3>Tools people want to explore</h3>
-            <p>Calculators, quote flows, 3D viewers, and product demos that turn attention into action.</p>
+            <span>04 / Tool Layer</span>
+            <h3>Interactive sales tools</h3>
+            <p>
+              Quote flows, calculators, 3D demos, and custom tools that turn
+              attention into action instead of sending users to a dead page.
+            </p>
           </div>
+
           <div class="work-card__visual" aria-hidden="true">
-            <i></i><i></i><i></i>
+            <i></i>
+            <i></i>
+            <i></i>
           </div>
         </article>
       </div>
     </section>
   </main>
 
+  <!-- Fixed interface that overlays the 3D experience. -->
   <div class="interface" aria-live="polite">
     <header class="brand-lockup">
       <a href="#top" class="brand">BIM LABS</a>
-      <span class="meta-pill">IMMERSIVE SYSTEM / 03 CHAPTERS</span>
+      <span class="meta-pill">DIGITAL SYSTEMS / 03 LAYERS</span>
     </header>
 
     <section class="copy copy--hero" data-copy="hero">
-      <p class="eyebrow">BIM LABS / IMMERSIVE WEB STUDIO</p>
-      <h1>We build high-end websites and digital systems for modern brands.</h1>
-      <p class="lede">BIM Labs designs immersive websites, client portals, AI workflows, and interactive tools that make your business feel premium, clear, and alive online.</p>
+      <p class="eyebrow">BIM LABS / HIGH-END DIGITAL SYSTEMS</p>
+
+      <h1>We build premium websites that work like business systems.</h1>
+
+      <p class="lede">
+        BIM Labs creates immersive websites, client portals, AI workflows, and
+        interactive tools that make your brand feel sharper, clearer, and more
+        valuable online.
+      </p>
+
       <div class="hero-services" aria-hidden="true">
-        <span>Immersive Websites</span>
-        <span>Client Portals</span>
+        <span>Websites</span>
+        <span>Portals</span>
         <span>AI Workflows</span>
+        <span>Interactive Tools</span>
       </div>
     </section>
 
     <section class="copy copy--build" data-copy="build">
       <p class="eyebrow">SYSTEM LAYER 01</p>
-      <h2>Every section has a job.</h2>
-      <p class="lede">The interface, motion, and 3D system work together so the site feels discovered — not scrolled.</p>
+
+      <h2>The website is only the surface.</h2>
+
+      <p class="lede">
+        Behind the design is a layered digital system: structure, automation,
+        client experience, and conversion flow built to move the business
+        forward.
+      </p>
     </section>
 
-    <div class="object-label label--ai" data-label="ai">AI WORKFLOW</div>
-    <div class="object-label label--portal" data-label="portal">CLIENT PORTAL</div>
+    <div class="object-label label--ai" data-label="ai">AI LAYER</div>
+    <div class="object-label label--portal" data-label="portal">PORTAL LAYER</div>
+
     <section class="copy copy--work" data-copy="work">
-      <p class="eyebrow">OUR WORK / DESCENT</p>
-      <h2>Scroll down through real build layers.</h2>
-      <p class="lede">This part is intentionally long: a cinematic scroll through larger work panels, architectural frames, and capability layers that feel like one continuous BIM Labs archive.</p>
+      <p class="eyebrow">SYSTEM LAYER 02</p>
+
+      <h2>Every piece connects.</h2>
+
+      <p class="lede">
+        Websites, dashboards, automations, and tools should not feel separate.
+        They should feel like one premium operating system for your brand.
+      </p>
     </section>
 
     <section class="copy copy--work-detail" data-copy="work-detail">
-      <p class="eyebrow">WORK LAYERS 01—03</p>
-      <h2>A cleaner way to show capability.</h2>
-      <p class="lede">Websites, portals, and automations sit in one guided story so visitors understand what BIM Labs does without being dropped into a messy portfolio grid.</p>
+      <p class="eyebrow">BUILD LAYERS 01—04</p>
+
+      <h2>A cleaner way to show what you do.</h2>
+
+      <p class="lede">
+        We turn your offer into a guided digital experience that helps customers
+        understand, trust, and take action without getting lost.
+      </p>
     </section>
 
     <div class="work-index" aria-hidden="true">
-      <div><span>01</span><strong>Premium web experiences</strong></div>
-      <div><span>02</span><strong>Private client systems</strong></div>
-      <div><span>03</span><strong>AI-powered operations</strong></div>
+      <div>
+        <span>01</span>
+        <strong>Premium website layer</strong>
+      </div>
+
+      <div>
+        <span>02</span>
+        <strong>Client portal layer</strong>
+      </div>
+
+      <div>
+        <span>03</span>
+        <strong>AI automation layer</strong>
+      </div>
     </div>
 
-    <div class="object-label label--viewer" data-label="viewer">3D VIEWER</div>
-    <div class="object-label label--archive" data-label="archive">WORK ARCHIVE</div>
+    <div class="object-label label--viewer" data-label="viewer">
+      INTERACTIVE TOOL
+    </div>
+
+    <div class="object-label label--archive" data-label="archive">
+      BUILD ARCHIVE
+    </div>
 
     <a href="#work" class="scroll-indicator" aria-label="Scroll to explore">
       <span>Scroll to enter</span>
@@ -123,13 +215,18 @@
 
     <div class="progress-rail" aria-hidden="true">
       <span class="progress-rail__meta">00</span>
-      <div class="progress-rail__track"><b id="progressFill"></b></div>
+      <div class="progress-rail__track">
+        <b id="progressFill"></b>
+      </div>
       <span class="progress-rail__meta">03</span>
     </div>
   </div>
 
+  <!-- Required libraries. Do not remove unless app.js is rewritten without GSAP. -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+  <!-- Main Three.js / scroll experience. -->
   <script src="app.js"></script>
 </body>
 </html>
