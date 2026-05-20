@@ -578,28 +578,37 @@
   }
 
   const archiveTl = gsap.timeline({
-    defaults: {
-      ease: "none"
-    },
+    defaults: { ease: "power2.inOut" },
     scrollTrigger: {
       trigger: archive,
       start: "top top",
-      end: "+=540%",
-      scrub: 1.2,
+      end: "+=560%",
+      scrub: 1.8,
       pin: true,
       anticipatePin: 1
     }
   });
 
   archiveTl
-    .to(intro, {
-      opacity: 1,
-      y: 0,
-      filter: "blur(0px)",
-      duration: 0.08
-    }, 0)
-
-    .to(intro, {
+    .to(intro, { opacity: 0, y: -80, filter: "blur(8px)", duration: 0.18 }, 0.08)
+    .to(workCards[0], { opacity: 1, y: 0, scale: 1, filter: "blur(0px)", duration: 0.22 }, 0.1)
+    .to(workCards[0], { opacity: 0, y: "-76vh", scale: 0.96, filter: "blur(5px)", duration: 0.22 }, 0.24)
+    .to(workCards[1], { opacity: 1, y: 0, scale: 1, filter: "blur(0px)", duration: 0.22 }, 0.24)
+    .to(workCards[1], { opacity: 0, y: "-76vh", scale: 0.96, filter: "blur(5px)", duration: 0.22 }, 0.39)
+    .to(workCards[2], { opacity: 1, y: 0, scale: 1, filter: "blur(0px)", duration: 0.22 }, 0.39)
+    .to(workCards[2], { opacity: 0, y: "-76vh", scale: 0.96, filter: "blur(5px)", duration: 0.22 }, 0.54)
+    .to(workCards[3], { opacity: 1, y: 0, scale: 1, filter: "blur(0px)", duration: 0.22 }, 0.54)
+    .to(archiveContent, { opacity: 0.42, filter: "blur(2px)", scale: 0.992, duration: 0.22 }, 0.66)
+    .to(workCards[3], { opacity: 0.24, scale: 0.99, filter: "blur(4px)", duration: 0.22 }, 0.68)
+    .to(pixelLayer, { opacity: 1, duration: 0.08 }, 0.68)
+    .to(pixelCells, {
+      opacity: 0.92,
+      scale: 1,
+      duration: 0.28,
+      stagger: { amount: 0.36, grid: "auto", from: "center" }
+    }, 0.69)
+    .to(archiveContent, { opacity: 0, filter: "blur(10px)", scale: 0.965, duration: 0.24 }, 0.76)
+    .fromTo(nextInner, {
       opacity: 0,
       y: -64,
       filter: "blur(10px)",
@@ -623,10 +632,18 @@
       opacity: 1,
       y: 0,
       filter: "blur(0px)",
-      pointerEvents: "auto",
-      duration: 0.18
-    }, 1.3);
-  }
+      duration: 0.3
+    }, 0.8)
+    .to(pixelCells, {
+      x: (_, cell) => Number(cell.dataset.dx),
+      y: (_, cell) => Number(cell.dataset.dy),
+      rotate: (_, cell) => Number(cell.dataset.rotate),
+      opacity: 0,
+      scale: (_, cell) => Number(cell.dataset.scale),
+      duration: 0.34,
+      stagger: { amount: 0.44, grid: "auto", from: "center" }
+    }, 0.82)
+    .to(pixelLayer, { opacity: 0, duration: 0.14 }, 0.96);
 }
  
 function updateProgress(progress) {
@@ -675,20 +692,14 @@ function updateProgress(progress) {
   function createScrollTimeline() {
     updateProgress(0);
 
-    if (reduceMotion) {
-      labelOpacity.value = 0.5;
-      workLabelOpacity.value = 0.8;
-
-      updateProgress(1);
-
-      orb.scale.setScalar(1);
-      orb.position.set(0.4, 1.25, -0.25);
-      workGroup.position.set(0.25, 0.15, -0.85);
-      camera.position.set(0, -0.7, 5.15);
-      radialGroup.scale.setScalar(1.2);
-      rings.scale.setScalar(1.15);
-
-      return;
+  const timeline = gsap.timeline({
+    defaults: { ease: "power2.inOut", duration: 0.24 },
+    scrollTrigger: {
+      trigger: document.body,
+      start: "top top",
+      end: "bottom bottom",
+      scrub: 2.2,
+      onUpdate: (self) => updateProgress(self.progress)
     }
 
     const timeline = gsap.timeline({
