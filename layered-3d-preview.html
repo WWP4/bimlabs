@@ -150,11 +150,32 @@
     </section>
   </main>
 
-  <script src="https://cdn.jsdelivr.net/npm/three@0.164.1/build/three.min.js"></script>
   <script>
-    // 1) scene setup
-    const canvas = document.getElementById('app3d');
-    const scene = new THREE.Scene();
+    function loadThreeJs(url) {
+      return new Promise((resolve, reject) => {
+        const script = document.createElement('script');
+        script.src = url;
+        script.onload = resolve;
+        script.onerror = reject;
+        document.head.appendChild(script);
+      });
+    }
+
+    async function ensureThree() {
+      if (window.THREE) return;
+      try {
+        await loadThreeJs('https://cdn.jsdelivr.net/npm/three@0.164.1/build/three.min.js');
+      } catch (err) {
+        await loadThreeJs('https://unpkg.com/three@0.164.1/build/three.min.js');
+      }
+    }
+
+    async function initPreview() {
+      await ensureThree();
+
+      // 1) scene setup
+      const canvas = document.getElementById('app3d');
+      const scene = new THREE.Scene();
 
     const camera = new THREE.PerspectiveCamera(38, window.innerWidth / window.innerHeight, 0.1, 100);
     camera.position.set(0, 1.6, 9.2);
@@ -354,14 +375,19 @@
       requestAnimationFrame(animate);
     }
 
-    animate();
+      animate();
 
-    // 5) resize handling
-    window.addEventListener('resize', () => {
+      // 5) resize handling
+      window.addEventListener('resize', () => {
       camera.aspect = window.innerWidth / window.innerHeight;
       camera.updateProjectionMatrix();
       renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
       renderer.setSize(window.innerWidth, window.innerHeight);
+      });
+    }
+
+    initPreview().catch((error) => {
+      console.error('Failed to load Three.js preview:', error);
     });
   </script>
 </body>
