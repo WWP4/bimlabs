@@ -66,6 +66,8 @@ const nodeGroup = new THREE.Group();
 const radialGroup = new THREE.Group();
 const innerFrame = new THREE.Group();
 const workGroup = new THREE.Group();
+const haloGroup = new THREE.Group();
+const dustGroup = new THREE.Group();
 const workMaterials = [];
 const labelAnchors = {
   ai: new THREE.Object3D(),
@@ -79,6 +81,7 @@ world.add(orb);
 orb.scale.setScalar(0.001);
 orb.add(rings, nodeGroup, radialGroup, innerFrame);
 world.add(workGroup);
+world.add(haloGroup, dustGroup);
 
 const deepLine = new THREE.LineBasicMaterial({ color: 0x07101d, transparent: true, opacity: 0.28 });
 const softLine = new THREE.LineBasicMaterial({ color: 0x07101d, transparent: true, opacity: 0.15 });
@@ -221,6 +224,43 @@ function buildAtmosphere() {
   }
 }
 
+function buildHaloField() {
+  const haloMaterial = new THREE.LineBasicMaterial({ color: 0x74b4ff, transparent: true, opacity: 0.24 });
+  const haloSoft = new THREE.LineBasicMaterial({ color: 0xb7d8ff, transparent: true, opacity: 0.12 });
+  for (let i = 0; i < 6; i += 1) {
+    const radius = 2.3 + i * 0.34;
+    const halo = lineFromPoints(makeCircle(radius, 220), i % 2 ? haloMaterial : haloSoft);
+    halo.rotation.set(0.22 + i * 0.08, -0.34 + i * 0.09, i * 0.1);
+    halo.userData.spin = 0.01 + i * 0.003;
+    halo.userData.wobble = 0.06 + i * 0.012;
+    haloGroup.add(halo);
+  }
+}
+
+function buildDustField() {
+  const dustGeometry = new THREE.BufferGeometry();
+  const particleCount = 720;
+  const positions = new Float32Array(particleCount * 3);
+  for (let i = 0; i < particleCount; i += 1) {
+    const radius = 1.8 + Math.random() * 8.4;
+    const theta = Math.random() * Math.PI * 2;
+    const phi = Math.acos(2 * Math.random() - 1);
+    positions[i * 3] = radius * Math.sin(phi) * Math.cos(theta);
+    positions[i * 3 + 1] = radius * Math.sin(phi) * Math.sin(theta) * 0.6;
+    positions[i * 3 + 2] = radius * Math.cos(phi);
+  }
+  dustGeometry.setAttribute("position", new THREE.BufferAttribute(positions, 3));
+  const dustMaterial = new THREE.PointsMaterial({
+    color: 0xbad9ff,
+    size: 0.018,
+    transparent: true,
+    opacity: 0.56,
+    depthWrite: false
+  });
+  const dust = new THREE.Points(dustGeometry, dustMaterial);
+  dustGroup.add(dust);
+}
+
 function registerWorkMaterial(material) {
   workMaterials.push({ material, target: material.opacity });
   material.opacity = 0;
@@ -305,6 +345,8 @@ buildNodes();
 buildInnerFrame();
 addLabelAnchors();
 buildAtmosphere();
+buildHaloField();
+buildDustField();
 buildWorkArchive();
 
 function setBackground(progress) {
@@ -406,36 +448,36 @@ function createArchiveTransition() {
   });
 
   const archiveTl = gsap.timeline({
-    defaults: { ease: "none" },
+    defaults: { ease: "power2.inOut" },
     scrollTrigger: {
       trigger: archive,
       start: "top top",
-      end: "+=420%",
-      scrub: true,
+      end: "+=560%",
+      scrub: 1.8,
       pin: true,
       anticipatePin: 1
     }
   });
 
   archiveTl
-    .to(intro, { opacity: 0, y: -80, filter: "blur(8px)", duration: 0.08 }, 0.08)
-    .to(workCards[0], { opacity: 1, y: 0, scale: 1, filter: "blur(0px)", duration: 0.12 }, 0.1)
-    .to(workCards[0], { opacity: 0, y: "-76vh", scale: 0.96, filter: "blur(5px)", duration: 0.12 }, 0.24)
-    .to(workCards[1], { opacity: 1, y: 0, scale: 1, filter: "blur(0px)", duration: 0.12 }, 0.24)
-    .to(workCards[1], { opacity: 0, y: "-76vh", scale: 0.96, filter: "blur(5px)", duration: 0.12 }, 0.39)
-    .to(workCards[2], { opacity: 1, y: 0, scale: 1, filter: "blur(0px)", duration: 0.12 }, 0.39)
-    .to(workCards[2], { opacity: 0, y: "-76vh", scale: 0.96, filter: "blur(5px)", duration: 0.12 }, 0.54)
-    .to(workCards[3], { opacity: 1, y: 0, scale: 1, filter: "blur(0px)", duration: 0.12 }, 0.54)
-    .to(archiveContent, { opacity: 0.42, filter: "blur(2px)", scale: 0.992, duration: 0.12 }, 0.66)
-    .to(workCards[3], { opacity: 0.24, scale: 0.99, filter: "blur(4px)", duration: 0.12 }, 0.68)
-    .to(pixelLayer, { opacity: 1, duration: 0.01 }, 0.68)
+    .to(intro, { opacity: 0, y: -80, filter: "blur(8px)", duration: 0.18 }, 0.08)
+    .to(workCards[0], { opacity: 1, y: 0, scale: 1, filter: "blur(0px)", duration: 0.22 }, 0.1)
+    .to(workCards[0], { opacity: 0, y: "-76vh", scale: 0.96, filter: "blur(5px)", duration: 0.22 }, 0.24)
+    .to(workCards[1], { opacity: 1, y: 0, scale: 1, filter: "blur(0px)", duration: 0.22 }, 0.24)
+    .to(workCards[1], { opacity: 0, y: "-76vh", scale: 0.96, filter: "blur(5px)", duration: 0.22 }, 0.39)
+    .to(workCards[2], { opacity: 1, y: 0, scale: 1, filter: "blur(0px)", duration: 0.22 }, 0.39)
+    .to(workCards[2], { opacity: 0, y: "-76vh", scale: 0.96, filter: "blur(5px)", duration: 0.22 }, 0.54)
+    .to(workCards[3], { opacity: 1, y: 0, scale: 1, filter: "blur(0px)", duration: 0.22 }, 0.54)
+    .to(archiveContent, { opacity: 0.42, filter: "blur(2px)", scale: 0.992, duration: 0.22 }, 0.66)
+    .to(workCards[3], { opacity: 0.24, scale: 0.99, filter: "blur(4px)", duration: 0.22 }, 0.68)
+    .to(pixelLayer, { opacity: 1, duration: 0.08 }, 0.68)
     .to(pixelCells, {
       opacity: 0.92,
       scale: 1,
-      duration: 0.16,
-      stagger: { amount: 0.22, grid: "auto", from: "center" }
+      duration: 0.28,
+      stagger: { amount: 0.36, grid: "auto", from: "center" }
     }, 0.69)
-    .to(archiveContent, { opacity: 0, filter: "blur(10px)", scale: 0.965, duration: 0.14 }, 0.76)
+    .to(archiveContent, { opacity: 0, filter: "blur(10px)", scale: 0.965, duration: 0.24 }, 0.76)
     .fromTo(nextInner, {
       opacity: 0,
       y: 70,
@@ -444,7 +486,7 @@ function createArchiveTransition() {
       opacity: 1,
       y: 0,
       filter: "blur(0px)",
-      duration: 0.18
+      duration: 0.3
     }, 0.8)
     .to(pixelCells, {
       x: (_, cell) => Number(cell.dataset.dx),
@@ -452,10 +494,10 @@ function createArchiveTransition() {
       rotate: (_, cell) => Number(cell.dataset.rotate),
       opacity: 0,
       scale: (_, cell) => Number(cell.dataset.scale),
-      duration: 0.2,
-      stagger: { amount: 0.26, grid: "auto", from: "center" }
+      duration: 0.34,
+      stagger: { amount: 0.44, grid: "auto", from: "center" }
     }, 0.82)
-    .to(pixelLayer, { opacity: 0, duration: 0.08 }, 0.96);
+    .to(pixelLayer, { opacity: 0, duration: 0.14 }, 0.96);
 }
 
 function updateProgress(progress) {
@@ -502,12 +544,12 @@ function createScrollTimeline() {
   }
 
   const timeline = gsap.timeline({
-    defaults: { ease: "none", duration: 0.14 },
+    defaults: { ease: "power3.inOut", duration: 0.34 },
     scrollTrigger: {
       trigger: document.body,
       start: "top top",
       end: "bottom bottom",
-      scrub: 1.15,
+      scrub: 2.8,
       onUpdate: (self) => updateProgress(self.progress)
     }
   });
@@ -534,6 +576,11 @@ function createScrollTimeline() {
     .to(camera.rotation, { z: 0.01, x: -0.08, duration: 0.34 }, 0.58)
     .to(workGroup.position, { y: 2.35, z: -0.72, duration: 0.34 }, 0.58)
     .to(orb.position, { y: 1.88, z: -0.58, duration: 0.34 }, 0.58);
+
+  timeline
+    .to(haloGroup.rotation, { y: Math.PI * 0.9, x: 0.25, duration: 0.42 }, 0.22)
+    .to(haloGroup.scale, { x: 1.18, y: 1.18, z: 1.18, duration: 0.44 }, 0.46)
+    .to(dustGroup.rotation, { y: Math.PI * 0.36, x: -0.08, duration: 0.46 }, 0.52);
 }
 
 function onPointerMove(event) {
@@ -582,6 +629,13 @@ function animate() {
   });
 
   innerFrame.rotation.y += delta * 0.045 * motionScale;
+  haloGroup.children.forEach((halo, index) => {
+    halo.rotation.z += delta * halo.userData.spin * motionScale;
+    halo.position.y = Math.sin(elapsed * (0.25 + index * 0.05)) * halo.userData.wobble * motionScale;
+  });
+  dustGroup.rotation.y += delta * 0.018 * motionScale;
+  dustGroup.rotation.x = Math.sin(elapsed * 0.24) * 0.06 * motionScale;
+  dustGroup.position.z = Math.sin(elapsed * 0.28) * 0.18 * motionScale;
   workGroup.children.forEach((child) => {
     if (child.isGroup && Number.isFinite(child.userData.baseY)) {
       child.position.y = child.userData.baseY + Math.sin(elapsed * 0.5 + child.userData.floatOffset) * 0.012 * motionScale;
