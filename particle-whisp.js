@@ -13,7 +13,9 @@
       this.scrollProgress = 0;
       this.dpr = Math.min(window.devicePixelRatio || 1, 1.75);
       this.isReducedMotion = reduceMotionQuery.matches;
-      this.baseCount = 380;
+      this.baseCount = 460;
+      this.hero = document.querySelector('.hero');
+      this.targetSection = document.querySelector('.editorial-transition');
       this.active = true;
 
       this.handleResize = this.handleResize.bind(this);
@@ -42,12 +44,14 @@
     buildPath() {
       const w = this.width;
       const h = this.height;
+      const journey = this.journeyProgress ?? 0;
+      const anchorY = h * (0.8 + journey * 0.22);
       return [
-        { x: w * 0.2, y: h * 0.22 },
-        { x: w * 0.35, y: h * 0.36 },
-        { x: w * 0.53, y: h * 0.54 },
-        { x: w * 0.68, y: h * 0.68 },
-        { x: w * 0.82, y: h * 0.86 }
+        { x: w * 0.16, y: h * 0.2 },
+        { x: w * 0.28, y: h * 0.34 },
+        { x: w * 0.44, y: h * 0.52 },
+        { x: w * 0.62, y: h * 0.7 },
+        { x: w * (0.78 - journey * 0.08), y: anchorY }
       ];
     }
 
@@ -113,6 +117,12 @@
       const maxScroll = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
       const raw = window.scrollY / maxScroll;
       this.scrollProgress = Math.max(0, Math.min(1, raw));
+
+      const heroBottom = this.hero ? this.hero.offsetHeight : window.innerHeight;
+      const sectionRange = this.targetSection ? this.targetSection.offsetHeight : window.innerHeight;
+      const travelRaw = (window.scrollY - heroBottom * 0.2) / Math.max(1, sectionRange);
+      this.journeyProgress = Math.max(0, Math.min(1, travelRaw));
+      this.path = this.buildPath();
     }
 
     draw() {
@@ -122,7 +132,8 @@
       ctx.globalCompositeOperation = 'lighter';
 
       const pulse = 0.6 + Math.sin(this.time * 0.5) * 0.08;
-      const flowBoost = this.scrollProgress * 0.08;
+      const flowBoost = this.scrollProgress * 0.11 + this.journeyProgress * 0.09;
+      const compression = 1 - this.journeyProgress * 0.42;
 
       for (let i = 0; i < this.particles.length; i += 1) {
         const p = this.particles[i];
@@ -138,12 +149,13 @@
           ? 0
           : Math.sin(this.time * (0.4 + p.depth) + p.driftSeed + p.t * 20) * p.spread * 0.12;
 
-        const laneOffset = (p.depth - 0.5) * p.spread * (1.4 - p.t * 0.9);
+        const laneOffset = (p.depth - 0.5) * p.spread * (1.4 - p.t * 0.9) * compression;
         const x = curvePoint.x + normalX * (laneOffset + turbulence) + tangent.x * (p.depth - 0.5) * 24;
         const y = curvePoint.y + normalY * (laneOffset + turbulence) + Math.sin(this.time * 0.2 + p.driftSeed) * 1.4;
 
         const tailFade = 1 - p.t;
-        const alpha = p.alpha * tailFade * pulse;
+        const sectionPullFade = 1 - this.journeyProgress * 0.2;
+        const alpha = p.alpha * tailFade * pulse * sectionPullFade;
         const r = p.size * (0.7 + p.depth * 1.2);
 
         ctx.fillStyle = `rgba(255,255,255,${alpha})`;

@@ -102,7 +102,7 @@ a {
 
 
 #particle-whisp-canvas {
-  position: absolute;
+  position: fixed;
   inset: 0;
   z-index: 3;
   width: 100%;
@@ -511,4 +511,46 @@ a {
   #particle-whisp-canvas {
     opacity: 0.45;
   }
+}
+
+
+.editorial-transition {
+  position: relative;
+  min-height: 135svh;
+  background:
+    radial-gradient(120% 90% at 50% -10%, rgba(255, 255, 255, 0.05), transparent 60%),
+    #030305;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.editorial-shell {
+  min-height: 100svh;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 18px;
+  text-align: center;
+  width: min(900px, calc(100% - 48px));
+  margin: 0 auto;
+  padding-top: 20svh;
+}
+
+.editorial-kicker {
+  margin: 0;
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.48);
+}
+
+.editorial-shell h2 {
+  margin: 0;
+  font-family: "IBM Plex Mono", monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  font-size: clamp(14px, 1.2vw, 20px);
+  line-height: 1.8;
+  color: rgba(255, 255, 255, 0.86);
+  max-width: 48ch;
 }
