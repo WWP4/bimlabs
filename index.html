@@ -13,79 +13,135 @@
 <body>
   <canvas id="bim-world" aria-hidden="true"></canvas>
 
-  <main class="experience" id="top">
-    <section class="chapter chapter--hero" aria-label="The System Comes Online"></section>
-    <section class="chapter chapter--build" aria-label="Inside the Build"></section>
-    <section class="chapter chapter--work" id="work" aria-label="Our Work">
-      <div class="work-scroll" aria-label="Selected BIM Labs work systems">
-        <div class="work-scroll__intro">
-          <span>WORK ARCHIVE / CONTINUOUS DESCENT</span>
-          <p>Keep scrolling. The work opens like a technical gallery instead of a normal portfolio grid.</p>
+ <main class="experience" id="top">
+
+  <!-- SCENE 01 / ARRIVAL -->
+  <section class="scene scene--hero" data-scene="hero" aria-label="BIM Labs system arrival">
+    <div class="scene__depth" aria-hidden="true">
+      <div class="scene__grid"></div>
+      <div class="scene__light scene__light--one"></div>
+      <div class="scene__light scene__light--two"></div>
+    </div>
+  </section>
+
+  <!-- SCENE 02 / SYSTEMS -->
+  <section class="scene scene--systems" data-scene="systems" aria-label="Inside the BIM Labs system">
+    <div class="scene__depth" aria-hidden="true">
+      <div class="system-line system-line--one"></div>
+      <div class="system-line system-line--two"></div>
+      <div class="system-node system-node--one"></div>
+      <div class="system-node system-node--two"></div>
+      <div class="system-node system-node--three"></div>
+    </div>
+  </section>
+
+  <!-- SCENE 03 / WORK DESCENT -->
+  <section class="scene scene--descent" id="work" data-scene="work" aria-label="BIM Labs work archive">
+    <div class="descent-stage">
+
+      <div class="descent-intro">
+        <span>WORK ARCHIVE / SYSTEM DESCENT</span>
+        <p>Four digital systems built to make a business feel premium, clear, and operationally sharper.</p>
+      </div>
+
+      <article class="system-panel system-panel--one" data-work="01">
+        <div class="system-panel__index">SYSTEM_01</div>
+        <div class="system-panel__content">
+          <span>IMMERSIVE WEB EXPERIENCE</span>
+          <h2>Premium websites that feel alive, guided, and impossible to confuse.</h2>
+          <p>Editorial layouts, cinematic scroll, conversion strategy, and motion systems built into one polished brand experience.</p>
         </div>
+        <div class="system-panel__visual" aria-hidden="true">
+          <div class="visual-plane visual-plane--main"></div>
+          <div class="visual-plane visual-plane--rear"></div>
+          <div class="visual-trace"></div>
+        </div>
+      </article>
 
-        <article class="work-card work-card--one">
-          <div class="work-card__copy">
-            <span>01 / Immersive Site</span>
-            <h3>Premium web experiences</h3>
-            <p>Editorial storytelling, 3D motion, and conversion strategy built into one guided brand system.</p>
-          </div>
-          <div class="work-card__visual" aria-hidden="true">
-            <i></i><i></i><i></i>
-          </div>
-        </article>
+      <article class="system-panel system-panel--two" data-work="02">
+        <div class="system-panel__index">SYSTEM_02</div>
+        <div class="system-panel__content">
+          <span>CLIENT PORTAL SYSTEM</span>
+          <h2>Private client spaces that make onboarding, files, and updates feel premium.</h2>
+          <p>Dashboards, project rooms, file hubs, quote flows, and secure-feeling experiences that make the business feel organized.</p>
+        </div>
+        <div class="system-panel__visual" aria-hidden="true">
+          <div class="visual-plane visual-plane--main"></div>
+          <div class="visual-plane visual-plane--rear"></div>
+          <div class="visual-trace"></div>
+        </div>
+      </article>
 
-        <article class="work-card work-card--two">
-          <div class="work-card__copy">
-            <span>02 / Client Portal</span>
-            <h3>Private client systems</h3>
-            <p>Secure-feeling dashboards and project spaces that make onboarding, files, and communication feel polished.</p>
-          </div>
-          <div class="work-card__visual" aria-hidden="true">
-            <i></i><i></i><i></i>
-          </div>
-        </article>
+      <article class="system-panel system-panel--three" data-work="03">
+        <div class="system-panel__index">SYSTEM_03</div>
+        <div class="system-panel__content">
+          <span>AI WORKFLOW LAYER</span>
+          <h2>AI systems that qualify leads, answer questions, and move users toward action.</h2>
+          <p>Smart intake flows, automated follow-up, guided recommendations, and operational tools that keep the business moving.</p>
+        </div>
+        <div class="system-panel__visual" aria-hidden="true">
+          <div class="visual-plane visual-plane--main"></div>
+          <div class="visual-plane visual-plane--rear"></div>
+          <div class="visual-trace"></div>
+        </div>
+      </article>
 
-        <article class="work-card work-card--three">
-          <div class="work-card__copy">
-            <span>03 / AI Workflow</span>
-            <h3>AI-powered operations</h3>
-            <p>Automation layers that qualify leads, guide users, and keep the business moving after the first click.</p>
-          </div>
-          <div class="work-card__visual" aria-hidden="true">
-            <i></i><i></i><i></i>
-          </div>
-        </article>
+      <article class="system-panel system-panel--four" data-work="04">
+        <div class="system-panel__index">SYSTEM_04</div>
+        <div class="system-panel__content">
+          <span>INTERACTIVE TOOLING</span>
+          <h2>Explorable tools that turn attention into trust, clarity, and conversion.</h2>
+          <p>Quote builders, calculators, 3D viewers, configurators, product demos, and guided sales tools built around the customer journey.</p>
+        </div>
+        <div class="system-panel__visual" aria-hidden="true">
+          <div class="visual-plane visual-plane--main"></div>
+          <div class="visual-plane visual-plane--rear"></div>
+          <div class="visual-trace"></div>
+        </div>
+      </article>
 
-        <article class="work-card work-card--four">
-          <div class="work-card__copy">
-            <span>04 / Interactive Tool</span>
-            <h3>Tools people want to explore</h3>
-            <p>Calculators, quote flows, 3D viewers, and product demos that turn attention into action.</p>
-          </div>
-          <div class="work-card__visual" aria-hidden="true">
-            <i></i><i></i><i></i>
-          </div>
-        </article>
-      </div>
-    </section>
-  </main>
+    </div>
+  </section>
 
-  <div class="interface" aria-live="polite">
-    <header class="brand-lockup">
-      <a href="#top" class="brand">BIM LABS</a>
-      <span class="meta-pill">IMMERSIVE SYSTEM / 03 CHAPTERS</span>
-    </header>
+</main>
 
-    <section class="copy copy--hero" data-copy="hero">
-      <p class="eyebrow">BIM LABS / IMMERSIVE WEB STUDIO</p>
-      <h1>We build high-end websites and digital systems for modern brands.</h1>
-      <p class="lede">BIM Labs designs immersive websites, client portals, AI workflows, and interactive tools that make your business feel premium, clear, and alive online.</p>
-      <div class="hero-services" aria-hidden="true">
-        <span>Immersive Websites</span>
-        <span>Client Portals</span>
-        <span>AI Workflows</span>
-      </div>
-    </section>
+<div class="interface" aria-live="polite">
+
+  <header class="brand-lockup">
+    <a href="#top" class="brand">BIM LABS</a>
+    <span class="meta-pill">IMMERSIVE SYSTEM / 03 SCENES</span>
+  </header>
+
+  <section class="copy copy--hero is-active" data-copy="hero">
+    <p class="eyebrow">BIM LABS / IMMERSIVE WEB STUDIO</p>
+    <h1>We build high-end websites and digital systems for modern brands.</h1>
+    <p class="lede">
+      BIM Labs designs immersive websites, client portals, AI workflows, and interactive tools that make your business feel premium, clear, and alive online.
+    </p>
+    <div class="hero-services" aria-hidden="true">
+      <span>Immersive Websites</span>
+      <span>Client Portals</span>
+      <span>AI Workflows</span>
+    </div>
+  </section>
+
+  <section class="copy copy--systems" data-copy="systems">
+    <p class="eyebrow">INSIDE THE BUILD</p>
+    <h2>Not just pages. A connected digital operating system.</h2>
+    <p class="lede">
+      Every experience is built around structure, motion, automation, and conversion — so the site feels expensive and the business feels easier to understand.
+    </p>
+  </section>
+
+  <section class="copy copy--work" data-copy="work">
+    <p class="eyebrow">WORK ARCHIVE</p>
+    <h2>Each build becomes a system people can enter, explore, and trust.</h2>
+    <p class="lede">
+      The goal is not decoration. The goal is to make your offer feel clearer, more premium, and easier to act on.
+    </p>
+  </section>
+
+</div>
 
     <section class="copy copy--build" data-copy="build">
       <p class="eyebrow">SYSTEM LAYER 01</p>
