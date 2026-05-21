@@ -221,3 +221,57 @@ h1{
   }
 
 }
+
+
+.hero{
+  position:relative;
+  width:100%;
+  height:100vh;
+  overflow:hidden;
+  background:#030305;
+}
+
+.spline-hero{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  z-index:1;
+}
+
+/* TEXT LAYER */
+
+.hero-content{
+  position:absolute;
+  inset:0;
+  z-index:5;
+
+  display:flex;
+  align-items:flex-end;
+  justify-content:center;
+
+  padding-bottom:7vh;
+
+  pointer-events:none;
+}
+
+/* ACTUAL COPY */
+
+.hero-copy{
+  width:min(760px, calc(100vw - 40px));
+
+  text-align:center;
+}
+
+/* IMPORTANT */
+
+.hero-copy *{
+  pointer-events:none;
+}
+
+/* RE-ENABLE BUTTONS */
+
+.hero-actions,
+.hero-actions *{
+  pointer-events:auto;
+}
