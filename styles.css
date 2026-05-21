@@ -472,3 +472,25 @@ a {
     display: none;
   }
 }
+
+
+.site-header{
+  padding:18px 32px 16px;
+  border-bottom:1px solid rgba(255,255,255,.16);
+}
+
+.main-nav{
+  gap:48px;
+}
+
+.brand{
+  padding-left:18px;
+}
+
+.main-nav a{
+  color:rgba(255,255,255,.62);
+}
+
+.main-nav a:hover{
+  color:white;
+}
