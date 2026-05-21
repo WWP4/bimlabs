@@ -554,3 +554,48 @@ a {
   color: rgba(255, 255, 255, 0.86);
   max-width: 48ch;
 }
+
+
+
+/* Keep Spline visually fixed, but stop it from stealing scroll/mouse control */
+.hero {
+  position: relative;
+  min-height: 100svh;
+  overflow: hidden;
+}
+
+.spline-hero {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  width: 100vw;
+  height: 100svh;
+  pointer-events: none;
+  touch-action: none;
+}
+
+/* Site content stays above Spline */
+.hero-shade {
+  z-index: 2;
+}
+
+#particle-whisp-canvas {
+  position: fixed;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+}
+
+.hero-content,
+.hero-actions,
+.site-header {
+  position: relative;
+  z-index: 10;
+}
+
+/* Once user scrolls past hero, hide/fade the fixed Spline */
+.editorial-transition {
+  position: relative;
+  z-index: 5;
+  background: #030305;
+}
