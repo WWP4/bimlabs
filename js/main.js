@@ -39,3 +39,5 @@ const splineObserver = new IntersectionObserver((entries) => {
 });
 
 lazySplines.forEach((spline) => splineObserver.observe(spline));
+
+console.log("BIM Labs loaded");
