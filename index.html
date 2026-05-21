@@ -3,140 +3,142 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="BIM Labs immersive 3D web experience prototype." />
-  <title>BIM Labs — Immersive 3D Preview</title>
+  <title>BIM Labs — Immersive Websites & Digital Systems</title>
+
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
   <link rel="stylesheet" href="styles.css" />
 </head>
+
 <body>
- <script type="module" src="https://unpkg.com/@splinetool/viewer@1.12.94/build/spline-viewer.js"></script>
+  <script type="module" src="https://unpkg.com/@splinetool/viewer@1.12.94/build/spline-viewer.js"></script>
 
-<spline-viewer
-  class="spline-bg"
-  url="https://prod.spline.design/ag-WI4DXSPEnCbze/scene.splinecode">
-</spline-viewer>
+  <header class="site-header">
+    <a href="#top" class="brand">BIM LABS</a>
+    <nav>
+      <a href="#work">Work</a>
+      <a href="#systems">Systems</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
 
-<a href="#contact" class="corner-cta">Start a Project</a>
+  <main id="top">
+    <!-- HERO -->
+    <section class="hero section">
+      <spline-viewer
+        class="spline spline-hero"
+        url="https://prod.spline.design/ag-WI4DXSPEnCbze/scene.splinecode">
+      </spline-viewer>
 
+      <div class="hero-overlay"></div>
 
-  <main class="experience" id="top">
-    <section class="chapter chapter--hero" aria-label="The System Comes Online"></section>
-    <section class="chapter chapter--build" aria-label="Inside the Build"></section>
-    <section class="chapter chapter--work" id="work" aria-label="Our Work">
-      <div class="work-scroll" aria-label="Selected BIM Labs work systems">
-        <div class="work-scroll__intro">
-          <span>WORK ARCHIVE / CONTINUOUS DESCENT</span>
-          <p>Keep scrolling. The work opens like a technical gallery instead of a normal portfolio grid.</p>
+      <div class="hero-content">
+        <p class="eyebrow">IMMERSIVE WEB STUDIO</p>
+        <h1>Websites that feel like premium digital systems.</h1>
+        <p>
+          BIM Labs builds cinematic websites, client portals, AI workflows,
+          and interactive tools for brands that need to look expensive and convert clearly.
+        </p>
+
+        <div class="hero-actions">
+          <a href="#contact" class="btn btn-primary">Start a Project</a>
+          <a href="#work" class="btn btn-secondary">See Work</a>
         </div>
-
-        <article class="work-card work-card--one">
-          <div class="work-card__copy">
-            <span>01 / Immersive Site</span>
-            <h3>Premium web experiences</h3>
-            <p>Editorial storytelling, 3D motion, and conversion strategy built into one guided brand system.</p>
-          </div>
-          <div class="work-card__visual" aria-hidden="true">
-            <i></i><i></i><i></i>
-          </div>
-        </article>
-
-        <article class="work-card work-card--two">
-          <div class="work-card__copy">
-            <span>02 / Client Portal</span>
-            <h3>Private client systems</h3>
-            <p>Secure-feeling dashboards and project spaces that make onboarding, files, and communication feel polished.</p>
-          </div>
-          <div class="work-card__visual" aria-hidden="true">
-            <i></i><i></i><i></i>
-          </div>
-        </article>
-
-        <article class="work-card work-card--three">
-          <div class="work-card__copy">
-            <span>03 / AI Workflow</span>
-            <h3>AI-powered operations</h3>
-            <p>Automation layers that qualify leads, guide users, and keep the business moving after the first click.</p>
-          </div>
-          <div class="work-card__visual" aria-hidden="true">
-            <i></i><i></i><i></i>
-          </div>
-        </article>
-
-        <article class="work-card work-card--four">
-          <div class="work-card__copy">
-            <span>04 / Interactive Tool</span>
-            <h3>Tools people want to explore</h3>
-            <p>Calculators, quote flows, 3D viewers, and product demos that turn attention into action.</p>
-          </div>
-          <div class="work-card__visual" aria-hidden="true">
-            <i></i><i></i><i></i>
-          </div>
-        </article>
       </div>
+
+      <div class="scroll-cue">
+        <span>Scroll</span>
+        <i></i>
+      </div>
+    </section>
+
+    <!-- SYSTEMS INTRO -->
+    <section class="section split" id="systems">
+      <div>
+        <p class="eyebrow">SYSTEM LAYER 01</p>
+        <h2>Not just a good-looking site.</h2>
+      </div>
+
+      <div class="split-copy">
+        <p>
+          The goal is simple: make the business feel trustworthy, modern, and easy to understand.
+          Every section has a job — build belief, show capability, and move the visitor toward action.
+        </p>
+
+        <div class="service-grid">
+          <article>
+            <span>01</span>
+            <h3>Immersive Websites</h3>
+            <p>High-end landing pages and brand experiences built around motion, depth, and clear messaging.</p>
+          </article>
+
+          <article>
+            <span>02</span>
+            <h3>Client Portals</h3>
+            <p>Private-feeling dashboards that organize onboarding, files, project steps, and communication.</p>
+          </article>
+
+          <article>
+            <span>03</span>
+            <h3>AI Workflows</h3>
+            <p>Lead qualification, chat flows, automated follow-ups, and operational systems that save time.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- OUR WORK SPLINE SECTION -->
+    <section class="work-section" id="work">
+      <spline-viewer
+        class="spline spline-work"
+        url="https://prod.spline.design/dCoa7QA6gWEMZniI/scene.splinecode">
+      </spline-viewer>
+
+      <div class="work-overlay"></div>
+
+      <div class="work-copy">
+        <p class="eyebrow">OUR WORK</p>
+        <h2>Interactive work that feels alive.</h2>
+        <p>
+          This section is built around your Spline scene, so the portfolio feels like an experience instead of a basic grid.
+        </p>
+      </div>
+    </section>
+
+    <!-- WORK CARDS -->
+    <section class="section work-cards">
+      <article>
+        <span>01 / Web Experience</span>
+        <h3>Premium business websites</h3>
+        <p>Modern sites with strong visuals, sharp copy, and clear conversion paths.</p>
+      </article>
+
+      <article>
+        <span>02 / Portal System</span>
+        <h3>Client-ready dashboards</h3>
+        <p>Systems that make your business feel organized before the customer even talks to you.</p>
+      </article>
+
+      <article>
+        <span>03 / Automation</span>
+        <h3>AI-powered workflows</h3>
+        <p>Automations that answer, qualify, follow up, and keep leads moving.</p>
+      </article>
+    </section>
+
+    <!-- CONTACT -->
+    <section class="section contact" id="contact">
+      <p class="eyebrow">START A PROJECT</p>
+      <h2>Need a website that feels serious?</h2>
+      <p>
+        Tell BIM Labs what you are building. We will map the site, the system, and the first version you can launch.
+      </p>
+      <a href="mailto:bimlabsstudio@gmail.com" class="btn btn-primary">Email BIM Labs</a>
     </section>
   </main>
 
-  <div class="interface" aria-live="polite">
-    <header class="brand-lockup">
-      <a href="#top" class="brand">BIM LABS</a>
-      <span class="meta-pill">IMMERSIVE SYSTEM / 03 CHAPTERS</span>
-    </header>
-
-    <section class="copy copy--hero" data-copy="hero">
-      <p class="eyebrow">BIM LABS / IMMERSIVE WEB STUDIO</p>
-      <h1>We build high-end websites and digital systems for modern brands.</h1>
-      <p class="lede">BIM Labs designs immersive websites, client portals, AI workflows, and interactive tools that make your business feel premium, clear, and alive online.</p>
-      <div class="hero-services" aria-hidden="true">
-        <span>Immersive Websites</span>
-        <span>Client Portals</span>
-        <span>AI Workflows</span>
-      </div>
-    </section>
-    <section class="copy copy--build" data-copy="build">
-      <p class="eyebrow">SYSTEM LAYER 01</p>
-      <h2>Every section has a job.</h2>
-      <p class="lede">The interface, motion, and 3D system work together so the site feels discovered — not scrolled.</p>
-    </section>
-
-    <div class="object-label label--ai" data-label="ai">AI WORKFLOW</div>
-    <div class="object-label label--portal" data-label="portal">CLIENT PORTAL</div>
-    <section class="copy copy--work" data-copy="work">
-      <p class="eyebrow">OUR WORK / DESCENT</p>
-      <h2>Scroll down through real build layers.</h2>
-      <p class="lede">This part is intentionally long: a cinematic scroll through larger work panels, architectural frames, and capability layers that feel like one continuous BIM Labs archive.</p>
-    </section>
-
-    <section class="copy copy--work-detail" data-copy="work-detail">
-      <p class="eyebrow">WORK LAYERS 01—03</p>
-      <h2>A cleaner way to show capability.</h2>
-      <p class="lede">Websites, portals, and automations sit in one guided story so visitors understand what BIM Labs does without being dropped into a messy portfolio grid.</p>
-    </section>
-
-    <div class="work-index" aria-hidden="true">
-      <div><span>01</span><strong>Premium web experiences</strong></div>
-      <div><span>02</span><strong>Private client systems</strong></div>
-      <div><span>03</span><strong>AI-powered operations</strong></div>
-    </div>
-
-    <div class="object-label label--viewer" data-label="viewer">3D VIEWER</div>
-    <div class="object-label label--archive" data-label="archive">WORK ARCHIVE</div>
-
-    <a href="#work" class="scroll-indicator" aria-label="Scroll to explore">
-      <span>Scroll to enter</span>
-      <i></i>
-    </a>
-
-    <div class="progress-rail" aria-hidden="true">
-      <span class="progress-rail__meta">00</span>
-      <div class="progress-rail__track"><b id="progressFill"></b></div>
-      <span class="progress-rail__meta">03</span>
-    </div>
-  </div>
-
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-  <script type="module" src="js/main.js"></script>
+  <script src="js/main.js"></script>
 </body>
 </html>
