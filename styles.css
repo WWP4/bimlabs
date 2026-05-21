@@ -623,3 +623,16 @@ h2,
 .work-card p {
   color: rgba(248, 250, 252, 0.68);
 }
+
+/* TEMP: visually cover Spline watermark during prototype */
+.spline-watermark-cover {
+  position: fixed;
+  right: 12px;
+  bottom: 12px;
+  width: 180px;
+  height: 58px;
+  z-index: 9999;
+  background: #030712;
+  border-radius: 12px;
+  pointer-events: none;
+}
