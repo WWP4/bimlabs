@@ -544,3 +544,46 @@ body::before {
     display: none;
   }
 }
+
+.hero-spline {
+  position: relative;
+  height: 100vh;
+  width: 100%;
+  background: #030305;
+  overflow: hidden;
+  z-index: 1;
+}
+
+#canvas3d {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  z-index: 1;
+  pointer-events: auto;
+}
+
+.hero-copy {
+  position: relative;
+  z-index: 2;
+  min-height: 70vh;
+  padding: clamp(90px, 12vw, 160px) clamp(22px, 5vw, 86px);
+  background: #030305;
+  text-align: center;
+}
+
+.hero-copy h1 {
+  max-width: 980px;
+  margin: 0 auto 28px;
+  font-size: clamp(52px, 8.2vw, 132px);
+  line-height: 0.88;
+  letter-spacing: -0.075em;
+  font-weight: 600;
+}
+
+.hero-copy p {
+  max-width: 720px;
+  margin-left: auto;
+  margin-right: auto;
+}
