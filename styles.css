@@ -434,3 +434,72 @@ h3 {
     opacity: 0.82;
   }
 }
+
+.site-header {
+  transition: background 0.25s ease, border-color 0.25s ease;
+}
+
+.site-header.is-scrolled {
+  background: rgba(3, 3, 5, 0.72);
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+/* Big performance fix */
+body::before {
+  display: none;
+}
+
+/* Backdrop blur is expensive */
+.btn-secondary,
+.service-grid article,
+.work-cards article {
+  backdrop-filter: none;
+}
+
+/* Reduce Spline GPU pressure */
+.spline {
+  contain: layout paint size;
+}
+
+.spline-work {
+  pointer-events: none;
+}
+
+.spline-hero {
+  pointer-events: auto;
+}
+
+/* Avoid sticky + heavy 3D conflict */
+.work-copy {
+  position: relative;
+  min-height: 100vh;
+}
+
+/* Make work section less brutal */
+.work-section {
+  height: 110vh;
+  min-height: 760px;
+}
+
+/* Reduce hover repaint cost */
+.service-grid article::before,
+.work-cards article::before {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .spline-work {
+    display: none;
+  }
+
+  .work-section {
+    height: auto;
+    min-height: 80vh;
+    padding: 90px 20px;
+  }
+
+  .work-copy {
+    min-height: auto;
+    padding-left: 0;
+  }
+}
