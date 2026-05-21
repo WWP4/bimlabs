@@ -3,20 +3,27 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>BIM Labs — Immersive Websites & Digital Systems</title>
 
+  <title>BIM Labs</title>
+
+  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Manrope:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
 
   <link rel="stylesheet" href="styles.css" />
 </head>
 
 <body>
-  <script type="module" src="https://unpkg.com/@splinetool/viewer@1.12.94/build/spline-viewer.js"></script>
 
+  <!-- HEADER -->
   <header class="site-header">
-    <a href="#top" class="brand">BIM LABS</a>
+    <a href="#" class="brand">BIM LABS</a>
+
     <nav>
       <a href="#work">Work</a>
       <a href="#systems">Systems</a>
@@ -24,121 +31,61 @@
     </nav>
   </header>
 
-  <main id="top">
-    <!-- HERO -->
-    <section class="hero section">
-      <spline-viewer
-        class="spline spline-hero"
-        url="https://prod.spline.design/ag-WI4DXSPEnCbze/scene.splinecode">
-      </spline-viewer>
+  <!-- HERO SPLINE -->
+  <section class="hero-spline">
 
-      <div class="hero-overlay"></div>
+    <canvas id="canvas3d"></canvas>
 
-      <div class="hero-content">
-        <p class="eyebrow">IMMERSIVE WEB STUDIO</p>
-        <h1>Websites that feel like premium digital systems.</h1>
-        <p>
-          BIM Labs builds cinematic websites, client portals, AI workflows,
-          and interactive tools for brands that need to look expensive and convert clearly.
-        </p>
+    <div class="hero-gradient"></div>
 
-        <div class="hero-actions">
-          <a href="#contact" class="btn btn-primary">Start a Project</a>
-          <a href="#work" class="btn btn-secondary">See Work</a>
-        </div>
-      </div>
+  </section>
 
-      <div class="scroll-cue">
-        <span>Scroll</span>
-        <i></i>
-      </div>
-    </section>
+  <!-- HERO TEXT -->
+  <section class="hero-copy">
 
-    <!-- SYSTEMS INTRO -->
-    <section class="section split" id="systems">
-      <div>
-        <p class="eyebrow">SYSTEM LAYER 01</p>
-        <h2>Not just a good-looking site.</h2>
-      </div>
+    <p class="eyebrow">
+      IMMERSIVE WEB STUDIO
+    </p>
 
-      <div class="split-copy">
-        <p>
-          The goal is simple: make the business feel trustworthy, modern, and easy to understand.
-          Every section has a job — build belief, show capability, and move the visitor toward action.
-        </p>
+    <h1>
+      Websites that feel like premium digital systems.
+    </h1>
 
-        <div class="service-grid">
-          <article>
-            <span>01</span>
-            <h3>Immersive Websites</h3>
-            <p>High-end landing pages and brand experiences built around motion, depth, and clear messaging.</p>
-          </article>
+    <p class="hero-description">
+      BIM Labs builds cinematic websites, AI workflows,
+      portals, and immersive digital experiences for brands
+      that want to feel modern, premium, and unforgettable.
+    </p>
 
-          <article>
-            <span>02</span>
-            <h3>Client Portals</h3>
-            <p>Private-feeling dashboards that organize onboarding, files, project steps, and communication.</p>
-          </article>
+    <div class="hero-actions">
 
-          <article>
-            <span>03</span>
-            <h3>AI Workflows</h3>
-            <p>Lead qualification, chat flows, automated follow-ups, and operational systems that save time.</p>
-          </article>
-        </div>
-      </div>
-    </section>
+      <a href="#contact" class="btn btn-primary">
+        Start a Project
+      </a>
 
-    <!-- OUR WORK SPLINE SECTION -->
-    <section class="work-section" id="work">
-<spline-viewer
-  class="spline spline-work lazy-spline"
-  data-url="https://prod.spline.design/dCoa7QA6gWEMZniI/scene.splinecode">
-</spline-viewer>
+      <a href="#work" class="btn btn-secondary">
+        See Work
+      </a>
 
-      <div class="work-overlay"></div>
+    </div>
 
-      <div class="work-copy">
-        <p class="eyebrow">OUR WORK</p>
-        <h2>Interactive work that feels alive.</h2>
-        <p>
-          This section is built around your Spline scene, so the portfolio feels like an experience instead of a basic grid.
-        </p>
-      </div>
-    </section>
+  </section>
 
-    <!-- WORK CARDS -->
-    <section class="section work-cards">
-      <article>
-        <span>01 / Web Experience</span>
-        <h3>Premium business websites</h3>
-        <p>Modern sites with strong visuals, sharp copy, and clear conversion paths.</p>
-      </article>
+  <!-- SPLINE RUNTIME -->
+  <script type="module">
 
-      <article>
-        <span>02 / Portal System</span>
-        <h3>Client-ready dashboards</h3>
-        <p>Systems that make your business feel organized before the customer even talks to you.</p>
-      </article>
+    import { Application }
+    from "https://unpkg.com/@splinetool/runtime@1.10.57/build/runtime.js";
 
-      <article>
-        <span>03 / Automation</span>
-        <h3>AI-powered workflows</h3>
-        <p>Automations that answer, qualify, follow up, and keep leads moving.</p>
-      </article>
-    </section>
+    const canvas = document.getElementById("canvas3d");
 
-    <!-- CONTACT -->
-    <section class="section contact" id="contact">
-      <p class="eyebrow">START A PROJECT</p>
-      <h2>Need a website that feels serious?</h2>
-      <p>
-        Tell BIM Labs what you are building. We will map the site, the system, and the first version you can launch.
-      </p>
-      <a href="mailto:bimlabsstudio@gmail.com" class="btn btn-primary">Email BIM Labs</a>
-    </section>
-  </main>
+    const app = new Application(canvas);
 
-  <script src="js/main.js"></script>
+    app.load(
+      "https://prod.spline.design/dCoa7QA6gWEMZniI/scene.splinecode"
+    );
+
+  </script>
+
 </body>
 </html>
