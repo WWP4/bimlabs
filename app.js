@@ -9,71 +9,76 @@
 
   gsap.registerPlugin(ScrollTrigger);
 
-const root = document.documentElement;
-const canvas = document.querySelector("#bim-world");
-const progressFill = document.querySelector("#progressFill");
-const labels = {
+  // Core DOM references
+  const root = document.documentElement;
+  const canvas = document.querySelector("#bim-world");
+  const progressFill = document.querySelector("#progressFill");
+  const labels = {
   ai: document.querySelector('[data-label="ai"]'),
   portal: document.querySelector('[data-label="portal"]'),
   viewer: document.querySelector('[data-label="viewer"]'),
   archive: document.querySelector('[data-label="archive"]')
-};
+  };
 
-const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-const clock = new THREE.Clock();
-const pointer = new THREE.Vector2();
-const pointerTarget = new THREE.Vector2();
-const screenPosition = new THREE.Vector3();
-const labelOpacity = { value: 0 };
-const workLabelOpacity = { value: 0 };
-const sceneState = { progress: 0, work: 0, depth: 0 };
+  // Shared state
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const clock = new THREE.Clock();
+  const pointer = new THREE.Vector2();
+  const pointerTarget = new THREE.Vector2();
+  const screenPosition = new THREE.Vector3();
+  const labelOpacity = { value: 0 };
+  const workLabelOpacity = { value: 0 };
+  const sceneState = { progress: 0, work: 0, depth: 0 };
 
-let width = window.innerWidth;
-let height = window.innerHeight;
+  let width = window.innerWidth;
+  let height = window.innerHeight;
 
-const scene = new THREE.Scene();
-scene.fog = new THREE.Fog(0xe7f0fb, 7, 16);
+  // Scene and camera
+  const scene = new THREE.Scene();
+  scene.fog = new THREE.Fog(0xe7f0fb, 7, 16);
 
-const camera = new THREE.PerspectiveCamera(36, width / height, 0.1, 100);
-camera.position.set(0, 0.1, 7.2);
+  const camera = new THREE.PerspectiveCamera(36, width / height, 0.1, 100);
+  camera.position.set(0, 0.1, 7.2);
 
-const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
-renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.7));
-renderer.setSize(width, height);
-renderer.outputColorSpace = THREE.SRGBColorSpace;
+  const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.7));
+  renderer.setSize(width, height);
+  renderer.outputColorSpace = THREE.SRGBColorSpace;
 
-const world = new THREE.Group();
-const orb = new THREE.Group();
-const rings = new THREE.Group();
-const nodeGroup = new THREE.Group();
-const radialGroup = new THREE.Group();
-const innerFrame = new THREE.Group();
-const workGroup = new THREE.Group();
-const workMaterials = [];
-const labelAnchors = {
+  // Scene graph groups
+  const world = new THREE.Group();
+  const orb = new THREE.Group();
+  const rings = new THREE.Group();
+  const nodeGroup = new THREE.Group();
+  const radialGroup = new THREE.Group();
+  const innerFrame = new THREE.Group();
+  const workGroup = new THREE.Group();
+  const workMaterials = [];
+  const labelAnchors = {
   ai: new THREE.Object3D(),
   portal: new THREE.Object3D(),
   viewer: new THREE.Object3D(),
   archive: new THREE.Object3D()
-};
+  };
 
-scene.add(world);
-world.add(orb);
-orb.scale.setScalar(0.001);
-orb.add(rings, nodeGroup, radialGroup, innerFrame);
-world.add(workGroup);
+  scene.add(world);
+  world.add(orb);
+  orb.scale.setScalar(0.001);
+  orb.add(rings, nodeGroup, radialGroup, innerFrame);
+  world.add(workGroup);
 
-const deepLine = new THREE.LineBasicMaterial({ color: 0x07101d, transparent: true, opacity: 0.28 });
-const softLine = new THREE.LineBasicMaterial({ color: 0x07101d, transparent: true, opacity: 0.15 });
-const blueLine = new THREE.LineBasicMaterial({ color: 0x0077ff, transparent: true, opacity: 0.72 });
-const blueSoft = new THREE.LineBasicMaterial({ color: 0x0077ff, transparent: true, opacity: 0.34 });
-const surfaceMaterial = new THREE.MeshBasicMaterial({
+  // Materials
+  const deepLine = new THREE.LineBasicMaterial({ color: 0x07101d, transparent: true, opacity: 0.28 });
+  const softLine = new THREE.LineBasicMaterial({ color: 0x07101d, transparent: true, opacity: 0.15 });
+  const blueLine = new THREE.LineBasicMaterial({ color: 0x0077ff, transparent: true, opacity: 0.72 });
+  const blueSoft = new THREE.LineBasicMaterial({ color: 0x0077ff, transparent: true, opacity: 0.34 });
+  const surfaceMaterial = new THREE.MeshBasicMaterial({
   color: 0xffffff,
   transparent: true,
   opacity: 0.075,
   depthWrite: false,
   side: THREE.DoubleSide
-});
+  });
 
 function lineFromPoints(points, material) {
   const geometry = new THREE.BufferGeometry().setFromPoints(points);
@@ -280,6 +285,7 @@ function buildWorkArchive() {
   workGroup.add(descentRail, crossLinks);
 }
 
+// Build scene content
 orb.add(buildOuterWireSphere());
 buildRings();
 buildRadials();
@@ -447,6 +453,7 @@ function animate() {
   requestAnimationFrame(animate);
 }
 
+// Runtime lifecycle
 window.addEventListener("pointermove", onPointerMove, { passive: true });
 window.addEventListener("resize", onResize);
 createScrollTimeline();
