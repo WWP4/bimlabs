@@ -398,104 +398,77 @@ a {
   opacity:.7;
 }
 
-/* NAV */
 
-.main-nav{
-  position:relative;
+/* HEADER */
 
-  grid-column:2;
-  justify-self:center;
+.site-header {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  z-index: 100;
 
-  display:flex;
-  align-items:center;
-  gap:clamp(28px,3vw,54px);
+  width: calc(100% - 48px);
+  max-width: 1680px;
 
-  padding-bottom:14px;
+  transform: translateX(-50%);
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 14px 12px 18px;
+
+  border-bottom: 1px solid rgba(255, 255, 255, 0.42);
+
+  pointer-events: none;
 }
 
-/* FULL BAR LINE */
-
-.nav-line{
-  position:absolute;
-  left:0;
-  bottom:0;
-
-  width:100%;
-  height:1px;
-
-  background:rgba(255,255,255,.08);
-
-  overflow:hidden;
+.site-header * {
+  pointer-events: auto;
 }
 
-/* ANIMATED WHITE SWEEP */
-
-.nav-line::after{
-  content:"";
-
-  position:absolute;
-  left:0;
-  top:0;
-
-  width:0%;
-  height:100%;
-
-  background:white;
-
-  transition:width .45s cubic-bezier(.19,1,.22,1);
+.brand {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: white;
 }
 
-/* WHEN NAV HOVERED */
-
-.main-nav:hover .nav-line::after{
-  width:100%;
+.main-nav {
+  display: flex;
+  align-items: center;
+  gap: clamp(34px, 4vw, 70px);
 }
 
-/* LINKS */
+.main-nav a {
+  position: relative;
 
-.main-nav a{
-  position:relative;
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
 
-  font-family:"IBM Plex Mono", monospace;
-  font-size:11px;
+  color: rgba(255, 255, 255, 0.78);
 
-  letter-spacing:.16em;
-  text-transform:uppercase;
-
-  color:rgba(255,255,255,.44);
-
-  transition:
-    color .25s ease,
-    transform .25s ease,
-    opacity .25s ease;
+  transition: color 0.25s ease, opacity 0.25s ease;
 }
 
-/* FADE NON HOVERED */
-
-.main-nav:hover a{
-  opacity:.35;
+.main-nav a:hover {
+  color: white;
 }
 
-/* ACTIVE LINK */
-
-.main-nav a:hover{
-  opacity:1 !important;
-  color:white;
-
-  transform:translateY(-1px);
+.main-nav:hover a:not(:hover) {
+  opacity: 0.45;
 }
 
-/* MOBILE */
-
-@media (max-width:900px){
-
-  .site-header{
-    display:flex;
-    justify-content:space-between;
+@media (max-width: 800px) {
+  .site-header {
+    width: calc(100% - 32px);
   }
 
-  .main-nav{
-    display:none;
+  .main-nav {
+    display: none;
   }
-
 }
