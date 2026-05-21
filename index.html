@@ -15,32 +15,47 @@
     rel="stylesheet"
   />
 
+  <!-- CSS -->
   <link rel="stylesheet" href="styles.css" />
+
+  <!-- Spline -->
+  <script
+    type="module"
+    src="https://unpkg.com/@splinetool/viewer@1.10.57/build/spline-viewer.js">
+  </script>
 </head>
 
 <body>
 
   <!-- HEADER -->
+
   <header class="site-header">
-    <a href="#" class="brand">BIM LABS</a>
+
+    <a href="#" class="brand">
+      BIM LABS
+    </a>
 
     <nav>
       <a href="#work">Work</a>
       <a href="#systems">Systems</a>
       <a href="#contact">Contact</a>
     </nav>
+
   </header>
 
-  <!-- HERO SPLINE -->
-  <section class="hero-spline">
+  <!-- HERO -->
 
-    <canvas id="canvas3d"></canvas>
+  <section class="hero">
 
-    <div class="hero-gradient"></div>
+    <spline-viewer
+      class="spline-hero"
+      url="https://prod.spline.design/ag-WI4DXSPEnCbze/scene.splinecode">
+    </spline-viewer>
 
   </section>
 
-  <!-- HERO TEXT -->
+  <!-- HERO COPY -->
+
   <section class="hero-copy">
 
     <p class="eyebrow">
@@ -48,13 +63,13 @@
     </p>
 
     <h1>
-      Websites that feel like premium digital systems.
+      Websites built like modern digital systems.
     </h1>
 
     <p class="hero-description">
-      BIM Labs builds cinematic websites, AI workflows,
-      portals, and immersive digital experiences for brands
-      that want to feel modern, premium, and unforgettable.
+      BIM Labs creates immersive websites, AI workflows,
+      portals, and interactive experiences designed to make
+      brands feel premium, cinematic, and unforgettable.
     </p>
 
     <div class="hero-actions">
@@ -71,21 +86,8 @@
 
   </section>
 
-  <!-- SPLINE RUNTIME -->
-  <script type="module">
-
-    import { Application }
-    from "https://unpkg.com/@splinetool/runtime@1.10.57/build/runtime.js";
-
-    const canvas = document.getElementById("canvas3d");
-
-    const app = new Application(canvas);
-
-    app.load(
-      "https://prod.spline.design/dCoa7QA6gWEMZniI/scene.splinecode"
-    );
-
-  </script>
+  <!-- JS -->
+  <script src="app.js"></script>
 
 </body>
 </html>
