@@ -6,93 +6,63 @@
 
   <title>BIM Labs</title>
 
-  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 
   <link
-    href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Manrope:wght@400;500;600;700&display=swap"
+    href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Manrope:wght@400;500;600&display=swap"
     rel="stylesheet"
   />
 
-  <!-- CSS -->
   <link rel="stylesheet" href="styles.css" />
 
-  <!-- Spline -->
   <script
     type="module"
-    src="https://unpkg.com/@splinetool/viewer@1.10.57/build/spline-viewer.js">
+    src="https://unpkg.com/@splinetool/viewer@1.12.94/build/spline-viewer.js">
   </script>
 </head>
 
 <body>
 
-  <!-- HEADER -->
-
   <header class="site-header">
-
-    <a href="#" class="brand">
-      BIM LABS
-    </a>
+    <a href="#top" class="brand">BIM LABS</a>
 
     <nav>
       <a href="#work">Work</a>
       <a href="#systems">Systems</a>
       <a href="#contact">Contact</a>
     </nav>
-
   </header>
 
- <section class="hero">
+  <main id="top">
 
-  <!-- SPLINE -->
+    <section class="hero">
 
-  <spline-viewer
-    class="spline-hero"
-    url="https://prod.spline.design/ag-WI4DXSPEnCbze/scene.splinecode">
-  </spline-viewer>
+      <spline-viewer
+        class="spline-hero"
+        url="https://prod.spline.design/ag-WI4DXSPEnCbze/scene.splinecode">
+      </spline-viewer>
 
-  <!-- OVERLAY TEXT -->
+      <div class="hero-shade"></div>
 
-  <div class="hero-content">
+      <div class="hero-content">
+        <p class="hero-label">BIM LABS / IMMERSIVE SYSTEMS</p>
 
-  <div class="hero-copy">
+        <h1>Cinematic websites for modern brands.</h1>
 
-  <p class="hero-tag">
-    BIM LABS / IMMERSIVE SYSTEMS
-  </p>
-
-  <h1>
-    Cinematic websites for modern brands.
-  </h1>
-
-  <p class="hero-description">
-    Web experiences, AI systems, portals,
-    and interactive digital infrastructure.
-  </p>
-
-</div>
-
-      <div class="hero-actions">
-
-        <a href="#contact" class="btn btn-primary">
-          Start a Project
-        </a>
-
-        <a href="#work" class="btn btn-secondary">
-          See Work
-        </a>
-
+        <p class="hero-sub">
+          Web experiences · AI systems · portals · interactive infrastructure
+        </p>
       </div>
 
-    </div>
+      <div class="hero-actions">
+        <a href="#contact" class="btn btn-primary">Start a Project</a>
+        <a href="#work" class="btn btn-secondary">See Work</a>
+      </div>
 
-  </div>
+    </section>
 
-</section>
-
-  <!-- JS -->
-  <script src="app.js"></script>
+  </main>
 
 </body>
 </html>
