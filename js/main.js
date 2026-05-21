@@ -1,28 +1,41 @@
-import { createScrollTimeline } from "./scroll.js";
+const header = document.querySelector(".site-header");
 
-(() => {
-  const { gsap, ScrollTrigger } = window;
+let ticking = false;
 
-  if (!gsap || !ScrollTrigger) {
-    console.error("GSAP and ScrollTrigger are required.");
-    return;
+function updateHeader() {
+  if (window.scrollY > 40) {
+    header.classList.add("is-scrolled");
+  } else {
+    header.classList.remove("is-scrolled");
   }
 
-  gsap.registerPlugin(ScrollTrigger);
+  ticking = false;
+}
 
-  const root = document.documentElement;
-  const progressFill = document.querySelector("#progressFill");
+window.addEventListener("scroll", () => {
+  if (!ticking) {
+    window.requestAnimationFrame(updateHeader);
+    ticking = true;
+  }
+}, { passive: true });
 
-  const app = {
-    root,
-    progressFill,
-    sceneState: {
-      progress: 0,
-      work: 0,
-      depth: 0
-    },
-    reduceMotion: window.matchMedia("(prefers-reduced-motion: reduce)").matches
-  };
+const lazySplines = document.querySelectorAll(".lazy-spline");
 
-  createScrollTimeline({ app, gsap, ScrollTrigger });
-})();
+const splineObserver = new IntersectionObserver((entries) => {
+  entries.forEach((entry) => {
+    if (!entry.isIntersecting) return;
+
+    const spline = entry.target;
+    const url = spline.dataset.url;
+
+    if (url && !spline.getAttribute("url")) {
+      spline.setAttribute("url", url);
+    }
+
+    splineObserver.unobserve(spline);
+  });
+}, {
+  rootMargin: "500px 0px"
+});
+
+lazySplines.forEach((spline) => splineObserver.observe(spline));
