@@ -347,3 +347,147 @@ main {
 
   color: rgba(255,255,255,0.92);
 }
+
+/* ===== CINEMATIC PORTAL ATMOSPHERE ===== */
+
+body::before {
+  content: "";
+
+  position: fixed;
+  inset: 0;
+  z-index: 2;
+
+  pointer-events: none;
+
+  background:
+    radial-gradient(
+      circle at center,
+      rgba(255,255,255,0.04) 0%,
+      rgba(255,255,255,0.02) 10%,
+      rgba(3,3,5,0) 22%,
+      rgba(3,3,5,0.28) 58%,
+      rgba(3,3,5,0.82) 100%
+    );
+
+  mix-blend-mode: screen;
+
+  opacity: calc(0.4 + var(--portal-progress, 0) * 0.6);
+
+  transition: opacity 0.4s ease;
+}
+
+body::after {
+  content: "";
+
+  position: fixed;
+  inset: -20%;
+  z-index: 2;
+
+  pointer-events: none;
+
+  background:
+    radial-gradient(
+      circle at center,
+      transparent 0%,
+      rgba(255,255,255,0.015) 12%,
+      rgba(255,255,255,0.008) 20%,
+      rgba(3,3,5,0.12) 48%,
+      rgba(3,3,5,0.92) 100%
+    );
+
+  filter:
+    blur(60px)
+    saturate(120%);
+
+  transform:
+    scale(calc(1 + var(--portal-progress, 0) * 0.22));
+
+  opacity:
+    calc(0.55 + var(--portal-progress, 0) * 0.45);
+
+  will-change:
+    transform,
+    opacity;
+}
+
+/* ===== FILM GRAIN ===== */
+
+.hero::before {
+  content: "";
+
+  position: fixed;
+  inset: 0;
+  z-index: 6;
+
+  pointer-events: none;
+
+  opacity: 0.045;
+
+  background-image:
+    repeating-radial-gradient(
+      circle at 0 0,
+      transparent 0,
+      rgba(255,255,255,0.08) 1px,
+      transparent 2px
+    );
+
+  background-size: 140px 140px;
+
+  mix-blend-mode: soft-light;
+}
+
+/* ===== SPLINE DEPTH ===== */
+
+.spline-hero {
+  will-change:
+    transform,
+    opacity,
+    filter;
+
+  backface-visibility: hidden;
+
+  image-rendering: auto;
+
+  filter:
+    contrast(1.05)
+    saturate(1.04)
+    brightness(0.98);
+
+  mask-image:
+    radial-gradient(
+      circle at center,
+      rgba(0,0,0,1) 18%,
+      rgba(0,0,0,0.96) 42%,
+      rgba(0,0,0,0.82) 68%,
+      rgba(0,0,0,0.18) 100%
+    );
+}
+
+/* ===== HERO TEXT CINEMATIC ===== */
+
+.hero-content h1 {
+  text-shadow:
+    0 0 24px rgba(255,255,255,0.04);
+
+  transform:
+    translateZ(0);
+
+  will-change:
+    transform,
+    opacity;
+}
+
+.hero-sub {
+  opacity: 0.72;
+
+  text-shadow:
+    0 0 18px rgba(255,255,255,0.02);
+}
+
+/* ===== PORTAL CHAPTER FEEL ===== */
+
+.portal-chapter h2 {
+  text-shadow:
+    0 0 40px rgba(255,255,255,0.05),
+    0 0 120px rgba(255,255,255,0.03);
+}
