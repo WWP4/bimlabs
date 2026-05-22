@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>BIM Labs</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Manrope:wght@400;500;600&display=swap"
+    rel="stylesheet"
+  />
+
+  <link rel="stylesheet" href="styles.css" />
+
+  <script
+    type="module"
+    src="https://unpkg.com/@splinetool/viewer@1.12.94/build/spline-viewer.js">
+  </script>
+</head>
+
+<body>
+  <header class="site-header">
+    <a href="#top" class="brand">BIM LABS</a>
+
+    <nav class="main-nav">
+      <a href="#work">Our Work</a>
+      <a href="#process">Process</a>
+      <a href="#systems">Systems</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <spline-viewer
+        class="spline-hero"
+        url="https://prod.spline.design/ag-WI4DXSPEnCbze/scene.splinecode">
+      </spline-viewer>
+
+      <canvas id="particle-whisp-canvas" aria-hidden="true"></canvas>
+
+      <div class="hero-shade"></div>
+
+      <div class="hero-content">
+        <p class="hero-label">BIM LABS / IMMERSIVE SYSTEMS</p>
+        <h1>Cinematic websites for modern brands.</h1>
+        <p class="hero-sub">
+          Web experiences · AI systems · portals · interactive infrastructure
+        </p>
+      </div>
+
+      <div class="hero-actions">
+        <a href="#contact" class="btn btn-primary">Start a Project</a>
+        <a href="#work" class="btn btn-secondary">See Work</a>
+      </div>
+    </section>
+
+    <section id="work" class="editorial-transition">
+      <div class="editorial-shell">
+        <p class="editorial-kicker">HIGH-END MODERN / EDITORIAL TECH</p>
+        <h2>Built as a continuation of the hero energy.</h2>
+      </div>
+    </section>
+  </main>
+
+<script type="module" src="js/main.js"></script>
+</body>
+</html>
