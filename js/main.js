@@ -5,11 +5,30 @@ const heroContent = document.querySelector(".hero-content");
 const heroActions = document.querySelector(".hero-actions");
 const portalChapter = document.querySelector(".portal-chapter");
 
-let headerTicking = false;
-let portalTicking = false;
+let targetProgress = 0;
+let currentProgress = 0;
+let targetMouseX = 0;
+let targetMouseY = 0;
+let mouseX = 0;
+let mouseY = 0;
+let ticking = false;
 
 function clamp(value, min = 0, max = 1) {
   return Math.min(Math.max(value, min), max);
+}
+
+function easeOutCubic(t) {
+  return 1 - Math.pow(1 - t, 3);
+}
+
+function easeInOutCubic(t) {
+  return t < 0.5
+    ? 4 * t * t * t
+    : 1 - Math.pow(-2 * t + 2, 3) / 2;
+}
+
+function lerp(start, end, amount) {
+  return start + (end - start) * amount;
 }
 
 /* HEADER */
@@ -22,105 +41,118 @@ function updateHeader() {
   } else {
     header.classList.remove("is-scrolled");
   }
-
-  headerTicking = false;
-}
-
-window.addEventListener("scroll", () => {
-  if (!headerTicking) {
-    window.requestAnimationFrame(updateHeader);
-    headerTicking = true;
-  }
-}, { passive: true });
-
-/* SPLINE LAZY LOAD */
-
-const lazySplines = document.querySelectorAll(".lazy-spline");
-
-if (lazySplines.length) {
-  const splineObserver = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      if (!entry.isIntersecting) return;
-
-      const spline = entry.target;
-      const url = spline.dataset.url;
-
-      if (url && !spline.getAttribute("url")) {
-        spline.setAttribute("url", url);
-      }
-
-      splineObserver.unobserve(spline);
-    });
-  }, {
-    rootMargin: "500px 0px"
-  });
-
-  lazySplines.forEach((spline) => splineObserver.observe(spline));
 }
 
 /* PREVENT SPLINE FROM BLOCKING SCROLL */
 
 if (splineHero) {
-  splineHero.addEventListener("wheel", (event) => {
-    event.stopPropagation();
+  splineHero.addEventListener(
+    "wheel",
+    (event) => {
+      event.stopPropagation();
 
-    window.scrollBy({
-      top: event.deltaY,
-      left: 0,
-      behavior: "auto"
-    });
-  }, { passive: false });
+      window.scrollBy({
+        top: event.deltaY,
+        left: 0,
+        behavior: "auto",
+      });
+    },
+    { passive: false }
+  );
 }
 
-/* PORTAL ZOOM SYSTEM */
+/* SUBTLE MOUSE DRIFT */
 
-function updatePortalTransition() {
+window.addEventListener(
+  "pointermove",
+  (event) => {
+    const x = event.clientX / window.innerWidth - 0.5;
+    const y = event.clientY / window.innerHeight - 0.5;
+
+    targetMouseX = x;
+    targetMouseY = y;
+  },
+  { passive: true }
+);
+
+/* CINEMATIC SCROLL SYSTEM */
+
+function calculateTargetProgress() {
   const vh = window.innerHeight || 1;
   const scrollY = window.scrollY || 0;
 
-  const progress = clamp(scrollY / (vh * 0.95), 0, 1);
+  targetProgress = clamp(scrollY / (vh * 1.25), 0, 1);
+}
 
-  const splineScale = 1.15 + progress * 3.6;
-  const particleScale = 1 + progress * 3;
+function render() {
+  currentProgress = lerp(currentProgress, targetProgress, 0.075);
+  mouseX = lerp(mouseX, targetMouseX, 0.04);
+  mouseY = lerp(mouseY, targetMouseY, 0.04);
 
-  const splineOpacity = 0.94 - progress * 0.55;
-  const particleOpacity = 0.9 - progress * 0.65;
+  const progress = currentProgress;
+  const eased = easeOutCubic(progress);
+  const soft = easeInOutCubic(progress);
 
-  const splineBlur = progress * 10;
-  const particleBlur = progress * 4;
+  const heroOut = clamp(progress / 0.62, 0, 1);
+  const heroOutEased = easeOutCubic(heroOut);
 
-  const textOpacity = clamp(1 - progress * 1.45, 0, 1);
+  const chapterIn = clamp((progress - 0.48) / 0.42, 0, 1);
+  const chapterEased = easeOutCubic(chapterIn);
+
+  const driftX = mouseX * 18;
+  const driftY = mouseY * 14;
 
   if (splineHero) {
-    splineHero.style.transform = `scale(${splineScale})`;
+    const splineScale = 1.08 + eased * 1.18;
+    const splineOpacity = 0.96 - soft * 0.22;
+    const splineBlur = soft * 2.2;
+
+    splineHero.style.transform = `
+      translate3d(${driftX}px, ${driftY}px, 0)
+      scale(${splineScale})
+    `;
+
     splineHero.style.opacity = splineOpacity.toFixed(3);
-    splineHero.style.filter = `blur(${splineBlur}px)`;
+    splineHero.style.filter = `blur(${splineBlur}px) saturate(${1.02 + soft * 0.08})`;
   }
 
   if (particleCanvas) {
-    particleCanvas.style.transform = `scale(${particleScale})`;
+    const particleScale = 1 + eased * 0.72;
+    const particleOpacity = 0.42 - soft * 0.2;
+    const particleBlur = soft * 1.5;
+
+    particleCanvas.style.transform = `
+      translate3d(${-driftX * 0.45}px, ${-driftY * 0.45}px, 0)
+      scale(${particleScale})
+    `;
+
     particleCanvas.style.opacity = particleOpacity.toFixed(3);
     particleCanvas.style.filter = `blur(${particleBlur}px)`;
   }
 
   if (heroContent) {
-    heroContent.style.opacity = textOpacity.toFixed(3);
-    heroContent.style.transform =
-      `translateX(-50%) translateY(${-progress * 90}px)`;
+    heroContent.style.opacity = (1 - heroOutEased).toFixed(3);
+    heroContent.style.transform = `
+      translateX(-50%)
+      translateY(${-heroOutEased * 52}px)
+      scale(${1 - heroOutEased * 0.025})
+    `;
   }
 
   if (heroActions) {
-    heroActions.style.opacity = textOpacity.toFixed(3);
-    heroActions.style.transform =
-      `translateY(${progress * 40}px)`;
+    heroActions.style.opacity = (1 - heroOutEased).toFixed(3);
+    heroActions.style.transform = `
+      translateY(${heroOutEased * 28}px)
+      scale(${1 - heroOutEased * 0.02})
+    `;
   }
 
   if (portalChapter) {
-    const chapterIn = clamp((progress - 0.58) / 0.32, 0, 1);
-
-    portalChapter.style.opacity = chapterIn.toFixed(3);
-    portalChapter.style.transform =
-      `translateY(${80 - chapterIn * 80}px) scale(${0.96 + chapterIn * 0.04})`;
+    portalChapter.style.opacity = chapterEased.toFixed(3);
+    portalChapter.style.transform = `
+      translateY(${70 - chapterEased * 70}px)
+      scale(${0.965 + chapterEased * 0.035})
+    `;
   }
 
   document.documentElement.style.setProperty(
@@ -128,19 +160,25 @@ function updatePortalTransition() {
     progress.toFixed(4)
   );
 
-  portalTicking = false;
+  ticking = false;
+
+  requestAnimationFrame(render);
 }
 
-window.addEventListener("scroll", () => {
-  if (!portalTicking) {
-    window.requestAnimationFrame(updatePortalTransition);
-    portalTicking = true;
+function onScroll() {
+  calculateTargetProgress();
+  updateHeader();
+
+  if (!ticking) {
+    ticking = true;
   }
-}, { passive: true });
+}
 
-window.addEventListener("resize", updatePortalTransition);
+window.addEventListener("scroll", onScroll, { passive: true });
+window.addEventListener("resize", calculateTargetProgress);
 
+calculateTargetProgress();
 updateHeader();
-updatePortalTransition();
+requestAnimationFrame(render);
 
-console.log("BIM Labs loaded");
+console.log("BIM Labs cinematic scroll loaded");
