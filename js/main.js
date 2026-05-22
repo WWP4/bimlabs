@@ -103,9 +103,9 @@ function render() {
   const driftY = mouseY * 14;
 
   if (splineHero) {
-    const splineScale = 1.08 + eased * 1.18;
-    const splineOpacity = 0.96 - soft * 0.22;
-    const splineBlur = soft * 2.2;
+    const splineScale = 1.08 + eased * 7.5;
+    const splineOpacity = 0.96 - soft * 0.08;
+    const splineBlur = soft * 0.8;
 
     splineHero.style.transform = `
       translate3d(${driftX}px, ${driftY}px, 0)
