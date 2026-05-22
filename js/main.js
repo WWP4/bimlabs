@@ -41,3 +41,20 @@ const splineObserver = new IntersectionObserver((entries) => {
 lazySplines.forEach((spline) => splineObserver.observe(spline));
 
 console.log("BIM Labs loaded");
+
+const splineHero = document.querySelector(".spline-hero");
+
+if (splineHero) {
+  splineHero.addEventListener(
+    "wheel",
+    (event) => {
+      event.stopPropagation();
+      window.scrollBy({
+        top: event.deltaY,
+        left: 0,
+        behavior: "auto",
+      });
+    },
+    { passive: false }
+  );
+}
