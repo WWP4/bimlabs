@@ -19,6 +19,8 @@ window.addEventListener("scroll", () => {
   }
 }, { passive: true });
 
+/* SPLINE LAZY LOAD */
+
 const lazySplines = document.querySelectorAll(".lazy-spline");
 
 const splineObserver = new IntersectionObserver((entries) => {
@@ -42,6 +44,8 @@ lazySplines.forEach((spline) => splineObserver.observe(spline));
 
 console.log("BIM Labs loaded");
 
+/* PREVENT SPLINE FROM EATING SCROLL */
+
 const splineHero = document.querySelector(".spline-hero");
 
 if (splineHero) {
@@ -49,6 +53,7 @@ if (splineHero) {
     "wheel",
     (event) => {
       event.stopPropagation();
+
       window.scrollBy({
         top: event.deltaY,
         left: 0,
@@ -59,9 +64,8 @@ if (splineHero) {
   );
 }
 
+/* PORTAL ZOOM SYSTEM */
 
-
-const splineHero = document.querySelector(".spline-hero");
 const particleCanvas = document.querySelector("#particle-whisp-canvas");
 const heroContent = document.querySelector(".hero-content");
 const heroActions = document.querySelector(".hero-actions");
@@ -74,35 +78,64 @@ function clamp(value, min = 0, max = 1) {
 
 function updatePortalTransition() {
   const vh = window.innerHeight || 1;
-  const progress = clamp(window.scrollY / (vh * 0.95), 0, 1);
 
-  const splineScale = 1.15 + progress * 3.4;
-  const particleScale = 1 + progress * 2.8;
-  const blur = progress * 10;
-  const textOpacity = clamp(1 - progress * 1.45, 0, 1);
+  const progress = clamp(
+    window.scrollY / (vh * 0.95),
+    0,
+    1
+  );
+
+  const splineScale = 1.15 + progress * 3.6;
+  const particleScale = 1 + progress * 3;
+
+  const blurAmount = progress * 10;
+  const particleBlur = progress * 4;
+
+  const textOpacity = clamp(
+    1 - progress * 1.45,
+    0,
+    1
+  );
 
   if (splineHero) {
     splineHero.style.transform = `scale(${splineScale})`;
-    splineHero.style.opacity = `${0.94 - progress * 0.55}`;
-    splineHero.style.filter = `blur(${blur}px)`;
+
+    splineHero.style.opacity =
+      `${0.94 - progress * 0.55}`;
+
+    splineHero.style.filter =
+      `blur(${blurAmount}px)`;
   }
 
   if (particleCanvas) {
-    particleCanvas.style.transform = `scale(${particleScale})`;
-    particleCanvas.style.opacity = `${0.9 - progress * 0.65}`;
-    particleCanvas.style.filter = `blur(${progress * 4}px)`;
+    particleCanvas.style.transform =
+      `scale(${particleScale})`;
+
+    particleCanvas.style.opacity =
+      `${0.9 - progress * 0.65}`;
+
+    particleCanvas.style.filter =
+      `blur(${particleBlur}px)`;
   }
 
   if (heroContent) {
     heroContent.style.opacity = textOpacity;
-    heroContent.style.transform = `translateX(-50%) translateY(${-progress * 90}px)`;
+
+    heroContent.style.transform =
+      `translateX(-50%) translateY(${-progress * 90}px)`;
   }
 
   if (heroActions) {
     heroActions.style.opacity = textOpacity;
+
+    heroActions.style.transform =
+      `translateY(${progress * 40}px)`;
   }
 
-  document.documentElement.style.setProperty("--portal-progress", progress.toFixed(4));
+  document.documentElement.style.setProperty(
+    "--portal-progress",
+    progress.toFixed(4)
+  );
 
   portalTicking = false;
 }
@@ -114,5 +147,9 @@ window.addEventListener("scroll", () => {
   }
 }, { passive: true });
 
-window.addEventListener("resize", updatePortalTransition);
+window.addEventListener(
+  "resize",
+  updatePortalTransition
+);
+
 updatePortalTransition();
