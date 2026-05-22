@@ -1,13 +1,15 @@
 :root {
   --bg: #030305;
   --text: #f5f7fa;
-  --muted: rgba(255, 255, 255, 0.48);
-  --soft: rgba(255, 255, 255, 0.16);
-  --line: rgba(255, 255, 255, 0.12);
+  --line: rgba(255, 255, 255, 0.14);
 }
 
 * {
   box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 html,
@@ -44,15 +46,13 @@ a {
 }
 
 .brand,
-.site-header nav a,
+.main-nav a,
 .hero-label,
 .hero-sub,
 .btn,
 .editorial-kicker {
   font-family: "IBM Plex Mono", monospace;
   text-transform: uppercase;
-  letter-spacing: 0.16em;
-  font-size: 11px;
 }
 
 .brand {
@@ -60,6 +60,8 @@ a {
   justify-self: start;
   color: rgba(255, 255, 255, 0.92);
   font-weight: 500;
+  letter-spacing: 0.18em;
+  color: white;
 }
 
 .site-header nav {
@@ -70,9 +72,11 @@ a {
   gap: clamp(26px, 3vw, 46px);
 }
 
-.site-header nav a {
-  color: rgba(255, 255, 255, 0.52);
-  transition: color 0.25s ease;
+.main-nav a {
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  color: rgba(255, 255, 255, 0.62);
+  transition: color 0.25s ease, opacity 0.25s ease;
 }
 
 .site-header nav a:hover {
@@ -81,14 +85,15 @@ a {
 
 .hero {
   position: relative;
-  height: 100svh;
+  min-height: 100svh;
   width: 100%;
-  overflow: hidden;
+  overflow: clip;
+  isolation: isolate;
   background: #030305;
 }
 
 .spline-hero {
-  position: absolute;
+  position: fixed;
   inset: 0;
   z-index: 1;
   width: 100%;
@@ -101,7 +106,7 @@ a {
 .hero-shade {
   position: absolute;
   inset: 0;
-  z-index: 2;
+  z-index: 4;
   pointer-events: none;
   background:
     radial-gradient(circle at center, transparent 22%, rgba(3, 3, 5, 0.2) 62%, rgba(3, 3, 5, 0.92) 100%),
@@ -122,10 +127,10 @@ a {
 .hero-content h1 {
   margin: 0 0 14px;
   font-family: "IBM Plex Mono", monospace;
-  font-size: clamp(13px, 1.05vw, 17px);
+  font-size: clamp(20px, 1.6vw, 28px);
   font-weight: 500;
-  line-height: 1.65;
-  letter-spacing: 0.02em;
+  line-height: 1.45;
+  letter-spacing: -0.01em;
   text-transform: uppercase;
   color: rgba(255, 255, 255, 0.92);
 }
