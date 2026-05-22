@@ -337,3 +337,20 @@ main {
     scroll-behavior: auto;
   }
 }
+
+.spline-hero {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+
+  width: 100vw;
+  height: 100svh;
+
+  transform: scale(1.15);
+  transform-origin: center center;
+
+  pointer-events: auto;
+  touch-action: pan-y;
+
+  opacity: 0.94;
+}
