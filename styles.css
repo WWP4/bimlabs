@@ -1134,3 +1134,12 @@ main {
     display: none;
   }
 }
+
+
+.spline-hero {
+  transition:
+    opacity 0.4s ease,
+    visibility 0.4s ease;
+
+  will-change: opacity;
+}
