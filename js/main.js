@@ -111,3 +111,42 @@ function init() {
 }
 
 init();
+
+
+
+const hero = document.querySelector(".hero");
+const splineHero = document.querySelector(".spline-hero");
+
+function setupHeroVisibility() {
+  if (!hero || !splineHero) return;
+
+  const observer = new IntersectionObserver(
+    ([entry]) => {
+      const visible = entry.isIntersecting;
+
+      if (visible) {
+        splineHero.style.opacity = "1";
+        splineHero.style.visibility = "visible";
+        splineHero.style.pointerEvents = "auto";
+
+        // resume rendering
+        splineHero.style.display = "block";
+      } else {
+        // fully disable rendering
+        splineHero.style.opacity = "0";
+        splineHero.style.visibility = "hidden";
+        splineHero.style.pointerEvents = "none";
+
+        // biggest performance gain
+        splineHero.style.display = "none";
+      }
+    },
+    {
+      threshold: 0.05,
+    }
+  );
+
+  observer.observe(hero);
+}
+
+setupHeroVisibility();
