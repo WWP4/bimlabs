@@ -1073,3 +1073,19 @@ main {
     opacity: 0.82;
   }
 }
+
+
+.stage-label--intro {
+  left: 0;
+  width: 1800px;
+}
+
+.stage-label--middle {
+  left: 1800px;
+  width: 1700px;
+}
+
+.stage-label--end {
+  left: 3500px;
+  width: 1900px;
+}
