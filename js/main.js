@@ -1,132 +1,113 @@
 const header = document.querySelector(".site-header");
-const splineHero = document.querySelector(".spline-hero");
-
 const showcaseScroll = document.querySelector("#showcaseScroll");
 const showcase = document.querySelector(".HomeShowcase");
 const outerFrame = document.querySelector(".HomeShowcase__outerFrame");
 const track = document.querySelector("#track");
 
-let ticking = false;
-let showcaseEnabled = false;
+let enabled = false;
 let maxMove = 0;
 let scrollLength = 1;
+let currentX = 0;
+let targetX = 0;
+let currentScale = 1;
+let targetScale = 1;
+let currentOpacity = 1;
+let targetOpacity = 1;
+let rafRunning = false;
 
-const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
-const lerp = (start, end, progress) => start + (end - start) * progress;
+const clamp = (v, min, max) => Math.min(Math.max(v, min), max);
+const lerp = (a, b, t) => a + (b - a) * t;
 
-function updateHeader() {
-  if (!header) return;
-  header.classList.toggle("is-scrolled", window.scrollY > 40);
-}
+function measure() {
+  enabled =
+    window.innerWidth > 820 &&
+    showcaseScroll &&
+    showcase &&
+    outerFrame &&
+    track;
 
-function measureShowcase() {
-  if (!showcaseScroll || !showcase || !outerFrame || !track) return;
-
-  showcaseEnabled = window.innerWidth > 820;
-
-  if (!showcaseEnabled) {
-    track.style.transform = "none";
-    outerFrame.style.transform = "none";
-    outerFrame.style.opacity = "1";
-    outerFrame.style.inset = "";
-    outerFrame.style.borderRadius = "";
-    showcase.style.background = "";
+  if (!enabled) {
+    if (track) track.style.transform = "none";
+    if (outerFrame) {
+      outerFrame.style.transform = "none";
+      outerFrame.style.opacity = "1";
+    }
     return;
   }
 
   maxMove = Math.max(0, track.scrollWidth - window.innerWidth);
   scrollLength = Math.max(1, showcaseScroll.offsetHeight - window.innerHeight);
 
-  updateShowcase();
+  updateTargets();
+  startLoop();
 }
 
-function updateShowcase() {
-  if (!showcaseEnabled || !showcaseScroll || !showcase || !outerFrame || !track) return;
+function updateTargets() {
+  if (!enabled) return;
 
   const rect = showcaseScroll.getBoundingClientRect();
   const progress = clamp(-rect.top / scrollLength, 0, 1);
 
-  const enterProgress = clamp(progress / 0.14, 0, 1);
-  const exitProgress = clamp((progress - 0.82) / 0.18, 0, 1);
-  const horizontalProgress = clamp((progress - 0.08) / 0.74, 0, 1);
+  const horizontalProgress = clamp((progress - 0.06) / 0.78, 0, 1);
+  const exitProgress = clamp((progress - 0.84) / 0.16, 0, 1);
 
-  const x = -maxMove * horizontalProgress;
+  targetX = -maxMove * horizontalProgress;
+  targetScale = lerp(1, 0.92, exitProgress);
+  targetOpacity = lerp(1, 0.78, exitProgress);
 
-  track.style.transform = `translate3d(${x}px, 0, 0)`;
+  if (header) {
+    header.classList.toggle("is-scrolled", window.scrollY > 40);
+  }
 
-  const frameInset = lerp(0, 28, enterProgress) + lerp(0, 90, exitProgress);
-  const radius = lerp(0, 13, enterProgress) + lerp(0, 22, exitProgress);
-  const scale = lerp(1, 0.88, exitProgress);
-  const opacity = lerp(1, 0.72, exitProgress);
-  const bgOpacity = 1 - lerp(0, 0.22, exitProgress);
-
-  outerFrame.style.inset = `${frameInset}px`;
-  outerFrame.style.borderRadius = `${radius}px`;
-  outerFrame.style.transform = `scale(${scale})`;
-  outerFrame.style.opacity = String(opacity);
-  showcase.style.background = `rgba(5, 5, 5, ${bgOpacity})`;
+  startLoop();
 }
 
-function requestUpdate() {
-  if (ticking) return;
+function startLoop() {
+  if (rafRunning) return;
+  rafRunning = true;
+  requestAnimationFrame(animate);
+}
 
-  ticking = true;
+function animate() {
+  currentX = lerp(currentX, targetX, 0.12);
+  currentScale = lerp(currentScale, targetScale, 0.12);
+  currentOpacity = lerp(currentOpacity, targetOpacity, 0.12);
 
-  requestAnimationFrame(() => {
-    updateHeader();
-    updateShowcase();
-    ticking = false;
-  });
+  if (track) {
+    track.style.transform = `translate3d(${currentX}px, 0, 0)`;
+  }
+
+  if (outerFrame) {
+    outerFrame.style.transform = `translate3d(0,0,0) scale(${currentScale})`;
+    outerFrame.style.opacity = currentOpacity.toFixed(3);
+  }
+
+  const stillMoving =
+    Math.abs(currentX - targetX) > 0.4 ||
+    Math.abs(currentScale - targetScale) > 0.002 ||
+    Math.abs(currentOpacity - targetOpacity) > 0.002;
+
+  if (stillMoving) {
+    requestAnimationFrame(animate);
+  } else {
+    rafRunning = false;
+  }
 }
 
 function debounce(fn, delay = 150) {
   let timer;
-
   return () => {
     clearTimeout(timer);
     timer = setTimeout(fn, delay);
   };
 }
 
-function setupSplineScrollPassThrough() {
-  if (!splineHero) return;
-
-  splineHero.addEventListener(
-    "wheel",
-    (event) => {
-      event.preventDefault();
-
-      window.scrollBy({
-        top: event.deltaY,
-        left: 0,
-        behavior: "auto",
-      });
-    },
-    { passive: false }
-  );
-}
-
 function init() {
-  updateHeader();
-  measureShowcase();
-  setupSplineScrollPassThrough();
+  measure();
 
-  window.addEventListener("scroll", requestUpdate, { passive: true });
-
-  window.addEventListener(
-    "resize",
-    debounce(() => {
-      measureShowcase();
-      requestUpdate();
-    }, 150)
-  );
-
-  window.addEventListener("load", () => {
-    measureShowcase();
-    requestUpdate();
-  });
+  window.addEventListener("scroll", updateTargets, { passive: true });
+  window.addEventListener("resize", debounce(measure, 150));
+  window.addEventListener("load", measure);
 }
 
 init();
-
-console.log("BIM Labs loaded");
