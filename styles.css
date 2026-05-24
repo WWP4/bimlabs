@@ -891,3 +891,9 @@ main {
     opacity 0.08s linear;
   transform-origin: center center;
 }
+
+.showcase-scroll {
+  position: relative;
+  height: 520vh;
+  background: var(--showcase-bg);
+}
