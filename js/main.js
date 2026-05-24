@@ -34,7 +34,8 @@ const showcase = document.querySelector(".HomeShowcase");
 const outerFrame = document.querySelector(".HomeShowcase__outerFrame");
 const track = document.querySelector("#track");
 
-let maxMove = 0;
+let showcaseProgress = 0;
+let isInsideShowcase = false;
 
 function clamp(value, min, max) {
   return Math.min(Math.max(value, min), max);
@@ -44,25 +45,17 @@ function lerp(start, end, progress) {
   return start + (end - start) * progress;
 }
 
-function updateShowcase() {
-  if (!showcaseScroll || !showcase || !outerFrame || !track) return;
+function renderShowcase() {
+  if (!track || !outerFrame || !showcase) return;
 
-  const rect = showcaseScroll.getBoundingClientRect();
-  const viewportH = window.innerHeight;
-
-  const scrollLength = showcaseScroll.offsetHeight - viewportH;
-  const rawProgress = -rect.top / scrollLength;
-  const progress = clamp(rawProgress, 0, 1);
-
-  const enterProgress = clamp(progress / 0.14, 0, 1);
-  const exitProgress = clamp((progress - 0.82) / 0.18, 0, 1);
-
-  maxMove = track.offsetWidth - window.innerWidth;
-
-  const horizontalProgress = clamp((progress - 0.08) / 0.74, 0, 1);
+  const maxMove = track.offsetWidth - window.innerWidth;
+  const horizontalProgress = clamp((showcaseProgress - 0.08) / 0.74, 0, 1);
   const x = -maxMove * horizontalProgress;
 
   track.style.transform = `translate3d(${x}px, 0, 0)`;
+
+  const enterProgress = clamp(showcaseProgress / 0.14, 0, 1);
+  const exitProgress = clamp((showcaseProgress - 0.82) / 0.18, 0, 1);
 
   const frameInset = lerp(0, 28, enterProgress) + lerp(0, 90, exitProgress);
   const radius = lerp(0, 13, enterProgress) + lerp(0, 22, exitProgress);
@@ -73,27 +66,57 @@ function updateShowcase() {
   outerFrame.style.borderRadius = `${radius}px`;
   outerFrame.style.transform = `scale(${scale})`;
   outerFrame.style.opacity = opacity;
-
-  const bgFade = lerp(0, 1, exitProgress);
-  showcase.style.background = `rgba(5, 5, 5, ${1 - bgFade * 0.22})`;
-
-  requestAnimationFrame(updateShowcase);
 }
 
-function setupShowcase() {
-  if (!showcaseScroll || !showcase || !outerFrame || !track) return;
+function checkShowcasePosition() {
+  if (!showcaseScroll) return;
 
-  if (window.innerWidth <= 820) {
-    track.style.transform = "none";
-    outerFrame.style.transform = "none";
-    outerFrame.style.opacity = "1";
-    outerFrame.style.inset = "";
-    outerFrame.style.borderRadius = "";
-    return;
+  const rect = showcaseScroll.getBoundingClientRect();
+
+  isInsideShowcase =
+    rect.top <= 0 &&
+    rect.bottom >= window.innerHeight &&
+    window.innerWidth > 820;
+}
+
+function lockShowcaseWheel(event) {
+  if (!isInsideShowcase) return;
+
+  const goingDown = event.deltaY > 0;
+  const goingUp = event.deltaY < 0;
+
+  const canMoveForward = goingDown && showcaseProgress < 1;
+  const canMoveBackward = goingUp && showcaseProgress > 0;
+
+  if (canMoveForward || canMoveBackward) {
+    event.preventDefault();
+
+    showcaseProgress += event.deltaY * 0.00055;
+    showcaseProgress = clamp(showcaseProgress, 0, 1);
+
+    renderShowcase();
+  }
+}
+
+function syncProgressToScroll() {
+  if (!showcaseScroll || window.innerWidth <= 820) return;
+
+  const rect = showcaseScroll.getBoundingClientRect();
+  const scrollLength = showcaseScroll.offsetHeight - window.innerHeight;
+  const scrollProgress = clamp(-rect.top / scrollLength, 0, 1);
+
+  if (!isInsideShowcase) {
+    showcaseProgress = scrollProgress;
+    renderShowcase();
   }
 
-  requestAnimationFrame(updateShowcase);
+  checkShowcasePosition();
 }
 
-window.addEventListener("load", setupShowcase);
-window.addEventListener("resize", setupShowcase);
+window.addEventListener("scroll", syncProgressToScroll, { passive: true });
+window.addEventListener("wheel", lockShowcaseWheel, { passive: false });
+window.addEventListener("resize", renderShowcase);
+window.addEventListener("load", () => {
+  syncProgressToScroll();
+  renderShowcase();
+});
