@@ -369,3 +369,162 @@ main {
     opacity: 0.82;
   }
 }
+
+
+
+.salo-showcase{
+  position:relative;
+  background:#050505;
+  color:#fff;
+  height:500vh;
+}
+
+.showcase-sticky{
+  position:sticky;
+  top:0;
+  height:100vh;
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+}
+
+.showcase-header{
+  position:absolute;
+  top:48px;
+  left:48px;
+  z-index:20;
+}
+
+.showcase-kicker{
+  display:block;
+  margin-bottom:12px;
+  font-size:.75rem;
+  letter-spacing:.2em;
+  text-transform:uppercase;
+  opacity:.5;
+}
+
+.showcase-header h2{
+  font-size:clamp(2rem,5vw,5rem);
+  font-weight:500;
+  line-height:.9;
+  letter-spacing:-0.05em;
+}
+
+.showcase-track{
+  display:flex;
+  gap:48px;
+  align-items:center;
+  padding-left:45vw;
+  will-change:transform;
+}
+
+.showcase-card{
+  flex:none;
+  width:38vw;
+  min-width:540px;
+}
+
+.showcase-image-wrap{
+  position:relative;
+  overflow:hidden;
+  border-radius:28px;
+  background:#111;
+}
+
+.showcase-image-wrap img{
+  width:100%;
+  height:72vh;
+  object-fit:cover;
+  display:block;
+}
+
+.showcase-meta{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  padding-top:18px;
+}
+
+.showcase-index{
+  font-size:.75rem;
+  opacity:.45;
+  letter-spacing:.2em;
+}
+
+.showcase-info h3{
+  font-size:1.4rem;
+  margin-bottom:8px;
+  font-weight:500;
+}
+
+.showcase-info p{
+  max-width:320px;
+  line-height:1.5;
+  opacity:.6;
+}
+
+.showcase-ending{
+  flex:none;
+  width:50vw;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  padding-right:10vw;
+}
+
+.showcase-ending .ending-label{
+  font-size:.75rem;
+  text-transform:uppercase;
+  letter-spacing:.2em;
+  opacity:.4;
+  margin-bottom:18px;
+}
+
+.showcase-ending h3{
+  font-size:clamp(3rem,7vw,8rem);
+  line-height:.9;
+  letter-spacing:-0.06em;
+  font-weight:500;
+}
+
+@media (max-width:900px){
+
+  .salo-showcase{
+    height:auto;
+  }
+
+  .showcase-sticky{
+    position:relative;
+    height:auto;
+    padding:140px 20px 80px;
+  }
+
+  .showcase-header{
+    position:relative;
+    top:auto;
+    left:auto;
+    margin-bottom:60px;
+  }
+
+  .showcase-track{
+    flex-direction:column;
+    padding-left:0;
+    transform:none !important;
+  }
+
+  .showcase-card{
+    width:100%;
+    min-width:100%;
+  }
+
+  .showcase-image-wrap img{
+    height:60vh;
+  }
+
+  .showcase-ending{
+    width:100%;
+    padding:60px 0 0;
+  }
+}
