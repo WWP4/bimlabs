@@ -30,9 +30,14 @@ function getProgress() {
   if (!processSystem) return 0;
 
   const rect = processSystem.getBoundingClientRect();
-  const scrollable = processSystem.offsetHeight - window.innerHeight;
+  const scrollable =
+    processSystem.offsetHeight - window.innerHeight;
 
-  return clamp(-rect.top / Math.max(scrollable, 1), 0, 1);
+  return clamp(
+    -rect.top / Math.max(scrollable, 1),
+    0,
+    1
+  );
 }
 
 function triggerHeadingGlitch(progress) {
@@ -42,7 +47,10 @@ function triggerHeadingGlitch(progress) {
     progress > 0.13 &&
     !processHeading.classList.contains("has-glitched")
   ) {
-    processHeading.classList.add("has-glitched", "is-glitching");
+    processHeading.classList.add(
+      "has-glitched",
+      "is-glitching"
+    );
 
     setTimeout(() => {
       processHeading.classList.remove("is-glitching");
@@ -95,7 +103,10 @@ function updateProcess() {
 
   const progress = getProgress();
 
-  processSystem.style.setProperty("--process-progress", progress.toFixed(4));
+  processSystem.style.setProperty(
+    "--process-progress",
+    progress.toFixed(4)
+  );
 
   updateFlow(progress);
   updateParallax(progress);
@@ -108,11 +119,24 @@ function requestProcessTick() {
   if (processTicking) return;
 
   processTicking = true;
+
   requestAnimationFrame(updateProcess);
 }
 
-window.addEventListener("scroll", requestProcessTick, { passive: true });
-window.addEventListener("resize", requestProcessTick);
-window.addEventListener("load", requestProcessTick);
+window.addEventListener(
+  "scroll",
+  requestProcessTick,
+  { passive: true }
+);
+
+window.addEventListener(
+  "resize",
+  requestProcessTick
+);
+
+window.addEventListener(
+  "load",
+  requestProcessTick
+);
 
 requestProcessTick();
