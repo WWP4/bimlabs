@@ -125,19 +125,16 @@ function setupHeroVisibility() {
       const visible = entry.isIntersecting;
 
       if (visible) {
+        splineHero.style.display = "block";
         splineHero.style.opacity = "1";
         splineHero.style.visibility = "visible";
-        splineHero.style.pointerEvents = "auto";
 
-        // resume rendering
-        splineHero.style.display = "block";
+        // IMPORTANT: keep this none so scrolling works over Spline
+        splineHero.style.pointerEvents = "none";
       } else {
-        // fully disable rendering
         splineHero.style.opacity = "0";
         splineHero.style.visibility = "hidden";
         splineHero.style.pointerEvents = "none";
-
-        // biggest performance gain
         splineHero.style.display = "none";
       }
     },
