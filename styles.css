@@ -1145,195 +1145,295 @@ main {
 }
 
 
-
 .bim-showcase {
-  --showcase-bg: #030305;
-  --showcase-panel: #0b0c0e;
-  --showcase-text: #f7f8f6;
-  --showcase-muted: rgba(247, 248, 246, 0.56);
-  --showcase-line: rgba(124, 255, 178, 0.16);
+  --showcase-bg: #030303;
+  --showcase-panel: #0a0a0a;
+  --showcase-text: #f4f4f4;
+  --showcase-muted: rgba(255, 255, 255, 0.46);
+  --showcase-line: rgba(255, 255, 255, 0.12);
+
+  background: var(--showcase-bg);
+  color: var(--showcase-text);
 }
 
 .bim-showcase .HomeShowcase__outerFrame {
-  background:
-    radial-gradient(circle at 18% 42%, rgba(124, 255, 178, 0.08), transparent 30%),
-    radial-gradient(circle at 76% 58%, rgba(141, 92, 255, 0.08), transparent 34%),
-    linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px),
-    #08090b;
-  background-size: auto, auto, 72px 72px, 72px 72px, auto;
+  background: #080808;
+  border: 1px solid var(--showcase-line);
+  border-radius: 0;
 }
 
-.bim-hero-text {
+.bim-track {
+  width: 5400px;
+}
+
+.bim-ruler {
   position: absolute;
-  width: 650px;
+  left: 0;
+  width: 5400px;
+  height: 1px;
+  background: rgba(255,255,255,0.12);
 }
 
-.bim-panel-a {
+.bim-ruler.top {
+  top: 84px;
+}
+
+.bim-ruler.bottom {
+  bottom: 84px;
+}
+
+.bim-index {
+  position: absolute;
+  font-family: var(--mono, monospace);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  color: rgba(255,255,255,0.32);
+}
+
+.bim-index--one {
+  left: 320px;
+  top: 110px;
+}
+
+.bim-index--two {
+  left: 2250px;
+  top: 110px;
+}
+
+.bim-index--three {
+  left: 4040px;
+  top: 110px;
+}
+
+.bim-intro {
+  position: absolute;
   left: 260px;
-  top: 29%;
+  top: 30%;
+  width: 760px;
 }
 
-.bim-hero-text h2 {
+.bim-intro p,
+.bim-close p {
   margin: 0 0 24px;
-  font-size: clamp(54px, 5.6vw, 96px);
+  font-family: var(--mono, monospace);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.42);
+}
+
+.bim-intro h2,
+.bim-close h2 {
+  margin: 0;
+  font-size: clamp(58px, 6vw, 106px);
   font-weight: 500;
+  line-height: 0.9;
+  letter-spacing: -0.075em;
+  color: #f5f5f5;
+}
+
+.bim-wordmark {
+  position: absolute;
+  font-size: 168px;
+  font-weight: 600;
+  line-height: 0.8;
+  letter-spacing: -0.08em;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(255,255,255,0.08);
+  pointer-events: none;
+}
+
+.bim-wordmark--one {
+  left: 1030px;
+  top: 56%;
+}
+
+.bim-wordmark--two {
+  left: 4050px;
+  top: 18%;
+}
+
+.bim-editorial {
+  position: absolute;
+  display: grid;
+  gap: 16px;
+  width: 760px;
+}
+
+.bim-editorial--one {
+  left: 1250px;
+  top: 23%;
+}
+
+.bim-editorial--two {
+  left: 3420px;
+  top: 24%;
+}
+
+.bim-editorial span {
+  display: block;
+  font-size: clamp(46px, 5vw, 88px);
   line-height: 0.92;
   letter-spacing: -0.07em;
+  color: rgba(255,255,255,0.9);
 }
 
-.bim-hero-text p {
-  max-width: 520px;
+.bim-editorial span:nth-child(2) {
+  color: rgba(255,255,255,0.38);
+}
+
+.bim-editorial span:nth-child(3) {
+  color: rgba(255,255,255,0.64);
+}
+
+.bim-case {
+  position: absolute;
+  width: 420px;
+  padding: 0;
+  border-top: 1px solid rgba(255,255,255,0.18);
+}
+
+.bim-case span {
+  display: block;
+  margin: 18px 0 42px;
+  font-family: var(--mono, monospace);
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.4);
+}
+
+.bim-case h3 {
+  margin: 0 0 20px;
+  font-size: 28px;
+  font-weight: 500;
+  line-height: 1.05;
+  letter-spacing: -0.045em;
+}
+
+.bim-case p {
   margin: 0;
-  font-size: 18px;
+  max-width: 330px;
+  font-size: 14px;
   line-height: 1.65;
-  color: rgba(247, 248, 246, 0.58);
+  color: rgba(255,255,255,0.48);
+}
+
+.bim-case--wwp {
+  left: 1980px;
+  top: 48%;
+}
+
+.bim-case--glca {
+  left: 2380px;
+  top: 18%;
+}
+
+.bim-case--momentum {
+  left: 3220px;
+  top: 53%;
+}
+
+.bim-case--orynd {
+  left: 3740px;
+  top: 50%;
 }
 
 .bim-statement {
   position: absolute;
-  width: 760px;
-  display: grid;
-  gap: 18px;
+  left: 2700px;
+  top: 26%;
+  width: 620px;
 }
 
-.bim-panel-b {
-  left: 1120px;
-  top: 25%;
-}
-
-.bim-panel-c {
-  left: 2650px;
-  top: 23%;
-}
-
-.bim-statement span {
-  display: block;
-  font-size: clamp(46px, 4.8vw, 86px);
+.bim-statement h3 {
+  margin: 0;
+  font-size: clamp(42px, 4vw, 72px);
+  font-weight: 500;
   line-height: 0.95;
-  letter-spacing: -0.07em;
-  color: rgba(247, 248, 246, 0.92);
+  letter-spacing: -0.065em;
+  color: rgba(255,255,255,0.88);
 }
 
-.bim-statement span:nth-child(2) {
-  color: rgba(247, 248, 246, 0.42);
+.bim-line-art {
+  position: absolute;
+  left: 2500px;
+  top: 57%;
+  width: 480px;
+  height: 170px;
+  border: 1px solid rgba(255,255,255,0.11);
+  overflow: hidden;
 }
 
-.bim-statement span:nth-child(3) {
-  color: rgba(124, 255, 178, 0.82);
+.bim-line-art span {
+  position: absolute;
+  width: 160%;
+  height: 1px;
+  left: -30%;
+  background: rgba(255,255,255,0.12);
+  transform: rotate(-12deg);
 }
 
-.bim-showcase .copy-card {
-  width: 410px;
-  border-color: rgba(255, 255, 255, 0.14);
-  background: rgba(18, 19, 22, 0.88);
-  backdrop-filter: blur(14px);
+.bim-line-art span:nth-child(1) { top: 28px; }
+.bim-line-art span:nth-child(2) { top: 68px; }
+.bim-line-art span:nth-child(3) { top: 108px; }
+.bim-line-art span:nth-child(4) { top: 148px; }
+
+.bim-close {
+  position: absolute;
+  left: 4420px;
+  top: 31%;
+  width: 680px;
 }
 
-.bim-showcase .copy-card .tag {
+.bim-close a {
+  display: inline-block;
+  margin-top: 34px;
+  padding-bottom: 7px;
+  border-bottom: 1px solid rgba(255,255,255,0.42);
   font-family: var(--mono, monospace);
   font-size: 11px;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: rgba(124, 255, 178, 0.72);
+  color: rgba(255,255,255,0.76);
 }
 
-.bim-showcase .copy-card .tag::before {
-  background: #7cffb2;
-}
-
-.bim-showcase .copy-card h3 {
-  font-size: 25px;
-  line-height: 1.1;
-  letter-spacing: -0.035em;
-}
-
-.bim-showcase .copy-card p {
-  color: rgba(247, 248, 246, 0.56);
-}
-
-.bim-showcase .btn {
-  border-radius: 999px;
-  border-color: rgba(124, 255, 178, 0.28);
-  background: rgba(124, 255, 178, 0.09);
-  color: #f7f8f6;
-  font-family: var(--mono, monospace);
-  font-size: 11px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-}
-
-.bim-showcase .cursor-replica span {
-  background: #7cffb2;
-  color: #030305;
-}
-
-.bim-showcase .center-copy {
-  width: 560px;
-}
-
-.bim-showcase .center-copy p {
-  max-width: 460px;
-  margin: -8px auto 26px;
-  font-size: 16px;
-  line-height: 1.65;
-  color: rgba(247, 248, 246, 0.56);
-}
-
-/* Reposition the old structure for text-only editorial layout */
-
-.bim-showcase .intro-copy {
-  left: 1850px;
-  top: 45%;
-}
-
-.bim-showcase .mid-copy {
-  left: 2220px;
-  top: 18%;
-}
-
-.bim-showcase .ender-copy {
-  left: 3420px;
-  top: 18%;
-}
-
-.bim-card-orynd {
-  left: 3820px;
-  top: 48%;
-}
-
-.bim-showcase .ender-title {
-  left: 4350px;
-  top: 28%;
-}
-
-.bim-showcase .intro-path {
-  left: 1660px;
-  top: 430px;
-}
-
-.bim-showcase .mid-path {
-  left: 2460px;
-  top: 390px;
-}
-
-.bim-showcase .ender-path {
-  left: 3230px;
-  top: 405px;
+.bim-showcase .stage-label {
+  background: linear-gradient(
+    to top,
+    rgba(8, 8, 8, 0.82),
+    rgba(8, 8, 8, 0)
+  );
+  color: rgba(255,255,255,0.22);
 }
 
 @media (max-width: 820px) {
-  .bim-hero-text,
+  .bim-track {
+    width: 100%;
+  }
+
+  .bim-ruler,
+  .bim-wordmark,
+  .bim-index {
+    display: none;
+  }
+
+  .bim-intro,
+  .bim-editorial,
+  .bim-case,
   .bim-statement,
-  .bim-card-orynd {
+  .bim-line-art,
+  .bim-close {
     position: relative !important;
     left: auto !important;
     top: auto !important;
     width: 100% !important;
   }
 
-  .bim-hero-text h2,
-  .bim-statement span {
+  .bim-intro h2,
+  .bim-close h2,
+  .bim-editorial span,
+  .bim-statement h3 {
     font-size: 42px;
   }
 }
