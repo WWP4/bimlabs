@@ -143,3 +143,34 @@ function initProcessSection() {
 }
 
 initProcessSection();
+
+
+
+function triggerProcessGlitch() {
+  const glitchEls = document.querySelectorAll(
+    ".process-title, .process-kicker, .process-index-number, .process-index-label"
+  );
+
+  glitchEls.forEach((el) => {
+    el.classList.remove("is-glitching");
+    void el.offsetWidth;
+    el.classList.add("is-glitching");
+  });
+}
+
+let glitchTriggered = false;
+
+function watchProcessGlitch() {
+  if (!processSection) return;
+
+  const rect = processSection.getBoundingClientRect();
+  const triggerPoint = window.innerHeight * 0.55;
+
+  if (!glitchTriggered && rect.top < triggerPoint) {
+    glitchTriggered = true;
+    triggerProcessGlitch();
+  }
+}
+
+window.addEventListener("scroll", watchProcessGlitch, { passive: true });
+window.addEventListener("load", watchProcessGlitch);
