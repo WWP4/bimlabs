@@ -1529,3 +1529,25 @@ main {
     height: 150px;
   }
 }
+
+
+.bim-wordmark {
+  position: absolute;
+
+  font-size: 150px;
+  font-weight: 600;
+  line-height: 0.8;
+  letter-spacing: -0.08em;
+
+  color: rgba(255, 255, 255, 0.045);
+
+  -webkit-text-stroke: 1px rgba(255, 255, 255, 0.12);
+
+  text-shadow:
+    0 0 1px rgba(255,255,255,0.04),
+    0 0 30px rgba(255,255,255,0.015);
+
+  pointer-events: none;
+  user-select: none;
+  white-space: nowrap;
+}
