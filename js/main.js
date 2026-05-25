@@ -42,18 +42,44 @@ function measure() {
   startLoop();
 }
 
+
 function updateTargets() {
   if (!enabled) return;
 
   const rect = showcaseScroll.getBoundingClientRect();
   const progress = clamp(-rect.top / scrollLength, 0, 1);
 
-  const horizontalProgress = clamp((progress - 0.06) / 0.78, 0, 1);
-  const exitProgress = clamp((progress - 0.84) / 0.16, 0, 1);
+  /*
+    TIMING MAP
+
+    0.00 → 0.10 = scale into fullscreen
+    0.10 → 0.82 = full cinematic horizontal section
+    0.82 → 1.00 = scale back out
+  */
+
+  const introProgress = clamp(progress / 0.10, 0, 1);
+  const horizontalProgress = clamp((progress - 0.08) / 0.72, 0, 1);
+  const exitProgress = clamp((progress - 0.82) / 0.18, 0, 1);
 
   targetX = -maxMove * horizontalProgress;
-  targetScale = lerp(1, 0.92, exitProgress);
-  targetOpacity = lerp(1, 0.78, exitProgress);
+
+  // ENTRY
+  if (progress <= 0.10) {
+    targetScale = lerp(0.92, 1, introProgress);
+    targetOpacity = lerp(0.72, 1, introProgress);
+  }
+
+  // MIDDLE
+  else if (progress > 0.10 && progress < 0.82) {
+    targetScale = 1;
+    targetOpacity = 1;
+  }
+
+  // EXIT
+  else {
+    targetScale = lerp(1, 0.92, exitProgress);
+    targetOpacity = lerp(1, 0.72, exitProgress);
+  }
 
   if (header) {
     header.classList.toggle("is-scrolled", window.scrollY > 40);
@@ -70,8 +96,8 @@ function startLoop() {
 
 function animate() {
   currentX = lerp(currentX, targetX, 0.12);
-  currentScale = lerp(currentScale, targetScale, 0.12);
-  currentOpacity = lerp(currentOpacity, targetOpacity, 0.12);
+currentScale = lerp(currentScale, targetScale, 0.08);
+currentOpacity = lerp(currentOpacity, targetOpacity, 0.08);
 
   if (track) {
     track.style.transform = `translate3d(${currentX}px, 0, 0)`;
