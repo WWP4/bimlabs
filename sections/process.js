@@ -21,62 +21,49 @@ function processProgress() {
   return clampProcess(-rect.top / Math.max(distance, 1), 0, 1);
 }
 
-function activateProcess() {
-  if (!processSystem || processActive) return;
+const processSystem = document.querySelector(".process-system");
+const heading = document.querySelector(".process-heading");
 
-  processActive = true;
-  processSystem.classList.add("is-active");
+const steps = [
+  [".process-rail", 0.05],
+  [".process-top-label", 0.08],
+  [".process-copy", 0.12],
+  [".system-layer--one, .label-one, .dot-one", 0.22],
+  [".system-layer--two, .label-two, .dot-two", 0.32],
+  [".system-layer--three, .label-three, .dot-three", 0.42],
+  [".system-layer--four, .label-four, .dot-four", 0.52],
+  [".system-curves", 0.62],
+  [".system-synth-dot, .system-synth-copy", 0.72],
+  [".process-outcome", 0.82],
+  [".process-bottom-nav", 0.9],
+];
 
-  if (processHeading) {
-    processHeading.classList.add("is-glitching");
-
-    setTimeout(() => {
-      processHeading.classList.remove("is-glitching");
-    }, 900);
-  }
+function clamp(v, min, max) {
+  return Math.min(Math.max(v, min), max);
 }
 
-function updateProcess() {
+function updateProcessFlow() {
   if (!processSystem) return;
 
   const rect = processSystem.getBoundingClientRect();
-  const vh = window.innerHeight;
+  const scrollable = processSystem.offsetHeight - window.innerHeight;
+  const progress = clamp(-rect.top / Math.max(scrollable, 1), 0, 1);
 
-  if (rect.top < vh * 0.72 && rect.bottom > vh * 0.2) {
-    activateProcess();
+  steps.forEach(([selector, trigger]) => {
+    document.querySelectorAll(selector).forEach((el) => {
+      el.classList.toggle("flow-in", progress >= trigger);
+    });
+  });
+
+  if (heading && progress > 0.14 && !heading.classList.contains("has-glitched")) {
+    heading.classList.add("has-glitched", "is-glitching");
+    setTimeout(() => heading.classList.remove("is-glitching"), 900);
   }
 
-  const p = processProgress();
-
-  if (systemStack) {
-    systemStack.style.transform = `
-      translate3d(${p * -22}px, ${p * -18}px, 0)
-    `;
-  }
-
-  if (systemCurves) {
-    systemCurves.style.transform = `
-      translate3d(${p * 12}px, ${p * -10}px, 0)
-    `;
-  }
-
-  if (processOutcome) {
-    processOutcome.style.transform = `
-      translate3d(${p * 18}px, ${p * -14}px, 0)
-    `;
-  }
-
-  processTicking = false;
+  document.documentElement.style.setProperty("--process-progress", progress);
 }
 
-function requestProcessTick() {
-  if (processTicking) return;
-  processTicking = true;
-  requestAnimationFrame(updateProcess);
-}
-
-window.addEventListener("scroll", requestProcessTick, { passive: true });
-window.addEventListener("resize", requestProcessTick);
-window.addEventListener("load", requestProcessTick);
-
-requestProcessTick();
+window.addEventListener("scroll", updateProcessFlow, { passive: true });
+window.addEventListener("resize", updateProcessFlow);
+window.addEventListener("load", updateProcessFlow);
+updateProcessFlow();
