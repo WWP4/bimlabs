@@ -1551,3 +1551,13 @@ main {
   user-select: none;
   white-space: nowrap;
 }
+
+
+.bim-showcase .HomeShowcase__outerFrame {
+  transform: scale(0.92);
+  opacity: 0.72;
+  transition:
+    transform 0.18s linear,
+    opacity 0.18s linear;
+  transform-origin: center center;
+}
