@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>BIM Labs — Process Step 03</title>
+
+<style>
+:root {
+  --bg: #050506;
+  --panel: #080809;
+  --line: rgba(255,255,255,.105);
+  --line-strong: rgba(255,255,255,.24);
+  --text: rgba(255,255,255,.88);
+  --muted: rgba(255,255,255,.52);
+  --faint: rgba(255,255,255,.28);
+  --warm: #d9c2a0;
+  --warm-soft: rgba(217,194,160,.28);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  width: 100%;
+  min-height: 100%;
+  background: var(--bg);
+  color: var(--text);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+  overflow-x: hidden;
+}
+
+.process03 {
+  min-height: 100vh;
+  position: relative;
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: 126px 34vw 1fr;
+  background:
+    radial-gradient(circle at 73% 52%, rgba(255,255,255,.06), transparent 33%),
+    radial-gradient(circle at 42% 18%, rgba(217,194,160,.05), transparent 26%),
+    linear-gradient(rgba(255,255,255,.028) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.028) 1px, transparent 1px),
+    #050506;
+  background-size: auto, auto, 112px 78px, 112px 78px;
+}
+
+.process03::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(90deg, rgba(0,0,0,.65), transparent 22%, transparent 76%, rgba(0,0,0,.55)),
+    radial-gradient(circle at center, transparent 35%, rgba(0,0,0,.72));
+  z-index: 1;
+}
+
+.rail {
+  position: relative;
+  z-index: 3;
+  border-right: 1px solid var(--line);
+  padding: 38px 0 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: linear-gradient(90deg, rgba(255,255,255,.035), transparent);
+}
+
+.brand {
+  font-size: 20px;
+  letter-spacing: .35em;
+  line-height: 1.25;
+  text-align: center;
+  color: rgba(255,255,255,.88);
+}
+
+.steps {
+  margin-top: auto;
+  margin-bottom: auto;
+  width: 100%;
+  padding-left: 32px;
+}
+
+.step {
+  position: relative;
+  min-height: 152px;
+  color: rgba(255,255,255,.38);
+  font-size: 12px;
+  letter-spacing: .14em;
+}
+
+.step::before {
+  content: "";
+  position: absolute;
+  left: 2px;
+  top: 28px;
+  bottom: 22px;
+  width: 1px;
+  background: rgba(255,255,255,.16);
+}
+
+.step-dot {
+  position: absolute;
+  left: -2px;
+  top: 0;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255,255,255,.34);
+}
+
+.step.active {
+  color: white;
+}
+
+.step.active .step-dot {
+  background: white;
+  box-shadow: 0 0 20px rgba(255,255,255,.8), 0 0 36px rgba(217,194,160,.42);
+}
+
+.step strong {
+  display: block;
+  margin-left: 22px;
+  font-weight: 400;
+  font-size: 14px;
+  margin-bottom: 9px;
+}
+
+.step span {
+  display: block;
+  margin-left: 22px;
+  font-size: 10px;
+  color: currentColor;
+}
+
+.menu {
+  font-size: 10px;
+  letter-spacing: .28em;
+  color: rgba(255,255,255,.48);
+}
+
+.content {
+  position: relative;
+  z-index: 3;
+  padding: 54px 54px 70px 58px;
+  display: flex;
+  flex-direction: column;
+}
+
+.kicker {
+  font-size: 12px;
+  letter-spacing: .34em;
+  color: rgba(255,255,255,.72);
+}
+
+.copy-center {
+  margin-top: auto;
+  margin-bottom: auto;
+  transform: translateY(-18px);
+}
+
+.micro {
+  font-size: 12px;
+  letter-spacing: .22em;
+  color: rgba(255,255,255,.72);
+  margin-bottom: 22px;
+}
+
+.title {
+  font-family: Georgia, "Times New Roman", serif;
+  font-weight: 300;
+  font-size: clamp(55px, 6.8vw, 102px);
+  line-height: .94;
+  letter-spacing: -.055em;
+  max-width: 520px;
+}
+
+.rule {
+  width: 30px;
+  height: 1px;
+  background: var(--warm);
+  margin: 42px 0;
+}
+
+.desc {
+  max-width: 405px;
+  color: rgba(255,255,255,.72);
+  font-family: "Courier New", monospace;
+  font-size: 13px;
+  line-height: 1.75;
+}
+
+.list {
+  margin-top: 88px;
+  max-width: 390px;
+}
+
+.list-label {
+  font-size: 11px;
+  letter-spacing: .28em;
+  color: rgba(255,255,255,.54);
+  margin-bottom: 18px;
+}
+
+.list-item {
+  display: grid;
+  grid-template-columns: 38px 1fr 28px;
+  gap: 8px;
+  align-items: center;
+  padding: 15px 0;
+  border-bottom: 1px solid rgba(255,255,255,.12);
+  cursor: pointer;
+  color: rgba(255,255,255,.68);
+  transition: color .25s ease, padding-left .25s ease;
+}
+
+.list-item:hover,
+.list-item.active {
+  color: white;
+  padding-left: 8px;
+}
+
+.list-item b {
+  font-family: "Courier New", monospace;
+  font-size: 13px;
+  font-weight: 400;
+  color: rgba(255,255,255,.5);
+}
+
+.list-item span {
+  font-size: 14px;
+}
+
+.list-item i {
+  font-style: normal;
+  text-align: right;
+  color: rgba(255,255,255,.72);
+}
+
+.visual {
+  position: relative;
+  z-index: 3;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 84px 74px 72px 30px;
+  perspective: 1100px;
+}
+
+.top-nav {
+  position: absolute;
+  top: 54px;
+  right: 58px;
+  z-index: 5;
+  display: flex;
+  gap: 26px;
+  align-items: center;
+  color: rgba(255,255,255,.45);
+  font-size: 11px;
+  letter-spacing: .28em;
+}
+
+.top-nav .current {
+  color: white;
+}
+
+.system-wrap {
+  width: min(780px, 95%);
+  height: 680px;
+  position: relative;
+  transform-style: preserve-3d;
+  transform: rotateX(58deg) rotateZ(-36deg);
+  transition: transform .22s ease-out;
+}
+
+.layer {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 560px;
+  height: 330px;
+  transform-style: preserve-3d;
+  transform: translate(-50%, -50%) translateZ(var(--z));
+  border: 1px solid rgba(255,255,255,.18);
+  background:
+    linear-gradient(rgba(255,255,255,.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.03) 1px, transparent 1px),
+    rgba(255,255,255,.015);
+  background-size: 32px 32px;
+  transition:
+    border-color .35s ease,
+    box-shadow .35s ease,
+    background-color .35s ease,
+    transform .35s ease;
+}
+
+.layer::before {
+  content: attr(data-layer);
+  position: absolute;
+  left: 18px;
+  top: 16px;
+  transform: rotateZ(36deg) rotateX(-58deg);
+  color: rgba(255,255,255,.58);
+  font-size: 10px;
+  letter-spacing: .22em;
+  white-space: nowrap;
+}
+
+.layer::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at var(--x, 50%) var(--y, 50%), rgba(255,255,255,.14), transparent 16%),
+    linear-gradient(120deg, transparent, rgba(217,194,160,.05), transparent);
+  opacity: .55;
+  pointer-events: none;
+}
+
+.layer.active {
+  border-color: rgba(255,255,255,.52);
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,.03),
+    0 0 40px rgba(255,255,255,.06),
+    0 0 65px rgba(217,194,160,.11);
+  background-color: rgba(255,255,255,.025);
+}
+
+.node {
+  position: absolute;
+  width: 7px;
+  height: 7px;
+  border: 1px solid rgba(255,255,255,.62);
+  border-radius: 50%;
+  background: #0d0d0e;
+  box-shadow: 0 0 18px rgba(255,255,255,.18);
+}
+
+.node.hot {
+  background: white;
+  border-color: white;
+  box-shadow: 0 0 20px rgba(255,255,255,.7), 0 0 36px rgba(217,194,160,.34);
+}
+
+.block {
+  position: absolute;
+  width: 46px;
+  height: 28px;
+  border: 1px solid rgba(255,255,255,.18);
+  background: rgba(255,255,255,.045);
+}
+
+.block.hot {
+  background: rgba(255,255,255,.2);
+  box-shadow: 0 0 22px rgba(255,255,255,.12);
+}
+
+.trace {
+  position: absolute;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,.42), transparent);
+  transform-origin: left center;
+  opacity: .55;
+}
+
+.vline {
+  position: absolute;
+  width: 1px;
+  height: var(--h);
+  left: var(--l);
+  top: var(--t);
+  background: linear-gradient(180deg, rgba(255,255,255,.52), rgba(255,255,255,.08));
+  transform: translateZ(var(--vz));
+}
+
+.vline::after {
+  content: "";
+  position: absolute;
+  left: -3px;
+  top: -3px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: white;
+  opacity: .8;
+  box-shadow: 0 0 22px rgba(255,255,255,.45);
+}
+
+.diagram-labels {
+  position: absolute;
+  right: 66px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 8;
+  display: grid;
+  gap: 70px;
+}
+
+.diagram-label {
+  width: 180px;
+  color: rgba(255,255,255,.55);
+  font-size: 11px;
+  letter-spacing: .14em;
+  line-height: 1.65;
+}
+
+.diagram-label b {
+  display: block;
+  color: rgba(255,255,255,.88);
+  font-weight: 400;
+  font-size: 13px;
+  margin-bottom: 7px;
+}
+
+.diagram-label::before {
+  content: "";
+  display: inline-block;
+  width: 52px;
+  height: 1px;
+  background: rgba(255,255,255,.18);
+  margin-right: 12px;
+  vertical-align: middle;
+}
+
+.bottom-meta {
+  position: absolute;
+  bottom: 42px;
+  left: 30px;
+  right: 54px;
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  color: rgba(255,255,255,.62);
+  font-size: 11px;
+  letter-spacing: .24em;
+}
+
+.bottom-meta .line {
+  height: 1px;
+  flex: 1;
+  background: rgba(255,255,255,.14);
+}
+
+.arrows {
+  position: absolute;
+  right: 54px;
+  bottom: 40px;
+  display: flex;
+  gap: 18px;
+}
+
+.arrow {
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,.24);
+  display: grid;
+  place-items: center;
+  color: rgba(255,255,255,.78);
+  font-size: 28px;
+}
+
+.arrow:last-child {
+  border-color: rgba(255,255,255,.72);
+}
+
+.scan {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 660px;
+  height: 1px;
+  transform: translate(-50%, -50%) rotate(-36deg);
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,.35), transparent);
+  opacity: .55;
+  animation: scan 4.4s ease-in-out infinite;
+}
+
+@keyframes scan {
+  0%, 100% { translate: -80px 220px; opacity: .1; }
+  50% { translate: 80px -180px; opacity: .6; }
+}
+
+@media (max-width: 1100px) {
+  .process03 {
+    grid-template-columns: 84px 1fr;
+  }
+
+  .visual {
+    grid-column: 1 / -1;
+    min-height: 760px;
+    padding: 20px;
+  }
+
+  .content {
+    padding: 48px 32px;
+  }
+
+  .top-nav,
+  .diagram-labels {
+    display: none;
+  }
+
+  .system-wrap {
+    scale: .78;
+  }
+}
+
+@media (max-width: 700px) {
+  .process03 {
+    grid-template-columns: 1fr;
+  }
+
+  .rail {
+    display: none;
+  }
+
+  .title {
+    font-size: 58px;
+  }
+
+  .system-wrap {
+    scale: .58;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<section class="process03">
+  <aside class="rail">
+    <div class="brand">BIM<br>LABS</div>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-dot"></div>
+        <strong>01</strong>
+        <span>STRATEGY</span>
+      </div>
+
+      <div class="step">
+        <div class="step-dot"></div>
+        <strong>02</strong>
+        <span>DESIGN</span>
+      </div>
+
+      <div class="step active">
+        <div class="step-dot"></div>
+        <strong>03</strong>
+        <span>SYSTEMS</span>
+      </div>
+
+      <div class="step">
+        <div class="step-dot"></div>
+        <strong>04</strong>
+        <span>LAUNCH</span>
+      </div>
+    </div>
+
+    <div class="menu">MENU</div>
+  </aside>
+
+  <main class="content">
+    <div class="kicker">OUR PROCESS</div>
+
+    <div class="copy-center">
+      <div class="micro">STEP&nbsp;&nbsp;03</div>
+
+      <h1 class="title">
+        Understanding<br>
+        the System
+      </h1>
+
+      <div class="rule"></div>
+
+      <p class="desc">
+        We dive deep into the architecture that powers performance.
+        Mapping every layer, dependency, and interaction to reveal how
+        the system truly works.
+      </p>
+
+      <div class="list">
+        <div class="list-label">IN THIS STEP</div>
+
+        <div class="list-item active" data-focus="0">
+          <b>01</b><span>System Architecture</span><i>→</i>
+        </div>
+        <div class="list-item" data-focus="1">
+          <b>02</b><span>Component Mapping</span><i>→</i>
+        </div>
+        <div class="list-item" data-focus="2">
+          <b>03</b><span>Dependency Analysis</span><i>→</i>
+        </div>
+        <div class="list-item" data-focus="3">
+          <b>04</b><span>Flow & Logic Mapping</span><i>→</i>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <section class="visual">
+    <nav class="top-nav">
+      <span>STRATEGY</span>
+      <span>/</span>
+      <span>DESIGN</span>
+      <span>/</span>
+      <span class="current">SYSTEMS</span>
+      <span>/</span>
+      <span>LAUNCH</span>
+    </nav>
+
+    <div class="system-wrap" id="systemWrap">
+      <div class="scan"></div>
+
+      <div class="layer active" data-layer="INTERFACE LAYER" style="--z: 150px">
+        <span class="node hot" style="left:18%;top:24%"></span>
+        <span class="node" style="left:46%;top:18%"></span>
+        <span class="node" style="left:72%;top:33%"></span>
+        <span class="trace" style="left:18%;top:25%;width:310px;transform:rotate(8deg)"></span>
+        <span class="block hot" style="left:58%;top:48%"></span>
+        <span class="block" style="left:34%;top:66%"></span>
+      </div>
+
+      <div class="layer" data-layer="LOGIC LAYER" style="--z: 55px">
+        <span class="node hot" style="left:30%;top:38%"></span>
+        <span class="node" style="left:51%;top:28%"></span>
+        <span class="node" style="left:66%;top:55%"></span>
+        <span class="node" style="left:39%;top:70%"></span>
+        <span class="trace" style="left:30%;top:39%;width:220px;transform:rotate(-11deg)"></span>
+        <span class="trace" style="left:40%;top:70%;width:180px;transform:rotate(-34deg)"></span>
+        <span class="block" style="left:20%;top:57%"></span>
+        <span class="block hot" style="left:70%;top:40%"></span>
+      </div>
+
+      <div class="layer" data-layer="DATA LAYER" style="--z: -45px">
+        <span class="node" style="left:24%;top:24%"></span>
+        <span class="node hot" style="left:54%;top:54%"></span>
+        <span class="node" style="left:76%;top:68%"></span>
+        <span class="trace" style="left:24%;top:25%;width:355px;transform:rotate(26deg)"></span>
+        <span class="block hot" style="left:45%;top:42%"></span>
+        <span class="block" style="left:63%;top:62%"></span>
+      </div>
+
+      <div class="layer" data-layer="INFRASTRUCTURE LAYER" style="--z: -145px">
+        <span class="node" style="left:15%;top:70%"></span>
+        <span class="node hot" style="left:50%;top:50%"></span>
+        <span class="node" style="left:82%;top:38%"></span>
+        <span class="trace" style="left:16%;top:71%;width:365px;transform:rotate(-29deg)"></span>
+        <span class="block" style="left:28%;top:30%"></span>
+        <span class="block hot" style="left:63%;top:46%"></span>
+      </div>
+
+      <span class="vline" style="--l:26%;--t:18%;--h:410px;--vz:20px"></span>
+      <span class="vline" style="--l:54%;--t:10%;--h:500px;--vz:40px"></span>
+      <span class="vline" style="--l:78%;--t:25%;--h:350px;--vz:20px"></span>
+    </div>
+
+    <div class="diagram-labels">
+      <div class="diagram-label">
+        <b>01&nbsp;&nbsp;INTERFACE LAYER</b>
+        User interaction<br>& presentation
+      </div>
+      <div class="diagram-label">
+        <b>02&nbsp;&nbsp;LOGIC LAYER</b>
+        Rules, actions<br>& processing
+      </div>
+      <div class="diagram-label">
+        <b>03&nbsp;&nbsp;DATA LAYER</b>
+        Information flow<br>& structure
+      </div>
+      <div class="diagram-label">
+        <b>04&nbsp;&nbsp;INFRASTRUCTURE</b>
+        Foundation, hosting<br>& environment
+      </div>
+    </div>
+
+    <div class="bottom-meta">
+      <span>SYSTEM OVERVIEW</span>
+      <span class="line"></span>
+      <span>03 / 04</span>
+    </div>
+
+    <div class="arrows">
+      <div class="arrow">←</div>
+      <div class="arrow">→</div>
+    </div>
+  </section>
+</section>
+
+<script>
+const wrap = document.getElementById("systemWrap");
+const layers = [...document.querySelectorAll(".layer")];
+const items = [...document.querySelectorAll(".list-item")];
+
+document.addEventListener("mousemove", (event) => {
+  const x = (event.clientX / window.innerWidth - 0.5) * 2;
+  const y = (event.clientY / window.innerHeight - 0.5) * 2;
+
+  wrap.style.transform = `
+    rotateX(${58 + y * 2.5}deg)
+    rotateZ(${-36 + x * 2.5}deg)
+    translate3d(${x * 10}px, ${y * 8}px, 0)
+  `;
+
+  layers.forEach((layer) => {
+    const rect = layer.getBoundingClientRect();
+    const lx = ((event.clientX - rect.left) / rect.width) * 100;
+    const ly = ((event.clientY - rect.top) / rect.height) * 100;
+
+    layer.style.setProperty("--x", `${lx}%`);
+    layer.style.setProperty("--y", `${ly}%`);
+  });
+});
+
+items.forEach((item, index) => {
+  item.addEventListener("mouseenter", () => focusLayer(index));
+  item.addEventListener("click", () => focusLayer(index));
+});
+
+layers.forEach((layer, index) => {
+  layer.addEventListener("mouseenter", () => focusLayer(index));
+});
+
+function focusLayer(index) {
+  items.forEach((item) => item.classList.remove("active"));
+  layers.forEach((layer) => layer.classList.remove("active"));
+
+  items[index]?.classList.add("active");
+  layers[index]?.classList.add("active");
+}
+</script>
+
+</body>
+</html>
