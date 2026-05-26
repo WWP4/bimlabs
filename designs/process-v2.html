@@ -1,1 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
 
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>BIM Labs — Process Systems</title>
+
+  <link rel="stylesheet" href="process-v2.css" />
+</head>
+
+<body>
+
+<section class="process03">
+
+  <!-- LEFT RAIL -->
+  <aside class="rail">
+
+    <div class="brand">
+      BIM<br>
+      LABS
+    </div>
+
+    <div class="steps">
+
+      <div class="step">
+        <div class="step-dot"></div>
+
+        <strong>01</strong>
+
+        <span>STRATEGY</span>
+      </div>
+
+      <div class="step">
+        <div class="step-dot"></div>
+
+        <strong>02</strong>
+
+        <span>DESIGN</span>
+      </div>
+
+      <div class="step active">
+        <div class="step-dot"></div>
+
+        <strong>03</strong>
+
+        <span>SYSTEMS</span>
+      </div>
+
+      <div class="step">
+        <div class="step-dot"></div>
+
+        <strong>04</strong>
+
+        <span>LAUNCH</span>
+      </div>
+
+    </div>
+
+    <div class="menu">
+      MENU
+    </div>
+
+  </aside>
+
+
+  <!-- CONTENT -->
+  <main class="content">
+
+    <div class="kicker">
+      OUR PROCESS
+    </div>
+
+    <div class="copy-center">
+
+      <div class="micro">
+        STEP 03
+      </div>
+
+      <h1 class="title">
+        Understanding<br>
+        the System
+      </h1>
+
+      <div class="rule"></div>
+
+      <p class="desc">
+        We dive deep into the architecture that powers performance.
+        Mapping every layer, dependency, and interaction to reveal
+        how the system truly works.
+      </p>
+
+
+      <div class="list">
+
+        <div class="list-label">
+          IN THIS STEP
+        </div>
+
+        <div class="list-item active" data-focus="0">
+          <b>01</b>
+
+          <span>System Architecture</span>
+
+          <i>→</i>
+        </div>
+
+        <div class="list-item" data-focus="1">
+          <b>02</b>
+
+          <span>Component Mapping</span>
+
+          <i>→</i>
+        </div>
+
+        <div class="list-item" data-focus="2">
+          <b>03</b>
+
+          <span>Dependency Analysis</span>
+
+          <i>→</i>
+        </div>
+
+        <div class="list-item" data-focus="3">
+          <b>04</b>
+
+          <span>Flow & Logic Mapping</span>
+
+          <i>→</i>
+        </div>
+
+      </div>
+
+    </div>
+
+  </main>
+
+
+  <!-- VISUAL -->
+  <section class="visual">
+
+    <nav class="top-nav">
+
+      <span>STRATEGY</span>
+
+      <span>/</span>
+
+      <span>DESIGN</span>
+
+      <span>/</span>
+
+      <span class="current">SYSTEMS</span>
+
+      <span>/</span>
+
+      <span>LAUNCH</span>
+
+    </nav>
+
+
+    <!-- SYSTEM STACK -->
+    <div class="system-wrap" id="systemWrap">
+
+
+      <!-- TOP SMALL -->
+      <div
+        class="layer interface-layer active"
+        data-layer="INTERFACE LAYER"
+        style="--z:190px"
+      >
+
+        <div class="grid-detail detail-a"></div>
+        <div class="grid-detail detail-b"></div>
+
+        <span class="node hot" style="left:18%; top:24%;"></span>
+        <span class="node" style="left:52%; top:18%;"></span>
+        <span class="node" style="left:74%; top:34%;"></span>
+
+        <span
+          class="trace"
+          style="left:18%; top:25%; width:280px; transform:rotate(8deg);"
+        ></span>
+
+      </div>
+
+
+      <!-- SECOND -->
+      <div
+        class="layer logic-layer"
+        data-layer="LOGIC LAYER"
+        style="--z:70px"
+      >
+
+        <div class="grid-detail detail-c"></div>
+        <div class="grid-detail detail-d"></div>
+
+        <span class="node hot" style="left:30%; top:38%;"></span>
+        <span class="node" style="left:52%; top:28%;"></span>
+        <span class="node" style="left:66%; top:54%;"></span>
+
+        <span
+          class="trace"
+          style="left:30%; top:39%; width:220px; transform:rotate(-12deg);"
+        ></span>
+
+        <div class="block hot" style="left:68%; top:42%;"></div>
+
+      </div>
+
+
+      <!-- LARGE THIRD -->
+      <div
+        class="layer data-layer"
+        data-layer="DATA LAYER"
+        style="--z:-65px"
+      >
+
+        <div class="grid-detail detail-e"></div>
+        <div class="grid-detail detail-f"></div>
+
+        <span class="node" style="left:22%; top:24%;"></span>
+        <span class="node hot" style="left:54%; top:54%;"></span>
+        <span class="node" style="left:76%; top:66%;"></span>
+
+        <span
+          class="trace"
+          style="left:22%; top:25%; width:360px; transform:rotate(26deg);"
+        ></span>
+
+        <div class="block hot" style="left:44%; top:44%;"></div>
+
+        <div class="cluster cluster-a"></div>
+        <div class="cluster cluster-b"></div>
+
+      </div>
+
+
+      <!-- LARGE BOTTOM -->
+      <div
+        class="layer infra-layer"
+        data-layer="INFRASTRUCTURE LAYER"
+        style="--z:-210px"
+      >
+
+        <div class="grid-detail detail-g"></div>
+        <div class="grid-detail detail-h"></div>
+
+        <span class="node" style="left:16%; top:72%;"></span>
+        <span class="node hot" style="left:50%; top:52%;"></span>
+        <span class="node" style="left:82%; top:36%;"></span>
+
+        <span
+          class="trace"
+          style="left:16%; top:71%; width:390px; transform:rotate(-29deg);"
+        ></span>
+
+        <div class="cluster cluster-c"></div>
+
+      </div>
+
+
+      <!-- VERTICAL CONNECTIONS -->
+      <span
+        class="vline"
+        style="--l:24%; --t:16%; --h:440px; --vz:30px;"
+      ></span>
+
+      <span
+        class="vline"
+        style="--l:52%; --t:10%; --h:520px; --vz:40px;"
+      ></span>
+
+      <span
+        class="vline"
+        style="--l:76%; --t:24%; --h:370px; --vz:25px;"
+      ></span>
+
+    </div>
+
+
+    <!-- RIGHT LABELS -->
+    <div class="diagram-labels">
+
+      <div class="diagram-label">
+        <b>01 INTERFACE LAYER</b>
+
+        User interaction<br>
+        & presentation
+      </div>
+
+      <div class="diagram-label">
+        <b>02 LOGIC LAYER</b>
+
+        Rules, actions<br>
+        & processing
+      </div>
+
+      <div class="diagram-label">
+        <b>03 DATA LAYER</b>
+
+        Information flow<br>
+        & structure
+      </div>
+
+      <div class="diagram-label">
+        <b>04 INFRASTRUCTURE LAYER</b>
+
+        Foundation, hosting<br>
+        & environment
+      </div>
+
+    </div>
+
+
+    <!-- BOTTOM -->
+    <div class="bottom-meta">
+
+      <span>SYSTEM OVERVIEW</span>
+
+      <span class="line"></span>
+
+      <span>03 / 04</span>
+
+    </div>
+
+
+    <!-- NAV -->
+    <div class="arrows">
+
+      <div class="arrow">
+        ←
+      </div>
+
+      <div class="arrow">
+        →
+      </div>
+
+    </div>
+
+  </section>
+
+</section>
+
+<script src="process-v2.js"></script>
+
+</body>
+</html>
