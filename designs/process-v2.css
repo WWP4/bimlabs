@@ -711,3 +711,152 @@ body {
     display: none;
   }
 }
+
+
+
+/* FIX FOR NEW HTML STRUCTURE */
+
+.cad-layer {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform-style: preserve-3d;
+  transform: translate(-50%, -50%) translateZ(var(--z));
+  border: 1px solid rgba(255,255,255,.12);
+  background-color: rgba(255,255,255,.015);
+  box-shadow:
+    inset 0 0 0 1px rgba(255,255,255,.035),
+    0 0 38px rgba(255,255,255,.035);
+}
+
+.cad-layer::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: .75;
+  background-image:
+    linear-gradient(rgba(255,255,255,.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.045) 1px, transparent 1px),
+    radial-gradient(circle, rgba(255,255,255,.22) .8px, transparent 1.4px);
+  background-size: 24px 24px, 24px 24px, 42px 42px;
+}
+
+.cad-layer::after {
+  content: attr(data-layer);
+  position: absolute;
+  left: 18px;
+  top: 14px;
+  transform: rotateZ(42deg) rotateX(-68deg);
+  font-size: 8px;
+  letter-spacing: .28em;
+  color: rgba(255,255,255,.22);
+  white-space: nowrap;
+}
+
+.layer-01 {
+  width: 300px;
+  height: 150px;
+  opacity: .92;
+}
+
+.layer-02 {
+  width: 470px;
+  height: 245px;
+  opacity: .52;
+}
+
+.layer-03 {
+  width: 700px;
+  height: 385px;
+  opacity: .28;
+}
+
+.layer-04 {
+  width: 940px;
+  height: 520px;
+  opacity: .14;
+}
+
+.node {
+  position: absolute;
+  left: var(--x);
+  top: var(--y);
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,.42);
+  background: #050506;
+  transform: translate(-50%, -50%);
+}
+
+.node.hot {
+  background: white;
+  border-color: white;
+  box-shadow:
+    0 0 8px rgba(255,255,255,.72),
+    0 0 24px rgba(255,255,255,.22);
+}
+
+.pin {
+  position: absolute;
+  width: 1px;
+  height: 520px;
+  background: repeating-linear-gradient(
+    180deg,
+    rgba(255,255,255,.3) 0,
+    rgba(255,255,255,.3) 3px,
+    transparent 3px,
+    transparent 9px
+  );
+  opacity: .25;
+  transform-style: preserve-3d;
+}
+
+.pin::before,
+.pin::after {
+  content: "";
+  position: absolute;
+  left: -3px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: white;
+  box-shadow: 0 0 12px rgba(255,255,255,.42);
+}
+
+.pin::before {
+  top: 0;
+}
+
+.pin::after {
+  bottom: 0;
+}
+
+.pin-a { left: 24%; top: 13%; transform: translateZ(40px); }
+.pin-b { left: 52%; top: 6%; height: 590px; transform: translateZ(55px); }
+.pin-c { left: 76%; top: 20%; height: 420px; transform: translateZ(30px); }
+.pin-d { left: 38%; top: 24%; height: 320px; transform: translateZ(-80px); }
+.pin-e { left: 66%; top: 30%; height: 300px; transform: translateZ(-150px); }
+
+.pin.strong {
+  opacity: .42;
+}
+
+.pin.subtle {
+  opacity: .14;
+}
+
+.system-glow {
+  position: absolute;
+  left: 44%;
+  top: 72%;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: white;
+  transform: translateZ(-260px);
+  box-shadow:
+    0 0 16px rgba(255,255,255,.9),
+    0 0 42px rgba(255,255,255,.32),
+    0 0 100px rgba(255,255,255,.12);
+}
