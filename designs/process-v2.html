@@ -159,105 +159,84 @@
     </nav>
 
 
-    <!-- SYSTEM STACK -->
-    <div class="system-wrap" id="systemWrap">
+  <!-- SYSTEM STACK -->
+<div class="system-wrap" id="systemWrap">
 
+  <div class="frame-corner corner-tl"></div>
+  <div class="frame-corner corner-tr"></div>
+  <div class="frame-corner corner-bl"></div>
+  <div class="frame-corner corner-br"></div>
 
-      <!-- TOP SMALL -->
-      <div
-        class="layer interface-layer active"
-        data-layer="INTERFACE LAYER"
-        style="--z:190px"
-      >
+  <!-- TOP SMALL -->
+  <div class="layer interface-layer active" data-layer="INTERFACE LAYER" style="--z:205px">
+    <div class="mesh mesh-a"></div>
+    <div class="mesh mesh-b"></div>
+    <div class="micro-line ml-a"></div>
+    <div class="micro-line ml-b"></div>
+    <div class="micro-line ml-c"></div>
 
-        <div class="grid-detail detail-a"></div>
-        <div class="grid-detail detail-b"></div>
+    <span class="node hot" style="left:18%; top:24%;"></span>
+    <span class="node" style="left:52%; top:18%;"></span>
+    <span class="node" style="left:78%; top:34%;"></span>
 
-        <span class="node hot" style="left:18%; top:24%;"></span>
-        <span class="node" style="left:52%; top:18%;"></span>
-        <span class="node" style="left:74%; top:34%;"></span>
+    <span class="trace" style="left:18%; top:25%; width:330px; transform:rotate(8deg);"></span>
+    <span class="trace soft" style="left:42%; top:70%; width:190px; transform:rotate(-18deg);"></span>
+  </div>
 
-        <span
-          class="trace"
-          style="left:18%; top:25%; width:280px; transform:rotate(8deg);"
-        ></span>
+  <!-- SECOND -->
+  <div class="layer logic-layer" data-layer="LOGIC LAYER" style="--z:78px">
+    <div class="mesh mesh-c"></div>
+    <div class="mesh mesh-d"></div>
+    <div class="chip chip-a"></div>
+    <div class="chip chip-b"></div>
 
-      </div>
+    <span class="node hot" style="left:30%; top:38%;"></span>
+    <span class="node" style="left:52%; top:28%;"></span>
+    <span class="node" style="left:68%; top:54%;"></span>
+    <span class="node" style="left:40%; top:70%;"></span>
 
+    <span class="trace" style="left:30%; top:39%; width:245px; transform:rotate(-12deg);"></span>
+    <span class="trace soft" style="left:40%; top:70%; width:190px; transform:rotate(-34deg);"></span>
+  </div>
 
-      <!-- SECOND -->
-      <div
-        class="layer logic-layer"
-        data-layer="LOGIC LAYER"
-        style="--z:70px"
-      >
+  <!-- LARGE THIRD -->
+  <div class="layer data-layer" data-layer="DATA LAYER" style="--z:-70px">
+    <div class="mesh mesh-e"></div>
+    <div class="mesh mesh-f"></div>
+    <div class="chip chip-c hot"></div>
+    <div class="chip chip-d"></div>
+    <div class="chip chip-e"></div>
 
-        <div class="grid-detail detail-c"></div>
-        <div class="grid-detail detail-d"></div>
+    <span class="node" style="left:22%; top:24%;"></span>
+    <span class="node hot" style="left:54%; top:54%;"></span>
+    <span class="node" style="left:78%; top:66%;"></span>
 
-        <span class="node hot" style="left:30%; top:38%;"></span>
-        <span class="node" style="left:52%; top:28%;"></span>
-        <span class="node" style="left:66%; top:54%;"></span>
+    <span class="trace" style="left:22%; top:25%; width:410px; transform:rotate(26deg);"></span>
+    <span class="trace soft" style="left:16%; top:72%; width:260px; transform:rotate(-8deg);"></span>
+  </div>
 
-        <span
-          class="trace"
-          style="left:30%; top:39%; width:220px; transform:rotate(-12deg);"
-        ></span>
+  <!-- LARGE BOTTOM -->
+  <div class="layer infra-layer" data-layer="INFRASTRUCTURE LAYER" style="--z:-225px">
+    <div class="mesh mesh-g"></div>
+    <div class="mesh mesh-h"></div>
+    <div class="mesh mesh-i"></div>
+    <div class="chip chip-f"></div>
+    <div class="chip chip-g hot"></div>
 
-        <div class="block hot" style="left:68%; top:42%;"></div>
+    <span class="node" style="left:16%; top:72%;"></span>
+    <span class="node hot" style="left:50%; top:52%;"></span>
+    <span class="node" style="left:84%; top:36%;"></span>
 
-      </div>
+    <span class="trace" style="left:16%; top:71%; width:440px; transform:rotate(-29deg);"></span>
+  </div>
 
+  <span class="vline" style="--l:24%; --t:16%; --h:455px; --vz:35px;"></span>
+  <span class="vline strong" style="--l:52%; --t:8%; --h:545px; --vz:45px;"></span>
+  <span class="vline" style="--l:76%; --t:23%; --h:390px; --vz:30px;"></span>
 
-      <!-- LARGE THIRD -->
-      <div
-        class="layer data-layer"
-        data-layer="DATA LAYER"
-        style="--z:-65px"
-      >
+  <span class="light-point"></span>
 
-        <div class="grid-detail detail-e"></div>
-        <div class="grid-detail detail-f"></div>
-
-        <span class="node" style="left:22%; top:24%;"></span>
-        <span class="node hot" style="left:54%; top:54%;"></span>
-        <span class="node" style="left:76%; top:66%;"></span>
-
-        <span
-          class="trace"
-          style="left:22%; top:25%; width:360px; transform:rotate(26deg);"
-        ></span>
-
-        <div class="block hot" style="left:44%; top:44%;"></div>
-
-        <div class="cluster cluster-a"></div>
-        <div class="cluster cluster-b"></div>
-
-      </div>
-
-
-      <!-- LARGE BOTTOM -->
-      <div
-        class="layer infra-layer"
-        data-layer="INFRASTRUCTURE LAYER"
-        style="--z:-210px"
-      >
-
-        <div class="grid-detail detail-g"></div>
-        <div class="grid-detail detail-h"></div>
-
-        <span class="node" style="left:16%; top:72%;"></span>
-        <span class="node hot" style="left:50%; top:52%;"></span>
-        <span class="node" style="left:82%; top:36%;"></span>
-
-        <span
-          class="trace"
-          style="left:16%; top:71%; width:390px; transform:rotate(-29deg);"
-        ></span>
-
-        <div class="cluster cluster-c"></div>
-
-      </div>
+</div>
 
 
       <!-- VERTICAL CONNECTIONS -->
