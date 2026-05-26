@@ -749,3 +749,30 @@ body {
     display: none;
   }
 }
+
+
+.system-wrap {
+  width: 760px;
+  height: 600px;
+  transform: rotateX(61deg) rotateZ(-36deg) rotateY(2deg) scale(.88);
+}
+
+.interface-layer {
+  width: 390px;
+  height: 215px;
+}
+
+.logic-layer {
+  width: 500px;
+  height: 285px;
+}
+
+.data-layer {
+  width: 635px;
+  height: 365px;
+}
+
+.infra-layer {
+  width: 720px;
+  height: 420px;
+}
