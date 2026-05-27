@@ -1,26 +1,17 @@
-/* =========================
-   BIM TESTIMONIALS — EDITORIAL
-   ========================= */
+/* ===============================
+   BIM TESTIMONIALS — OVERRIDE
+================================ */
 
 .bim-testimonials {
   position: relative;
-  min-height: 100svh;
-
-  padding:
-    clamp(80px, 8vw, 120px)
-    clamp(24px, 4vw, 60px)
-    42px;
-
+  min-height: 100vh;
   overflow: hidden;
+  background: #050505;
+  color: #fff;
+  display: flex;
+  align-items: center;
   isolation: isolate;
-
-  background: #020202;
-  color: #f3f3f3;
 }
-
-/* =========================
-   BACKGROUND
-   ========================= */
 
 .testimonial-bg {
   position: absolute;
@@ -31,335 +22,228 @@
 .testimonial-bg img {
   width: 100%;
   height: 100%;
-
   object-fit: cover;
-
-  opacity: .62;
-
-  filter:
-    grayscale(1)
-    contrast(1.04)
-    brightness(.52);
-
-  transform: scale(1.015);
-}
-
-.testimonial-bg::after {
-  content: "";
-
-  position: absolute;
-  inset: 0;
-
-  background:
-    linear-gradient(
-      180deg,
-      rgba(0,0,0,.82),
-      rgba(0,0,0,.28) 42%,
-      rgba(0,0,0,.86)
-    ),
-
-    radial-gradient(
-      circle at 50% 76%,
-      rgba(255,255,255,.045),
-      transparent 36%
-    );
+  opacity: .38;
+  filter: contrast(1.05) brightness(.72);
 }
 
 .testimonial-noise {
   position: absolute;
   inset: 0;
-  z-index: -2;
-
-  opacity: .05;
-
-  background-image:
-    linear-gradient(rgba(255,255,255,.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,.02) 1px, transparent 1px);
-
-  background-size: 88px 88px;
-
+  z-index: -3;
   pointer-events: none;
+  opacity: .16;
+  background-image: radial-gradient(rgba(255,255,255,.22) 1px, transparent 1px);
+  background-size: 4px 4px;
+  mix-blend-mode: overlay;
 }
 
-/* =========================
-   LAYOUT
-   ========================= */
+.testimonial-fog {
+  position: absolute;
+  inset: -30%;
+  z-index: -2;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 20% 45%, rgba(255,255,255,.08), transparent 32%),
+    radial-gradient(circle at 75% 55%, rgba(255,255,255,.045), transparent 38%),
+    radial-gradient(circle at 50% 85%, rgba(255,255,255,.05), transparent 34%);
+  filter: blur(90px);
+  opacity: .7;
+  animation: testimonialFog 18s ease-in-out infinite alternate;
+}
+
+@keyframes testimonialFog {
+  from {
+    transform: translate3d(-2%, 1%, 0) scale(1);
+  }
+
+  to {
+    transform: translate3d(2%, -2%, 0) scale(1.08);
+  }
+}
+
+.testimonial-ghost {
+  position: absolute;
+  right: 6vw;
+  bottom: 7vh;
+  z-index: -1;
+  font-size: clamp(7rem, 18vw, 18rem);
+  line-height: .8;
+  letter-spacing: -.1em;
+  font-weight: 600;
+  color: rgba(255,255,255,.035);
+  pointer-events: none;
+  transition: opacity 1.2s ease, filter 1.2s ease, transform 1.2s ease;
+}
+
+.bim-testimonials.is-switching .testimonial-ghost {
+  opacity: .015;
+  filter: blur(18px);
+  transform: translateY(-18px);
+}
 
 .testimonial-shell {
-  position: relative;
-  z-index: 2;
-
-  width: 100%;
-  max-width: 1200px;
-
-  min-height: calc(100svh - 140px);
-
+  width: min(1180px, calc(100% - 48px));
   margin: 0 auto;
-
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: .85fr 1.15fr;
+  gap: clamp(3rem, 8vw, 8rem);
   align-items: center;
-  justify-content: center;
-
-  text-align: center;
+  padding: 11vh 0 16vh;
 }
-
-/* =========================
-   LABEL
-   ========================= */
 
 .testimonial-kicker {
-  margin: 0 0 22px;
-
-  font-family: var(--mono);
-  font-size: 9px;
-  font-weight: 500;
-
-  letter-spacing: .34em;
+  margin: 0 0 1.2rem;
+  font-size: .68rem;
+  letter-spacing: .22em;
   text-transform: uppercase;
-
-  color: rgba(255,255,255,.34);
+  color: rgba(255,255,255,.48);
 }
-
-.testimonial-kicker::after {
-  content: "";
-
-  display: block;
-
-  width: 1px;
-  height: 34px;
-
-  margin: 18px auto 0;
-
-  background: rgba(255,255,255,.22);
-}
-
-/* =========================
-   HEADLINE
-   ========================= */
 
 .testimonial-shell h2 {
-  max-width: 820px;
-
   margin: 0;
-
-  font-family: var(--serif);
-
-  font-size: clamp(48px, 6vw, 96px);
-  font-weight: 400;
-  line-height: .9;
-
+  font-size: clamp(2.4rem, 5.6vw, 6.2rem);
+  line-height: .88;
   letter-spacing: -.075em;
-
-  color: rgba(255,255,255,.94);
+  font-weight: 500;
+  color: rgba(255,255,255,.92);
 }
 
-/* =========================
-   TYPEWRITER
-   ========================= */
+.testimonial-right {
+  padding-top: 9vh;
+}
 
 .testimonial-typebox {
-  max-width: 520px;
-
-  margin-top: 38px;
-
-  font-family: var(--mono);
-
-  font-size: clamp(13px, 1vw, 17px);
-  font-weight: 400;
-  line-height: 1.95;
-
-  letter-spacing: -.02em;
-
-  color: rgba(255,255,255,.68);
+  position: relative;
+  min-height: 190px;
+  max-width: 720px;
 }
 
-.testimonial-typebox p {
-  display: inline;
+#testimonialText {
+  margin: 0;
+  font-size: clamp(1.18rem, 1.8vw, 2rem);
+  line-height: 1.48;
+  letter-spacing: -.035em;
+  font-weight: 300;
+  color: rgba(255,255,255,.88);
+  transition:
+    opacity 1.15s ease,
+    transform 1.15s ease,
+    filter 1.15s ease;
+  will-change: opacity, transform, filter;
 }
 
-.type-cursor {
-  display: inline-block;
-
-  width: 7px;
-  height: 1em;
-
-  margin-left: 5px;
-
-  transform: translateY(2px);
-
-  background: rgba(255,255,255,.78);
-
-  animation: cursorBlink .9s steps(2) infinite;
+#testimonialText.is-leaving {
+  opacity: 0;
+  transform: translateY(-22px) scale(1.015);
+  filter: blur(22px);
 }
 
-/* =========================
-   META
-   ========================= */
+#testimonialText.is-entering {
+  opacity: 0;
+  transform: translateY(24px);
+  filter: blur(16px);
+}
+
+#testimonialText.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+  filter: blur(0);
+}
 
 .testimonial-meta {
-  margin-top: 38px;
+  display: flex;
+  align-items: flex-start;
+  gap: 1.4rem;
+  margin-top: 2.4rem;
+  color: rgba(255,255,255,.5);
+}
 
+.testimonial-meta > span {
+  font-size: .68rem;
+  letter-spacing: .18em;
+  color: rgba(255,255,255,.38);
+  padding-top: .18rem;
+}
+
+.testimonial-meta div {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  gap: .3rem;
+}
 
-  gap: 8px;
-
-  font-family: var(--mono);
+.testimonial-meta strong {
+  font-size: .8rem;
+  letter-spacing: .08em;
   text-transform: uppercase;
-}
-
-#testimonialCount {
-  margin-bottom: 10px;
-
-  font-size: 9px;
-  letter-spacing: .24em;
-
-  color: rgba(255,255,255,.34);
-}
-
-#testimonialName {
-  font-size: 10px;
-  font-weight: 500;
-
-  letter-spacing: .32em;
-
   color: rgba(255,255,255,.82);
 }
 
-#testimonialRole {
-  font-size: 8px;
-  letter-spacing: .24em;
-
-  color: rgba(255,255,255,.34);
+.testimonial-meta div span {
+  font-size: .78rem;
+  color: rgba(255,255,255,.44);
 }
 
-/* =========================
-   PROGRESS
-   ========================= */
-
 .testimonial-progress {
-  margin-top: 34px;
-
   display: flex;
-  align-items: center;
-  gap: 12px;
+  gap: .55rem;
+  margin-top: 2.2rem;
 }
 
 .testimonial-progress button {
-  width: 54px;
+  width: 34px;
   height: 1px;
-
-  padding: 0;
   border: 0;
-
+  padding: 0;
   cursor: pointer;
-
-  background: rgba(255,255,255,.12);
-
-  transition:
-    background .5s ease,
-    transform .5s ease;
-}
-
-.testimonial-progress button:hover {
-  transform: scaleX(1.12);
+  background: rgba(255,255,255,.2);
+  transition: width .45s ease, background .45s ease, opacity .45s ease;
 }
 
 .testimonial-progress button.is-active {
-  background: rgba(255,255,255,.82);
+  width: 62px;
+  background: rgba(255,255,255,.86);
 }
 
-/* =========================
-   CLIENT BAND
-   ========================= */
-
 .client-band-wrap {
-  width: 100%;
-
-  margin-top: auto;
-  padding-top: 90px;
-
-  text-align: center;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 3.2rem;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 2rem;
+  align-items: center;
+  padding: 0 clamp(1.5rem, 5vw, 5rem);
+  color: rgba(255,255,255,.38);
 }
 
 .client-band-wrap > span {
-  display: block;
-
-  margin-bottom: 18px;
-
-  font-family: var(--mono);
-  font-size: 8px;
-
-  letter-spacing: .32em;
+  white-space: nowrap;
+  font-size: .62rem;
   text-transform: uppercase;
-
-  color: rgba(255,255,255,.24);
+  letter-spacing: .2em;
 }
 
 .client-band {
   overflow: hidden;
-
-  padding: 14px 0;
-
-  border-top: 1px solid rgba(255,255,255,.07);
-  border-bottom: 1px solid rgba(255,255,255,.07);
-
-  mask-image:
-    linear-gradient(
-      90deg,
-      transparent,
-      black 10%,
-      black 90%,
-      transparent
-    );
+  mask-image: linear-gradient(to right, transparent, #000 12%, #000 88%, transparent);
 }
 
 .client-band-track {
   display: flex;
-  align-items: center;
-
-  gap: 120px;
-
   width: max-content;
-
-  animation: clientBandMove 52s linear infinite;
+  gap: 3rem;
+  animation: clientBandMove 32s linear infinite;
 }
 
 .client-band-track p {
-  position: relative;
-
   margin: 0;
-
-  flex-shrink: 0;
-
-  font-family: var(--sans);
-
-  font-size: clamp(11px, .9vw, 15px);
-  font-weight: 400;
-
-  letter-spacing: .08em;
   white-space: nowrap;
-
-  color: rgba(255,255,255,.26);
+  font-size: .68rem;
+  letter-spacing: .22em;
+  color: rgba(255,255,255,.62);
 }
-
-.client-band-track p::after {
-  content: "—";
-
-  position: absolute;
-  right: -64px;
-  top: 50%;
-
-  transform: translateY(-50%);
-
-  color: rgba(255,255,255,.12);
-}
-
-/* =========================
-   ANIMATION
-   ========================= */
 
 @keyframes clientBandMove {
   from {
@@ -367,298 +251,32 @@
   }
 
   to {
-    transform: translateX(-33.333%);
+    transform: translateX(-50%);
   }
 }
 
-@keyframes cursorBlink {
-  0%, 48% {
-    opacity: 1;
-  }
-
-  49%, 100% {
-    opacity: 0;
-  }
-}
-
-/* =========================
-   MOBILE
-   ========================= */
-
-@media (max-width: 768px) {
-
+@media (max-width: 850px) {
   .bim-testimonials {
-    padding:
-      90px
-      20px
-      40px;
+    min-height: auto;
   }
 
-  .testimonial-shell h2 {
-    font-size: clamp(42px, 14vw, 72px);
+  .testimonial-shell {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+    padding: 8rem 0 10rem;
+  }
+
+  .testimonial-right {
+    padding-top: 0;
   }
 
   .testimonial-typebox {
-    max-width: 92%;
+    min-height: 180px;
   }
 
   .client-band-wrap {
-    padding-top: 70px;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    bottom: 2rem;
   }
-
-  .testimonial-progress button {
-    width: 38px;
-  }
-}
-
-
-/* =========================
-   BACKGROUND IMAGE FIX
-   ========================= */
-
-.testimonial-bg img {
-  opacity: .84 !important;
-
-  filter:
-    grayscale(1)
-    contrast(1.08)
-    brightness(.82) !important;
-}
-
-/* =========================
-   OVERLAY FIX
-   ========================= */
-
-.testimonial-bg::after {
-  content: "";
-
-  position: absolute;
-  inset: 0;
-
-  background:
-    linear-gradient(
-      180deg,
-      rgba(0,0,0,.38),
-      rgba(0,0,0,.06) 38%,
-      rgba(0,0,0,.48)
-    ),
-
-    radial-gradient(
-      circle at 50% 78%,
-      rgba(255,255,255,.05),
-      transparent 42%
-    ) !important;
-}
-
-/* =========================
-   FOG LIGHTEN
-   ========================= */
-
-.testimonial-fog {
-  opacity: .18 !important;
-
-  filter: blur(60px) !important;
-}
-
-/* =========================
-   NOISE LIGHTEN
-   ========================= */
-
-.testimonial-noise {
-  opacity: .025 !important;
-}
-
-
-
-/* =========================
-   BIM TESTIMONIALS OVERRIDE
-   ========================= */
-
-/* REMOVE LUXURY EDITORIAL FEEL */
-
-.bim-testimonials {
-  background: #020202 !important;
-}
-
-/* CLEANER BACKGROUND */
-
-.testimonial-bg img {
-  opacity: .82 !important;
-
-  filter:
-    grayscale(1)
-    contrast(1.06)
-    brightness(.78) !important;
-}
-
-.testimonial-bg::after {
-  background:
-    linear-gradient(
-      180deg,
-      rgba(0,0,0,.32),
-      rgba(0,0,0,.04) 42%,
-      rgba(0,0,0,.42)
-    ) !important;
-}
-
-/* REMOVE HEAVY FOG */
-
-.testimonial-fog {
-  opacity: .06 !important;
-  filter: blur(80px) !important;
-}
-
-/* REDUCE NOISE */
-
-.testimonial-noise {
-  opacity: .018 !important;
-}
-
-/* =========================
-   TYPOGRAPHY ALIGNMENT
-   ========================= */
-
-.testimonial-shell h2 {
-  max-width: 760px !important;
-
-  font-family: var(--sans, Manrope, sans-serif) !important;
-
-  font-size: clamp(46px, 5vw, 82px) !important;
-  font-weight: 500 !important;
-  line-height: .9 !important;
-
-  letter-spacing: -.085em !important;
-
-  color: rgba(255,255,255,.92) !important;
-}
-
-/* SMALLER LABEL */
-
-.testimonial-kicker {
-  font-size: 8px !important;
-  letter-spacing: .32em !important;
-
-  color: rgba(255,255,255,.34) !important;
-}
-
-/* TERMINAL STYLE TESTIMONIAL */
-
-.testimonial-typebox {
-  max-width: 560px !important;
-
-  margin-top: 30px !important;
-
-  font-family: var(--mono, "IBM Plex Mono", monospace) !important;
-
-  font-size: 13px !important;
-  line-height: 1.9 !important;
-
-  letter-spacing: -.01em !important;
-
-  color: rgba(255,255,255,.58) !important;
-}
-
-/* CLEANER META */
-
-.testimonial-meta {
-  margin-top: 34px !important;
-}
-
-#testimonialCount {
-  font-size: 8px !important;
-  letter-spacing: .24em !important;
-
-  color: rgba(255,255,255,.28) !important;
-}
-
-#testimonialName {
-  font-size: 10px !important;
-  letter-spacing: .28em !important;
-
-  color: rgba(255,255,255,.76) !important;
-}
-
-#testimonialRole {
-  font-size: 8px !important;
-  letter-spacing: .22em !important;
-
-  color: rgba(255,255,255,.28) !important;
-}
-
-/* SMALLER SYSTEM-STYLE PROGRESS */
-
-.testimonial-progress {
-  margin-top: 28px !important;
-  gap: 10px !important;
-}
-
-.testimonial-progress button {
-  width: 42px !important;
-
-  background: rgba(255,255,255,.12) !important;
-}
-
-.testimonial-progress button.is-active {
-  background: rgba(255,255,255,.72) !important;
-}
-
-/* =========================
-   CLIENT BAND
-   ========================= */
-
-.client-band-wrap {
-  padding-top: 72px !important;
-}
-
-.client-band-wrap > span {
-  font-size: 8px !important;
-  letter-spacing: .28em !important;
-
-  color: rgba(255,255,255,.22) !important;
-}
-
-.client-band {
-  padding: 12px 0 !important;
-
-  border-top: 1px solid rgba(255,255,255,.05) !important;
-  border-bottom: 1px solid rgba(255,255,255,.05) !important;
-}
-
-.client-band-track {
-  gap: 120px !important;
-}
-
-.client-band-track p {
-  font-family: var(--mono, "IBM Plex Mono", monospace) !important;
-
-  font-size: 10px !important;
-  font-weight: 400 !important;
-
-  letter-spacing: .22em !important;
-  text-transform: uppercase !important;
-
-  color: rgba(255,255,255,.2) !important;
-}
-
-.client-band-track p::after {
-  right: -64px !important;
-
-  color: rgba(255,255,255,.1) !important;
-}
-
-#testimonialText {
-  transition:
-    opacity .28s ease,
-    transform .28s ease,
-    filter .28s ease;
-}
-
-#testimonialText.is-changing {
-  opacity: 0;
-  transform: translateY(6px);
-  filter: blur(4px);
-}
-
-.type-cursor {
-  display: none !important;
 }
