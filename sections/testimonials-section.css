@@ -1,54 +1,63 @@
 /* ===============================
-   BIM TESTIMONIALS — OVERRIDE
+   BIM TESTIMONIALS
+   Continuous black canvas version
+   No separate background block.
 ================================ */
 
 .bim-testimonials {
   position: relative;
   min-height: 100vh;
   overflow: hidden;
-  background: #050505;
+
+  background: transparent;
   color: #fff;
+
   display: flex;
   align-items: center;
   isolation: isolate;
 }
 
+/* Keep image as atmosphere only, not section background */
 .testimonial-bg {
   position: absolute;
   inset: 0;
   z-index: -5;
+  pointer-events: none;
 }
 
 .testimonial-bg img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  opacity: .38;
-  filter: contrast(1.05) brightness(.72);
-}
 
-.testimonial-noise {
-  position: absolute;
-  inset: 0;
-  z-index: -3;
-  pointer-events: none;
   opacity: .16;
-  background-image: radial-gradient(rgba(255,255,255,.22) 1px, transparent 1px);
-  background-size: 4px 4px;
-  mix-blend-mode: overlay;
+  filter:
+    grayscale(1)
+    contrast(1.08)
+    brightness(.48);
+
+  mix-blend-mode: screen;
 }
 
+/* kill noisy dotted layer */
+.testimonial-noise {
+  display: none !important;
+}
+
+/* subtle atmosphere, same black underneath */
 .testimonial-fog {
   position: absolute;
   inset: -30%;
   z-index: -2;
   pointer-events: none;
+
   background:
-    radial-gradient(circle at 20% 45%, rgba(255,255,255,.08), transparent 32%),
-    radial-gradient(circle at 75% 55%, rgba(255,255,255,.045), transparent 38%),
-    radial-gradient(circle at 50% 85%, rgba(255,255,255,.05), transparent 34%);
+    radial-gradient(circle at 20% 45%, rgba(255,255,255,.035), transparent 32%),
+    radial-gradient(circle at 75% 55%, rgba(255,255,255,.025), transparent 38%),
+    radial-gradient(circle at 50% 85%, rgba(255,255,255,.028), transparent 34%);
+
   filter: blur(90px);
-  opacity: .7;
+  opacity: .56;
   animation: testimonialFog 18s ease-in-out infinite alternate;
 }
 
@@ -62,32 +71,43 @@
   }
 }
 
-
+/* CONTENT */
 
 .testimonial-shell {
+  position: relative;
+  z-index: 2;
+
   width: min(1180px, calc(100% - 48px));
   margin: 0 auto;
+
   display: grid;
   grid-template-columns: .85fr 1.15fr;
   gap: clamp(3rem, 8vw, 8rem);
   align-items: center;
+
   padding: 11vh 0 16vh;
 }
 
 .testimonial-kicker {
   margin: 0 0 1.2rem;
+
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
   font-size: .68rem;
   letter-spacing: .22em;
   text-transform: uppercase;
+
   color: rgba(255,255,255,.48);
 }
 
 .testimonial-shell h2 {
   margin: 0;
+
+  font-family: Manrope, system-ui, sans-serif;
   font-size: clamp(2.4rem, 5.6vw, 6.2rem);
   line-height: .88;
   letter-spacing: -.075em;
   font-weight: 500;
+
   color: rgba(255,255,255,.92);
 }
 
@@ -103,15 +123,20 @@
 
 #testimonialText {
   margin: 0;
+
+  font-family: Manrope, system-ui, sans-serif;
   font-size: clamp(1.18rem, 1.8vw, 2rem);
   line-height: 1.48;
   letter-spacing: -.035em;
   font-weight: 300;
+
   color: rgba(255,255,255,.88);
+
   transition:
     opacity 1.15s ease,
     transform 1.15s ease,
     filter 1.15s ease;
+
   will-change: opacity, transform, filter;
 }
 
@@ -133,19 +158,26 @@
   filter: blur(0);
 }
 
+/* META */
+
 .testimonial-meta {
   display: flex;
   align-items: flex-start;
   gap: 1.4rem;
+
   margin-top: 2.4rem;
+
   color: rgba(255,255,255,.5);
 }
 
 .testimonial-meta > span {
+  padding-top: .18rem;
+
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
   font-size: .68rem;
   letter-spacing: .18em;
+
   color: rgba(255,255,255,.38);
-  padding-top: .18rem;
 }
 
 .testimonial-meta div {
@@ -155,9 +187,12 @@
 }
 
 .testimonial-meta strong {
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
   font-size: .8rem;
+  font-weight: 500;
   letter-spacing: .08em;
   text-transform: uppercase;
+
   color: rgba(255,255,255,.82);
 }
 
@@ -166,9 +201,12 @@
   color: rgba(255,255,255,.44);
 }
 
+/* PROGRESS */
+
 .testimonial-progress {
   display: flex;
   gap: .55rem;
+
   margin-top: 2.2rem;
 }
 
@@ -178,8 +216,13 @@
   border: 0;
   padding: 0;
   cursor: pointer;
+
   background: rgba(255,255,255,.2);
-  transition: width .45s ease, background .45s ease, opacity .45s ease;
+
+  transition:
+    width .45s ease,
+    background .45s ease,
+    opacity .45s ease;
 }
 
 .testimonial-progress button.is-active {
@@ -187,21 +230,29 @@
   background: rgba(255,255,255,.86);
 }
 
+/* CLIENT BAND */
+
 .client-band-wrap {
   position: absolute;
   left: 0;
   right: 0;
   bottom: 3.2rem;
+  z-index: 3;
+
   display: grid;
   grid-template-columns: auto 1fr;
   gap: 2rem;
   align-items: center;
+
   padding: 0 clamp(1.5rem, 5vw, 5rem);
+
   color: rgba(255,255,255,.38);
 }
 
 .client-band-wrap > span {
   white-space: nowrap;
+
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
   font-size: .62rem;
   text-transform: uppercase;
   letter-spacing: .2em;
@@ -209,21 +260,31 @@
 
 .client-band {
   overflow: hidden;
-  mask-image: linear-gradient(to right, transparent, #000 12%, #000 88%, transparent);
+  mask-image: linear-gradient(
+    to right,
+    transparent,
+    #000 12%,
+    #000 88%,
+    transparent
+  );
 }
 
 .client-band-track {
   display: flex;
   width: max-content;
   gap: 3rem;
+
   animation: clientBandMove 32s linear infinite;
 }
 
 .client-band-track p {
   margin: 0;
   white-space: nowrap;
+
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
   font-size: .68rem;
   letter-spacing: .22em;
+
   color: rgba(255,255,255,.62);
 }
 
@@ -236,6 +297,8 @@
     transform: translateX(-50%);
   }
 }
+
+/* RESPONSIVE */
 
 @media (max-width: 850px) {
   .bim-testimonials {
@@ -260,5 +323,16 @@
     grid-template-columns: 1fr;
     gap: 1rem;
     bottom: 2rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .testimonial-fog,
+  .client-band-track {
+    animation: none !important;
+  }
+
+  #testimonialText {
+    transition: none !important;
   }
 }
