@@ -575,3 +575,575 @@
 .process-card:hover {
   transform: translateY(-8px);
 }
+
+
+/* =========================================================
+   BIM LABS — ALIVE PROCESS SCROLL OVERRIDE
+   Paste at bottom of sections/process.css
+   ========================================================= */
+
+.bim-process {
+  position: relative;
+  min-height: 260vh;
+  padding: 0 clamp(20px, 4vw, 80px);
+  overflow: visible;
+
+  background:
+    radial-gradient(circle at 50% 0%, rgba(255,255,255,.085), transparent 30%),
+    radial-gradient(circle at 82% 44%, rgba(255,255,255,.035), transparent 34%),
+    linear-gradient(180deg, #050505 0%, #080808 54%, #050505 100%);
+
+  color: #f5f5f5;
+  isolation: isolate;
+}
+
+/* fog bridge from horizontal showcase into process */
+.bim-process .section-whisp {
+  position: absolute;
+  top: -180px;
+  left: 50%;
+  width: 120vw;
+  height: 340px;
+  transform: translateX(-50%);
+  pointer-events: none;
+  z-index: 5;
+
+  background:
+    radial-gradient(ellipse at 50% 90%, rgba(255,255,255,.075), transparent 42%),
+    linear-gradient(180deg, rgba(5,5,5,0) 0%, rgba(5,5,5,.88) 68%, rgba(5,5,5,1) 100%);
+
+  filter: blur(18px);
+  opacity: .9;
+}
+
+/* sticky stage */
+.process-shell {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+
+  height: 100vh;
+  min-height: 100vh;
+  max-width: 1780px;
+  margin: 0 auto;
+
+  display: grid;
+  grid-template-columns: minmax(260px, 28vw) 1fr;
+  align-items: center;
+  gap: clamp(34px, 5vw, 92px);
+
+  opacity: var(--process-opacity, 1);
+  transform:
+    translateY(var(--process-y, 0px))
+    scale(var(--process-scale, 1));
+
+  transition:
+    opacity .18s linear,
+    transform .18s linear;
+}
+
+/* subtle technical grid that wakes up during scroll */
+.bim-process::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+
+  background-image:
+    linear-gradient(rgba(255,255,255,.018) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.018) 1px, transparent 1px);
+
+  background-size: 92px 92px;
+  opacity: calc(.12 + (var(--process-progress, 0) * .22));
+
+  mask-image:
+    radial-gradient(circle at 55% 45%, black 0%, transparent 72%);
+}
+
+.bim-process::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+
+  background:
+    radial-gradient(circle at 50% calc(22% + (var(--process-progress, 0) * 22%)),
+      rgba(255,255,255,.12),
+      transparent 24%);
+
+  opacity: .36;
+  filter: blur(18px);
+}
+
+/* left copy fades as cards take over */
+.process-intro {
+  height: min(72vh, 760px);
+  min-height: 0;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  opacity: var(--intro-opacity, 1);
+  transform: translateY(var(--intro-y, 0px));
+  transition:
+    opacity .12s linear,
+    transform .12s linear;
+}
+
+.process-kicker {
+  margin-bottom: 28px;
+  font-size: 9px;
+  letter-spacing: .24em;
+  color: rgba(255,255,255,.42);
+}
+
+.process-title {
+  max-width: 520px;
+  margin: 0 0 26px;
+
+  font-size: clamp(48px, 4.5vw, 92px);
+  line-height: .88;
+  letter-spacing: -.085em;
+  font-weight: 500;
+
+  color: rgba(255,255,255,.96);
+}
+
+.process-description {
+  max-width: 380px;
+  font-size: 14px;
+  line-height: 1.9;
+  color: rgba(255,255,255,.55);
+}
+
+.process-link {
+  margin-top: 42px;
+}
+
+/* board becomes the main animated object */
+.process-board {
+  position: relative;
+  height: min(72vh, 760px);
+  min-height: 0;
+
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+
+  border-top: 1px solid rgba(255,255,255,.08);
+  border-bottom: 1px solid rgba(255,255,255,.22);
+
+  transform: translateY(var(--board-y, 0px));
+  transition: transform .14s linear;
+}
+
+/* cinematic base floor */
+.process-board::before {
+  content: "";
+  position: absolute;
+  left: -8%;
+  right: -8%;
+  bottom: -42px;
+  height: 110px;
+  z-index: -1;
+
+  background:
+    radial-gradient(ellipse at center,
+      rgba(255,255,255,.16),
+      rgba(255,255,255,.035) 42%,
+      transparent 72%);
+
+  filter: blur(18px);
+  opacity: calc(.28 + (var(--process-progress, 0) * .32));
+}
+
+/* cards are scroll-grown, not just revealed */
+.process-card {
+  position: relative;
+  min-height: 0;
+  height: 100%;
+  overflow: hidden;
+  isolation: isolate;
+
+  opacity: var(--card-opacity, .18);
+  transform:
+    translateY(var(--card-y, 86px))
+    scale(var(--card-scale, .9));
+
+  transform-origin: bottom center;
+
+  border-left: 1px solid rgba(255,255,255,.07);
+  background: #080808;
+
+  transition:
+    transform .18s linear,
+    opacity .18s linear,
+    filter .45s ease,
+    border-color .45s ease;
+}
+
+.process-card:last-child {
+  border-right: 1px solid rgba(255,255,255,.07);
+}
+
+.process-card.is-current {
+  border-color: rgba(255,255,255,.18);
+}
+
+.process-card:hover {
+  filter: brightness(1.08);
+}
+
+/* image motion */
+.process-card img {
+  position: absolute;
+  inset: 0;
+
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+
+  opacity: calc(.42 + (var(--card-progress, 0) * .38));
+  filter:
+    grayscale(1)
+    contrast(1.26)
+    brightness(calc(.52 + (var(--card-progress, 0) * .24)));
+
+  transform:
+    scale(calc(1.12 - (var(--card-progress, 0) * .055)))
+    translateY(calc((1 - var(--card-progress, 0)) * 20px));
+
+  transition:
+    transform .8s cubic-bezier(.16,1,.3,1),
+    opacity .4s ease,
+    filter .4s ease;
+
+  z-index: -3;
+}
+
+.process-card:hover img {
+  transform: scale(1.11) translateY(-8px);
+  opacity: .95;
+  filter: grayscale(1) contrast(1.35) brightness(.82);
+}
+
+/* darker, more editorial overlays */
+.process-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(3,3,3,.96) 0%,
+      rgba(3,3,3,.72) 42%,
+      rgba(3,3,3,.16) 100%
+    ),
+    linear-gradient(
+      90deg,
+      rgba(0,0,0,.55),
+      transparent 62%
+    );
+}
+
+.process-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.075), transparent 34%),
+    radial-gradient(circle at 50% 100%, rgba(255,255,255,.13), transparent 38%);
+
+  opacity: calc(.05 + (var(--card-progress, 0) * .32));
+  transition: opacity .4s ease;
+}
+
+.process-card::after {
+  content: "";
+  position: absolute;
+  left: 22px;
+  right: 22px;
+  bottom: 22px;
+  height: 1px;
+
+  background: linear-gradient(90deg, rgba(255,255,255,.65), transparent);
+  transform: scaleX(var(--card-progress, 0));
+  transform-origin: left;
+  opacity: .52;
+}
+
+/* card content */
+.process-card-content {
+  position: relative;
+  height: 100%;
+
+  padding:
+    clamp(34px, 3.3vw, 62px)
+    clamp(24px, 2vw, 38px);
+
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.step-number {
+  display: block;
+  margin-bottom: 30px;
+
+  font-family: var(--mono);
+  font-size: clamp(24px, 1.9vw, 36px);
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: -.04em;
+
+  color: rgba(255,255,255,.72);
+
+  transform: translateY(calc((1 - var(--card-progress, 0)) * 16px));
+  opacity: calc(.34 + (var(--card-progress, 0) * .66));
+}
+
+.step-rule {
+  width: 24px;
+  height: 1px;
+  margin-bottom: 30px;
+
+  background: rgba(255,255,255,.58);
+  transform: scaleX(var(--card-progress, 0));
+  transform-origin: left;
+}
+
+.process-card h3 {
+  margin: 0 0 22px;
+
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 500;
+
+  letter-spacing: .24em;
+  text-transform: uppercase;
+
+  color: rgba(255,255,255,.93);
+
+  transform: translateY(calc((1 - var(--card-progress, 0)) * 18px));
+  opacity: calc(.28 + (var(--card-progress, 0) * .72));
+}
+
+.process-card p {
+  max-width: 245px;
+  margin: 0;
+
+  font-size: 13px;
+  line-height: 1.85;
+  color: rgba(255,255,255,.54);
+
+  transform: translateY(calc((1 - var(--card-progress, 0)) * 22px));
+  opacity: calc(.14 + (var(--card-progress, 0) * .86));
+}
+
+/* bottom CTA hover detail */
+.process-card-cta {
+  margin-top: auto;
+  padding-top: 28px;
+
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+
+  font-family: var(--mono);
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  text-decoration: none;
+
+  color: rgba(255,255,255,.72);
+
+  opacity: 0;
+  transform: translateY(16px);
+
+  transition:
+    opacity .5s cubic-bezier(.16,1,.3,1),
+    transform .5s cubic-bezier(.16,1,.3,1),
+    color .35s ease;
+}
+
+.process-card:hover .process-card-cta,
+.process-card.is-current .process-card-cta {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.process-card-cta i {
+  position: relative;
+  width: 28px;
+  height: 1px;
+  background: rgba(255,255,255,.62);
+  transition: transform .35s ease, background .35s ease;
+}
+
+.process-card-cta i::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: -4px;
+  width: 8px;
+  height: 8px;
+  border-top: 1px solid currentColor;
+  border-right: 1px solid currentColor;
+  transform: rotate(45deg);
+}
+
+.process-card-cta:hover {
+  color: rgba(255,255,255,.98);
+}
+
+.process-card-cta:hover i {
+  transform: translateX(6px);
+  background: rgba(255,255,255,.9);
+}
+
+/* footer becomes a quiet pinned caption */
+.process-footer {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: clamp(24px, 4vh, 42px);
+
+  padding-top: 0;
+
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+
+  opacity: var(--footer-opacity, .38);
+  transform: translateY(var(--footer-y, 18px));
+
+  font-size: 9px;
+  letter-spacing: .2em;
+  color: rgba(255,255,255,.38);
+
+  transition:
+    opacity .16s linear,
+    transform .16s linear;
+}
+
+.process-footer span {
+  color: rgba(255,255,255,.72);
+}
+
+/* stop old one-time reveal animation from fighting scroll animation */
+.bim-process .reveal-text,
+.bim-process .reveal-image,
+.bim-process .reveal-card,
+.bim-process .reveal-text.is-visible,
+.bim-process .reveal-image.is-visible,
+.bim-process .reveal-card.is-visible {
+  transition: none;
+}
+
+/* responsive: disable sticky story on smaller screens */
+@media (max-width: 1080px) {
+  .bim-process {
+    min-height: auto;
+    padding:
+      clamp(82px, 10vw, 130px)
+      clamp(20px, 5vw, 56px);
+    overflow: hidden;
+  }
+
+  .process-shell {
+    position: relative;
+    height: auto;
+    min-height: auto;
+
+    grid-template-columns: 1fr;
+    gap: 48px;
+
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  .process-intro {
+    height: auto;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  .process-board {
+    height: auto;
+    min-height: 0;
+    grid-template-columns: repeat(2, 1fr);
+    transform: none !important;
+  }
+
+  .process-card {
+    min-height: 520px;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  .process-card img {
+    opacity: .72;
+    transform: scale(1.06);
+  }
+
+  .process-card-cta {
+    opacity: 1;
+    transform: none;
+  }
+
+  .process-footer {
+    position: relative;
+    bottom: auto;
+    margin-top: 28px;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+@media (max-width: 720px) {
+  .process-board {
+    grid-template-columns: 1fr;
+  }
+
+  .process-card {
+    min-height: 460px;
+  }
+
+  .process-title {
+    font-size: clamp(48px, 14vw, 64px);
+  }
+
+  .process-footer {
+    flex-direction: column;
+    align-items: flex-start;
+    line-height: 1.8;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bim-process {
+    min-height: auto;
+  }
+
+  .process-shell {
+    position: relative;
+    height: auto;
+    min-height: auto;
+    transform: none !important;
+    opacity: 1 !important;
+  }
+
+  .process-card,
+  .process-intro,
+  .process-board,
+  .process-footer {
+    transform: none !important;
+    opacity: 1 !important;
+  }
+}
