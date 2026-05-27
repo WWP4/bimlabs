@@ -21,7 +21,6 @@ const textEl = document.getElementById("testimonialText");
 const nameEl = document.getElementById("testimonialName");
 const roleEl = document.getElementById("testimonialRole");
 const countEl = document.getElementById("testimonialCount");
-const ghostEl = document.getElementById("testimonialGhost");
 const buttons = document.querySelectorAll(".testimonial-progress button");
 
 let currentIndex = 0;
@@ -54,7 +53,6 @@ function showTestimonial(index) {
     nameEl.textContent = item.name;
     roleEl.textContent = item.role;
     countEl.textContent = formatCount(index);
-    ghostEl.textContent = `0${index + 1}`;
 
     setActiveButton(index);
 
