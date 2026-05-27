@@ -1,48 +1,69 @@
 (() => {
-  const items = document.querySelectorAll(".reveal-testimonial");
+  const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
 
-  const observer = new IntersectionObserver(
-    entries => {
-      entries.forEach(entry => {
-        if (!entry.isIntersecting) return;
+  const processSection = document.querySelector(".bim-process");
+  const testimonialSection = document.querySelector(".bim-testimonials");
 
-        const el = entry.target;
-        const index = [...items].indexOf(el);
+  const processCards = [...document.querySelectorAll(".process-card")];
+  const testimonialCards = [...document.querySelectorAll(".testimonial-card")];
+  const testimonialCopy = document.querySelector(".testimonial-copy");
+  const testimonialBg = document.querySelector(".testimonial-bg img");
 
-        setTimeout(() => {
-          el.classList.add("is-visible");
-        }, index * 120);
+  function getProgress(section) {
+    if (!section) return 0;
 
-        observer.unobserve(el);
-      });
-    },
-    {
-      threshold: 0.18,
-      rootMargin: "0px 0px -8% 0px"
-    }
-  );
-
-  items.forEach(item => observer.observe(item));
-
-  const section = document.querySelector(".bim-testimonials");
-  const cards = document.querySelectorAll(".testimonial-card");
-
-  if (!section || !cards.length) return;
-
-  section.addEventListener("mousemove", e => {
     const rect = section.getBoundingClientRect();
-    const x = (e.clientX - rect.left) / rect.width - 0.5;
-    const y = (e.clientY - rect.top) / rect.height - 0.5;
+    const scrollLength = rect.height - window.innerHeight;
 
-    cards.forEach((card, i) => {
-      const depth = (i + 1) * 6;
-      card.style.transform = `translate3d(${x * depth}px, ${y * depth}px, 0)`;
-    });
-  });
+    if (scrollLength <= 0) return 0;
 
-  section.addEventListener("mouseleave", () => {
-    cards.forEach(card => {
-      card.style.transform = "";
+    return clamp(-rect.top / scrollLength, 0, 1);
+  }
+
+  function animate() {
+    const processProgress = getProgress(processSection);
+    const testimonialProgress = getProgress(testimonialSection);
+
+    processCards.forEach((card, index) => {
+      const start = index * 0.16;
+      const local = clamp((processProgress - start) / 0.45, 0, 1);
+
+      const y = (1 - local) * 90;
+      const scale = 0.94 + local * 0.06;
+      const opacity = 0.28 + local * 0.72;
+
+      card.style.setProperty("--processY", `${y}px`);
+      card.style.setProperty("--processScale", scale.toFixed(3));
+      card.style.setProperty("--processOpacity", opacity.toFixed(3));
     });
-  });
+
+    testimonialCards.forEach((card, index) => {
+      const start = index * 0.14;
+      const local = clamp((testimonialProgress - start) / 0.5, 0, 1);
+      const direction = index % 2 === 0 ? 1 : -1;
+
+      card.style.setProperty("--cardX", `${direction * (1 - local) * 90}px`);
+      card.style.setProperty("--cardY", `${(1 - local) * 120}px`);
+      card.style.setProperty("--cardRotate", `${direction * (1 - local) * 5}deg`);
+      card.style.setProperty("--cardScale", `${0.92 + local * 0.08}`);
+      card.style.setProperty("--cardOpacity", `${0.18 + local * 0.82}`);
+    });
+
+    if (testimonialCopy) {
+      testimonialCopy.style.setProperty(
+        "--copyY",
+        `${(1 - testimonialProgress) * 80}px`
+      );
+    }
+
+    if (testimonialBg) {
+      testimonialBg.style.setProperty("--bgScale", `${1.04 + testimonialProgress * 0.08}`);
+      testimonialBg.style.setProperty("--bgX", `${(testimonialProgress - 0.5) * 22}px`);
+      testimonialBg.style.setProperty("--bgY", `${(testimonialProgress - 0.5) * -16}px`);
+    }
+
+    requestAnimationFrame(animate);
+  }
+
+  requestAnimationFrame(animate);
 })();
