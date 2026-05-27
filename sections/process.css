@@ -1586,3 +1586,170 @@
     line-height: 1.8;
   }
 }
+
+
+
+/* =========================================================
+   PROCESS FIX — REMOVE BIG RECTANGLE / ADD DEPTH BACKPLATES
+   Paste at very bottom of sections/process.css
+   ========================================================= */
+
+/* remove the visible rectangle container */
+.process-board {
+  background: transparent !important;
+  border-top: 0 !important;
+  border-bottom: 0 !important;
+  gap: clamp(10px, 1vw, 18px);
+  align-items: end;
+  overflow: visible;
+}
+
+/* remove the long floor rectangle feeling */
+.process-board::before {
+  left: 2%;
+  right: 2%;
+  bottom: -44px;
+  height: 88px;
+  opacity: .22;
+  filter: blur(24px);
+  background:
+    radial-gradient(
+      ellipse at center,
+      rgba(255,255,255,.12),
+      rgba(255,255,255,.025) 42%,
+      transparent 72%
+    );
+}
+
+/* each card gets its own depth plate behind it */
+.process-card {
+  border-left: 0 !important;
+  border-right: 0 !important;
+  background: transparent !important;
+  overflow: visible;
+
+  height: calc(var(--grow, 0) * 100%);
+  opacity: 1;
+
+  transform:
+    translateY(var(--card-rise, 54px))
+    scaleX(var(--card-width, .96));
+
+  transition: none !important;
+}
+
+/* backplate grows first */
+.process-card::before {
+  content: "";
+  position: absolute;
+  left: -8px;
+  right: -8px;
+  bottom: -10px;
+
+  height: calc(var(--plate-grow, 0) * 100%);
+
+  z-index: -4;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255,255,255,.055),
+      rgba(255,255,255,.025) 38%,
+      rgba(255,255,255,.01)
+    ),
+    linear-gradient(180deg, #111 0%, #070707 100%);
+
+  border: 1px solid rgba(255,255,255,.07);
+  box-shadow:
+    0 34px 90px rgba(0,0,0,.62),
+    inset 0 1px 0 rgba(255,255,255,.08);
+
+  opacity: var(--plate-opacity, 0);
+  transform:
+    translateY(calc((1 - var(--plate-grow, 0)) * 28px))
+    scaleX(calc(.94 + (var(--plate-grow, 0) * .06)));
+
+  transform-origin: bottom center;
+}
+
+/* actual card face */
+.process-card-inner,
+.process-card > img,
+.process-card > .process-overlay,
+.process-card > .process-card-content {
+  border: 1px solid rgba(255,255,255,.075);
+}
+
+/* make image/content respect the growing card without needing a visible board */
+.process-card img,
+.process-card .process-overlay,
+.process-card .process-card-content {
+  overflow: hidden;
+}
+
+/* image should sit inside the grown height */
+.process-card img {
+  border: 1px solid rgba(255,255,255,.075);
+  box-shadow:
+    0 24px 70px rgba(0,0,0,.5),
+    inset 0 1px 0 rgba(255,255,255,.07);
+
+  opacity: calc(var(--grow, 0) * .82);
+}
+
+/* overlay matches image border */
+.process-overlay {
+  border: 1px solid rgba(255,255,255,.075);
+}
+
+/* content on top should not add its own border visually */
+.process-card-content {
+  border: 1px solid transparent;
+}
+
+/* bottom line should only appear after card exists */
+.process-card::after {
+  left: 22px;
+  right: 22px;
+  bottom: 22px;
+  opacity: calc(var(--grow, 0) * .48);
+}
+
+/* smooth current card glow */
+.process-card.is-current::before {
+  border-color: rgba(255,255,255,.14);
+  box-shadow:
+    0 42px 110px rgba(0,0,0,.68),
+    0 0 70px rgba(255,255,255,.055),
+    inset 0 1px 0 rgba(255,255,255,.11);
+}
+
+/* soften the intro fade so it does not snap */
+.process-intro {
+  transition: none !important;
+  will-change: opacity, transform;
+}
+
+.process-card,
+.process-card::before,
+.process-card img,
+.process-card-content {
+  will-change: height, transform, opacity;
+}
+
+/* optional: make cards feel more architectural by staggering height slightly */
+.process-card:nth-child(1) {
+  margin-bottom: 0;
+}
+
+.process-card:nth-child(2) {
+  margin-bottom: clamp(14px, 2vh, 24px);
+}
+
+.process-card:nth-child(3) {
+  margin-bottom: clamp(30px, 4vh, 48px);
+}
+
+.process-card:nth-child(4) {
+  margin-bottom: clamp(8px, 1.5vh, 18px);
+}
