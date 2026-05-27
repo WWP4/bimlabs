@@ -1561,3 +1561,58 @@ main {
     opacity 0.18s linear;
   transform-origin: center center;
 }
+
+/* GLOBAL SECTION WHISP TRANSITION */
+
+.bim-process,
+.bim-testimonials,
+.bim-showcase {
+  position: relative;
+  isolation: isolate;
+}
+
+.bim-process::after,
+.bim-testimonials::after,
+.bim-showcase::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 220px;
+  z-index: 20;
+  pointer-events: none;
+
+  background:
+    radial-gradient(
+      ellipse at 50% 100%,
+      rgba(255,255,255,.055),
+      transparent 58%
+    ),
+    linear-gradient(
+      180deg,
+      transparent,
+      rgba(2,2,2,.92)
+    );
+
+  filter: blur(10px);
+}
+
+.bim-process::before,
+.bim-testimonials::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -1px;
+  height: 180px;
+  z-index: 19;
+  pointer-events: none;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(2,2,2,.88),
+      transparent
+    );
+}
