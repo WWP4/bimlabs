@@ -1073,3 +1073,64 @@
     pointer-events: auto;
   }
 }
+
+
+/* =========================================================
+   PROCESS BACKGROUND IMAGE — CINEMATIC STAGE
+   File expected at: designs/procecss-bg.png
+   ========================================================= */
+
+.bim-process {
+  background:
+    linear-gradient(
+      180deg,
+      rgba(0,0,0,.86) 0%,
+      rgba(0,0,0,.62) 36%,
+      rgba(0,0,0,.72) 72%,
+      rgba(0,0,0,.88) 100%
+    ),
+    linear-gradient(
+      90deg,
+      rgba(0,0,0,.82) 0%,
+      rgba(0,0,0,.62) 30%,
+      rgba(0,0,0,.34) 58%,
+      rgba(0,0,0,.58) 100%
+    ),
+    url("../designs/procecss-bg.png") center center / cover no-repeat !important;
+}
+
+/* extra dark polish layer so text/cards stay readable */
+.bim-process::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+
+  background:
+    radial-gradient(
+      ellipse at 68% 62%,
+      rgba(255,255,255,.055),
+      transparent 36%
+    ),
+    linear-gradient(
+      180deg,
+      rgba(0,0,0,.48) 0%,
+      rgba(0,0,0,.08) 34%,
+      rgba(0,0,0,.34) 100%
+    ) !important;
+
+  opacity: .9 !important;
+  filter: none !important;
+}
+
+/* make sure actual content stays above the background overlays */
+.process-shell {
+  position: sticky !important;
+  z-index: 3 !important;
+}
+
+/* optional: hide the grid if the photo background is enough */
+.bim-process::before {
+  opacity: .04 !important;
+}
