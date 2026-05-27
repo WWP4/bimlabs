@@ -467,3 +467,181 @@
 .testimonial-noise {
   opacity: .025 !important;
 }
+
+
+
+/* =========================
+   BIM TESTIMONIALS OVERRIDE
+   ========================= */
+
+/* REMOVE LUXURY EDITORIAL FEEL */
+
+.bim-testimonials {
+  background: #020202 !important;
+}
+
+/* CLEANER BACKGROUND */
+
+.testimonial-bg img {
+  opacity: .82 !important;
+
+  filter:
+    grayscale(1)
+    contrast(1.06)
+    brightness(.78) !important;
+}
+
+.testimonial-bg::after {
+  background:
+    linear-gradient(
+      180deg,
+      rgba(0,0,0,.32),
+      rgba(0,0,0,.04) 42%,
+      rgba(0,0,0,.42)
+    ) !important;
+}
+
+/* REMOVE HEAVY FOG */
+
+.testimonial-fog {
+  opacity: .06 !important;
+  filter: blur(80px) !important;
+}
+
+/* REDUCE NOISE */
+
+.testimonial-noise {
+  opacity: .018 !important;
+}
+
+/* =========================
+   TYPOGRAPHY ALIGNMENT
+   ========================= */
+
+.testimonial-shell h2 {
+  max-width: 760px !important;
+
+  font-family: var(--sans, Manrope, sans-serif) !important;
+
+  font-size: clamp(46px, 5vw, 82px) !important;
+  font-weight: 500 !important;
+  line-height: .9 !important;
+
+  letter-spacing: -.085em !important;
+
+  color: rgba(255,255,255,.92) !important;
+}
+
+/* SMALLER LABEL */
+
+.testimonial-kicker {
+  font-size: 8px !important;
+  letter-spacing: .32em !important;
+
+  color: rgba(255,255,255,.34) !important;
+}
+
+/* TERMINAL STYLE TESTIMONIAL */
+
+.testimonial-typebox {
+  max-width: 560px !important;
+
+  margin-top: 30px !important;
+
+  font-family: var(--mono, "IBM Plex Mono", monospace) !important;
+
+  font-size: 13px !important;
+  line-height: 1.9 !important;
+
+  letter-spacing: -.01em !important;
+
+  color: rgba(255,255,255,.58) !important;
+}
+
+/* CLEANER META */
+
+.testimonial-meta {
+  margin-top: 34px !important;
+}
+
+#testimonialCount {
+  font-size: 8px !important;
+  letter-spacing: .24em !important;
+
+  color: rgba(255,255,255,.28) !important;
+}
+
+#testimonialName {
+  font-size: 10px !important;
+  letter-spacing: .28em !important;
+
+  color: rgba(255,255,255,.76) !important;
+}
+
+#testimonialRole {
+  font-size: 8px !important;
+  letter-spacing: .22em !important;
+
+  color: rgba(255,255,255,.28) !important;
+}
+
+/* SMALLER SYSTEM-STYLE PROGRESS */
+
+.testimonial-progress {
+  margin-top: 28px !important;
+  gap: 10px !important;
+}
+
+.testimonial-progress button {
+  width: 42px !important;
+
+  background: rgba(255,255,255,.12) !important;
+}
+
+.testimonial-progress button.is-active {
+  background: rgba(255,255,255,.72) !important;
+}
+
+/* =========================
+   CLIENT BAND
+   ========================= */
+
+.client-band-wrap {
+  padding-top: 72px !important;
+}
+
+.client-band-wrap > span {
+  font-size: 8px !important;
+  letter-spacing: .28em !important;
+
+  color: rgba(255,255,255,.22) !important;
+}
+
+.client-band {
+  padding: 12px 0 !important;
+
+  border-top: 1px solid rgba(255,255,255,.05) !important;
+  border-bottom: 1px solid rgba(255,255,255,.05) !important;
+}
+
+.client-band-track {
+  gap: 120px !important;
+}
+
+.client-band-track p {
+  font-family: var(--mono, "IBM Plex Mono", monospace) !important;
+
+  font-size: 10px !important;
+  font-weight: 400 !important;
+
+  letter-spacing: .22em !important;
+  text-transform: uppercase !important;
+
+  color: rgba(255,255,255,.2) !important;
+}
+
+.client-band-track p::after {
+  right: -64px !important;
+
+  color: rgba(255,255,255,.1) !important;
+}
