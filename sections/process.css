@@ -940,3 +940,136 @@
     clip-path: inset(0 0 0 0) !important;
   }
 }
+
+
+/* =========================================================
+   PROCESS FIX — NO EMPTY PLACEHOLDER CARDS
+   Cards are invisible until they actually reveal.
+   ========================================================= */
+
+/* board should feel like an empty stage before scroll */
+.process-board {
+  background: transparent !important;
+  border: 0 !important;
+  overflow: visible !important;
+}
+
+/* no visible card frame before reveal */
+.process-card {
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  overflow: visible !important;
+
+  opacity: var(--face-opacity, 0) !important;
+  transform: translateY(var(--face-y, 54px)) scale(calc(.985 + (var(--face-opacity, 0) * .015))) !important;
+}
+
+/* only the actual revealed card gets a border */
+.process-card img,
+.process-overlay,
+.process-card-content {
+  border: 0 !important;
+}
+
+/* create one clean border that reveals with the card */
+.process-card .process-card-content::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+
+  pointer-events: none;
+
+  border: 1px solid rgba(255,255,255,.085);
+
+  opacity: var(--face-opacity, 0);
+
+  box-shadow:
+    0 34px 90px rgba(0,0,0,.62),
+    inset 0 1px 0 rgba(255,255,255,.055);
+}
+
+/* current card gets subtle depth, not a visible placeholder */
+.process-card.is-current .process-card-content::before {
+  border-color: rgba(255,255,255,.16);
+
+  box-shadow:
+    0 42px 110px rgba(0,0,0,.68),
+    0 0 70px rgba(255,255,255,.045),
+    inset 0 1px 0 rgba(255,255,255,.085);
+}
+
+/* keep the image + overlay clipped together */
+.process-card img,
+.process-overlay,
+.process-card-content {
+  clip-path: inset(var(--grow-clip, 100%) 0 0 0) !important;
+}
+
+/* image should not show at all until reveal starts */
+.process-card img {
+  opacity: var(--image-opacity, 0) !important;
+}
+
+/* overlay should also not show until reveal starts */
+.process-overlay {
+  opacity: var(--face-opacity, 0) !important;
+}
+
+/* content reveals after the panel starts becoming real */
+.process-card-content {
+  opacity: var(--content-opacity, 0) !important;
+  transform: translateY(var(--content-y, 24px)) !important;
+}
+
+/* remove bottom line until card exists */
+.process-card::after {
+  opacity: calc(var(--face-opacity, 0) * .36) !important;
+}
+
+/* optional: make unrevealed cards non-interactive */
+.process-card:not(.is-current) {
+  pointer-events: none;
+}
+
+.process-card.is-current,
+.process-card:hover {
+  pointer-events: auto;
+}
+
+/* mobile fallback: all cards visible normally */
+@media (max-width: 1080px) {
+  .process-card {
+    opacity: 1 !important;
+    transform: none !important;
+    background: #070707 !important;
+  }
+
+  .process-card .process-card-content::before {
+    opacity: 1 !important;
+  }
+
+  .process-card img,
+  .process-overlay,
+  .process-card-content {
+    clip-path: inset(0 0 0 0) !important;
+  }
+
+  .process-card img {
+    opacity: .72 !important;
+  }
+
+  .process-overlay {
+    opacity: 1 !important;
+  }
+
+  .process-card-content {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  .process-card {
+    pointer-events: auto;
+  }
+}
