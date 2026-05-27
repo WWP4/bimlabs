@@ -645,3 +645,20 @@
 
   color: rgba(255,255,255,.1) !important;
 }
+
+#testimonialText {
+  transition:
+    opacity .28s ease,
+    transform .28s ease,
+    filter .28s ease;
+}
+
+#testimonialText.is-changing {
+  opacity: 0;
+  transform: translateY(6px);
+  filter: blur(4px);
+}
+
+.type-cursor {
+  display: none !important;
+}
