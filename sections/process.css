@@ -1,7 +1,7 @@
 /* =========================================================
    BIM LABS — PROCESS SECTION
-   OG CLEAN BLACK VERSION
-   Black background. Left text. Four cards. No PNG background.
+   Continuous black canvas. Left text. Four cards.
+   No section background. No PNG background. No fog layer.
    ========================================================= */
 
 .bim-process {
@@ -13,10 +13,10 @@
   isolation: isolate;
 
   color: #f5f5f5;
-  background: #020202;
+  background: transparent;
 }
 
-/* kill any old background/fog leftovers */
+/* kill old background/fog leftovers */
 .process-stage,
 .process-bg,
 .process-bg-wash,
@@ -26,9 +26,7 @@
   display: none !important;
 }
 
-/* =========================
-   STICKY CONTENT
-   ========================= */
+/* STICKY CONTENT */
 
 .process-shell {
   position: sticky;
@@ -45,9 +43,7 @@
   gap: clamp(36px, 5vw, 92px);
 }
 
-/* =========================
-   LEFT TEXT
-   ========================= */
+/* LEFT TEXT */
 
 .process-intro {
   height: min(72vh, 760px);
@@ -169,9 +165,7 @@
   transform: translateX(7px);
 }
 
-/* =========================
-   CARD BOARD
-   ========================= */
+/* CARD BOARD */
 
 .process-board {
   height: min(72vh, 760px);
@@ -184,9 +178,7 @@
   overflow: visible;
 }
 
-/* =========================
-   CARDS
-   ========================= */
+/* CARDS */
 
 .process-card {
   position: relative;
@@ -198,7 +190,7 @@
   overflow: hidden;
   isolation: isolate;
 
-  background: rgba(255,255,255,.025);
+  background: rgba(255,255,255,.026);
   border: 1px solid rgba(255,255,255,.105);
 
   opacity: var(--face-opacity, 0);
@@ -252,9 +244,7 @@
   overflow: hidden;
 }
 
-/* =========================
-   CARD IMAGE
-   ========================= */
+/* CARD IMAGE */
 
 .process-card-img {
   position: absolute;
@@ -304,15 +294,15 @@
   background:
     linear-gradient(
       180deg,
-      rgba(0,0,0,.82) 0%,
-      rgba(0,0,0,.56) 45%,
-      rgba(0,0,0,.22) 100%
+      rgba(2,2,2,.82) 0%,
+      rgba(2,2,2,.56) 45%,
+      rgba(2,2,2,.22) 100%
     ),
     linear-gradient(
       90deg,
-      rgba(0,0,0,.48) 0%,
-      rgba(0,0,0,.12) 62%,
-      rgba(0,0,0,.36) 100%
+      rgba(2,2,2,.48) 0%,
+      rgba(2,2,2,.12) 62%,
+      rgba(2,2,2,.36) 100%
     );
 }
 
@@ -328,9 +318,7 @@
   pointer-events: none;
 }
 
-/* =========================
-   CARD CONTENT
-   ========================= */
+/* CARD CONTENT */
 
 .process-card-content {
   position: relative;
@@ -404,9 +392,7 @@
   color: rgba(255,255,255,.62);
 }
 
-/* =========================
-   FOOTER
-   ========================= */
+/* FOOTER */
 
 .process-footer {
   position: absolute;
@@ -443,9 +429,7 @@
   color: rgba(255,255,255,.72);
 }
 
-/* =========================
-   RESPONSIVE
-   ========================= */
+/* RESPONSIVE */
 
 @media (max-width: 1080px) {
   .bim-process {
@@ -550,9 +534,7 @@
   }
 }
 
-/* =========================
-   REDUCED MOTION
-   ========================= */
+/* REDUCED MOTION */
 
 @media (prefers-reduced-motion: reduce) {
   .bim-process {
