@@ -1,56 +1,39 @@
+/* =========================================================
+   BIM LABS — MINIMAL PROCESS CSS
+   Replace entire sections/process.css with this.
+   Background image is handled in HTML through .process-bg.
+   ========================================================= */
+
+
 /* =========================
-   SECTION BASE
+   SECTION
    ========================= */
 
 .bim-process {
   position: relative;
-  min-height: 310vh;
+  min-height: 300vh;
   width: 100%;
   padding: 0 clamp(20px, 4vw, 80px);
   overflow: visible;
   isolation: isolate;
-
   color: #f5f5f5;
-
-  background:
-    radial-gradient(circle at 50% 8%, rgba(255,255,255,.07), transparent 32%),
-    radial-gradient(circle at 84% 44%, rgba(255,255,255,.025), transparent 34%),
-    linear-gradient(180deg, #050505 0%, #080808 52%, #050505 100%);
+  background: #050505;
 }
 
-.bim-process .section-whisp {
-  position: absolute;
-  top: -180px;
-  left: 50%;
-  width: 120vw;
-  height: 340px;
-  transform: translateX(-50%);
-  pointer-events: none;
-  z-index: 5;
-
-  background:
-    radial-gradient(ellipse at 50% 90%, rgba(255,255,255,.075), transparent 42%),
-    linear-gradient(180deg, rgba(5,5,5,0) 0%, rgba(5,5,5,.9) 72%, rgba(5,5,5,1) 100%);
-
-  filter: blur(18px);
-  opacity: .9;
-}
-
-.bim-process::before {
-  content: "";
+.process-bg {
   position: absolute;
   inset: 0;
   z-index: 0;
+
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+  object-position: center;
+
+  opacity: .34;
   pointer-events: none;
-
-  background-image:
-    linear-gradient(rgba(255,255,255,.015) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,.015) 1px, transparent 1px);
-
-  background-size: 92px 92px;
-  opacity: calc(.08 + (var(--process-progress, 0) * .18));
-
-  mask-image: radial-gradient(circle at 56% 46%, black 0%, transparent 72%);
+  user-select: none;
 }
 
 .bim-process::after {
@@ -61,14 +44,23 @@
   pointer-events: none;
 
   background:
-    radial-gradient(
-      circle at 58% calc(20% + (var(--process-progress, 0) * 26%)),
-      rgba(255,255,255,.105),
-      transparent 25%
+    linear-gradient(
+      90deg,
+      rgba(0,0,0,.84) 0%,
+      rgba(0,0,0,.62) 34%,
+      rgba(0,0,0,.28) 62%,
+      rgba(0,0,0,.56) 100%
+    ),
+    linear-gradient(
+      180deg,
+      rgba(0,0,0,.72) 0%,
+      rgba(0,0,0,.22) 46%,
+      rgba(0,0,0,.76) 100%
     );
+}
 
-  opacity: .34;
-  filter: blur(20px);
+.section-whisp {
+  display: none;
 }
 
 
@@ -82,7 +74,6 @@
   z-index: 2;
 
   height: 100vh;
-  min-height: 100vh;
   max-width: 1780px;
   margin: 0 auto;
 
@@ -99,7 +90,6 @@
 
 .process-intro {
   height: min(72vh, 760px);
-  min-height: 0;
 
   display: flex;
   flex-direction: column;
@@ -107,15 +97,12 @@
 
   opacity: var(--intro-opacity, 1);
   transform: translateY(var(--intro-y, 0px));
-
-  transition: none;
-  will-change: opacity, transform;
 }
 
 .process-kicker {
   margin: 0 0 28px;
 
-  font-family: var(--mono, ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace);
+  font-family: var(--mono, monospace);
   font-size: 9px;
   font-weight: 500;
   letter-spacing: .24em;
@@ -128,7 +115,7 @@
   max-width: 520px;
   margin: 0 0 26px;
 
-  font-family: var(--sans, Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif);
+  font-family: var(--sans, system-ui, sans-serif);
   font-size: clamp(48px, 4.5vw, 92px);
   font-weight: 500;
   line-height: .88;
@@ -141,18 +128,14 @@
   max-width: 380px;
   margin: 0;
 
-  font-family: var(--sans, Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif);
+  font-family: var(--sans, system-ui, sans-serif);
   font-size: 14px;
-  font-weight: 400;
   line-height: 1.9;
-  letter-spacing: -.01em;
 
-  color: rgba(255,255,255,.55);
+  color: rgba(255,255,255,.56);
 }
 
 .process-link {
-  position: relative;
-
   width: fit-content;
   margin-top: 42px;
 
@@ -160,33 +143,14 @@
   align-items: center;
   gap: 22px;
 
-  text-decoration: none;
-
-  font-family: var(--mono, ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace);
+  font-family: var(--mono, monospace);
   font-size: 9px;
   font-weight: 500;
   letter-spacing: .2em;
   text-transform: uppercase;
+  text-decoration: none;
 
   color: rgba(255,255,255,.78);
-}
-
-.process-link::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  bottom: -11px;
-
-  width: 0;
-  height: 1px;
-
-  background: rgba(255,255,255,.72);
-
-  transition: width .65s cubic-bezier(.16,1,.3,1);
-}
-
-.process-link:hover::after {
-  width: calc(100% - 42px);
 }
 
 .process-link i {
@@ -194,7 +158,6 @@
   width: 30px;
   height: 1px;
   background: rgba(255,255,255,.68);
-  transition: transform .45s cubic-bezier(.16,1,.3,1);
 }
 
 .process-link i::after {
@@ -212,20 +175,13 @@
   transform: rotate(45deg);
 }
 
-.process-link:hover i {
-  transform: translateX(7px);
-}
-
 
 /* =========================
-   CARD BOARD
+   BOARD
    ========================= */
 
 .process-board {
-  position: relative;
-
   height: min(72vh, 760px);
-  min-height: 0;
 
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -233,35 +189,11 @@
   gap: clamp(10px, 1vw, 18px);
 
   overflow: visible;
-
-  background: transparent;
-  border: 0;
-}
-
-.process-board::before {
-  content: "";
-  position: absolute;
-  left: 2%;
-  right: 2%;
-  bottom: -44px;
-  height: 88px;
-  z-index: -1;
-
-  background:
-    radial-gradient(
-      ellipse at center,
-      rgba(255,255,255,.13),
-      rgba(255,255,255,.028) 42%,
-      transparent 72%
-    );
-
-  filter: blur(24px);
-  opacity: calc(.16 + (var(--process-progress, 0) * .18));
 }
 
 
 /* =========================
-   PROCESS CARD
+   CARDS
    ========================= */
 
 .process-card {
@@ -270,21 +202,21 @@
   min-height: 0;
   align-self: end;
 
-  overflow: visible;
+  overflow: hidden;
   isolation: isolate;
 
-  background: transparent;
-  border: 0;
+  background: #070707;
+  border: 1px solid rgba(255,255,255,.085);
 
-  transform: translateY(var(--face-y, 54px));
-  opacity: 1;
+  opacity: var(--face-opacity, 0);
 
-  transition: filter .4s ease;
-  will-change: transform;
-}
+  transform:
+    translateY(var(--face-y, 54px))
+    scaleY(calc(.94 + (var(--face-opacity, 0) * .06)));
 
-.process-card:nth-child(1) {
-  margin-bottom: 0;
+  transform-origin: bottom center;
+
+  box-shadow: 0 30px 80px rgba(0,0,0,.48);
 }
 
 .process-card:nth-child(2) {
@@ -299,120 +231,50 @@
   margin-bottom: clamp(8px, 1.3vh, 18px);
 }
 
-.process-card:hover {
-  filter: brightness(1.08);
-}
-
-/* Independent backplate. This is what gives depth without one huge rectangle. */
-.process-card::before {
-  content: "";
-  position: absolute;
-  left: -8px;
-  right: -8px;
-  top: 0;
-  bottom: -10px;
-  z-index: -5;
-
-  background:
-    linear-gradient(
-      180deg,
-      rgba(255,255,255,.055),
-      rgba(255,255,255,.025) 38%,
-      rgba(255,255,255,.01)
-    ),
-    linear-gradient(180deg, #111 0%, #070707 100%);
-
-  border: 1px solid rgba(255,255,255,.075);
-
-  box-shadow:
-    0 34px 90px rgba(0,0,0,.62),
-    inset 0 1px 0 rgba(255,255,255,.08);
-
-  opacity: var(--plate-opacity, 0);
-  transform: translateY(var(--plate-y, 34px));
-  clip-path: inset(var(--plate-clip, 100%) 0 0 0);
-
-  transition:
-    border-color .45s ease,
-    box-shadow .45s ease;
-
-  will-change: clip-path, opacity, transform;
-}
-
-.process-card.is-current::before {
-  border-color: rgba(255,255,255,.15);
-  box-shadow:
-    0 42px 110px rgba(0,0,0,.68),
-    0 0 70px rgba(255,255,255,.055),
-    inset 0 1px 0 rgba(255,255,255,.11);
-}
-
-/* Card face. Image, overlay, and content all share the same clipping. */
-.process-card img,
-.process-overlay,
-.process-card-content {
+.process-card img {
   position: absolute;
   inset: 0;
+  z-index: -3;
 
-  clip-path: inset(var(--grow-clip, 100%) 0 0 0);
-
-  border: 1px solid rgba(255,255,255,.075);
-
-  will-change: clip-path, opacity, transform;
-}
-
-.process-card img {
   width: 100%;
   height: 100%;
+
   object-fit: cover;
   object-position: center;
 
-  z-index: -4;
-
   opacity: var(--image-opacity, 0);
 
-  filter:
-    grayscale(1)
-    contrast(1.28)
-    brightness(.68);
-
-  transform: scale(1.075);
-
-  transition:
-    transform .85s cubic-bezier(.16,1,.3,1),
-    filter .45s ease,
-    opacity .2s linear;
-}
-
-.process-card:hover img,
-.process-card.is-current img {
-  transform: scale(1.115) translateY(-8px);
-  filter:
-    grayscale(1)
-    contrast(1.36)
-    brightness(.82);
+  filter: grayscale(1) contrast(1.18) brightness(.66);
+  transform: scale(1.05);
 }
 
 .process-overlay {
-  z-index: -3;
+  position: absolute;
+  inset: 0;
+  z-index: -2;
   pointer-events: none;
+
+  opacity: var(--face-opacity, 0);
 
   background:
     linear-gradient(
       180deg,
-      rgba(3,3,3,.96) 0%,
-      rgba(3,3,3,.72) 42%,
-      rgba(3,3,3,.18) 100%
+      rgba(3,3,3,.92) 0%,
+      rgba(3,3,3,.68) 42%,
+      rgba(3,3,3,.22) 100%
     ),
     linear-gradient(
       90deg,
-      rgba(0,0,0,.58),
+      rgba(0,0,0,.56),
       transparent 62%
     );
 }
 
 .process-card-content {
+  position: relative;
   z-index: 1;
+
+  height: 100%;
 
   padding:
     clamp(34px, 3.3vw, 62px)
@@ -422,40 +284,24 @@
   flex-direction: column;
   align-items: flex-start;
 
-  border-color: rgba(255,255,255,.075);
-
   opacity: var(--content-opacity, 0);
   transform: translateY(var(--content-y, 24px));
 }
 
-.process-card::after {
-  content: "";
-  position: absolute;
-  left: 22px;
-  right: 22px;
-  bottom: 22px;
-  z-index: 3;
-
-  height: 1px;
-
-  background: linear-gradient(90deg, rgba(255,255,255,.68), transparent);
-
-  transform: scaleX(var(--line-scale, 0));
-  transform-origin: left;
-
-  opacity: calc(var(--face-opacity, 0) * .52);
+.process-card.is-current {
+  border-color: rgba(255,255,255,.16);
 }
 
 
 /* =========================
-   CARD TYPOGRAPHY
+   CARD TEXT
    ========================= */
 
 .step-number {
   display: block;
   margin: 0 0 30px;
 
-  font-family: var(--mono, ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace);
+  font-family: var(--mono, monospace);
   font-size: clamp(24px, 1.9vw, 36px);
   font-weight: 500;
   line-height: 1;
@@ -472,7 +318,6 @@
   margin-bottom: 30px;
 
   background: rgba(255,255,255,.58);
-
   transform: scaleX(var(--content-opacity, 0));
   transform-origin: left;
 }
@@ -480,7 +325,7 @@
 .process-card h3 {
   margin: 0 0 22px;
 
-  font-family: var(--mono, ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace);
+  font-family: var(--mono, monospace);
   font-size: 10px;
   font-weight: 500;
   letter-spacing: .24em;
@@ -493,83 +338,11 @@
   max-width: 245px;
   margin: 0;
 
-  font-family: var(--sans, Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif);
+  font-family: var(--sans, system-ui, sans-serif);
   font-size: 13px;
-  font-weight: 400;
   line-height: 1.85;
-  letter-spacing: -.01em;
 
   color: rgba(255,255,255,.55);
-}
-
-
-/* =========================
-   OPTIONAL CARD CTA
-   Safe even if not currently in HTML.
-   ========================= */
-
-.process-card-cta {
-  margin-top: auto;
-  padding-top: 28px;
-
-  display: inline-flex;
-  align-items: center;
-  gap: 14px;
-
-  font-family: var(--mono, ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace);
-  font-size: 9px;
-  font-weight: 500;
-  letter-spacing: .2em;
-  text-transform: uppercase;
-  text-decoration: none;
-
-  color: rgba(255,255,255,.72);
-
-  opacity: 0;
-  transform: translateY(14px);
-
-  transition:
-    opacity .5s cubic-bezier(.16,1,.3,1),
-    transform .5s cubic-bezier(.16,1,.3,1),
-    color .35s ease;
-}
-
-.process-card:hover .process-card-cta,
-.process-card.is-current .process-card-cta {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.process-card-cta i {
-  position: relative;
-  width: 28px;
-  height: 1px;
-  background: rgba(255,255,255,.62);
-  transition: transform .35s ease, background .35s ease;
-}
-
-.process-card-cta i::after {
-  content: "";
-  position: absolute;
-  right: 0;
-  top: -4px;
-
-  width: 8px;
-  height: 8px;
-
-  border-top: 1px solid currentColor;
-  border-right: 1px solid currentColor;
-
-  transform: rotate(45deg);
-}
-
-.process-card-cta:hover {
-  color: rgba(255,255,255,.98);
-}
-
-.process-card-cta:hover i {
-  transform: translateX(6px);
-  background: rgba(255,255,255,.9);
 }
 
 
@@ -583,8 +356,6 @@
   right: 0;
   bottom: clamp(24px, 4vh, 42px);
 
-  padding-top: 0;
-
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -593,17 +364,13 @@
   opacity: var(--footer-opacity, 0);
   transform: translateY(var(--footer-y, 18px));
 
-  font-family: var(--mono, ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace);
+  font-family: var(--mono, monospace);
   font-size: 9px;
   font-weight: 500;
-  line-height: 1.6;
   letter-spacing: .2em;
   text-transform: uppercase;
 
   color: rgba(255,255,255,.38);
-
-  transition: none;
-  will-change: opacity, transform;
 }
 
 .process-footer p {
@@ -617,41 +384,31 @@
 
 
 /* =========================
-   NEUTRALIZE OLD REVEAL CLASSES
+   KILL OLD REVEALS
    ========================= */
 
 .bim-process .reveal-text,
-.bim-process .reveal-image,
 .bim-process .reveal-card,
-.bim-process .reveal-text.is-visible,
-.bim-process .reveal-image.is-visible,
-.bim-process .reveal-card.is-visible {
-  opacity: unset;
-  transform: unset;
+.bim-process .reveal-image {
   transition: none;
   animation: none;
 }
 
 
 /* =========================
-   RESPONSIVE FALLBACK
+   RESPONSIVE
    ========================= */
 
 @media (max-width: 1080px) {
   .bim-process {
     min-height: auto;
-    padding:
-      clamp(82px, 10vw, 130px)
-      clamp(20px, 5vw, 56px);
+    padding: 90px 24px;
     overflow: hidden;
   }
 
   .process-shell {
     position: relative;
-    top: auto;
-
     height: auto;
-    min-height: auto;
 
     grid-template-columns: 1fr;
     gap: 48px;
@@ -665,50 +422,29 @@
 
   .process-board {
     height: auto;
-    min-height: 0;
-
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    align-items: stretch;
-  }
-
-  .process-board::before {
-    opacity: .2;
   }
 
   .process-card,
-  .process-card:nth-child(1),
   .process-card:nth-child(2),
   .process-card:nth-child(3),
   .process-card:nth-child(4) {
     min-height: 520px;
-    height: auto;
     margin-bottom: 0;
 
-    transform: none;
-  }
-
-  .process-card::before,
-  .process-card img,
-  .process-overlay,
-  .process-card-content {
-    clip-path: inset(0 0 0 0);
     opacity: 1;
     transform: none;
   }
 
-  .process-card::before {
-    top: 0;
-    bottom: 0;
-  }
-
   .process-card img {
     opacity: .72;
-    transform: scale(1.06);
+  }
+
+  .process-overlay {
+    opacity: 1;
   }
 
   .process-card-content {
-    position: relative;
-    min-height: 520px;
     opacity: 1;
     transform: none;
   }
@@ -717,23 +453,11 @@
     transform: scaleX(1);
   }
 
-  .process-card::after {
-    transform: scaleX(1);
-    opacity: .45;
-  }
-
-  .process-card-cta {
-    opacity: 1;
-    transform: none;
-  }
-
   .process-footer {
     position: relative;
-    left: auto;
-    right: auto;
     bottom: auto;
 
-    margin-top: 28px;
+    margin-top: 32px;
 
     opacity: 1;
     transform: none;
@@ -741,19 +465,11 @@
 }
 
 @media (max-width: 720px) {
-  .bim-process {
-    padding:
-      82px 20px
-      96px;
-  }
-
   .process-board {
     grid-template-columns: 1fr;
-    gap: 18px;
   }
 
   .process-card,
-  .process-card:nth-child(1),
   .process-card:nth-child(2),
   .process-card:nth-child(3),
   .process-card:nth-child(4) {
@@ -761,7 +477,6 @@
   }
 
   .process-card-content {
-    min-height: 460px;
     padding: 46px 28px;
   }
 
@@ -774,363 +489,4 @@
     align-items: flex-start;
     line-height: 1.8;
   }
-}
-
-
-/* =========================
-   REDUCED MOTION
-   ========================= */
-
-@media (prefers-reduced-motion: reduce) {
-  .bim-process {
-    min-height: auto;
-    padding:
-      clamp(82px, 10vw, 130px)
-      clamp(20px, 5vw, 56px);
-  }
-
-  .process-shell {
-    position: relative;
-    height: auto;
-    min-height: auto;
-  }
-
-  .process-intro,
-  .process-footer,
-  .process-card,
-  .process-card::before,
-  .process-card img,
-  .process-overlay,
-  .process-card-content {
-    opacity: 1;
-    transform: none;
-    transition: none;
-    animation: none;
-    clip-path: inset(0 0 0 0);
-  }
-
-  .process-board {
-    height: auto;
-  }
-
-  .process-card {
-    min-height: 520px;
-  }
-
-  .process-card-content {
-    position: relative;
-    min-height: 520px;
-  }
-}
-
-
-
-/* =========================================================
-   PROCESS FIX — REMOVE DOUBLE OVERLAY / RING LOOK
-   Paste at very bottom of sections/process.css
-   ========================================================= */
-
-/* kill the separate outside backplate frame */
-.process-card::before {
-  display: none !important;
-}
-
-/* make every card one single clean panel */
-.process-card {
-  background: #070707 !important;
-  border: 1px solid rgba(255,255,255,.085) !important;
-  overflow: hidden !important;
-
-  box-shadow:
-    0 34px 90px rgba(0,0,0,.62),
-    inset 0 1px 0 rgba(255,255,255,.055) !important;
-}
-
-/* current card gets subtle lift, not a second border */
-.process-card.is-current {
-  border-color: rgba(255,255,255,.16) !important;
-
-  box-shadow:
-    0 42px 110px rgba(0,0,0,.68),
-    0 0 70px rgba(255,255,255,.045),
-    inset 0 1px 0 rgba(255,255,255,.085) !important;
-}
-
-/* remove individual borders from image / overlay / content */
-.process-card img,
-.process-overlay,
-.process-card-content {
-  border: 0 !important;
-}
-
-/* make the image fill the same card shape */
-.process-card img {
-  inset: 0 !important;
-  width: 100% !important;
-  height: 100% !important;
-
-  clip-path: inset(var(--grow-clip, 100%) 0 0 0) !important;
-}
-
-/* make overlay cover the entire card face cleanly */
-.process-overlay {
-  inset: 0 !important;
-  z-index: -2 !important;
-
-  clip-path: inset(var(--grow-clip, 100%) 0 0 0) !important;
-
-  background:
-    linear-gradient(
-      180deg,
-      rgba(3,3,3,.92) 0%,
-      rgba(3,3,3,.68) 38%,
-      rgba(3,3,3,.24) 100%
-    ),
-    linear-gradient(
-      90deg,
-      rgba(0,0,0,.52) 0%,
-      rgba(0,0,0,.22) 52%,
-      rgba(0,0,0,.46) 100%
-    ) !important;
-}
-
-/* content should sit cleanly above the overlay */
-.process-card-content {
-  inset: 0 !important;
-  z-index: 2 !important;
-
-  clip-path: inset(var(--grow-clip, 100%) 0 0 0) !important;
-
-  background: transparent !important;
-}
-
-/* remove the weird hard-looking bottom line if it feels like another frame */
-.process-card::after {
-  left: 22px !important;
-  right: 22px !important;
-  bottom: 22px !important;
-
-  opacity: calc(var(--face-opacity, 0) * .38) !important;
-
-  background:
-    linear-gradient(
-      90deg,
-      rgba(255,255,255,.52),
-      rgba(255,255,255,.08),
-      transparent
-    ) !important;
-}
-
-/* card hover should be cinematic, not frame-heavy */
-.process-card:hover,
-.process-card.is-current {
-  filter: brightness(1.05) !important;
-}
-
-/* responsive fallback */
-@media (max-width: 1080px) {
-  .process-card {
-    border: 1px solid rgba(255,255,255,.09) !important;
-    overflow: hidden !important;
-  }
-
-  .process-card img,
-  .process-overlay,
-  .process-card-content {
-    clip-path: inset(0 0 0 0) !important;
-  }
-}
-
-
-/* =========================================================
-   PROCESS FIX — NO EMPTY PLACEHOLDER CARDS
-   Cards are invisible until they actually reveal.
-   ========================================================= */
-
-/* board should feel like an empty stage before scroll */
-.process-board {
-  background: transparent !important;
-  border: 0 !important;
-  overflow: visible !important;
-}
-
-/* no visible card frame before reveal */
-.process-card {
-  background: transparent !important;
-  border: 0 !important;
-  box-shadow: none !important;
-  overflow: visible !important;
-
-  opacity: var(--face-opacity, 0) !important;
-  transform: translateY(var(--face-y, 54px)) scale(calc(.985 + (var(--face-opacity, 0) * .015))) !important;
-}
-
-/* only the actual revealed card gets a border */
-.process-card img,
-.process-overlay,
-.process-card-content {
-  border: 0 !important;
-}
-
-/* create one clean border that reveals with the card */
-.process-card .process-card-content::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-
-  pointer-events: none;
-
-  border: 1px solid rgba(255,255,255,.085);
-
-  opacity: var(--face-opacity, 0);
-
-  box-shadow:
-    0 34px 90px rgba(0,0,0,.62),
-    inset 0 1px 0 rgba(255,255,255,.055);
-}
-
-/* current card gets subtle depth, not a visible placeholder */
-.process-card.is-current .process-card-content::before {
-  border-color: rgba(255,255,255,.16);
-
-  box-shadow:
-    0 42px 110px rgba(0,0,0,.68),
-    0 0 70px rgba(255,255,255,.045),
-    inset 0 1px 0 rgba(255,255,255,.085);
-}
-
-/* keep the image + overlay clipped together */
-.process-card img,
-.process-overlay,
-.process-card-content {
-  clip-path: inset(var(--grow-clip, 100%) 0 0 0) !important;
-}
-
-/* image should not show at all until reveal starts */
-.process-card img {
-  opacity: var(--image-opacity, 0) !important;
-}
-
-/* overlay should also not show until reveal starts */
-.process-overlay {
-  opacity: var(--face-opacity, 0) !important;
-}
-
-/* content reveals after the panel starts becoming real */
-.process-card-content {
-  opacity: var(--content-opacity, 0) !important;
-  transform: translateY(var(--content-y, 24px)) !important;
-}
-
-/* remove bottom line until card exists */
-.process-card::after {
-  opacity: calc(var(--face-opacity, 0) * .36) !important;
-}
-
-/* optional: make unrevealed cards non-interactive */
-.process-card:not(.is-current) {
-  pointer-events: none;
-}
-
-.process-card.is-current,
-.process-card:hover {
-  pointer-events: auto;
-}
-
-/* mobile fallback: all cards visible normally */
-@media (max-width: 1080px) {
-  .process-card {
-    opacity: 1 !important;
-    transform: none !important;
-    background: #070707 !important;
-  }
-
-  .process-card .process-card-content::before {
-    opacity: 1 !important;
-  }
-
-  .process-card img,
-  .process-overlay,
-  .process-card-content {
-    clip-path: inset(0 0 0 0) !important;
-  }
-
-  .process-card img {
-    opacity: .72 !important;
-  }
-
-  .process-overlay {
-    opacity: 1 !important;
-  }
-
-  .process-card-content {
-    opacity: 1 !important;
-    transform: none !important;
-  }
-
-  .process-card {
-    pointer-events: auto;
-  }
-}
-
-
-/* =========================================================
-   PROCESS BACKGROUND IMAGE — CINEMATIC STAGE
-   File expected at: designs/procecss-bg.png
-   ========================================================= */
-
-.bim-process {
-  background:
-    linear-gradient(
-      180deg,
-      rgba(0,0,0,.86) 0%,
-      rgba(0,0,0,.62) 36%,
-      rgba(0,0,0,.72) 72%,
-      rgba(0,0,0,.88) 100%
-    ),
-    linear-gradient(
-      90deg,
-      rgba(0,0,0,.82) 0%,
-      rgba(0,0,0,.62) 30%,
-      rgba(0,0,0,.34) 58%,
-      rgba(0,0,0,.58) 100%
-    ),
-    url("../designs/procecss-bg.png") center center / cover no-repeat !important;
-}
-
-/* extra dark polish layer so text/cards stay readable */
-.bim-process::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  pointer-events: none;
-
-  background:
-    radial-gradient(
-      ellipse at 68% 62%,
-      rgba(255,255,255,.055),
-      transparent 36%
-    ),
-    linear-gradient(
-      180deg,
-      rgba(0,0,0,.48) 0%,
-      rgba(0,0,0,.08) 34%,
-      rgba(0,0,0,.34) 100%
-    ) !important;
-
-  opacity: .9 !important;
-  filter: none !important;
-}
-
-/* make sure actual content stays above the background overlays */
-.process-shell {
-  position: sticky !important;
-  z-index: 3 !important;
-}
-
-/* optional: hide the grid if the photo background is enough */
-.bim-process::before {
-  opacity: .04 !important;
 }
