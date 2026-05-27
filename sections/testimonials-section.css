@@ -444,3 +444,39 @@
     grid-template-columns: repeat(2, 1fr);
   }
 }
+
+
+
+/* STICKY ALIVE TESTIMONIALS */
+
+.bim-testimonials {
+  min-height: 260vh;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.testimonial-shell {
+  position: sticky;
+  top: 0;
+  min-height: 100vh;
+}
+
+.testimonial-card {
+  transform:
+    translate3d(var(--cardX, 0px), var(--cardY, 0px), 0)
+    rotate(var(--cardRotate, 0deg))
+    scale(var(--cardScale, 1));
+  opacity: var(--cardOpacity, 1);
+  will-change: transform, opacity;
+}
+
+.testimonial-copy {
+  transform: translateY(var(--copyY, 0px));
+  will-change: transform;
+}
+
+.testimonial-bg img {
+  transform:
+    scale(var(--bgScale, 1.04))
+    translate3d(var(--bgX, 0px), var(--bgY, 0px), 0);
+}
