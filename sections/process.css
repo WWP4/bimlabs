@@ -548,25 +548,30 @@
 }
 
 
-/* STICKY ALIVE PROCESS */
+/* CLEAN PROCESS FLOW */
 
 .bim-process {
-  min-height: 260vh;
-  padding-top: 0;
-  padding-bottom: 0;
+  position: relative;
+  min-height: auto;
+  padding:
+    clamp(90px, 10vw, 140px)
+    clamp(22px, 4vw, 80px);
 }
 
 .process-shell {
-  position: sticky;
-  top: 0;
-  min-height: 100vh;
-  align-items: center;
+  position: relative;
+  min-height: auto;
+  align-items: start;
 }
 
 .process-card {
-  transform:
-    translateY(var(--processY, 0px))
-    scale(var(--processScale, 1));
-  opacity: var(--processOpacity, 1);
-  will-change: transform, opacity;
+  transform: translateY(0);
+  opacity: 1;
+  transition:
+    transform .7s cubic-bezier(.16,1,.3,1),
+    opacity .7s ease;
+}
+
+.process-card:hover {
+  transform: translateY(-8px);
 }
