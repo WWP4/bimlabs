@@ -1616,3 +1616,38 @@ main {
       transparent
     );
 }
+
+.section-whisp {
+  position: absolute;
+  left: 50%;
+  bottom: -80px;
+  width: 70vw;
+  height: 220px;
+  transform: translateX(-50%);
+  z-index: 18;
+  pointer-events: none;
+
+  background:
+    radial-gradient(
+      ellipse,
+      rgba(255,255,255,.07),
+      transparent 64%
+    );
+
+  filter: blur(44px);
+  opacity: .36;
+
+  animation: sectionWhisp 10s ease-in-out infinite alternate;
+}
+
+@keyframes sectionWhisp {
+  from {
+    transform: translateX(-54%) translateY(18px) scale(.96);
+    opacity: .22;
+  }
+
+  to {
+    transform: translateX(-46%) translateY(-8px) scale(1.04);
+    opacity: .42;
+  }
+}
