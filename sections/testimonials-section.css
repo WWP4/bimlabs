@@ -62,25 +62,7 @@
   }
 }
 
-.testimonial-ghost {
-  position: absolute;
-  right: 6vw;
-  bottom: 7vh;
-  z-index: -1;
-  font-size: clamp(7rem, 18vw, 18rem);
-  line-height: .8;
-  letter-spacing: -.1em;
-  font-weight: 600;
-  color: rgba(255,255,255,.035);
-  pointer-events: none;
-  transition: opacity 1.2s ease, filter 1.2s ease, transform 1.2s ease;
-}
 
-.bim-testimonials.is-switching .testimonial-ghost {
-  opacity: .015;
-  filter: blur(18px);
-  transform: translateY(-18px);
-}
 
 .testimonial-shell {
   width: min(1180px, calc(100% - 48px));
