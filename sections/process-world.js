@@ -1,50 +1,50 @@
 /* =========================================================
-   BIM LABS — CINEMATIC PROCESS GLITCH SCROLL
+   BIM LABS — PROCESS / WORK COPY SMOOTH SCROLL
    Full replacement for: sections/process-world.js
 
    Built for:
-   .bim-process-cinema
-   .process-cinema-bg span
-   .process-cinema-step
-   .process-step-card
+   .process-work-copy
+   .process-work-word
+   .process-work-item
+   .process-work-card
    .glitch-text
 
    Behavior:
-   - Huge PROCESS word slowly scales/fades with scroll
-   - Step cards reveal as they enter view
-   - Alternating left/right cards get subtle motion
-   - Titles scramble/glitch on scroll reveal
-   - Titles glitch again on hover
-   - Underline hover is handled by CSS
+   - Big "process" word grows as user enters the section
+   - Word stays centered while steps scroll over it
+   - Cards drift softly left/right with scroll
+   - Cards reveal without snappy timing
+   - Glitch happens on scroll reveal and hover
    ========================================================= */
 
 (function () {
-  const section = document.querySelector(".bim-process-cinema");
+  const section = document.querySelector(".process-work-copy");
 
   if (!section) {
-    console.warn("[Process Cinema] Missing .bim-process-cinema");
+    console.warn("[Process Work Copy] Missing .process-work-copy");
     return;
   }
 
-  const bgWord = section.querySelector(".process-cinema-bg span");
-  const steps = Array.from(section.querySelectorAll("[data-process-step]"));
-  const cards = Array.from(section.querySelectorAll(".process-step-card"));
+  const bigWord = section.querySelector(".process-work-word");
+  const items = Array.from(section.querySelectorAll("[data-process-step]"));
+  const cards = Array.from(section.querySelectorAll(".process-work-card"));
   const glitchTexts = Array.from(section.querySelectorAll(".glitch-text"));
 
-  if (!steps.length) {
-    console.warn("[Process Cinema] No [data-process-step] elements found.");
+  if (!items.length) {
+    console.warn("[Process Work Copy] No [data-process-step] items found.");
     return;
   }
 
   const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const glyphs = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789#%&<>/[]{}+-=_";
 
-  let revealObserver = null;
+  let observer = null;
+
+  let sectionTop = 0;
+  let sectionHeight = 1;
   let targetProgress = 0;
   let currentProgress = 0;
   let rafRunning = false;
-  let sectionTop = 0;
-  let sectionHeight = 1;
 
   const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
   const lerp = (start, end, amount) => start + (end - start) * amount;
@@ -86,8 +86,8 @@
     element.classList.add("is-scrambling");
 
     let frame = 0;
-    const totalFrames = force ? 18 : 30;
-    const speed = force ? 22 : 26;
+    const totalFrames = force ? 16 : 28;
+    const speed = force ? 20 : 25;
 
     const interval = window.setInterval(() => {
       const progress = frame / totalFrames;
@@ -98,7 +98,7 @@
           if (char === " ") return " ";
 
           const revealPoint = index / Math.max(finalText.length, 1);
-          const shouldReveal = progress > revealPoint + 0.16;
+          const shouldReveal = progress > revealPoint + 0.15;
 
           return shouldReveal ? char : randomGlyph();
         })
@@ -115,66 +115,67 @@
         element.dataset.scrambled = "true";
         element.classList.remove("is-scrambling");
 
-        const parentStep = element.closest(".process-cinema-step");
+        const parentItem = element.closest(".process-work-item");
 
-        if (parentStep) {
-          parentStep.classList.add("is-glitching");
+        if (parentItem) {
+          parentItem.classList.add("is-glitching");
 
           window.setTimeout(() => {
-            parentStep.classList.remove("is-glitching");
+            parentItem.classList.remove("is-glitching");
           }, 520);
         }
       }
     }, speed);
   }
 
-  function revealStep(step) {
-    if (!step) return;
+  function revealItem(item) {
+    if (!item) return;
 
-    step.classList.add("is-visible");
+    item.classList.add("is-visible");
 
-    const title = step.querySelector(".glitch-text");
+    const title = item.querySelector(".glitch-text");
 
     if (title) {
       scrambleText(title);
     }
   }
 
-  function hideStep(step) {
-    if (!step) return;
-    step.classList.remove("is-visible");
+  function hideItem(item) {
+    if (!item) return;
+
+    item.classList.remove("is-visible");
   }
 
-  function setupRevealObserver() {
-    if (revealObserver) {
-      revealObserver.disconnect();
+  function setupObserver() {
+    if (observer) {
+      observer.disconnect();
     }
 
-    revealObserver = new IntersectionObserver(
+    observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          const step = entry.target;
+          const item = entry.target;
 
           if (entry.isIntersecting) {
-            revealStep(step);
+            revealItem(item);
           } else {
-            hideStep(step);
+            hideItem(item);
           }
         });
       },
       {
         root: null,
-        threshold: 0.34,
-        rootMargin: "-10% 0px -16% 0px"
+        threshold: 0.28,
+        rootMargin: "-8% 0px -12% 0px"
       }
     );
 
-    steps.forEach((step) => revealObserver.observe(step));
+    items.forEach((item) => observer.observe(item));
   }
 
   function setupInitialState() {
-    steps.forEach((step) => {
-      step.classList.remove("is-visible", "is-hovered", "is-glitching");
+    items.forEach((item) => {
+      item.classList.remove("is-visible", "is-hovered", "is-glitching");
     });
 
     glitchTexts.forEach((text) => {
@@ -188,11 +189,11 @@
   }
 
   function setupHoverEffects() {
-    steps.forEach((step) => {
-      const title = step.querySelector(".glitch-text");
+    items.forEach((item) => {
+      const title = item.querySelector(".glitch-text");
 
       function enter() {
-        step.classList.add("is-hovered");
+        item.classList.add("is-hovered");
 
         if (title) {
           scrambleText(title, { force: true });
@@ -200,13 +201,13 @@
       }
 
       function leave() {
-        step.classList.remove("is-hovered");
+        item.classList.remove("is-hovered");
       }
 
-      step.addEventListener("mouseenter", enter);
-      step.addEventListener("mouseleave", leave);
-      step.addEventListener("focusin", enter);
-      step.addEventListener("focusout", leave);
+      item.addEventListener("mouseenter", enter);
+      item.addEventListener("mouseleave", leave);
+      item.addEventListener("focusin", enter);
+      item.addEventListener("focusout", leave);
     });
   }
 
@@ -236,11 +237,16 @@
   }
 
   function animate() {
-    currentProgress = lerp(currentProgress, targetProgress, 0.075);
+    /*
+      Lower = smoother/heavier.
+      0.055 is calmer and more high-end than quick 0.1+ motion.
+    */
+
+    currentProgress = lerp(currentProgress, targetProgress, 0.055);
 
     render(currentProgress);
 
-    if (Math.abs(currentProgress - targetProgress) > 0.0006) {
+    if (Math.abs(currentProgress - targetProgress) > 0.00055) {
       window.requestAnimationFrame(animate);
     } else {
       currentProgress = targetProgress;
@@ -250,26 +256,37 @@
   }
 
   function render(progress) {
-    renderBackgroundWord(progress);
+    renderBigWord(progress);
     renderCards();
   }
 
-  function renderBackgroundWord(progress) {
-    if (!bgWord) return;
+  function renderBigWord(progress) {
+    if (!bigWord) return;
 
     /*
-      The word should feel like the environment:
-      it grows slowly, not like an animation gimmick.
+      Entry:
+      - starts smaller and faint
+      - grows into center
+
+      Middle:
+      - sits behind the cards
+
+      Exit:
+      - slightly enlarges and fades softer
     */
 
-    const scale = lerp(0.82, 1.34, smoothstep(0, 1, progress));
-    const opacity = lerp(0.075, 0.135, smoothstep(0.08, 0.72, progress));
-    const blur = lerp(0, 1.4, smoothstep(0.72, 1, progress));
-    const y = lerp(0, -18, smoothstep(0, 1, progress));
+    const enter = smoothstep(0, 0.22, progress);
+    const middle = smoothstep(0.18, 0.72, progress);
+    const exit = smoothstep(0.78, 1, progress);
 
-    setStyles(bgWord, {
-      transform: `translate3d(0, ${y}px, 0) scale(${scale})`,
-      opacity: opacity.toFixed(3),
+    const scale = lerp(0.64, 1.08, enter) + lerp(0, 0.16, middle) + lerp(0, 0.12, exit);
+    const opacity = lerp(0.035, 0.145, enter) - lerp(0, 0.045, exit);
+    const y = lerp(42, 0, enter) + lerp(0, -26, exit);
+    const blur = lerp(2.2, 0, enter) + lerp(0, 1.2, exit);
+
+    setStyles(bigWord, {
+      transform: `translate3d(0, ${y.toFixed(2)}px, 0) scale(${scale.toFixed(4)})`,
+      opacity: clamp(opacity, 0.035, 0.15).toFixed(3),
       filter: `blur(${blur.toFixed(2)}px)`
     });
   }
@@ -278,68 +295,72 @@
     const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
 
     cards.forEach((card) => {
-      const step = card.closest(".process-cinema-step");
-      if (!step) return;
+      const item = card.closest(".process-work-item");
+      if (!item) return;
 
-      const rect = step.getBoundingClientRect();
+      const rect = item.getBoundingClientRect();
       const center = rect.top + rect.height / 2;
-      const distanceFromCenter = (center - viewportHeight / 2) / viewportHeight;
 
-      const normalized = clamp(Math.abs(distanceFromCenter), 0, 1);
-      const strength = 1 - normalized;
+      const viewportProgress = clamp(center / viewportHeight, 0, 1);
+      const distanceFromCenter = Math.abs(center - viewportHeight / 2) / viewportHeight;
+      const focus = 1 - clamp(distanceFromCenter, 0, 1);
 
-      const isRight = step.classList.contains("process-cinema-step--right");
+      const isRight = item.classList.contains("process-work-item--right");
       const direction = isRight ? 1 : -1;
 
       /*
-        Subtle horizontal drift as the card moves through the viewport.
-        Keep this small. Big motion makes it feel cheap.
+        This creates the premium float:
+        small horizontal parallax + tiny vertical movement.
+        Keep this subtle. Big motion feels cheap.
       */
 
-      const driftX = direction * lerp(18, -18, clamp((center / viewportHeight), 0, 1));
-      const driftY = lerp(12, -10, clamp((center / viewportHeight), 0, 1));
-      const opacity = lerp(0.74, 1, strength);
+      const driftX = direction * lerp(24, -24, smoothstep(0, 1, viewportProgress));
+      const driftY = lerp(18, -12, smoothstep(0, 1, viewportProgress));
+      const cardOpacity = lerp(0.72, 1, smoothstep(0.08, 0.75, focus));
 
-      if (!step.classList.contains("is-hovered")) {
+      if (!item.classList.contains("is-hovered")) {
         setStyles(card, {
           transform: `translate3d(${driftX.toFixed(2)}px, ${driftY.toFixed(2)}px, 0)`,
-          opacity: opacity.toFixed(3)
+          opacity: cardOpacity.toFixed(3)
         });
       }
     });
   }
 
-  function refreshVisibleSteps() {
+  function refreshVisibleItems() {
     const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
 
-    steps.forEach((step) => {
-      const rect = step.getBoundingClientRect();
+    items.forEach((item) => {
+      const rect = item.getBoundingClientRect();
       const center = rect.top + rect.height / 2;
 
-      const isNearCenter =
-        center > viewportHeight * 0.16 &&
-        center < viewportHeight * 0.84;
+      const isNearReadingZone =
+        center > viewportHeight * 0.12 &&
+        center < viewportHeight * 0.88;
 
-      if (isNearCenter) {
-        revealStep(step);
+      if (isNearReadingZone) {
+        revealItem(item);
       }
     });
   }
 
   function setupReducedMotion() {
-    steps.forEach((step) => {
-      step.classList.add("is-visible");
+    items.forEach((item) => {
+      item.classList.add("is-visible");
     });
 
     glitchTexts.forEach((text) => {
       const finalText = text.getAttribute("data-glitch-text") || text.textContent.trim();
+
       text.textContent = finalText;
+      text.dataset.scrambled = "true";
+      text.dataset.scrambling = "false";
     });
 
-    if (bgWord) {
-      bgWord.style.transform = "";
-      bgWord.style.opacity = "";
-      bgWord.style.filter = "";
+    if (bigWord) {
+      bigWord.style.transform = "";
+      bigWord.style.opacity = "";
+      bigWord.style.filter = "";
     }
   }
 
@@ -351,24 +372,28 @@
       return;
     }
 
-    setupRevealObserver();
+    setupObserver();
     setupHoverEffects();
     measure();
-    refreshVisibleSteps();
+    refreshVisibleItems();
 
     window.addEventListener("scroll", updateTarget, { passive: true });
-    window.addEventListener("resize", debounce(() => {
-      measure();
-      refreshVisibleSteps();
-    }, 180));
+
+    window.addEventListener(
+      "resize",
+      debounce(() => {
+        measure();
+        refreshVisibleItems();
+      }, 180)
+    );
 
     window.addEventListener("load", () => {
       measure();
-      refreshVisibleSteps();
+      refreshVisibleItems();
     });
 
-    console.log("[Process Cinema] Glitch scroll loaded.", {
-      steps: steps.length
+    console.log("[Process Work Copy] Smooth glitch scroll loaded.", {
+      items: items.length
     });
   }
 
