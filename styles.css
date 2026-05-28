@@ -1312,3 +1312,60 @@ select {
     opacity: .82;
   }
 }
+
+
+/* =========================================================
+   CINEMATIC NAV BEHAVIOR
+   ========================================================= */
+
+.site-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+
+  transform: translateY(0);
+  opacity: 1;
+
+  transition:
+    transform 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.45s ease,
+    background 0.45s ease,
+    border-color 0.45s ease,
+    backdrop-filter 0.45s ease;
+
+  will-change: transform, opacity;
+}
+
+.site-header.nav-hidden {
+  transform: translateY(-110%);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.site-header.nav-visible {
+  transform: translateY(0);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.site-header.is-scrolled {
+  background: rgba(3, 3, 3, 0.46);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border-bottom: 1px solid rgba(244, 241, 234, 0.08);
+}
+
+/* Optional: make nav feel lighter and less in the way */
+.site-header .brand,
+.site-header .main-nav a {
+  transition:
+    opacity 0.35s ease,
+    color 0.35s ease;
+}
+
+.site-header.is-scrolled .brand,
+.site-header.is-scrolled .main-nav a {
+  color: rgba(244, 241, 234, 0.72);
+}
