@@ -813,3 +813,29 @@ body {
     font-size: 9px;
   }
 }
+
+
+/* =========================================================
+   PROCESS WALL — ANIMATION START STATES
+   Keeps section from appearing fully built before JS animates
+   ========================================================= */
+
+@media (min-width: 1101px) {
+  .bim-process-wall:not(.process-ready) .process-meta,
+  .bim-process-wall:not(.process-ready) .process-footer-meta,
+  .bim-process-wall:not(.process-ready) .process-kicker,
+  .bim-process-wall:not(.process-ready) .process-hero h2,
+  .bim-process-wall:not(.process-ready) .process-intro-copy,
+  .bim-process-wall:not(.process-ready) .process-close,
+  .bim-process-wall:not(.process-ready) .process-row,
+  .bim-process-wall:not(.process-ready) .process-row-number,
+  .bim-process-wall:not(.process-ready) .process-row-title,
+  .bim-process-wall:not(.process-ready) .process-row-detail {
+    opacity: 0;
+  }
+
+  .bim-process-wall:not(.process-ready) .process-row-line {
+    transform: scaleX(0);
+    transform-origin: left center;
+  }
+}
