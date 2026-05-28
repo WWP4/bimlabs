@@ -93,14 +93,14 @@
   color: #ffffff !important;
   opacity: 0.12;
 
-  font-size: clamp(150px, 25vw, 620px);
+  font-size: clamp(95px, 17vw, 420px);
   font-weight: 800;
   line-height: 0.72;
   letter-spacing: -0.12em;
   text-transform: lowercase;
   white-space: nowrap;
 
-  transform: translate3d(0, -50%, 0) scale(0.78);
+  transform: translate3d(0, -50%, 0) scale(0.72);
   transform-origin: center center;
 
   filter: none;
