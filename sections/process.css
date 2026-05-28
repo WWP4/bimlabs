@@ -2,12 +2,16 @@
    BIM LABS — PROCESS SECTION
    Full replacement for: sections/process.css
 
-   Fixed behavior:
-   - PROCESS word stays sticky in the center
-   - PROCESS word grows from JS without losing center position
-   - PROCESS feels like a background layer
-   - Cards scroll over the word
-   - Clean minimal high-end black/white style
+   Includes:
+   - Sticky centered PROCESS word
+   - Large alternating process cards
+   - Premium dark editorial styling
+   - Fullscreen cinematic void handoff
+   - Booking section emerging from depth
+   ========================================================= */
+
+/* =========================================================
+   BASE SECTION
    ========================================================= */
 
 .process-work-copy {
@@ -27,7 +31,6 @@
   box-sizing: border-box;
 }
 
-/* Soft section atmosphere */
 .process-work-copy::before {
   content: "";
   position: absolute;
@@ -38,17 +41,16 @@
     radial-gradient(circle at 50% 22%, rgba(255,255,255,0.075), transparent 28%),
     radial-gradient(circle at 12% 62%, rgba(255,255,255,0.035), transparent 34%),
     radial-gradient(circle at 88% 76%, rgba(255,255,255,0.03), transparent 32%),
-    linear-gradient(180deg, #030303 0%, #060606 42%, #030303 100%);
+    linear-gradient(180deg, #030303 0%, #060606 42%, #000000 100%);
 }
 
-/* Subtle grain/noise feel without using an image */
 .process-work-copy::after {
   content: "";
   position: absolute;
   inset: 0;
   z-index: 1;
   pointer-events: none;
-  opacity: 0.05;
+  opacity: 0.045;
   background-image:
     linear-gradient(rgba(255,255,255,0.09) 1px, transparent 1px),
     linear-gradient(90deg, rgba(255,255,255,0.09) 1px, transparent 1px);
@@ -56,12 +58,11 @@
   mask-image: radial-gradient(circle at 50% 45%, black, transparent 72%);
 }
 
-/* Long scroll section */
 .process-work-container {
   position: relative;
   z-index: 2;
   min-height: 560vh;
-  padding: clamp(110px, 14vh, 170px) 7vw clamp(130px, 17vh, 210px);
+  padding: clamp(110px, 14vh, 170px) 7vw 0;
 }
 
 /* =========================================================
@@ -76,11 +77,6 @@
   overflow: visible;
 }
 
-/*
-   Important:
-   This is the background word.
-   JS animates the scale, but it must always keep translateY(-50%).
-*/
 .process-work-word {
   position: sticky;
   top: 50vh;
@@ -108,10 +104,9 @@
   user-select: none;
 }
 
-/* Real content sits above the background word */
+/* Real content above background word */
 .process-work-top,
-.process-work-list,
-.process-work-bottom {
+.process-work-list {
   position: relative;
   z-index: 5;
 }
@@ -159,7 +154,7 @@
 }
 
 .process-work-item {
-  min-height: 96vh;
+  min-height: 112vh;
   display: flex;
   align-items: center;
   opacity: 0.42;
@@ -182,14 +177,26 @@
   justify-content: flex-end;
 }
 
+/* Quiet cards when the void starts */
+.process-work-copy.is-entering-void .process-work-item {
+  opacity: 0;
+  transform: translate3d(0, -40px, 0) scale(0.96);
+}
+
 /* =========================================================
    CARDS
    ========================================================= */
 
 .process-work-card {
   position: relative;
-  width: min(100%, 620px);
-  padding: clamp(30px, 4.4vw, 58px);
+
+  width: min(100%, 760px);
+  min-height: clamp(520px, 62vh, 700px);
+  padding: clamp(38px, 5vw, 72px);
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 
   border: 1px solid rgba(255,255,255,0.14);
   border-radius: 2px;
@@ -216,6 +223,14 @@
     border-color 420ms ease,
     background 420ms ease,
     box-shadow 420ms ease;
+}
+
+.process-work-item--left .process-work-card {
+  margin-left: 2vw;
+}
+
+.process-work-item--right .process-work-card {
+  margin-right: 2vw;
 }
 
 .process-work-card::before {
@@ -246,12 +261,13 @@
   z-index: 0;
   pointer-events: none;
   opacity: 0.35;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255,255,255,0.4),
-    transparent
-  );
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(255,255,255,0.4),
+      transparent
+    );
 }
 
 .process-work-card:hover,
@@ -305,49 +321,102 @@
 .process-work-card h3 {
   margin: 0;
   color: #ffffff;
-  font-size: clamp(54px, 6.8vw, 128px);
+  font-size: clamp(72px, 8vw, 150px);
   font-weight: 400;
-  line-height: 0.78;
-  letter-spacing: -0.095em;
+  line-height: 0.76;
+  letter-spacing: -0.1em;
 }
 
 .process-work-card p {
-  max-width: 455px;
-  margin: clamp(30px, 4.6vh, 46px) 0 0;
-  color: rgba(255,255,255,0.66);
-  font-size: 14px;
-  line-height: 1.68;
+  max-width: 560px;
+  margin: clamp(34px, 5vh, 56px) 0 0;
+  color: rgba(255,255,255,0.68);
+  font-size: clamp(14px, 1.05vw, 17px);
+  line-height: 1.75;
   font-weight: 400;
   letter-spacing: -0.015em;
 }
 
-.process-work-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 28px;
+.process-work-points {
+  list-style: none;
+  padding: 0;
+  margin: clamp(28px, 4vh, 44px) 0 0;
+  display: grid;
+  gap: 12px;
+  max-width: 560px;
 }
 
-.process-work-tags span {
-  min-height: 24px;
-  padding: 0 10px;
+.process-work-points li {
+  position: relative;
+  padding-left: 20px;
+  color: rgba(255,255,255,0.58);
+  font-size: 12px;
+  line-height: 1.5;
+  letter-spacing: 0.02em;
+}
+
+.process-work-points li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.72em;
+  width: 7px;
+  height: 1px;
+  background: rgba(255,255,255,0.8);
+}
+
+.process-work-actions {
+  margin-top: clamp(34px, 5vh, 58px);
+  padding-top: 24px;
+  border-top: 1px solid rgba(255,255,255,0.12);
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+}
+
+.process-work-actions > span {
+  color: rgba(255,255,255,0.36);
+  font-size: 10px;
+  line-height: 1;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.process-card-btn {
+  min-height: 38px;
+  padding: 0 16px;
 
   display: inline-flex;
   align-items: center;
   justify-content: center;
 
-  border: 1px solid rgba(255,255,255,0.16);
+  border: 1px solid rgba(255,255,255,0.26);
   border-radius: 999px;
 
-  color: rgba(255,255,255,0.52);
-  background: rgba(255,255,255,0.025);
+  color: #ffffff;
+  background: rgba(255,255,255,0.035);
 
-  font-size: 8px;
+  font-size: 9px;
   line-height: 1;
   font-weight: 500;
-  letter-spacing: 0.15em;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
+  text-decoration: none;
   white-space: nowrap;
+
+  transition:
+    border-color 300ms ease,
+    background 300ms ease,
+    transform 300ms ease;
+}
+
+.process-card-btn:hover {
+  border-color: rgba(255,255,255,0.72);
+  background: rgba(255,255,255,0.09);
+  transform: translateY(-2px);
 }
 
 /* =========================================================
@@ -484,383 +553,26 @@
 }
 
 /* =========================================================
-   BOTTOM CTA
-   ========================================================= */
-
-.process-work-bottom {
-  min-height: 82vh;
-  max-width: 900px;
-  margin-left: auto;
-  padding: clamp(80px, 12vh, 140px) 0;
-
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: center;
-}
-
-.process-work-bottom p {
-  margin: 0;
-  color: #ffffff;
-  font-size: clamp(42px, 5.5vw, 104px);
-  font-weight: 400;
-  line-height: 0.92;
-  letter-spacing: -0.078em;
-}
-
-.process-work-cta {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-
-  min-height: 38px;
-  margin-top: 36px;
-  padding: 0 17px;
-
-  border: 1px solid rgba(255,255,255,0.3);
-  border-radius: 999px;
-
-  color: #ffffff;
-  background: transparent;
-
-  font-size: 9px;
-  line-height: 1;
-  font-weight: 500;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  text-decoration: none;
-  white-space: nowrap;
-
-  transition:
-    border-color 300ms ease,
-    background 300ms ease,
-    color 300ms ease,
-    transform 300ms ease;
-}
-
-.process-work-cta:hover {
-  border-color: rgba(255,255,255,0.72);
-  background: rgba(255,255,255,0.08);
-  transform: translateY(-2px);
-}
-
-/* =========================================================
-   REDUCED MOTION
-   ========================================================= */
-
-@media (prefers-reduced-motion: reduce) {
-  .process-work-item,
-  .process-work-card,
-  .underline-hover::after,
-  .process-work-cta {
-    transition: none !important;
-  }
-
-  .process-work-item {
-    opacity: 1;
-    transform: none;
-  }
-
-  .process-work-word {
-    transform: translate3d(0, -50%, 0) scale(1);
-  }
-}
-
-/* =========================================================
-   RESPONSIVE
-   ========================================================= */
-
-@media (max-width: 1100px) {
-  .process-work-container {
-    min-height: auto;
-    padding: 110px 24px 105px;
-  }
-
-  .process-work-word {
-    font-size: clamp(110px, 26vw, 320px);
-    opacity: 0.1;
-  }
-
-  .process-work-top {
-    min-height: 72vh;
-    display: block;
-    padding-top: 0;
-  }
-
-  .process-work-kicker {
-    margin-bottom: 88px;
-  }
-
-  .process-work-intro {
-    max-width: 560px;
-    font-size: 14px;
-  }
-
-  .process-work-item {
-    min-height: auto;
-    padding: 62px 0;
-    justify-content: flex-start;
-  }
-
-  .process-work-card {
-    width: min(100%, 720px);
-  }
-
-  .process-work-card h3 {
-    font-size: clamp(54px, 13vw, 112px);
-  }
-
-  .process-work-bottom {
-    min-height: auto;
-    margin-left: 0;
-    padding: 78px 0 20px;
-  }
-}
-
-@media (max-width: 767px) {
-  .process-work-container {
-    padding: 92px 20px 84px;
-  }
-
-  .process-work-word {
-    top: 50vh;
-    font-size: 34vw;
-    letter-spacing: -0.115em;
-  }
-
-  .process-work-top {
-    min-height: 68vh;
-  }
-
-  .process-work-kicker {
-    margin-bottom: 72px;
-    font-size: 9px;
-  }
-
-  .process-work-intro {
-    font-size: 13px;
-    line-height: 1.7;
-  }
-
-  .process-work-item {
-    padding: 48px 0;
-  }
-
-  .process-work-card {
-    padding: 28px 22px 30px;
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
-  }
-
-  .process-work-card-meta {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 12px;
-    margin-bottom: 42px;
-  }
-
-  .process-work-card h3 {
-    font-size: clamp(46px, 16vw, 76px);
-    letter-spacing: -0.085em;
-  }
-
-  .process-work-card p {
-    font-size: 13px;
-  }
-
-  .process-work-bottom p {
-    font-size: clamp(34px, 11vw, 54px);
-  }
-}
-
-
-
-/* =========================================================
-   BIGGER PROCESS CARDS + REAL CONTENT
-   ========================================================= */
-
-.process-work-card {
-  width: min(100%, 760px);
-  min-height: clamp(520px, 62vh, 700px);
-  padding: clamp(38px, 5vw, 72px);
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-
-.process-work-card h3 {
-  font-size: clamp(72px, 8vw, 150px);
-  line-height: 0.76;
-  letter-spacing: -0.1em;
-}
-
-.process-work-card p {
-  max-width: 560px;
-  margin-top: clamp(34px, 5vh, 56px);
-  color: rgba(255,255,255,0.68);
-  font-size: clamp(14px, 1.05vw, 17px);
-  line-height: 1.75;
-}
-
-.process-work-points {
-  list-style: none;
-  padding: 0;
-  margin: clamp(28px, 4vh, 44px) 0 0;
-  display: grid;
-  gap: 12px;
-  max-width: 560px;
-}
-
-.process-work-points li {
-  position: relative;
-  padding-left: 20px;
-  color: rgba(255,255,255,0.58);
-  font-size: 12px;
-  line-height: 1.5;
-  letter-spacing: 0.02em;
-}
-
-.process-work-points li::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 0.72em;
-  width: 7px;
-  height: 1px;
-  background: rgba(255,255,255,0.8);
-}
-
-.process-work-actions {
-  margin-top: clamp(34px, 5vh, 58px);
-  padding-top: 24px;
-  border-top: 1px solid rgba(255,255,255,0.12);
-
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 18px;
-}
-
-.process-work-actions > span {
-  color: rgba(255,255,255,0.36);
-  font-size: 10px;
-  line-height: 1;
-  letter-spacing: 0.24em;
-  text-transform: uppercase;
-  white-space: nowrap;
-}
-
-.process-card-btn {
-  min-height: 38px;
-  padding: 0 16px;
-
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-
-  border: 1px solid rgba(255,255,255,0.26);
-  border-radius: 999px;
-
-  color: #ffffff;
-  background: rgba(255,255,255,0.035);
-
-  font-size: 9px;
-  line-height: 1;
-  font-weight: 500;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  text-decoration: none;
-  white-space: nowrap;
-
-  transition:
-    border-color 300ms ease,
-    background 300ms ease,
-    transform 300ms ease;
-}
-
-.process-card-btn:hover {
-  border-color: rgba(255,255,255,0.72);
-  background: rgba(255,255,255,0.09);
-  transform: translateY(-2px);
-}
-
-/* Give each step more room so the larger cards breathe */
-.process-work-item {
-  min-height: 112vh;
-}
-
-/* Slightly offset bigger cards so the PROCESS word still shows behind */
-.process-work-item--left .process-work-card {
-  margin-left: 2vw;
-}
-
-.process-work-item--right .process-work-card {
-  margin-right: 2vw;
-}
-
-/* Responsive */
-@media (max-width: 1100px) {
-  .process-work-card {
-    width: min(100%, 780px);
-    min-height: auto;
-  }
-
-  .process-work-item {
-    min-height: auto;
-    padding: 70px 0;
-  }
-
-  .process-work-card h3 {
-    font-size: clamp(60px, 13vw, 118px);
-  }
-
-  .process-work-item--left .process-work-card,
-  .process-work-item--right .process-work-card {
-    margin-left: 0;
-    margin-right: 0;
-  }
-}
-
-@media (max-width: 767px) {
-  .process-work-card {
-    padding: 32px 22px;
-  }
-
-  .process-work-card h3 {
-    font-size: clamp(50px, 16vw, 78px);
-  }
-
-  .process-work-actions {
-    align-items: flex-start;
-    flex-direction: column;
-  }
-
-  .process-card-btn {
-    width: 100%;
-  }
-}
-
-
-
-/* =========================================================
    PROCESS → BOOKING FULLSCREEN VOID HANDOFF
-   Replace previous void/booking CSS with this
    ========================================================= */
 
 .process-void-exit {
   position: relative;
   z-index: 20;
 
-  /* More scroll time = slower cinematic handoff */
-  min-height: 320vh;
-  margin-top: -18vh;
+  width: 100vw;
+  min-height: 340vh;
 
-  background: #000;
+  margin-top: -18vh;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+
+  background: #000000;
   overflow: clip;
   isolation: isolate;
 }
 
-/* This becomes the actual full-screen world */
+/* Fullscreen sticky camera scene */
 .process-void-stage {
   position: sticky;
   top: 0;
@@ -872,29 +584,29 @@
   justify-content: center;
 
   overflow: hidden;
-  background: #000;
+  background: #000000;
 }
 
 /* Fullscreen darkness / depth */
 .process-void-stage::before {
   content: "";
   position: absolute;
-  inset: -20vh -18vw;
+  inset: -24vh -18vw;
   z-index: 0;
   pointer-events: none;
 
   background:
     radial-gradient(circle at 50% 50%,
       rgba(255,255,255,0.09) 0%,
-      rgba(255,255,255,0.035) 14%,
-      rgba(0,0,0,0.78) 38%,
-      #000 72%
+      rgba(255,255,255,0.036) 13%,
+      rgba(0,0,0,0.72) 38%,
+      #000000 74%
     ),
     radial-gradient(circle at 50% 50%,
       transparent 0%,
-      rgba(0,0,0,0.35) 34%,
-      rgba(0,0,0,0.92) 70%,
-      #000 100%
+      rgba(0,0,0,0.36) 34%,
+      rgba(0,0,0,0.94) 72%,
+      #000000 100%
     );
 
   opacity: var(--void-opacity, 0);
@@ -902,12 +614,11 @@
     scale(var(--void-scale, 0.72))
     translate3d(0, 0, 0);
 
-  filter: blur(var(--void-blur, 28px));
-
+  filter: blur(var(--void-blur, 30px));
   will-change: opacity, transform, filter;
 }
 
-/* The center opening / tunnel mouth */
+/* Tunnel mouth / center opening */
 .void-door {
   position: absolute;
   left: 50%;
@@ -920,8 +631,8 @@
 
   background:
     radial-gradient(circle,
-      rgba(255,255,255,0.12) 0%,
-      rgba(255,255,255,0.052) 12%,
+      rgba(255,255,255,0.13) 0%,
+      rgba(255,255,255,0.054) 12%,
       rgba(255,255,255,0.018) 28%,
       rgba(0,0,0,0.12) 46%,
       transparent 68%
@@ -930,14 +641,14 @@
   opacity: var(--door-opacity, 0);
   transform:
     translate3d(-50%, -50%, 0)
-    scale(var(--door-scale, 0.2));
+    scale(var(--door-scale, 0.18));
 
-  filter: blur(var(--door-blur, 46px));
+  filter: blur(var(--door-blur, 52px));
   pointer-events: none;
   will-change: opacity, transform, filter;
 }
 
-/* Dust / light points */
+/* Dust / light depth points */
 .void-depth-field {
   position: absolute;
   inset: 0;
@@ -962,11 +673,6 @@
 
   opacity: calc(0.12 + var(--s) * 0.42);
 
-  /*
-    Important:
-    This pulls particles toward center, giving forward movement.
-    It should NOT feel like falling snow.
-  */
   transform:
     translate3d(
       calc((50vw - var(--x)) * var(--dust-pull, 0)),
@@ -979,7 +685,7 @@
   will-change: transform, filter, opacity;
 }
 
-/* Booking should be the room inside the void, not a block below */
+/* Booking emerges from depth */
 .booking-entry {
   position: relative;
   z-index: 8;
@@ -996,18 +702,11 @@
   text-align: center;
 
   opacity: var(--booking-opacity, 0);
-
-  /*
-    Key change:
-    No big downward movement.
-    It comes forward with scale/blur instead.
-  */
   transform:
     translate3d(0, 0, 0)
-    scale(var(--booking-scale, 0.58));
+    scale(var(--booking-scale, 0.56));
 
-  filter: blur(var(--booking-blur, 34px));
-
+  filter: blur(var(--booking-blur, 38px));
   will-change: opacity, transform, filter;
 }
 
@@ -1051,7 +750,8 @@
   border-radius: 2px;
 
   background:
-    linear-gradient(135deg,
+    linear-gradient(
+      135deg,
       rgba(8,8,8,0.78),
       rgba(22,22,22,0.46)
     );
@@ -1104,6 +804,10 @@
   margin-top: 12px;
 }
 
+.booking-row input + input {
+  margin-top: 0;
+}
+
 .booking-form input::placeholder,
 .booking-form textarea::placeholder {
   color: rgba(255,255,255,0.36);
@@ -1141,10 +845,173 @@
   opacity: 0.86;
 }
 
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .process-work-item,
+  .process-work-card,
+  .underline-hover::after,
+  .process-card-btn,
+  .booking-form button,
+  .booking-form input,
+  .booking-form textarea {
+    transition: none !important;
+  }
+
+  .process-work-item {
+    opacity: 1;
+    transform: none;
+  }
+
+  .process-work-word {
+    transform: translate3d(0, -50%, 0) scale(1);
+  }
+
+  .process-void-stage::before {
+    opacity: 1;
+    transform: scale(1);
+    filter: none;
+  }
+
+  .void-door {
+    opacity: 0.5;
+    transform: translate3d(-50%, -50%, 0) scale(1);
+    filter: blur(10px);
+  }
+
+  .void-depth-field {
+    opacity: 0.35;
+  }
+
+  .booking-entry {
+    opacity: 1;
+    transform: scale(1);
+    filter: none;
+  }
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 1100px) {
+  .process-work-container {
+    min-height: auto;
+    padding: 110px 24px 0;
+  }
+
+  .process-work-word {
+    font-size: clamp(110px, 26vw, 320px);
+    opacity: 0.1;
+  }
+
+  .process-work-top {
+    min-height: 72vh;
+    display: block;
+    padding-top: 0;
+  }
+
+  .process-work-kicker {
+    margin-bottom: 88px;
+  }
+
+  .process-work-intro {
+    max-width: 560px;
+    font-size: 14px;
+  }
+
+  .process-work-item {
+    min-height: auto;
+    padding: 70px 0;
+    justify-content: flex-start;
+  }
+
+  .process-work-card {
+    width: min(100%, 780px);
+    min-height: auto;
+  }
+
+  .process-work-card h3 {
+    font-size: clamp(60px, 13vw, 118px);
+  }
+
+  .process-work-item--left .process-work-card,
+  .process-work-item--right .process-work-card {
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  .process-void-exit {
+    min-height: 300vh;
+    margin-top: -10vh;
+  }
+}
+
 @media (max-width: 767px) {
+  .process-work-container {
+    padding: 92px 20px 0;
+  }
+
+  .process-work-word {
+    top: 50vh;
+    font-size: 34vw;
+    letter-spacing: -0.115em;
+  }
+
+  .process-work-top {
+    min-height: 68vh;
+  }
+
+  .process-work-kicker {
+    margin-bottom: 72px;
+    font-size: 9px;
+  }
+
+  .process-work-intro {
+    font-size: 13px;
+    line-height: 1.7;
+  }
+
+  .process-work-item {
+    padding: 48px 0;
+  }
+
+  .process-work-card {
+    padding: 32px 22px;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+
+  .process-work-card-meta {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 42px;
+  }
+
+  .process-work-card h3 {
+    font-size: clamp(50px, 16vw, 78px);
+    letter-spacing: -0.085em;
+  }
+
+  .process-work-card p {
+    font-size: 13px;
+  }
+
+  .process-work-actions {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .process-card-btn {
+    width: 100%;
+  }
+
   .process-void-exit {
     min-height: 280vh;
-    margin-top: -10vh;
+    margin-top: -6vh;
   }
 
   .booking-entry {
@@ -1157,6 +1024,10 @@
 
   .booking-row {
     grid-template-columns: 1fr;
+  }
+
+  .booking-row input + input {
+    margin-top: 12px;
   }
 
   .booking-form {
