@@ -2,12 +2,14 @@
    BIM LABS — PROCESS SECTION
    Full replacement for: sections/process-world.js
 
-   Behavior:
-   - PROCESS stays sticky/centered while the user moves through cards
-   - Cards reveal smoothly over the word
-   - Final phase becomes a cinematic void handoff
-   - PROCESS dissolves fully into depth
-   - Booking appears from inside the void, not as a normal section
+   Real ending behavior:
+   - Cards teach the process
+   - Cards quiet down
+   - PROCESS background fades
+   - Portal word appears as the final camera target
+   - Camera zooms into the letter C
+   - Booking appears from inside the C
+   - Scrolling back reverses the zoom
    ========================================================= */
 
 (function () {
@@ -22,6 +24,14 @@
   const items = Array.from(section.querySelectorAll("[data-process-step]"));
   const cards = Array.from(section.querySelectorAll(".process-work-card"));
   const glitchTexts = Array.from(section.querySelectorAll(".glitch-text"));
+
+  const portalExit = section.querySelector(".process-portal-exit");
+  const portalStage = section.querySelector(".process-portal-stage");
+  const portalWord = section.querySelector("[data-portal-word]");
+  const portalTarget = section.querySelector("[data-portal-target]");
+  const portalBooking = section.querySelector(".portal-booking");
+  const portalCore = section.querySelector(".portal-core");
+  const portalDepthField = section.querySelector(".portal-depth-field");
 
   const prefersReducedMotion = window.matchMedia(
     "(prefers-reduced-motion: reduce)"
@@ -38,6 +48,12 @@
   let currentProgress = 0;
   let rafRunning = false;
   let observer = null;
+
+  let portalMetrics = {
+    x: 0,
+    y: 0,
+    scale: 1
+  };
 
   /* =========================================================
      HELPERS
@@ -59,6 +75,14 @@
     );
 
     return x * x * (3 - 2 * x);
+  }
+
+  function easeInOutCubic(value) {
+    const x = clamp(value, 0, 1);
+
+    return x < 0.5
+      ? 4 * x * x * x
+      : 1 - Math.pow(-2 * x + 2, 3) / 2;
   }
 
   function randomGlyph() {
@@ -83,7 +107,7 @@
   }
 
   /* =========================================================
-     MEASURE SECTION
+     MEASURE
      ========================================================= */
 
   function measure() {
@@ -95,7 +119,49 @@
     scrollStart = sectionTop;
     scrollEnd = sectionTop + sectionHeight - window.innerHeight;
 
+    measurePortalTarget();
     updateTargetProgress();
+  }
+
+  function measurePortalTarget() {
+    if (!portalStage || !portalWord || !portalTarget) return;
+
+    /*
+      Reset transform before measuring so the C target is measured
+      from its natural position in the pinned scene.
+    */
+    setStyles(portalWord, {
+      transform: "translate3d(0px, 0px, 0px) scale(1)"
+    });
+
+    const stageRect = portalStage.getBoundingClientRect();
+    const targetRect = portalTarget.getBoundingClientRect();
+
+    const stageCenterX = stageRect.left + stageRect.width / 2;
+    const stageCenterY = stageRect.top + stageRect.height / 2;
+
+    const targetCenterX = targetRect.left + targetRect.width / 2;
+    const targetCenterY = targetRect.top + targetRect.height / 2;
+
+    const moveX = stageCenterX - targetCenterX;
+    const moveY = stageCenterY - targetCenterY;
+
+    /*
+      Scale target:
+      Make the C grow far beyond viewport size so it feels like
+      the camera actually enters the letter instead of just zooming text.
+    */
+    const targetWidth = Math.max(targetRect.width, 1);
+    const targetHeight = Math.max(targetRect.height, 1);
+    const viewportMax = Math.max(window.innerWidth, window.innerHeight);
+
+    const zoomScale = clamp((viewportMax * 3.4) / Math.max(targetWidth, targetHeight), 16, 42);
+
+    portalMetrics = {
+      x: moveX,
+      y: moveY,
+      scale: zoomScale
+    };
   }
 
   function updateTargetProgress() {
@@ -103,7 +169,6 @@
       (window.scrollY - scrollStart) / Math.max(scrollEnd - scrollStart, 1);
 
     targetProgress = clamp(raw, 0, 1);
-
     startAnimationLoop();
   }
 
@@ -113,7 +178,7 @@
 
   function setupInitialState() {
     section.classList.add("process-js-ready");
-    section.classList.remove("is-entering-void");
+    section.classList.remove("is-entering-portal", "is-inside-portal");
 
     items.forEach((item) => {
       item.classList.remove("is-visible", "is-hovered", "is-glitching");
@@ -146,66 +211,69 @@
       });
     });
 
-    const voidExit = section.querySelector(".process-void-exit");
+    if (portalExit) {
+      portalExit.style.setProperty("--portal-progress", "0");
+      portalExit.style.setProperty("--portal-bg-opacity", "0");
+      portalExit.style.setProperty("--portal-depth-opacity", "0");
+      portalExit.style.setProperty("--portal-depth-scale", "1");
+      portalExit.style.setProperty("--portal-pull", "0");
+      portalExit.style.setProperty("--portal-dot-scale", "1");
+      portalExit.style.setProperty("--portal-dot-blur", "0px");
+      portalExit.style.setProperty("--portal-core-opacity", "0");
+      portalExit.style.setProperty("--portal-core-scale", "0.2");
+      portalExit.style.setProperty("--portal-core-blur", "48px");
+      portalExit.style.setProperty("--booking-opacity", "0");
+      portalExit.style.setProperty("--booking-scale", "0.72");
+      portalExit.style.setProperty("--booking-blur", "32px");
+    }
 
-    if (voidExit) {
-      voidExit.style.setProperty("--void-opacity", "0");
-      voidExit.style.setProperty("--void-scale", "0.72");
-      voidExit.style.setProperty("--void-blur", "30px");
+    if (portalWord) {
+      setStyles(portalWord, {
+        opacity: "0",
+        filter: "blur(18px)",
+        transform: "translate3d(0px, 0px, 0px) scale(0.82)"
+      });
+    }
 
-      voidExit.style.setProperty("--door-opacity", "0");
-      voidExit.style.setProperty("--door-scale", "0.18");
-      voidExit.style.setProperty("--door-blur", "52px");
-
-      voidExit.style.setProperty("--dust-opacity", "0");
-      voidExit.style.setProperty("--dust-pull", "0");
-      voidExit.style.setProperty("--dust-scale", "0.72");
-      voidExit.style.setProperty("--dust-blur", "0px");
-      voidExit.style.setProperty("--field-scale", "1");
-
-      voidExit.style.setProperty("--booking-opacity", "0");
-      voidExit.style.setProperty("--booking-scale", "0.56");
-      voidExit.style.setProperty("--booking-blur", "38px");
+    if (portalBooking) {
+      setStyles(portalBooking, {
+        opacity: "0",
+        transform: "scale(0.72)",
+        filter: "blur(32px)"
+      });
     }
   }
 
   /* =========================================================
-     BIG PROCESS WORD
+     BACKGROUND PROCESS WORD
      ========================================================= */
 
   function renderBigWord(progress) {
     if (!bigWord) return;
 
     const enter = smoothstep(0, 0.16, progress);
-    const grow = smoothstep(0.08, 0.62, progress);
+    const grow = smoothstep(0.08, 0.56, progress);
 
     /*
-      This starts earlier and lasts longer.
-      The old timing made PROCESS hang too long and disappear too abruptly.
+      This word belongs to the card chapter.
+      It fades before the portal word takes over.
     */
-    const exit = smoothstep(0.58, 0.94, progress);
+    const exit = smoothstep(0.54, 0.73, progress);
 
     const scale =
       lerp(0.72, 0.92, enter) +
-      lerp(0, 0.18, grow) -
-      lerp(0, 0.16, exit);
+      lerp(0, 0.16, grow) -
+      lerp(0, 0.12, exit);
 
     const opacity =
-      lerp(0.08, 0.22, enter) -
-      lerp(0, 0.215, exit);
+      lerp(0.08, 0.21, enter) -
+      lerp(0, 0.21, exit);
 
-    const blur = lerp(2, 0, enter) + lerp(0, 24, exit);
+    const blur = lerp(2, 0, enter) + lerp(0, 18, exit);
 
     setStyles(bigWord, {
       color: "#ffffff",
-
-      /*
-        Critical fix:
-        min opacity is 0, not .08.
-        Otherwise the word can never dissolve.
-      */
-      opacity: clamp(opacity, 0, 0.22).toFixed(3),
-
+      opacity: clamp(opacity, 0, 0.21).toFixed(3),
       filter: `blur(${blur.toFixed(2)}px)`,
       transform: `translate3d(0, -50%, 0) scale(${scale.toFixed(4)})`
     });
@@ -219,11 +287,7 @@
     const viewportHeight =
       window.innerHeight || document.documentElement.clientHeight;
 
-    /*
-      Quiet phase begins before the void fully opens.
-      This makes the cards feel like they are shutting down.
-    */
-    const quiet = smoothstep(0.58, 0.76, progress);
+    const quiet = smoothstep(0.52, 0.68, progress);
 
     cards.forEach((card) => {
       const item = card.closest(".process-work-item");
@@ -254,12 +318,14 @@
       const baseScale = lerp(0.975, 1, visibleStrength);
 
       const finalOpacity = baseOpacity * lerp(1, 0, quiet);
-      const finalScale = baseScale * lerp(1, 0.96, quiet);
-      const finalY = driftY + lerp(0, -44, quiet);
+      const finalScale = baseScale * lerp(1, 0.94, quiet);
+      const finalY = driftY + lerp(0, -58, quiet);
+      const blur = lerp(0, 10, quiet);
 
       if (!item.classList.contains("is-hovered")) {
         setStyles(card, {
           opacity: finalOpacity.toFixed(3),
+          filter: `blur(${blur.toFixed(2)}px)`,
           transform: `translate3d(${driftX.toFixed(2)}px, ${finalY.toFixed(
             2
           )}px, 0) scale(${finalScale.toFixed(4)})`
@@ -269,60 +335,104 @@
   }
 
   /* =========================================================
-     VOID EXIT / BOOKING HANDOFF
+     TRUE PORTAL ZOOM INTO LETTER C
      ========================================================= */
 
-  function renderVoidExit(progress) {
-    const voidExit = section.querySelector(".process-void-exit");
-
-    if (!voidExit) return;
+  function renderPortalZoom(progress) {
+    if (!portalExit || !portalStage || !portalWord || !portalTarget) return;
 
     /*
-      Longer timings = less "new section appearing"
-      and more "camera moving into depth."
+      Timelines:
+      - portalIntro: portal stage takes over
+      - zoomRaw: camera moves into the C
+      - inside: booking room becomes current section
     */
-    const quiet = smoothstep(0.56, 0.74, progress);
-    const exit = smoothstep(0.62, 0.9, progress);
-    const deepExit = smoothstep(0.7, 1, progress);
-    const booking = smoothstep(0.82, 1, progress);
+    const portalIntro = smoothstep(0.62, 0.74, progress);
+    const zoomRaw = smoothstep(0.72, 0.94, progress);
+    const zoom = easeInOutCubic(zoomRaw);
+    const inside = smoothstep(0.86, 1, progress);
 
-    const voidOpacity = lerp(0, 1, exit);
-    const voidScale = lerp(0.72, 1.48, deepExit);
-    const voidBlur = lerp(34, 0, exit);
+    const wordOpacity = lerp(0, 1, portalIntro) * lerp(1, 0.08, inside);
+    const wordBlur = lerp(18, 0, portalIntro) + lerp(0, 6, inside);
 
-    const doorOpacity = lerp(0, 1, deepExit);
-    const doorScale = lerp(0.16, 1.65, deepExit);
-    const doorBlur = lerp(58, 6, deepExit);
+    /*
+      Real target zoom:
+      Move the word so the C is centered, then scale heavily.
+      This gives the camera-target feeling.
+    */
+    const moveX = lerp(0, portalMetrics.x, zoom);
+    const moveY = lerp(0, portalMetrics.y, zoom);
+    const scale = lerp(0.82, portalMetrics.scale, zoom);
 
-    const dustOpacity = lerp(0, 0.82, exit);
-    const dustPull = lerp(0, 0.36, deepExit);
-    const dustScale = lerp(0.72, 2.35, deepExit);
-    const dustBlur = lerp(0, 2.9, deepExit);
-    const fieldScale = lerp(1, 1.24, deepExit);
+    /*
+      As we get very close, the word should stop feeling like text
+      and become a wall/portal edge.
+    */
+    const brightness = lerp(1, 0.72, inside);
+    const contrast = lerp(1, 1.25, zoom);
 
-    const bookingOpacity = lerp(0, 1, booking);
-    const bookingScale = lerp(0.54, 1, booking);
-    const bookingBlur = lerp(42, 0, booking);
+    setStyles(portalWord, {
+      opacity: clamp(wordOpacity, 0, 1).toFixed(3),
+      filter: `blur(${wordBlur.toFixed(2)}px) brightness(${brightness.toFixed(
+        3
+      )}) contrast(${contrast.toFixed(3)})`,
+      transform: `translate3d(${moveX.toFixed(2)}px, ${moveY.toFixed(
+        2
+      )}px, 0) scale(${scale.toFixed(5)})`
+    });
 
-    voidExit.style.setProperty("--void-opacity", voidOpacity.toFixed(3));
-    voidExit.style.setProperty("--void-scale", voidScale.toFixed(3));
-    voidExit.style.setProperty("--void-blur", `${voidBlur.toFixed(2)}px`);
+    /*
+      Depth atmosphere.
+      Dots pull toward center as the C fills the screen.
+    */
+    const depthOpacity = lerp(0, 0.72, portalIntro) * lerp(1, 0.45, inside);
+    const depthScale = lerp(1, 1.28, zoom);
+    const pull = lerp(0, 0.42, zoom);
+    const dotScale = lerp(0.9, 2.45, zoom);
+    const dotBlur = lerp(0, 3.4, zoom);
 
-    voidExit.style.setProperty("--door-opacity", doorOpacity.toFixed(3));
-    voidExit.style.setProperty("--door-scale", doorScale.toFixed(3));
-    voidExit.style.setProperty("--door-blur", `${doorBlur.toFixed(2)}px`);
+    portalExit.style.setProperty("--portal-progress", zoom.toFixed(3));
+    portalExit.style.setProperty("--portal-bg-opacity", portalIntro.toFixed(3));
+    portalExit.style.setProperty("--portal-depth-opacity", depthOpacity.toFixed(3));
+    portalExit.style.setProperty("--portal-depth-scale", depthScale.toFixed(3));
+    portalExit.style.setProperty("--portal-pull", pull.toFixed(3));
+    portalExit.style.setProperty("--portal-dot-scale", dotScale.toFixed(3));
+    portalExit.style.setProperty("--portal-dot-blur", `${dotBlur.toFixed(2)}px`);
 
-    voidExit.style.setProperty("--dust-opacity", dustOpacity.toFixed(3));
-    voidExit.style.setProperty("--dust-pull", dustPull.toFixed(3));
-    voidExit.style.setProperty("--dust-scale", dustScale.toFixed(3));
-    voidExit.style.setProperty("--dust-blur", `${dustBlur.toFixed(2)}px`);
-    voidExit.style.setProperty("--field-scale", fieldScale.toFixed(3));
+    /*
+      Core darkness opens right where the C becomes too large to read.
+    */
+    const coreOpacity = smoothstep(0.76, 0.96, progress);
+    const coreScale = lerp(0.2, 1.8, smoothstep(0.78, 1, progress));
+    const coreBlur = lerp(52, 4, smoothstep(0.78, 1, progress));
 
-    voidExit.style.setProperty("--booking-opacity", bookingOpacity.toFixed(3));
-    voidExit.style.setProperty("--booking-scale", bookingScale.toFixed(3));
-    voidExit.style.setProperty("--booking-blur", `${bookingBlur.toFixed(2)}px`);
+    portalExit.style.setProperty("--portal-core-opacity", coreOpacity.toFixed(3));
+    portalExit.style.setProperty("--portal-core-scale", coreScale.toFixed(3));
+    portalExit.style.setProperty("--portal-core-blur", `${coreBlur.toFixed(2)}px`);
 
-    section.classList.toggle("is-entering-void", quiet > 0.5);
+    /*
+      Booking appears after the C has taken over the viewport.
+      It does not scroll up. It comes forward from the same center.
+    */
+    const bookingIn = smoothstep(0.88, 1, progress);
+    const bookingOpacity = bookingIn;
+    const bookingScale = lerp(0.72, 1, easeInOutCubic(bookingIn));
+    const bookingBlur = lerp(34, 0, bookingIn);
+
+    if (portalBooking) {
+      setStyles(portalBooking, {
+        opacity: bookingOpacity.toFixed(3),
+        filter: `blur(${bookingBlur.toFixed(2)}px)`,
+        transform: `scale(${bookingScale.toFixed(4)})`
+      });
+    }
+
+    portalExit.style.setProperty("--booking-opacity", bookingOpacity.toFixed(3));
+    portalExit.style.setProperty("--booking-scale", bookingScale.toFixed(3));
+    portalExit.style.setProperty("--booking-blur", `${bookingBlur.toFixed(2)}px`);
+
+    section.classList.toggle("is-entering-portal", portalIntro > 0.4);
+    section.classList.toggle("is-inside-portal", inside > 0.5);
   }
 
   /* =========================================================
@@ -332,7 +442,7 @@
   function render(progress) {
     renderBigWord(progress);
     renderCards(progress);
-    renderVoidExit(progress);
+    renderPortalZoom(progress);
   }
 
   function startAnimationLoop() {
@@ -508,7 +618,8 @@
         if (card) {
           setStyles(card, {
             transform: "translate3d(0, -8px, 0) scale(1.012)",
-            opacity: "1"
+            opacity: "1",
+            filter: "blur(0px)"
           });
         }
 
@@ -562,35 +673,38 @@
     cards.forEach((card) => {
       setStyles(card, {
         opacity: "1",
-        transform: "none"
+        transform: "none",
+        filter: "none"
       });
     });
 
-    const voidExit = section.querySelector(".process-void-exit");
+    if (portalWord) {
+      setStyles(portalWord, {
+        opacity: "1",
+        filter: "none",
+        transform: "none"
+      });
+    }
 
-    if (voidExit) {
-      voidExit.style.setProperty("--void-opacity", "1");
-      voidExit.style.setProperty("--void-scale", "1");
-      voidExit.style.setProperty("--void-blur", "0px");
+    if (portalBooking) {
+      setStyles(portalBooking, {
+        opacity: "1",
+        transform: "scale(1)",
+        filter: "none"
+      });
+    }
 
-      voidExit.style.setProperty("--door-opacity", "0.55");
-      voidExit.style.setProperty("--door-scale", "1");
-      voidExit.style.setProperty("--door-blur", "10px");
-
-      voidExit.style.setProperty("--dust-opacity", "0.35");
-      voidExit.style.setProperty("--dust-pull", "0");
-      voidExit.style.setProperty("--dust-scale", "1");
-      voidExit.style.setProperty("--dust-blur", "0px");
-      voidExit.style.setProperty("--field-scale", "1");
-
-      voidExit.style.setProperty("--booking-opacity", "1");
-      voidExit.style.setProperty("--booking-scale", "1");
-      voidExit.style.setProperty("--booking-blur", "0px");
+    if (portalExit) {
+      portalExit.style.setProperty("--portal-bg-opacity", "1");
+      portalExit.style.setProperty("--portal-depth-opacity", "0.35");
+      portalExit.style.setProperty("--portal-core-opacity", "0.75");
+      portalExit.style.setProperty("--portal-core-scale", "1");
+      portalExit.style.setProperty("--portal-core-blur", "6px");
     }
   }
 
   /* =========================================================
-     EVENT LISTENERS
+     EVENTS
      ========================================================= */
 
   function bindEvents() {
@@ -616,6 +730,13 @@
       refreshVisibleItems();
       render(currentProgress);
     });
+
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(() => {
+        measurePortalTarget();
+        render(currentProgress);
+      });
+    }
   }
 
   /* =========================================================
@@ -638,12 +759,15 @@
     render(currentProgress);
     bindEvents();
 
-    console.log("[Process] Loaded correctly.", {
+    console.log("[Process] Loaded portal zoom.", {
       items: items.length,
       cards: cards.length,
       hasBigWord: Boolean(bigWord),
-      hasVoidExit: Boolean(section.querySelector(".process-void-exit")),
-      hasVoidStage: Boolean(section.querySelector(".process-void-stage"))
+      hasPortalExit: Boolean(portalExit),
+      hasPortalStage: Boolean(portalStage),
+      hasPortalWord: Boolean(portalWord),
+      hasPortalTarget: Boolean(portalTarget),
+      hasPortalBooking: Boolean(portalBooking)
     });
   }
 
