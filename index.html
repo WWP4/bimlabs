@@ -147,22 +147,22 @@
 
 <section class="bim-world-entry" id="process-world" aria-label="BIM Labs process world">
 
-  <!-- WEBGL / CANVAS WORLD LAYER -->
-  <div class="world-canvas-wrap" aria-hidden="true">
-    <canvas id="bimWorldCanvas"></canvas>
-  </div>
-
-  <!-- GLOBAL ATMOSPHERE LAYERS -->
-  <div class="world-atmosphere" aria-hidden="true">
-    <div class="world-vignette"></div>
-    <div class="world-grain"></div>
-    <div class="world-fog world-fog-a"></div>
-    <div class="world-fog world-fog-b"></div>
-    <div class="world-horizon"></div>
-  </div>
-
   <!-- STICKY CAMERA VIEWPORT -->
   <div class="world-sticky">
+
+    <!-- WEBGL / CANVAS WORLD LAYER -->
+    <div class="world-canvas-wrap" aria-hidden="true">
+      <canvas id="bimWorldCanvas"></canvas>
+    </div>
+
+    <!-- GLOBAL ATMOSPHERE LAYERS -->
+    <div class="world-atmosphere" aria-hidden="true">
+      <div class="world-vignette"></div>
+      <div class="world-grain"></div>
+      <div class="world-fog world-fog-a"></div>
+      <div class="world-fog world-fog-b"></div>
+      <div class="world-horizon"></div>
+    </div>
 
     <!-- FIXED BRAND UI -->
     <div class="world-brand">
@@ -175,7 +175,7 @@
       <span>Scroll to enter</span>
     </div>
 
-    <!-- SECTION 2 EXIT: CAPABILITIES WORLD -->
+    <!-- SCENE 01: CAPABILITIES WORLD -->
     <div class="world-scene world-scene-capabilities" data-scene="capabilities">
 
       <div class="world-copy world-copy-capabilities">
@@ -193,6 +193,7 @@
       </div>
 
       <div class="capability-ribbon" aria-label="BIM Labs capabilities">
+
         <article class="capability-panel" data-depth="1">
           <span>/ 01</span>
           <h3>Websites</h3>
@@ -222,11 +223,11 @@
           <h3>Interactive / 3D</h3>
           <p>Immersive visuals, viewers, and product experiences that create memory.</p>
         </article>
-      </div>
 
+      </div>
     </div>
 
-    <!-- TRANSITION VOID -->
+    <!-- SCENE 02: TRANSITION VOID -->
     <div class="world-scene world-scene-void" data-scene="void" aria-hidden="true">
       <div class="void-core"></div>
       <div class="void-line void-line-a"></div>
@@ -234,7 +235,7 @@
       <div class="void-line void-line-c"></div>
     </div>
 
-    <!-- SECTION 3 ENTRY: PROCESS WORLD -->
+    <!-- SCENE 03: PROCESS WORLD -->
     <div class="world-scene world-scene-process" data-scene="process">
 
       <div class="world-copy world-copy-process">
@@ -286,7 +287,6 @@
         </article>
 
       </div>
-
     </div>
 
     <!-- DEPTH / FLOOR LAYERS -->
