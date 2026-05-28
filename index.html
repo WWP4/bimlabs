@@ -145,164 +145,167 @@
 </section>
 
 
-<section class="bim-world-entry" id="process-world" aria-label="BIM Labs process world">
+<section class="bim-process-wall" id="process" aria-label="BIM Labs process">
 
-  <!-- STICKY CAMERA VIEWPORT -->
-  <div class="world-sticky">
+  <!-- soft transition layer from section 2 -->
+  <div class="process-transition" aria-hidden="true">
+    <div class="process-transition-line"></div>
+    <div class="process-transition-label">How we work</div>
+  </div>
 
-    <!-- WEBGL / CANVAS WORLD LAYER -->
-    <div class="world-canvas-wrap" aria-hidden="true">
-      <canvas id="bimWorldCanvas"></canvas>
+  <div class="process-sticky">
+
+    <!-- fixed editorial frame -->
+    <div class="process-frame" aria-hidden="true">
+      <div class="process-ruler process-ruler--top"></div>
+      <div class="process-ruler process-ruler--bottom"></div>
+      <div class="process-corner process-corner--tl"></div>
+      <div class="process-corner process-corner--tr"></div>
+      <div class="process-corner process-corner--bl"></div>
+      <div class="process-corner process-corner--br"></div>
     </div>
 
-    <!-- GLOBAL ATMOSPHERE LAYERS -->
-    <div class="world-atmosphere" aria-hidden="true">
-      <div class="world-vignette"></div>
-      <div class="world-grain"></div>
-      <div class="world-fog world-fog-a"></div>
-      <div class="world-fog world-fog-b"></div>
-      <div class="world-horizon"></div>
+    <!-- top fixed meta -->
+    <div class="process-meta">
+      <span>03 / Process</span>
+      <span>Operating Method</span>
     </div>
 
-    <!-- FIXED BRAND UI -->
-    <div class="world-brand">
-      <span class="world-brand-mark">B</span>
-      <span>BIM Labs</span>
+    <!-- main opening copy -->
+    <div class="process-hero">
+      <p class="process-kicker">From work to method</p>
+
+      <h2>
+        How the work moves<br />
+        from idea to system.
+      </h2>
+
+      <p class="process-intro-copy">
+        A focused sequence for turning scattered ideas, rough offers, and disconnected
+        tools into a digital experience that feels clear, useful, and built to last.
+      </p>
     </div>
 
-    <div class="world-status">
-      <span>03 / Process World</span>
-      <span>Scroll to enter</span>
-    </div>
+    <!-- process wall -->
+    <div class="process-wall" aria-label="Four step BIM Labs process">
 
-    <!-- SCENE 01: CAPABILITIES WORLD -->
-    <div class="world-scene world-scene-capabilities" data-scene="capabilities">
+      <article class="process-row process-row--one" data-step="01">
+        <div class="process-row-line" aria-hidden="true"></div>
 
-      <div class="world-copy world-copy-capabilities">
-        <p class="world-kicker">02 / Capabilities</p>
+        <div class="process-row-number">
+          <span>01</span>
+        </div>
 
-        <h2>
-          Everything we build<br />
-          lives in one world.
-        </h2>
+        <div class="process-row-title">
+          <h3>Diagnose</h3>
+        </div>
 
-        <p>
-          Websites, AI systems, portals, automations, and interactive experiences
-          designed as one connected digital environment.
-        </p>
-      </div>
+        <div class="process-row-detail">
+          <p>
+            We map the offer, audience, friction points, and real business goal
+            before touching design.
+          </p>
 
-      <div class="capability-ribbon" aria-label="BIM Labs capabilities">
-
-        <article class="capability-panel" data-depth="1">
-          <span>/ 01</span>
-          <h3>Websites</h3>
-          <p>Premium digital foundations built to move people through a clear journey.</p>
-        </article>
-
-        <article class="capability-panel" data-depth="2">
-          <span>/ 02</span>
-          <h3>AI Systems</h3>
-          <p>Assistants and guided flows that qualify, answer, route, and support.</p>
-        </article>
-
-        <article class="capability-panel" data-depth="3">
-          <span>/ 03</span>
-          <h3>Client Portals</h3>
-          <p>Private project spaces that make the customer experience feel organized.</p>
-        </article>
-
-        <article class="capability-panel" data-depth="4">
-          <span>/ 04</span>
-          <h3>Automations</h3>
-          <p>Behind-the-scenes systems that reduce manual work and keep momentum.</p>
-        </article>
-
-        <article class="capability-panel" data-depth="5">
-          <span>/ 05</span>
-          <h3>Interactive / 3D</h3>
-          <p>Immersive visuals, viewers, and product experiences that create memory.</p>
-        </article>
-
-      </div>
-    </div>
-
-    <!-- SCENE 02: TRANSITION VOID -->
-    <div class="world-scene world-scene-void" data-scene="void" aria-hidden="true">
-      <div class="void-core"></div>
-      <div class="void-line void-line-a"></div>
-      <div class="void-line void-line-b"></div>
-      <div class="void-line void-line-c"></div>
-    </div>
-
-    <!-- SCENE 03: PROCESS WORLD -->
-    <div class="world-scene world-scene-process" data-scene="process">
-
-      <div class="world-copy world-copy-process">
-        <p class="world-kicker">03 / Our Process</p>
-
-        <h2>
-          From first principles<br />
-          to living systems.
-        </h2>
-
-        <p>
-          A controlled build sequence for turning scattered ideas into a premium
-          digital system that looks clear, sells clearly, and works behind the scenes.
-        </p>
-      </div>
-
-      <div class="process-world-stage" aria-label="BIM Labs four step process">
-
-        <article class="process-chapter process-chapter-01" data-step="01">
-          <div class="chapter-inner">
-            <span class="chapter-number">01</span>
-            <h3>Diagnose</h3>
-            <p>We map the offer, audience, friction points, and conversion path.</p>
+          <div class="process-row-tags" aria-label="Diagnose focus areas">
+            <span>Offer</span>
+            <span>Audience</span>
+            <span>Friction</span>
           </div>
-        </article>
+        </div>
+      </article>
 
-        <article class="process-chapter process-chapter-02" data-step="02">
-          <div class="chapter-inner">
-            <span class="chapter-number">02</span>
-            <h3>Design the world</h3>
-            <p>We define the visual language, content rhythm, and interaction system.</p>
+      <article class="process-row process-row--two" data-step="02">
+        <div class="process-row-line" aria-hidden="true"></div>
+
+        <div class="process-row-number">
+          <span>02</span>
+        </div>
+
+        <div class="process-row-title">
+          <h3>Architect</h3>
+        </div>
+
+        <div class="process-row-detail">
+          <p>
+            We define the structure: pages, flows, content rhythm, user journey,
+            and system logic.
+          </p>
+
+          <div class="process-row-tags" aria-label="Architect focus areas">
+            <span>Structure</span>
+            <span>Journey</span>
+            <span>Logic</span>
           </div>
-        </article>
+        </div>
+      </article>
 
-        <article class="process-chapter process-chapter-03" data-step="03">
-          <div class="chapter-inner">
-            <span class="chapter-number">03</span>
-            <h3>Build the engine</h3>
-            <p>We connect the website, forms, AI, portal, CRM, and automations.</p>
+      <article class="process-row process-row--three" data-step="03">
+        <div class="process-row-line" aria-hidden="true"></div>
+
+        <div class="process-row-number">
+          <span>03</span>
+        </div>
+
+        <div class="process-row-title">
+          <h3>Build</h3>
+        </div>
+
+        <div class="process-row-detail">
+          <p>
+            We design and develop the interface, AI layer, portal, automations,
+            and supporting tools.
+          </p>
+
+          <div class="process-row-tags" aria-label="Build focus areas">
+            <span>Interface</span>
+            <span>AI</span>
+            <span>Automation</span>
           </div>
-        </article>
+        </div>
+      </article>
 
-        <article class="process-chapter process-chapter-04" data-step="04">
-          <div class="chapter-inner">
-            <span class="chapter-number">04</span>
-            <h3>Launch & refine</h3>
-            <p>We ship, measure, improve, and keep the system moving after launch.</p>
+      <article class="process-row process-row--four" data-step="04">
+        <div class="process-row-line" aria-hidden="true"></div>
+
+        <div class="process-row-number">
+          <span>04</span>
+        </div>
+
+        <div class="process-row-title">
+          <h3>Refine</h3>
+        </div>
+
+        <div class="process-row-detail">
+          <p>
+            We launch, review behavior, clean up friction, and improve the system
+            after it goes live.
+          </p>
+
+          <div class="process-row-tags" aria-label="Refine focus areas">
+            <span>Launch</span>
+            <span>Review</span>
+            <span>Improve</span>
           </div>
-        </article>
+        </div>
+      </article>
 
-      </div>
     </div>
 
-    <!-- DEPTH / FLOOR LAYERS -->
-    <div class="world-floor" aria-hidden="true">
-      <div class="floor-plane"></div>
-      <div class="floor-shadow floor-shadow-a"></div>
-      <div class="floor-shadow floor-shadow-b"></div>
-      <div class="floor-grid"></div>
+    <!-- closing statement -->
+    <div class="process-close">
+      <p>
+        If the system needs to sell, guide, or organize — we build the path.
+      </p>
+
+      <a href="#contact" class="process-cta">
+        Start a conversation
+      </a>
     </div>
 
-    <!-- SCROLL HUD -->
-    <div class="world-scroll-ui" aria-hidden="true">
-      <div class="world-progress">
-        <span></span>
-      </div>
-      <p>Scroll to enter the process world</p>
+    <!-- small bottom progress language -->
+    <div class="process-footer-meta" aria-hidden="true">
+      <span>Small by design</span>
+      <span>Serious by default</span>
     </div>
 
   </div>
