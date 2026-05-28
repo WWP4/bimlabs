@@ -587,3 +587,106 @@
     font-size: 15px;
   }
 }
+
+
+
+/* =========================================================
+   PROCESS WALL — STACKING + TIMING FIX
+   Prevents section 2 from visually sitting on top of section 3
+   ========================================================= */
+
+@media (min-width: 1101px) {
+  .salo-showcase,
+  .bim-showcase {
+    position: relative;
+    z-index: 1;
+  }
+
+  .bim-process-wall {
+    position: relative;
+    z-index: 20;
+    min-height: 360vh;
+    margin-top: -1px;
+    background: #030303;
+  }
+
+  .process-sticky {
+    position: sticky;
+    top: 0;
+    z-index: 25;
+    background:
+      linear-gradient(to bottom, #030303 0%, rgba(3, 3, 3, 0.98) 22%, #030303 100%),
+      radial-gradient(circle at 72% 48%, rgba(255, 255, 255, 0.04), transparent 28%),
+      #030303;
+  }
+
+  .process-transition {
+    display: none;
+  }
+
+  .process-hero {
+    top: 13vh;
+    left: 4.5vw;
+    max-width: 620px;
+  }
+
+  .process-hero h2 {
+    max-width: 620px;
+    font-size: clamp(48px, 4.65vw, 82px);
+    line-height: 0.92;
+  }
+
+  .process-intro-copy {
+    max-width: 360px;
+    margin-top: 24px;
+    font-size: 12px;
+    line-height: 1.55;
+  }
+
+  .process-wall {
+    left: 4.5vw;
+    right: 4.5vw;
+    bottom: 13vh;
+  }
+
+  .process-row {
+    min-height: 74px;
+    grid-template-columns: 82px minmax(230px, 0.62fr) minmax(560px, 1fr);
+    column-gap: 38px;
+  }
+
+  .process-row-title h3 {
+    font-size: clamp(30px, 2.65vw, 48px);
+    line-height: 0.94;
+  }
+
+  .process-row-detail {
+    grid-template-columns: minmax(300px, 440px) 1fr;
+    gap: 28px;
+  }
+
+  .process-row-detail p {
+    max-width: 420px;
+    font-size: 11px;
+    line-height: 1.5;
+  }
+
+  .process-row-tags span {
+    min-height: 22px;
+    padding: 0 9px;
+    font-size: 9px;
+  }
+
+  .process-close {
+    bottom: 5.8vh;
+  }
+
+  .process-close p {
+    font-size: 13px;
+  }
+
+  .process-cta {
+    min-height: 36px;
+    font-size: 9px;
+  }
+}
