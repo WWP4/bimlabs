@@ -285,43 +285,29 @@
     renderCards();
   }
 
-  /* =========================================================
-     BIG CENTERED PROCESS WORD
-     ========================================================= */
+ function renderBigWord(progress) {
+  if (!bigWord) return;
 
-  function renderBigWord(progress) {
-    if (!bigWord) return;
+  const enter = smoothstep(0, 0.18, progress);
+  const grow = smoothstep(0.08, 0.72, progress);
+  const exit = smoothstep(0.84, 1, progress);
 
-    /*
-      Important:
-      The word stays centered because translateY always stays -50%.
-      We only animate scale, opacity, and blur.
-    */
+  const scale =
+    lerp(0.8, 1.05, enter) +
+    lerp(0, 0.28, grow) -
+    lerp(0, 0.05, exit);
 
-    const enter = smoothstep(0, 0.18, progress);
-    const grow = smoothstep(0.08, 0.72, progress);
-    const exit = smoothstep(0.84, 1, progress);
+  const opacity =
+    lerp(0.25, 1, enter) -
+    lerp(0, 0.12, exit);
 
-    const scale =
-      lerp(0.72, 1.04, enter) +
-      lerp(0, 0.34, grow) -
-      lerp(0, 0.08, exit);
-
-    const opacity =
-      lerp(0.08, 0.34, enter) -
-      lerp(0, 0.08, exit);
-
-    const blur =
-      lerp(3.2, 0, enter) +
-      lerp(0, 0.65, exit);
-
-    setStyles(bigWord, {
-      color: "#ffffff",
-      opacity: clamp(opacity, 0.08, 0.34).toFixed(3),
-      filter: `blur(${blur.toFixed(2)}px)`,
-      transform: `translate3d(0, -50%, 0) scale(${scale.toFixed(4)})`
-    });
-  }
+  setStyles(bigWord, {
+    color: "#ffffff",
+    opacity: clamp(opacity, 0.25, 1).toFixed(3),
+    filter: "none",
+    transform: `scale(${scale.toFixed(4)})`
+  });
+}
 
   /* =========================================================
      CARD MOTION
