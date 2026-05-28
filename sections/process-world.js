@@ -260,36 +260,46 @@
     renderCards();
   }
 
-  function renderBigWord(progress) {
-    if (!bigWord) return;
 
-    /*
-      Entry:
-      - starts smaller and faint
-      - grows into center
+   function renderBigWord(progress) {
+  if (!bigWord) return;
 
-      Middle:
-      - sits behind the cards
+  /*
+    Goal:
+    - Enters large
+    - Grows into a huge white background word
+    - Stays centered behind the steps
+    - Moves subtly with scroll so it does not feel pinned/dead
+  */
 
-      Exit:
-      - slightly enlarges and fades softer
-    */
+  const enter = smoothstep(0, 0.18, progress);
+  const travel = smoothstep(0.08, 0.9, progress);
+  const exit = smoothstep(0.82, 1, progress);
 
-    const enter = smoothstep(0, 0.22, progress);
-    const middle = smoothstep(0.18, 0.72, progress);
-    const exit = smoothstep(0.78, 1, progress);
+  const scale =
+    lerp(0.72, 1.18, enter) +
+    lerp(0, 0.34, travel) -
+    lerp(0, 0.08, exit);
 
-    const scale = lerp(0.64, 1.08, enter) + lerp(0, 0.16, middle) + lerp(0, 0.12, exit);
-    const opacity = lerp(0.035, 0.145, enter) - lerp(0, 0.045, exit);
-    const y = lerp(42, 0, enter) + lerp(0, -26, exit);
-    const blur = lerp(2.2, 0, enter) + lerp(0, 1.2, exit);
+  const opacity =
+    lerp(0.04, 0.22, enter) -
+    lerp(0, 0.06, exit);
 
-    setStyles(bigWord, {
-      transform: `translate3d(0, ${y.toFixed(2)}px, 0) scale(${scale.toFixed(4)})`,
-      opacity: clamp(opacity, 0.035, 0.15).toFixed(3),
-      filter: `blur(${blur.toFixed(2)}px)`
-    });
-  }
+  const y =
+    lerp(90, 0, enter) +
+    lerp(0, -120, travel);
+
+  const blur =
+    lerp(3.2, 0, enter) +
+    lerp(0, 0.8, exit);
+
+  setStyles(bigWord, {
+    transform: `translate3d(0, calc(-50% + ${y.toFixed(2)}px), 0) scale(${scale.toFixed(4)})`,
+    opacity: clamp(opacity, 0.04, 0.22).toFixed(3),
+    filter: `blur(${blur.toFixed(2)}px)`
+  });
+}
+   
 
   function renderCards() {
     const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
