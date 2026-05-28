@@ -1,16 +1,18 @@
 /* =========================================================
-   BIM LABS — PROCESS WALL
-   Full clean replacement for sections/process.css
+   BIM LABS — PROCESS SECTION
+   Clean full replacement for sections/process.css
 
-   Notes:
-   - CSS handles layout and visual design.
-   - JS/GSAP handles animation.
-   - No duplicate override blocks.
-   - No static fallback forcing rows visible.
+   CSS = layout + design only
+   JS/GSAP = animation only
+
+   Important:
+   This file intentionally does NOT set animated items to
+   opacity: 0 by default. That prevents CSS from killing GSAP.
    ========================================================= */
 
+
 /* =========================================================
-   BASE SECTION
+   SECTION BASE
    ========================================================= */
 
 .bim-process-wall {
@@ -30,12 +32,12 @@
   box-sizing: border-box;
 }
 
-/* Keeps previous horizontal showcase behind this section */
 .salo-showcase,
 .bim-showcase {
   position: relative;
   z-index: 1;
 }
+
 
 /* =========================================================
    STICKY STAGE
@@ -49,15 +51,37 @@
   height: 100svh;
   overflow: hidden;
   background:
-    radial-gradient(circle at 72% 48%, rgba(255, 255, 255, 0.045), transparent 28%),
-    radial-gradient(circle at 28% 88%, rgba(255, 255, 255, 0.035), transparent 34%),
+    radial-gradient(circle at 62% 36%, rgba(244, 241, 234, 0.04), transparent 24%),
+    radial-gradient(circle at 58% 72%, rgba(244, 241, 234, 0.035), transparent 34%),
+    radial-gradient(circle at 76% 48%, rgba(255, 255, 255, 0.035), transparent 28%),
     linear-gradient(to bottom, #030303 0%, #030303 100%);
 }
 
-/* Optional transition layer is hidden on desktop because the section already has clean handoff */
+/* subtle depth glow — safe, does not touch GSAP transforms */
+.process-sticky::before {
+  content: "";
+  position: absolute;
+  left: 38%;
+  top: 18%;
+  width: 46vw;
+  height: 46vh;
+  z-index: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(244, 241, 234, 0.06),
+    rgba(244, 241, 234, 0.018) 38%,
+    transparent 72%
+  );
+  filter: blur(42px);
+  opacity: 0.5;
+}
+
+/* old transition layer not needed for current composition */
 .process-transition {
   display: none;
 }
+
 
 /* =========================================================
    EDITORIAL FRAME
@@ -72,8 +96,8 @@
 
 .process-ruler {
   position: absolute;
-  left: 40px;
-  right: 40px;
+  left: 38px;
+  right: 38px;
   height: 1px;
   background: rgba(244, 241, 234, 0.11);
 }
@@ -95,38 +119,51 @@
 }
 
 .process-corner--tl {
-  left: 40px;
+  left: 38px;
   top: 38px;
   border-width: 1px 0 0 1px;
 }
 
 .process-corner--tr {
-  right: 40px;
+  right: 38px;
   top: 38px;
   border-width: 1px 1px 0 0;
 }
 
 .process-corner--bl {
-  left: 40px;
+  left: 38px;
   bottom: 38px;
   border-width: 0 0 1px 1px;
 }
 
 .process-corner--br {
-  right: 40px;
+  right: 38px;
   bottom: 38px;
   border-width: 0 1px 1px 0;
 }
 
+
 /* =========================================================
-   META LABELS
+   TOP / BOTTOM META
    ========================================================= */
 
 .process-meta {
   position: absolute;
-  left: 40px;
-  right: 40px;
+  left: 38px;
+  right: 38px;
   top: 58px;
+  z-index: 5;
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+  pointer-events: none;
+}
+
+.process-footer-meta {
+  position: absolute;
+  left: 38px;
+  right: 38px;
+  bottom: 58px;
   z-index: 5;
   display: flex;
   justify-content: space-between;
@@ -136,28 +173,17 @@
 
 .process-meta span,
 .process-footer-meta span {
-  color: rgba(244, 241, 234, 0.34);
+  color: rgba(244, 241, 234, 0.32);
   font-size: 10px;
   line-height: 1;
   letter-spacing: 0.26em;
   text-transform: uppercase;
 }
 
-.process-footer-meta {
-  position: absolute;
-  left: 40px;
-  right: 40px;
-  bottom: 58px;
-  z-index: 5;
-  display: flex;
-  justify-content: space-between;
-  gap: 24px;
-  pointer-events: none;
-}
-
 .process-footer-meta span {
   color: rgba(244, 241, 234, 0.24);
 }
+
 
 /* =========================================================
    HERO COPY
@@ -165,59 +191,60 @@
 
 .process-hero {
   position: absolute;
-  left: 4.6vw;
-  top: 12vh;
+  left: 7vw;
+  top: 15vh;
   z-index: 5;
-  max-width: 640px;
+  max-width: 520px;
 }
 
 .process-kicker {
-  margin: 0 0 24px;
-  color: rgba(244, 241, 234, 0.44);
-  font-size: 11px;
+  margin: 0 0 22px;
+  color: rgba(244, 241, 234, 0.38);
+  font-size: 10px;
   line-height: 1;
-  letter-spacing: 0.32em;
+  letter-spacing: 0.34em;
   text-transform: uppercase;
 }
 
 .process-hero h2 {
-  max-width: 640px;
+  max-width: 520px;
   margin: 0;
-  color: rgba(244, 241, 234, 0.94);
+  color: rgba(244, 241, 234, 0.88);
   font-family: inherit;
-  font-size: clamp(48px, 4.75vw, 84px);
+  font-size: clamp(42px, 3.85vw, 68px);
   font-weight: 400;
-  line-height: 0.92;
-  letter-spacing: -0.075em;
+  line-height: 0.96;
+  letter-spacing: -0.065em;
 }
 
 .process-intro-copy {
-  max-width: 365px;
+  max-width: 330px;
   margin: 24px 0 0;
-  color: rgba(244, 241, 234, 0.52);
-  font-size: 12px;
-  line-height: 1.6;
+  color: rgba(244, 241, 234, 0.46);
+  font-size: 11px;
+  line-height: 1.65;
 }
 
+
 /* =========================================================
-   PROCESS ROW WALL
+   PROCESS WALL ROWS
    ========================================================= */
 
 .process-wall {
   position: absolute;
-  left: 4.6vw;
-  right: 4.6vw;
-  bottom: 15vh;
+  left: 7vw;
+  right: 7vw;
+  bottom: 13.5vh;
   z-index: 6;
 }
 
 .process-row {
   position: relative;
-  min-height: 72px;
+  min-height: 66px;
   display: grid;
-  grid-template-columns: 82px minmax(220px, 0.58fr) minmax(540px, 1fr);
+  grid-template-columns: 70px minmax(190px, 0.5fr) minmax(520px, 1fr);
   align-items: center;
-  column-gap: 38px;
+  column-gap: 34px;
   color: #f4f1ea;
 }
 
@@ -227,7 +254,7 @@
   right: 0;
   top: 0;
   height: 1px;
-  background: rgba(244, 241, 234, 0.16);
+  background: rgba(244, 241, 234, 0.15);
   transform-origin: left center;
 }
 
@@ -238,40 +265,40 @@
   right: 0;
   bottom: 0;
   height: 1px;
-  background: rgba(244, 241, 234, 0.16);
+  background: rgba(244, 241, 234, 0.15);
 }
 
 .process-row-number span {
   display: inline-block;
-  color: rgba(244, 241, 234, 0.4);
-  font-size: 12px;
+  color: rgba(244, 241, 234, 0.34);
+  font-size: 10px;
   line-height: 1;
   letter-spacing: 0.24em;
 }
 
 .process-row-title h3 {
   margin: 0;
-  color: rgba(244, 241, 234, 0.92);
+  color: rgba(244, 241, 234, 0.86);
   font-family: inherit;
-  font-size: clamp(30px, 2.6vw, 48px);
+  font-size: clamp(28px, 2.35vw, 42px);
   font-weight: 400;
-  line-height: 0.94;
+  line-height: 0.96;
   letter-spacing: -0.055em;
 }
 
 .process-row-detail {
   display: grid;
-  grid-template-columns: minmax(300px, 430px) 1fr;
+  grid-template-columns: minmax(280px, 390px) 1fr;
   align-items: center;
   gap: 28px;
 }
 
 .process-row-detail p {
-  max-width: 420px;
+  max-width: 390px;
   margin: 0;
-  color: rgba(244, 241, 234, 0.5);
-  font-size: 11px;
-  line-height: 1.5;
+  color: rgba(244, 241, 234, 0.44);
+  font-size: 10.5px;
+  line-height: 1.52;
 }
 
 .process-row-tags {
@@ -285,17 +312,18 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: 22px;
-  padding: 0 9px;
-  border: 1px solid rgba(244, 241, 234, 0.16);
+  min-height: 20px;
+  padding: 0 8px;
+  border: 1px solid rgba(244, 241, 234, 0.13);
   border-radius: 999px;
-  color: rgba(244, 241, 234, 0.42);
-  font-size: 9px;
+  color: rgba(244, 241, 234, 0.36);
+  font-size: 8px;
   line-height: 1;
   letter-spacing: 0.13em;
   text-transform: uppercase;
   white-space: nowrap;
 }
+
 
 /* =========================================================
    CLOSING CTA
@@ -303,9 +331,9 @@
 
 .process-close {
   position: absolute;
-  left: 4.6vw;
-  right: 4.6vw;
-  bottom: 5.5vh;
+  left: 7vw;
+  right: 7vw;
+  bottom: 5.4vh;
   z-index: 9;
   display: flex;
   align-items: center;
@@ -317,7 +345,7 @@
 .process-close p {
   max-width: 520px;
   margin: 0;
-  color: rgba(244, 241, 234, 0.72);
+  color: rgba(244, 241, 234, 0.68);
   font-size: 13px;
   line-height: 1.35;
   letter-spacing: -0.02em;
@@ -329,9 +357,9 @@
   align-items: center;
   min-height: 36px;
   padding: 0 16px;
-  border: 1px solid rgba(244, 241, 234, 0.28);
+  border: 1px solid rgba(244, 241, 234, 0.25);
   border-radius: 999px;
-  color: rgba(244, 241, 234, 0.82);
+  color: rgba(244, 241, 234, 0.78);
   font-size: 9px;
   line-height: 1;
   letter-spacing: 0.22em;
@@ -355,7 +383,7 @@
 }
 
 .process-cta:hover {
-  border-color: rgba(244, 241, 234, 0.55);
+  border-color: rgba(244, 241, 234, 0.52);
   color: rgba(244, 241, 234, 1);
 }
 
@@ -363,47 +391,43 @@
   transform: scaleX(1);
 }
 
+
 /* =========================================================
-   ANIMATION START STATES
-   Important:
-   - Before JS runs, hide animated pieces.
-   - Once JS adds .process-ready, CSS gets out of the way.
-   - GSAP inline styles then control the reveal.
+   GSAP SAFETY
+   Do not set opacity/transform here.
+   These rules simply prevent accidental hidden states.
    ========================================================= */
 
 @media (min-width: 1101px) {
-  .bim-process-wall:not(.process-ready) .process-meta,
-  .bim-process-wall:not(.process-ready) .process-footer-meta,
-  .bim-process-wall:not(.process-ready) .process-kicker,
-  .bim-process-wall:not(.process-ready) .process-hero h2,
-  .bim-process-wall:not(.process-ready) .process-intro-copy,
-  .bim-process-wall:not(.process-ready) .process-close,
-  .bim-process-wall:not(.process-ready) .process-row,
-  .bim-process-wall:not(.process-ready) .process-row-number,
-  .bim-process-wall:not(.process-ready) .process-row-title,
-  .bim-process-wall:not(.process-ready) .process-row-detail {
-    opacity: 0;
+  .bim-process-wall .process-meta,
+  .bim-process-wall .process-footer-meta,
+  .bim-process-wall .process-kicker,
+  .bim-process-wall .process-hero h2,
+  .bim-process-wall .process-intro-copy,
+  .bim-process-wall .process-close,
+  .bim-process-wall .process-row,
+  .bim-process-wall .process-row-number,
+  .bim-process-wall .process-row-title,
+  .bim-process-wall .process-row-detail {
+    visibility: visible;
   }
 
-  .bim-process-wall:not(.process-ready) .process-row {
-    transform: translateY(72px);
-  }
-
-  .bim-process-wall:not(.process-ready) .process-row-line {
-    transform: scaleX(0);
+  .bim-process-wall .process-row-line {
+    transform-origin: left center;
   }
 }
 
+
 /* =========================================================
-   RESPONSIVE TABLET / MOBILE
-   No sticky wall on smaller screens.
-   Everything becomes readable and normal.
+   TABLET / MOBILE
+   Mobile does not use sticky wall layout.
    ========================================================= */
 
 @media (max-width: 1100px) {
   .bim-process-wall {
     min-height: auto;
     background: #030303;
+    overflow: hidden;
   }
 
   .process-sticky {
@@ -415,6 +439,7 @@
     overflow: visible;
   }
 
+  .process-sticky::before,
   .process-transition,
   .process-frame,
   .process-meta,
@@ -432,6 +457,7 @@
 
   .process-kicker {
     margin-bottom: 22px;
+    font-size: 10px;
   }
 
   .process-hero h2 {
@@ -519,10 +545,6 @@
     padding: 96px 20px 70px;
   }
 
-  .process-kicker {
-    font-size: 10px;
-  }
-
   .process-hero h2 {
     font-size: clamp(42px, 13vw, 62px);
   }
@@ -546,125 +568,5 @@
 
   .process-row-detail p {
     font-size: 13px;
-  }
-}
-
-
-/* =========================================================
-   PROCESS WALL — SAFE ELEVATION PASS
-   Does not interfere with GSAP animation transforms
-   ========================================================= */
-
-@media (min-width: 1101px) {
-  .process-sticky {
-    background:
-      radial-gradient(circle at 62% 36%, rgba(244, 241, 234, 0.04), transparent 24%),
-      radial-gradient(circle at 58% 72%, rgba(244, 241, 234, 0.035), transparent 34%),
-      linear-gradient(to bottom, #030303 0%, #030303 100%);
-  }
-
-  .process-sticky::before {
-    content: "";
-    position: absolute;
-    left: 38%;
-    top: 18%;
-    width: 46vw;
-    height: 46vh;
-    z-index: 0;
-    pointer-events: none;
-    background: radial-gradient(
-      ellipse at center,
-      rgba(244, 241, 234, 0.065),
-      rgba(244, 241, 234, 0.018) 38%,
-      transparent 72%
-    );
-    filter: blur(42px);
-    opacity: 0.5;
-  }
-
-  .process-frame,
-  .process-meta,
-  .process-footer-meta,
-  .process-hero,
-  .process-wall,
-  .process-close {
-    position: absolute;
-  }
-
-  .process-frame {
-    z-index: 2;
-  }
-
-  .process-meta,
-  .process-footer-meta {
-    z-index: 5;
-  }
-
-  .process-hero {
-    left: 7vw;
-    top: 15vh;
-    max-width: 520px;
-    z-index: 5;
-  }
-
-  .process-kicker {
-    margin-bottom: 22px;
-    font-size: 10px;
-    letter-spacing: 0.34em;
-  }
-
-  .process-hero h2 {
-    max-width: 520px;
-    font-size: clamp(42px, 3.85vw, 68px);
-    line-height: 0.96;
-    letter-spacing: -0.065em;
-  }
-
-  .process-intro-copy {
-    max-width: 330px;
-    margin-top: 24px;
-    font-size: 11px;
-    line-height: 1.65;
-  }
-
-  .process-wall {
-    left: 7vw;
-    right: 7vw;
-    bottom: 13.5vh;
-    z-index: 6;
-  }
-
-  .process-row {
-    min-height: 66px;
-    grid-template-columns: 70px minmax(190px, 0.5fr) minmax(520px, 1fr);
-    column-gap: 34px;
-  }
-
-  .process-row-title h3 {
-    font-size: clamp(28px, 2.35vw, 42px);
-    line-height: 0.96;
-  }
-
-  .process-row-detail p {
-    max-width: 390px;
-    font-size: 10.5px;
-    line-height: 1.52;
-  }
-
-  .process-row-number span {
-    font-size: 10px;
-  }
-
-  .process-row-tags span {
-    min-height: 20px;
-    padding: 0 8px;
-    font-size: 8px;
-  }
-
-  .process-close {
-    left: 7vw;
-    right: 7vw;
-    bottom: 5.4vh;
-    z-index: 9;
   }
 }
