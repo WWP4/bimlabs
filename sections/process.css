@@ -1,13 +1,22 @@
 /* =========================================================
-   BIM LABS — PROCESS INDEX SECTION
+   BIM LABS — CINEMATIC PROCESS SECTION
    Full replacement for: sections/process.css
 
    Built for:
-   .bim-process-index
-   .process-index-shell
-   .process-index-sticky
-   .process-index-list
-   .process-index-step
+   .bim-process-cinema
+   .process-cinema-bg
+   .process-cinema-shell
+   .process-cinema-step
+   .process-step-card
+   .glitch-text
+   .underline-hover
+
+   Direction:
+   - Huge PROCESS word behind the section
+   - Long vertical scroll
+   - Steps alternate left / right
+   - Glitch reveal on scroll + hover
+   - Underline hover detail
    ========================================================= */
 
 
@@ -15,10 +24,11 @@
    SECTION BASE
    ========================================================= */
 
-.bim-process-index {
+.bim-process-cinema {
   position: relative;
   z-index: 5;
   margin: 0;
+  min-height: 100vh;
   background: #030303;
   color: #f4f1ea;
   overflow: hidden;
@@ -26,12 +36,12 @@
   font-family: inherit;
 }
 
-.bim-process-index,
-.bim-process-index * {
+.bim-process-cinema,
+.bim-process-cinema * {
   box-sizing: border-box;
 }
 
-.bim-process-index::before {
+.bim-process-cinema::before {
   content: "";
   position: absolute;
   inset: 0;
@@ -39,224 +49,116 @@
   pointer-events: none;
 
   background:
-    radial-gradient(circle at 72% 18%, rgba(244, 241, 234, 0.065), transparent 24%),
-    radial-gradient(circle at 22% 68%, rgba(244, 241, 234, 0.035), transparent 28%),
-    linear-gradient(to bottom, #030303 0%, #050505 48%, #030303 100%);
+    radial-gradient(circle at 70% 18%, rgba(244, 241, 234, 0.055), transparent 24%),
+    radial-gradient(circle at 22% 58%, rgba(244, 241, 234, 0.032), transparent 28%),
+    linear-gradient(to bottom, #030303 0%, #050505 46%, #030303 100%);
 }
 
-.bim-process-index::after {
+.bim-process-cinema::after {
   content: "";
   position: absolute;
-  left: 8vw;
-  right: 8vw;
+  left: 5vw;
+  right: 5vw;
   bottom: -18vh;
   z-index: 0;
 
-  height: 34vh;
+  height: 38vh;
   pointer-events: none;
 
   background:
     radial-gradient(
       ellipse at center,
-      rgba(244, 241, 234, 0.07),
+      rgba(244, 241, 234, 0.075),
       rgba(244, 241, 234, 0.018) 42%,
-      transparent 72%
+      transparent 74%
     );
 
-  filter: blur(40px);
-  opacity: 0.4;
+  filter: blur(44px);
+  opacity: 0.42;
 }
 
 
 /* =========================================================
-   LAYOUT
+   HUGE BACKGROUND WORD
    ========================================================= */
 
-.process-index-shell {
-  position: relative;
-  z-index: 2;
-
-  display: grid;
-  grid-template-columns: minmax(320px, 0.82fr) minmax(520px, 1.18fr);
-  column-gap: clamp(56px, 8vw, 140px);
-
-  width: 100%;
-  min-height: 100vh;
-  padding: clamp(96px, 12vh, 150px) 7vw clamp(110px, 13vh, 170px);
-}
-
-.process-index-sticky {
+.process-cinema-bg {
   position: sticky;
   top: 0;
-
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+  z-index: 1;
 
   height: 100vh;
   height: 100svh;
-  padding: clamp(38px, 6vh, 64px) 0;
+  margin-bottom: -100vh;
 
-  align-self: start;
+  display: grid;
+  place-items: center;
+
+  pointer-events: none;
+  overflow: hidden;
 }
 
-
-/* =========================================================
-   LEFT SIDE
-   ========================================================= */
-
-.process-index-meta {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 24px;
-
-  width: 100%;
-  max-width: 460px;
-}
-
-.process-index-meta span {
-  display: inline-block;
-
-  color: rgba(244, 241, 234, 0.31);
-  font-size: 10px;
-  line-height: 1;
-  letter-spacing: 0.28em;
-  text-transform: uppercase;
-  white-space: nowrap;
-}
-
-.process-index-heading {
-  max-width: 560px;
-}
-
-.process-index-heading p {
-  margin: 0 0 24px;
-
-  color: rgba(244, 241, 234, 0.38);
-  font-size: 10px;
-  line-height: 1;
-  letter-spacing: 0.34em;
-  text-transform: uppercase;
-}
-
-.process-index-heading h2 {
-  margin: 0;
+.process-cinema-bg span {
+  display: block;
 
   color: rgba(244, 241, 234, 0.92);
   font-family: inherit;
-  font-size: clamp(58px, 6.3vw, 112px);
-  font-weight: 400;
-  line-height: 0.86;
-  letter-spacing: -0.09em;
-}
+  font-size: clamp(105px, 19vw, 420px);
+  font-weight: 800;
+  line-height: 0.75;
+  letter-spacing: -0.095em;
+  text-transform: uppercase;
+  white-space: nowrap;
 
-.process-index-note {
-  max-width: 370px;
-}
-
-.process-index-note p {
-  margin: 0;
-
-  color: rgba(244, 241, 234, 0.43);
-  font-size: 12px;
-  line-height: 1.7;
-  letter-spacing: -0.01em;
+  opacity: 0.08;
+  transform: scale(0.82);
+  will-change: transform, opacity, filter;
 }
 
 
 /* =========================================================
-   RIGHT SIDE LIST
+   MAIN LAYOUT
    ========================================================= */
 
-.process-index-list {
+.process-cinema-shell {
   position: relative;
-  padding-top: clamp(12px, 4vh, 42px);
+  z-index: 3;
+
+  width: 100%;
+  padding: clamp(110px, 14vh, 170px) 7vw clamp(120px, 16vh, 190px);
 }
 
-.process-index-list::before {
-  content: "";
+
+/* =========================================================
+   INTRO
+   ========================================================= */
+
+.process-cinema-intro {
+  position: relative;
+  min-height: 88vh;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  max-width: 760px;
+}
+
+.process-cinema-meta {
   position: absolute;
   left: 0;
-  top: 0;
-  bottom: 0;
+  right: 0;
+  top: clamp(18px, 3vh, 44px);
 
-  width: 1px;
-  background: linear-gradient(
-    to bottom,
-    transparent,
-    rgba(244, 241, 234, 0.12) 8%,
-    rgba(244, 241, 234, 0.12) 86%,
-    transparent
-  );
-}
-
-.process-index-step {
-  position: relative;
-
-  min-height: 70vh;
-  padding: clamp(58px, 9vh, 96px) 0 clamp(58px, 9vh, 96px) clamp(34px, 4vw, 70px);
-
-  border-top: 1px solid rgba(244, 241, 234, 0.11);
-
-  opacity: 0.58;
-  transform: translateY(24px);
-  transition:
-    opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1),
-    transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.process-index-step:first-child {
-  border-top-color: rgba(244, 241, 234, 0.16);
-}
-
-.process-index-step::before {
-  content: "";
-  position: absolute;
-  left: -4px;
-  top: clamp(60px, 9vh, 98px);
-
-  width: 7px;
-  height: 7px;
-
-  border-radius: 999px;
-  background: rgba(244, 241, 234, 0.22);
-  box-shadow: 0 0 0 6px rgba(244, 241, 234, 0.025);
-
-  transition:
-    background 0.6s ease,
-    box-shadow 0.6s ease,
-    transform 0.6s ease;
-}
-
-.process-index-step.is-visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.process-index-step.is-visible::before {
-  background: rgba(244, 241, 234, 0.74);
-  box-shadow:
-    0 0 0 7px rgba(244, 241, 234, 0.03),
-    0 0 34px rgba(244, 241, 234, 0.13);
-  transform: scale(1.05);
-}
-
-
-/* =========================================================
-   STEP CONTENT
-   ========================================================= */
-
-.process-step-topline {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 24px;
-
-  margin-bottom: clamp(34px, 6vh, 72px);
 }
 
-.process-step-topline span {
+.process-cinema-meta span {
+  display: inline-block;
+
   color: rgba(244, 241, 234, 0.32);
   font-size: 10px;
   line-height: 1;
@@ -265,24 +167,219 @@
   white-space: nowrap;
 }
 
-.process-index-step h3 {
+.process-cinema-intro h2 {
+  max-width: 820px;
   margin: 0;
 
   color: rgba(244, 241, 234, 0.92);
   font-family: inherit;
-  font-size: clamp(70px, 9vw, 172px);
+  font-size: clamp(58px, 7.2vw, 138px);
   font-weight: 400;
-  line-height: 0.78;
-  letter-spacing: -0.105em;
+  line-height: 0.86;
+  letter-spacing: -0.09em;
 }
 
-.process-index-step p {
-  max-width: 470px;
-  margin: clamp(30px, 5vh, 52px) 0 0;
+.process-cinema-intro p {
+  max-width: 430px;
+  margin: 32px 0 0;
 
-  color: rgba(244, 241, 234, 0.53);
+  color: rgba(244, 241, 234, 0.48);
+  font-size: 13px;
+  line-height: 1.72;
+  letter-spacing: -0.01em;
+}
+
+
+/* =========================================================
+   STEP POSITIONING
+   ========================================================= */
+
+.process-cinema-step {
+  position: relative;
+
+  min-height: 92vh;
+  display: flex;
+  align-items: center;
+
+  opacity: 0.62;
+  transform: translateY(42px);
+  transition:
+    opacity 1s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.process-cinema-step.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.process-cinema-step--left {
+  justify-content: flex-start;
+}
+
+.process-cinema-step--right {
+  justify-content: flex-end;
+}
+
+.process-cinema-step--left .process-step-card {
+  margin-left: clamp(0px, 3vw, 60px);
+}
+
+.process-cinema-step--right .process-step-card {
+  margin-right: clamp(0px, 3vw, 60px);
+}
+
+
+/* =========================================================
+   STEP CARD
+   ========================================================= */
+
+.process-step-card {
+  position: relative;
+
+  width: min(100%, 620px);
+  padding: clamp(30px, 4.5vw, 58px);
+
+  border: 1px solid rgba(244, 241, 234, 0.105);
+  border-radius: 2px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(244, 241, 234, 0.045),
+      rgba(244, 241, 234, 0.012) 42%,
+      rgba(244, 241, 234, 0.026)
+    );
+
+  box-shadow:
+    0 32px 110px rgba(0, 0, 0, 0.34),
+    inset 0 1px 0 rgba(244, 241, 234, 0.06);
+
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+
+  overflow: hidden;
+  transform: translateX(0);
+  transition:
+    border-color 0.55s ease,
+    background 0.55s ease,
+    box-shadow 0.55s ease,
+    transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.process-step-card::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+
+  height: 1px;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(244, 241, 234, 0.28),
+      transparent
+    );
+
+  opacity: 0;
+  transform: translateX(-35%);
+  transition:
+    opacity 0.55s ease,
+    transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.process-step-card::after {
+  content: "";
+  position: absolute;
+  inset: auto 26px 20px 26px;
+
+  height: 1px;
+  background: rgba(244, 241, 234, 0.09);
+
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.process-cinema-step--right .process-step-card::after {
+  transform-origin: right center;
+}
+
+.process-cinema-step.is-visible .process-step-card::after {
+  transform: scaleX(1);
+}
+
+.process-cinema-step.is-hovered .process-step-card,
+.process-step-card:hover {
+  border-color: rgba(244, 241, 234, 0.22);
+  background:
+    linear-gradient(
+      135deg,
+      rgba(244, 241, 234, 0.065),
+      rgba(244, 241, 234, 0.018) 42%,
+      rgba(244, 241, 234, 0.035)
+    );
+
+  box-shadow:
+    0 44px 140px rgba(0, 0, 0, 0.45),
+    0 0 44px rgba(244, 241, 234, 0.035),
+    inset 0 1px 0 rgba(244, 241, 234, 0.09);
+
+  transform: translateY(-6px);
+}
+
+.process-cinema-step.is-hovered .process-step-card::before,
+.process-step-card:hover::before {
+  opacity: 1;
+  transform: translateX(35%);
+}
+
+
+/* =========================================================
+   CARD CONTENT
+   ========================================================= */
+
+.process-step-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+
+  margin-bottom: clamp(42px, 6vh, 70px);
+}
+
+.process-step-meta span {
+  display: inline-block;
+
+  color: rgba(244, 241, 234, 0.34);
+  font-size: 10px;
+  line-height: 1;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.process-step-card h3 {
+  margin: 0;
+
+  color: rgba(244, 241, 234, 0.92);
+  font-family: inherit;
+  font-size: clamp(54px, 6.8vw, 128px);
+  font-weight: 400;
+  line-height: 0.78;
+  letter-spacing: -0.095em;
+}
+
+.process-step-card p {
+  max-width: 455px;
+  margin: clamp(30px, 4.6vh, 46px) 0 0;
+
+  color: rgba(244, 241, 234, 0.52);
   font-size: 14px;
-  line-height: 1.65;
+  line-height: 1.66;
   letter-spacing: -0.015em;
 }
 
@@ -295,6 +392,8 @@
 }
 
 .process-step-tags span {
+  position: relative;
+
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -307,17 +406,76 @@
 
   background: rgba(244, 241, 234, 0.014);
 
-  color: rgba(244, 241, 234, 0.4);
+  color: rgba(244, 241, 234, 0.42);
   font-size: 8px;
   line-height: 1;
   letter-spacing: 0.15em;
   text-transform: uppercase;
   white-space: nowrap;
+
+  transition:
+    color 0.35s ease,
+    border-color 0.35s ease,
+    background 0.35s ease;
+}
+
+.process-step-tags span:hover {
+  color: rgba(244, 241, 234, 0.78);
+  border-color: rgba(244, 241, 234, 0.28);
+  background: rgba(244, 241, 234, 0.035);
 }
 
 
 /* =========================================================
-   GLITCH TEXT STATES
+   UNDERLINE HOVER
+   ========================================================= */
+
+.underline-hover {
+  position: relative;
+  display: inline-block;
+}
+
+.underline-hover::selection {
+  background: rgba(244, 241, 234, 0.2);
+}
+
+.underline-hover::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: auto;
+  bottom: -0.12em;
+
+  width: 100%;
+  height: 0.04em;
+
+  background: rgba(244, 241, 234, 0.74);
+
+  transform: scaleX(0);
+  transform-origin: left center;
+
+  transition: transform 0.58s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.process-cinema-step--right .underline-hover::after {
+  left: auto;
+  right: 0;
+  transform-origin: right center;
+}
+
+.underline-hover:hover::after,
+.process-step-card:hover .underline-hover::after,
+.process-cinema-step.is-hovered .underline-hover::after {
+  transform: scaleX(1);
+}
+
+
+/* =========================================================
+   GLITCH TEXT
+   Works on:
+   - scroll class: .is-glitching
+   - hover class: .is-hovered
+   - title class: .is-scrambling
    ========================================================= */
 
 .glitch-text {
@@ -337,21 +495,32 @@
 }
 
 .glitch-text::before {
-  color: rgba(244, 241, 234, 0.45);
+  color: rgba(244, 241, 234, 0.5);
   transform: translate(2px, -1px);
 }
 
 .glitch-text::after {
-  color: rgba(244, 241, 234, 0.25);
+  color: rgba(244, 241, 234, 0.28);
   transform: translate(-2px, 1px);
 }
 
-.process-index-step.is-glitching .glitch-text::before {
-  animation: processGlitchA 0.42s steps(2, end);
+.process-cinema-step.is-glitching .glitch-text::before,
+.process-cinema-step.is-hovered .glitch-text::before,
+.glitch-text:hover::before {
+  animation: processGlitchA 0.46s steps(2, end);
 }
 
-.process-index-step.is-glitching .glitch-text::after {
-  animation: processGlitchB 0.42s steps(2, end);
+.process-cinema-step.is-glitching .glitch-text::after,
+.process-cinema-step.is-hovered .glitch-text::after,
+.glitch-text:hover::after {
+  animation: processGlitchB 0.46s steps(2, end);
+}
+
+.glitch-text.is-scrambling {
+  color: rgba(244, 241, 234, 0.84);
+  text-shadow:
+    1px 0 rgba(244, 241, 234, 0.18),
+    -1px 0 rgba(244, 241, 234, 0.08);
 }
 
 @keyframes processGlitchA {
@@ -360,23 +529,23 @@
     clip-path: inset(0 0 92% 0);
   }
 
-  18% {
-    opacity: 0.7;
+  16% {
+    opacity: 0.75;
     clip-path: inset(18% 0 54% 0);
   }
 
-  34% {
+  33% {
     opacity: 0.25;
     clip-path: inset(72% 0 12% 0);
   }
 
   52% {
-    opacity: 0.6;
+    opacity: 0.64;
     clip-path: inset(34% 0 43% 0);
   }
 
-  76% {
-    opacity: 0.25;
+  74% {
+    opacity: 0.28;
     clip-path: inset(8% 0 76% 0);
   }
 
@@ -392,18 +561,18 @@
     clip-path: inset(88% 0 0 0);
   }
 
-  16% {
-    opacity: 0.45;
+  18% {
+    opacity: 0.48;
     clip-path: inset(58% 0 20% 0);
   }
 
-  31% {
-    opacity: 0.18;
+  32% {
+    opacity: 0.2;
     clip-path: inset(10% 0 75% 0);
   }
 
   58% {
-    opacity: 0.42;
+    opacity: 0.46;
     clip-path: inset(42% 0 38% 0);
   }
 
@@ -420,30 +589,34 @@
 
 
 /* =========================================================
-   CLOSE CTA
+   CLOSE
    ========================================================= */
 
-.process-index-close {
+.process-cinema-close {
   position: relative;
 
-  min-height: 56vh;
-  padding: clamp(70px, 10vh, 110px) 0 0 clamp(34px, 4vw, 70px);
+  min-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
 
-  border-top: 1px solid rgba(244, 241, 234, 0.13);
+  max-width: 900px;
+  margin-left: auto;
+  padding: clamp(80px, 12vh, 140px) 0;
 }
 
-.process-index-close p {
-  max-width: 680px;
+.process-cinema-close p {
   margin: 0;
 
-  color: rgba(244, 241, 234, 0.78);
-  font-size: clamp(34px, 4vw, 72px);
+  color: rgba(244, 241, 234, 0.82);
+  font-size: clamp(42px, 5.5vw, 104px);
   font-weight: 400;
-  line-height: 0.96;
-  letter-spacing: -0.07em;
+  line-height: 0.92;
+  letter-spacing: -0.078em;
 }
 
-.process-index-close a {
+.process-cinema-cta {
   position: relative;
 
   display: inline-flex;
@@ -451,7 +624,7 @@
   justify-content: center;
 
   min-height: 38px;
-  margin-top: 34px;
+  margin-top: 36px;
   padding: 0 17px;
 
   border: 1px solid rgba(244, 241, 234, 0.25);
@@ -465,42 +638,35 @@
   text-decoration: none;
   white-space: nowrap;
 
-  overflow: hidden;
+  overflow: visible;
   transition:
     border-color 0.35s ease,
-    color 0.35s ease;
+    color 0.35s ease,
+    background 0.35s ease;
 }
 
-.process-index-close a::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-
-  background: rgba(244, 241, 234, 0.08);
-  transform: scaleX(0);
-  transform-origin: left center;
-  transition: transform 0.45s ease;
+.process-cinema-cta::after {
+  bottom: -7px;
+  height: 1px;
 }
 
-.process-index-close a:hover {
+.process-cinema-cta:hover {
   border-color: rgba(244, 241, 234, 0.52);
   color: rgba(244, 241, 234, 1);
-}
-
-.process-index-close a:hover::after {
-  transform: scaleX(1);
+  background: rgba(244, 241, 234, 0.035);
 }
 
 
 /* =========================================================
-   JS HOOKS / PERFORMANCE
+   PERFORMANCE HOOKS
    ========================================================= */
 
-.process-index-step,
+.process-cinema-bg span,
+.process-cinema-step,
+.process-step-card,
 .glitch-text,
-.process-index-heading,
-.process-index-note {
+.process-cinema-intro,
+.process-cinema-close {
   will-change: transform, opacity;
 }
 
@@ -510,65 +676,72 @@
    ========================================================= */
 
 @media (max-width: 1100px) {
-  .process-index-shell {
-    display: block;
-    min-height: auto;
+  .process-cinema-shell {
     padding: 110px 24px 100px;
   }
 
-  .process-index-sticky {
+  .process-cinema-bg span {
+    font-size: clamp(100px, 26vw, 260px);
+    opacity: 0.055;
+  }
+
+  .process-cinema-intro {
+    min-height: 74vh;
+  }
+
+  .process-cinema-meta {
     position: relative;
     top: auto;
-
-    height: auto;
-    padding: 0;
-    margin-bottom: 80px;
+    margin-bottom: 88px;
   }
 
-  .process-index-meta {
-    max-width: none;
-    margin-bottom: 90px;
+  .process-cinema-intro h2 {
+    font-size: clamp(52px, 12vw, 94px);
   }
 
-  .process-index-heading h2 {
-    font-size: clamp(54px, 12vw, 92px);
-  }
-
-  .process-index-note {
+  .process-cinema-intro p {
     max-width: 560px;
-    margin-top: 30px;
-  }
-
-  .process-index-note p {
     font-size: 14px;
   }
 
-  .process-index-list::before {
+  .process-cinema-step {
+    min-height: auto;
+    padding: 62px 0;
+  }
+
+  .process-cinema-step--left,
+  .process-cinema-step--right {
+    justify-content: flex-start;
+  }
+
+  .process-cinema-step--left .process-step-card,
+  .process-cinema-step--right .process-step-card {
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  .process-step-card {
+    width: min(100%, 720px);
+  }
+
+  .process-step-card h3 {
+    font-size: clamp(54px, 13vw, 112px);
+  }
+
+  .process-cinema-step--right .underline-hover::after {
     left: 0;
+    right: auto;
+    transform-origin: left center;
   }
 
-  .process-index-step {
+  .process-cinema-close {
     min-height: auto;
-    padding: 68px 0 72px 32px;
+    margin-left: 0;
+    padding: 78px 0 20px;
   }
 
-  .process-index-step h3 {
-    font-size: clamp(54px, 15vw, 110px);
-  }
-
-  .process-index-step p {
-    max-width: 600px;
-    font-size: 14px;
-  }
-
-  .process-index-close {
-    min-height: auto;
-    padding: 72px 0 0 32px;
-  }
-
-  .process-index-close p {
-    max-width: 760px;
-    font-size: clamp(40px, 9vw, 78px);
+  .process-cinema-close p {
+    font-size: clamp(40px, 10vw, 78px);
   }
 }
 
@@ -578,67 +751,65 @@
    ========================================================= */
 
 @media (max-width: 767px) {
-  .process-index-shell {
-    padding: 92px 20px 82px;
+  .process-cinema-shell {
+    padding: 92px 20px 84px;
   }
 
-  .process-index-meta {
-    margin-bottom: 70px;
+  .process-cinema-bg span {
+    font-size: 34vw;
+    opacity: 0.045;
   }
 
-  .process-index-meta span {
+  .process-cinema-intro {
+    min-height: 70vh;
+  }
+
+  .process-cinema-meta {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 72px;
+  }
+
+  .process-cinema-meta span,
+  .process-step-meta span {
     font-size: 9px;
     letter-spacing: 0.22em;
   }
 
-  .process-index-heading p {
-    margin-bottom: 20px;
-    font-size: 9px;
-    letter-spacing: 0.3em;
-  }
-
-  .process-index-heading h2 {
+  .process-cinema-intro h2 {
     font-size: clamp(44px, 14vw, 68px);
-    letter-spacing: -0.075em;
+    letter-spacing: -0.076em;
   }
 
-  .process-index-note {
-    margin-top: 26px;
-  }
-
-  .process-index-note p {
+  .process-cinema-intro p {
     font-size: 13px;
-    line-height: 1.65;
+    line-height: 1.66;
   }
 
-  .process-step-topline {
+  .process-cinema-step {
+    padding: 42px 0;
+  }
+
+  .process-step-card {
+    padding: 28px 22px 30px;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+
+  .process-step-meta {
     align-items: flex-start;
     flex-direction: column;
-    gap: 10px;
+    gap: 12px;
     margin-bottom: 42px;
   }
 
-  .process-step-topline span {
-    font-size: 9px;
-    letter-spacing: 0.22em;
+  .process-step-card h3 {
+    font-size: clamp(46px, 16vw, 76px);
+    letter-spacing: -0.082em;
   }
 
-  .process-index-step {
-    padding: 58px 0 62px 26px;
-  }
-
-  .process-index-step::before {
-    left: -3px;
-    width: 6px;
-    height: 6px;
-  }
-
-  .process-index-step h3 {
-    font-size: clamp(46px, 16vw, 78px);
-    letter-spacing: -0.08em;
-  }
-
-  .process-index-step p {
+  .process-step-card p {
     margin-top: 28px;
     font-size: 13px;
     line-height: 1.62;
@@ -655,27 +826,12 @@
     font-size: 8px;
   }
 
-  .process-index-close {
-    padding: 62px 0 0 26px;
-  }
-
-  .process-index-close p {
+  .process-cinema-close p {
     font-size: clamp(34px, 11vw, 54px);
   }
 
-  .process-index-close a {
+  .process-cinema-cta {
     min-height: 40px;
     font-size: 9px;
   }
-}
-
-.process-index-step.is-hovered {
-  opacity: 1;
-}
-
-.glitch-text.is-scrambling {
-  color: rgba(244, 241, 234, 0.82);
-  text-shadow:
-    1px 0 rgba(244, 241, 234, 0.18),
-    -1px 0 rgba(244, 241, 234, 0.08);
 }
