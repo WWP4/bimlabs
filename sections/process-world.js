@@ -73,10 +73,6 @@
       return;
     }
 
-    /* -----------------------------
-       GSAP START STATES
-    ----------------------------- */
-
     gsap.set([meta, footerMeta], {
       opacity: 0
     });
@@ -147,10 +143,6 @@
 
     section.classList.add("process-ready");
 
-    /* -----------------------------
-       SCROLL TIMELINE
-    ----------------------------- */
-
     const tl = gsap.timeline({
       defaults: {
         ease: "none"
@@ -164,7 +156,6 @@
       }
     });
 
-    /* Intro arrives */
     tl.to([meta, footerMeta], {
       opacity: 1,
       duration: 0.08
@@ -190,7 +181,6 @@
       duration: 0.16
     }, 0.18);
 
-    /* Rows move into place */
     tl.to(wall, {
       y: 0,
       duration: 0.25
@@ -229,7 +219,6 @@
       }, start + 0.075);
     });
 
-    /* Hero quiets down so rows become the focus */
     tl.to(hero, {
       y: -60,
       opacity: 0.25,
@@ -248,7 +237,6 @@
       duration: 0.18
     }, 0.88);
 
-    /* Thin fullscreen exit */
     if (exitBand && exitLine && exitLabel) {
       tl.to([hero, wall, close, meta, footerMeta], {
         opacity: 0,
