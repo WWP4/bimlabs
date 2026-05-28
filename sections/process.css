@@ -802,3 +802,65 @@
     font-size: 9px;
   }
 }
+
+
+
+/* =========================================================
+   FIX: PROCESS WORD WHITE / CENTERED / GROWS ON SCROLL
+   Paste at bottom of sections/process.css
+   ========================================================= */
+
+.process-work-word-wrap {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  overflow: visible;
+}
+
+.process-work-word {
+  position: sticky;
+  top: 50vh;
+
+  display: block;
+  width: max-content;
+  margin: 0 auto;
+
+  color: #ffffff !important;
+  opacity: 0.28;
+
+  font-size: clamp(160px, 27vw, 620px);
+  font-weight: 800;
+  line-height: 0.72;
+  letter-spacing: -0.12em;
+  text-transform: lowercase;
+  white-space: nowrap;
+
+  transform: translate3d(0, -50%, 0) scale(0.78);
+  transform-origin: center center;
+
+  filter: none;
+  will-change: transform, opacity, filter;
+}
+
+/* Make sure content stays above the giant word */
+.process-work-top,
+.process-work-list,
+.process-work-bottom {
+  position: relative;
+  z-index: 5;
+}
+
+@media (max-width: 1100px) {
+  .process-work-word {
+    font-size: clamp(110px, 27vw, 320px);
+    opacity: 0.16;
+  }
+}
+
+@media (max-width: 767px) {
+  .process-work-word {
+    font-size: 34vw;
+    opacity: 0.12;
+  }
+}
