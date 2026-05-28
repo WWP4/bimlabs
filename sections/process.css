@@ -1,22 +1,15 @@
 /* =========================================================
-   BIM LABS — CINEMATIC PROCESS SECTION
+   BIM LABS — PROCESS / WORK COPY SECTION
    Full replacement for: sections/process.css
 
    Built for:
-   .bim-process-cinema
-   .process-cinema-bg
-   .process-cinema-shell
-   .process-cinema-step
-   .process-step-card
+   .process-work-copy
+   .process-work-container
+   .process-work-word
+   .process-work-item
+   .process-work-card
    .glitch-text
    .underline-hover
-
-   Direction:
-   - Huge PROCESS word behind the section
-   - Long vertical scroll
-   - Steps alternate left / right
-   - Glitch reveal on scroll + hover
-   - Underline hover detail
    ========================================================= */
 
 
@@ -24,11 +17,10 @@
    SECTION BASE
    ========================================================= */
 
-.bim-process-cinema {
+.process-work-copy {
   position: relative;
   z-index: 5;
   margin: 0;
-  min-height: 100vh;
   background: #030303;
   color: #f4f1ea;
   overflow: hidden;
@@ -36,12 +28,12 @@
   font-family: inherit;
 }
 
-.bim-process-cinema,
-.bim-process-cinema * {
+.process-work-copy,
+.process-work-copy * {
   box-sizing: border-box;
 }
 
-.bim-process-cinema::before {
+.process-work-copy::before {
   content: "";
   position: absolute;
   inset: 0;
@@ -50,39 +42,46 @@
 
   background:
     radial-gradient(circle at 70% 18%, rgba(244, 241, 234, 0.055), transparent 24%),
-    radial-gradient(circle at 22% 58%, rgba(244, 241, 234, 0.032), transparent 28%),
-    linear-gradient(to bottom, #030303 0%, #050505 46%, #030303 100%);
+    radial-gradient(circle at 20% 62%, rgba(244, 241, 234, 0.035), transparent 30%),
+    linear-gradient(to bottom, #030303 0%, #050505 48%, #030303 100%);
 }
 
-.bim-process-cinema::after {
+.process-work-copy::after {
   content: "";
   position: absolute;
   left: 5vw;
   right: 5vw;
-  bottom: -18vh;
+  bottom: -20vh;
   z-index: 0;
 
-  height: 38vh;
+  height: 40vh;
   pointer-events: none;
 
   background:
     radial-gradient(
       ellipse at center,
       rgba(244, 241, 234, 0.075),
-      rgba(244, 241, 234, 0.018) 42%,
+      rgba(244, 241, 234, 0.018) 44%,
       transparent 74%
     );
 
   filter: blur(44px);
-  opacity: 0.42;
+  opacity: 0.38;
+}
+
+.process-work-container {
+  position: relative;
+  z-index: 2;
+  min-height: 520vh;
+  padding: clamp(110px, 14vh, 170px) 7vw clamp(120px, 16vh, 190px);
 }
 
 
 /* =========================================================
-   HUGE BACKGROUND WORD
+   GIANT STICKY WORD
    ========================================================= */
 
-.process-cinema-bg {
+.process-work-word-wrap {
   position: sticky;
   top: 0;
   z-index: 1;
@@ -98,176 +97,152 @@
   overflow: hidden;
 }
 
-.process-cinema-bg span {
-  display: block;
+.process-work-word {
+  margin: 0;
 
-  color: rgba(244, 241, 234, 0.92);
+  color: #f4f1ea;
   font-family: inherit;
-  font-size: clamp(105px, 19vw, 420px);
+  font-size: clamp(104px, 18vw, 410px);
   font-weight: 800;
-  line-height: 0.75;
-  letter-spacing: -0.095em;
-  text-transform: uppercase;
+  line-height: 0.74;
+  letter-spacing: -0.105em;
+  text-transform: lowercase;
   white-space: nowrap;
 
-  opacity: 0.08;
-  transform: scale(0.82);
+  opacity: 0.12;
+  transform: scale(0.72);
+  transform-origin: center center;
+
+  filter: blur(0px);
+
   will-change: transform, opacity, filter;
 }
 
 
 /* =========================================================
-   MAIN LAYOUT
+   TOP INTRO
    ========================================================= */
 
-.process-cinema-shell {
+.process-work-top {
   position: relative;
-  z-index: 3;
+  z-index: 4;
 
-  width: 100%;
-  padding: clamp(110px, 14vh, 170px) 7vw clamp(120px, 16vh, 190px);
+  min-height: 86vh;
+
+  display: grid;
+  grid-template-columns: minmax(160px, 0.45fr) minmax(320px, 0.55fr);
+  align-items: start;
+  column-gap: clamp(42px, 7vw, 120px);
+
+  padding-top: clamp(24px, 5vh, 70px);
 }
 
-
-/* =========================================================
-   INTRO
-   ========================================================= */
-
-.process-cinema-intro {
-  position: relative;
-  min-height: 88vh;
-
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-
-  max-width: 760px;
-}
-
-.process-cinema-meta {
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: clamp(18px, 3vh, 44px);
-
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 24px;
-}
-
-.process-cinema-meta span {
-  display: inline-block;
-
-  color: rgba(244, 241, 234, 0.32);
-  font-size: 10px;
-  line-height: 1;
-  letter-spacing: 0.28em;
-  text-transform: uppercase;
-  white-space: nowrap;
-}
-
-.process-cinema-intro h2 {
-  max-width: 820px;
+.process-work-kicker {
   margin: 0;
 
-  color: rgba(244, 241, 234, 0.92);
-  font-family: inherit;
-  font-size: clamp(58px, 7.2vw, 138px);
-  font-weight: 400;
-  line-height: 0.86;
-  letter-spacing: -0.09em;
+  color: rgba(244, 241, 234, 0.36);
+  font-size: 10px;
+  line-height: 1;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
 }
 
-.process-cinema-intro p {
-  max-width: 430px;
-  margin: 32px 0 0;
+.process-work-intro {
+  max-width: 440px;
+  margin: 0;
 
-  color: rgba(244, 241, 234, 0.48);
+  color: rgba(244, 241, 234, 0.54);
   font-size: 13px;
-  line-height: 1.72;
+  line-height: 1.74;
   letter-spacing: -0.01em;
 }
 
 
 /* =========================================================
-   STEP POSITIONING
+   PROCESS LIST
    ========================================================= */
 
-.process-cinema-step {
+.process-work-list {
+  position: relative;
+  z-index: 5;
+}
+
+.process-work-item {
   position: relative;
 
-  min-height: 92vh;
+  min-height: 94vh;
   display: flex;
   align-items: center;
 
-  opacity: 0.62;
+  opacity: 0.58;
   transform: translateY(42px);
+
   transition:
     opacity 1s cubic-bezier(0.16, 1, 0.3, 1),
     transform 1s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.process-cinema-step.is-visible {
+.process-work-item.is-visible {
   opacity: 1;
   transform: translateY(0);
 }
 
-.process-cinema-step--left {
+.process-work-item--left {
   justify-content: flex-start;
 }
 
-.process-cinema-step--right {
+.process-work-item--right {
   justify-content: flex-end;
 }
 
-.process-cinema-step--left .process-step-card {
-  margin-left: clamp(0px, 3vw, 60px);
+.process-work-item--left .process-work-card {
+  margin-left: clamp(0px, 2vw, 42px);
 }
 
-.process-cinema-step--right .process-step-card {
-  margin-right: clamp(0px, 3vw, 60px);
+.process-work-item--right .process-work-card {
+  margin-right: clamp(0px, 2vw, 42px);
 }
 
 
 /* =========================================================
-   STEP CARD
+   CARD
    ========================================================= */
 
-.process-step-card {
+.process-work-card {
   position: relative;
 
   width: min(100%, 620px);
-  padding: clamp(30px, 4.5vw, 58px);
+  padding: clamp(30px, 4.3vw, 56px);
 
-  border: 1px solid rgba(244, 241, 234, 0.105);
+  border: 1px solid rgba(244, 241, 234, 0.11);
   border-radius: 2px;
 
   background:
     linear-gradient(
       135deg,
-      rgba(244, 241, 234, 0.045),
-      rgba(244, 241, 234, 0.012) 42%,
+      rgba(244, 241, 234, 0.047),
+      rgba(244, 241, 234, 0.012) 44%,
       rgba(244, 241, 234, 0.026)
     );
 
   box-shadow:
-    0 32px 110px rgba(0, 0, 0, 0.34),
+    0 32px 110px rgba(0, 0, 0, 0.36),
     inset 0 1px 0 rgba(244, 241, 234, 0.06);
 
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
 
   overflow: hidden;
-  transform: translateX(0);
+
   transition:
     border-color 0.55s ease,
     background 0.55s ease,
     box-shadow 0.55s ease,
-    transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+    transform 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.process-step-card::before {
+.process-work-card::before {
   content: "";
   position: absolute;
   left: 0;
@@ -280,59 +255,63 @@
     linear-gradient(
       90deg,
       transparent,
-      rgba(244, 241, 234, 0.28),
+      rgba(244, 241, 234, 0.32),
       transparent
     );
 
   opacity: 0;
   transform: translateX(-35%);
+
   transition:
     opacity 0.55s ease,
-    transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.process-step-card::after {
+.process-work-card::after {
   content: "";
   position: absolute;
-  inset: auto 26px 20px 26px;
+  left: 26px;
+  right: 26px;
+  bottom: 20px;
 
   height: 1px;
-  background: rgba(244, 241, 234, 0.09);
+  background: rgba(244, 241, 234, 0.1);
 
   transform: scaleX(0);
   transform-origin: left center;
+
   transition: transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.process-cinema-step--right .process-step-card::after {
+.process-work-item--right .process-work-card::after {
   transform-origin: right center;
 }
 
-.process-cinema-step.is-visible .process-step-card::after {
+.process-work-item.is-visible .process-work-card::after {
   transform: scaleX(1);
 }
 
-.process-cinema-step.is-hovered .process-step-card,
-.process-step-card:hover {
-  border-color: rgba(244, 241, 234, 0.22);
+.process-work-item.is-hovered .process-work-card,
+.process-work-card:hover {
+  border-color: rgba(244, 241, 234, 0.23);
   background:
     linear-gradient(
       135deg,
-      rgba(244, 241, 234, 0.065),
-      rgba(244, 241, 234, 0.018) 42%,
-      rgba(244, 241, 234, 0.035)
+      rgba(244, 241, 234, 0.067),
+      rgba(244, 241, 234, 0.018) 44%,
+      rgba(244, 241, 234, 0.037)
     );
 
   box-shadow:
-    0 44px 140px rgba(0, 0, 0, 0.45),
-    0 0 44px rgba(244, 241, 234, 0.035),
+    0 44px 140px rgba(0, 0, 0, 0.46),
+    0 0 46px rgba(244, 241, 234, 0.035),
     inset 0 1px 0 rgba(244, 241, 234, 0.09);
 
   transform: translateY(-6px);
 }
 
-.process-cinema-step.is-hovered .process-step-card::before,
-.process-step-card:hover::before {
+.process-work-item.is-hovered .process-work-card::before,
+.process-work-card:hover::before {
   opacity: 1;
   transform: translateX(35%);
 }
@@ -342,7 +321,7 @@
    CARD CONTENT
    ========================================================= */
 
-.process-step-meta {
+.process-work-card-meta {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -351,7 +330,7 @@
   margin-bottom: clamp(42px, 6vh, 70px);
 }
 
-.process-step-meta span {
+.process-work-card-meta span {
   display: inline-block;
 
   color: rgba(244, 241, 234, 0.34);
@@ -362,10 +341,10 @@
   white-space: nowrap;
 }
 
-.process-step-card h3 {
+.process-work-card h3 {
   margin: 0;
 
-  color: rgba(244, 241, 234, 0.92);
+  color: rgba(244, 241, 234, 0.94);
   font-family: inherit;
   font-size: clamp(54px, 6.8vw, 128px);
   font-weight: 400;
@@ -373,17 +352,17 @@
   letter-spacing: -0.095em;
 }
 
-.process-step-card p {
+.process-work-card p {
   max-width: 455px;
   margin: clamp(30px, 4.6vh, 46px) 0 0;
 
-  color: rgba(244, 241, 234, 0.52);
+  color: rgba(244, 241, 234, 0.54);
   font-size: 14px;
   line-height: 1.66;
   letter-spacing: -0.015em;
 }
 
-.process-step-tags {
+.process-work-tags {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
@@ -391,7 +370,7 @@
   margin-top: 28px;
 }
 
-.process-step-tags span {
+.process-work-tags span {
   position: relative;
 
   display: inline-flex;
@@ -419,7 +398,7 @@
     background 0.35s ease;
 }
 
-.process-step-tags span:hover {
+.process-work-tags span:hover {
   color: rgba(244, 241, 234, 0.78);
   border-color: rgba(244, 241, 234, 0.28);
   background: rgba(244, 241, 234, 0.035);
@@ -449,7 +428,7 @@
   width: 100%;
   height: 0.04em;
 
-  background: rgba(244, 241, 234, 0.74);
+  background: rgba(244, 241, 234, 0.78);
 
   transform: scaleX(0);
   transform-origin: left center;
@@ -457,25 +436,21 @@
   transition: transform 0.58s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.process-cinema-step--right .underline-hover::after {
+.process-work-item--right .underline-hover::after {
   left: auto;
   right: 0;
   transform-origin: right center;
 }
 
 .underline-hover:hover::after,
-.process-step-card:hover .underline-hover::after,
-.process-cinema-step.is-hovered .underline-hover::after {
+.process-work-card:hover .underline-hover::after,
+.process-work-item.is-hovered .underline-hover::after {
   transform: scaleX(1);
 }
 
 
 /* =========================================================
    GLITCH TEXT
-   Works on:
-   - scroll class: .is-glitching
-   - hover class: .is-hovered
-   - title class: .is-scrambling
    ========================================================= */
 
 .glitch-text {
@@ -495,7 +470,7 @@
 }
 
 .glitch-text::before {
-  color: rgba(244, 241, 234, 0.5);
+  color: rgba(244, 241, 234, 0.52);
   transform: translate(2px, -1px);
 }
 
@@ -504,20 +479,20 @@
   transform: translate(-2px, 1px);
 }
 
-.process-cinema-step.is-glitching .glitch-text::before,
-.process-cinema-step.is-hovered .glitch-text::before,
+.process-work-item.is-glitching .glitch-text::before,
+.process-work-item.is-hovered .glitch-text::before,
 .glitch-text:hover::before {
   animation: processGlitchA 0.46s steps(2, end);
 }
 
-.process-cinema-step.is-glitching .glitch-text::after,
-.process-cinema-step.is-hovered .glitch-text::after,
+.process-work-item.is-glitching .glitch-text::after,
+.process-work-item.is-hovered .glitch-text::after,
 .glitch-text:hover::after {
   animation: processGlitchB 0.46s steps(2, end);
 }
 
 .glitch-text.is-scrambling {
-  color: rgba(244, 241, 234, 0.84);
+  color: rgba(244, 241, 234, 0.86);
   text-shadow:
     1px 0 rgba(244, 241, 234, 0.18),
     -1px 0 rgba(244, 241, 234, 0.08);
@@ -589,13 +564,14 @@
 
 
 /* =========================================================
-   CLOSE
+   BOTTOM CTA
    ========================================================= */
 
-.process-cinema-close {
+.process-work-bottom {
   position: relative;
+  z-index: 5;
 
-  min-height: 80vh;
+  min-height: 82vh;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -606,7 +582,7 @@
   padding: clamp(80px, 12vh, 140px) 0;
 }
 
-.process-cinema-close p {
+.process-work-bottom p {
   margin: 0;
 
   color: rgba(244, 241, 234, 0.82);
@@ -616,7 +592,7 @@
   letter-spacing: -0.078em;
 }
 
-.process-cinema-cta {
+.process-work-cta {
   position: relative;
 
   display: inline-flex;
@@ -639,18 +615,19 @@
   white-space: nowrap;
 
   overflow: visible;
+
   transition:
     border-color 0.35s ease,
     color 0.35s ease,
     background 0.35s ease;
 }
 
-.process-cinema-cta::after {
+.process-work-cta::after {
   bottom: -7px;
   height: 1px;
 }
 
-.process-cinema-cta:hover {
+.process-work-cta:hover {
   border-color: rgba(244, 241, 234, 0.52);
   color: rgba(244, 241, 234, 1);
   background: rgba(244, 241, 234, 0.035);
@@ -658,15 +635,15 @@
 
 
 /* =========================================================
-   PERFORMANCE HOOKS
+   PERFORMANCE
    ========================================================= */
 
-.process-cinema-bg span,
-.process-cinema-step,
-.process-step-card,
+.process-work-word,
+.process-work-item,
+.process-work-card,
 .glitch-text,
-.process-cinema-intro,
-.process-cinema-close {
+.process-work-top,
+.process-work-bottom {
   will-change: transform, opacity;
 }
 
@@ -676,71 +653,68 @@
    ========================================================= */
 
 @media (max-width: 1100px) {
-  .process-cinema-shell {
+  .process-work-container {
+    min-height: auto;
     padding: 110px 24px 100px;
   }
 
-  .process-cinema-bg span {
+  .process-work-word {
     font-size: clamp(100px, 26vw, 260px);
-    opacity: 0.055;
+    opacity: 0.08;
   }
 
-  .process-cinema-intro {
-    min-height: 74vh;
+  .process-work-top {
+    min-height: 72vh;
+    display: block;
+    padding-top: 0;
   }
 
-  .process-cinema-meta {
-    position: relative;
-    top: auto;
+  .process-work-kicker {
     margin-bottom: 88px;
   }
 
-  .process-cinema-intro h2 {
-    font-size: clamp(52px, 12vw, 94px);
-  }
-
-  .process-cinema-intro p {
+  .process-work-intro {
     max-width: 560px;
     font-size: 14px;
   }
 
-  .process-cinema-step {
+  .process-work-item {
     min-height: auto;
     padding: 62px 0;
   }
 
-  .process-cinema-step--left,
-  .process-cinema-step--right {
+  .process-work-item--left,
+  .process-work-item--right {
     justify-content: flex-start;
   }
 
-  .process-cinema-step--left .process-step-card,
-  .process-cinema-step--right .process-step-card {
+  .process-work-item--left .process-work-card,
+  .process-work-item--right .process-work-card {
     margin-left: 0;
     margin-right: 0;
   }
 
-  .process-step-card {
+  .process-work-card {
     width: min(100%, 720px);
   }
 
-  .process-step-card h3 {
+  .process-work-card h3 {
     font-size: clamp(54px, 13vw, 112px);
   }
 
-  .process-cinema-step--right .underline-hover::after {
+  .process-work-item--right .underline-hover::after {
     left: 0;
     right: auto;
     transform-origin: left center;
   }
 
-  .process-cinema-close {
+  .process-work-bottom {
     min-height: auto;
     margin-left: 0;
     padding: 78px 0 20px;
   }
 
-  .process-cinema-close p {
+  .process-work-bottom p {
     font-size: clamp(40px, 10vw, 78px);
   }
 }
@@ -751,86 +725,79 @@
    ========================================================= */
 
 @media (max-width: 767px) {
-  .process-cinema-shell {
+  .process-work-container {
     padding: 92px 20px 84px;
   }
 
-  .process-cinema-bg span {
+  .process-work-word {
     font-size: 34vw;
-    opacity: 0.045;
+    opacity: 0.06;
   }
 
-  .process-cinema-intro {
-    min-height: 70vh;
+  .process-work-top {
+    min-height: 68vh;
   }
 
-  .process-cinema-meta {
-    align-items: flex-start;
-    flex-direction: column;
-    gap: 12px;
+  .process-work-kicker {
     margin-bottom: 72px;
-  }
-
-  .process-cinema-meta span,
-  .process-step-meta span {
     font-size: 9px;
-    letter-spacing: 0.22em;
+    letter-spacing: 0.24em;
   }
 
-  .process-cinema-intro h2 {
-    font-size: clamp(44px, 14vw, 68px);
-    letter-spacing: -0.076em;
-  }
-
-  .process-cinema-intro p {
+  .process-work-intro {
     font-size: 13px;
     line-height: 1.66;
   }
 
-  .process-cinema-step {
+  .process-work-item {
     padding: 42px 0;
   }
 
-  .process-step-card {
+  .process-work-card {
     padding: 28px 22px 30px;
     backdrop-filter: none;
     -webkit-backdrop-filter: none;
   }
 
-  .process-step-meta {
+  .process-work-card-meta {
     align-items: flex-start;
     flex-direction: column;
     gap: 12px;
     margin-bottom: 42px;
   }
 
-  .process-step-card h3 {
+  .process-work-card-meta span {
+    font-size: 9px;
+    letter-spacing: 0.22em;
+  }
+
+  .process-work-card h3 {
     font-size: clamp(46px, 16vw, 76px);
     letter-spacing: -0.082em;
   }
 
-  .process-step-card p {
+  .process-work-card p {
     margin-top: 28px;
     font-size: 13px;
     line-height: 1.62;
   }
 
-  .process-step-tags {
+  .process-work-tags {
     gap: 6px;
     margin-top: 24px;
   }
 
-  .process-step-tags span {
+  .process-work-tags span {
     min-height: 23px;
     padding: 0 8px;
     font-size: 8px;
   }
 
-  .process-cinema-close p {
+  .process-work-bottom p {
     font-size: clamp(34px, 11vw, 54px);
   }
 
-  .process-cinema-cta {
+  .process-work-cta {
     min-height: 40px;
     font-size: 9px;
   }
