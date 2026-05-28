@@ -270,8 +270,7 @@
   }
 
 
-
-   /* =========================================================
+/* =========================================================
    VOID EXIT / BOOKING HANDOFF
    ========================================================= */
 
@@ -280,32 +279,35 @@ function renderVoidExit(progress) {
 
   if (!voidExit) return;
 
-  const exit = smoothstep(0.76, 1, progress);
-  const deepExit = smoothstep(0.84, 1, progress);
-  const booking = smoothstep(0.88, 1, progress);
+  /*
+    These timings are intentionally wider.
+    The old version happened too fast and felt like a section fade.
+  */
+  const quiet = smoothstep(0.58, 0.76, progress);
+  const exit = smoothstep(0.64, 0.92, progress);
+  const deepExit = smoothstep(0.72, 1, progress);
+  const booking = smoothstep(0.82, 1, progress);
 
   const voidOpacity = lerp(0, 1, exit);
-  const voidScale = lerp(0.82, 1.28, exit);
-  const voidY = lerp(90, -20, exit);
-  const voidBlur = lerp(22, 0, exit);
+  const voidScale = lerp(0.72, 1.42, deepExit);
+  const voidBlur = lerp(30, 0, exit);
 
   const doorOpacity = lerp(0, 1, deepExit);
-  const doorScale = lerp(0.42, 1.25, deepExit);
-  const doorBlur = lerp(40, 8, deepExit);
+  const doorScale = lerp(0.18, 1.55, deepExit);
+  const doorBlur = lerp(52, 6, deepExit);
 
-  const dustOpacity = lerp(0, 0.9, exit);
-  const dustPull = lerp(0, 0.22, deepExit);
-  const dustScale = lerp(0.8, 1.85, deepExit);
-  const dustBlur = lerp(0, 2.4, deepExit);
+  const dustOpacity = lerp(0, 0.82, exit);
+  const dustPull = lerp(0, 0.34, deepExit);
+  const dustScale = lerp(0.72, 2.25, deepExit);
+  const dustBlur = lerp(0, 2.8, deepExit);
+  const fieldScale = lerp(1, 1.22, deepExit);
 
   const bookingOpacity = lerp(0, 1, booking);
-  const bookingY = lerp(120, 0, booking);
-  const bookingScale = lerp(0.82, 1, booking);
-  const bookingBlur = lerp(22, 0, booking);
+  const bookingScale = lerp(0.56, 1, booking);
+  const bookingBlur = lerp(38, 0, booking);
 
   voidExit.style.setProperty("--void-opacity", voidOpacity.toFixed(3));
   voidExit.style.setProperty("--void-scale", voidScale.toFixed(3));
-  voidExit.style.setProperty("--void-y", `${voidY.toFixed(2)}px`);
   voidExit.style.setProperty("--void-blur", `${voidBlur.toFixed(2)}px`);
 
   voidExit.style.setProperty("--door-opacity", doorOpacity.toFixed(3));
@@ -316,14 +318,18 @@ function renderVoidExit(progress) {
   voidExit.style.setProperty("--dust-pull", dustPull.toFixed(3));
   voidExit.style.setProperty("--dust-scale", dustScale.toFixed(3));
   voidExit.style.setProperty("--dust-blur", `${dustBlur.toFixed(2)}px`);
+  voidExit.style.setProperty("--field-scale", fieldScale.toFixed(3));
 
   voidExit.style.setProperty("--booking-opacity", bookingOpacity.toFixed(3));
-  voidExit.style.setProperty("--booking-y", `${bookingY.toFixed(2)}px`);
   voidExit.style.setProperty("--booking-scale", bookingScale.toFixed(3));
   voidExit.style.setProperty("--booking-blur", `${bookingBlur.toFixed(2)}px`);
-}
 
-   
+  /*
+    Optional class hook if you want to fade other stuff later.
+  */
+  section.classList.toggle("is-entering-void", quiet > 0.5);
+}
+ 
 
 function render(progress) {
   renderBigWord(progress);
