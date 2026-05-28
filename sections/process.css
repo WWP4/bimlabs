@@ -736,3 +736,85 @@
     right: 22px;
   }
 }
+
+
+/* =========================================================
+   PROCESS WORLD — HARD STACKING FIX
+   Forces WebGL, atmosphere, scenes, and floor into one viewport
+   ========================================================= */
+
+.bim-world-entry {
+  position: relative;
+  min-height: 620vh;
+  background: #030303;
+  overflow: visible;
+  isolation: isolate;
+}
+
+.world-sticky {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;
+  background: #030303;
+  z-index: 1;
+  isolation: isolate;
+}
+
+.world-canvas-wrap {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  background: #030303;
+  pointer-events: none;
+}
+
+#bimWorldCanvas {
+  position: absolute;
+  inset: 0;
+  width: 100% !important;
+  height: 100% !important;
+  display: block;
+}
+
+.world-atmosphere {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+}
+
+.world-floor {
+  position: absolute;
+  inset: 0;
+  z-index: 12;
+  pointer-events: none;
+}
+
+.world-scene {
+  position: absolute;
+  inset: 0;
+  z-index: 30;
+  pointer-events: none;
+}
+
+.world-scene-capabilities {
+  opacity: 1;
+  visibility: visible;
+}
+
+.world-brand,
+.world-status,
+.world-scroll-ui {
+  z-index: 80;
+}
+
+/* Make sure the first visible DOM world actually appears before scroll animation */
+.capability-ribbon,
+.world-copy-capabilities {
+  opacity: 1;
+  visibility: visible;
+}
