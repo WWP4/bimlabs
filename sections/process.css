@@ -1,28 +1,13 @@
 /* =========================================================
-   BIM LABS — PROCESS / WORK COPY SECTION
-   Full replacement for: sections/process.css
-
-   Built for:
-   .process-work-copy
-   .process-work-container
-   .process-work-word
-   .process-work-item
-   .process-work-card
-   .glitch-text
-   .underline-hover
-   ========================================================= */
-
-
-/* =========================================================
-   SECTION BASE
+   BIM LABS — PROCESS SECTION
+   Clean replacement for sections/process.css
    ========================================================= */
 
 .process-work-copy {
   position: relative;
   z-index: 5;
-  margin: 0;
   background: #030303;
-  color: #f4f1ea;
+  color: #fff;
   overflow: hidden;
   isolation: isolate;
   font-family: inherit;
@@ -39,36 +24,13 @@
   inset: 0;
   z-index: 0;
   pointer-events: none;
-
   background:
-    radial-gradient(circle at 70% 18%, rgba(244, 241, 234, 0.055), transparent 24%),
-    radial-gradient(circle at 20% 62%, rgba(244, 241, 234, 0.035), transparent 30%),
-    linear-gradient(to bottom, #030303 0%, #050505 48%, #030303 100%);
+    radial-gradient(circle at 70% 20%, rgba(255,255,255,0.06), transparent 28%),
+    radial-gradient(circle at 20% 70%, rgba(255,255,255,0.035), transparent 32%),
+    linear-gradient(180deg, #030303 0%, #070707 48%, #030303 100%);
 }
 
-.process-work-copy::after {
-  content: "";
-  position: absolute;
-  left: 5vw;
-  right: 5vw;
-  bottom: -20vh;
-  z-index: 0;
-
-  height: 40vh;
-  pointer-events: none;
-
-  background:
-    radial-gradient(
-      ellipse at center,
-      rgba(244, 241, 234, 0.075),
-      rgba(244, 241, 234, 0.018) 44%,
-      transparent 74%
-    );
-
-  filter: blur(44px);
-  opacity: 0.38;
-}
-
+/* Main long scroll area */
 .process-work-container {
   position: relative;
   z-index: 2;
@@ -77,17 +39,13 @@
 }
 
 /* =========================================================
-   GIANT SCROLLING BACKGROUND WORD
+   HUGE PROCESS WORD
    ========================================================= */
 
 .process-work-word-wrap {
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
+  inset: 0;
   z-index: 1;
-
-  height: 100%;
   pointer-events: none;
   overflow: visible;
 }
@@ -100,47 +58,47 @@
   width: max-content;
   margin: 0 auto;
 
-  color: #ffffff;
-  font-family: inherit;
-  font-size: clamp(150px, 25vw, 560px);
+  color: #ffffff !important;
+  opacity: 1 !important;
+
+  font-size: clamp(160px, 26vw, 620px);
   font-weight: 800;
   line-height: 0.72;
-  letter-spacing: -0.11em;
+  letter-spacing: -0.12em;
   text-transform: lowercase;
   white-space: nowrap;
 
-  opacity: 0.16;
-
-  transform: translateY(-50%) scale(1);
+  transform: translate3d(0, -50%, 0) scale(0.78);
   transform-origin: center center;
 
-  filter: blur(0px);
+  filter: none;
   will-change: transform, opacity, filter;
 }
 
+/* Make real content sit over the giant word */
+.process-work-top,
+.process-work-list,
+.process-work-bottom {
+  position: relative;
+  z-index: 5;
+}
 
 /* =========================================================
    TOP INTRO
    ========================================================= */
 
 .process-work-top {
-  position: relative;
-  z-index: 4;
-
   min-height: 86vh;
-
   display: grid;
-  grid-template-columns: minmax(160px, 0.45fr) minmax(320px, 0.55fr);
+  grid-template-columns: 0.45fr 0.55fr;
+  gap: clamp(42px, 7vw, 120px);
   align-items: start;
-  column-gap: clamp(42px, 7vw, 120px);
-
   padding-top: clamp(24px, 5vh, 70px);
 }
 
 .process-work-kicker {
   margin: 0;
-
-  color: rgba(244, 241, 234, 0.36);
+  color: rgba(255,255,255,0.46);
   font-size: 10px;
   line-height: 1;
   letter-spacing: 0.32em;
@@ -150,36 +108,29 @@
 .process-work-intro {
   max-width: 440px;
   margin: 0;
-
-  color: rgba(244, 241, 234, 0.54);
+  color: rgba(255,255,255,0.62);
   font-size: 13px;
-  line-height: 1.74;
+  line-height: 1.75;
   letter-spacing: -0.01em;
 }
 
-
 /* =========================================================
-   PROCESS LIST
+   PROCESS ITEMS
    ========================================================= */
 
 .process-work-list {
   position: relative;
-  z-index: 5;
 }
 
 .process-work-item {
-  position: relative;
-
   min-height: 94vh;
   display: flex;
   align-items: center;
-
-  opacity: 0.58;
+  opacity: 0.55;
   transform: translateY(42px);
-
   transition:
-    opacity 1s cubic-bezier(0.16, 1, 0.3, 1),
-    transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+    opacity 900ms cubic-bezier(.16,1,.3,1),
+    transform 900ms cubic-bezier(.16,1,.3,1);
 }
 
 .process-work-item.is-visible {
@@ -195,127 +146,76 @@
   justify-content: flex-end;
 }
 
-.process-work-item--left .process-work-card {
-  margin-left: clamp(0px, 2vw, 42px);
-}
-
-.process-work-item--right .process-work-card {
-  margin-right: clamp(0px, 2vw, 42px);
-}
-
-
 /* =========================================================
    CARD
    ========================================================= */
 
 .process-work-card {
   position: relative;
-
   width: min(100%, 620px);
   padding: clamp(30px, 4.3vw, 56px);
 
-  border: 1px solid rgba(244, 241, 234, 0.11);
+  border: 1px solid rgba(255,255,255,0.14);
   border-radius: 2px;
 
   background:
     linear-gradient(
       135deg,
-      rgba(244, 241, 234, 0.047),
-      rgba(244, 241, 234, 0.012) 44%,
-      rgba(244, 241, 234, 0.026)
+      rgba(10,10,10,0.86),
+      rgba(20,20,20,0.74)
     );
 
   box-shadow:
-    0 32px 110px rgba(0, 0, 0, 0.36),
-    inset 0 1px 0 rgba(244, 241, 234, 0.06);
+    0 34px 120px rgba(0,0,0,0.58),
+    inset 0 1px 0 rgba(255,255,255,0.08);
 
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
 
   overflow: hidden;
-
   transition:
-    border-color 0.55s ease,
-    background 0.55s ease,
-    box-shadow 0.55s ease,
-    transform 0.7s cubic-bezier(0.16, 1, 0.3, 1),
-    opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+    transform 700ms cubic-bezier(.16,1,.3,1),
+    opacity 700ms cubic-bezier(.16,1,.3,1),
+    border-color 400ms ease,
+    background 400ms ease,
+    box-shadow 400ms ease;
 }
 
 .process-work-card::before {
   content: "";
   position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-
-  height: 1px;
-
+  inset: 0;
+  pointer-events: none;
   background:
-    linear-gradient(
-      90deg,
-      transparent,
-      rgba(244, 241, 234, 0.32),
-      transparent
-    );
-
+    linear-gradient(90deg, transparent, rgba(255,255,255,0.09), transparent);
   opacity: 0;
-  transform: translateX(-35%);
-
+  transform: translateX(-50%);
   transition:
-    opacity 0.55s ease,
-    transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+    opacity 400ms ease,
+    transform 800ms cubic-bezier(.16,1,.3,1);
 }
 
-.process-work-card::after {
-  content: "";
-  position: absolute;
-  left: 26px;
-  right: 26px;
-  bottom: 20px;
-
-  height: 1px;
-  background: rgba(244, 241, 234, 0.1);
-
-  transform: scaleX(0);
-  transform-origin: left center;
-
-  transition: transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.process-work-item--right .process-work-card::after {
-  transform-origin: right center;
-}
-
-.process-work-item.is-visible .process-work-card::after {
-  transform: scaleX(1);
-}
-
-.process-work-item.is-hovered .process-work-card,
-.process-work-card:hover {
-  border-color: rgba(244, 241, 234, 0.23);
+.process-work-card:hover,
+.process-work-item.is-hovered .process-work-card {
+  border-color: rgba(255,255,255,0.34);
   background:
     linear-gradient(
       135deg,
-      rgba(244, 241, 234, 0.067),
-      rgba(244, 241, 234, 0.018) 44%,
-      rgba(244, 241, 234, 0.037)
+      rgba(18,18,18,0.92),
+      rgba(30,30,30,0.78)
     );
-
   box-shadow:
-    0 44px 140px rgba(0, 0, 0, 0.46),
-    0 0 46px rgba(244, 241, 234, 0.035),
-    inset 0 1px 0 rgba(244, 241, 234, 0.09);
-
+    0 44px 150px rgba(0,0,0,0.68),
+    0 0 60px rgba(255,255,255,0.04),
+    inset 0 1px 0 rgba(255,255,255,0.12);
   transform: translateY(-6px);
 }
 
-.process-work-item.is-hovered .process-work-card::before,
-.process-work-card:hover::before {
+.process-work-card:hover::before,
+.process-work-item.is-hovered .process-work-card::before {
   opacity: 1;
-  transform: translateX(35%);
+  transform: translateX(50%);
 }
-
 
 /* =========================================================
    CARD CONTENT
@@ -323,17 +223,13 @@
 
 .process-work-card-meta {
   display: flex;
-  align-items: center;
   justify-content: space-between;
   gap: 24px;
-
   margin-bottom: clamp(42px, 6vh, 70px);
 }
 
 .process-work-card-meta span {
-  display: inline-block;
-
-  color: rgba(244, 241, 234, 0.34);
+  color: rgba(255,255,255,0.42);
   font-size: 10px;
   line-height: 1;
   letter-spacing: 0.28em;
@@ -343,9 +239,7 @@
 
 .process-work-card h3 {
   margin: 0;
-
-  color: rgba(244, 241, 234, 0.94);
-  font-family: inherit;
+  color: #ffffff;
   font-size: clamp(54px, 6.8vw, 128px);
   font-weight: 400;
   line-height: 0.78;
@@ -355,8 +249,7 @@
 .process-work-card p {
   max-width: 455px;
   margin: clamp(30px, 4.6vh, 46px) 0 0;
-
-  color: rgba(244, 241, 234, 0.54);
+  color: rgba(255,255,255,0.64);
   font-size: 14px;
   line-height: 1.66;
   letter-spacing: -0.015em;
@@ -366,47 +259,31 @@
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-
   margin-top: 28px;
 }
 
 .process-work-tags span {
-  position: relative;
-
+  min-height: 24px;
+  padding: 0 10px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
 
-  min-height: 24px;
-  padding: 0 10px;
-
-  border: 1px solid rgba(244, 241, 234, 0.14);
+  border: 1px solid rgba(255,255,255,0.16);
   border-radius: 999px;
 
-  background: rgba(244, 241, 234, 0.014);
+  color: rgba(255,255,255,0.48);
+  background: rgba(255,255,255,0.025);
 
-  color: rgba(244, 241, 234, 0.42);
   font-size: 8px;
   line-height: 1;
   letter-spacing: 0.15em;
   text-transform: uppercase;
   white-space: nowrap;
-
-  transition:
-    color 0.35s ease,
-    border-color 0.35s ease,
-    background 0.35s ease;
 }
-
-.process-work-tags span:hover {
-  color: rgba(244, 241, 234, 0.78);
-  border-color: rgba(244, 241, 234, 0.28);
-  background: rgba(244, 241, 234, 0.035);
-}
-
 
 /* =========================================================
-   UNDERLINE HOVER
+   UNDERLINE + GLITCH
    ========================================================= */
 
 .underline-hover {
@@ -414,26 +291,17 @@
   display: inline-block;
 }
 
-.underline-hover::selection {
-  background: rgba(244, 241, 234, 0.2);
-}
-
 .underline-hover::after {
   content: "";
   position: absolute;
   left: 0;
-  right: auto;
   bottom: -0.12em;
-
   width: 100%;
   height: 0.04em;
-
-  background: rgba(244, 241, 234, 0.78);
-
+  background: #ffffff;
   transform: scaleX(0);
   transform-origin: left center;
-
-  transition: transform 0.58s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: transform 520ms cubic-bezier(.16,1,.3,1);
 }
 
 .process-work-item--right .underline-hover::after {
@@ -448,11 +316,6 @@
   transform: scaleX(1);
 }
 
-
-/* =========================================================
-   GLITCH TEXT
-   ========================================================= */
-
 .glitch-text {
   position: relative;
   display: inline-block;
@@ -464,128 +327,74 @@
   content: attr(data-glitch-text);
   position: absolute;
   inset: 0;
-
   opacity: 0;
   pointer-events: none;
 }
 
 .glitch-text::before {
-  color: rgba(244, 241, 234, 0.52);
+  color: #ffffff;
   transform: translate(2px, -1px);
 }
 
 .glitch-text::after {
-  color: rgba(244, 241, 234, 0.28);
+  color: #ffffff;
   transform: translate(-2px, 1px);
 }
 
 .process-work-item.is-glitching .glitch-text::before,
 .process-work-item.is-hovered .glitch-text::before,
 .glitch-text:hover::before {
-  animation: processGlitchA 0.46s steps(2, end);
+  animation: processGlitchA 440ms steps(2, end);
 }
 
 .process-work-item.is-glitching .glitch-text::after,
 .process-work-item.is-hovered .glitch-text::after,
 .glitch-text:hover::after {
-  animation: processGlitchB 0.46s steps(2, end);
+  animation: processGlitchB 440ms steps(2, end);
 }
 
 .glitch-text.is-scrambling {
-  color: rgba(244, 241, 234, 0.86);
+  color: #ffffff;
   text-shadow:
-    1px 0 rgba(244, 241, 234, 0.18),
-    -1px 0 rgba(244, 241, 234, 0.08);
+    1px 0 rgba(255,255,255,0.3),
+    -1px 0 rgba(255,255,255,0.2);
 }
 
 @keyframes processGlitchA {
-  0% {
-    opacity: 0;
-    clip-path: inset(0 0 92% 0);
-  }
-
-  16% {
-    opacity: 0.75;
-    clip-path: inset(18% 0 54% 0);
-  }
-
-  33% {
-    opacity: 0.25;
-    clip-path: inset(72% 0 12% 0);
-  }
-
-  52% {
-    opacity: 0.64;
-    clip-path: inset(34% 0 43% 0);
-  }
-
-  74% {
-    opacity: 0.28;
-    clip-path: inset(8% 0 76% 0);
-  }
-
-  100% {
-    opacity: 0;
-    clip-path: inset(0 0 0 0);
-  }
+  0% { opacity: 0; clip-path: inset(0 0 90% 0); }
+  25% { opacity: 0.75; clip-path: inset(18% 0 54% 0); }
+  50% { opacity: 0.3; clip-path: inset(72% 0 12% 0); }
+  75% { opacity: 0.65; clip-path: inset(34% 0 43% 0); }
+  100% { opacity: 0; clip-path: inset(0 0 0 0); }
 }
 
 @keyframes processGlitchB {
-  0% {
-    opacity: 0;
-    clip-path: inset(88% 0 0 0);
-  }
-
-  18% {
-    opacity: 0.48;
-    clip-path: inset(58% 0 20% 0);
-  }
-
-  32% {
-    opacity: 0.2;
-    clip-path: inset(10% 0 75% 0);
-  }
-
-  58% {
-    opacity: 0.46;
-    clip-path: inset(42% 0 38% 0);
-  }
-
-  82% {
-    opacity: 0.2;
-    clip-path: inset(78% 0 6% 0);
-  }
-
-  100% {
-    opacity: 0;
-    clip-path: inset(0 0 0 0);
-  }
+  0% { opacity: 0; clip-path: inset(88% 0 0 0); }
+  25% { opacity: 0.5; clip-path: inset(58% 0 20% 0); }
+  50% { opacity: 0.25; clip-path: inset(10% 0 75% 0); }
+  75% { opacity: 0.45; clip-path: inset(42% 0 38% 0); }
+  100% { opacity: 0; clip-path: inset(0 0 0 0); }
 }
 
-
 /* =========================================================
-   BOTTOM CTA
+   BOTTOM
    ========================================================= */
 
 .process-work-bottom {
-  position: relative;
-  z-index: 5;
-
   min-height: 82vh;
+  max-width: 900px;
+  margin-left: auto;
+  padding: clamp(80px, 12vh, 140px) 0;
+
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   justify-content: center;
-
-  max-width: 900px;
-  margin-left: auto;
-  padding: clamp(80px, 12vh, 140px) 0;
 }
 
 .process-work-bottom p {
   margin: 0;
-
-  color: rgba(244, 241, 234, 0.82);
+  color: #ffffff;
   font-size: clamp(42px, 5.5vw, 104px);
   font-weight: 400;
   line-height: 0.92;
@@ -593,8 +402,6 @@
 }
 
 .process-work-cta {
-  position: relative;
-
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -603,53 +410,20 @@
   margin-top: 36px;
   padding: 0 17px;
 
-  border: 1px solid rgba(244, 241, 234, 0.25);
+  border: 1px solid rgba(255,255,255,0.3);
   border-radius: 999px;
 
-  color: rgba(244, 241, 234, 0.76);
+  color: #ffffff;
   font-size: 9px;
   line-height: 1;
   letter-spacing: 0.22em;
   text-transform: uppercase;
   text-decoration: none;
   white-space: nowrap;
-
-  overflow: visible;
-
-  transition:
-    border-color 0.35s ease,
-    color 0.35s ease,
-    background 0.35s ease;
 }
-
-.process-work-cta::after {
-  bottom: -7px;
-  height: 1px;
-}
-
-.process-work-cta:hover {
-  border-color: rgba(244, 241, 234, 0.52);
-  color: rgba(244, 241, 234, 1);
-  background: rgba(244, 241, 234, 0.035);
-}
-
 
 /* =========================================================
-   PERFORMANCE
-   ========================================================= */
-
-.process-work-word,
-.process-work-item,
-.process-work-card,
-.glitch-text,
-.process-work-top,
-.process-work-bottom {
-  will-change: transform, opacity;
-}
-
-
-/* =========================================================
-   TABLET
+   RESPONSIVE
    ========================================================= */
 
 @media (max-width: 1100px) {
@@ -659,8 +433,7 @@
   }
 
   .process-work-word {
-    font-size: clamp(100px, 26vw, 260px);
-    opacity: 0.08;
+    font-size: clamp(110px, 26vw, 320px);
   }
 
   .process-work-top {
@@ -681,17 +454,7 @@
   .process-work-item {
     min-height: auto;
     padding: 62px 0;
-  }
-
-  .process-work-item--left,
-  .process-work-item--right {
     justify-content: flex-start;
-  }
-
-  .process-work-item--left .process-work-card,
-  .process-work-item--right .process-work-card {
-    margin-left: 0;
-    margin-right: 0;
   }
 
   .process-work-card {
@@ -702,27 +465,12 @@
     font-size: clamp(54px, 13vw, 112px);
   }
 
-  .process-work-item--right .underline-hover::after {
-    left: 0;
-    right: auto;
-    transform-origin: left center;
-  }
-
   .process-work-bottom {
     min-height: auto;
     margin-left: 0;
     padding: 78px 0 20px;
   }
-
-  .process-work-bottom p {
-    font-size: clamp(40px, 10vw, 78px);
-  }
 }
-
-
-/* =========================================================
-   MOBILE
-   ========================================================= */
 
 @media (max-width: 767px) {
   .process-work-container {
@@ -731,7 +479,6 @@
 
   .process-work-word {
     font-size: 34vw;
-    opacity: 0.06;
   }
 
   .process-work-top {
@@ -741,16 +488,6 @@
   .process-work-kicker {
     margin-bottom: 72px;
     font-size: 9px;
-    letter-spacing: 0.24em;
-  }
-
-  .process-work-intro {
-    font-size: 13px;
-    line-height: 1.66;
-  }
-
-  .process-work-item {
-    padding: 42px 0;
   }
 
   .process-work-card {
@@ -760,107 +497,20 @@
   }
 
   .process-work-card-meta {
-    align-items: flex-start;
     flex-direction: column;
     gap: 12px;
     margin-bottom: 42px;
   }
 
-  .process-work-card-meta span {
-    font-size: 9px;
-    letter-spacing: 0.22em;
-  }
-
   .process-work-card h3 {
     font-size: clamp(46px, 16vw, 76px);
-    letter-spacing: -0.082em;
   }
 
   .process-work-card p {
-    margin-top: 28px;
     font-size: 13px;
-    line-height: 1.62;
-  }
-
-  .process-work-tags {
-    gap: 6px;
-    margin-top: 24px;
-  }
-
-  .process-work-tags span {
-    min-height: 23px;
-    padding: 0 8px;
-    font-size: 8px;
   }
 
   .process-work-bottom p {
     font-size: clamp(34px, 11vw, 54px);
-  }
-
-  .process-work-cta {
-    min-height: 40px;
-    font-size: 9px;
-  }
-}
-
-
-
-/* =========================================================
-   FIX: PROCESS WORD WHITE / CENTERED / GROWS ON SCROLL
-   Paste at bottom of sections/process.css
-   ========================================================= */
-
-.process-work-word-wrap {
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  pointer-events: none;
-  overflow: visible;
-}
-
-.process-work-word {
-  position: sticky;
-  top: 50vh;
-
-  display: block;
-  width: max-content;
-  margin: 0 auto;
-
-  color: #ffffff !important;
-  opacity: 0.28;
-
-  font-size: clamp(160px, 27vw, 620px);
-  font-weight: 800;
-  line-height: 0.72;
-  letter-spacing: -0.12em;
-  text-transform: lowercase;
-  white-space: nowrap;
-
-  transform: translate3d(0, -50%, 0) scale(0.78);
-  transform-origin: center center;
-
-  filter: none;
-  will-change: transform, opacity, filter;
-}
-
-/* Make sure content stays above the giant word */
-.process-work-top,
-.process-work-list,
-.process-work-bottom {
-  position: relative;
-  z-index: 5;
-}
-
-@media (max-width: 1100px) {
-  .process-work-word {
-    font-size: clamp(110px, 27vw, 320px);
-    opacity: 0.16;
-  }
-}
-
-@media (max-width: 767px) {
-  .process-work-word {
-    font-size: 34vw;
-    opacity: 0.12;
   }
 }
