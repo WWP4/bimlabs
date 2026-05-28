@@ -1,13 +1,13 @@
 /* =========================================================
    BIM LABS — PROCESS SECTION
-   Clean full replacement for sections/process.css
+   Full replacement for: sections/process.css
 
-   CSS = layout + design only
-   JS/GSAP = animation only
-
-   Important:
-   This file intentionally does NOT set animated items to
-   opacity: 0 by default. That prevents CSS from killing GSAP.
+   Goal:
+   - True fullscreen sticky process section
+   - Clean editorial spacing
+   - Smooth GSAP compatibility
+   - No CSS fighting JS animations
+   - Thin fullscreen exit band support
    ========================================================= */
 
 
@@ -19,10 +19,17 @@
   position: relative;
   z-index: 4;
   min-height: 430vh;
-  margin-top: 0;
+  margin: 0;
   background: #030303;
   color: #f4f1ea;
-  overflow: clip;
+
+  /*
+    IMPORTANT:
+    Do NOT use overflow: clip here.
+    Sticky children can break when parent is clipped.
+  */
+  overflow: visible;
+
   isolation: isolate;
   font-family: inherit;
 }
@@ -40,44 +47,71 @@
 
 
 /* =========================================================
-   STICKY STAGE
+   STICKY FULLSCREEN STAGE
    ========================================================= */
 
 .process-sticky {
   position: sticky;
   top: 0;
   z-index: 2;
+
   width: 100%;
+  height: 100vh;
   height: 100svh;
+  min-height: 100vh;
+
   overflow: hidden;
   background:
-    radial-gradient(circle at 62% 36%, rgba(244, 241, 234, 0.04), transparent 24%),
-    radial-gradient(circle at 58% 72%, rgba(244, 241, 234, 0.035), transparent 34%),
-    radial-gradient(circle at 76% 48%, rgba(255, 255, 255, 0.035), transparent 28%),
-    linear-gradient(to bottom, #030303 0%, #030303 100%);
+    radial-gradient(circle at 66% 34%, rgba(244, 241, 234, 0.055), transparent 25%),
+    radial-gradient(circle at 56% 72%, rgba(244, 241, 234, 0.035), transparent 36%),
+    radial-gradient(circle at 82% 50%, rgba(255, 255, 255, 0.028), transparent 30%),
+    linear-gradient(to bottom, #030303 0%, #050505 48%, #030303 100%);
 }
 
-/* subtle depth glow — safe, does not touch GSAP transforms */
+/* Soft atmospheric center glow */
 .process-sticky::before {
   content: "";
   position: absolute;
-  left: 38%;
-  top: 18%;
-  width: 46vw;
-  height: 46vh;
+  left: 35%;
+  top: 12%;
+  width: 54vw;
+  height: 58vh;
   z-index: 0;
   pointer-events: none;
-  background: radial-gradient(
-    ellipse at center,
-    rgba(244, 241, 234, 0.06),
-    rgba(244, 241, 234, 0.018) 38%,
-    transparent 72%
-  );
-  filter: blur(42px);
-  opacity: 0.5;
+  background:
+    radial-gradient(
+      ellipse at center,
+      rgba(244, 241, 234, 0.07),
+      rgba(244, 241, 234, 0.025) 34%,
+      transparent 72%
+    );
+  filter: blur(52px);
+  opacity: 0.58;
 }
 
-/* old transition layer not needed for current composition */
+/* Subtle floor depth */
+.process-sticky::after {
+  content: "";
+  position: absolute;
+  left: 8vw;
+  right: 8vw;
+  bottom: -18vh;
+  height: 34vh;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(
+      ellipse at center,
+      rgba(244, 241, 234, 0.07),
+      rgba(244, 241, 234, 0.018) 42%,
+      transparent 72%
+    );
+  filter: blur(36px);
+  opacity: 0.42;
+}
+
+/* Current HTML has this transition layer.
+   Keep it hidden so it does not create weird extra height. */
 .process-transition {
   display: none;
 }
@@ -99,7 +133,7 @@
   left: 38px;
   right: 38px;
   height: 1px;
-  background: rgba(244, 241, 234, 0.11);
+  background: rgba(244, 241, 234, 0.105);
 }
 
 .process-ruler--top {
@@ -112,9 +146,9 @@
 
 .process-corner {
   position: absolute;
-  width: 12px;
-  height: 12px;
-  border-color: rgba(244, 241, 234, 0.22);
+  width: 13px;
+  height: 13px;
+  border-color: rgba(244, 241, 234, 0.2);
   border-style: solid;
 }
 
@@ -144,44 +178,45 @@
 
 
 /* =========================================================
-   TOP / BOTTOM META
+   META TEXT
    ========================================================= */
 
-.process-meta {
-  position: absolute;
-  left: 38px;
-  right: 38px;
-  top: 58px;
-  z-index: 5;
-  display: flex;
-  justify-content: space-between;
-  gap: 24px;
-  pointer-events: none;
-}
-
+.process-meta,
 .process-footer-meta {
   position: absolute;
   left: 38px;
   right: 38px;
-  bottom: 58px;
-  z-index: 5;
+  z-index: 8;
+
   display: flex;
+  align-items: center;
   justify-content: space-between;
   gap: 24px;
+
   pointer-events: none;
+}
+
+.process-meta {
+  top: 58px;
+}
+
+.process-footer-meta {
+  bottom: 58px;
 }
 
 .process-meta span,
 .process-footer-meta span {
+  display: inline-block;
   color: rgba(244, 241, 234, 0.32);
   font-size: 10px;
   line-height: 1;
   letter-spacing: 0.26em;
   text-transform: uppercase;
+  white-space: nowrap;
 }
 
 .process-footer-meta span {
-  color: rgba(244, 241, 234, 0.24);
+  color: rgba(244, 241, 234, 0.23);
 }
 
 
@@ -193,8 +228,8 @@
   position: absolute;
   left: 7vw;
   top: 15vh;
-  z-index: 5;
-  max-width: 520px;
+  z-index: 6;
+  max-width: 540px;
 }
 
 .process-kicker {
@@ -207,27 +242,30 @@
 }
 
 .process-hero h2 {
-  max-width: 520px;
+  max-width: 560px;
   margin: 0;
-  color: rgba(244, 241, 234, 0.88);
+
+  color: rgba(244, 241, 234, 0.9);
   font-family: inherit;
-  font-size: clamp(42px, 3.85vw, 68px);
+  font-size: clamp(42px, 3.85vw, 70px);
   font-weight: 400;
-  line-height: 0.96;
-  letter-spacing: -0.065em;
+  line-height: 0.95;
+  letter-spacing: -0.07em;
 }
 
 .process-intro-copy {
-  max-width: 330px;
+  max-width: 350px;
   margin: 24px 0 0;
+
   color: rgba(244, 241, 234, 0.46);
   font-size: 11px;
-  line-height: 1.65;
+  line-height: 1.68;
+  letter-spacing: -0.01em;
 }
 
 
 /* =========================================================
-   PROCESS WALL ROWS
+   PROCESS WALL
    ========================================================= */
 
 .process-wall {
@@ -235,16 +273,18 @@
   left: 7vw;
   right: 7vw;
   bottom: 13.5vh;
-  z-index: 6;
+  z-index: 7;
 }
 
 .process-row {
   position: relative;
-  min-height: 66px;
+
+  min-height: 68px;
   display: grid;
-  grid-template-columns: 70px minmax(190px, 0.5fr) minmax(520px, 1fr);
+  grid-template-columns: 72px minmax(190px, 0.5fr) minmax(520px, 1fr);
   align-items: center;
   column-gap: 34px;
+
   color: #f4f1ea;
 }
 
@@ -253,6 +293,7 @@
   left: 0;
   right: 0;
   top: 0;
+
   height: 1px;
   background: rgba(244, 241, 234, 0.15);
   transform-origin: left center;
@@ -264,12 +305,14 @@
   left: 0;
   right: 0;
   bottom: 0;
+
   height: 1px;
   background: rgba(244, 241, 234, 0.15);
 }
 
 .process-row-number span {
   display: inline-block;
+
   color: rgba(244, 241, 234, 0.34);
   font-size: 10px;
   line-height: 1;
@@ -278,6 +321,7 @@
 
 .process-row-title h3 {
   margin: 0;
+
   color: rgba(244, 241, 234, 0.86);
   font-family: inherit;
   font-size: clamp(28px, 2.35vw, 42px);
@@ -296,14 +340,17 @@
 .process-row-detail p {
   max-width: 390px;
   margin: 0;
+
   color: rgba(244, 241, 234, 0.44);
   font-size: 10.5px;
-  line-height: 1.52;
+  line-height: 1.54;
+  letter-spacing: -0.005em;
 }
 
 .process-row-tags {
   display: flex;
   justify-content: flex-end;
+  align-items: center;
   flex-wrap: wrap;
   gap: 7px;
 }
@@ -312,16 +359,21 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
+
   min-height: 20px;
   padding: 0 8px;
+
   border: 1px solid rgba(244, 241, 234, 0.13);
   border-radius: 999px;
+
   color: rgba(244, 241, 234, 0.36);
   font-size: 8px;
   line-height: 1;
   letter-spacing: 0.13em;
   text-transform: uppercase;
   white-space: nowrap;
+
+  background: rgba(244, 241, 234, 0.012);
 }
 
 
@@ -333,18 +385,21 @@
   position: absolute;
   left: 7vw;
   right: 7vw;
-  bottom: 5.4vh;
+  bottom: 5.35vh;
   z-index: 9;
+
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 32px;
+
   pointer-events: auto;
 }
 
 .process-close p {
-  max-width: 520px;
+  max-width: 540px;
   margin: 0;
+
   color: rgba(244, 241, 234, 0.68);
   font-size: 13px;
   line-height: 1.35;
@@ -353,18 +408,25 @@
 
 .process-cta {
   position: relative;
+
   display: inline-flex;
   align-items: center;
+  justify-content: center;
+
   min-height: 36px;
   padding: 0 16px;
+
   border: 1px solid rgba(244, 241, 234, 0.25);
   border-radius: 999px;
+
   color: rgba(244, 241, 234, 0.78);
   font-size: 9px;
   line-height: 1;
   letter-spacing: 0.22em;
   text-transform: uppercase;
   text-decoration: none;
+  white-space: nowrap;
+
   overflow: hidden;
   transition:
     border-color 0.35s ease,
@@ -376,6 +438,7 @@
   position: absolute;
   inset: 0;
   z-index: -1;
+
   background: rgba(244, 241, 234, 0.08);
   transform: scaleX(0);
   transform-origin: left center;
@@ -393,57 +456,131 @@
 
 
 /* =========================================================
-   GSAP SAFETY
-   Do not set opacity/transform here.
-   These rules simply prevent accidental hidden states.
+   THIN FULLSCREEN EXIT BAND
+   JS already animates this.
    ========================================================= */
 
-@media (min-width: 1101px) {
-  .bim-process-wall .process-meta,
-  .bim-process-wall .process-footer-meta,
-  .bim-process-wall .process-kicker,
-  .bim-process-wall .process-hero h2,
-  .bim-process-wall .process-intro-copy,
-  .bim-process-wall .process-close,
-  .bim-process-wall .process-row,
-  .bim-process-wall .process-row-number,
-  .bim-process-wall .process-row-title,
-  .bim-process-wall .process-row-detail {
-    visibility: visible;
-  }
+.process-exit-band {
+  position: absolute;
+  inset: 0;
+  z-index: 30;
 
-  .bim-process-wall .process-row-line {
-    transform-origin: left center;
-  }
+  display: grid;
+  place-items: center;
+
+  pointer-events: none;
+  opacity: 0;
+  transform: translateY(100%);
+}
+
+.process-exit-band::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+
+  height: 1px;
+  background: rgba(244, 241, 234, 0.1);
+}
+
+.process-exit-line {
+  position: absolute;
+  left: 7vw;
+  right: 7vw;
+  top: 50%;
+
+  height: 1px;
+  background: rgba(244, 241, 234, 0.35);
+
+  transform: scaleX(0);
+  transform-origin: center;
+}
+
+.process-exit-band span {
+  position: relative;
+  z-index: 2;
+
+  color: rgba(244, 241, 234, 0.42);
+  font-size: 10px;
+  line-height: 1;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+
+  opacity: 0;
+  transform: translateY(18px);
 }
 
 
 /* =========================================================
-   TABLET / MOBILE
-   Mobile does not use sticky wall layout.
+   GSAP SAFETY
+   Do not set opacity/transform hidden states here.
+   JS controls animation states.
+   ========================================================= */
+
+.bim-process-wall .process-meta,
+.bim-process-wall .process-footer-meta,
+.bim-process-wall .process-kicker,
+.bim-process-wall .process-hero h2,
+.bim-process-wall .process-intro-copy,
+.bim-process-wall .process-close,
+.bim-process-wall .process-row,
+.bim-process-wall .process-row-number,
+.bim-process-wall .process-row-title,
+.bim-process-wall .process-row-detail {
+  will-change: transform, opacity;
+}
+
+.bim-process-wall .process-row-line,
+.bim-process-wall .process-exit-line {
+  will-change: transform;
+}
+
+
+/* =========================================================
+   TABLET
+   Mobile/tablet should not use sticky wall layout.
    ========================================================= */
 
 @media (max-width: 1100px) {
   .bim-process-wall {
     min-height: auto;
     background: #030303;
-    overflow: hidden;
+    overflow: visible;
   }
 
   .process-sticky {
     position: relative;
     top: auto;
+
     height: auto;
     min-height: 100vh;
+
     padding: 120px 24px 80px;
-    overflow: visible;
+    overflow: hidden;
   }
 
-  .process-sticky::before,
+  .process-sticky::before {
+    left: 10%;
+    top: 4%;
+    width: 90vw;
+    height: 42vh;
+    opacity: 0.4;
+  }
+
+  .process-sticky::after {
+    left: 0;
+    right: 0;
+    bottom: -14vh;
+    height: 28vh;
+    opacity: 0.32;
+  }
+
   .process-transition,
   .process-frame,
   .process-meta,
-  .process-footer-meta {
+  .process-footer-meta,
+  .process-exit-band {
     display: none;
   }
 
@@ -451,8 +588,9 @@
     position: relative;
     left: auto;
     top: auto;
+
     max-width: 100%;
-    margin-bottom: 70px;
+    margin-bottom: 72px;
   }
 
   .process-kicker {
@@ -461,14 +599,14 @@
   }
 
   .process-hero h2 {
-    max-width: 720px;
+    max-width: 760px;
     font-size: clamp(46px, 11vw, 78px);
     line-height: 0.94;
     letter-spacing: -0.065em;
   }
 
   .process-intro-copy {
-    max-width: 480px;
+    max-width: 500px;
     margin-top: 24px;
     font-size: 14px;
     line-height: 1.65;
@@ -479,6 +617,7 @@
     left: auto;
     right: auto;
     bottom: auto;
+    z-index: 5;
   }
 
   .process-row {
@@ -487,6 +626,7 @@
     align-items: start;
     row-gap: 18px;
     column-gap: 18px;
+
     padding: 34px 0;
   }
 
@@ -505,7 +645,7 @@
   }
 
   .process-row-detail p {
-    max-width: 520px;
+    max-width: 560px;
     font-size: 13px;
     line-height: 1.62;
   }
@@ -524,13 +664,16 @@
     left: auto;
     right: auto;
     bottom: auto;
+
     margin-top: 70px;
-    opacity: 1;
+
     flex-direction: column;
     align-items: flex-start;
+    justify-content: flex-start;
   }
 
   .process-close p {
+    max-width: 560px;
     font-size: 16px;
   }
 
@@ -540,9 +683,18 @@
   }
 }
 
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
 @media (max-width: 767px) {
   .process-sticky {
     padding: 96px 20px 70px;
+  }
+
+  .process-hero {
+    margin-bottom: 58px;
   }
 
   .process-hero h2 {
@@ -569,55 +721,18 @@
   .process-row-detail p {
     font-size: 13px;
   }
-}
 
-
-/* =========================================================
-   PROCESS — THIN FULLSCREEN EXIT BAND
-   ========================================================= */
-
-@media (min-width: 1101px) {
-  .process-exit-band {
-    position: absolute;
-    inset: 0;
-    z-index: 30;
-    display: grid;
-    place-items: center;
-    pointer-events: none;
-    opacity: 0;
-    transform: translateY(100%);
+  .process-row-tags {
+    gap: 6px;
   }
 
-  .process-exit-band::before {
-    content: "";
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 50%;
-    height: 1px;
-    background: rgba(244, 241, 234, 0.1);
+  .process-row-tags span {
+    min-height: 23px;
+    padding: 0 7px;
+    font-size: 8px;
   }
 
-  .process-exit-line {
-    position: absolute;
-    left: 7vw;
-    right: 7vw;
-    top: 50%;
-    height: 1px;
-    background: rgba(244, 241, 234, 0.35);
-    transform: scaleX(0);
-    transform-origin: center;
-  }
-
-  .process-exit-band span {
-    position: relative;
-    z-index: 2;
-    color: rgba(244, 241, 234, 0.42);
-    font-size: 10px;
-    line-height: 1;
-    letter-spacing: 0.32em;
-    text-transform: uppercase;
-    opacity: 0;
-    transform: translateY(18px);
+  .process-close {
+    margin-top: 54px;
   }
 }
