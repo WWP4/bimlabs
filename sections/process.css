@@ -10,7 +10,22 @@
    - Thin fullscreen exit band support
    ========================================================= */
 
+.bim-process-wall {
+  position: relative;
+  min-height: 430vh;
+  overflow: visible;
+}
 
+.process-sticky {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 100vh;
+  height: 100svh;
+  overflow: hidden;
+  transform-origin: center center;
+}
 /* =========================================================
    SECTION BASE
    ========================================================= */
