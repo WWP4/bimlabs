@@ -1,8 +1,10 @@
 /* =========================================================
    BIM LABS — PROCESS WALL
    Full clean replacement for sections/process-world.js
+
    CSS handles sticky positioning.
    GSAP handles reveal animation.
+   Includes thin fullscreen exit band.
    ========================================================= */
 
 (function () {
@@ -40,6 +42,10 @@
 
     const close = section.querySelector(".process-close");
 
+    const exitBand = section.querySelector(".process-exit-band");
+    const exitLine = section.querySelector(".process-exit-line");
+    const exitLabel = section.querySelector(".process-exit-band span");
+
     ScrollTrigger.getAll().forEach((trigger) => {
       if (trigger.trigger === section || section.contains(trigger.trigger)) {
         trigger.kill();
@@ -69,7 +75,7 @@
 
     /* -----------------------------
        GSAP START STATES
-       ----------------------------- */
+    ----------------------------- */
 
     gsap.set([meta, footerMeta], {
       opacity: 0
@@ -118,16 +124,32 @@
       pointerEvents: "none"
     });
 
-    /*
-      Important:
-      Add process-ready AFTER gsap.set().
-      This removes CSS hiding only after JS owns the animation state.
-    */
+    if (exitBand) {
+      gsap.set(exitBand, {
+        opacity: 0,
+        yPercent: 100
+      });
+    }
+
+    if (exitLine) {
+      gsap.set(exitLine, {
+        scaleX: 0,
+        transformOrigin: "center"
+      });
+    }
+
+    if (exitLabel) {
+      gsap.set(exitLabel, {
+        opacity: 0,
+        y: 18
+      });
+    }
+
     section.classList.add("process-ready");
 
     /* -----------------------------
        SCROLL TIMELINE
-       ----------------------------- */
+    ----------------------------- */
 
     const tl = gsap.timeline({
       defaults: {
@@ -142,6 +164,7 @@
       }
     });
 
+    /* Intro arrives */
     tl.to([meta, footerMeta], {
       opacity: 1,
       duration: 0.08
@@ -167,6 +190,7 @@
       duration: 0.16
     }, 0.18);
 
+    /* Rows move into place */
     tl.to(wall, {
       y: 0,
       duration: 0.25
@@ -205,6 +229,7 @@
       }, start + 0.075);
     });
 
+    /* Hero quiets down so rows become the focus */
     tl.to(hero, {
       y: -60,
       opacity: 0.25,
@@ -223,11 +248,38 @@
       duration: 0.18
     }, 0.88);
 
+    /* Thin fullscreen exit */
+    if (exitBand && exitLine && exitLabel) {
+      tl.to([hero, wall, close, meta, footerMeta], {
+        opacity: 0,
+        y: -36,
+        duration: 0.16
+      }, 0.94);
+
+      tl.to(exitBand, {
+        opacity: 1,
+        yPercent: 0,
+        duration: 0.16
+      }, 0.94);
+
+      tl.to(exitLine, {
+        scaleX: 1,
+        duration: 0.18
+      }, 0.965);
+
+      tl.to(exitLabel, {
+        opacity: 1,
+        y: 0,
+        duration: 0.12
+      }, 0.99);
+    }
+
     ScrollTrigger.refresh();
 
     console.log("[Process] Animation loaded:", {
       rows: rows.length,
-      desktop: isDesktop
+      desktop: isDesktop,
+      exitBand: !!exitBand
     });
   }
 
