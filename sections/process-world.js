@@ -1,21 +1,7 @@
 /* =========================================================
    BIM LABS — PROCESS LONG PINNED SCROLL
+   Smoother / slower premium version
    Full replacement for: sections/process-world.js
-
-   Built for:
-   .bim-process-scroll
-   .process-scroll-track
-   .process-sticky
-   .process-scene
-   .process-progress
-
-   Behavior:
-   - Pins the process section naturally with CSS sticky
-   - Converts scroll progress into scene changes
-   - Intro → Step 01 → Step 02 → Step 03 → Step 04 → Close
-   - Adds active/before/after classes
-   - Updates progress rail
-   - Uses light smoothing so it feels premium, not snappy
    ========================================================= */
 
 (function () {
@@ -41,6 +27,7 @@
   let enabled = false;
   let sectionTop = 0;
   let scrollLength = 1;
+
   let targetProgress = 0;
   let currentProgress = 0;
   let rafRunning = false;
@@ -49,8 +36,13 @@
   const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
   const lerp = (start, end, amount) => start + (end - start) * amount;
 
+  function smoothstep(edge0, edge1, value) {
+    const x = clamp((value - edge0) / (edge1 - edge0), 0, 1);
+    return x * x * (3 - 2 * x);
+  }
+
   function mapRange(value, inMin, inMax, outMin, outMax) {
-    const progress = clamp((value - inMin) / (inMax - inMin), 0, 1);
+    const progress = smoothstep(inMin, inMax, value);
     return lerp(outMin, outMax, progress);
   }
 
@@ -59,7 +51,7 @@
     Object.assign(element.style, styles);
   }
 
-  function debounce(fn, delay = 150) {
+  function debounce(fn, delay = 160) {
     let timer;
 
     return function () {
@@ -70,33 +62,32 @@
 
   function getSceneIndex(progress) {
     /*
-      6 total scenes:
-      0 intro
-      1 step 01
-      2 step 02
-      3 step 03
-      4 step 04
-      5 close
+      More breathing room per scene.
 
-      Slightly longer hold on intro and close.
+      0.00 - 0.20 intro
+      0.20 - 0.34 step 01
+      0.34 - 0.48 step 02
+      0.48 - 0.62 step 03
+      0.62 - 0.77 step 04
+      0.77 - 1.00 close
     */
 
-    if (progress < 0.17) return 0;
-    if (progress < 0.32) return 1;
-    if (progress < 0.47) return 2;
+    if (progress < 0.2) return 0;
+    if (progress < 0.34) return 1;
+    if (progress < 0.48) return 2;
     if (progress < 0.62) return 3;
-    if (progress < 0.78) return 4;
+    if (progress < 0.77) return 4;
     return 5;
   }
 
   function getLocalSceneProgress(progress, index) {
     const ranges = [
-      [0.0, 0.17],
-      [0.17, 0.32],
-      [0.32, 0.47],
-      [0.47, 0.62],
-      [0.62, 0.78],
-      [0.78, 1.0]
+      [0.0, 0.2],
+      [0.2, 0.34],
+      [0.34, 0.48],
+      [0.48, 0.62],
+      [0.62, 0.77],
+      [0.77, 1.0]
     ];
 
     const range = ranges[index] || [0, 1];
@@ -137,8 +128,8 @@
       return;
     }
 
-    section.style.minHeight = "620vh";
-    track.style.minHeight = "620vh";
+    section.style.minHeight = "760vh";
+    track.style.minHeight = "760vh";
 
     sticky.style.transform = "translate3d(0, 0, 0)";
     sticky.style.opacity = "1";
@@ -225,11 +216,18 @@
   }
 
   function animate() {
-    currentProgress = lerp(currentProgress, targetProgress, 0.12);
+    /*
+      Lower number = smoother / heavier / less snappy.
+      0.045 is very slow.
+      0.055 is premium but still responsive.
+      0.075 is slightly faster.
+    */
+
+    currentProgress = lerp(currentProgress, targetProgress, 0.055);
 
     render(currentProgress);
 
-    const stillMoving = Math.abs(currentProgress - targetProgress) > 0.0008;
+    const stillMoving = Math.abs(currentProgress - targetProgress) > 0.00045;
 
     if (stillMoving) {
       requestAnimationFrame(animate);
@@ -249,30 +247,25 @@
   }
 
   function renderStickyFrame(progress) {
-    /*
-      Small framed feeling at entry and exit.
-      Fullscreen in the middle.
-    */
-
-    const entry = clamp(progress / 0.09, 0, 1);
-    const exit = clamp((progress - 0.92) / 0.08, 0, 1);
+    const entry = smoothstep(0, 0.13, progress);
+    const exit = smoothstep(0.9, 1, progress);
 
     let inset = 0;
     let radius = 0;
     let scale = 1;
     let opacity = 1;
 
-    if (progress < 0.09) {
-      inset = lerp(46, 0, entry);
+    if (progress < 0.13) {
+      inset = lerp(52, 0, entry);
       radius = lerp(34, 0, entry);
-      scale = lerp(0.925, 1, entry);
+      scale = lerp(0.92, 1, entry);
       opacity = lerp(0.72, 1, entry);
     }
 
-    if (progress > 0.92) {
-      inset = lerp(0, 46, exit);
+    if (progress > 0.9) {
+      inset = lerp(0, 52, exit);
       radius = lerp(0, 34, exit);
-      scale = lerp(1, 0.925, exit);
+      scale = lerp(1, 0.92, exit);
       opacity = lerp(1, 0.72, exit);
     }
 
@@ -300,49 +293,48 @@
     const closeCopy = scene.querySelector(".process-close-copy");
 
     /*
-      These are intentionally subtle because the CSS already handles
-      the main scene fade/blur. JS adds internal motion only.
+      Small movement only. The more we move things, the cheaper/snappier it feels.
     */
 
     if (intro) {
       setStyles(intro, {
-        transform: `translate3d(0, ${mapRange(local, 0, 1, 18, -8)}px, 0)`,
-        opacity: mapRange(local, 0, 0.22, 0.7, 1).toFixed(3)
+        transform: `translate3d(0, ${mapRange(local, 0, 1, 10, -6)}px, 0)`,
+        opacity: mapRange(local, 0, 0.34, 0.82, 1).toFixed(3)
       });
     }
 
     if (introAside) {
       setStyles(introAside, {
-        transform: `translate3d(${mapRange(local, 0, 1, 0, 28)}px, 0, 0)`,
-        opacity: mapRange(local, 0.68, 1, 1, 0).toFixed(3)
+        transform: `translate3d(${mapRange(local, 0.2, 1, 0, 16)}px, 0, 0)`,
+        opacity: mapRange(local, 0.7, 1, 1, 0).toFixed(3)
       });
     }
 
     if (stepLeft) {
       setStyles(stepLeft, {
-        transform: `translate3d(0, ${mapRange(local, 0, 1, 22, -10)}px, 0)`,
-        opacity: mapRange(local, 0, 0.18, 0.65, 1).toFixed(3)
+        transform: `translate3d(0, ${mapRange(local, 0, 1, 12, -6)}px, 0)`,
+        opacity: mapRange(local, 0, 0.32, 0.78, 1).toFixed(3)
       });
     }
 
     if (stepRight) {
       setStyles(stepRight, {
-        transform: `translate3d(0, ${mapRange(local, 0, 1, 42, -6)}px, 0)`,
-        opacity: mapRange(local, 0.08, 0.28, 0, 1).toFixed(3)
+        transform: `translate3d(0, ${mapRange(local, 0, 1, 20, -4)}px, 0)`,
+        opacity: mapRange(local, 0.08, 0.38, 0, 1).toFixed(3)
       });
     }
 
     if (stepNumber) {
       setStyles(stepNumber, {
-        transform: `translate3d(0, -50%, 0) scale(${mapRange(local, 0, 1, 0.96, 1.04)})`,
-        opacity: mapRange(local, 0, 0.35, 0.45, 1).toFixed(3)
+        transform: `translate3d(0, -50%, 0) scale(${mapRange(local, 0, 1, 0.985, 1.025)})`,
+        opacity: mapRange(local, 0, 0.45, 0.55, 1).toFixed(3)
       });
     }
 
     if (closeCopy) {
       setStyles(closeCopy, {
-        transform: `translate3d(0, ${mapRange(local, 0, 1, 30, -4)}px, 0)`,
-        opacity: mapRange(local, 0, 0.22, 0.65, 1).toFixed(3)
+        transform: `translate3d(0, ${mapRange(local, 0, 1, 18, -3)}px, 0)`,
+        opacity: mapRange(local, 0, 0.34, 0.76, 1).toFixed(3)
       });
     }
 
@@ -371,7 +363,7 @@
     window.addEventListener("resize", debounce(measure, 180));
     window.addEventListener("load", measure);
 
-    console.log("[Process] Long pinned process scroll loaded.", {
+    console.log("[Process] Smooth long pinned process scroll loaded.", {
       scenes: scenes.length
     });
   }
