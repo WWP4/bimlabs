@@ -38,49 +38,52 @@
   padding: clamp(110px, 14vh, 170px) 7vw clamp(120px, 16vh, 190px);
 }
 
+
 /* =========================================================
-   HUGE PROCESS WORD
+   HUGE PROCESS BACKGROUND WORD — REAL STICKY LAYER
    ========================================================= */
 
 .process-work-word-wrap {
-  position: absolute;
-  inset: 0;
+  position: sticky;
+  top: 0;
   z-index: 1;
+
+  height: 100vh;
+  width: 100%;
+
+  margin-bottom: -100vh;
+
+  display: grid;
+  place-items: center;
+
   pointer-events: none;
-  overflow: visible;
+  overflow: hidden;
 }
 
 .process-work-word {
-  position: sticky;
-  top: 50vh;
+  position: relative;
 
   display: block;
-  width: max-content;
-  margin: 0 auto;
+  width: 100vw;
+  margin: 0;
+
+  text-align: center;
 
   color: #ffffff !important;
   opacity: 1 !important;
 
-  font-size: clamp(160px, 26vw, 620px);
+  font-size: clamp(140px, 25vw, 560px);
   font-weight: 800;
-  line-height: 0.72;
+  line-height: 0.75;
   letter-spacing: -0.12em;
   text-transform: lowercase;
   white-space: nowrap;
 
-  transform: translate3d(0, -50%, 0) scale(0.78);
+  transform: scale(0.8);
   transform-origin: center center;
 
-  filter: none;
-  will-change: transform, opacity, filter;
-}
-
-/* Make real content sit over the giant word */
-.process-work-top,
-.process-work-list,
-.process-work-bottom {
-  position: relative;
-  z-index: 5;
+  filter: none !important;
+  will-change: transform;
 }
 
 /* =========================================================
