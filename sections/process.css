@@ -1,69 +1,80 @@
 /* =========================================================
-   BIM LABS — PROCESS SECTION
+   BIM LABS — PROCESS SCROLL
    Full replacement for: sections/process.css
 
-   Goal:
-   - True fullscreen sticky process section
-   - Clean editorial spacing
-   - Smooth GSAP compatibility
-   - No CSS fighting JS animations
-   - Thin fullscreen exit band support
+   Built for:
+   <section class="bim-process-scroll" id="process">
    ========================================================= */
 
-.bim-process-wall {
-  position: relative;
-  min-height: 430vh;
-  overflow: visible;
-}
 
-.process-sticky {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 100vh;
-  height: 100svh;
-  overflow: hidden;
-  transform-origin: center center;
-}
 /* =========================================================
    SECTION BASE
    ========================================================= */
 
-.bim-process-wall {
+.bim-process-scroll {
   position: relative;
-  z-index: 4;
-  min-height: 430vh;
+  z-index: 5;
+  min-height: 620vh;
   margin: 0;
   background: #030303;
   color: #f4f1ea;
-
-  /*
-    IMPORTANT:
-    Do NOT use overflow: clip here.
-    Sticky children can break when parent is clipped.
-  */
   overflow: visible;
-
   isolation: isolate;
   font-family: inherit;
 }
 
-.bim-process-wall,
-.bim-process-wall * {
+.bim-process-scroll,
+.bim-process-scroll * {
   box-sizing: border-box;
 }
 
-.salo-showcase,
-.bim-showcase {
-  position: relative;
-  z-index: 1;
+.bim-process-scroll a {
+  color: inherit;
 }
 
 
 /* =========================================================
-   STICKY FULLSCREEN STAGE
+   ENTRY FROM PREVIOUS SECTION
    ========================================================= */
+
+.process-entry {
+  position: absolute;
+  top: 0;
+  left: 38px;
+  right: 38px;
+  z-index: 4;
+
+  height: 1px;
+  pointer-events: none;
+}
+
+.process-entry-line {
+  width: 100%;
+  height: 1px;
+  background: rgba(244, 241, 234, 0.11);
+}
+
+.process-entry span {
+  position: absolute;
+  top: 17px;
+  right: 0;
+
+  color: rgba(244, 241, 234, 0.28);
+  font-size: 10px;
+  line-height: 1;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+}
+
+
+/* =========================================================
+   LONG SCROLL TRACK
+   ========================================================= */
+
+.process-scroll-track {
+  position: relative;
+  min-height: 620vh;
+}
 
 .process-sticky {
   position: sticky;
@@ -77,58 +88,58 @@
 
   overflow: hidden;
   background:
-    radial-gradient(circle at 66% 34%, rgba(244, 241, 234, 0.055), transparent 25%),
-    radial-gradient(circle at 56% 72%, rgba(244, 241, 234, 0.035), transparent 36%),
-    radial-gradient(circle at 82% 50%, rgba(255, 255, 255, 0.028), transparent 30%),
-    linear-gradient(to bottom, #030303 0%, #050505 48%, #030303 100%);
+    radial-gradient(circle at 64% 42%, rgba(244, 241, 234, 0.065), transparent 24%),
+    radial-gradient(circle at 50% 78%, rgba(244, 241, 234, 0.035), transparent 34%),
+    radial-gradient(circle at 84% 50%, rgba(255, 255, 255, 0.025), transparent 32%),
+    linear-gradient(to bottom, #030303 0%, #050505 46%, #030303 100%);
 }
 
-/* Soft atmospheric center glow */
+/* soft central atmosphere */
 .process-sticky::before {
   content: "";
   position: absolute;
-  left: 35%;
-  top: 12%;
-  width: 54vw;
-  height: 58vh;
+  left: 34%;
+  top: 10%;
   z-index: 0;
-  pointer-events: none;
+
+  width: 56vw;
+  height: 62vh;
+
   background:
     radial-gradient(
       ellipse at center,
-      rgba(244, 241, 234, 0.07),
-      rgba(244, 241, 234, 0.025) 34%,
+      rgba(244, 241, 234, 0.075),
+      rgba(244, 241, 234, 0.028) 35%,
       transparent 72%
     );
-  filter: blur(52px);
-  opacity: 0.58;
+
+  filter: blur(58px);
+  opacity: 0.6;
+  pointer-events: none;
 }
 
-/* Subtle floor depth */
+/* subtle floor depth */
 .process-sticky::after {
   content: "";
   position: absolute;
   left: 8vw;
   right: 8vw;
-  bottom: -18vh;
-  height: 34vh;
+  bottom: -20vh;
   z-index: 0;
-  pointer-events: none;
+
+  height: 36vh;
+
   background:
     radial-gradient(
       ellipse at center,
-      rgba(244, 241, 234, 0.07),
-      rgba(244, 241, 234, 0.018) 42%,
-      transparent 72%
+      rgba(244, 241, 234, 0.075),
+      rgba(244, 241, 234, 0.018) 44%,
+      transparent 76%
     );
-  filter: blur(36px);
-  opacity: 0.42;
-}
 
-/* Current HTML has this transition layer.
-   Keep it hidden so it does not create weird extra height. */
-.process-transition {
-  display: none;
+  filter: blur(40px);
+  opacity: 0.44;
+  pointer-events: none;
 }
 
 
@@ -139,23 +150,23 @@
 .process-frame {
   position: absolute;
   inset: 0;
-  z-index: 2;
+  z-index: 8;
   pointer-events: none;
 }
 
-.process-ruler {
+.process-frame-line {
   position: absolute;
   left: 38px;
   right: 38px;
   height: 1px;
-  background: rgba(244, 241, 234, 0.105);
+  background: rgba(244, 241, 234, 0.1);
 }
 
-.process-ruler--top {
+.process-frame-line--top {
   top: 38px;
 }
 
-.process-ruler--bottom {
+.process-frame-line--bottom {
   bottom: 38px;
 }
 
@@ -193,7 +204,7 @@
 
 
 /* =========================================================
-   META TEXT
+   FIXED META
    ========================================================= */
 
 .process-meta,
@@ -201,7 +212,7 @@
   position: absolute;
   left: 38px;
   right: 38px;
-  z-index: 8;
+  z-index: 12;
 
   display: flex;
   align-items: center;
@@ -222,10 +233,11 @@
 .process-meta span,
 .process-footer-meta span {
   display: inline-block;
-  color: rgba(244, 241, 234, 0.32);
+
+  color: rgba(244, 241, 234, 0.3);
   font-size: 10px;
   line-height: 1;
-  letter-spacing: 0.26em;
+  letter-spacing: 0.28em;
   text-transform: uppercase;
   white-space: nowrap;
 }
@@ -236,189 +248,257 @@
 
 
 /* =========================================================
-   HERO COPY
+   SCENES
    ========================================================= */
 
-.process-hero {
+.process-scene {
   position: absolute;
-  left: 7vw;
-  top: 15vh;
+  inset: 0;
+  z-index: 3;
+
+  display: grid;
+  align-items: center;
+
+  padding: 9vh 7vw;
+
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+
+  transform: translateY(28px) scale(0.985);
+  filter: blur(10px);
+
+  transition:
+    opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1),
+    visibility 0.75s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.75s cubic-bezier(0.16, 1, 0.3, 1),
+    filter 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.process-scene.is-active {
   z-index: 6;
-  max-width: 540px;
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateY(0) scale(1);
+  filter: blur(0);
+}
+
+.process-scene.is-before {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-34px) scale(0.982);
+  filter: blur(12px);
+}
+
+.process-scene.is-after {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(34px) scale(0.982);
+  filter: blur(12px);
+}
+
+
+/* =========================================================
+   INTRO SCENE
+   ========================================================= */
+
+.process-scene--intro {
+  grid-template-columns: minmax(320px, 600px) 1fr;
+  column-gap: 8vw;
+}
+
+.process-intro {
+  align-self: center;
+  max-width: 620px;
 }
 
 .process-kicker {
-  margin: 0 0 22px;
-  color: rgba(244, 241, 234, 0.38);
+  margin: 0 0 24px;
+
+  color: rgba(244, 241, 234, 0.4);
   font-size: 10px;
   line-height: 1;
   letter-spacing: 0.34em;
   text-transform: uppercase;
 }
 
-.process-hero h2 {
-  max-width: 560px;
+.process-intro h2,
+.process-close-copy h2 {
   margin: 0;
 
-  color: rgba(244, 241, 234, 0.9);
+  color: rgba(244, 241, 234, 0.91);
   font-family: inherit;
-  font-size: clamp(42px, 3.85vw, 70px);
+  font-size: clamp(54px, 6.2vw, 118px);
   font-weight: 400;
-  line-height: 0.95;
-  letter-spacing: -0.07em;
+  line-height: 0.88;
+  letter-spacing: -0.085em;
 }
 
-.process-intro-copy {
-  max-width: 350px;
-  margin: 24px 0 0;
+.process-intro p:not(.process-kicker) {
+  max-width: 390px;
+  margin: 28px 0 0;
 
-  color: rgba(244, 241, 234, 0.46);
-  font-size: 11px;
+  color: rgba(244, 241, 234, 0.48);
+  font-size: 12px;
   line-height: 1.68;
   letter-spacing: -0.01em;
 }
 
+.process-intro-aside {
+  justify-self: end;
+  align-self: end;
+
+  display: flex;
+  align-items: center;
+  gap: 14px;
+
+  margin-bottom: 18vh;
+
+  color: rgba(244, 241, 234, 0.28);
+  font-size: 10px;
+  line-height: 1;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+}
+
+.process-intro-aside div {
+  width: 84px;
+  height: 1px;
+  background: rgba(244, 241, 234, 0.16);
+}
+
 
 /* =========================================================
-   PROCESS WALL
+   STEP SCENES
    ========================================================= */
 
-.process-wall {
+.process-step {
+  grid-template-columns: minmax(340px, 0.95fr) minmax(320px, 0.7fr);
+  column-gap: 8vw;
+}
+
+.process-step::before {
+  content: "";
   position: absolute;
   left: 7vw;
   right: 7vw;
-  bottom: 13.5vh;
-  z-index: 7;
+  top: 50%;
+  z-index: -1;
+
+  height: 1px;
+  background: rgba(244, 241, 234, 0.12);
+  transform: translateY(-50%);
 }
 
-.process-row {
+.process-step-bg-number {
+  position: absolute;
+  right: 6vw;
+  top: 50%;
+  z-index: -2;
+
+  color: rgba(244, 241, 234, 0.035);
+  font-size: clamp(180px, 24vw, 430px);
+  font-weight: 400;
+  line-height: 0.75;
+  letter-spacing: -0.14em;
+
+  transform: translateY(-50%);
+  pointer-events: none;
+  user-select: none;
+}
+
+.process-step-left {
   position: relative;
-
-  min-height: 68px;
-  display: grid;
-  grid-template-columns: 72px minmax(190px, 0.5fr) minmax(520px, 1fr);
-  align-items: center;
-  column-gap: 34px;
-
-  color: #f4f1ea;
+  z-index: 2;
 }
 
-.process-row-line {
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-
-  height: 1px;
-  background: rgba(244, 241, 234, 0.15);
-  transform-origin: left center;
-}
-
-.process-row:last-child::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-
-  height: 1px;
-  background: rgba(244, 241, 234, 0.15);
-}
-
-.process-row-number span {
+.process-step-count {
   display: inline-block;
+  margin-bottom: 24px;
 
   color: rgba(244, 241, 234, 0.34);
   font-size: 10px;
   line-height: 1;
-  letter-spacing: 0.24em;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
 }
 
-.process-row-title h3 {
+.process-step-left h3 {
   margin: 0;
 
-  color: rgba(244, 241, 234, 0.86);
+  color: rgba(244, 241, 234, 0.92);
   font-family: inherit;
-  font-size: clamp(28px, 2.35vw, 42px);
+  font-size: clamp(72px, 10vw, 190px);
   font-weight: 400;
-  line-height: 0.96;
-  letter-spacing: -0.055em;
+  line-height: 0.78;
+  letter-spacing: -0.105em;
 }
 
-.process-row-detail {
-  display: grid;
-  grid-template-columns: minmax(280px, 390px) 1fr;
-  align-items: center;
-  gap: 28px;
+.process-step-right {
+  justify-self: end;
+  align-self: center;
+
+  width: min(100%, 470px);
+  padding-top: 14vh;
 }
 
-.process-row-detail p {
-  max-width: 390px;
+.process-step-right p {
+  max-width: 430px;
   margin: 0;
 
-  color: rgba(244, 241, 234, 0.44);
-  font-size: 10.5px;
-  line-height: 1.54;
-  letter-spacing: -0.005em;
+  color: rgba(244, 241, 234, 0.54);
+  font-size: 14px;
+  line-height: 1.62;
+  letter-spacing: -0.018em;
 }
 
-.process-row-tags {
+.process-tags {
   display: flex;
-  justify-content: flex-end;
-  align-items: center;
   flex-wrap: wrap;
-  gap: 7px;
+  gap: 8px;
+
+  margin-top: 28px;
 }
 
-.process-row-tags span {
+.process-tags span {
   display: inline-flex;
   align-items: center;
   justify-content: center;
 
-  min-height: 20px;
-  padding: 0 8px;
+  min-height: 24px;
+  padding: 0 10px;
 
-  border: 1px solid rgba(244, 241, 234, 0.13);
+  border: 1px solid rgba(244, 241, 234, 0.14);
   border-radius: 999px;
 
-  color: rgba(244, 241, 234, 0.36);
+  background: rgba(244, 241, 234, 0.015);
+
+  color: rgba(244, 241, 234, 0.38);
   font-size: 8px;
   line-height: 1;
-  letter-spacing: 0.13em;
+  letter-spacing: 0.15em;
   text-transform: uppercase;
   white-space: nowrap;
-
-  background: rgba(244, 241, 234, 0.012);
 }
 
 
 /* =========================================================
-   CLOSING CTA
+   CLOSING SCENE
    ========================================================= */
 
-.process-close {
-  position: absolute;
-  left: 7vw;
-  right: 7vw;
-  bottom: 5.35vh;
-  z-index: 9;
-
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 32px;
-
-  pointer-events: auto;
+.process-scene--close {
+  grid-template-columns: 1fr;
 }
 
-.process-close p {
-  max-width: 540px;
-  margin: 0;
+.process-close-copy {
+  max-width: 980px;
+  align-self: center;
+}
 
-  color: rgba(244, 241, 234, 0.68);
-  font-size: 13px;
-  line-height: 1.35;
-  letter-spacing: -0.02em;
+.process-close-copy h2 {
+  max-width: 1000px;
+  font-size: clamp(48px, 5.6vw, 104px);
 }
 
 .process-cta {
@@ -428,13 +508,14 @@
   align-items: center;
   justify-content: center;
 
-  min-height: 36px;
-  padding: 0 16px;
+  min-height: 38px;
+  margin-top: 34px;
+  padding: 0 17px;
 
   border: 1px solid rgba(244, 241, 234, 0.25);
   border-radius: 999px;
 
-  color: rgba(244, 241, 234, 0.78);
+  color: rgba(244, 241, 234, 0.76);
   font-size: 9px;
   line-height: 1;
   letter-spacing: 0.22em;
@@ -471,97 +552,107 @@
 
 
 /* =========================================================
-   THIN FULLSCREEN EXIT BAND
-   JS already animates this.
+   PROGRESS NAV
    ========================================================= */
 
-.process-exit-band {
+.process-progress {
   position: absolute;
-  inset: 0;
-  z-index: 30;
+  right: 38px;
+  top: 50%;
+  z-index: 14;
 
-  display: grid;
-  place-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 14px;
 
+  transform: translateY(-50%);
   pointer-events: none;
-  opacity: 0;
-  transform: translateY(100%);
 }
 
-.process-exit-band::before {
+.process-progress::before {
   content: "";
   position: absolute;
-  left: 0;
-  right: 0;
-  top: 50%;
+  right: 3px;
+  top: -34px;
+  bottom: -34px;
 
-  height: 1px;
-  background: rgba(244, 241, 234, 0.1);
+  width: 1px;
+  background: rgba(244, 241, 234, 0.09);
 }
 
-.process-exit-line {
-  position: absolute;
-  left: 7vw;
-  right: 7vw;
-  top: 50%;
-
-  height: 1px;
-  background: rgba(244, 241, 234, 0.35);
-
-  transform: scaleX(0);
-  transform-origin: center;
-}
-
-.process-exit-band span {
+.process-progress span {
   position: relative;
-  z-index: 2;
 
-  color: rgba(244, 241, 234, 0.42);
-  font-size: 10px;
+  color: rgba(244, 241, 234, 0.24);
+  font-size: 9px;
   line-height: 1;
-  letter-spacing: 0.32em;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
 
-  opacity: 0;
-  transform: translateY(18px);
+  transition:
+    color 0.35s ease,
+    transform 0.35s ease;
+}
+
+.process-progress span::after {
+  content: "";
+  position: absolute;
+  right: -7px;
+  top: 50%;
+
+  width: 5px;
+  height: 5px;
+
+  border-radius: 999px;
+  background: rgba(244, 241, 234, 0.18);
+
+  transform: translateY(-50%) scale(0.8);
+  transition:
+    background 0.35s ease,
+    transform 0.35s ease;
+}
+
+.process-progress span.is-active {
+  color: rgba(244, 241, 234, 0.74);
+  transform: translateX(-7px);
+}
+
+.process-progress span.is-active::after {
+  background: rgba(244, 241, 234, 0.75);
+  transform: translateY(-50%) scale(1);
 }
 
 
 /* =========================================================
-   GSAP SAFETY
-   Do not set opacity/transform hidden states here.
-   JS controls animation states.
+   GSAP / JS SAFETY
    ========================================================= */
 
-.bim-process-wall .process-meta,
-.bim-process-wall .process-footer-meta,
-.bim-process-wall .process-kicker,
-.bim-process-wall .process-hero h2,
-.bim-process-wall .process-intro-copy,
-.bim-process-wall .process-close,
-.bim-process-wall .process-row,
-.bim-process-wall .process-row-number,
-.bim-process-wall .process-row-title,
-.bim-process-wall .process-row-detail {
-  will-change: transform, opacity;
-}
-
-.bim-process-wall .process-row-line,
-.bim-process-wall .process-exit-line {
-  will-change: transform;
+.bim-process-scroll .process-scene,
+.bim-process-scroll .process-intro,
+.bim-process-scroll .process-intro h2,
+.bim-process-scroll .process-intro p,
+.bim-process-scroll .process-step-left,
+.bim-process-scroll .process-step-right,
+.bim-process-scroll .process-step-bg-number,
+.bim-process-scroll .process-close-copy,
+.bim-process-scroll .process-progress span {
+  will-change: transform, opacity, filter;
 }
 
 
 /* =========================================================
-   TABLET
-   Mobile/tablet should not use sticky wall layout.
+   TABLET FALLBACK
    ========================================================= */
 
 @media (max-width: 1100px) {
-  .bim-process-wall {
+  .bim-process-scroll {
     min-height: auto;
-    background: #030303;
-    overflow: visible;
+    overflow: hidden;
+  }
+
+  .process-scroll-track {
+    min-height: auto;
   }
 
   .process-sticky {
@@ -571,130 +662,121 @@
     height: auto;
     min-height: 100vh;
 
-    padding: 120px 24px 80px;
+    padding: 120px 24px 90px;
     overflow: hidden;
   }
 
+  .process-entry,
+  .process-frame,
+  .process-meta,
+  .process-footer-meta,
+  .process-progress,
+  .process-intro-aside {
+    display: none;
+  }
+
   .process-sticky::before {
-    left: 10%;
+    left: 8%;
     top: 4%;
-    width: 90vw;
-    height: 42vh;
-    opacity: 0.4;
+    width: 92vw;
+    height: 44vh;
+    opacity: 0.42;
   }
 
   .process-sticky::after {
     left: 0;
     right: 0;
     bottom: -14vh;
-    height: 28vh;
+    height: 30vh;
     opacity: 0.32;
   }
 
-  .process-transition,
-  .process-frame,
-  .process-meta,
-  .process-footer-meta,
-  .process-exit-band {
+  .process-scene {
+    position: relative;
+    inset: auto;
+
+    display: block;
+    padding: 0;
+
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+
+    transform: none;
+    filter: none;
+    transition: none;
+  }
+
+  .process-scene + .process-scene {
+    margin-top: 86px;
+  }
+
+  .process-scene--intro,
+  .process-step,
+  .process-scene--close {
+    grid-template-columns: 1fr;
+  }
+
+  .process-intro,
+  .process-close-copy {
+    max-width: 760px;
+  }
+
+  .process-intro h2,
+  .process-close-copy h2 {
+    font-size: clamp(48px, 11vw, 86px);
+    line-height: 0.9;
+    letter-spacing: -0.075em;
+  }
+
+  .process-intro p:not(.process-kicker) {
+    max-width: 560px;
+    font-size: 14px;
+  }
+
+  .process-step {
+    padding: 42px 0;
+    border-top: 1px solid rgba(244, 241, 234, 0.13);
+  }
+
+  .process-step::before {
     display: none;
   }
 
-  .process-hero {
-    position: relative;
-    left: auto;
-    top: auto;
-
-    max-width: 100%;
-    margin-bottom: 72px;
+  .process-step-bg-number {
+    right: 0;
+    top: 30px;
+    font-size: 170px;
+    opacity: 0.75;
+    transform: none;
   }
 
-  .process-kicker {
-    margin-bottom: 22px;
-    font-size: 10px;
+  .process-step-count {
+    margin-bottom: 18px;
   }
 
-  .process-hero h2 {
-    max-width: 760px;
-    font-size: clamp(46px, 11vw, 78px);
-    line-height: 0.94;
-    letter-spacing: -0.065em;
+  .process-step-left h3 {
+    font-size: clamp(54px, 15vw, 110px);
+    line-height: 0.82;
   }
 
-  .process-intro-copy {
-    max-width: 500px;
-    margin-top: 24px;
+  .process-step-right {
+    width: 100%;
+    max-width: 580px;
+    padding-top: 26px;
+  }
+
+  .process-step-right p {
     font-size: 14px;
-    line-height: 1.65;
   }
 
-  .process-wall {
-    position: relative;
-    left: auto;
-    right: auto;
-    bottom: auto;
-    z-index: 5;
+  .process-tags {
+    margin-top: 22px;
   }
 
-  .process-row {
-    min-height: auto;
-    grid-template-columns: 72px 1fr;
-    align-items: start;
-    row-gap: 18px;
-    column-gap: 18px;
-
-    padding: 34px 0;
-  }
-
-  .process-row-title {
-    grid-column: 2;
-  }
-
-  .process-row-title h3 {
-    font-size: clamp(38px, 9vw, 60px);
-  }
-
-  .process-row-detail {
-    grid-column: 2;
-    grid-template-columns: 1fr;
-    gap: 18px;
-  }
-
-  .process-row-detail p {
-    max-width: 560px;
-    font-size: 13px;
-    line-height: 1.62;
-  }
-
-  .process-row-tags {
-    justify-content: flex-start;
-  }
-
-  .process-row-tags span {
-    min-height: 24px;
-    font-size: 9px;
-  }
-
-  .process-close {
-    position: relative;
-    left: auto;
-    right: auto;
-    bottom: auto;
-
-    margin-top: 70px;
-
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: flex-start;
-  }
-
-  .process-close p {
-    max-width: 560px;
-    font-size: 16px;
-  }
-
-  .process-cta {
-    min-height: 40px;
-    font-size: 10px;
+  .process-close-copy {
+    padding-top: 22px;
+    border-top: 1px solid rgba(244, 241, 234, 0.13);
   }
 }
 
@@ -705,90 +787,63 @@
 
 @media (max-width: 767px) {
   .process-sticky {
-    padding: 96px 20px 70px;
+    padding: 96px 20px 76px;
   }
 
-  .process-hero {
-    margin-bottom: 58px;
+  .process-scene + .process-scene {
+    margin-top: 72px;
   }
 
-  .process-hero h2 {
-    font-size: clamp(42px, 13vw, 62px);
+  .process-kicker {
+    margin-bottom: 20px;
+    font-size: 9px;
+    letter-spacing: 0.3em;
   }
 
-  .process-intro-copy {
+  .process-intro h2,
+  .process-close-copy h2 {
+    font-size: clamp(42px, 14vw, 64px);
+    letter-spacing: -0.07em;
+  }
+
+  .process-intro p:not(.process-kicker) {
     font-size: 13px;
+    line-height: 1.65;
   }
 
-  .process-row {
-    grid-template-columns: 54px 1fr;
-    padding: 30px 0;
+  .process-step {
+    padding: 36px 0;
   }
 
-  .process-row-number span {
-    font-size: 11px;
+  .process-step-bg-number {
+    font-size: 118px;
   }
 
-  .process-row-title h3 {
-    font-size: 38px;
+  .process-step-left h3 {
+    font-size: clamp(48px, 16vw, 76px);
   }
 
-  .process-row-detail p {
+  .process-step-right {
+    padding-top: 22px;
+  }
+
+  .process-step-right p {
     font-size: 13px;
+    line-height: 1.62;
   }
 
-  .process-row-tags {
+  .process-tags {
     gap: 6px;
   }
 
-  .process-row-tags span {
+  .process-tags span {
     min-height: 23px;
-    padding: 0 7px;
+    padding: 0 8px;
     font-size: 8px;
   }
 
-  .process-close {
-    margin-top: 54px;
+  .process-cta {
+    min-height: 40px;
+    font-size: 9px;
   }
-}
-
-
-/* =========================================================
-   PROCESS — JS CONTROLLED FULLSCREEN TAKEOVER
-   ========================================================= */
-
-.bim-process-wall {
-  position: relative;
-  min-height: 430vh;
-  background: #030303;
-  overflow: visible;
-}
-
-.process-sticky {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-
-  width: 100%;
-  height: 100vh;
-  height: 100svh;
-
-  overflow: hidden;
-  transform-origin: center center;
-  will-change: transform, opacity, clip-path, border-radius;
-
-  background:
-    radial-gradient(circle at 66% 34%, rgba(244, 241, 234, 0.055), transparent 25%),
-    radial-gradient(circle at 56% 72%, rgba(244, 241, 234, 0.035), transparent 36%),
-    radial-gradient(circle at 82% 50%, rgba(255, 255, 255, 0.028), transparent 30%),
-    #030303;
-}
-
-.process-sticky.process-fullscreen {
-  border-radius: 0;
-}
-
-.process-sticky.process-framed {
-  border-radius: 34px;
 }
