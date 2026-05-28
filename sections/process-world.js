@@ -2,12 +2,12 @@
    BIM LABS — PROCESS SECTION
    Full replacement for: sections/process-world.js
 
-   True behavior:
+   True single-word portal behavior:
    - Uses ONE PROCESS word only
-   - Original PROCESS word becomes the portal object
-   - Camera zooms into the letter C
-   - C hands off to darkness before text gets ugly/pixelated
-   - Booking emerges inside the same pinned scene
+   - Zoom target is the optical center of the letter C
+   - Booking exists behind PROCESS before the zoom finishes
+   - No fake blackout-to-new-section handoff
+   - Scroll up reverses the zoom
    ========================================================= */
 
 (function () {
@@ -48,8 +48,14 @@
   let portalMetrics = {
     x: 0,
     y: 0,
-    scale: 7
+    scale: 7,
+    originX: 0,
+    originY: 0
   };
+
+  /* =========================================================
+     HELPERS
+     ========================================================= */
 
   function clamp(value, min, max) {
     return Math.min(Math.max(value, min), max);
@@ -98,6 +104,10 @@
     };
   }
 
+  /* =========================================================
+     MEASURE
+     ========================================================= */
+
   function measure() {
     const rect = section.getBoundingClientRect();
 
@@ -115,38 +125,55 @@
     if (!bigWord || !portalTarget) return;
 
     /*
-      Temporarily reset to the normal centered word state before measuring.
-      We keep translateY(-50%) because the word is sticky at 50vh.
+      Reset the word to a clean measurable position.
+      It is sticky at 50vh, so translateY(-50%) stays.
     */
     setStyles(bigWord, {
-      transform: "translate3d(0, -50%, 0) scale(1)"
+      transformOrigin: "center center",
+      transform: "translate3d(0px, -50%, 0) scale(1)"
     });
 
+    const wordRect = bigWord.getBoundingClientRect();
     const targetRect = portalTarget.getBoundingClientRect();
 
     const viewportCenterX = window.innerWidth / 2;
     const viewportCenterY = window.innerHeight / 2;
 
-    const targetCenterX = targetRect.left + targetRect.width / 2;
-    const targetCenterY = targetRect.top + targetRect.height / 2;
+    /*
+      A lowercase c's visual opening is not perfectly centered
+      in the bounding box. These are optical tuning values.
+
+      Increase opticalX slightly if it still feels too far left.
+      Decrease opticalX if it feels too far right.
+    */
+    const opticalX = 0.54;
+    const opticalY = 0.5;
+
+    const targetCenterX = targetRect.left + targetRect.width * opticalX;
+    const targetCenterY = targetRect.top + targetRect.height * opticalY;
+
+    const originX = targetCenterX - wordRect.left;
+    const originY = targetCenterY - wordRect.top;
 
     const moveX = viewportCenterX - targetCenterX;
     const moveY = viewportCenterY - targetCenterY;
 
-    /*
-      Controlled scale:
-      Do NOT blow this up to 20x–40x. That causes the ugly pixelated look.
-      The C should become the doorway, then darkness takes over.
-    */
     const targetSize = Math.max(targetRect.width, targetRect.height, 1);
     const viewportMax = Math.max(window.innerWidth, window.innerHeight);
 
-    const zoomScale = clamp((viewportMax * 1.55) / targetSize, 5.5, 11);
+    /*
+      Controlled zoom scale.
+      Do not go massive here. The C should become the doorway,
+      then the room behind it should take over.
+    */
+    const zoomScale = clamp((viewportMax * 1.45) / targetSize, 5.2, 9.5);
 
     portalMetrics = {
       x: moveX,
       y: moveY,
-      scale: zoomScale
+      scale: zoomScale,
+      originX,
+      originY
     };
   }
 
@@ -157,6 +184,10 @@
     targetProgress = clamp(raw, 0, 1);
     startAnimationLoop();
   }
+
+  /* =========================================================
+     INITIAL STATE
+     ========================================================= */
 
   function setupInitialState() {
     section.classList.add("process-js-ready");
@@ -182,7 +213,8 @@
         color: "#ffffff",
         opacity: "0.08",
         filter: "blur(2px)",
-        transform: "translate3d(0, -50%, 0) scale(0.78)"
+        transformOrigin: "center center",
+        transform: "translate3d(0px, -50%, 0) scale(0.78)"
       });
     }
 
@@ -197,27 +229,34 @@
     if (portalExit) {
       portalExit.style.setProperty("--portal-progress", "0");
       portalExit.style.setProperty("--portal-bg-opacity", "0");
+
       portalExit.style.setProperty("--portal-depth-opacity", "0");
       portalExit.style.setProperty("--portal-depth-scale", "1");
       portalExit.style.setProperty("--portal-pull", "0");
       portalExit.style.setProperty("--portal-dot-scale", "1");
       portalExit.style.setProperty("--portal-dot-blur", "0px");
+
       portalExit.style.setProperty("--portal-core-opacity", "0");
       portalExit.style.setProperty("--portal-core-scale", "0.18");
       portalExit.style.setProperty("--portal-core-blur", "42px");
+
       portalExit.style.setProperty("--booking-opacity", "0");
-      portalExit.style.setProperty("--booking-scale", "0.72");
-      portalExit.style.setProperty("--booking-blur", "34px");
+      portalExit.style.setProperty("--booking-scale", "0.86");
+      portalExit.style.setProperty("--booking-blur", "22px");
     }
 
     if (portalBooking) {
       setStyles(portalBooking, {
         opacity: "0",
-        transform: "scale(0.72)",
-        filter: "blur(34px)"
+        transform: "scale(0.86)",
+        filter: "blur(22px)"
       });
     }
   }
+
+  /* =========================================================
+     PROCESS WORD / C TARGET ZOOM
+     ========================================================= */
 
   function renderProcessWord(progress) {
     if (!bigWord) return;
@@ -226,18 +265,21 @@
     const grow = smoothstep(0.08, 0.52, progress);
 
     /*
-      Card chapter quiets down before the portal takes over.
-      The same word remains alive, but it becomes the camera target.
+      The portal starts taking over while cards are quieting.
     */
-    const portalTakeover = smoothstep(0.56, 0.68, progress);
+    const portalIntro = smoothstep(0.58, 0.68, progress);
+
+    /*
+      Faster zoom. The C should not hang huge on screen.
+    */
     const zoomRaw = smoothstep(0.66, 0.82, progress);
     const zoom = easeInOutCubic(zoomRaw);
 
     /*
-      Fade the text before it scales too much.
-      This prevents the pixelated / cheap oversized text look.
+      Fade the word as the C becomes the doorway.
+      This prevents the blown-up text from looking cheap.
     */
-    const wordFadeOut = smoothstep(0.74, 0.88, progress);
+    const wordFadeOut = smoothstep(0.72, 0.82, progress);
 
     const baseScale =
       lerp(0.72, 0.92, enter) +
@@ -248,21 +290,31 @@
     const moveX = lerp(0, portalMetrics.x, zoom);
     const moveY = lerp(0, portalMetrics.y, zoom);
 
+    const baseOpacity = lerp(0.08, 0.21, enter);
+
+    /*
+      Keep PROCESS readable through cards,
+      then let it become the portal target,
+      then get out of the way.
+    */
     const opacity =
-      lerp(0.08, 0.21, enter) *
-      lerp(1, 1, portalTakeover) *
+      baseOpacity *
+      lerp(1, 1.08, portalIntro) *
       lerp(1, 0, wordFadeOut);
 
     const blur =
       lerp(2, 0, enter) +
-      lerp(0, 10, wordFadeOut);
+      lerp(0, 8, wordFadeOut);
 
-    const brightness = lerp(1, 0.78, wordFadeOut);
-    const contrast = lerp(1, 1.12, zoom);
+    const brightness = lerp(1, 0.82, wordFadeOut);
+    const contrast = lerp(1, 1.1, zoom);
 
     setStyles(bigWord, {
       color: "#ffffff",
       opacity: clamp(opacity, 0, 0.24).toFixed(3),
+      transformOrigin: `${portalMetrics.originX.toFixed(
+        2
+      )}px ${portalMetrics.originY.toFixed(2)}px`,
       filter: `blur(${blur.toFixed(2)}px) brightness(${brightness.toFixed(
         3
       )}) contrast(${contrast.toFixed(3)})`,
@@ -272,10 +324,17 @@
     });
   }
 
+  /* =========================================================
+     CARD MOTION
+     ========================================================= */
+
   function renderCards(progress) {
     const viewportHeight =
       window.innerHeight || document.documentElement.clientHeight;
 
+    /*
+      Cards leave before the C zoom fully takes over.
+    */
     const quiet = smoothstep(0.52, 0.68, progress);
 
     cards.forEach((card) => {
@@ -323,30 +382,40 @@
     });
   }
 
+  /* =========================================================
+     PORTAL / BOOKING BEHIND PROCESS
+     ========================================================= */
+
   function renderPortal(progress) {
     if (!portalExit) return;
 
     const portalIntro = smoothstep(0.58, 0.68, progress);
     const zoomRaw = smoothstep(0.66, 0.82, progress);
     const zoom = easeInOutCubic(zoomRaw);
-    const coreOpen = smoothstep(0.72, 0.9, progress);
-    const inside = smoothstep(0.78, 0.94, progress);
-    const bookingIn = smoothstep(0.82, 0.98, progress);
 
     /*
-      Stage background comes in while the original section becomes a camera scene.
+      Booking starts early so it exists behind PROCESS during the zoom.
+      This is the key difference from the old blackout/fade approach.
     */
+    const bookingIn = smoothstep(0.68, 0.9, progress);
+
+    /*
+      Core is now a soft lens/depth layer, not a black curtain.
+    */
+    const coreOpen = smoothstep(0.72, 0.9, progress);
+    const inside = smoothstep(0.78, 0.94, progress);
+
     portalExit.style.setProperty("--portal-progress", zoom.toFixed(3));
     portalExit.style.setProperty("--portal-bg-opacity", portalIntro.toFixed(3));
 
     /*
-      Dust pulls inward. Subtle, not sci-fi.
+      Dust/depth should support the zoom, not become a space effect.
     */
-    const depthOpacity = lerp(0, 0.62, portalIntro) * lerp(1, 0.48, inside);
-    const depthScale = lerp(1, 1.22, zoom);
-    const pull = lerp(0, 0.34, zoom);
-    const dotScale = lerp(0.9, 1.85, zoom);
-    const dotBlur = lerp(0, 2.4, zoom);
+    const depthOpacity = lerp(0, 0.5, portalIntro) * lerp(1, 0.55, inside);
+    const depthScale = lerp(1, 1.18, zoom);
+    const pull = lerp(0, 0.3, zoom);
+    const dotScale = lerp(0.9, 1.55, zoom);
+    const dotBlur = lerp(0, 2, zoom);
 
     portalExit.style.setProperty("--portal-depth-opacity", depthOpacity.toFixed(3));
     portalExit.style.setProperty("--portal-depth-scale", depthScale.toFixed(3));
@@ -355,23 +424,23 @@
     portalExit.style.setProperty("--portal-dot-blur", `${dotBlur.toFixed(2)}px`);
 
     /*
-      Darkness becomes the actual transition after the C grows.
-      This is what keeps it premium instead of over-scaling text.
+      Soft lens. Not a full blackout.
+      CSS should make portal-core semi-transparent, not pure black.
     */
-    const coreOpacity = lerp(0, 1, coreOpen);
-    const coreScale = lerp(0.18, 2.4, coreOpen);
-    const coreBlur = lerp(42, 2, coreOpen);
+    const coreOpacity = lerp(0, 0.72, coreOpen);
+    const coreScale = lerp(0.18, 1.85, coreOpen);
+    const coreBlur = lerp(42, 6, coreOpen);
 
     portalExit.style.setProperty("--portal-core-opacity", coreOpacity.toFixed(3));
     portalExit.style.setProperty("--portal-core-scale", coreScale.toFixed(3));
     portalExit.style.setProperty("--portal-core-blur", `${coreBlur.toFixed(2)}px`);
 
     /*
-      Booking appears from the same center. No scrolling upward.
+      Booking sits behind the PROCESS word and sharpens as we enter.
     */
     const bookingOpacity = bookingIn;
-    const bookingScale = lerp(0.72, 1, easeInOutCubic(bookingIn));
-    const bookingBlur = lerp(34, 0, bookingIn);
+    const bookingScale = lerp(0.86, 1, easeInOutCubic(bookingIn));
+    const bookingBlur = lerp(22, 0, bookingIn);
 
     portalExit.style.setProperty("--booking-opacity", bookingOpacity.toFixed(3));
     portalExit.style.setProperty("--booking-scale", bookingScale.toFixed(3));
@@ -388,6 +457,10 @@
     section.classList.toggle("is-entering-portal", portalIntro > 0.4);
     section.classList.toggle("is-inside-portal", inside > 0.5);
   }
+
+  /* =========================================================
+     MAIN RENDER LOOP
+     ========================================================= */
 
   function render(progress) {
     renderCards(progress);
@@ -415,6 +488,10 @@
       rafRunning = false;
     }
   }
+
+  /* =========================================================
+     REVEAL OBSERVER
+     ========================================================= */
 
   function setupObserver() {
     if (observer) {
@@ -480,6 +557,10 @@
     });
   }
 
+  /* =========================================================
+     SCRAMBLE / GLITCH TEXT
+     ========================================================= */
+
   function scrambleText(element, options = {}) {
     if (!element || prefersReducedMotion) return;
 
@@ -544,6 +625,10 @@
     }, 460);
   }
 
+  /* =========================================================
+     HOVER EFFECTS
+     ========================================================= */
+
   function setupHoverEffects() {
     items.forEach((item) => {
       const card = item.querySelector(".process-work-card");
@@ -579,6 +664,10 @@
     });
   }
 
+  /* =========================================================
+     REDUCED MOTION
+     ========================================================= */
+
   function setupReducedMotion() {
     items.forEach((item) => {
       item.classList.add("is-visible");
@@ -598,6 +687,7 @@
       setStyles(bigWord, {
         opacity: "0.12",
         filter: "none",
+        transformOrigin: "center center",
         transform: "translate3d(0, -50%, 0) scale(1)"
       });
     }
@@ -613,9 +703,11 @@
     if (portalExit) {
       portalExit.style.setProperty("--portal-bg-opacity", "1");
       portalExit.style.setProperty("--portal-depth-opacity", "0.3");
-      portalExit.style.setProperty("--portal-core-opacity", "0.7");
+
+      portalExit.style.setProperty("--portal-core-opacity", "0.45");
       portalExit.style.setProperty("--portal-core-scale", "1");
-      portalExit.style.setProperty("--portal-core-blur", "6px");
+      portalExit.style.setProperty("--portal-core-blur", "8px");
+
       portalExit.style.setProperty("--booking-opacity", "1");
       portalExit.style.setProperty("--booking-scale", "1");
       portalExit.style.setProperty("--booking-blur", "0px");
@@ -629,6 +721,10 @@
       });
     }
   }
+
+  /* =========================================================
+     EVENTS
+     ========================================================= */
 
   function bindEvents() {
     window.addEventListener(
@@ -662,6 +758,10 @@
     }
   }
 
+  /* =========================================================
+     INIT
+     ========================================================= */
+
   function init() {
     setupInitialState();
 
@@ -678,14 +778,15 @@
     render(currentProgress);
     bindEvents();
 
-    console.log("[Process] Loaded single-word portal zoom.", {
+    console.log("[Process] Loaded accurate C portal zoom.", {
       items: items.length,
       cards: cards.length,
       hasProcessWord: Boolean(bigWord),
       hasPortalTargetC: Boolean(portalTarget),
       hasPortalExit: Boolean(portalExit),
       hasPortalStage: Boolean(portalStage),
-      hasPortalBooking: Boolean(portalBooking)
+      hasPortalBooking: Boolean(portalBooking),
+      portalMetrics
     });
   }
 
