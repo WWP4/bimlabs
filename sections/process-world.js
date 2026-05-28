@@ -116,15 +116,16 @@
         defaults: {
           ease: "power2.out"
         },
-        scrollTrigger: {
-          trigger: section,
-          start: "top top",
-          end: "bottom bottom",
-          scrub: 1.15,
-          pin: sticky,
-          anticipatePin: 1,
-          invalidateOnRefresh: true
-        }
+    scrollTrigger: {
+  trigger: section,
+  start: "top 70%",
+  end: "+=260%",
+  scrub: 0.9,
+  pin: sticky,
+  pinSpacing: true,
+  anticipatePin: 1,
+  invalidateOnRefresh: true
+}
       });
 
       /* Phase 1: handoff from section 2 */
@@ -185,7 +186,7 @@
       }, 0.34);
 
       rows.forEach((row, index) => {
-        const start = 0.4 + index * 0.105;
+       const start = 0.28 + index * 0.085;
 
         tl.to(row, {
           opacity: 1,
@@ -219,11 +220,11 @@
       });
 
       /* Phase 4: headline quiets down as full process becomes focus */
-      tl.to(hero, {
-        y: -28,
-        opacity: 0.72,
-        duration: 0.18
-      }, 0.76);
+   tl.to(hero, {
+  y: -52,
+  opacity: 0.26,
+  duration: 0.2
+}, 0.48);
 
       /* Phase 5: final closing line */
       tl.to(close, {
