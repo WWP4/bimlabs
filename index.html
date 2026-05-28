@@ -145,68 +145,77 @@
 </section>
 
 
-<section class="bim-process-wall" id="process" aria-label="BIM Labs process">
+<section class="bim-process-scroll" id="process" aria-label="BIM Labs process">
 
-  <!-- soft transition layer from section 2 -->
-  <div class="process-transition" aria-hidden="true">
-    <div class="process-transition-line"></div>
-    <div class="process-transition-label">How we work</div>
+  <!-- SECTION ENTRY / TRANSITION FROM PREVIOUS SECTION -->
+  <div class="process-entry" aria-hidden="true">
+    <div class="process-entry-line"></div>
+    <span>Entering method</span>
   </div>
 
-  <div class="process-sticky">
+  <!-- LONG SCROLL CONTAINER -->
+  <div class="process-scroll-track">
 
-    <!-- fixed editorial frame -->
-    <div class="process-frame" aria-hidden="true">
-      <div class="process-ruler process-ruler--top"></div>
-      <div class="process-ruler process-ruler--bottom"></div>
-      <div class="process-corner process-corner--tl"></div>
-      <div class="process-corner process-corner--tr"></div>
-      <div class="process-corner process-corner--bl"></div>
-      <div class="process-corner process-corner--br"></div>
-    </div>
+    <!-- STICKY FULLSCREEN EXPERIENCE -->
+    <div class="process-sticky">
 
-    <!-- top fixed meta -->
-    <div class="process-meta">
-      <span>03 / Process</span>
-      <span>Operating Method</span>
-    </div>
+      <!-- EDITORIAL FRAME -->
+      <div class="process-frame" aria-hidden="true">
+        <div class="process-frame-line process-frame-line--top"></div>
+        <div class="process-frame-line process-frame-line--bottom"></div>
 
-    <!-- main opening copy -->
-    <div class="process-hero">
-      <p class="process-kicker">From work to method</p>
+        <div class="process-corner process-corner--tl"></div>
+        <div class="process-corner process-corner--tr"></div>
+        <div class="process-corner process-corner--bl"></div>
+        <div class="process-corner process-corner--br"></div>
+      </div>
 
-      <h2>
-        How the work moves<br />
-        from idea to system.
-      </h2>
+      <!-- FIXED TOP META -->
+      <div class="process-meta">
+        <span>03 / Process</span>
+        <span>Operating Method</span>
+      </div>
 
-      <p class="process-intro-copy">
-        A focused sequence for turning scattered ideas, rough offers, and disconnected
-        tools into a digital experience that feels clear, useful, and built to last.
-      </p>
-    </div>
+      <!-- OPENING SCREEN -->
+      <div class="process-scene process-scene--intro is-active" data-process-scene="intro">
+        <div class="process-intro">
+          <p class="process-kicker">From work to method</p>
 
-    <!-- process wall -->
-    <div class="process-wall" aria-label="Four step BIM Labs process">
+          <h2>
+            How the work<br />
+            moves from idea<br />
+            to system.
+          </h2>
 
-      <article class="process-row process-row--one" data-step="01">
-        <div class="process-row-line" aria-hidden="true"></div>
-
-        <div class="process-row-number">
-          <span>01</span>
+          <p>
+            A focused sequence for turning scattered ideas, rough offers, and disconnected
+            tools into a digital experience that feels clear, useful, and built to last.
+          </p>
         </div>
 
-        <div class="process-row-title">
+        <div class="process-intro-aside">
+          <span>Scroll</span>
+          <div></div>
+          <span>Begin sequence</span>
+        </div>
+      </div>
+
+      <!-- STEP 01 -->
+      <article class="process-scene process-step" data-process-scene="01">
+        <div class="process-step-bg-number">01</div>
+
+        <div class="process-step-left">
+          <span class="process-step-count">01</span>
           <h3>Diagnose</h3>
         </div>
 
-        <div class="process-row-detail">
+        <div class="process-step-right">
           <p>
             We map the offer, audience, friction points, and real business goal
             before touching design.
           </p>
 
-          <div class="process-row-tags" aria-label="Diagnose focus areas">
+          <div class="process-tags">
             <span>Offer</span>
             <span>Audience</span>
             <span>Friction</span>
@@ -214,24 +223,22 @@
         </div>
       </article>
 
-      <article class="process-row process-row--two" data-step="02">
-        <div class="process-row-line" aria-hidden="true"></div>
+      <!-- STEP 02 -->
+      <article class="process-scene process-step" data-process-scene="02">
+        <div class="process-step-bg-number">02</div>
 
-        <div class="process-row-number">
-          <span>02</span>
-        </div>
-
-        <div class="process-row-title">
+        <div class="process-step-left">
+          <span class="process-step-count">02</span>
           <h3>Architect</h3>
         </div>
 
-        <div class="process-row-detail">
+        <div class="process-step-right">
           <p>
             We define the structure: pages, flows, content rhythm, user journey,
             and system logic.
           </p>
 
-          <div class="process-row-tags" aria-label="Architect focus areas">
+          <div class="process-tags">
             <span>Structure</span>
             <span>Journey</span>
             <span>Logic</span>
@@ -239,49 +246,45 @@
         </div>
       </article>
 
-      <article class="process-row process-row--three" data-step="03">
-        <div class="process-row-line" aria-hidden="true"></div>
+      <!-- STEP 03 -->
+      <article class="process-scene process-step" data-process-scene="03">
+        <div class="process-step-bg-number">03</div>
 
-        <div class="process-row-number">
-          <span>03</span>
-        </div>
-
-        <div class="process-row-title">
+        <div class="process-step-left">
+          <span class="process-step-count">03</span>
           <h3>Build</h3>
         </div>
 
-        <div class="process-row-detail">
+        <div class="process-step-right">
           <p>
             We design and develop the interface, AI layer, portal, automations,
             and supporting tools.
           </p>
 
-          <div class="process-row-tags" aria-label="Build focus areas">
+          <div class="process-tags">
             <span>Interface</span>
-            <span>AI</span>
+            <span>AI Layer</span>
             <span>Automation</span>
           </div>
         </div>
       </article>
 
-      <article class="process-row process-row--four" data-step="04">
-        <div class="process-row-line" aria-hidden="true"></div>
+      <!-- STEP 04 -->
+      <article class="process-scene process-step" data-process-scene="04">
+        <div class="process-step-bg-number">04</div>
 
-        <div class="process-row-number">
-          <span>04</span>
-        </div>
-
-        <div class="process-row-title">
+        <div class="process-step-left">
+          <span class="process-step-count">04</span>
           <h3>Refine</h3>
         </div>
 
-        <div class="process-row-detail">
+        <div class="process-step-right">
           <p>
             We launch, review behavior, clean up friction, and improve the system
             after it goes live.
           </p>
 
-          <div class="process-row-tags" aria-label="Refine focus areas">
+          <div class="process-tags">
             <span>Launch</span>
             <span>Review</span>
             <span>Improve</span>
@@ -289,30 +292,40 @@
         </div>
       </article>
 
+      <!-- CLOSING SCREEN -->
+      <div class="process-scene process-scene--close" data-process-scene="close">
+        <div class="process-close-copy">
+          <p class="process-kicker">Built to move</p>
+
+          <h2>
+            If the system needs to sell,<br />
+            guide, or organize —<br />
+            we build the path.
+          </h2>
+
+          <a href="#contact" class="process-cta">
+            Start a conversation
+          </a>
+        </div>
+      </div>
+
+      <!-- STEP NAV / PROGRESS -->
+      <div class="process-progress" aria-hidden="true">
+        <span data-progress-step="intro">00</span>
+        <span data-progress-step="01">01</span>
+        <span data-progress-step="02">02</span>
+        <span data-progress-step="03">03</span>
+        <span data-progress-step="04">04</span>
+        <span data-progress-step="close">End</span>
+      </div>
+
+      <!-- BOTTOM META -->
+      <div class="process-footer-meta" aria-hidden="true">
+        <span>Small by design</span>
+        <span>Serious by default</span>
+      </div>
+
     </div>
-
-    <!-- closing statement -->
-    <div class="process-close">
-      <p>
-        If the system needs to sell, guide, or organize — we build the path.
-      </p>
-
-      <a href="#contact" class="process-cta">
-        Start a conversation
-      </a>
-    </div>
-
-    <!-- small bottom progress language -->
-    <div class="process-footer-meta" aria-hidden="true">
-      <span>Small by design</span>
-      <span>Serious by default</span>
-    </div>
-
-    <div class="process-exit-band" aria-hidden="true">
-  <div class="process-exit-line"></div>
-  <span>Next</span>
-</div>
-
   </div>
 </section>
 
