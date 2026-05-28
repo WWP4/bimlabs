@@ -1,66 +1,53 @@
 /* =========================================================
-   BIM LABS — PROCESS FULLSCREEN TAKEOVER
+   BIM LABS — PROCESS LONG PINNED SCROLL
    Full replacement for: sections/process-world.js
 
-   Behavior:
-   - Process section enters as a framed scene
-   - Expands into true fullscreen
-   - Rows animate in while screen is pinned
-   - Closing CTA appears
-   - Section shrinks/screens out at the end
-
-   Required HTML:
-   .bim-process-wall
+   Built for:
+   .bim-process-scroll
+   .process-scroll-track
    .process-sticky
-   .process-hero
-   .process-wall
-   .process-row
-   .process-exit-band
+   .process-scene
+   .process-progress
+
+   Behavior:
+   - Pins the process section naturally with CSS sticky
+   - Converts scroll progress into scene changes
+   - Intro → Step 01 → Step 02 → Step 03 → Step 04 → Close
+   - Adds active/before/after classes
+   - Updates progress rail
+   - Uses light smoothing so it feels premium, not snappy
    ========================================================= */
 
 (function () {
-  const section = document.querySelector(".bim-process-wall");
-  const stage = document.querySelector(".process-sticky");
+  const section = document.querySelector(".bim-process-scroll");
+  const track = document.querySelector(".process-scroll-track");
+  const sticky = document.querySelector(".process-sticky");
 
-  if (!section || !stage) {
-    console.warn("[Process] Missing .bim-process-wall or .process-sticky");
+  if (!section || !track || !sticky) {
+    console.warn("[Process] Missing process section, track, or sticky stage.");
     return;
   }
 
-  const meta = section.querySelector(".process-meta");
-  const footerMeta = section.querySelector(".process-footer-meta");
+  const scenes = Array.from(section.querySelectorAll(".process-scene"));
+  const progressItems = Array.from(section.querySelectorAll(".process-progress span"));
 
-  const hero = section.querySelector(".process-hero");
-  const kicker = section.querySelector(".process-kicker");
-  const heading = section.querySelector(".process-hero h2");
-  const introCopy = section.querySelector(".process-intro-copy");
-
-  const wall = section.querySelector(".process-wall");
-  const rows = Array.from(section.querySelectorAll(".process-row"));
-  const rowLines = Array.from(section.querySelectorAll(".process-row-line"));
-  const rowNumbers = Array.from(section.querySelectorAll(".process-row-number"));
-  const rowTitles = Array.from(section.querySelectorAll(".process-row-title"));
-  const rowDetails = Array.from(section.querySelectorAll(".process-row-detail"));
-
-  const close = section.querySelector(".process-close");
-
-  const exitBand = section.querySelector(".process-exit-band");
-  const exitLine = section.querySelector(".process-exit-line");
-  const exitLabel = section.querySelector(".process-exit-band span");
-
-  let enabled = false;
-  let sectionTop = 0;
-  let sectionHeight = 1;
-  let scrollLength = 1;
-
-  let targetProgress = 0;
-  let currentProgress = 0;
-  let rafRunning = false;
+  if (!scenes.length) {
+    console.warn("[Process] No .process-scene elements found.");
+    return;
+  }
 
   const DESKTOP_QUERY = "(min-width: 1101px)";
 
+  let enabled = false;
+  let sectionTop = 0;
+  let scrollLength = 1;
+  let targetProgress = 0;
+  let currentProgress = 0;
+  let rafRunning = false;
+  let activeIndex = -1;
+
   const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
-  const lerp = (a, b, t) => a + (b - a) * t;
+  const lerp = (start, end, amount) => start + (end - start) * amount;
 
   function mapRange(value, inMin, inMax, outMin, outMax) {
     const progress = clamp((value - inMin) / (inMax - inMin), 0, 1);
@@ -81,161 +68,68 @@
     };
   }
 
-  function setupDesktopBase() {
-    section.style.position = "relative";
-    section.style.minHeight = "430vh";
-    section.style.overflow = "visible";
-    section.style.background = "#030303";
+  function getSceneIndex(progress) {
+    /*
+      6 total scenes:
+      0 intro
+      1 step 01
+      2 step 02
+      3 step 03
+      4 step 04
+      5 close
 
-    stage.style.position = "absolute";
-    stage.style.top = "0";
-    stage.style.left = "0";
-    stage.style.right = "0";
-    stage.style.bottom = "auto";
-    stage.style.width = "100%";
-    stage.style.height = "100vh";
-    stage.style.height = "100svh";
-    stage.style.overflow = "hidden";
-    stage.style.transformOrigin = "center center";
-    stage.style.willChange = "transform, opacity, clip-path, border-radius";
+      Slightly longer hold on intro and close.
+    */
 
-    setStyles(stage, {
-      opacity: "1",
-      transform: "scale(0.9)",
-      clipPath: "inset(42px round 34px)",
-      borderRadius: "34px"
+    if (progress < 0.17) return 0;
+    if (progress < 0.32) return 1;
+    if (progress < 0.47) return 2;
+    if (progress < 0.62) return 3;
+    if (progress < 0.78) return 4;
+    return 5;
+  }
+
+  function getLocalSceneProgress(progress, index) {
+    const ranges = [
+      [0.0, 0.17],
+      [0.17, 0.32],
+      [0.32, 0.47],
+      [0.47, 0.62],
+      [0.62, 0.78],
+      [0.78, 1.0]
+    ];
+
+    const range = ranges[index] || [0, 1];
+    return clamp((progress - range[0]) / (range[1] - range[0]), 0, 1);
+  }
+
+  function updateSceneClasses(index) {
+    if (index === activeIndex) return;
+
+    activeIndex = index;
+
+    scenes.forEach((scene, sceneIndex) => {
+      scene.classList.remove("is-active", "is-before", "is-after");
+
+      if (sceneIndex === index) {
+        scene.classList.add("is-active");
+      } else if (sceneIndex < index) {
+        scene.classList.add("is-before");
+      } else {
+        scene.classList.add("is-after");
+      }
     });
 
-    setStyles(meta, { opacity: "0" });
-    setStyles(footerMeta, { opacity: "0" });
+    const activeScene = scenes[index];
+    const activeKey = activeScene ? activeScene.getAttribute("data-process-scene") : "";
 
-    setStyles(kicker, {
-      opacity: "0",
-      transform: "translate3d(0, 24px, 0)"
-    });
-
-    setStyles(heading, {
-      opacity: "0",
-      transform: "translate3d(0, 70px, 0)",
-      filter: "blur(12px)",
-      letterSpacing: "-0.105em"
-    });
-
-    setStyles(introCopy, {
-      opacity: "0",
-      transform: "translate3d(0, 34px, 0)"
-    });
-
-    setStyles(hero, {
-      opacity: "1",
-      transform: "translate3d(0, 0, 0)"
-    });
-
-    setStyles(wall, {
-      opacity: "1",
-      transform: "translate3d(0, 110px, 0)"
-    });
-
-    rows.forEach((row) => {
-      setStyles(row, {
-        opacity: "0",
-        transform: "translate3d(0, 72px, 0)"
-      });
-    });
-
-    rowLines.forEach((line) => {
-      setStyles(line, {
-        transform: "scaleX(0)",
-        transformOrigin: "left center"
-      });
-    });
-
-    [...rowNumbers, ...rowTitles, ...rowDetails].forEach((item) => {
-      setStyles(item, {
-        opacity: "0",
-        transform: "translate3d(0, 34px, 0)"
-      });
-    });
-
-    setStyles(close, {
-      opacity: "0",
-      transform: "translate3d(0, 40px, 0)",
-      pointerEvents: "none"
-    });
-
-    setStyles(exitBand, {
-      opacity: "0",
-      transform: "translate3d(0, 100%, 0)"
-    });
-
-    setStyles(exitLine, {
-      transform: "scaleX(0)",
-      transformOrigin: "center center"
-    });
-
-    setStyles(exitLabel, {
-      opacity: "0",
-      transform: "translate3d(0, 18px, 0)"
+    progressItems.forEach((item) => {
+      const itemKey = item.getAttribute("data-progress-step");
+      item.classList.toggle("is-active", itemKey === activeKey);
     });
   }
 
-  function resetMobile() {
-    section.style.position = "";
-    section.style.minHeight = "";
-    section.style.overflow = "";
-    section.style.background = "";
-
-    stage.style.position = "";
-    stage.style.top = "";
-    stage.style.left = "";
-    stage.style.right = "";
-    stage.style.bottom = "";
-    stage.style.width = "";
-    stage.style.height = "";
-    stage.style.overflow = "";
-    stage.style.transformOrigin = "";
-    stage.style.willChange = "";
-    stage.style.opacity = "";
-    stage.style.transform = "";
-    stage.style.clipPath = "";
-    stage.style.borderRadius = "";
-
-    [
-      meta,
-      footerMeta,
-      hero,
-      kicker,
-      heading,
-      introCopy,
-      wall,
-      close,
-      exitBand,
-      exitLine,
-      exitLabel,
-      ...rows,
-      ...rowLines,
-      ...rowNumbers,
-      ...rowTitles,
-      ...rowDetails
-    ].forEach((element) => {
-      if (!element) return;
-
-      element.style.opacity = "";
-      element.style.transform = "";
-      element.style.filter = "";
-      element.style.letterSpacing = "";
-      element.style.pointerEvents = "";
-      element.style.clipPath = "";
-      element.style.borderRadius = "";
-      element.style.position = "";
-      element.style.top = "";
-      element.style.left = "";
-      element.style.right = "";
-      element.style.bottom = "";
-    });
-  }
-
-  function measure() {
+  function setupDesktop() {
     enabled = window.matchMedia(DESKTOP_QUERY).matches;
 
     if (!enabled) {
@@ -243,58 +137,83 @@
       return;
     }
 
-    setupDesktopBase();
+    section.style.minHeight = "620vh";
+    track.style.minHeight = "620vh";
+
+    sticky.style.transform = "translate3d(0, 0, 0)";
+    sticky.style.opacity = "1";
+    sticky.style.clipPath = "inset(0px round 0px)";
+    sticky.style.borderRadius = "0px";
+
+    scenes.forEach((scene, index) => {
+      scene.style.opacity = "";
+      scene.style.visibility = "";
+      scene.style.transform = "";
+      scene.style.filter = "";
+      scene.style.pointerEvents = "";
+
+      if (index === 0) {
+        scene.classList.add("is-active");
+        scene.classList.remove("is-before", "is-after");
+      } else {
+        scene.classList.remove("is-active", "is-before");
+        scene.classList.add("is-after");
+      }
+    });
+
+    progressItems.forEach((item) => {
+      const itemKey = item.getAttribute("data-progress-step");
+      item.classList.toggle("is-active", itemKey === "intro");
+    });
+
+    activeIndex = 0;
+  }
+
+  function resetMobile() {
+    section.style.minHeight = "";
+    track.style.minHeight = "";
+
+    sticky.style.transform = "";
+    sticky.style.opacity = "";
+    sticky.style.clipPath = "";
+    sticky.style.borderRadius = "";
+
+    scenes.forEach((scene) => {
+      scene.classList.remove("is-active", "is-before", "is-after");
+      scene.style.opacity = "";
+      scene.style.visibility = "";
+      scene.style.transform = "";
+      scene.style.filter = "";
+      scene.style.pointerEvents = "";
+    });
+
+    progressItems.forEach((item) => {
+      item.classList.remove("is-active");
+    });
+
+    activeIndex = -1;
+  }
+
+  function measure() {
+    setupDesktop();
+
+    if (!enabled) return;
 
     const rect = section.getBoundingClientRect();
 
     sectionTop = rect.top + window.scrollY;
-    sectionHeight = section.offsetHeight;
-    scrollLength = Math.max(1, sectionHeight - window.innerHeight);
+    scrollLength = Math.max(1, section.offsetHeight - window.innerHeight);
 
-    updateTargets();
+    updateTarget();
     startLoop();
   }
 
-  function updatePin() {
-    const scrollY = window.scrollY;
-
-    const beforeSection = scrollY < sectionTop;
-    const insideSection = scrollY >= sectionTop && scrollY <= sectionTop + scrollLength;
-    const afterSection = scrollY > sectionTop + scrollLength;
-
-    if (beforeSection) {
-      stage.style.position = "absolute";
-      stage.style.top = "0";
-      stage.style.bottom = "auto";
-      stage.style.left = "0";
-      stage.style.right = "0";
-    }
-
-    if (insideSection) {
-      stage.style.position = "fixed";
-      stage.style.top = "0";
-      stage.style.bottom = "auto";
-      stage.style.left = "0";
-      stage.style.right = "0";
-    }
-
-    if (afterSection) {
-      stage.style.position = "absolute";
-      stage.style.top = "auto";
-      stage.style.bottom = "0";
-      stage.style.left = "0";
-      stage.style.right = "0";
-    }
-  }
-
-  function updateTargets() {
+  function updateTarget() {
     if (!enabled) return;
 
     const rawProgress = (window.scrollY - sectionTop) / scrollLength;
-
     targetProgress = clamp(rawProgress, 0, 1);
 
-    updatePin();
     startLoop();
   }
 
@@ -306,190 +225,154 @@
   }
 
   function animate() {
-    currentProgress = lerp(currentProgress, targetProgress, 0.11);
+    currentProgress = lerp(currentProgress, targetProgress, 0.12);
 
     render(currentProgress);
 
-    const stillMoving = Math.abs(currentProgress - targetProgress) > 0.001;
+    const stillMoving = Math.abs(currentProgress - targetProgress) > 0.0008;
 
     if (stillMoving) {
       requestAnimationFrame(animate);
     } else {
+      currentProgress = targetProgress;
+      render(currentProgress);
       rafRunning = false;
     }
   }
 
-  function renderProcessScreen(progress) {
+  function render(progress) {
+    const sceneIndex = getSceneIndex(progress);
+
+    updateSceneClasses(sceneIndex);
+    renderStickyFrame(progress);
+    renderSceneDetail(progress, sceneIndex);
+  }
+
+  function renderStickyFrame(progress) {
     /*
-      0.00 → 0.14 = framed entry into fullscreen
-      0.14 → 0.88 = true fullscreen
-      0.88 → 1.00 = framed exit
+      Small framed feeling at entry and exit.
+      Fullscreen in the middle.
     */
 
-    const entryProgress = clamp(progress / 0.14, 0, 1);
-    const exitProgress = clamp((progress - 0.88) / 0.12, 0, 1);
+    const entry = clamp(progress / 0.09, 0, 1);
+    const exit = clamp((progress - 0.92) / 0.08, 0, 1);
 
-    let scale = 1;
-    let opacity = 1;
     let inset = 0;
     let radius = 0;
+    let scale = 1;
+    let opacity = 1;
 
-    if (progress < 0.14) {
-      scale = lerp(0.9, 1, entryProgress);
-      opacity = lerp(0.68, 1, entryProgress);
-      inset = lerp(42, 0, entryProgress);
-      radius = lerp(34, 0, entryProgress);
-    } else if (progress > 0.88) {
-      scale = lerp(1, 0.9, exitProgress);
-      opacity = lerp(1, 0.68, exitProgress);
-      inset = lerp(0, 42, exitProgress);
-      radius = lerp(0, 34, exitProgress);
+    if (progress < 0.09) {
+      inset = lerp(46, 0, entry);
+      radius = lerp(34, 0, entry);
+      scale = lerp(0.925, 1, entry);
+      opacity = lerp(0.72, 1, entry);
     }
 
-    stage.style.transform = `scale(${scale})`;
-    stage.style.opacity = opacity.toFixed(3);
-    stage.style.clipPath = `inset(${inset}px round ${radius}px)`;
-    stage.style.borderRadius = `${radius}px`;
-  }
+    if (progress > 0.92) {
+      inset = lerp(0, 46, exit);
+      radius = lerp(0, 34, exit);
+      scale = lerp(1, 0.925, exit);
+      opacity = lerp(1, 0.72, exit);
+    }
 
-  function renderHero(progress) {
-    setStyles(meta, {
-      opacity: mapRange(progress, 0.03, 0.12, 0, 1).toFixed(3)
-    });
-
-    setStyles(footerMeta, {
-      opacity: mapRange(progress, 0.03, 0.12, 0, 1).toFixed(3)
-    });
-
-    setStyles(kicker, {
-      opacity: mapRange(progress, 0.06, 0.15, 0, 1).toFixed(3),
-      transform: `translate3d(0, ${mapRange(progress, 0.06, 0.15, 24, 0)}px, 0)`
-    });
-
-    setStyles(heading, {
-      opacity: mapRange(progress, 0.08, 0.24, 0, 1).toFixed(3),
-      transform: `translate3d(0, ${mapRange(progress, 0.08, 0.24, 70, 0)}px, 0)`,
-      filter: `blur(${mapRange(progress, 0.08, 0.24, 12, 0)}px)`,
-      letterSpacing: `${mapRange(progress, 0.08, 0.24, -0.105, -0.075)}em`
-    });
-
-    setStyles(introCopy, {
-      opacity: mapRange(progress, 0.16, 0.28, 0, 1).toFixed(3),
-      transform: `translate3d(0, ${mapRange(progress, 0.16, 0.28, 34, 0)}px, 0)`
-    });
-
-    const heroOpacity = mapRange(progress, 0.72, 0.86, 1, 0.24);
-    const heroY = mapRange(progress, 0.72, 0.86, 0, -60);
-
-    setStyles(hero, {
-      opacity: heroOpacity.toFixed(3),
-      transform: `translate3d(0, ${heroY}px, 0)`
+    setStyles(sticky, {
+      transform: `scale(${scale})`,
+      opacity: opacity.toFixed(3),
+      clipPath: `inset(${inset}px round ${radius}px)`,
+      borderRadius: `${radius}px`
     });
   }
 
-  function renderRows(progress) {
-    const wallInY = mapRange(progress, 0.22, 0.36, 110, 0);
-    const wallExitY = mapRange(progress, 0.80, 0.90, 0, -22);
-    const wallOpacity = mapRange(progress, 0.92, 0.98, 1, 0);
+  function renderSceneDetail(progress, sceneIndex) {
+    const scene = scenes[sceneIndex];
+    if (!scene) return;
 
-    setStyles(wall, {
-      opacity: wallOpacity.toFixed(3),
-      transform: `translate3d(0, ${wallInY + wallExitY}px, 0)`
-    });
+    const local = getLocalSceneProgress(progress, sceneIndex);
 
-    rows.forEach((row, index) => {
-      const start = 0.3 + index * 0.095;
-      const end = start + 0.14;
+    const intro = scene.querySelector(".process-intro");
+    const introAside = scene.querySelector(".process-intro-aside");
 
-      const rowOpacity = mapRange(progress, start, end, 0, 1);
-      const rowY = mapRange(progress, start, end, 72, 0);
+    const stepLeft = scene.querySelector(".process-step-left");
+    const stepRight = scene.querySelector(".process-step-right");
+    const stepNumber = scene.querySelector(".process-step-bg-number");
 
-      setStyles(row, {
-        opacity: rowOpacity.toFixed(3),
-        transform: `translate3d(0, ${rowY}px, 0)`
-      });
+    const closeCopy = scene.querySelector(".process-close-copy");
 
-      setStyles(rowLines[index], {
-        transform: `scaleX(${mapRange(progress, start, end, 0, 1)})`
-      });
+    /*
+      These are intentionally subtle because the CSS already handles
+      the main scene fade/blur. JS adds internal motion only.
+    */
 
-      setStyles(rowNumbers[index], {
-        opacity: mapRange(progress, start + 0.02, end, 0, 1).toFixed(3),
-        transform: `translate3d(0, ${mapRange(progress, start + 0.02, end, 34, 0)}px, 0)`
-      });
-
-      setStyles(rowTitles[index], {
-        opacity: mapRange(progress, start + 0.035, end, 0, 1).toFixed(3),
-        transform: `translate3d(0, ${mapRange(progress, start + 0.035, end, 34, 0)}px, 0)`
-      });
-
-      setStyles(rowDetails[index], {
-        opacity: mapRange(progress, start + 0.05, end, 0, 1).toFixed(3),
-        transform: `translate3d(0, ${mapRange(progress, start + 0.05, end, 34, 0)}px, 0)`
-      });
-    });
-  }
-
-  function renderClose(progress) {
-    const closeOpacity = mapRange(progress, 0.82, 0.9, 0, 1);
-    const closeY = mapRange(progress, 0.82, 0.9, 40, 0);
-    const closeExitOpacity = mapRange(progress, 0.93, 0.98, 1, 0);
-
-    setStyles(close, {
-      opacity: Math.min(closeOpacity, closeExitOpacity).toFixed(3),
-      transform: `translate3d(0, ${closeY}px, 0)`,
-      pointerEvents: progress > 0.84 && progress < 0.93 ? "auto" : "none"
-    });
-  }
-
-  function renderExit(progress) {
-    const exitOpacity = mapRange(progress, 0.92, 0.98, 0, 1);
-    const exitY = mapRange(progress, 0.92, 0.98, 100, 0);
-    const lineScale = mapRange(progress, 0.94, 0.99, 0, 1);
-    const labelOpacity = mapRange(progress, 0.96, 1, 0, 1);
-    const labelY = mapRange(progress, 0.96, 1, 18, 0);
-
-    setStyles(exitBand, {
-      opacity: exitOpacity.toFixed(3),
-      transform: `translate3d(0, ${exitY}%, 0)`
-    });
-
-    setStyles(exitLine, {
-      transform: `scaleX(${lineScale})`
-    });
-
-    setStyles(exitLabel, {
-      opacity: labelOpacity.toFixed(3),
-      transform: `translate3d(0, ${labelY}px, 0)`
-    });
-
-    if (progress > 0.94) {
-      const fadeOut = mapRange(progress, 0.94, 0.99, 1, 0);
-
-      [hero, wall, close, meta, footerMeta].forEach((element) => {
-        if (!element) return;
-        element.style.opacity = Math.min(Number(element.style.opacity || 1), fadeOut).toFixed(3);
+    if (intro) {
+      setStyles(intro, {
+        transform: `translate3d(0, ${mapRange(local, 0, 1, 18, -8)}px, 0)`,
+        opacity: mapRange(local, 0, 0.22, 0.7, 1).toFixed(3)
       });
     }
+
+    if (introAside) {
+      setStyles(introAside, {
+        transform: `translate3d(${mapRange(local, 0, 1, 0, 28)}px, 0, 0)`,
+        opacity: mapRange(local, 0.68, 1, 1, 0).toFixed(3)
+      });
+    }
+
+    if (stepLeft) {
+      setStyles(stepLeft, {
+        transform: `translate3d(0, ${mapRange(local, 0, 1, 22, -10)}px, 0)`,
+        opacity: mapRange(local, 0, 0.18, 0.65, 1).toFixed(3)
+      });
+    }
+
+    if (stepRight) {
+      setStyles(stepRight, {
+        transform: `translate3d(0, ${mapRange(local, 0, 1, 42, -6)}px, 0)`,
+        opacity: mapRange(local, 0.08, 0.28, 0, 1).toFixed(3)
+      });
+    }
+
+    if (stepNumber) {
+      setStyles(stepNumber, {
+        transform: `translate3d(0, -50%, 0) scale(${mapRange(local, 0, 1, 0.96, 1.04)})`,
+        opacity: mapRange(local, 0, 0.35, 0.45, 1).toFixed(3)
+      });
+    }
+
+    if (closeCopy) {
+      setStyles(closeCopy, {
+        transform: `translate3d(0, ${mapRange(local, 0, 1, 30, -4)}px, 0)`,
+        opacity: mapRange(local, 0, 0.22, 0.65, 1).toFixed(3)
+      });
+    }
+
+    resetInactiveInlineStyles(sceneIndex);
   }
 
-  function render(progress) {
-    renderProcessScreen(progress);
-    renderHero(progress);
-    renderRows(progress);
-    renderClose(progress);
-    renderExit(progress);
+  function resetInactiveInlineStyles(activeSceneIndex) {
+    scenes.forEach((scene, index) => {
+      if (index === activeSceneIndex) return;
+
+      const animatedChildren = scene.querySelectorAll(
+        ".process-intro, .process-intro-aside, .process-step-left, .process-step-right, .process-step-bg-number, .process-close-copy"
+      );
+
+      animatedChildren.forEach((element) => {
+        element.style.transform = "";
+        element.style.opacity = "";
+      });
+    });
   }
 
   function init() {
     measure();
 
-    window.addEventListener("scroll", updateTargets, { passive: true });
-    window.addEventListener("resize", debounce(measure, 150));
+    window.addEventListener("scroll", updateTarget, { passive: true });
+    window.addEventListener("resize", debounce(measure, 180));
     window.addEventListener("load", measure);
 
-    console.log("[Process] Fullscreen takeover loaded", {
-      rows: rows.length
+    console.log("[Process] Long pinned process scroll loaded.", {
+      scenes: scenes.length
     });
   }
 
