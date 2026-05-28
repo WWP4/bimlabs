@@ -843,85 +843,98 @@
 
 
 /* =========================================================
-   PROCESS → BOOKING CINEMATIC VOID HANDOFF
-   Add to bottom of: sections/process.css
+   PROCESS → BOOKING FULLSCREEN VOID HANDOFF
+   Replace previous void/booking CSS with this
    ========================================================= */
 
 .process-void-exit {
   position: relative;
-  z-index: 6;
-  min-height: 210vh;
-  margin-top: -8vh;
+  z-index: 20;
+
+  /* More scroll time = slower cinematic handoff */
+  min-height: 320vh;
+  margin-top: -18vh;
+
+  background: #000;
+  overflow: clip;
+  isolation: isolate;
+}
+
+/* This becomes the actual full-screen world */
+.process-void-stage {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  height: 100vh;
 
   display: flex;
   align-items: center;
   justify-content: center;
 
   overflow: hidden;
-  isolation: isolate;
+  background: #000;
 }
 
-/* Deep dark tunnel */
-.process-void-exit::before {
+/* Fullscreen darkness / depth */
+.process-void-stage::before {
   content: "";
   position: absolute;
-  inset: -20vh -10vw;
+  inset: -20vh -18vw;
   z-index: 0;
   pointer-events: none;
 
   background:
-    radial-gradient(circle at 50% 48%,
-      rgba(255,255,255,0.08) 0%,
-      rgba(255,255,255,0.025) 14%,
-      rgba(0,0,0,0.96) 42%,
+    radial-gradient(circle at 50% 50%,
+      rgba(255,255,255,0.09) 0%,
+      rgba(255,255,255,0.035) 14%,
+      rgba(0,0,0,0.78) 38%,
       #000 72%
     ),
-    linear-gradient(180deg, transparent 0%, #000 38%, #000 100%);
+    radial-gradient(circle at 50% 50%,
+      transparent 0%,
+      rgba(0,0,0,0.35) 34%,
+      rgba(0,0,0,0.92) 70%,
+      #000 100%
+    );
 
   opacity: var(--void-opacity, 0);
   transform:
-    scale(var(--void-scale, 0.82))
-    translate3d(0, var(--void-y, 80px), 0);
+    scale(var(--void-scale, 0.72))
+    translate3d(0, 0, 0);
 
-  filter: blur(var(--void-blur, 18px));
+  filter: blur(var(--void-blur, 28px));
 
-  transition:
-    opacity 180ms linear,
-    transform 180ms linear,
-    filter 180ms linear;
+  will-change: opacity, transform, filter;
 }
 
-/* Soft center opening */
+/* The center opening / tunnel mouth */
 .void-door {
   position: absolute;
   left: 50%;
   top: 50%;
   z-index: 1;
 
-  width: min(74vw, 980px);
-  height: min(74vw, 980px);
+  width: min(92vw, 1180px);
+  height: min(92vw, 1180px);
   border-radius: 999px;
 
   background:
     radial-gradient(circle,
-      rgba(255,255,255,0.09) 0%,
-      rgba(255,255,255,0.035) 18%,
-      rgba(255,255,255,0.01) 35%,
-      transparent 64%
+      rgba(255,255,255,0.12) 0%,
+      rgba(255,255,255,0.052) 12%,
+      rgba(255,255,255,0.018) 28%,
+      rgba(0,0,0,0.12) 46%,
+      transparent 68%
     );
 
+  opacity: var(--door-opacity, 0);
   transform:
     translate3d(-50%, -50%, 0)
-    scale(var(--door-scale, 0.45));
+    scale(var(--door-scale, 0.2));
 
-  opacity: var(--door-opacity, 0);
-  filter: blur(var(--door-blur, 34px));
-
+  filter: blur(var(--door-blur, 46px));
   pointer-events: none;
-  transition:
-    opacity 180ms linear,
-    transform 180ms linear,
-    filter 180ms linear;
+  will-change: opacity, transform, filter;
 }
 
 /* Dust / light points */
@@ -931,6 +944,8 @@
   z-index: 2;
   pointer-events: none;
   opacity: var(--dust-opacity, 0);
+  transform: scale(var(--field-scale, 1));
+  will-change: opacity, transform;
 }
 
 .void-depth-field span {
@@ -938,15 +953,20 @@
   left: var(--x);
   top: var(--y);
 
-  width: calc(2px + 3px * var(--s));
-  height: calc(2px + 3px * var(--s));
+  width: calc(1px + 3px * var(--s));
+  height: calc(1px + 3px * var(--s));
   border-radius: 999px;
 
-  background: rgba(255,255,255,0.58);
-  box-shadow: 0 0 18px rgba(255,255,255,0.18);
+  background: rgba(255,255,255,0.56);
+  box-shadow: 0 0 22px rgba(255,255,255,0.16);
 
-  opacity: calc(0.22 + var(--s) * 0.5);
+  opacity: calc(0.12 + var(--s) * 0.42);
 
+  /*
+    Important:
+    This pulls particles toward center, giving forward movement.
+    It should NOT feel like falling snow.
+  */
   transform:
     translate3d(
       calc((50vw - var(--x)) * var(--dust-pull, 0)),
@@ -956,21 +976,17 @@
     scale(var(--dust-scale, 1));
 
   filter: blur(var(--dust-blur, 0px));
-  transition:
-    transform 180ms linear,
-    filter 180ms linear,
-    opacity 180ms linear;
+  will-change: transform, filter, opacity;
 }
 
-/* Booking appears from inside the void */
+/* Booking should be the room inside the void, not a block below */
 .booking-entry {
-  position: sticky;
-  top: 0;
+  position: relative;
   z-index: 8;
 
   width: min(100%, 980px);
   min-height: 100vh;
-  padding: 14vh 24px;
+  padding: 12vh 24px;
 
   display: flex;
   flex-direction: column;
@@ -980,21 +996,24 @@
   text-align: center;
 
   opacity: var(--booking-opacity, 0);
+
+  /*
+    Key change:
+    No big downward movement.
+    It comes forward with scale/blur instead.
+  */
   transform:
-    translate3d(0, var(--booking-y, 110px), 0)
-    scale(var(--booking-scale, 0.84));
+    translate3d(0, 0, 0)
+    scale(var(--booking-scale, 0.58));
 
-  filter: blur(var(--booking-blur, 18px));
+  filter: blur(var(--booking-blur, 34px));
 
-  transition:
-    opacity 180ms linear,
-    transform 180ms linear,
-    filter 180ms linear;
+  will-change: opacity, transform, filter;
 }
 
 .booking-kicker {
   margin: 0 0 28px;
-  color: rgba(255,255,255,0.48);
+  color: rgba(255,255,255,0.46);
   font-size: 10px;
   line-height: 1;
   font-weight: 500;
@@ -1028,18 +1047,18 @@
   margin-top: 54px;
   padding: clamp(22px, 3vw, 34px);
 
-  border: 1px solid rgba(255,255,255,0.14);
+  border: 1px solid rgba(255,255,255,0.12);
   border-radius: 2px;
 
   background:
     linear-gradient(135deg,
-      rgba(12,12,12,0.72),
-      rgba(28,28,28,0.48)
+      rgba(8,8,8,0.78),
+      rgba(22,22,22,0.46)
     );
 
   box-shadow:
-    0 44px 140px rgba(0,0,0,0.72),
-    inset 0 1px 0 rgba(255,255,255,0.07);
+    0 44px 150px rgba(0,0,0,0.78),
+    inset 0 1px 0 rgba(255,255,255,0.065);
 
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
@@ -1124,7 +1143,8 @@
 
 @media (max-width: 767px) {
   .process-void-exit {
-    min-height: 190vh;
+    min-height: 280vh;
+    margin-top: -10vh;
   }
 
   .booking-entry {
