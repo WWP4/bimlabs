@@ -1,9 +1,13 @@
 /* =========================================================
-   BIM LABS — PROCESS SCROLL
+   BIM LABS — PROCESS INDEX SECTION
    Full replacement for: sections/process.css
 
    Built for:
-   <section class="bim-process-scroll" id="process">
+   .bim-process-index
+   .process-index-shell
+   .process-index-sticky
+   .process-index-list
+   .process-index-step
    ========================================================= */
 
 
@@ -11,230 +15,110 @@
    SECTION BASE
    ========================================================= */
 
-.bim-process-scroll {
+.bim-process-index {
   position: relative;
   z-index: 5;
-  min-height: 620vh;
   margin: 0;
   background: #030303;
   color: #f4f1ea;
-  overflow: visible;
+  overflow: hidden;
   isolation: isolate;
   font-family: inherit;
 }
 
-.bim-process-scroll,
-.bim-process-scroll * {
+.bim-process-index,
+.bim-process-index * {
   box-sizing: border-box;
 }
 
-.bim-process-scroll a {
-  color: inherit;
-}
-
-
-/* =========================================================
-   ENTRY FROM PREVIOUS SECTION
-   ========================================================= */
-
-.process-entry {
-  position: absolute;
-  top: 0;
-  left: 38px;
-  right: 38px;
-  z-index: 4;
-
-  height: 1px;
-  pointer-events: none;
-}
-
-.process-entry-line {
-  width: 100%;
-  height: 1px;
-  background: rgba(244, 241, 234, 0.11);
-}
-
-.process-entry span {
-  position: absolute;
-  top: 17px;
-  right: 0;
-
-  color: rgba(244, 241, 234, 0.28);
-  font-size: 10px;
-  line-height: 1;
-  letter-spacing: 0.32em;
-  text-transform: uppercase;
-}
-
-
-/* =========================================================
-   LONG SCROLL TRACK
-   ========================================================= */
-
-.process-scroll-track {
-  position: relative;
-  min-height: 620vh;
-}
-
-.process-sticky {
-  position: sticky;
-  top: 0;
-  z-index: 2;
-
-  width: 100%;
-  height: 100vh;
-  height: 100svh;
-  min-height: 100vh;
-
-  overflow: hidden;
-  background:
-    radial-gradient(circle at 64% 42%, rgba(244, 241, 234, 0.065), transparent 24%),
-    radial-gradient(circle at 50% 78%, rgba(244, 241, 234, 0.035), transparent 34%),
-    radial-gradient(circle at 84% 50%, rgba(255, 255, 255, 0.025), transparent 32%),
-    linear-gradient(to bottom, #030303 0%, #050505 46%, #030303 100%);
-}
-
-/* soft central atmosphere */
-.process-sticky::before {
+.bim-process-index::before {
   content: "";
   position: absolute;
-  left: 34%;
-  top: 10%;
+  inset: 0;
   z-index: 0;
-
-  width: 56vw;
-  height: 62vh;
+  pointer-events: none;
 
   background:
-    radial-gradient(
-      ellipse at center,
-      rgba(244, 241, 234, 0.075),
-      rgba(244, 241, 234, 0.028) 35%,
-      transparent 72%
-    );
-
-  filter: blur(58px);
-  opacity: 0.6;
-  pointer-events: none;
+    radial-gradient(circle at 72% 18%, rgba(244, 241, 234, 0.065), transparent 24%),
+    radial-gradient(circle at 22% 68%, rgba(244, 241, 234, 0.035), transparent 28%),
+    linear-gradient(to bottom, #030303 0%, #050505 48%, #030303 100%);
 }
 
-/* subtle floor depth */
-.process-sticky::after {
+.bim-process-index::after {
   content: "";
   position: absolute;
   left: 8vw;
   right: 8vw;
-  bottom: -20vh;
+  bottom: -18vh;
   z-index: 0;
 
-  height: 36vh;
+  height: 34vh;
+  pointer-events: none;
 
   background:
     radial-gradient(
       ellipse at center,
-      rgba(244, 241, 234, 0.075),
-      rgba(244, 241, 234, 0.018) 44%,
-      transparent 76%
+      rgba(244, 241, 234, 0.07),
+      rgba(244, 241, 234, 0.018) 42%,
+      transparent 72%
     );
 
   filter: blur(40px);
-  opacity: 0.44;
-  pointer-events: none;
+  opacity: 0.4;
 }
 
 
 /* =========================================================
-   EDITORIAL FRAME
+   LAYOUT
    ========================================================= */
 
-.process-frame {
-  position: absolute;
-  inset: 0;
-  z-index: 8;
-  pointer-events: none;
+.process-index-shell {
+  position: relative;
+  z-index: 2;
+
+  display: grid;
+  grid-template-columns: minmax(320px, 0.82fr) minmax(520px, 1.18fr);
+  column-gap: clamp(56px, 8vw, 140px);
+
+  width: 100%;
+  min-height: 100vh;
+  padding: clamp(96px, 12vh, 150px) 7vw clamp(110px, 13vh, 170px);
 }
 
-.process-frame-line {
-  position: absolute;
-  left: 38px;
-  right: 38px;
-  height: 1px;
-  background: rgba(244, 241, 234, 0.1);
-}
+.process-index-sticky {
+  position: sticky;
+  top: 0;
 
-.process-frame-line--top {
-  top: 38px;
-}
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 
-.process-frame-line--bottom {
-  bottom: 38px;
-}
+  height: 100vh;
+  height: 100svh;
+  padding: clamp(38px, 6vh, 64px) 0;
 
-.process-corner {
-  position: absolute;
-  width: 13px;
-  height: 13px;
-  border-color: rgba(244, 241, 234, 0.2);
-  border-style: solid;
-}
-
-.process-corner--tl {
-  left: 38px;
-  top: 38px;
-  border-width: 1px 0 0 1px;
-}
-
-.process-corner--tr {
-  right: 38px;
-  top: 38px;
-  border-width: 1px 1px 0 0;
-}
-
-.process-corner--bl {
-  left: 38px;
-  bottom: 38px;
-  border-width: 0 0 1px 1px;
-}
-
-.process-corner--br {
-  right: 38px;
-  bottom: 38px;
-  border-width: 0 1px 1px 0;
+  align-self: start;
 }
 
 
 /* =========================================================
-   FIXED META
+   LEFT SIDE
    ========================================================= */
 
-.process-meta,
-.process-footer-meta {
-  position: absolute;
-  left: 38px;
-  right: 38px;
-  z-index: 12;
-
+.process-index-meta {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 24px;
 
-  pointer-events: none;
+  width: 100%;
+  max-width: 460px;
 }
 
-.process-meta {
-  top: 58px;
-}
-
-.process-footer-meta {
-  bottom: 58px;
-}
-
-.process-meta span,
-.process-footer-meta span {
+.process-index-meta span {
   display: inline-block;
 
-  color: rgba(244, 241, 234, 0.3);
+  color: rgba(244, 241, 234, 0.31);
   font-size: 10px;
   line-height: 1;
   letter-spacing: 0.28em;
@@ -242,218 +126,167 @@
   white-space: nowrap;
 }
 
-.process-footer-meta span {
-  color: rgba(244, 241, 234, 0.23);
+.process-index-heading {
+  max-width: 560px;
 }
 
-
-/* =========================================================
-   SCENES
-   ========================================================= */
-
-.process-scene {
-  position: absolute;
-  inset: 0;
-  z-index: 3;
-
-  display: grid;
-  align-items: center;
-
-  padding: 9vh 7vw;
-
-  opacity: 0;
-  visibility: hidden;
-  pointer-events: none;
-
-  transform: translateY(28px) scale(0.985);
-  filter: blur(10px);
-
-  transition:
-    opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1),
-    visibility 0.75s cubic-bezier(0.16, 1, 0.3, 1),
-    transform 0.75s cubic-bezier(0.16, 1, 0.3, 1),
-    filter 0.75s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.process-scene.is-active {
-  z-index: 6;
-  opacity: 1;
-  visibility: visible;
-  pointer-events: auto;
-  transform: translateY(0) scale(1);
-  filter: blur(0);
-}
-
-.process-scene.is-before {
-  opacity: 0;
-  visibility: hidden;
-  transform: translateY(-34px) scale(0.982);
-  filter: blur(12px);
-}
-
-.process-scene.is-after {
-  opacity: 0;
-  visibility: hidden;
-  transform: translateY(34px) scale(0.982);
-  filter: blur(12px);
-}
-
-
-/* =========================================================
-   INTRO SCENE
-   ========================================================= */
-
-.process-scene--intro {
-  grid-template-columns: minmax(320px, 600px) 1fr;
-  column-gap: 8vw;
-}
-
-.process-intro {
-  align-self: center;
-  max-width: 620px;
-}
-
-.process-kicker {
+.process-index-heading p {
   margin: 0 0 24px;
 
-  color: rgba(244, 241, 234, 0.4);
+  color: rgba(244, 241, 234, 0.38);
   font-size: 10px;
   line-height: 1;
   letter-spacing: 0.34em;
   text-transform: uppercase;
 }
 
-.process-intro h2,
-.process-close-copy h2 {
-  margin: 0;
-
-  color: rgba(244, 241, 234, 0.91);
-  font-family: inherit;
-  font-size: clamp(54px, 6.2vw, 118px);
-  font-weight: 400;
-  line-height: 0.88;
-  letter-spacing: -0.085em;
-}
-
-.process-intro p:not(.process-kicker) {
-  max-width: 390px;
-  margin: 28px 0 0;
-
-  color: rgba(244, 241, 234, 0.48);
-  font-size: 12px;
-  line-height: 1.68;
-  letter-spacing: -0.01em;
-}
-
-.process-intro-aside {
-  justify-self: end;
-  align-self: end;
-
-  display: flex;
-  align-items: center;
-  gap: 14px;
-
-  margin-bottom: 18vh;
-
-  color: rgba(244, 241, 234, 0.28);
-  font-size: 10px;
-  line-height: 1;
-  letter-spacing: 0.28em;
-  text-transform: uppercase;
-}
-
-.process-intro-aside div {
-  width: 84px;
-  height: 1px;
-  background: rgba(244, 241, 234, 0.16);
-}
-
-
-/* =========================================================
-   STEP SCENES
-   ========================================================= */
-
-.process-step {
-  grid-template-columns: minmax(340px, 0.95fr) minmax(320px, 0.7fr);
-  column-gap: 8vw;
-}
-
-.process-step::before {
-  content: "";
-  position: absolute;
-  left: 7vw;
-  right: 7vw;
-  top: 50%;
-  z-index: -1;
-
-  height: 1px;
-  background: rgba(244, 241, 234, 0.12);
-  transform: translateY(-50%);
-}
-
-.process-step-bg-number {
-  position: absolute;
-  right: 6vw;
-  top: 50%;
-  z-index: -2;
-
-  color: rgba(244, 241, 234, 0.035);
-  font-size: clamp(180px, 24vw, 430px);
-  font-weight: 400;
-  line-height: 0.75;
-  letter-spacing: -0.14em;
-
-  transform: translateY(-50%);
-  pointer-events: none;
-  user-select: none;
-}
-
-.process-step-left {
-  position: relative;
-  z-index: 2;
-}
-
-.process-step-count {
-  display: inline-block;
-  margin-bottom: 24px;
-
-  color: rgba(244, 241, 234, 0.34);
-  font-size: 10px;
-  line-height: 1;
-  letter-spacing: 0.28em;
-  text-transform: uppercase;
-}
-
-.process-step-left h3 {
+.process-index-heading h2 {
   margin: 0;
 
   color: rgba(244, 241, 234, 0.92);
   font-family: inherit;
-  font-size: clamp(72px, 10vw, 190px);
+  font-size: clamp(58px, 6.3vw, 112px);
+  font-weight: 400;
+  line-height: 0.86;
+  letter-spacing: -0.09em;
+}
+
+.process-index-note {
+  max-width: 370px;
+}
+
+.process-index-note p {
+  margin: 0;
+
+  color: rgba(244, 241, 234, 0.43);
+  font-size: 12px;
+  line-height: 1.7;
+  letter-spacing: -0.01em;
+}
+
+
+/* =========================================================
+   RIGHT SIDE LIST
+   ========================================================= */
+
+.process-index-list {
+  position: relative;
+  padding-top: clamp(12px, 4vh, 42px);
+}
+
+.process-index-list::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+
+  width: 1px;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    rgba(244, 241, 234, 0.12) 8%,
+    rgba(244, 241, 234, 0.12) 86%,
+    transparent
+  );
+}
+
+.process-index-step {
+  position: relative;
+
+  min-height: 70vh;
+  padding: clamp(58px, 9vh, 96px) 0 clamp(58px, 9vh, 96px) clamp(34px, 4vw, 70px);
+
+  border-top: 1px solid rgba(244, 241, 234, 0.11);
+
+  opacity: 0.58;
+  transform: translateY(24px);
+  transition:
+    opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.process-index-step:first-child {
+  border-top-color: rgba(244, 241, 234, 0.16);
+}
+
+.process-index-step::before {
+  content: "";
+  position: absolute;
+  left: -4px;
+  top: clamp(60px, 9vh, 98px);
+
+  width: 7px;
+  height: 7px;
+
+  border-radius: 999px;
+  background: rgba(244, 241, 234, 0.22);
+  box-shadow: 0 0 0 6px rgba(244, 241, 234, 0.025);
+
+  transition:
+    background 0.6s ease,
+    box-shadow 0.6s ease,
+    transform 0.6s ease;
+}
+
+.process-index-step.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.process-index-step.is-visible::before {
+  background: rgba(244, 241, 234, 0.74);
+  box-shadow:
+    0 0 0 7px rgba(244, 241, 234, 0.03),
+    0 0 34px rgba(244, 241, 234, 0.13);
+  transform: scale(1.05);
+}
+
+
+/* =========================================================
+   STEP CONTENT
+   ========================================================= */
+
+.process-step-topline {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+
+  margin-bottom: clamp(34px, 6vh, 72px);
+}
+
+.process-step-topline span {
+  color: rgba(244, 241, 234, 0.32);
+  font-size: 10px;
+  line-height: 1;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.process-index-step h3 {
+  margin: 0;
+
+  color: rgba(244, 241, 234, 0.92);
+  font-family: inherit;
+  font-size: clamp(70px, 9vw, 172px);
   font-weight: 400;
   line-height: 0.78;
   letter-spacing: -0.105em;
 }
 
-.process-step-right {
-  justify-self: end;
-  align-self: center;
+.process-index-step p {
+  max-width: 470px;
+  margin: clamp(30px, 5vh, 52px) 0 0;
 
-  width: min(100%, 470px);
-  padding-top: 14vh;
-}
-
-.process-step-right p {
-  max-width: 430px;
-  margin: 0;
-
-  color: rgba(244, 241, 234, 0.54);
+  color: rgba(244, 241, 234, 0.53);
   font-size: 14px;
-  line-height: 1.62;
-  letter-spacing: -0.018em;
+  line-height: 1.65;
+  letter-spacing: -0.015em;
 }
 
-.process-tags {
+.process-step-tags {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
@@ -461,7 +294,7 @@
   margin-top: 28px;
 }
 
-.process-tags span {
+.process-step-tags span {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -472,9 +305,9 @@
   border: 1px solid rgba(244, 241, 234, 0.14);
   border-radius: 999px;
 
-  background: rgba(244, 241, 234, 0.015);
+  background: rgba(244, 241, 234, 0.014);
 
-  color: rgba(244, 241, 234, 0.38);
+  color: rgba(244, 241, 234, 0.4);
   font-size: 8px;
   line-height: 1;
   letter-spacing: 0.15em;
@@ -484,24 +317,133 @@
 
 
 /* =========================================================
-   CLOSING SCENE
+   GLITCH TEXT STATES
    ========================================================= */
 
-.process-scene--close {
-  grid-template-columns: 1fr;
+.glitch-text {
+  position: relative;
+  display: inline-block;
+  white-space: nowrap;
 }
 
-.process-close-copy {
-  max-width: 980px;
-  align-self: center;
+.glitch-text::before,
+.glitch-text::after {
+  content: attr(data-glitch-text);
+  position: absolute;
+  inset: 0;
+
+  opacity: 0;
+  pointer-events: none;
 }
 
-.process-close-copy h2 {
-  max-width: 1000px;
-  font-size: clamp(48px, 5.6vw, 104px);
+.glitch-text::before {
+  color: rgba(244, 241, 234, 0.45);
+  transform: translate(2px, -1px);
 }
 
-.process-cta {
+.glitch-text::after {
+  color: rgba(244, 241, 234, 0.25);
+  transform: translate(-2px, 1px);
+}
+
+.process-index-step.is-glitching .glitch-text::before {
+  animation: processGlitchA 0.42s steps(2, end);
+}
+
+.process-index-step.is-glitching .glitch-text::after {
+  animation: processGlitchB 0.42s steps(2, end);
+}
+
+@keyframes processGlitchA {
+  0% {
+    opacity: 0;
+    clip-path: inset(0 0 92% 0);
+  }
+
+  18% {
+    opacity: 0.7;
+    clip-path: inset(18% 0 54% 0);
+  }
+
+  34% {
+    opacity: 0.25;
+    clip-path: inset(72% 0 12% 0);
+  }
+
+  52% {
+    opacity: 0.6;
+    clip-path: inset(34% 0 43% 0);
+  }
+
+  76% {
+    opacity: 0.25;
+    clip-path: inset(8% 0 76% 0);
+  }
+
+  100% {
+    opacity: 0;
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+@keyframes processGlitchB {
+  0% {
+    opacity: 0;
+    clip-path: inset(88% 0 0 0);
+  }
+
+  16% {
+    opacity: 0.45;
+    clip-path: inset(58% 0 20% 0);
+  }
+
+  31% {
+    opacity: 0.18;
+    clip-path: inset(10% 0 75% 0);
+  }
+
+  58% {
+    opacity: 0.42;
+    clip-path: inset(42% 0 38% 0);
+  }
+
+  82% {
+    opacity: 0.2;
+    clip-path: inset(78% 0 6% 0);
+  }
+
+  100% {
+    opacity: 0;
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+
+/* =========================================================
+   CLOSE CTA
+   ========================================================= */
+
+.process-index-close {
+  position: relative;
+
+  min-height: 56vh;
+  padding: clamp(70px, 10vh, 110px) 0 0 clamp(34px, 4vw, 70px);
+
+  border-top: 1px solid rgba(244, 241, 234, 0.13);
+}
+
+.process-index-close p {
+  max-width: 680px;
+  margin: 0;
+
+  color: rgba(244, 241, 234, 0.78);
+  font-size: clamp(34px, 4vw, 72px);
+  font-weight: 400;
+  line-height: 0.96;
+  letter-spacing: -0.07em;
+}
+
+.process-index-close a {
   position: relative;
 
   display: inline-flex;
@@ -529,7 +471,7 @@
     color 0.35s ease;
 }
 
-.process-cta::after {
+.process-index-close a::after {
   content: "";
   position: absolute;
   inset: 0;
@@ -541,242 +483,92 @@
   transition: transform 0.45s ease;
 }
 
-.process-cta:hover {
+.process-index-close a:hover {
   border-color: rgba(244, 241, 234, 0.52);
   color: rgba(244, 241, 234, 1);
 }
 
-.process-cta:hover::after {
+.process-index-close a:hover::after {
   transform: scaleX(1);
 }
 
 
 /* =========================================================
-   PROGRESS NAV
+   JS HOOKS / PERFORMANCE
    ========================================================= */
 
-.process-progress {
-  position: absolute;
-  right: 38px;
-  top: 50%;
-  z-index: 14;
-
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 14px;
-
-  transform: translateY(-50%);
-  pointer-events: none;
-}
-
-.process-progress::before {
-  content: "";
-  position: absolute;
-  right: 3px;
-  top: -34px;
-  bottom: -34px;
-
-  width: 1px;
-  background: rgba(244, 241, 234, 0.09);
-}
-
-.process-progress span {
-  position: relative;
-
-  color: rgba(244, 241, 234, 0.24);
-  font-size: 9px;
-  line-height: 1;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-
-  transition:
-    color 0.35s ease,
-    transform 0.35s ease;
-}
-
-.process-progress span::after {
-  content: "";
-  position: absolute;
-  right: -7px;
-  top: 50%;
-
-  width: 5px;
-  height: 5px;
-
-  border-radius: 999px;
-  background: rgba(244, 241, 234, 0.18);
-
-  transform: translateY(-50%) scale(0.8);
-  transition:
-    background 0.35s ease,
-    transform 0.35s ease;
-}
-
-.process-progress span.is-active {
-  color: rgba(244, 241, 234, 0.74);
-  transform: translateX(-7px);
-}
-
-.process-progress span.is-active::after {
-  background: rgba(244, 241, 234, 0.75);
-  transform: translateY(-50%) scale(1);
+.process-index-step,
+.glitch-text,
+.process-index-heading,
+.process-index-note {
+  will-change: transform, opacity;
 }
 
 
 /* =========================================================
-   GSAP / JS SAFETY
-   ========================================================= */
-
-.bim-process-scroll .process-scene,
-.bim-process-scroll .process-intro,
-.bim-process-scroll .process-intro h2,
-.bim-process-scroll .process-intro p,
-.bim-process-scroll .process-step-left,
-.bim-process-scroll .process-step-right,
-.bim-process-scroll .process-step-bg-number,
-.bim-process-scroll .process-close-copy,
-.bim-process-scroll .process-progress span {
-  will-change: transform, opacity, filter;
-}
-
-
-/* =========================================================
-   TABLET FALLBACK
+   TABLET
    ========================================================= */
 
 @media (max-width: 1100px) {
-  .bim-process-scroll {
+  .process-index-shell {
+    display: block;
     min-height: auto;
-    overflow: hidden;
+    padding: 110px 24px 100px;
   }
 
-  .process-scroll-track {
-    min-height: auto;
-  }
-
-  .process-sticky {
+  .process-index-sticky {
     position: relative;
     top: auto;
 
     height: auto;
-    min-height: 100vh;
-
-    padding: 120px 24px 90px;
-    overflow: hidden;
-  }
-
-  .process-entry,
-  .process-frame,
-  .process-meta,
-  .process-footer-meta,
-  .process-progress,
-  .process-intro-aside {
-    display: none;
-  }
-
-  .process-sticky::before {
-    left: 8%;
-    top: 4%;
-    width: 92vw;
-    height: 44vh;
-    opacity: 0.42;
-  }
-
-  .process-sticky::after {
-    left: 0;
-    right: 0;
-    bottom: -14vh;
-    height: 30vh;
-    opacity: 0.32;
-  }
-
-  .process-scene {
-    position: relative;
-    inset: auto;
-
-    display: block;
     padding: 0;
-
-    opacity: 1;
-    visibility: visible;
-    pointer-events: auto;
-
-    transform: none;
-    filter: none;
-    transition: none;
+    margin-bottom: 80px;
   }
 
-  .process-scene + .process-scene {
-    margin-top: 86px;
+  .process-index-meta {
+    max-width: none;
+    margin-bottom: 90px;
   }
 
-  .process-scene--intro,
-  .process-step,
-  .process-scene--close {
-    grid-template-columns: 1fr;
+  .process-index-heading h2 {
+    font-size: clamp(54px, 12vw, 92px);
   }
 
-  .process-intro,
-  .process-close-copy {
-    max-width: 760px;
-  }
-
-  .process-intro h2,
-  .process-close-copy h2 {
-    font-size: clamp(48px, 11vw, 86px);
-    line-height: 0.9;
-    letter-spacing: -0.075em;
-  }
-
-  .process-intro p:not(.process-kicker) {
+  .process-index-note {
     max-width: 560px;
+    margin-top: 30px;
+  }
+
+  .process-index-note p {
     font-size: 14px;
   }
 
-  .process-step {
-    padding: 42px 0;
-    border-top: 1px solid rgba(244, 241, 234, 0.13);
+  .process-index-list::before {
+    left: 0;
   }
 
-  .process-step::before {
-    display: none;
+  .process-index-step {
+    min-height: auto;
+    padding: 68px 0 72px 32px;
   }
 
-  .process-step-bg-number {
-    right: 0;
-    top: 30px;
-    font-size: 170px;
-    opacity: 0.75;
-    transform: none;
-  }
-
-  .process-step-count {
-    margin-bottom: 18px;
-  }
-
-  .process-step-left h3 {
+  .process-index-step h3 {
     font-size: clamp(54px, 15vw, 110px);
-    line-height: 0.82;
   }
 
-  .process-step-right {
-    width: 100%;
-    max-width: 580px;
-    padding-top: 26px;
-  }
-
-  .process-step-right p {
+  .process-index-step p {
+    max-width: 600px;
     font-size: 14px;
   }
 
-  .process-tags {
-    margin-top: 22px;
+  .process-index-close {
+    min-height: auto;
+    padding: 72px 0 0 32px;
   }
 
-  .process-close-copy {
-    padding-top: 22px;
-    border-top: 1px solid rgba(244, 241, 234, 0.13);
+  .process-index-close p {
+    max-width: 760px;
+    font-size: clamp(40px, 9vw, 78px);
   }
 }
 
@@ -786,63 +578,92 @@
    ========================================================= */
 
 @media (max-width: 767px) {
-  .process-sticky {
-    padding: 96px 20px 76px;
+  .process-index-shell {
+    padding: 92px 20px 82px;
   }
 
-  .process-scene + .process-scene {
-    margin-top: 72px;
+  .process-index-meta {
+    margin-bottom: 70px;
   }
 
-  .process-kicker {
+  .process-index-meta span {
+    font-size: 9px;
+    letter-spacing: 0.22em;
+  }
+
+  .process-index-heading p {
     margin-bottom: 20px;
     font-size: 9px;
     letter-spacing: 0.3em;
   }
 
-  .process-intro h2,
-  .process-close-copy h2 {
-    font-size: clamp(42px, 14vw, 64px);
-    letter-spacing: -0.07em;
+  .process-index-heading h2 {
+    font-size: clamp(44px, 14vw, 68px);
+    letter-spacing: -0.075em;
   }
 
-  .process-intro p:not(.process-kicker) {
+  .process-index-note {
+    margin-top: 26px;
+  }
+
+  .process-index-note p {
     font-size: 13px;
     line-height: 1.65;
   }
 
-  .process-step {
-    padding: 36px 0;
+  .process-step-topline {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 42px;
   }
 
-  .process-step-bg-number {
-    font-size: 118px;
+  .process-step-topline span {
+    font-size: 9px;
+    letter-spacing: 0.22em;
   }
 
-  .process-step-left h3 {
-    font-size: clamp(48px, 16vw, 76px);
+  .process-index-step {
+    padding: 58px 0 62px 26px;
   }
 
-  .process-step-right {
-    padding-top: 22px;
+  .process-index-step::before {
+    left: -3px;
+    width: 6px;
+    height: 6px;
   }
 
-  .process-step-right p {
+  .process-index-step h3 {
+    font-size: clamp(46px, 16vw, 78px);
+    letter-spacing: -0.08em;
+  }
+
+  .process-index-step p {
+    margin-top: 28px;
     font-size: 13px;
     line-height: 1.62;
   }
 
-  .process-tags {
+  .process-step-tags {
     gap: 6px;
+    margin-top: 24px;
   }
 
-  .process-tags span {
+  .process-step-tags span {
     min-height: 23px;
     padding: 0 8px;
     font-size: 8px;
   }
 
-  .process-cta {
+  .process-index-close {
+    padding: 62px 0 0 26px;
+  }
+
+  .process-index-close p {
+    font-size: clamp(34px, 11vw, 54px);
+  }
+
+  .process-index-close a {
     min-height: 40px;
     font-size: 9px;
   }
