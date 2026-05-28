@@ -550,68 +550,67 @@
 }
 
 
-
-
 /* =========================================================
-   PROCESS WALL — ELEVATED COMPOSITION PASS
-   Smaller headline, better center balance, subtle depth
+   PROCESS WALL — SAFE ELEVATION PASS
+   Does not interfere with GSAP animation transforms
    ========================================================= */
 
 @media (min-width: 1101px) {
+  .process-sticky {
+    background:
+      radial-gradient(circle at 62% 36%, rgba(244, 241, 234, 0.04), transparent 24%),
+      radial-gradient(circle at 58% 72%, rgba(244, 241, 234, 0.035), transparent 34%),
+      linear-gradient(to bottom, #030303 0%, #030303 100%);
+  }
+
   .process-sticky::before {
     content: "";
     position: absolute;
-    left: 39%;
-    top: 14%;
-    width: 44vw;
-    height: 52vh;
-    z-index: 1;
-    pointer-events: none;
-    background:
-      radial-gradient(circle at 50% 50%, rgba(244, 241, 234, 0.055), transparent 56%),
-      linear-gradient(
-        135deg,
-        rgba(244, 241, 234, 0.055),
-        rgba(244, 241, 234, 0.012) 38%,
-        transparent 70%
-      );
-    border: 1px solid rgba(244, 241, 234, 0.045);
-    filter: blur(0.2px);
-    opacity: 0.8;
-    transform: perspective(900px) rotateX(58deg) rotateZ(-9deg);
-  }
-
-  .process-sticky::after {
-    content: "";
-    position: absolute;
-    left: 37%;
-    top: 26%;
-    width: 48vw;
-    height: 36vh;
-    z-index: 1;
+    left: 38%;
+    top: 18%;
+    width: 46vw;
+    height: 46vh;
+    z-index: 0;
     pointer-events: none;
     background: radial-gradient(
       ellipse at center,
-      rgba(244, 241, 234, 0.07),
+      rgba(244, 241, 234, 0.065),
       rgba(244, 241, 234, 0.018) 38%,
       transparent 72%
     );
-    filter: blur(34px);
-    opacity: 0.58;
-    transform: rotate(-8deg);
+    filter: blur(42px);
+    opacity: 0.5;
+  }
+
+  .process-frame,
+  .process-meta,
+  .process-footer-meta,
+  .process-hero,
+  .process-wall,
+  .process-close {
+    position: absolute;
+  }
+
+  .process-frame {
+    z-index: 2;
+  }
+
+  .process-meta,
+  .process-footer-meta {
+    z-index: 5;
   }
 
   .process-hero {
     left: 7vw;
     top: 15vh;
     max-width: 520px;
+    z-index: 5;
   }
 
   .process-kicker {
     margin-bottom: 22px;
     font-size: 10px;
     letter-spacing: 0.34em;
-    color: rgba(244, 241, 234, 0.38);
   }
 
   .process-hero h2 {
@@ -619,7 +618,6 @@
     font-size: clamp(42px, 3.85vw, 68px);
     line-height: 0.96;
     letter-spacing: -0.065em;
-    color: rgba(244, 241, 234, 0.86);
   }
 
   .process-intro-copy {
@@ -627,7 +625,6 @@
     margin-top: 24px;
     font-size: 11px;
     line-height: 1.65;
-    color: rgba(244, 241, 234, 0.46);
   }
 
   .process-wall {
@@ -646,32 +643,28 @@
   .process-row-title h3 {
     font-size: clamp(28px, 2.35vw, 42px);
     line-height: 0.96;
-    color: rgba(244, 241, 234, 0.86);
   }
 
   .process-row-detail p {
     max-width: 390px;
     font-size: 10.5px;
     line-height: 1.52;
-    color: rgba(244, 241, 234, 0.44);
   }
 
   .process-row-number span {
     font-size: 10px;
-    color: rgba(244, 241, 234, 0.34);
   }
 
   .process-row-tags span {
     min-height: 20px;
     padding: 0 8px;
     font-size: 8px;
-    color: rgba(244, 241, 234, 0.36);
-    border-color: rgba(244, 241, 234, 0.12);
   }
 
   .process-close {
     left: 7vw;
     right: 7vw;
     bottom: 5.4vh;
+    z-index: 9;
   }
 }
