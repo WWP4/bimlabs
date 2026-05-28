@@ -1,7 +1,7 @@
 /* =========================================================
-   BIM LABS — PROCESS WALL
-   Replacement for process-world.js
-   Requires: GSAP + ScrollTrigger loaded globally
+   BIM LABS — PROCESS WALL FIXED
+   Clean sticky-scroll animation
+   Uses CSS sticky only. No GSAP pin.
    ========================================================= */
 
 (function () {
@@ -19,51 +19,33 @@
 
   gsap.registerPlugin(ScrollTrigger);
 
-  const sticky = section.querySelector(".process-sticky");
-  const transitionLine = section.querySelector(".process-transition-line");
-  const transitionLabel = section.querySelector(".process-transition-label");
+  const q = gsap.utils.selector(section);
 
-  const meta = section.querySelector(".process-meta");
-  const hero = section.querySelector(".process-hero");
-  const kicker = section.querySelector(".process-kicker");
-  const heading = section.querySelector(".process-hero h2");
-  const introCopy = section.querySelector(".process-intro-copy");
+  const meta = q(".process-meta");
+  const footerMeta = q(".process-footer-meta");
 
-  const wall = section.querySelector(".process-wall");
-  const rows = gsap.utils.toArray(".process-row");
-  const rowLines = gsap.utils.toArray(".process-row-line");
-  const rowNumbers = gsap.utils.toArray(".process-row-number");
-  const rowTitles = gsap.utils.toArray(".process-row-title");
-  const rowDetails = gsap.utils.toArray(".process-row-detail");
+  const kicker = q(".process-kicker");
+  const heading = q(".process-hero h2");
+  const introCopy = q(".process-intro-copy");
+  const hero = q(".process-hero");
 
-  const close = section.querySelector(".process-close");
-  const footerMeta = section.querySelector(".process-footer-meta");
+  const wall = q(".process-wall");
+  const rows = q(".process-row");
+  const rowLines = q(".process-row-line");
+  const rowNumbers = q(".process-row-number");
+  const rowTitles = q(".process-row-title");
+  const rowDetails = q(".process-row-detail");
 
-  const isDesktop = window.matchMedia("(min-width: 1101px)");
+  const close = q(".process-close");
 
   let ctx;
 
-  function buildDesktopAnimation() {
+  function buildDesktop() {
     if (ctx) ctx.revert();
 
     ctx = gsap.context(() => {
-      /* -----------------------------
-         Initial states
-      ----------------------------- */
-
       gsap.set([meta, footerMeta], {
         opacity: 0
-      });
-
-      gsap.set(transitionLine, {
-        scaleX: 0.12,
-        opacity: 0.12,
-        transformOrigin: "left center"
-      });
-
-      gsap.set(transitionLabel, {
-        opacity: 0,
-        y: 12
       });
 
       gsap.set(kicker, {
@@ -74,18 +56,18 @@
       gsap.set(heading, {
         opacity: 0,
         y: 46,
-        letterSpacing: "-0.095em",
-        filter: "blur(8px)"
+        filter: "blur(8px)",
+        letterSpacing: "-0.095em"
       });
 
       gsap.set(introCopy, {
         opacity: 0,
-        y: 26
+        y: 24
       });
 
       gsap.set(wall, {
         opacity: 1,
-        y: 70
+        y: 72
       });
 
       gsap.set(rows, {
@@ -100,98 +82,65 @@
 
       gsap.set([rowNumbers, rowTitles, rowDetails], {
         opacity: 0,
-        y: 24
+        y: 22
       });
 
       gsap.set(close, {
         opacity: 0,
-        y: 28
+        y: 28,
+        pointerEvents: "none"
       });
-
-      /* -----------------------------
-         Main pinned timeline
-      ----------------------------- */
 
       const tl = gsap.timeline({
         defaults: {
           ease: "power2.out"
         },
-    scrollTrigger: {
-  trigger: section,
-  start: "top 70%",
-  end: "+=260%",
-  scrub: 0.9,
-  pin: sticky,
-  pinSpacing: true,
-  anticipatePin: 1,
-  invalidateOnRefresh: true
-}
+        scrollTrigger: {
+          trigger: section,
+          start: "top top",
+          end: "bottom bottom",
+          scrub: 0.85,
+          invalidateOnRefresh: true
+        }
       });
 
-      /* Phase 1: handoff from section 2 */
-      tl.to(transitionLine, {
-        scaleX: 1,
-        opacity: 0.22,
-        duration: 0.16,
-        ease: "power1.out"
-      }, 0);
-
-      tl.to(transitionLabel, {
-        opacity: 1,
-        y: 0,
-        duration: 0.12
-      }, 0.03);
-
-      tl.to(transitionLabel, {
-        opacity: 0,
-        y: -12,
-        duration: 0.12
-      }, 0.16);
-
-      tl.to(transitionLine, {
-        opacity: 0,
-        duration: 0.12
-      }, 0.18);
-
-      /* Phase 2: editorial frame arrives */
       tl.to([meta, footerMeta], {
         opacity: 1,
-        duration: 0.16
-      }, 0.15);
+        duration: 0.12
+      }, 0);
 
       tl.to(kicker, {
         opacity: 1,
         y: 0,
-        duration: 0.14
-      }, 0.18);
+        duration: 0.13
+      }, 0.04);
 
       tl.to(heading, {
         opacity: 1,
         y: 0,
-        letterSpacing: "-0.075em",
         filter: "blur(0px)",
-        duration: 0.22
-      }, 0.2);
+        letterSpacing: "-0.075em",
+        duration: 0.24
+      }, 0.07);
 
       tl.to(introCopy, {
         opacity: 1,
         y: 0,
         duration: 0.16
-      }, 0.28);
+      }, 0.18);
 
-      /* Phase 3: process rows assemble */
       tl.to(wall, {
         y: 0,
         duration: 0.22
-      }, 0.34);
+      }, 0.24);
 
       rows.forEach((row, index) => {
-       const start = 0.28 + index * 0.085;
+        const start = 0.28 + index * 0.09;
 
         tl.to(row, {
           opacity: 1,
           y: 0,
-          duration: 0.12
+          duration: 0.13
         }, start);
 
         tl.to(rowLines[index], {
@@ -203,7 +152,7 @@
         tl.to(rowNumbers[index], {
           opacity: 1,
           y: 0,
-          duration: 0.12
+          duration: 0.13
         }, start + 0.025);
 
         tl.to(rowTitles[index], {
@@ -219,57 +168,46 @@
         }, start + 0.065);
       });
 
-      /* Phase 4: headline quiets down as full process becomes focus */
-   tl.to(hero, {
-  y: -52,
-  opacity: 0.26,
-  duration: 0.2
-}, 0.48);
-
-      /* Phase 5: final closing line */
-      tl.to(close, {
-        opacity: 1,
-        y: 0,
-        duration: 0.18
-      }, 0.84);
+      tl.to(hero, {
+        y: -52,
+        opacity: 0.28,
+        duration: 0.22
+      }, 0.62);
 
       tl.to(wall, {
         y: -18,
-        duration: 0.16
-      }, 0.86);
+        duration: 0.18
+      }, 0.78);
 
-      /* tiny living detail, not cheap */
-      gsap.to(".process-ruler--top", {
+      tl.to(close, {
+        opacity: 1,
+        y: 0,
+        pointerEvents: "auto",
+        duration: 0.2
+      }, 0.82);
+
+      gsap.to(q(".process-ruler--top"), {
         opacity: 0.55,
-        duration: 2.6,
-        yoyo: true,
+        duration: 2.8,
         repeat: -1,
+        yoyo: true,
         ease: "sine.inOut"
       });
 
-      gsap.to(".process-ruler--bottom", {
+      gsap.to(q(".process-ruler--bottom"), {
         opacity: 0.42,
-        duration: 3.2,
-        yoyo: true,
+        duration: 3.4,
         repeat: -1,
+        yoyo: true,
         ease: "sine.inOut"
       });
     }, section);
   }
 
-  function buildMobileFallback() {
+  function buildMobile() {
     if (ctx) ctx.revert();
 
     ctx = gsap.context(() => {
-      gsap.set([
-        ".process-meta",
-        ".process-footer-meta",
-        ".process-transition",
-        ".process-frame"
-      ], {
-        clearProps: "all"
-      });
-
       gsap.set([
         ".process-kicker",
         ".process-hero h2",
@@ -288,12 +226,12 @@
       rows.forEach((row) => {
         gsap.from(row, {
           opacity: 0,
-          y: 32,
-          duration: 0.8,
+          y: 28,
+          duration: 0.7,
           ease: "power2.out",
           scrollTrigger: {
             trigger: row,
-            start: "top 86%",
+            start: "top 88%",
             once: true
           }
         });
@@ -303,21 +241,22 @@
 
   function init() {
     ScrollTrigger.getAll().forEach((trigger) => {
-      if (trigger.trigger === section || trigger.pin === sticky) {
+      if (trigger.trigger === section || section.contains(trigger.trigger)) {
         trigger.kill();
       }
     });
 
-    if (isDesktop.matches) {
-      buildDesktopAnimation();
+    if (window.matchMedia("(min-width: 1101px)").matches) {
+      buildDesktop();
     } else {
-      buildMobileFallback();
+      buildMobile();
     }
 
     ScrollTrigger.refresh();
   }
 
   window.addEventListener("load", init);
+
   window.addEventListener("resize", () => {
     clearTimeout(window.__bimProcessResize);
     window.__bimProcessResize = setTimeout(init, 250);
