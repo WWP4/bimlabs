@@ -172,11 +172,11 @@
     const grow = smoothstep(0.08, 0.74, progress);
     const exit = smoothstep(0.86, 1, progress);
 
-    const scale =
-      lerp(0.78, 1.02, enter) +
-      lerp(0, 0.34, grow) -
-      lerp(0, 0.08, exit);
-
+   const scale =
+  lerp(0.72, 0.92, enter) +
+  lerp(0, 0.18, grow) -
+  lerp(0, 0.05, exit);
+     
     const opacity =
       lerp(0.08, 0.22, enter) -
       lerp(0, 0.06, exit);
