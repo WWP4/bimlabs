@@ -2,16 +2,8 @@
    BIM LABS — PROCESS SECTION
    Full replacement for: sections/process.css
 
-   Includes:
-   - Sticky centered PROCESS background word
-   - Large alternating process cards
-   - Real portal zoom stage
-   - Letter C camera-target system
-   - Booking room revealed inside the portal
-   ========================================================= */
-
-/* =========================================================
-   BASE PROCESS SECTION
+   Uses one PROCESS word only.
+   Original PROCESS word becomes the C zoom portal.
    ========================================================= */
 
 .process-work-copy {
@@ -66,13 +58,13 @@
 }
 
 /* =========================================================
-   HUGE STICKY BACKGROUND WORD
+   ONE PROCESS WORD / PORTAL OBJECT
    ========================================================= */
 
 .process-work-word-wrap {
   position: absolute;
   inset: 0;
-  z-index: 1;
+  z-index: 6;
   pointer-events: none;
   overflow: visible;
 }
@@ -81,7 +73,10 @@
   position: sticky;
   top: 50vh;
 
-  display: block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
   width: max-content;
   max-width: none;
   margin-inline: auto;
@@ -104,16 +99,54 @@
   user-select: none;
 }
 
-/* Real content above background word */
-.process-work-top,
-.process-work-list {
+.process-letter {
+  display: inline-block;
   position: relative;
-  z-index: 5;
+  transform: translate3d(0, 0, 0);
+}
+
+.process-letter-c {
+  text-shadow:
+    0 0 28px rgba(255,255,255,0.07),
+    0 0 90px rgba(255,255,255,0.05);
+}
+
+.process-letter-c::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+
+  width: 42%;
+  height: 62%;
+  border-radius: 999px;
+
+  background:
+    radial-gradient(circle,
+      rgba(0,0,0,0.88) 0%,
+      rgba(0,0,0,0.6) 44%,
+      rgba(0,0,0,0) 70%
+    );
+
+  transform:
+    translate3d(-50%, -50%, 0)
+    scale(calc(0.45 + (var(--portal-progress, 0) * 0.8)));
+
+  opacity: calc(var(--portal-progress, 0) * 0.74);
+  filter: blur(calc(16px - (var(--portal-progress, 0) * 10px)));
+
+  pointer-events: none;
 }
 
 /* =========================================================
-   TOP INTRO
+   CONTENT LAYERS
    ========================================================= */
+
+.process-work-top,
+.process-work-list {
+  position: relative;
+  z-index: 8;
+}
 
 .process-work-top {
   min-height: 88vh;
@@ -150,7 +183,6 @@
 
 .process-work-list {
   position: relative;
-  z-index: 5;
 }
 
 .process-work-item {
@@ -291,10 +323,6 @@
   z-index: 2;
 }
 
-/* =========================================================
-   CARD CONTENT
-   ========================================================= */
-
 .process-work-card-meta {
   display: flex;
   align-items: center;
@@ -415,7 +443,7 @@
 }
 
 /* =========================================================
-   UNDERLINE + GLITCH
+   GLITCH
    ========================================================= */
 
 .underline-hover {
@@ -494,80 +522,41 @@
 }
 
 @keyframes processGlitchA {
-  0% {
-    opacity: 0;
-    clip-path: inset(0 0 90% 0);
-  }
-
-  25% {
-    opacity: 0.75;
-    clip-path: inset(18% 0 54% 0);
-  }
-
-  50% {
-    opacity: 0.3;
-    clip-path: inset(72% 0 12% 0);
-  }
-
-  75% {
-    opacity: 0.65;
-    clip-path: inset(34% 0 43% 0);
-  }
-
-  100% {
-    opacity: 0;
-    clip-path: inset(0 0 0 0);
-  }
+  0% { opacity: 0; clip-path: inset(0 0 90% 0); }
+  25% { opacity: 0.75; clip-path: inset(18% 0 54% 0); }
+  50% { opacity: 0.3; clip-path: inset(72% 0 12% 0); }
+  75% { opacity: 0.65; clip-path: inset(34% 0 43% 0); }
+  100% { opacity: 0; clip-path: inset(0 0 0 0); }
 }
 
 @keyframes processGlitchB {
-  0% {
-    opacity: 0;
-    clip-path: inset(88% 0 0 0);
-  }
-
-  25% {
-    opacity: 0.5;
-    clip-path: inset(58% 0 20% 0);
-  }
-
-  50% {
-    opacity: 0.25;
-    clip-path: inset(10% 0 75% 0);
-  }
-
-  75% {
-    opacity: 0.45;
-    clip-path: inset(42% 0 38% 0);
-  }
-
-  100% {
-    opacity: 0;
-    clip-path: inset(0 0 0 0);
-  }
+  0% { opacity: 0; clip-path: inset(88% 0 0 0); }
+  25% { opacity: 0.5; clip-path: inset(58% 0 20% 0); }
+  50% { opacity: 0.25; clip-path: inset(10% 0 75% 0); }
+  75% { opacity: 0.45; clip-path: inset(42% 0 38% 0); }
+  100% { opacity: 0; clip-path: inset(0 0 0 0); }
 }
 
 /* =========================================================
-   REAL PORTAL ZOOM EXIT
+   PORTAL STAGE
    ========================================================= */
 
 .process-portal-exit {
   position: relative;
-  z-index: 30;
+  z-index: 4;
 
   width: 100vw;
-  min-height: 380vh;
+  min-height: 300vh;
 
-  margin-top: -10vh;
+  margin-top: -8vh;
   margin-left: calc(50% - 50vw);
   margin-right: calc(50% - 50vw);
 
-  background: #000000;
+  background: transparent;
   overflow: clip;
   isolation: isolate;
 }
 
-/* Sticky camera stage */
 .process-portal-stage {
   position: sticky;
   top: 0;
@@ -580,12 +569,12 @@
   justify-content: center;
 
   overflow: hidden;
-  background: #000000;
   perspective: 1200px;
   transform-style: preserve-3d;
+
+  background: transparent;
 }
 
-/* Fullscreen dark lens */
 .process-portal-stage::before {
   content: "";
   position: absolute;
@@ -597,27 +586,26 @@
 
   background:
     radial-gradient(circle at 50% 50%,
-      rgba(255,255,255,0.09) 0%,
-      rgba(255,255,255,0.035) 13%,
-      rgba(0,0,0,0.76) 39%,
+      rgba(255,255,255,0.08) 0%,
+      rgba(255,255,255,0.03) 13%,
+      rgba(0,0,0,0.78) 39%,
       #000 72%
     ),
     radial-gradient(circle at 50% 50%,
       transparent 0%,
-      rgba(0,0,0,0.35) 34%,
+      rgba(0,0,0,0.36) 34%,
       rgba(0,0,0,0.95) 74%,
       #000 100%
     );
 
   transform:
-    scale(calc(1 + (var(--portal-progress, 0) * 0.22)))
+    scale(calc(1 + (var(--portal-progress, 0) * 0.2)))
     translate3d(0, 0, 0);
 
   filter: blur(calc(20px - (var(--portal-progress, 0) * 18px)));
   will-change: opacity, transform, filter;
 }
 
-/* Subtle vignette always keeps it premium */
 .process-portal-stage::after {
   content: "";
   position: absolute;
@@ -633,10 +621,9 @@
       rgba(0,0,0,0.94) 100%
     );
 
-  opacity: 0.84;
+  opacity: calc(0.34 + (var(--portal-bg-opacity, 0) * 0.5));
 }
 
-/* Depth dust */
 .portal-depth-field {
   position: absolute;
   inset: 0;
@@ -679,88 +666,6 @@
   will-change: transform, opacity, filter;
 }
 
-/* Word layer */
-.portal-word-wrap {
-  position: absolute;
-  inset: 0;
-  z-index: 7;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  pointer-events: none;
-  transform-style: preserve-3d;
-  will-change: transform, opacity;
-}
-
-/*
-  This is the actual zoom object.
-  JS moves it so the C becomes the camera target.
-*/
-.portal-word {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  color: #ffffff;
-
-  font-size: clamp(100px, 18vw, 430px);
-  font-weight: 800;
-  line-height: 0.72;
-  letter-spacing: -0.12em;
-  text-transform: lowercase;
-  white-space: nowrap;
-
-  transform-origin: center center;
-  transform-style: preserve-3d;
-
-  opacity: 0;
-  filter: blur(18px);
-
-  will-change: transform, opacity, filter;
-  user-select: none;
-}
-
-.portal-letter {
-  display: inline-block;
-  position: relative;
-  transform: translate3d(0, 0, 0);
-}
-
-.portal-letter-c {
-  color: #ffffff;
-  text-shadow:
-    0 0 28px rgba(255,255,255,0.07),
-    0 0 90px rgba(255,255,255,0.05);
-}
-
-/* Slight portal hollow in the C area as zoom begins */
-.portal-letter-c::after {
-  content: "";
-  position: absolute;
-  left: 50%;
-  top: 50%;
-
-  width: 42%;
-  height: 62%;
-  border-radius: 999px;
-
-  background:
-    radial-gradient(circle,
-      rgba(0,0,0,0.86) 0%,
-      rgba(0,0,0,0.62) 44%,
-      rgba(0,0,0,0) 70%
-    );
-
-  transform: translate3d(-50%, -50%, 0) scale(calc(0.55 + (var(--portal-progress, 0) * 0.8)));
-  opacity: calc(var(--portal-progress, 0) * 0.78);
-  filter: blur(calc(18px - (var(--portal-progress, 0) * 12px)));
-
-  pointer-events: none;
-}
-
-/* Darkness that takes over after entering the C */
 .portal-core {
   position: absolute;
   left: 50%;
@@ -774,8 +679,8 @@
   background:
     radial-gradient(circle,
       rgba(0,0,0,1) 0%,
-      rgba(0,0,0,0.92) 34%,
-      rgba(0,0,0,0.46) 58%,
+      rgba(0,0,0,0.95) 34%,
+      rgba(0,0,0,0.52) 58%,
       rgba(0,0,0,0) 74%
     );
 
@@ -783,14 +688,17 @@
 
   transform:
     translate3d(-50%, -50%, 0)
-    scale(var(--portal-core-scale, 0.2));
+    scale(var(--portal-core-scale, 0.18));
 
-  filter: blur(var(--portal-core-blur, 48px));
+  filter: blur(var(--portal-core-blur, 42px));
   pointer-events: none;
   will-change: opacity, transform, filter;
 }
 
-/* Booking room */
+/* =========================================================
+   BOOKING ROOM
+   ========================================================= */
+
 .portal-booking {
   position: relative;
   z-index: 12;
@@ -809,7 +717,7 @@
 
   opacity: var(--booking-opacity, 0);
   transform: scale(var(--booking-scale, 0.72));
-  filter: blur(var(--booking-blur, 32px));
+  filter: blur(var(--booking-blur, 34px));
 
   will-change: opacity, transform, filter;
 }
@@ -954,64 +862,6 @@
 }
 
 /* =========================================================
-   REDUCED MOTION
-   ========================================================= */
-
-@media (prefers-reduced-motion: reduce) {
-  .process-work-item,
-  .process-work-card,
-  .underline-hover::after,
-  .process-card-btn,
-  .booking-form button,
-  .booking-form input,
-  .booking-form textarea {
-    transition: none !important;
-  }
-
-  .process-work-item {
-    opacity: 1;
-    transform: none;
-  }
-
-  .process-work-card {
-    filter: none !important;
-  }
-
-  .process-work-word {
-    transform: translate3d(0, -50%, 0) scale(1);
-  }
-
-  .process-portal-stage::before {
-    opacity: 1;
-    transform: scale(1);
-    filter: none;
-  }
-
-  .portal-depth-field {
-    opacity: 0.35;
-  }
-
-  .portal-word {
-    opacity: 1;
-    filter: none;
-    transform: none;
-  }
-
-  .portal-core {
-    opacity: 0.72;
-    transform: translate3d(-50%, -50%, 0) scale(1);
-    filter: blur(6px);
-  }
-
-  .portal-booking {
-    opacity: 1;
-    transform: scale(1);
-    filter: none;
-    pointer-events: auto;
-  }
-}
-
-/* =========================================================
    RESPONSIVE
    ========================================================= */
 
@@ -1062,12 +912,8 @@
   }
 
   .process-portal-exit {
-    min-height: 340vh;
+    min-height: 280vh;
     margin-top: -6vh;
-  }
-
-  .portal-word {
-    font-size: clamp(110px, 25vw, 340px);
   }
 }
 
@@ -1132,13 +978,8 @@
   }
 
   .process-portal-exit {
-    min-height: 310vh;
+    min-height: 260vh;
     margin-top: -4vh;
-  }
-
-  .portal-word {
-    font-size: 33vw;
-    letter-spacing: -0.115em;
   }
 
   .portal-booking {
