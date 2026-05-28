@@ -145,211 +145,171 @@
 </section>
 
 
-<section class="bim-process" id="process">
-  <div class="process-shell">
+<section class="bim-world-entry" id="process-world" aria-label="BIM Labs process world">
 
-    <!-- LEFT INTRO -->
-    <aside class="process-intro">
-      <p class="process-kicker">HOW WE WORK</p>
-
-      <h2 class="process-title">
-        Our process<br />
-        is simple.
-      </h2>
-
-      <p class="process-description">
-        A refined 4-step journey designed to create systems that scale,
-        experiences that convert, and brands that last.
-      </p>
-
-      <a href="#contact" class="process-link">
-        <span>LET’S BUILD TOGETHER</span>
-        <i aria-hidden="true"></i>
-      </a>
-    </aside>
-
-    <!-- RIGHT PROCESS CARDS -->
-    <div class="process-board" aria-label="BIM Labs process steps">
-
-      <article class="process-card" data-step="01">
-        <div class="process-card-face">
-          <img
-            class="process-card-img"
-            src="designs/swirl.png"
-            alt="Abstract curved architecture"
-            loading="lazy"
-            decoding="async"
-          />
-
-          <div class="process-card-overlay" aria-hidden="true"></div>
-
-          <div class="process-card-content">
-            <span class="step-number">01</span>
-            <span class="step-rule" aria-hidden="true"></span>
-
-            <h3>Discover</h3>
-
-            <p>
-              We dive deep into your brand, market, and goals
-              to uncover the real opportunity.
-            </p>
-          </div>
-        </div>
-      </article>
-
-      <article class="process-card" data-step="02">
-        <div class="process-card-face">
-          <img
-            class="process-card-img"
-            src="designs/tower.png"
-            alt="Architectural tower detail"
-            loading="lazy"
-            decoding="async"
-          />
-
-          <div class="process-card-overlay" aria-hidden="true"></div>
-
-          <div class="process-card-content">
-            <span class="step-number">02</span>
-            <span class="step-rule" aria-hidden="true"></span>
-
-            <h3>Strategize</h3>
-
-            <p>
-              We map the blueprint. Positioning, messaging,
-              UX, and systems engineered to perform.
-            </p>
-          </div>
-        </div>
-      </article>
-
-      <article class="process-card" data-step="03">
-        <div class="process-card-face">
-          <img
-            class="process-card-img"
-            src="designs/rails.png"
-            alt="Dark architectural rails"
-            loading="lazy"
-            decoding="async"
-          />
-
-          <div class="process-card-overlay" aria-hidden="true"></div>
-
-          <div class="process-card-content">
-            <span class="step-number">03</span>
-            <span class="step-rule" aria-hidden="true"></span>
-
-            <h3>Build</h3>
-
-            <p>
-              We design and develop high-performance
-              experiences that look stunning and work seamlessly.
-            </p>
-          </div>
-        </div>
-      </article>
-
-      <article class="process-card" data-step="04">
-        <div class="process-card-face">
-          <img
-            class="process-card-img"
-            src="designs/view.png"
-            alt="Person standing in architectural light"
-            loading="lazy"
-            decoding="async"
-          />
-
-          <div class="process-card-overlay" aria-hidden="true"></div>
-
-          <div class="process-card-content">
-            <span class="step-number">04</span>
-            <span class="step-rule" aria-hidden="true"></span>
-
-            <h3>Launch & Grow</h3>
-
-            <p>
-              We launch with precision and stay with you to
-              optimize, scale, and fuel long-term growth.
-            </p>
-          </div>
-        </div>
-      </article>
-
-    </div>
-
-    <footer class="process-footer">
-      <p>Strategy. Design. Technology. Growth.</p>
-
-      <p>
-        BUILT FOR BRANDS THAT WANT MORE.
-        <span>///</span>
-      </p>
-    </footer>
-
-  </div>
-</section>
-
-
-<section class="bim-testimonials" id="testimonials">
-  <div class="testimonial-bg">
-    <img src="designs/testimonials-b.png" alt="" />
+  <!-- WEBGL / CANVAS WORLD LAYER -->
+  <div class="world-canvas-wrap" aria-hidden="true">
+    <canvas id="bimWorldCanvas"></canvas>
   </div>
 
-  <div class="testimonial-noise"></div>
-  <div class="testimonial-fog"></div>
+  <!-- GLOBAL ATMOSPHERE LAYERS -->
+  <div class="world-atmosphere" aria-hidden="true">
+    <div class="world-vignette"></div>
+    <div class="world-grain"></div>
+    <div class="world-fog world-fog-a"></div>
+    <div class="world-fog world-fog-b"></div>
+    <div class="world-horizon"></div>
+  </div>
 
+  <!-- STICKY CAMERA VIEWPORT -->
+  <div class="world-sticky">
 
-  <div class="testimonial-shell">
-    <div class="testimonial-left">
-      <p class="testimonial-kicker">Client words</p>
-
-      <h2>
-        What they remember<br />
-        is the feeling.
-      </h2>
+    <!-- FIXED BRAND UI -->
+    <div class="world-brand">
+      <span class="world-brand-mark">B</span>
+      <span>BIM Labs</span>
     </div>
 
-    <div class="testimonial-right">
-      <div class="testimonial-typebox">
-        <p id="testimonialText">
-          BIM Labs didn’t just build a website — they built the foundation for our digital ecosystem.
+    <div class="world-status">
+      <span>03 / Process World</span>
+      <span>Scroll to enter</span>
+    </div>
+
+    <!-- SECTION 2 EXIT: CAPABILITIES WORLD -->
+    <div class="world-scene world-scene-capabilities" data-scene="capabilities">
+
+      <div class="world-copy world-copy-capabilities">
+        <p class="world-kicker">02 / Capabilities</p>
+
+        <h2>
+          Everything we build<br />
+          lives in one world.
+        </h2>
+
+        <p>
+          Websites, AI systems, portals, automations, and interactive experiences
+          designed as one connected digital environment.
         </p>
       </div>
 
-      <div class="testimonial-meta">
-        <span id="testimonialCount">01 / 03</span>
-        <div>
-          <strong id="testimonialName">Daniel K.</strong>
-          <span id="testimonialRole">CEO, Nexora</span>
-        </div>
+      <div class="capability-ribbon" aria-label="BIM Labs capabilities">
+        <article class="capability-panel" data-depth="1">
+          <span>/ 01</span>
+          <h3>Websites</h3>
+          <p>Premium digital foundations built to move people through a clear journey.</p>
+        </article>
+
+        <article class="capability-panel" data-depth="2">
+          <span>/ 02</span>
+          <h3>AI Systems</h3>
+          <p>Assistants and guided flows that qualify, answer, route, and support.</p>
+        </article>
+
+        <article class="capability-panel" data-depth="3">
+          <span>/ 03</span>
+          <h3>Client Portals</h3>
+          <p>Private project spaces that make the customer experience feel organized.</p>
+        </article>
+
+        <article class="capability-panel" data-depth="4">
+          <span>/ 04</span>
+          <h3>Automations</h3>
+          <p>Behind-the-scenes systems that reduce manual work and keep momentum.</p>
+        </article>
+
+        <article class="capability-panel" data-depth="5">
+          <span>/ 05</span>
+          <h3>Interactive / 3D</h3>
+          <p>Immersive visuals, viewers, and product experiences that create memory.</p>
+        </article>
       </div>
 
-      <div class="testimonial-progress">
-        <button class="is-active" data-testimonial="0" aria-label="View testimonial 1"></button>
-        <button data-testimonial="1" aria-label="View testimonial 2"></button>
-        <button data-testimonial="2" aria-label="View testimonial 3"></button>
-      </div>
     </div>
-  </div>
 
-  <div class="client-band-wrap">
-    <span>Companies we’ve built with</span>
-
-    <div class="client-band">
-      <div class="client-band-track">
-        <p>WONDER WORLD PLAYSETS</p>
-        <p>GLCA</p>
-        <p>MOMENTUM ATHLETE</p>
-        <p>ORYND AI</p>
-        <p>WONDER WORLD PLAYSETS</p>
-        <p>GLCA</p>
-        <p>MOMENTUM ATHLETE</p>
-        <p>ORYND AI</p>
-      </div>
+    <!-- TRANSITION VOID -->
+    <div class="world-scene world-scene-void" data-scene="void" aria-hidden="true">
+      <div class="void-core"></div>
+      <div class="void-line void-line-a"></div>
+      <div class="void-line void-line-b"></div>
+      <div class="void-line void-line-c"></div>
     </div>
+
+    <!-- SECTION 3 ENTRY: PROCESS WORLD -->
+    <div class="world-scene world-scene-process" data-scene="process">
+
+      <div class="world-copy world-copy-process">
+        <p class="world-kicker">03 / Our Process</p>
+
+        <h2>
+          From first principles<br />
+          to living systems.
+        </h2>
+
+        <p>
+          A controlled build sequence for turning scattered ideas into a premium
+          digital system that looks clear, sells clearly, and works behind the scenes.
+        </p>
+      </div>
+
+      <div class="process-world-stage" aria-label="BIM Labs four step process">
+
+        <article class="process-chapter process-chapter-01" data-step="01">
+          <div class="chapter-inner">
+            <span class="chapter-number">01</span>
+            <h3>Diagnose</h3>
+            <p>We map the offer, audience, friction points, and conversion path.</p>
+          </div>
+        </article>
+
+        <article class="process-chapter process-chapter-02" data-step="02">
+          <div class="chapter-inner">
+            <span class="chapter-number">02</span>
+            <h3>Design the world</h3>
+            <p>We define the visual language, content rhythm, and interaction system.</p>
+          </div>
+        </article>
+
+        <article class="process-chapter process-chapter-03" data-step="03">
+          <div class="chapter-inner">
+            <span class="chapter-number">03</span>
+            <h3>Build the engine</h3>
+            <p>We connect the website, forms, AI, portal, CRM, and automations.</p>
+          </div>
+        </article>
+
+        <article class="process-chapter process-chapter-04" data-step="04">
+          <div class="chapter-inner">
+            <span class="chapter-number">04</span>
+            <h3>Launch & refine</h3>
+            <p>We ship, measure, improve, and keep the system moving after launch.</p>
+          </div>
+        </article>
+
+      </div>
+
+    </div>
+
+    <!-- DEPTH / FLOOR LAYERS -->
+    <div class="world-floor" aria-hidden="true">
+      <div class="floor-plane"></div>
+      <div class="floor-shadow floor-shadow-a"></div>
+      <div class="floor-shadow floor-shadow-b"></div>
+      <div class="floor-grid"></div>
+    </div>
+
+    <!-- SCROLL HUD -->
+    <div class="world-scroll-ui" aria-hidden="true">
+      <div class="world-progress">
+        <span></span>
+      </div>
+      <p>Scroll to enter the process world</p>
+    </div>
+
   </div>
 </section>
-    
+
+
+
 <script src="sections/testimonials-section.js"></script>
 <script src="./js/main.js" defer></script>
 <script src="sections/process.js" defer></script>
