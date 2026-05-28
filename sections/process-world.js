@@ -170,18 +170,18 @@
 
     const enter = smoothstep(0, 0.16, progress);
     const grow = smoothstep(0.08, 0.74, progress);
-    const exit = smoothstep(0.86, 1, progress);
+    const exit = smoothstep(0.74, 1, progress);
 
    const scale =
   lerp(0.72, 0.92, enter) +
   lerp(0, 0.18, grow) -
   lerp(0, 0.05, exit);
      
-    const opacity =
-      lerp(0.08, 0.22, enter) -
-      lerp(0, 0.06, exit);
+ const opacity =
+  lerp(0.08, 0.22, enter) -
+  lerp(0, 0.19, exit);
 
-    const blur = lerp(2, 0, enter);
+    const blur = lerp(2, 0, enter) + lerp(0, 16, exit);
 
     setStyles(bigWord, {
       color: "#ffffff",
@@ -269,11 +269,67 @@
     }
   }
 
-  function render(progress) {
-    renderBigWord(progress);
-    renderCards();
-  }
 
+
+   /* =========================================================
+   VOID EXIT / BOOKING HANDOFF
+   ========================================================= */
+
+function renderVoidExit(progress) {
+  const voidExit = section.querySelector(".process-void-exit");
+
+  if (!voidExit) return;
+
+  const exit = smoothstep(0.76, 1, progress);
+  const deepExit = smoothstep(0.84, 1, progress);
+  const booking = smoothstep(0.88, 1, progress);
+
+  const voidOpacity = lerp(0, 1, exit);
+  const voidScale = lerp(0.82, 1.28, exit);
+  const voidY = lerp(90, -20, exit);
+  const voidBlur = lerp(22, 0, exit);
+
+  const doorOpacity = lerp(0, 1, deepExit);
+  const doorScale = lerp(0.42, 1.25, deepExit);
+  const doorBlur = lerp(40, 8, deepExit);
+
+  const dustOpacity = lerp(0, 0.9, exit);
+  const dustPull = lerp(0, 0.22, deepExit);
+  const dustScale = lerp(0.8, 1.85, deepExit);
+  const dustBlur = lerp(0, 2.4, deepExit);
+
+  const bookingOpacity = lerp(0, 1, booking);
+  const bookingY = lerp(120, 0, booking);
+  const bookingScale = lerp(0.82, 1, booking);
+  const bookingBlur = lerp(22, 0, booking);
+
+  voidExit.style.setProperty("--void-opacity", voidOpacity.toFixed(3));
+  voidExit.style.setProperty("--void-scale", voidScale.toFixed(3));
+  voidExit.style.setProperty("--void-y", `${voidY.toFixed(2)}px`);
+  voidExit.style.setProperty("--void-blur", `${voidBlur.toFixed(2)}px`);
+
+  voidExit.style.setProperty("--door-opacity", doorOpacity.toFixed(3));
+  voidExit.style.setProperty("--door-scale", doorScale.toFixed(3));
+  voidExit.style.setProperty("--door-blur", `${doorBlur.toFixed(2)}px`);
+
+  voidExit.style.setProperty("--dust-opacity", dustOpacity.toFixed(3));
+  voidExit.style.setProperty("--dust-pull", dustPull.toFixed(3));
+  voidExit.style.setProperty("--dust-scale", dustScale.toFixed(3));
+  voidExit.style.setProperty("--dust-blur", `${dustBlur.toFixed(2)}px`);
+
+  voidExit.style.setProperty("--booking-opacity", bookingOpacity.toFixed(3));
+  voidExit.style.setProperty("--booking-y", `${bookingY.toFixed(2)}px`);
+  voidExit.style.setProperty("--booking-scale", bookingScale.toFixed(3));
+  voidExit.style.setProperty("--booking-blur", `${bookingBlur.toFixed(2)}px`);
+}
+
+   
+
+function render(progress) {
+  renderBigWord(progress);
+  renderCards();
+  renderVoidExit(progress);
+}
   /* =========================================================
      REVEAL OBSERVER
      ========================================================= */
