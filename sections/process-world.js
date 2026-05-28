@@ -1,27 +1,21 @@
 /* =========================================================
-   BIM LABS — PROCESS / WORK COPY SMOOTH SCROLL
+   BIM LABS — PROCESS SECTION
    Full replacement for: sections/process-world.js
 
-   Built for:
-   .process-work-copy
-   .process-work-word
-   .process-work-item
-   .process-work-card
-   .glitch-text
-
    Behavior:
-   - Big "process" word grows as user enters the section
-   - Word stays centered while steps scroll over it
-   - Cards drift softly left/right with scroll
-   - Cards reveal without snappy timing
-   - Glitch happens on scroll reveal and hover
+   - Big "process" word stays centered
+   - Big word grows as user scrolls through section
+   - Big word stays white and visible
+   - Cards reveal smoothly
+   - Cards softly drift/parallax
+   - Glitch/scramble on reveal + hover
    ========================================================= */
 
 (function () {
   const section = document.querySelector(".process-work-copy");
 
   if (!section) {
-    console.warn("[Process Work Copy] Missing .process-work-copy");
+    console.warn("[Process] Missing .process-work-copy");
     return;
   }
 
@@ -30,12 +24,17 @@
   const cards = Array.from(section.querySelectorAll(".process-work-card"));
   const glitchTexts = Array.from(section.querySelectorAll(".glitch-text"));
 
+  if (!bigWord) {
+    console.warn("[Process] Missing .process-work-word");
+  }
+
   if (!items.length) {
-    console.warn("[Process Work Copy] No [data-process-step] items found.");
+    console.warn("[Process] Missing [data-process-step] items");
     return;
   }
 
   const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
   const glyphs = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789#%&<>/[]{}+-=_";
 
   let observer = null;
@@ -50,7 +49,7 @@
   const lerp = (start, end, amount) => start + (end - start) * amount;
 
   function smoothstep(edge0, edge1, value) {
-    const x = clamp((value - edge0) / (edge1 - edge0), 0, 1);
+    const x = clamp((value - edge0) / Math.max(edge1 - edge0, 0.0001), 0, 1);
     return x * x * (3 - 2 * x);
   }
 
@@ -72,6 +71,10 @@
     };
   }
 
+  /* =========================================================
+     TEXT SCRAMBLE / GLITCH
+     ========================================================= */
+
   function scrambleText(element, options = {}) {
     if (!element || prefersReducedMotion) return;
 
@@ -86,8 +89,8 @@
     element.classList.add("is-scrambling");
 
     let frame = 0;
-    const totalFrames = force ? 16 : 28;
-    const speed = force ? 20 : 25;
+    const totalFrames = force ? 14 : 24;
+    const speed = force ? 18 : 24;
 
     const interval = window.setInterval(() => {
       const progress = frame / totalFrames;
@@ -98,7 +101,7 @@
           if (char === " ") return " ";
 
           const revealPoint = index / Math.max(finalText.length, 1);
-          const shouldReveal = progress > revealPoint + 0.15;
+          const shouldReveal = progress > revealPoint + 0.12;
 
           return shouldReveal ? char : randomGlyph();
         })
@@ -122,7 +125,7 @@
 
           window.setTimeout(() => {
             parentItem.classList.remove("is-glitching");
-          }, 520);
+          }, 480);
         }
       }
     }, speed);
@@ -146,6 +149,10 @@
     item.classList.remove("is-visible");
   }
 
+  /* =========================================================
+     OBSERVER
+     ========================================================= */
+
   function setupObserver() {
     if (observer) {
       observer.disconnect();
@@ -165,13 +172,17 @@
       },
       {
         root: null,
-        threshold: 0.28,
-        rootMargin: "-8% 0px -12% 0px"
+        threshold: 0.24,
+        rootMargin: "-10% 0px -14% 0px"
       }
     );
 
     items.forEach((item) => observer.observe(item));
   }
+
+  /* =========================================================
+     INITIAL STATE
+     ========================================================= */
 
   function setupInitialState() {
     items.forEach((item) => {
@@ -186,7 +197,20 @@
       text.dataset.scrambling = "false";
       text.classList.remove("is-scrambling");
     });
+
+    if (bigWord) {
+      setStyles(bigWord, {
+        color: "#ffffff",
+        opacity: "0.08",
+        transform: "translate3d(0, -50%, 0) scale(0.72)",
+        filter: "blur(3px)"
+      });
+    }
   }
+
+  /* =========================================================
+     HOVER EFFECTS
+     ========================================================= */
 
   function setupHoverEffects() {
     items.forEach((item) => {
@@ -211,6 +235,10 @@
     });
   }
 
+  /* =========================================================
+     MEASURE / SCROLL PROGRESS
+     ========================================================= */
+
   function measure() {
     const rect = section.getBoundingClientRect();
 
@@ -223,9 +251,11 @@
   function updateTarget() {
     const start = sectionTop;
     const end = sectionTop + sectionHeight - window.innerHeight;
+
     const raw = (window.scrollY - start) / Math.max(end - start, 1);
 
     targetProgress = clamp(raw, 0, 1);
+
     startLoop();
   }
 
@@ -237,16 +267,11 @@
   }
 
   function animate() {
-    /*
-      Lower = smoother/heavier.
-      0.055 is calmer and more high-end than quick 0.1+ motion.
-    */
-
-    currentProgress = lerp(currentProgress, targetProgress, 0.055);
+    currentProgress = lerp(currentProgress, targetProgress, 0.06);
 
     render(currentProgress);
 
-    if (Math.abs(currentProgress - targetProgress) > 0.00055) {
+    if (Math.abs(currentProgress - targetProgress) > 0.0005) {
       window.requestAnimationFrame(animate);
     } else {
       currentProgress = targetProgress;
@@ -260,46 +285,47 @@
     renderCards();
   }
 
+  /* =========================================================
+     BIG CENTERED PROCESS WORD
+     ========================================================= */
 
-   function renderBigWord(progress) {
-  if (!bigWord) return;
+  function renderBigWord(progress) {
+    if (!bigWord) return;
 
-  /*
-    Goal:
-    - Enters large
-    - Grows into a huge white background word
-    - Stays centered behind the steps
-    - Moves subtly with scroll so it does not feel pinned/dead
-  */
+    /*
+      Important:
+      The word stays centered because translateY always stays -50%.
+      We only animate scale, opacity, and blur.
+    */
 
-  const enter = smoothstep(0, 0.18, progress);
-  const travel = smoothstep(0.08, 0.9, progress);
-  const exit = smoothstep(0.82, 1, progress);
+    const enter = smoothstep(0, 0.18, progress);
+    const grow = smoothstep(0.08, 0.72, progress);
+    const exit = smoothstep(0.84, 1, progress);
 
-  const scale =
-    lerp(0.72, 1.18, enter) +
-    lerp(0, 0.34, travel) -
-    lerp(0, 0.08, exit);
+    const scale =
+      lerp(0.72, 1.04, enter) +
+      lerp(0, 0.34, grow) -
+      lerp(0, 0.08, exit);
 
-  const opacity =
-    lerp(0.04, 0.22, enter) -
-    lerp(0, 0.06, exit);
+    const opacity =
+      lerp(0.08, 0.34, enter) -
+      lerp(0, 0.08, exit);
 
-  const y =
-    lerp(90, 0, enter) +
-    lerp(0, -120, travel);
+    const blur =
+      lerp(3.2, 0, enter) +
+      lerp(0, 0.65, exit);
 
-  const blur =
-    lerp(3.2, 0, enter) +
-    lerp(0, 0.8, exit);
+    setStyles(bigWord, {
+      color: "#ffffff",
+      opacity: clamp(opacity, 0.08, 0.34).toFixed(3),
+      filter: `blur(${blur.toFixed(2)}px)`,
+      transform: `translate3d(0, -50%, 0) scale(${scale.toFixed(4)})`
+    });
+  }
 
-  setStyles(bigWord, {
-    transform: `translate3d(0, calc(-50% + ${y.toFixed(2)}px), 0) scale(${scale.toFixed(4)})`,
-    opacity: clamp(opacity, 0.04, 0.22).toFixed(3),
-    filter: `blur(${blur.toFixed(2)}px)`
-  });
-}
-   
+  /* =========================================================
+     CARD MOTION
+     ========================================================= */
 
   function renderCards() {
     const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
@@ -318,24 +344,23 @@
       const isRight = item.classList.contains("process-work-item--right");
       const direction = isRight ? 1 : -1;
 
-      /*
-        This creates the premium float:
-        small horizontal parallax + tiny vertical movement.
-        Keep this subtle. Big motion feels cheap.
-      */
-
-      const driftX = direction * lerp(24, -24, smoothstep(0, 1, viewportProgress));
-      const driftY = lerp(18, -12, smoothstep(0, 1, viewportProgress));
-      const cardOpacity = lerp(0.72, 1, smoothstep(0.08, 0.75, focus));
+      const driftX = direction * lerp(22, -22, smoothstep(0, 1, viewportProgress));
+      const driftY = lerp(18, -14, smoothstep(0, 1, viewportProgress));
+      const cardOpacity = lerp(0.72, 1, smoothstep(0.1, 0.78, focus));
+      const cardScale = lerp(0.985, 1, smoothstep(0.08, 0.76, focus));
 
       if (!item.classList.contains("is-hovered")) {
         setStyles(card, {
-          transform: `translate3d(${driftX.toFixed(2)}px, ${driftY.toFixed(2)}px, 0)`,
+          transform: `translate3d(${driftX.toFixed(2)}px, ${driftY.toFixed(2)}px, 0) scale(${cardScale.toFixed(4)})`,
           opacity: cardOpacity.toFixed(3)
         });
       }
     });
   }
+
+  /* =========================================================
+     VISIBILITY REFRESH
+     ========================================================= */
 
   function refreshVisibleItems() {
     const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
@@ -354,6 +379,10 @@
     });
   }
 
+  /* =========================================================
+     REDUCED MOTION
+     ========================================================= */
+
   function setupReducedMotion() {
     items.forEach((item) => {
       item.classList.add("is-visible");
@@ -368,11 +397,18 @@
     });
 
     if (bigWord) {
-      bigWord.style.transform = "";
-      bigWord.style.opacity = "";
-      bigWord.style.filter = "";
+      setStyles(bigWord, {
+        color: "#ffffff",
+        opacity: "0.22",
+        filter: "none",
+        transform: "translate3d(0, -50%, 0) scale(1)"
+      });
     }
   }
+
+  /* =========================================================
+     INIT
+     ========================================================= */
 
   function init() {
     setupInitialState();
@@ -384,6 +420,7 @@
 
     setupObserver();
     setupHoverEffects();
+
     measure();
     refreshVisibleItems();
 
@@ -402,8 +439,9 @@
       refreshVisibleItems();
     });
 
-    console.log("[Process Work Copy] Smooth glitch scroll loaded.", {
-      items: items.length
+    console.log("[Process] Loaded.", {
+      items: items.length,
+      cards: cards.length
     });
   }
 
