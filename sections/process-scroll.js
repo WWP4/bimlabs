@@ -1,9 +1,6 @@
 // sections/process-scroll.js
 
-export function initProcessScroll({ section, scene, ui, cards }) {
-  const gsap = window.gsap;
-  const ScrollTrigger = window.ScrollTrigger;
-
+export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger, cards }) {
   const word = section.querySelector(".process-word");
   const copy = section.querySelector(".process-copy");
   const cardTrack = section.querySelector(".process-cards");
