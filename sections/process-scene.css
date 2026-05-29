@@ -12,8 +12,10 @@
   --process-intro: 0;
   --process-cards: 0;
   --process-handoff: 0;
-  --process-c-x: 51.8%;
-  --process-c-y: 50%;
+
+  /* This is the actual C camera target */
+  --process-camera-x: 50%;
+  --process-camera-y: 50%;
 }
 
 .process-3d {
@@ -68,8 +70,8 @@
 
 .process-world-inside {
   position: absolute;
-  left: var(--process-c-x);
-  top: var(--process-c-y);
+  left: var(--process-camera-x);
+  top: var(--process-camera-y);
   z-index: 2;
   width: 0;
   height: 0;
@@ -81,7 +83,6 @@
   pointer-events: none;
   will-change: width, height, transform, opacity, filter;
 }
-
 .process-world-inside__inner {
   position: absolute;
   left: 50%;
@@ -118,13 +119,19 @@
 
 .process-void {
   position: absolute;
-  left: var(--process-c-x);
-  top: var(--process-c-y);
+  left: var(--process-camera-x);
+  top: var(--process-camera-y);
   z-index: 3;
   width: clamp(96px, 12vw, 230px);
   aspect-ratio: 1;
   border-radius: 999px;
-  background: radial-gradient(circle, rgba(0,0,0,0.96) 0 34%, rgba(0,0,0,0.68) 48%, rgba(0,0,0,0.22) 66%, rgba(0,0,0,0) 78%);
+  background: radial-gradient(
+    circle,
+    rgba(0,0,0,0.96) 0 34%,
+    rgba(0,0,0,0.68) 48%,
+    rgba(0,0,0,0.22) 66%,
+    rgba(0,0,0,0) 78%
+  );
   opacity: 0;
   transform: translate(-50%, -50%) scale(0.14);
   filter: blur(1px);
