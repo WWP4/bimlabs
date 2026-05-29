@@ -77,70 +77,68 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger, car
 
   timeline
     .to(word, {
-      scale: 1.42,
-      autoAlpha: 0.72,
-      duration: 0.14
+      scale: 1.5,
+      autoAlpha: 0.78,
+      duration: 0.12
     }, 0.76)
     .to(cards, {
       autoAlpha: 0,
       duration: 0.08
-    }, 0.8)
+    }, 0.78)
     .to(voidTarget, {
-      autoAlpha: 1,
+      autoAlpha: 0.92,
       scale: 1,
-      duration: 0.06
-    }, 0.8)
+      duration: 0.055
+    }, 0.79)
     .to(worldInside, {
-      autoAlpha: 0.42,
-      clipPath: "circle(11% at 51.8% 50%)",
-      y: 18,
-      scale: 0.88,
-      duration: 0.08
-    }, 0.81)
-    .to(word, {
-      scale: 3.4,
-      xPercent: -4.5,
-      autoAlpha: 0.42,
-      filter: "blur(2px)",
-      duration: 0.08
-    }, 0.83)
-    .to(voidTarget, {
-      scale: 3.2,
-      autoAlpha: 1,
-      duration: 0.08
-    }, 0.83)
-    .to(worldInside, {
-      autoAlpha: 1,
-      clipPath: "circle(38% at 51.8% 50%)",
-      y: 0,
-      scale: 0.96,
-      duration: 0.08
-    }, 0.86)
-    .to(word, {
-      scale: 8.8,
-      xPercent: -9,
-      autoAlpha: 0.06,
+      autoAlpha: 0.22,
+      clipPath: "circle(7% at 51.8% 50%)",
+      y: 26,
+      scale: 0.86,
       filter: "blur(10px)",
-      duration: 0.12
-    }, 0.88)
+      duration: 0.06
+    }, 0.805)
+    .to(word, {
+      scale: 3.15,
+      xPercent: -3.8,
+      autoAlpha: 0.58,
+      filter: "blur(1.5px)",
+      duration: 0.07
+    }, 0.83)
     .to(voidTarget, {
-      scale: 9.5,
-      autoAlpha: 1,
-      duration: 0.11
-    }, 0.88)
+      scale: 3.7,
+      autoAlpha: 0.86,
+      duration: 0.07
+    }, 0.83)
     .to(worldInside, {
-      clipPath: "circle(145% at 51.8% 50%)",
+      autoAlpha: 0.72,
+      clipPath: "circle(28% at 51.8% 50%)",
+      y: 8,
+      scale: 0.94,
+      filter: "blur(3px)",
+      duration: 0.075
+    }, 0.855)
+    .to(word, {
+      scale: 12.5,
+      xPercent: -13.5,
+      autoAlpha: 0,
+      filter: "blur(14px)",
+      duration: 0.14
+    }, 0.89)
+    .to(voidTarget, {
+      scale: 18,
+      autoAlpha: 0,
+      duration: 0.13
+    }, 0.89)
+    .to(worldInside, {
+      autoAlpha: 1,
+      clipPath: "circle(150% at 51.8% 50%)",
       scale: 1,
       y: 0,
-      duration: 0.12
-    }, 0.88)
-    .to(sceneMount, {
-      scale: 1.42,
-      xPercent: -5.5,
-      transformOrigin: "51.8% 50%",
-      duration: 0.12
-    }, 0.88)
-    .to(section, { "--process-section-intensity": 0.18, duration: 0.1 }, 0.9);
+      filter: "blur(0px)",
+      duration: 0.14
+    }, 0.89)
+    .to(section, { "--process-section-intensity": 0.08, duration: 0.1 }, 0.9);
 
   window.addEventListener("resize", () => ScrollTrigger.refresh());
 
@@ -175,8 +173,9 @@ function prepareInitialState({ gsap, section, sceneMount, word, voidTarget, worl
   gsap.set(worldInside, {
     autoAlpha: 0,
     clipPath: "circle(0% at 51.8% 50%)",
-    y: 34,
-    scale: 0.82,
+    y: 44,
+    scale: 0.8,
+    filter: "blur(12px)",
     transformOrigin: "51.8% 50%"
   });
 
@@ -202,7 +201,7 @@ function prepareReducedState({ gsap, section, word, voidTarget, worldInside, cop
 
   gsap.set(word, { clearProps: "all" });
   gsap.set(voidTarget, { autoAlpha: 0 });
-  gsap.set(worldInside, { autoAlpha: 0 });
+  gsap.set(worldInside, { autoAlpha: 0, filter: "none" });
   gsap.set(copy, { autoAlpha: 1, y: 0 });
   gsap.set(cardTrack, { autoAlpha: 1 });
   gsap.set(cards, { autoAlpha: 1, x: 0, yPercent: 0, scale: 1, rotateX: 0 });
