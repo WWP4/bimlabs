@@ -13,9 +13,9 @@
   --process-cards: 0;
   --process-handoff: 0;
 
-  /* This is the actual C camera target */
-  --process-camera-x: 50%;
-  --process-camera-y: 50%;
+  /* Camera target: actual center of the C, not center of screen */
+  --process-camera-x: 56.2%;
+  --process-camera-y: 50.5%;
 }
 
 .process-3d {
