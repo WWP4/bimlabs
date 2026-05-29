@@ -13,7 +13,7 @@
     href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Manrope:wght@400;500;600&display=swap"
     rel="stylesheet"
   />
-<link rel="stylesheet" href="sections/testimonials-section.css">
+
 <link rel="stylesheet" href="styles.css">
 <link rel="stylesheet" href="sections/process.css">
 
@@ -145,77 +145,98 @@
 </section>
 
 
- <section class="process-work-copy" id="process" aria-label="BIM Labs process">
+<!-- =========================================================
+  PROCESS / TRUE 3D HANDOFF SECTION
+  The canvas owns the cinematic PROCESS word.
+  The DOM only owns readable copy, cards, and CTAs.
+========================================================= -->
 
-  <!-- GLOBAL PROCESS SCENE -->
-  <div class="process-scene-layer" aria-hidden="true">
-    <div class="process-depth-glow"></div>
+<section class="process-3d" id="process" aria-label="BIM Labs process">
 
-    <div class="process-work-word-wrap">
-      <h2 class="process-work-word">process</h2>
-    </div>
+  <!-- TRUE 3D SCENE -->
+  <div class="process-scene" data-process-scene aria-hidden="true"></div>
 
-    <!-- JS injects WebGL canvas here -->
-    <div class="process-webgl-layer"></div>
+  <!-- DARKNESS / FOG / HANDOFF LAYERS -->
+  <div class="process-atmosphere" aria-hidden="true">
+    <div class="process-atmosphere__grain"></div>
+    <div class="process-atmosphere__vignette"></div>
+    <div class="process-atmosphere__glow"></div>
   </div>
 
-  <div class="process-work-container">
+  <!-- READABLE DOM CONTENT OVER THE 3D SCENE -->
+  <div class="process-overlay">
 
-    <!-- TOP INTRO -->
-    <div class="process-work-top">
-      <p class="process-work-kicker">03 / Process</p>
+    <!-- INTRO COPY -->
+    <header class="process-copy">
+      <p class="process-kicker">03 / Process</p>
 
-      <p class="process-work-intro">
-        A focused method for turning scattered ideas, rough offers, and disconnected
-        tools into digital systems that feel clear, useful, and built to last.
+      <h2>
+        A focused process for turning rough ideas into digital systems.
+      </h2>
+
+      <p>
+        We map the offer, design the experience, build the system, and refine the
+        final flow so your site feels clear, premium, and useful.
       </p>
-    </div>
+    </header>
 
     <!-- PROCESS CARDS -->
-    <div class="process-work-list">
+    <div class="process-cards" aria-label="Four step process">
 
-      <article class="process-work-item process-work-item--left" data-process-step>
-        <div class="process-work-card">
-          <div class="process-work-card-meta">
+      <!-- STEP 01 -->
+      <article class="process-card process-card--left" data-process-card>
+        <div class="process-card__inner">
+
+          <div class="process-card__meta">
             <span>Step 01</span>
             <span>Strategy</span>
           </div>
 
-          <div class="process-work-card-main">
+          <div class="process-card__main">
             <h3>
-              <span class="glitch-text underline-hover" data-glitch-text="Discover">Discover</span>
+              <span class="glitch-text underline-hover" data-glitch-text="Discover">
+                Discover
+              </span>
             </h3>
 
             <p>
               We uncover what your business actually needs, where your current
               digital presence is falling short, and what has to change for the
-              site or system to create real momentum.
+              site or system to create momentum.
             </p>
 
-            <ul class="process-work-points">
+            <ul>
               <li>Brand and website audit</li>
               <li>Offer and audience positioning</li>
               <li>Clear conversion path</li>
             </ul>
           </div>
 
-          <div class="process-work-actions">
-            <a href="#contact" class="process-card-btn">Start the conversation</a>
+          <div class="process-card__actions">
+            <a href="#contact" class="process-card__button">
+              Start the conversation
+            </a>
+
             <span>01 / 04</span>
           </div>
+
         </div>
       </article>
 
-      <article class="process-work-item process-work-item--right" data-process-step>
-        <div class="process-work-card">
-          <div class="process-work-card-meta">
+      <!-- STEP 02 -->
+      <article class="process-card process-card--right" data-process-card>
+        <div class="process-card__inner">
+
+          <div class="process-card__meta">
             <span>Step 02</span>
             <span>Direction</span>
           </div>
 
-          <div class="process-work-card-main">
+          <div class="process-card__main">
             <h3>
-              <span class="glitch-text underline-hover" data-glitch-text="Design">Design</span>
+              <span class="glitch-text underline-hover" data-glitch-text="Design">
+                Design
+              </span>
             </h3>
 
             <p>
@@ -224,30 +245,38 @@
               brand instead of looking like another template.
             </p>
 
-            <ul class="process-work-points">
+            <ul>
               <li>High-end visual direction</li>
               <li>Homepage and key section concepts</li>
               <li>Mobile-first layout thinking</li>
             </ul>
           </div>
 
-          <div class="process-work-actions">
-            <a href="#work" class="process-card-btn">View selected work</a>
+          <div class="process-card__actions">
+            <a href="#work" class="process-card__button">
+              View selected work
+            </a>
+
             <span>02 / 04</span>
           </div>
+
         </div>
       </article>
 
-      <article class="process-work-item process-work-item--left" data-process-step>
-        <div class="process-work-card">
-          <div class="process-work-card-meta">
+      <!-- STEP 03 -->
+      <article class="process-card process-card--left" data-process-card>
+        <div class="process-card__inner">
+
+          <div class="process-card__meta">
             <span>Step 03</span>
             <span>Build</span>
           </div>
 
-          <div class="process-work-card-main">
+          <div class="process-card__main">
             <h3>
-              <span class="glitch-text underline-hover" data-glitch-text="Develop">Develop</span>
+              <span class="glitch-text underline-hover" data-glitch-text="Develop">
+                Develop
+              </span>
             </h3>
 
             <p>
@@ -256,30 +285,38 @@
               technical foundation behind it.
             </p>
 
-            <ul class="process-work-points">
+            <ul>
               <li>Custom front-end build</li>
               <li>Responsive desktop and mobile experience</li>
               <li>Animation and performance cleanup</li>
             </ul>
           </div>
 
-          <div class="process-work-actions">
-            <a href="#contact" class="process-card-btn">Talk about a build</a>
+          <div class="process-card__actions">
+            <a href="#contact" class="process-card__button">
+              Talk about a build
+            </a>
+
             <span>03 / 04</span>
           </div>
+
         </div>
       </article>
 
-      <article class="process-work-item process-work-item--right" data-process-step>
-        <div class="process-work-card">
-          <div class="process-work-card-meta">
+      <!-- STEP 04 -->
+      <article class="process-card process-card--right" data-process-card>
+        <div class="process-card__inner">
+
+          <div class="process-card__meta">
             <span>Step 04</span>
             <span>Launch</span>
           </div>
 
-          <div class="process-work-card-main">
+          <div class="process-card__main">
             <h3>
-              <span class="glitch-text underline-hover" data-glitch-text="Launch">Launch</span>
+              <span class="glitch-text underline-hover" data-glitch-text="Launch">
+                Launch
+              </span>
             </h3>
 
             <p>
@@ -288,57 +325,88 @@
               send traffic, leads, and clients.
             </p>
 
-            <ul class="process-work-points">
+            <ul>
               <li>Final QA and launch support</li>
               <li>Conversion path cleanup</li>
               <li>Post-launch improvements</li>
             </ul>
           </div>
 
-          <div class="process-work-actions">
-            <a href="#contact" class="process-card-btn">Plan your launch</a>
+          <div class="process-card__actions">
+            <a href="#contact" class="process-card__button">
+              Plan your launch
+            </a>
+
             <span>04 / 04</span>
           </div>
+
         </div>
       </article>
 
     </div>
+  </div>
 
-    <!-- PORTAL / BOOKING HANDOFF -->
-    <div class="process-portal-exit" aria-label="Booking transition">
+  <!-- EXIT DARKNESS THAT THE JS CAN PUSH INTO -->
+  <div class="process-exit" aria-hidden="true">
+    <div class="process-exit__void"></div>
+  </div>
 
-      <div class="process-portal-stage">
+</section>
 
-        <div class="portal-booking" id="contact">
-          <p class="booking-kicker">Start the conversation</p>
 
-          <h2>
-            Tell us what you’re building,<br />
-            fixing, or automating.
-          </h2>
+<!-- =========================================================
+  BOOKING / CONTACT SECTION
+  Important: this is OUTSIDE the process section.
+  The process handoff reveals this after the camera pushes through.
+========================================================= -->
 
-          <p class="booking-sub">
-            A short project intake so we can understand the right next step.
-            No pressure. No bloated discovery process.
-          </p>
+<section class="booking-section" id="contact" aria-label="Start a project with BIM Labs">
 
-          <form class="booking-form">
-            <div class="booking-row">
-              <input type="text" name="name" placeholder="Name" />
-              <input type="email" name="email" placeholder="Email" />
-            </div>
+  <div class="booking-shell">
 
-            <input type="text" name="project" placeholder="What are you trying to build?" />
+    <div class="booking-copy">
+      <p class="booking-kicker">Start the conversation</p>
 
-            <textarea name="message" placeholder="Tell us what you need help with."></textarea>
+      <h2>
+        Tell us what you’re building,<br />
+        fixing, or automating.
+      </h2>
 
-            <button type="submit">Send project note</button>
-          </form>
-        </div>
+      <p>
+        A short project intake so we can understand the right next step. No pressure.
+        No bloated discovery process.
+      </p>
+    </div>
 
+    <form class="booking-form" action="#" method="post">
+
+      <div class="booking-row">
+        <label>
+          <span>Name</span>
+          <input type="text" name="name" placeholder="Your name" autocomplete="name" />
+        </label>
+
+        <label>
+          <span>Email</span>
+          <input type="email" name="email" placeholder="you@email.com" autocomplete="email" />
+        </label>
       </div>
 
-    </div>
+      <label>
+        <span>Project</span>
+        <input type="text" name="project" placeholder="What are you trying to build?" />
+      </label>
+
+      <label>
+        <span>Message</span>
+        <textarea name="message" placeholder="Tell us what you need help with."></textarea>
+      </label>
+
+      <button type="submit">
+        Send project note
+      </button>
+
+    </form>
 
   </div>
 
