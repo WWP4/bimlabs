@@ -148,28 +148,59 @@
 
 <section id="process" class="process-3d" aria-labelledby="process-title">
   <div class="process-scene" data-process-scene>
-    
-    <!-- The clipped window that will be locked to the inside of the C -->
-    <div class="process-c-aperture" aria-hidden="true">
-      <div class="process-world-inside">
-        <div class="process-world-inside__inner">
-          <p>Systems</p>
-          <h2>Useful digital infrastructure after the cinematic layer.</h2>
+    <svg
+      class="process-svg"
+      viewBox="0 0 1600 900"
+      preserveAspectRatio="xMidYMid slice"
+      aria-hidden="true"
+    >
+      <defs>
+        <!--
+          This is the real aperture.
+          It lives in the same SVG coordinate system as PROCESS,
+          so it will not drift like a DOM circle.
+        -->
+        <clipPath id="process-c-aperture-clip" clipPathUnits="userSpaceOnUse">
+          <circle
+            class="process-c-aperture-shape"
+            data-process-aperture-shape
+            cx="680"
+            cy="450"
+            r="0"
+          />
+        </clipPath>
+      </defs>
+
+      <!-- The world/next section is clipped through the C aperture -->
+      <foreignObject
+        class="process-svg-world"
+        x="0"
+        y="0"
+        width="1600"
+        height="900"
+        clip-path="url(#process-c-aperture-clip)"
+      >
+        <div class="process-world-inside" xmlns="http://www.w3.org/1999/xhtml">
+          <div class="process-world-inside__inner">
+            <p>Systems</p>
+            <h2>Useful digital infrastructure after the cinematic layer.</h2>
+          </div>
         </div>
-      </div>
-    </div>
+      </foreignObject>
 
-    <!-- The PROCESS word stays above the aperture visually -->
-    <h2 id="process-title" class="process-word" aria-label="PROCESS">
-      <span aria-hidden="true">P</span>
-      <span aria-hidden="true">R</span>
-      <span aria-hidden="true">O</span>
-      <span class="process-letter-c" data-process-aperture-letter aria-hidden="true">C</span>
-      <span aria-hidden="true">E</span>
-      <span aria-hidden="true">S</span>
-      <span aria-hidden="true">S</span>
-    </h2>
-
+      <!-- PROCESS word layer -->
+      <text
+        id="process-title"
+        class="process-svg-word"
+        data-process-word
+        x="800"
+        y="465"
+        text-anchor="middle"
+        dominant-baseline="middle"
+      >
+        PROCESS
+      </text>
+    </svg>
   </div>
 
   <div class="process-overlay">
