@@ -1,9 +1,17 @@
-/* =========================================================
+
+  /* =========================================================
    BIM LABS — PROCESS SECTION
    Full replacement for: sections/process.css
 
-   Uses one PROCESS word only.
-   Original PROCESS word becomes the C zoom portal.
+   Built for:
+   - HTML process cards
+   - Sticky DOM PROCESS word during card chapter
+   - WebGL camera portal takeover
+   - Booking overlay behind WebGL scene
+   ========================================================= */
+
+/* =========================================================
+   BASE PROCESS SECTION
    ========================================================= */
 
 .process-work-copy {
@@ -30,10 +38,10 @@
   z-index: 0;
   pointer-events: none;
   background:
-    radial-gradient(circle at 50% 20%, rgba(255,255,255,0.075), transparent 30%),
+    radial-gradient(circle at 50% 18%, rgba(255,255,255,0.075), transparent 30%),
     radial-gradient(circle at 12% 62%, rgba(255,255,255,0.035), transparent 34%),
-    radial-gradient(circle at 88% 76%, rgba(255,255,255,0.03), transparent 32%),
-    linear-gradient(180deg, #030303 0%, #050505 46%, #000000 100%);
+    radial-gradient(circle at 88% 76%, rgba(255,255,255,0.028), transparent 32%),
+    linear-gradient(180deg, #030303 0%, #050505 48%, #000000 100%);
 }
 
 .process-work-copy::after {
@@ -42,12 +50,12 @@
   inset: 0;
   z-index: 1;
   pointer-events: none;
-  opacity: 0.04;
+  opacity: 0.035;
   background-image:
-    linear-gradient(rgba(255,255,255,0.09) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,0.09) 1px, transparent 1px);
-  background-size: 90px 90px;
-  mask-image: radial-gradient(circle at 50% 45%, black, transparent 72%);
+    linear-gradient(rgba(255,255,255,0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.08) 1px, transparent 1px);
+  background-size: 92px 92px;
+  mask-image: radial-gradient(circle at 50% 45%, black, transparent 74%);
 }
 
 .process-work-container {
@@ -58,13 +66,15 @@
 }
 
 /* =========================================================
-   ONE PROCESS WORD / PORTAL OBJECT
+   DOM PROCESS WORD
+   This appears during the card chapter.
+   WebGL takes over later.
    ========================================================= */
 
 .process-work-word-wrap {
   position: absolute;
   inset: 0;
-  z-index: 6;
+  z-index: 4;
   pointer-events: none;
   overflow: visible;
 }
@@ -73,10 +83,7 @@
   position: sticky;
   top: 50vh;
 
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
+  display: block;
   width: max-content;
   max-width: none;
   margin-inline: auto;
@@ -102,40 +109,13 @@
 .process-letter {
   display: inline-block;
   position: relative;
-  transform: translate3d(0, 0, 0);
 }
 
+/* Keep harmless if your HTML is split into spans */
 .process-letter-c {
   text-shadow:
     0 0 28px rgba(255,255,255,0.07),
     0 0 90px rgba(255,255,255,0.05);
-}
-
-.process-letter-c::after {
-  content: "";
-  position: absolute;
-  left: 50%;
-  top: 50%;
-
-  width: 42%;
-  height: 62%;
-  border-radius: 999px;
-
-  background:
-    radial-gradient(circle,
-      rgba(0,0,0,0.88) 0%,
-      rgba(0,0,0,0.6) 44%,
-      rgba(0,0,0,0) 70%
-    );
-
-  transform:
-    translate3d(-50%, -50%, 0)
-    scale(calc(0.45 + (var(--portal-progress, 0) * 0.8)));
-
-  opacity: calc(var(--portal-progress, 0) * 0.74);
-  filter: blur(calc(16px - (var(--portal-progress, 0) * 10px)));
-
-  pointer-events: none;
 }
 
 /* =========================================================
@@ -147,6 +127,10 @@
   position: relative;
   z-index: 8;
 }
+
+/* =========================================================
+   TOP INTRO
+   ========================================================= */
 
 .process-work-top {
   min-height: 88vh;
@@ -323,6 +307,10 @@
   z-index: 2;
 }
 
+/* =========================================================
+   CARD CONTENT
+   ========================================================= */
+
 .process-work-card-meta {
   display: flex;
   align-items: center;
@@ -443,7 +431,7 @@
 }
 
 /* =========================================================
-   GLITCH
+   GLITCH / UNDERLINE
    ========================================================= */
 
 .underline-hover {
@@ -538,21 +526,21 @@
 }
 
 /* =========================================================
-   PORTAL STAGE
+   WEBGL PORTAL CAMERA STAGE
    ========================================================= */
 
 .process-portal-exit {
   position: relative;
-  z-index: 4;
+  z-index: 12;
 
   width: 100vw;
-  min-height: 300vh;
+  min-height: 320vh;
 
   margin-top: -8vh;
   margin-left: calc(50% - 50vw);
   margin-right: calc(50% - 50vw);
 
-  background: transparent;
+  background: #000000;
   overflow: clip;
   isolation: isolate;
 }
@@ -569,12 +557,25 @@
   justify-content: center;
 
   overflow: hidden;
+  background: #000000;
   perspective: 1200px;
   transform-style: preserve-3d;
-
-  background: transparent;
 }
 
+/* WebGL canvas injected by JS */
+.process-portal-canvas {
+  position: absolute;
+  inset: 0;
+  z-index: 8;
+
+  width: 100%;
+  height: 100%;
+
+  display: block;
+  pointer-events: none;
+}
+
+/* Premium dark lens behind WebGL */
 .process-portal-stage::before {
   content: "";
   position: absolute;
@@ -582,95 +583,68 @@
   z-index: 0;
   pointer-events: none;
 
-  opacity: var(--portal-bg-opacity, 0);
-
   background:
     radial-gradient(circle at 50% 50%,
-      rgba(255,255,255,0.08) 0%,
-      rgba(255,255,255,0.03) 13%,
+      rgba(255,255,255,0.075) 0%,
+      rgba(255,255,255,0.025) 13%,
       rgba(0,0,0,0.78) 39%,
-      #000 72%
+      #000000 72%
     ),
     radial-gradient(circle at 50% 50%,
       transparent 0%,
-      rgba(0,0,0,0.36) 34%,
-      rgba(0,0,0,0.95) 74%,
-      #000 100%
+      rgba(0,0,0,0.38) 34%,
+      rgba(0,0,0,0.96) 74%,
+      #000000 100%
     );
 
-  transform:
-    scale(calc(1 + (var(--portal-progress, 0) * 0.2)))
-    translate3d(0, 0, 0);
-
-  filter: blur(calc(20px - (var(--portal-progress, 0) * 18px)));
-  will-change: opacity, transform, filter;
+  opacity: 1;
+  transform: translate3d(0, 0, 0) scale(1);
 }
 
+/* Vignette above the canvas, below booking */
 .process-portal-stage::after {
   content: "";
   position: absolute;
   inset: 0;
-  z-index: 20;
+  z-index: 10;
   pointer-events: none;
 
   background:
     radial-gradient(circle at 50% 50%,
       transparent 0%,
       transparent 46%,
-      rgba(0,0,0,0.52) 74%,
-      rgba(0,0,0,0.94) 100%
+      rgba(0,0,0,0.38) 72%,
+      rgba(0,0,0,0.88) 100%
     );
 
-  opacity: calc(0.34 + (var(--portal-bg-opacity, 0) * 0.5));
+  opacity: 0.82;
 }
 
+/* Legacy/HTML dust layer, harmless if still in HTML */
 .portal-depth-field {
   position: absolute;
   inset: 0;
   z-index: 2;
   pointer-events: none;
-
-  opacity: var(--portal-depth-opacity, 0);
-  transform:
-    translate3d(0, 0, -140px)
-    scale(var(--portal-depth-scale, 1));
-
-  will-change: opacity, transform;
+  opacity: 0;
 }
 
 .portal-depth-field span {
   position: absolute;
   left: var(--x);
   top: var(--y);
-
   width: calc(1px + 3px * var(--s));
   height: calc(1px + 3px * var(--s));
   border-radius: 999px;
-
-  background: rgba(255,255,255,0.58);
-  box-shadow:
-    0 0 16px rgba(255,255,255,0.22),
-    0 0 46px rgba(255,255,255,0.08);
-
-  opacity: calc(0.12 + var(--s) * 0.42);
-
-  transform:
-    translate3d(
-      calc((50vw - var(--x)) * var(--portal-pull, 0)),
-      calc((50vh - var(--y)) * var(--portal-pull, 0)),
-      0
-    )
-    scale(var(--portal-dot-scale, 1));
-
-  filter: blur(var(--portal-dot-blur, 0px));
-  will-change: transform, opacity, filter;
+  background: rgba(255,255,255,0.48);
 }
 
+/* Legacy core layer: keep it soft, not blackout */
 .portal-core {
   position: absolute;
   left: 50%;
   top: 50%;
-  z-index: 9;
+  z-index: 6;
 
   width: min(92vw, 1160px);
   height: min(92vw, 1160px);
@@ -678,33 +652,32 @@
 
   background:
     radial-gradient(circle,
-      rgba(0,0,0,1) 0%,
-      rgba(0,0,0,0.95) 34%,
-      rgba(0,0,0,0.52) 58%,
+      rgba(0,0,0,0.18) 0%,
+      rgba(0,0,0,0.34) 34%,
+      rgba(0,0,0,0.26) 58%,
       rgba(0,0,0,0) 74%
     );
 
-  opacity: var(--portal-core-opacity, 0);
-
-  transform:
-    translate3d(-50%, -50%, 0)
-    scale(var(--portal-core-scale, 0.18));
-
-  filter: blur(var(--portal-core-blur, 42px));
+  opacity: 0;
+  transform: translate3d(-50%, -50%, 0) scale(1);
+  filter: blur(12px);
   pointer-events: none;
-  will-change: opacity, transform, filter;
 }
 
 /* =========================================================
-   BOOKING ROOM
+   BOOKING OVERLAY
+   Sits behind the WebGL canvas emotionally,
+   but above it enough to stay readable/clickable at the end.
    ========================================================= */
 
 .portal-booking {
-  position: relative;
-  z-index: 12;
+  position: absolute;
+  inset: 0;
+  z-index: 11;
 
   width: min(100%, 980px);
   min-height: 100vh;
+  margin: 0 auto;
   padding: 12vh 24px;
 
   display: flex;
@@ -716,14 +689,20 @@
   pointer-events: none;
 
   opacity: var(--booking-opacity, 0);
-  transform: scale(var(--booking-scale, 0.72));
-  filter: blur(var(--booking-blur, 34px));
+  transform: scale(var(--booking-scale, 0.88));
+  filter: blur(var(--booking-blur, 24px));
 
   will-change: opacity, transform, filter;
 }
 
 .process-work-copy.is-inside-portal .portal-booking {
   pointer-events: auto;
+}
+
+/* Keep booking text above the vignette feeling */
+.portal-booking > * {
+  position: relative;
+  z-index: 2;
 }
 
 .booking-kicker {
@@ -862,6 +841,47 @@
 }
 
 /* =========================================================
+   REDUCED MOTION
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .process-work-item,
+  .process-work-card,
+  .underline-hover::after,
+  .process-card-btn,
+  .booking-form button,
+  .booking-form input,
+  .booking-form textarea {
+    transition: none !important;
+  }
+
+  .process-work-item {
+    opacity: 1;
+    transform: none;
+  }
+
+  .process-work-card {
+    filter: none !important;
+  }
+
+  .process-work-word {
+    opacity: 0.12;
+    transform: translate3d(0, -50%, 0) scale(1);
+  }
+
+  .process-portal-canvas {
+    opacity: 0.25;
+  }
+
+  .portal-booking {
+    opacity: 1;
+    transform: scale(1);
+    filter: none;
+    pointer-events: auto;
+  }
+}
+
+/* =========================================================
    RESPONSIVE
    ========================================================= */
 
@@ -912,7 +932,7 @@
   }
 
   .process-portal-exit {
-    min-height: 280vh;
+    min-height: 290vh;
     margin-top: -6vh;
   }
 }
