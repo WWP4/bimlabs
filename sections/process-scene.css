@@ -68,23 +68,33 @@
 
 .process-world-inside {
   position: absolute;
-  inset: 0;
+  left: var(--process-c-x);
+  top: var(--process-c-y);
   z-index: 2;
-  display: grid;
-  place-items: center;
-  padding: clamp(90px, 12vw, 160px) 24px;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+  border-radius: 9999px;
   background: #050505;
   opacity: 0;
-  clip-path: circle(0% at var(--process-c-x) var(--process-c-y));
-  transform: translate3d(0, 44px, -260px) scale(0.8);
-  transform-origin: var(--process-c-x) var(--process-c-y);
-  filter: blur(12px);
+  transform: translate3d(-50%, -50%, -260px);
   pointer-events: none;
-  will-change: transform, opacity, clip-path, filter;
+  will-change: width, height, transform, opacity, filter;
 }
 
 .process-world-inside__inner {
-  width: min(920px, 100%);
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  box-sizing: border-box;
+  padding: clamp(90px, 12vw, 160px) max(24px, calc((100vw - 920px) / 2));
+  transform: translate(-51.8vw, -50vh);
 }
 
 .process-world-inside p {

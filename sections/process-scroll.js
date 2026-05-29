@@ -91,10 +91,10 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger, car
       duration: 0.055
     }, 0.79)
     .to(worldInside, {
-      autoAlpha: 0.22,
-      clipPath: "circle(7% at 51.8% 50%)",
-      y: 26,
-      scale: 0.86,
+      autoAlpha: 0.2,
+      width: "7vmax",
+      height: "7vmax",
+      y: 24,
       filter: "blur(10px)",
       duration: 0.06
     }, 0.805)
@@ -111,10 +111,10 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger, car
       duration: 0.07
     }, 0.83)
     .to(worldInside, {
-      autoAlpha: 0.72,
-      clipPath: "circle(28% at 51.8% 50%)",
+      autoAlpha: 0.68,
+      width: "22vmax",
+      height: "22vmax",
       y: 8,
-      scale: 0.94,
       filter: "blur(3px)",
       duration: 0.075
     }, 0.855)
@@ -132,8 +132,8 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger, car
     }, 0.89)
     .to(worldInside, {
       autoAlpha: 1,
-      clipPath: "circle(150% at 51.8% 50%)",
-      scale: 1,
+      width: "240vmax",
+      height: "240vmax",
       y: 0,
       filter: "blur(0px)",
       duration: 0.14
@@ -172,11 +172,11 @@ function prepareInitialState({ gsap, section, sceneMount, word, voidTarget, worl
 
   gsap.set(worldInside, {
     autoAlpha: 0,
-    clipPath: "circle(0% at 51.8% 50%)",
+    width: "0vmax",
+    height: "0vmax",
     y: 44,
-    scale: 0.8,
     filter: "blur(12px)",
-    transformOrigin: "51.8% 50%"
+    transformOrigin: "50% 50%"
   });
 
   gsap.set(copy, { autoAlpha: 0, y: 28 });
@@ -201,7 +201,7 @@ function prepareReducedState({ gsap, section, word, voidTarget, worldInside, cop
 
   gsap.set(word, { clearProps: "all" });
   gsap.set(voidTarget, { autoAlpha: 0 });
-  gsap.set(worldInside, { autoAlpha: 0, filter: "none" });
+  gsap.set(worldInside, { autoAlpha: 0, width: "0vmax", height: "0vmax", filter: "none" });
   gsap.set(copy, { autoAlpha: 1, y: 0 });
   gsap.set(cardTrack, { autoAlpha: 1 });
   gsap.set(cards, { autoAlpha: 1, x: 0, yPercent: 0, scale: 1, rotateX: 0 });
