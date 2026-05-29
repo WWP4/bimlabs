@@ -147,27 +147,26 @@
 
 
 <!-- =========================================================
-  PROCESS / TRUE 3D HANDOFF SECTION
-  The canvas owns the cinematic PROCESS word.
-  The DOM only owns readable copy, cards, and CTAs.
+  PROCESS / TRUE 3D HANDOFF
+  Canvas owns the cinematic PROCESS word.
+  DOM owns only readable process content.
 ========================================================= -->
 
-<section class="process-3d" id="process" aria-label="BIM Labs process">
+<section class="process-work-copy process-3d" id="process" aria-label="BIM Labs process">
 
-  <!-- TRUE 3D SCENE -->
+  <!-- 3D CANVAS MOUNT -->
   <div class="process-scene" data-process-scene aria-hidden="true"></div>
 
-  <!-- DARKNESS / FOG / HANDOFF LAYERS -->
+  <!-- ATMOSPHERE ABOVE CANVAS -->
   <div class="process-atmosphere" aria-hidden="true">
     <div class="process-atmosphere__grain"></div>
     <div class="process-atmosphere__vignette"></div>
     <div class="process-atmosphere__glow"></div>
   </div>
 
-  <!-- READABLE DOM CONTENT OVER THE 3D SCENE -->
+  <!-- CONTENT OVERLAY -->
   <div class="process-overlay">
 
-    <!-- INTRO COPY -->
     <header class="process-copy">
       <p class="process-kicker">03 / Process</p>
 
@@ -181,7 +180,6 @@
       </p>
     </header>
 
-    <!-- PROCESS CARDS -->
     <div class="process-cards" aria-label="Four step process">
 
       <!-- STEP 01 -->
@@ -195,9 +193,7 @@
 
           <div class="process-card__main">
             <h3>
-              <span class="glitch-text underline-hover" data-glitch-text="Discover">
-                Discover
-              </span>
+              <span class="glitch-text underline-hover" data-glitch-text="Discover">Discover</span>
             </h3>
 
             <p>
@@ -214,10 +210,7 @@
           </div>
 
           <div class="process-card__actions">
-            <a href="#contact" class="process-card__button">
-              Start the conversation
-            </a>
-
+            <a href="#contact" class="process-card__button">Start the conversation</a>
             <span>01 / 04</span>
           </div>
 
@@ -235,9 +228,7 @@
 
           <div class="process-card__main">
             <h3>
-              <span class="glitch-text underline-hover" data-glitch-text="Design">
-                Design
-              </span>
+              <span class="glitch-text underline-hover" data-glitch-text="Design">Design</span>
             </h3>
 
             <p>
@@ -254,10 +245,7 @@
           </div>
 
           <div class="process-card__actions">
-            <a href="#work" class="process-card__button">
-              View selected work
-            </a>
-
+            <a href="#work" class="process-card__button">View selected work</a>
             <span>02 / 04</span>
           </div>
 
@@ -275,9 +263,7 @@
 
           <div class="process-card__main">
             <h3>
-              <span class="glitch-text underline-hover" data-glitch-text="Develop">
-                Develop
-              </span>
+              <span class="glitch-text underline-hover" data-glitch-text="Develop">Develop</span>
             </h3>
 
             <p>
@@ -294,10 +280,7 @@
           </div>
 
           <div class="process-card__actions">
-            <a href="#contact" class="process-card__button">
-              Talk about a build
-            </a>
-
+            <a href="#contact" class="process-card__button">Talk about a build</a>
             <span>03 / 04</span>
           </div>
 
@@ -315,9 +298,7 @@
 
           <div class="process-card__main">
             <h3>
-              <span class="glitch-text underline-hover" data-glitch-text="Launch">
-                Launch
-              </span>
+              <span class="glitch-text underline-hover" data-glitch-text="Launch">Launch</span>
             </h3>
 
             <p>
@@ -334,10 +315,7 @@
           </div>
 
           <div class="process-card__actions">
-            <a href="#contact" class="process-card__button">
-              Plan your launch
-            </a>
-
+            <a href="#contact" class="process-card__button">Plan your launch</a>
             <span>04 / 04</span>
           </div>
 
@@ -347,7 +325,7 @@
     </div>
   </div>
 
-  <!-- EXIT DARKNESS THAT THE JS CAN PUSH INTO -->
+  <!-- HANDOFF DARKNESS -->
   <div class="process-exit" aria-hidden="true">
     <div class="process-exit__void"></div>
   </div>
@@ -356,9 +334,9 @@
 
 
 <!-- =========================================================
-  BOOKING / CONTACT SECTION
-  Important: this is OUTSIDE the process section.
-  The process handoff reveals this after the camera pushes through.
+  BOOKING / CONTACT
+  Lives outside the pinned Process section.
+  The process camera handoff reveals this section.
 ========================================================= -->
 
 <section class="booking-section" id="contact" aria-label="Start a project with BIM Labs">
@@ -374,8 +352,8 @@
       </h2>
 
       <p>
-        A short project intake so we can understand the right next step. No pressure.
-        No bloated discovery process.
+        A short project intake so we can understand the right next step.
+        No pressure. No bloated discovery process.
       </p>
     </div>
 
@@ -403,9 +381,7 @@
         <textarea name="message" placeholder="Tell us what you need help with."></textarea>
       </label>
 
-      <button type="submit">
-        Send project note
-      </button>
+      <button type="submit">Send project note</button>
 
     </form>
 
@@ -414,12 +390,11 @@
 </section>
 
 
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 
+<script src="./js/main.js"></script>
 <script type="module" src="sections/process-main.js"></script>
-<script src="./js/main.js" defer></script>
     
 </body>
 </html>
