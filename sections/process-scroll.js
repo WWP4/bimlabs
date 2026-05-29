@@ -23,7 +23,7 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger, car
       start: "top top",
       end: () => `+=${Math.max(window.innerHeight * 5.4, 5200)}`,
       pin: true,
-      scrub: 1.05,
+      scrub: 0.85,
       anticipatePin: 1,
       invalidateOnRefresh: true,
       onUpdate: (self) => updateByProgress({ progress: self.progress, scene, ui }),
