@@ -26,7 +26,7 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger, car
       start: "top top",
       end: () => `+=${Math.max(window.innerHeight * 5.4, 5200)}`,
       pin: true,
-      scrub: 1.05,
+      scrub: 0.85,
       anticipatePin: 1,
       invalidateOnRefresh: true,
       onRefresh: () => syncApertureAnchor({ section, sceneMount, word, apertureLetter }),
@@ -38,6 +38,10 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger, car
     }
   });
 
+  /*
+    PHASE 1:
+    Bring PROCESS into the scene.
+  */
   timeline
     .to(section, { "--process-section-intensity": 1, duration: 0.12 }, 0)
     .to(word, {

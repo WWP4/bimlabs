@@ -140,7 +140,54 @@
 
 .process-overlay {
   position: relative;
+  z-index: 1;
+  margin: 0;
+  max-width: 780px;
+
+  font-family: var(--sans, Manrope, system-ui, sans-serif);
+  font-size: clamp(44px, 7vw, 112px);
+  line-height: 0.92;
+  letter-spacing: -0.075em;
+  font-weight: 500;
+
+  color: var(--process-white);
+}
+
+/* the dark tunnel sitting exactly in the C */
+.process-void {
+  position: absolute;
+  left: var(--process-aperture-x);
+  top: var(--process-aperture-y);
   z-index: 3;
+
+  width: clamp(90px, 10vw, 210px);
+  aspect-ratio: 1;
+  border-radius: 999px;
+
+  background: radial-gradient(
+    circle,
+    rgba(0, 0, 0, 1) 0 36%,
+    rgba(0, 0, 0, 0.78) 52%,
+    rgba(0, 0, 0, 0.28) 68%,
+    rgba(0, 0, 0, 0) 80%
+  );
+
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.14);
+  transform-origin: 50% 50%;
+  filter: blur(1px);
+
+  pointer-events: none;
+  will-change: transform, opacity;
+}
+
+/* ================================
+   OVERLAY COPY
+================================ */
+
+.process-overlay {
+  position: relative;
+  z-index: 4;
   width: min(1380px, calc(100% - 44px));
   height: 100%;
   margin: 0 auto;
@@ -164,6 +211,7 @@
   line-height: 1;
   letter-spacing: 0.18em;
   text-transform: uppercase;
+
   color: rgba(245, 245, 240, 0.52);
 }
 
