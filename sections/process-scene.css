@@ -1,8 +1,11 @@
 /* =========================================================
    PROCESS SECTION
-   Cinematic C-aperture handoff
-   HTML expects:
-   .process-c-aperture > .process-world-inside
+   SVG C-aperture cinematic handoff
+   Built for:
+   .process-svg
+   .process-svg-word
+   .process-svg-world
+   .process-c-aperture-shape
 ========================================================= */
 
 :root {
@@ -16,11 +19,6 @@
   --process-intro: 0;
   --process-cards: 0;
   --process-handoff: 0;
-
-  --process-c-x: 50%;
-  --process-c-y: 50%;
-  --process-word-origin-x: 50%;
-  --process-word-origin-y: 50%;
 }
 
 /* =========================================================
@@ -43,14 +41,20 @@
   inset: 0;
   z-index: 0;
   pointer-events: none;
+
   background:
-    radial-gradient(circle at 50% 50%, rgba(245, 245, 240, 0.055), transparent 34%),
+    radial-gradient(
+      circle at 50% 50%,
+      rgba(245, 245, 240, 0.055),
+      transparent 35%
+    ),
     linear-gradient(
       to bottom,
       rgba(0, 0, 0, 0.98),
-      rgba(2, 2, 2, 0.68) 34%,
+      rgba(2, 2, 2, 0.7) 34%,
       #020202 100%
     );
+
   opacity: calc(0.72 + (var(--process-section-intensity) * 0.28));
 }
 
@@ -58,7 +62,7 @@
   content: "";
   position: absolute;
   inset: auto 0 0;
-  z-index: 6;
+  z-index: 8;
   height: 26vh;
   pointer-events: none;
   background: linear-gradient(to bottom, transparent, #020202);
@@ -66,100 +70,131 @@
 }
 
 /* =========================================================
-   SCENE
+   SVG SCENE
 ========================================================= */
 
 .process-scene {
   position: absolute;
   inset: 0;
   z-index: 1;
-  display: grid;
-  place-items: center;
+
   overflow: hidden;
+  pointer-events: none;
+
   perspective: 1200px;
   transform-style: preserve-3d;
-  pointer-events: none;
   will-change: transform;
 }
 
-/* =========================================================
-   C APERTURE
-   This is the actual clipped window attached to the C.
-========================================================= */
-
-.process-c-aperture {
+.process-svg {
   position: absolute;
-  left: var(--process-c-x);
-  top: var(--process-c-y);
-  z-index: 2;
+  inset: 0;
+  width: 100%;
+  height: 100%;
 
-  width: 0;
-  height: 0;
-  overflow: hidden;
-  border-radius: 9999px;
+  display: block;
+  overflow: visible;
 
-  opacity: 0;
-  transform: translate3d(-50%, -50%, -240px) scale(1);
   transform-origin: 50% 50%;
-
-  background: #050505;
-  pointer-events: none;
-  will-change: width, height, opacity, transform, filter;
+  will-change: transform, opacity, filter;
 }
 
-/* The old dark shaded orb is intentionally killed. */
+/* The world is clipped by the SVG clipPath. */
+.process-svg-world {
+  opacity: 0;
+  overflow: hidden;
+  pointer-events: none;
+  will-change: opacity, filter;
+}
+
+/* The actual aperture shape lives in SVG coords.
+   JS animates its radius, not CSS left/top guesses. */
+.process-c-aperture-shape {
+  transform-box: fill-box;
+  transform-origin: center;
+  will-change: r, transform;
+}
+
+/* SVG PROCESS word */
+.process-svg-word {
+  font-family: var(--sans, Manrope, system-ui, sans-serif);
+  font-size: 255px;
+  line-height: 1;
+  letter-spacing: -0.085em;
+  font-weight: 600;
+  text-transform: uppercase;
+
+  fill: rgba(245, 245, 240, 0.92);
+
+  opacity: 0.28;
+
+  transform-box: view-box;
+  transform-origin: 680px 450px;
+
+  paint-order: stroke fill;
+  stroke: rgba(245, 245, 240, 0.02);
+  stroke-width: 1;
+
+  filter: blur(0px);
+
+  will-change: transform, opacity, filter, letter-spacing;
+}
+
+/* Kill the old architecture if any old HTML remains by accident. */
+.process-word,
+.process-c-aperture,
 .process-void {
   display: none !important;
 }
 
-/* The world lives inside the aperture now.
-   It no longer positions itself with left/top. */
-.process-world-inside {
-  position: absolute;
-  inset: 0;
-  z-index: 1;
+/* =========================================================
+   WORLD CONTENT INSIDE SVG FOREIGNOBJECT
+========================================================= */
 
+.process-world-inside {
   width: 100%;
   height: 100%;
+
   overflow: hidden;
-  border-radius: inherit;
 
   background:
-    radial-gradient(circle at 50% 50%, rgba(245, 245, 240, 0.07), transparent 32%),
+    radial-gradient(
+      circle at 50% 50%,
+      rgba(245, 245, 240, 0.075),
+      transparent 32%
+    ),
+    radial-gradient(
+      circle at 45% 45%,
+      rgba(255, 255, 255, 0.035),
+      transparent 38%
+    ),
     linear-gradient(to bottom, #050505, #020202);
 
-  opacity: 1;
-  transform: none;
-  pointer-events: none;
+  color: var(--process-white);
 }
 
 .process-world-inside__inner {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
   box-sizing: border-box;
 
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   justify-content: center;
-  gap: 0;
 
   padding: clamp(90px, 12vw, 160px) max(24px, calc((100vw - 920px) / 2));
-
-  transform: translate(-50%, -50%);
 }
 
 .process-world-inside p {
   margin: 0 0 18px;
+
   font-family: var(--mono, ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace);
   font-size: 11px;
   line-height: 1;
   letter-spacing: 0.18em;
   text-transform: uppercase;
+
   color: rgba(245, 245, 240, 0.5);
 }
 
@@ -172,40 +207,8 @@
   line-height: 0.92;
   letter-spacing: -0.075em;
   font-weight: 500;
+
   color: var(--process-white);
-}
-
-/* =========================================================
-   PROCESS WORD
-========================================================= */
-
-.process-word {
-  position: relative;
-  z-index: 3;
-  margin: 0;
-
-  font-family: var(--sans, Manrope, system-ui, sans-serif);
-  font-size: clamp(76px, 17vw, 310px);
-  line-height: 0.78;
-  letter-spacing: -0.085em;
-  font-weight: 600;
-  text-transform: uppercase;
-  white-space: nowrap;
-
-  color: rgba(245, 245, 240, 0.92);
-
-  transform: translate3d(0, 0, -180px) scale(0.46);
-  transform-origin: var(--process-word-origin-x) var(--process-word-origin-y);
-
-  will-change: transform, opacity, filter, letter-spacing;
-}
-
-.process-word span {
-  display: inline-block;
-}
-
-.process-letter-c {
-  position: relative;
 }
 
 /* =========================================================
@@ -275,6 +278,7 @@
 .process-card {
   position: absolute;
   top: 50%;
+
   width: min(480px, 35vw);
   min-height: 270px;
   box-sizing: border-box;
@@ -290,7 +294,11 @@
   border-radius: 28px;
 
   background:
-    linear-gradient(135deg, rgba(245, 245, 240, 0.075), rgba(245, 245, 240, 0.025)),
+    linear-gradient(
+      135deg,
+      rgba(245, 245, 240, 0.075),
+      rgba(245, 245, 240, 0.025)
+    ),
     rgba(5, 5, 5, 0.68);
 
   box-shadow:
@@ -302,6 +310,7 @@
 
   opacity: 0;
   pointer-events: auto;
+
   transform: translateY(86%) scale(0.94);
   transform-origin: 50% 70%;
 
@@ -324,8 +333,16 @@
   pointer-events: none;
 
   background:
-    radial-gradient(circle at 18% 0%, rgba(245, 245, 240, 0.13), transparent 34%),
-    linear-gradient(to bottom, rgba(255, 255, 255, 0.045), transparent 44%);
+    radial-gradient(
+      circle at 18% 0%,
+      rgba(245, 245, 240, 0.13),
+      transparent 34%
+    ),
+    linear-gradient(
+      to bottom,
+      rgba(255, 255, 255, 0.045),
+      transparent 44%
+    );
 
   opacity: calc(0.56 - (var(--handoff-soften, 0) * 0.42));
 }
@@ -468,6 +485,10 @@
 ========================================================= */
 
 @media (max-width: 1100px) {
+  .process-svg-word {
+    font-size: 230px;
+  }
+
   .process-card {
     width: min(450px, 42vw);
   }
@@ -491,8 +512,8 @@
     width: min(560px, 100%);
   }
 
-  .process-word {
-    font-size: clamp(68px, 20vw, 170px);
+  .process-svg-word {
+    font-size: 205px;
   }
 
   .process-card {
@@ -523,8 +544,8 @@
     max-width: 340px;
   }
 
-  .process-word {
-    font-size: clamp(58px, 22vw, 132px);
+  .process-svg-word {
+    font-size: 165px;
     letter-spacing: -0.09em;
   }
 
@@ -563,13 +584,16 @@
 
   .process-scene {
     position: relative;
-    min-height: 180px;
+    min-height: 220px;
   }
 
-  .process-c-aperture,
-  .process-world-inside,
-  .process-void {
-    display: none !important;
+  .process-svg {
+    position: relative;
+    height: 220px;
+  }
+
+  .process-svg-world {
+    display: none;
   }
 
   .process-overlay {
@@ -604,9 +628,9 @@
     filter: none !important;
   }
 
-  .process-word {
+  .process-svg-word {
+    opacity: 1 !important;
     transform: none !important;
     filter: none !important;
-    opacity: 1 !important;
   }
 }
