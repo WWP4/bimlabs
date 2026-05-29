@@ -4,13 +4,11 @@ export function initProcessScroll({ section, scene, ui, cards }) {
   const gsap = window.gsap;
   const ScrollTrigger = window.ScrollTrigger;
 
-  const overlay = section.querySelector(".process-overlay");
   const copy = section.querySelector(".process-copy");
 
   prepareInitialState({
     gsap,
     section,
-    overlay,
     copy,
     cards
   });
@@ -22,22 +20,19 @@ export function initProcessScroll({ section, scene, ui, cards }) {
     scrollTrigger: {
       trigger: section,
       start: "top top",
-      end: "+=5200",
+      end: "+=4200",
       pin: true,
-      scrub: 1.15,
+      scrub: 1.05,
       anticipatePin: 1,
       invalidateOnRefresh: true,
       onUpdate: (self) => {
         updateSceneByProgress({
           progress: self.progress,
           scene,
-          ui,
-          cards
+          ui
         });
       },
-      onEnter: () => {
-        section.classList.add("is-process-active");
-      },
+      onEnter: () => section.classList.add("is-process-active"),
       onLeave: () => {
         section.classList.remove("is-process-active");
         section.classList.add("is-process-complete");
@@ -46,16 +41,14 @@ export function initProcessScroll({ section, scene, ui, cards }) {
         section.classList.add("is-process-active");
         section.classList.remove("is-process-complete");
       },
-      onLeaveBack: () => {
-        section.classList.remove("is-process-active");
-      }
+      onLeaveBack: () => section.classList.remove("is-process-active")
     }
   });
 
   timeline
     .to(section, {
       "--process-section-intensity": 1,
-      duration: 0.12
+      duration: 0.16
     }, 0)
 
     .to(copy, {
@@ -67,59 +60,49 @@ export function initProcessScroll({ section, scene, ui, cards }) {
     .to(cards[0], {
       autoAlpha: 1,
       y: 0,
-      rotateX: 0,
       scale: 1,
-      duration: 0.13
-    }, 0.18)
+      duration: 0.12
+    }, 0.16)
 
     .to(cards[1], {
       autoAlpha: 1,
       y: 0,
-      rotateX: 0,
       scale: 1,
-      duration: 0.13
-    }, 0.31)
+      duration: 0.12
+    }, 0.29)
 
     .to(cards[2], {
       autoAlpha: 1,
       y: 0,
-      rotateX: 0,
       scale: 1,
-      duration: 0.13
-    }, 0.44)
+      duration: 0.12
+    }, 0.42)
 
     .to(cards[3], {
       autoAlpha: 1,
       y: 0,
-      rotateX: 0,
       scale: 1,
-      duration: 0.13
-    }, 0.57)
+      duration: 0.12
+    }, 0.55)
 
     .to(copy, {
       autoAlpha: 0,
-      y: -24,
+      y: -18,
       duration: 0.12
-    }, 0.72)
+    }, 0.76)
 
     .to(cards, {
       autoAlpha: 0,
-      y: -70,
-      scale: 0.96,
-      stagger: 0.025,
-      duration: 0.16
-    }, 0.76)
+      y: -42,
+      scale: 0.985,
+      stagger: 0.018,
+      duration: 0.14
+    }, 0.78)
 
     .to(section, {
       "--process-exit-darkness": 1,
-      duration: 0.2
-    }, 0.82);
-
-  createBookingReveal({
-    gsap,
-    ScrollTrigger,
-    section
-  });
+      duration: 0.18
+    }, 0.84);
 
   window.addEventListener("resize", () => {
     ScrollTrigger.refresh();
@@ -128,34 +111,28 @@ export function initProcessScroll({ section, scene, ui, cards }) {
   return timeline;
 }
 
-function prepareInitialState({ gsap, section, overlay, copy, cards }) {
+function prepareInitialState({ gsap, section, copy, cards }) {
   section.style.setProperty("--process-section-intensity", 0);
   section.style.setProperty("--process-exit-darkness", 0);
   section.style.setProperty("--process-handoff", 0);
 
-  gsap.set(overlay, {
-    autoAlpha: 1
-  });
-
   gsap.set(copy, {
     autoAlpha: 0,
-    y: 28
+    y: 24
   });
 
   gsap.set(cards, {
     autoAlpha: 0,
-    y: 80,
-    rotateX: -8,
-    scale: 0.965,
-    transformPerspective: 1000,
+    y: 54,
+    scale: 0.975,
     transformOrigin: "center bottom"
   });
 }
 
 function updateSceneByProgress({ progress, scene, ui }) {
   const intro = mapRange(progress, 0.02, 0.24);
-  const cards = mapRange(progress, 0.18, 0.68);
-  const handoff = mapRange(progress, 0.72, 1.0);
+  const cards = mapRange(progress, 0.16, 0.7);
+  const handoff = mapRange(progress, 0.76, 1);
 
   scene.setProgress({
     intro,
@@ -165,43 +142,6 @@ function updateSceneByProgress({ progress, scene, ui }) {
 
   ui.setCardsProgress(cards);
   ui.softenForHandoff(handoff);
-}
-
-function createBookingReveal({ gsap, ScrollTrigger, section }) {
-  const nextSection =
-    document.querySelector("#booking") ||
-    document.querySelector("#contact") ||
-    section.nextElementSibling;
-
-  if (!nextSection) return;
-
-  gsap.set(nextSection, {
-    position: "relative",
-    zIndex: 3
-  });
-
-  gsap.fromTo(
-    nextSection,
-    {
-      autoAlpha: 0.25,
-      y: -90,
-      scale: 0.985,
-      filter: "blur(16px)"
-    },
-    {
-      autoAlpha: 1,
-      y: 0,
-      scale: 1,
-      filter: "blur(0px)",
-      ease: "power3.out",
-      scrollTrigger: {
-        trigger: section,
-        start: "bottom bottom",
-        end: "bottom top",
-        scrub: 1
-      }
-    }
-  );
 }
 
 function mapRange(value, start, end) {
