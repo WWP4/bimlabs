@@ -21,8 +21,7 @@ function bootProcessExperience() {
   window.gsap.registerPlugin(window.ScrollTrigger);
 
   const scene = new ProcessScene({
-    mount: sceneMount,
-    word: "PROCESS"
+    mount: sceneMount
   });
 
   scene.init();
