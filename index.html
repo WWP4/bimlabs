@@ -145,14 +145,21 @@
 </section>
 
 
-    <section class="process-work-copy" id="process" aria-label="BIM Labs process">
+ <section class="process-work-copy" id="process" aria-label="BIM Labs process">
 
-  <div class="process-work-container">
+  <!-- GLOBAL PROCESS SCENE -->
+  <div class="process-scene-layer" aria-hidden="true">
+    <div class="process-depth-glow"></div>
 
-    <!-- DOM PROCESS WORD / USED ONLY DURING CARD CHAPTER -->
-    <div class="process-work-word-wrap" aria-hidden="true">
+    <div class="process-work-word-wrap">
       <h2 class="process-work-word">process</h2>
     </div>
+
+    <!-- JS injects WebGL canvas here -->
+    <div class="process-webgl-layer"></div>
+  </div>
+
+  <div class="process-work-container">
 
     <!-- TOP INTRO -->
     <div class="process-work-top">
@@ -167,10 +174,8 @@
     <!-- PROCESS CARDS -->
     <div class="process-work-list">
 
-      <!-- STEP 01 -->
       <article class="process-work-item process-work-item--left" data-process-step>
         <div class="process-work-card">
-
           <div class="process-work-card-meta">
             <span>Step 01</span>
             <span>Strategy</span>
@@ -182,13 +187,15 @@
             </h3>
 
             <p>
-              We start by understanding your business, your offer, your audience, and the actual reason your current digital presence is not converting the way it should. This gives the project a real direction before design ever begins.
+              We uncover what your business actually needs, where your current
+              digital presence is falling short, and what has to change for the
+              site or system to create real momentum.
             </p>
 
             <ul class="process-work-points">
               <li>Brand and website audit</li>
               <li>Offer and audience positioning</li>
-              <li>Project goals, pages, and conversion path</li>
+              <li>Clear conversion path</li>
             </ul>
           </div>
 
@@ -196,14 +203,11 @@
             <a href="#contact" class="process-card-btn">Start the conversation</a>
             <span>01 / 04</span>
           </div>
-
         </div>
       </article>
 
-      <!-- STEP 02 -->
       <article class="process-work-item process-work-item--right" data-process-step>
         <div class="process-work-card">
-
           <div class="process-work-card-meta">
             <span>Step 02</span>
             <span>Direction</span>
@@ -215,7 +219,9 @@
             </h3>
 
             <p>
-              Once the strategy is clear, we create a visual direction that feels premium, intentional, and specific to your brand. The goal is not to make something trendy. The goal is to make your business feel more trusted, refined, and valuable.
+              We shape the visual direction, layout system, and interaction style
+              so the experience feels premium, intentional, and specific to your
+              brand instead of looking like another template.
             </p>
 
             <ul class="process-work-points">
@@ -229,14 +235,11 @@
             <a href="#work" class="process-card-btn">View selected work</a>
             <span>02 / 04</span>
           </div>
-
         </div>
       </article>
 
-      <!-- STEP 03 -->
       <article class="process-work-item process-work-item--left" data-process-step>
         <div class="process-work-card">
-
           <div class="process-work-card-meta">
             <span>Step 03</span>
             <span>Build</span>
@@ -248,13 +251,15 @@
             </h3>
 
             <p>
-              We turn the approved direction into a polished live experience with clean structure, smooth motion, responsive layouts, and clear calls to action. This is where the site starts feeling alive instead of static.
+              We turn the approved direction into a polished live experience with
+              clean structure, responsive layouts, smooth motion, and the right
+              technical foundation behind it.
             </p>
 
             <ul class="process-work-points">
               <li>Custom front-end build</li>
               <li>Responsive desktop and mobile experience</li>
-              <li>Animation, interaction, and performance cleanup</li>
+              <li>Animation and performance cleanup</li>
             </ul>
           </div>
 
@@ -262,14 +267,11 @@
             <a href="#contact" class="process-card-btn">Talk about a build</a>
             <span>03 / 04</span>
           </div>
-
         </div>
       </article>
 
-      <!-- STEP 04 -->
       <article class="process-work-item process-work-item--right" data-process-step>
         <div class="process-work-card">
-
           <div class="process-work-card-meta">
             <span>Step 04</span>
             <span>Launch</span>
@@ -281,13 +283,15 @@
             </h3>
 
             <p>
-              Before launch, we refine the final details, test the experience, clean up the flow, and make sure the site feels sharp across screens. After launch, you have a stronger digital foundation to send traffic, leads, and clients into.
+              We refine the final details, test the experience, clean up the flow,
+              and make sure the site feels sharp before it becomes the place you
+              send traffic, leads, and clients.
             </p>
 
             <ul class="process-work-points">
               <li>Final QA and launch support</li>
               <li>Conversion path cleanup</li>
-              <li>Post-launch improvements and next steps</li>
+              <li>Post-launch improvements</li>
             </ul>
           </div>
 
@@ -295,24 +299,17 @@
             <a href="#contact" class="process-card-btn">Plan your launch</a>
             <span>04 / 04</span>
           </div>
-
         </div>
       </article>
 
     </div>
 
-    <!-- WEBGL CAMERA / BOOKING HANDOFF -->
-    <div class="process-portal-exit" aria-label="Project booking transition">
+    <!-- PORTAL / BOOKING HANDOFF -->
+    <div class="process-portal-exit" aria-label="Booking transition">
 
       <div class="process-portal-stage">
 
-        <!-- 
-          Three.js canvas is injected here by process-world.js.
-          Do not manually add a canvas here.
-        -->
-
         <div class="portal-booking" id="contact">
-
           <p class="booking-kicker">Start the conversation</p>
 
           <h2>
@@ -331,20 +328,12 @@
               <input type="email" name="email" placeholder="Email" />
             </div>
 
-            <input
-              type="text"
-              name="project"
-              placeholder="What are you trying to build?"
-            />
+            <input type="text" name="project" placeholder="What are you trying to build?" />
 
-            <textarea
-              name="message"
-              placeholder="Tell us what you need help with."
-            ></textarea>
+            <textarea name="message" placeholder="Tell us what you need help with."></textarea>
 
             <button type="submit">Send project note</button>
           </form>
-
         </div>
 
       </div>
