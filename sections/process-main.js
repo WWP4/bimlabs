@@ -1,5 +1,6 @@
 // js/process-main.js
 
+import { S as ScrollTrigger } from "../CODEX%20USE%20THIS%20FOLDER%20FOR%20PROCESS%20ANIMATIONS/ScrollTrigger.039d4140.js";
 import { ProcessScene } from "./process-scene.js";
 import { initProcessUI } from "./process-ui.js";
 import { initProcessScroll } from "./process-scroll.js";
@@ -13,16 +14,18 @@ function bootProcessExperience() {
     return;
   }
 
-  if (!window.gsap || !window.ScrollTrigger) {
-    console.warn("[Process] GSAP and ScrollTrigger are required.");
+  const gsap = window.gsap;
+
+  if (!gsap || !ScrollTrigger) {
+    console.warn("[Process] GSAP core and local ScrollTrigger are required.");
     return;
   }
 
-  window.gsap.registerPlugin(window.ScrollTrigger);
+  window.ScrollTrigger = ScrollTrigger;
+  gsap.registerPlugin(ScrollTrigger);
 
   const scene = new ProcessScene({
-    mount: sceneMount,
-    word: "PROCESS"
+    mount: sceneMount
   });
 
   scene.init();
@@ -36,6 +39,8 @@ function bootProcessExperience() {
     section,
     scene,
     ui,
+    gsap,
+    ScrollTrigger,
     cards: [...section.querySelectorAll("[data-process-card]")]
   });
 
