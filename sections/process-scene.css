@@ -110,9 +110,9 @@
 /* The actual aperture shape lives in SVG coords.
    JS animates its radius, not CSS left/top guesses. */
 .process-c-aperture-shape {
-  transform-box: fill-box;
+  transform-box: view-box;
   transform-origin: center;
-  will-change: r, transform;
+  will-change: transform;
 }
 
 /* SVG PROCESS word */
@@ -125,11 +125,10 @@
   text-transform: uppercase;
 
   fill: rgba(245, 245, 240, 0.92);
-
   opacity: 0.28;
 
   transform-box: view-box;
-  transform-origin: 680px 450px;
+  transform-origin: center;
 
   paint-order: stroke fill;
   stroke: rgba(245, 245, 240, 0.02);
@@ -137,7 +136,7 @@
 
   filter: blur(0px);
 
-  will-change: transform, opacity, filter, letter-spacing;
+  will-change: transform, opacity, filter;
 }
 
 /* Kill the old architecture if any old HTML remains by accident. */
