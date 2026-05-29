@@ -5,6 +5,8 @@ import * as THREE from "https://unpkg.com/three@0.160.0/build/three.module.js";
   if (!section) return;
 
   const domWord = section.querySelector(".process-work-word");
+  const wordWrap = section.querySelector(".process-work-word-wrap");
+
   const items = Array.from(section.querySelectorAll("[data-process-step]"));
   const cards = Array.from(section.querySelectorAll(".process-work-card"));
   const glitchTexts = Array.from(section.querySelectorAll(".glitch-text"));
@@ -17,27 +19,26 @@ import * as THREE from "https://unpkg.com/three@0.160.0/build/three.module.js";
 
   const glyphs = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789#%&<>/[]{}+-=_";
 
-  let sectionProgress = 0;
-  let portalProgress = 0;
-
   let targetSectionProgress = 0;
   let targetPortalProgress = 0;
-
   let currentSectionProgress = 0;
   let currentPortalProgress = 0;
 
   let rafRunning = false;
   let observer = null;
 
-  let renderer, scene, camera, canvas;
-  let wordMesh, apertureMesh, glowMesh, particleSystem;
+  let renderer;
+  let scene;
+  let camera;
+  let canvas;
+  let apertureMesh;
+  let glowMesh;
+  let particleSystem;
   let clock;
 
-  const webgl = {
-    cTargetX: 0.72,
-    cTargetY: -0.02,
-    cameraStartZ: 8.8,
-    cameraEndZ: 2.05
+  const portal = {
+    cFocusX: 0.54,
+    cFocusY: 0.5
   };
 
   function clamp(value, min, max) {
@@ -85,18 +86,23 @@ import * as THREE from "https://unpkg.com/three@0.160.0/build/three.module.js";
     return clamp((window.scrollY - start) / Math.max(end - start, 1), 0, 1);
   }
 
+  function forceBlackSite() {
+    document.documentElement.style.background = "#000";
+    document.body.style.background = "#000";
+    section.style.background = "#000";
+  }
+
   function updateProgress() {
-    sectionProgress = getScrollProgress(section);
-    portalProgress = getScrollProgress(portalExit);
-
-    targetSectionProgress = sectionProgress;
-    targetPortalProgress = portalProgress;
-
+    targetSectionProgress = getScrollProgress(section);
+    targetPortalProgress = getScrollProgress(portalExit);
     startAnimationLoop();
   }
 
   function setupInitialState() {
+    forceBlackSite();
+
     section.classList.add("process-js-ready");
+    section.classList.remove("is-entering-portal", "is-inside-portal");
 
     items.forEach((item) => {
       item.classList.remove("is-visible", "is-hovered", "is-glitching");
@@ -112,12 +118,21 @@ import * as THREE from "https://unpkg.com/three@0.160.0/build/three.module.js";
       text.classList.remove("is-scrambling");
     });
 
+    if (wordWrap) {
+      setStyles(wordWrap, {
+        zIndex: "18",
+        pointerEvents: "none"
+      });
+    }
+
     if (domWord) {
       setStyles(domWord, {
         color: "#ffffff",
         opacity: "0.08",
-        filter: "blur(2px)",
-        transform: "translate3d(0, -50%, 0) scale(0.72)"
+        filter: "blur(1.5px)",
+        transform: "translate3d(0, -50%, 0) scale(0.72)",
+        transformOrigin: "54% 50%",
+        willChange: "transform, opacity, filter"
       });
     }
 
@@ -138,42 +153,6 @@ import * as THREE from "https://unpkg.com/three@0.160.0/build/three.module.js";
     }
   }
 
-  function createWordTexture() {
-    const c = document.createElement("canvas");
-    const ctx = c.getContext("2d");
-
-    c.width = 4096;
-    c.height = 1200;
-
-    const fontFamily = getComputedStyle(document.body).fontFamily || "Arial, sans-serif";
-
-    ctx.clearRect(0, 0, c.width, c.height);
-    ctx.fillStyle = "#ffffff";
-    ctx.textAlign = "center";
-    ctx.textBaseline = "middle";
-    ctx.font = `800 660px ${fontFamily}`;
-
-    ctx.fillText("process", c.width / 2, c.height / 2 + 36);
-
-    const gradient = ctx.createLinearGradient(0, 0, c.width, c.height);
-    gradient.addColorStop(0, "rgba(255,255,255,0.72)");
-    gradient.addColorStop(0.48, "rgba(255,255,255,1)");
-    gradient.addColorStop(1, "rgba(255,255,255,0.72)");
-
-    ctx.globalCompositeOperation = "source-in";
-    ctx.fillStyle = gradient;
-    ctx.fillRect(0, 0, c.width, c.height);
-
-    const texture = new THREE.CanvasTexture(c);
-    texture.colorSpace = THREE.SRGBColorSpace;
-    texture.anisotropy = 8;
-    texture.minFilter = THREE.LinearFilter;
-    texture.magFilter = THREE.LinearFilter;
-    texture.generateMipmaps = false;
-
-    return texture;
-  }
-
   function createApertureTexture() {
     const c = document.createElement("canvas");
     const ctx = c.getContext("2d");
@@ -184,8 +163,8 @@ import * as THREE from "https://unpkg.com/three@0.160.0/build/three.module.js";
 
     const g = ctx.createRadialGradient(size / 2, size / 2, 0, size / 2, size / 2, size / 2);
     g.addColorStop(0, "rgba(0,0,0,1)");
-    g.addColorStop(0.28, "rgba(0,0,0,0.95)");
-    g.addColorStop(0.56, "rgba(0,0,0,0.42)");
+    g.addColorStop(0.25, "rgba(0,0,0,0.95)");
+    g.addColorStop(0.54, "rgba(0,0,0,0.46)");
     g.addColorStop(1, "rgba(0,0,0,0)");
 
     ctx.fillStyle = g;
@@ -200,15 +179,15 @@ import * as THREE from "https://unpkg.com/three@0.160.0/build/three.module.js";
   }
 
   function createParticles() {
-    const count = 260;
+    const count = 320;
     const positions = new Float32Array(count * 3);
 
-    for (let i = 0; i < count; i++) {
+    for (let i = 0; i < count; i += 1) {
       const i3 = i * 3;
 
       positions[i3] = (Math.random() - 0.5) * 12;
       positions[i3 + 1] = (Math.random() - 0.5) * 7;
-      positions[i3 + 2] = -Math.random() * 11 - 1;
+      positions[i3 + 2] = -Math.random() * 12 - 1;
     }
 
     const geometry = new THREE.BufferGeometry();
@@ -216,17 +195,14 @@ import * as THREE from "https://unpkg.com/three@0.160.0/build/three.module.js";
 
     const material = new THREE.PointsMaterial({
       color: 0xffffff,
-      size: 0.018,
+      size: 0.016,
       transparent: true,
       opacity: 0,
       depthWrite: false,
       blending: THREE.AdditiveBlending
     });
 
-    const points = new THREE.Points(geometry, material);
-    points.position.z = 1.4;
-
-    return points;
+    return new THREE.Points(geometry, material);
   }
 
   function initWebGL() {
@@ -235,6 +211,7 @@ import * as THREE from "https://unpkg.com/three@0.160.0/build/three.module.js";
     canvas = document.createElement("canvas");
     canvas.className = "process-portal-canvas";
     canvas.setAttribute("aria-hidden", "true");
+
     portalStage.prepend(canvas);
 
     renderer = new THREE.WebGLRenderer({
@@ -248,26 +225,14 @@ import * as THREE from "https://unpkg.com/three@0.160.0/build/three.module.js";
     renderer.outputColorSpace = THREE.SRGBColorSpace;
 
     scene = new THREE.Scene();
-    scene.fog = new THREE.FogExp2(0x000000, 0.045);
+    scene.fog = new THREE.FogExp2(0x000000, 0.05);
 
     camera = new THREE.PerspectiveCamera(42, 1, 0.1, 80);
-    camera.position.set(0, 0, webgl.cameraStartZ);
+    camera.position.set(0, 0, 7.5);
 
     clock = new THREE.Clock();
 
-    const wordGeometry = new THREE.PlaneGeometry(7.2, 1.95);
-    const wordMaterial = new THREE.MeshBasicMaterial({
-      map: createWordTexture(),
-      transparent: true,
-      opacity: 0,
-      depthWrite: false
-    });
-
-    wordMesh = new THREE.Mesh(wordGeometry, wordMaterial);
-    wordMesh.position.set(0, 0, 0);
-    scene.add(wordMesh);
-
-    const apertureGeometry = new THREE.PlaneGeometry(2.2, 2.2);
+    const apertureGeometry = new THREE.PlaneGeometry(2.4, 2.4);
     const apertureMaterial = new THREE.MeshBasicMaterial({
       map: createApertureTexture(),
       transparent: true,
@@ -276,7 +241,7 @@ import * as THREE from "https://unpkg.com/three@0.160.0/build/three.module.js";
     });
 
     apertureMesh = new THREE.Mesh(apertureGeometry, apertureMaterial);
-    apertureMesh.position.set(webgl.cTargetX, webgl.cTargetY, 0.04);
+    apertureMesh.position.set(0.28, -0.02, 0.1);
     scene.add(apertureMesh);
 
     const glowGeometry = new THREE.CircleGeometry(1, 96);
@@ -289,7 +254,7 @@ import * as THREE from "https://unpkg.com/three@0.160.0/build/three.module.js";
     });
 
     glowMesh = new THREE.Mesh(glowGeometry, glowMaterial);
-    glowMesh.position.set(webgl.cTargetX, webgl.cTargetY, -0.05);
+    glowMesh.position.set(0.28, -0.02, -0.05);
     scene.add(glowMesh);
 
     particleSystem = createParticles();
@@ -313,28 +278,43 @@ import * as THREE from "https://unpkg.com/three@0.160.0/build/three.module.js";
     camera.updateProjectionMatrix();
   }
 
-  function renderDomProcessWord(progress, portal) {
+  function renderDomProcessWord(sectionP, portalP) {
     if (!domWord) return;
 
-    const enter = smoothstep(0.02, 0.16, progress);
-    const grow = smoothstep(0.12, 0.52, progress);
+    const enter = smoothstep(0.02, 0.16, sectionP);
+    const grow = smoothstep(0.1, 0.52, sectionP);
 
-    const fadeForPortal = smoothstep(0.01, 0.22, portal);
+    const portalStart = smoothstep(0.01, 0.18, portalP);
+    const zoomRaw = smoothstep(0.14, 0.7, portalP);
+    const zoom = easeInOutCubic(zoomRaw);
+    const dissolve = smoothstep(0.64, 0.88, portalP);
 
-    const scale = lerp(0.72, 1.04, grow);
-    const opacity = lerp(0.08, 0.22, enter) * lerp(1, 0, fadeForPortal);
-    const blur = lerp(2, 0, enter) + lerp(0, 12, fadeForPortal);
+    const baseScale = lerp(0.72, 1.04, grow);
+    const portalScale = lerp(1, 4.6, zoom);
+
+    const opacity =
+      lerp(0.08, 0.24, enter) *
+      lerp(1, 0.82, portalStart) *
+      lerp(1, 0, dissolve);
+
+    const blur =
+      lerp(1.5, 0, enter) +
+      lerp(0, 18, dissolve);
+
+    const x = lerp(0, -4.5, zoom);
+    const y = lerp(-50, -50, zoom);
 
     setStyles(domWord, {
-      opacity: clamp(opacity, 0, 0.24).toFixed(3),
+      transformOrigin: "54% 50%",
+      opacity: clamp(opacity, 0, 0.26).toFixed(3),
       filter: `blur(${blur.toFixed(2)}px)`,
-      transform: `translate3d(0, -50%, 0) scale(${scale.toFixed(4)})`
+      transform: `translate3d(${x.toFixed(2)}vw, ${y}%, 0) scale(${(baseScale * portalScale).toFixed(4)})`
     });
   }
 
-  function renderCards(progress, portal) {
+  function renderCards(sectionP, portalP) {
     const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
-    const portalQuiet = smoothstep(0.01, 0.25, portal);
+    const portalQuiet = smoothstep(0.01, 0.22, portalP);
 
     cards.forEach((card) => {
       const item = card.closest(".process-work-item");
@@ -352,13 +332,13 @@ import * as THREE from "https://unpkg.com/three@0.160.0/build/three.module.js";
       const direction = isRight ? 1 : -1;
 
       const viewportProgress = clamp(itemCenter / viewportHeight, 0, 1);
-      const driftX = direction * lerp(28, -28, smoothstep(0, 1, viewportProgress));
-      const driftY = lerp(26, -18, smoothstep(0, 1, viewportProgress));
+      const driftX = direction * lerp(26, -26, smoothstep(0, 1, viewportProgress));
+      const driftY = lerp(24, -18, smoothstep(0, 1, viewportProgress));
 
       const opacity = lerp(0.62, 1, visible) * lerp(1, 0, portalQuiet);
       const scale = lerp(0.975, 1, visible) * lerp(1, 0.94, portalQuiet);
-      const y = driftY + lerp(0, -64, portalQuiet);
-      const blur = lerp(0, 10, portalQuiet);
+      const y = driftY + lerp(0, -70, portalQuiet);
+      const blur = lerp(0, 11, portalQuiet);
 
       setStyles(card, {
         opacity: opacity.toFixed(3),
@@ -368,53 +348,45 @@ import * as THREE from "https://unpkg.com/three@0.160.0/build/three.module.js";
     });
   }
 
-  function renderWebGLPortal(progress) {
+  function renderWebGLVoid(portalP) {
     if (!renderer || !scene || !camera) return;
 
     const time = clock ? clock.getElapsedTime() : 0;
 
-    const sceneIn = smoothstep(0.02, 0.16, progress);
-    const travelRaw = smoothstep(0.14, 0.58, progress);
+    const sceneIn = smoothstep(0.02, 0.18, portalP);
+    const travelRaw = smoothstep(0.16, 0.72, portalP);
     const travel = easeInOutCubic(travelRaw);
 
-    const apertureOpen = smoothstep(0.34, 0.72, progress);
-    const wordFade = smoothstep(0.5, 0.76, progress);
-    const bookingIn = smoothstep(0.62, 0.94, progress);
+    const apertureOpen = smoothstep(0.3, 0.78, portalP);
+    const bookingIn = smoothstep(0.68, 0.96, portalP);
 
-    camera.position.x = lerp(0, webgl.cTargetX, travel);
-    camera.position.y = lerp(0, webgl.cTargetY, travel);
-    camera.position.z = lerp(webgl.cameraStartZ, webgl.cameraEndZ, travel);
-
-    camera.lookAt(webgl.cTargetX * travel, webgl.cTargetY * travel, 0);
-
-    if (wordMesh) {
-      wordMesh.material.opacity = clamp(sceneIn * lerp(1, 0, wordFade), 0, 1);
-      wordMesh.position.z = lerp(0, -0.26, travel);
-      wordMesh.rotation.z = lerp(0, -0.006, travel);
-      wordMesh.scale.setScalar(lerp(1, 1.1, travel));
-    }
+    camera.position.x = lerp(0, 0.28, travel);
+    camera.position.y = lerp(0, -0.02, travel);
+    camera.position.z = lerp(7.5, 2.0, travel);
+    camera.lookAt(lerp(0, 0.28, travel), lerp(0, -0.02, travel), 0);
 
     if (apertureMesh) {
-      apertureMesh.material.opacity = clamp(lerp(0, 0.88, apertureOpen), 0, 0.88);
-      apertureMesh.scale.setScalar(lerp(0.18, 5.2, apertureOpen));
-      apertureMesh.position.z = lerp(0.04, 0.28, apertureOpen);
+      apertureMesh.material.opacity = sceneIn * lerp(0.05, 0.9, apertureOpen);
+      apertureMesh.scale.setScalar(lerp(0.2, 6.2, apertureOpen));
+      apertureMesh.position.z = lerp(0.08, 0.32, apertureOpen);
     }
 
     if (glowMesh) {
-      glowMesh.material.opacity = sceneIn * lerp(0.025, 0.11, apertureOpen) * lerp(1, 0.28, wordFade);
-      glowMesh.scale.setScalar(lerp(0.8, 5.8, apertureOpen));
+      glowMesh.material.opacity = sceneIn * lerp(0.015, 0.1, apertureOpen) * lerp(1, 0.35, bookingIn);
+      glowMesh.scale.setScalar(lerp(0.7, 6.8, apertureOpen));
     }
 
     if (particleSystem) {
-      particleSystem.material.opacity = sceneIn * lerp(0.05, 0.28, travel) * lerp(1, 0.55, bookingIn);
-      particleSystem.rotation.z = time * 0.015;
-      particleSystem.position.z = lerp(1.4, 4.4, travel);
+      particleSystem.material.opacity = sceneIn * lerp(0.04, 0.3, travel) * lerp(1, 0.52, bookingIn);
+      particleSystem.rotation.z = time * 0.012;
+      particleSystem.position.z = lerp(1.3, 4.8, travel);
 
       const positions = particleSystem.geometry.attributes.position.array;
+
       for (let i = 0; i < positions.length; i += 3) {
-        const pull = travel * 0.0015;
-        positions[i] += (webgl.cTargetX - positions[i]) * pull;
-        positions[i + 1] += (webgl.cTargetY - positions[i + 1]) * pull;
+        const pull = travel * 0.0017;
+        positions[i] += (0.28 - positions[i]) * pull;
+        positions[i + 1] += (-0.02 - positions[i + 1]) * pull;
       }
 
       particleSystem.geometry.attributes.position.needsUpdate = true;
@@ -432,7 +404,7 @@ import * as THREE from "https://unpkg.com/three@0.160.0/build/three.module.js";
       });
     }
 
-    section.classList.toggle("is-entering-portal", sceneIn > 0.18);
+    section.classList.toggle("is-entering-portal", sceneIn > 0.15);
     section.classList.toggle("is-inside-portal", bookingIn > 0.7);
 
     renderer.render(scene, camera);
@@ -441,7 +413,7 @@ import * as THREE from "https://unpkg.com/three@0.160.0/build/three.module.js";
   function render() {
     renderCards(currentSectionProgress, currentPortalProgress);
     renderDomProcessWord(currentSectionProgress, currentPortalProgress);
-    renderWebGLPortal(currentPortalProgress);
+    renderWebGLVoid(currentPortalProgress);
   }
 
   function startAnimationLoop() {
@@ -457,10 +429,10 @@ import * as THREE from "https://unpkg.com/three@0.160.0/build/three.module.js";
 
     render();
 
-    const sectionDelta = Math.abs(currentSectionProgress - targetSectionProgress);
-    const portalDelta = Math.abs(currentPortalProgress - targetPortalProgress);
-
-    if (sectionDelta > 0.0005 || portalDelta > 0.0005) {
+    if (
+      Math.abs(currentSectionProgress - targetSectionProgress) > 0.0005 ||
+      Math.abs(currentPortalProgress - targetPortalProgress) > 0.0005
+    ) {
       requestAnimationFrame(animate);
     } else {
       currentSectionProgress = targetSectionProgress;
@@ -530,7 +502,7 @@ import * as THREE from "https://unpkg.com/three@0.160.0/build/three.module.js";
         })
         .join("");
 
-      frame++;
+      frame += 1;
 
       if (frame > totalFrames) {
         clearInterval(interval);
@@ -593,11 +565,12 @@ import * as THREE from "https://unpkg.com/three@0.160.0/build/three.module.js";
   }
 
   function setupReducedMotion() {
+    forceBlackSite();
+
     items.forEach((item) => item.classList.add("is-visible"));
 
     glitchTexts.forEach((text) => {
       const finalText = text.getAttribute("data-glitch-text") || text.textContent.trim();
-
       text.textContent = finalText;
       text.dataset.scrambled = "true";
       text.dataset.scrambling = "false";
@@ -642,23 +615,12 @@ import * as THREE from "https://unpkg.com/three@0.160.0/build/three.module.js";
     );
 
     window.addEventListener("load", () => {
+      forceBlackSite();
       resizeWebGL();
       updateProgress();
       refreshVisibleItems();
       render();
     });
-
-    if (document.fonts && document.fonts.ready) {
-      document.fonts.ready.then(() => {
-        if (wordMesh) {
-          wordMesh.material.map = createWordTexture();
-          wordMesh.material.needsUpdate = true;
-        }
-
-        resizeWebGL();
-        render();
-      });
-    }
   }
 
   function init() {
@@ -679,9 +641,10 @@ import * as THREE from "https://unpkg.com/three@0.160.0/build/three.module.js";
     refreshVisibleItems();
     render();
 
-    console.log("[Process] WebGL split timeline loaded.", {
+    console.log("[Process] Real DOM process word zoom loaded.", {
       cards: cards.length,
       items: items.length,
+      hasDomWord: Boolean(domWord),
       hasPortalExit: Boolean(portalExit),
       hasPortalStage: Boolean(portalStage),
       hasPortalBooking: Boolean(portalBooking)
