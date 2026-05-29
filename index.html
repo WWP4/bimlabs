@@ -155,23 +155,18 @@
       aria-hidden="true"
     >
       <defs>
-        <!--
-          This is the real aperture.
-          It lives in the same SVG coordinate system as PROCESS,
-          so it will not drift like a DOM circle.
-        -->
         <clipPath id="process-c-aperture-clip" clipPathUnits="userSpaceOnUse">
           <circle
             class="process-c-aperture-shape"
             data-process-aperture-shape
-            cx="680"
-            cy="450"
+            cx="0"
+            cy="0"
             r="0"
           />
         </clipPath>
       </defs>
 
-      <!-- The world/next section is clipped through the C aperture -->
+      <!-- WORLD / NEXT LAYER CLIPPED THROUGH THE REAL C APERTURE -->
       <foreignObject
         class="process-svg-world"
         x="0"
@@ -188,7 +183,7 @@
         </div>
       </foreignObject>
 
-      <!-- PROCESS word layer -->
+      <!-- PROCESS WORD LAYER -->
       <text
         id="process-title"
         class="process-svg-word"
@@ -198,7 +193,7 @@
         text-anchor="middle"
         dominant-baseline="middle"
       >
-        PROCESS
+        <tspan>P</tspan><tspan>R</tspan><tspan>O</tspan><tspan data-process-c-letter>C</tspan><tspan>E</tspan><tspan>S</tspan><tspan>S</tspan>
       </text>
     </svg>
   </div>
