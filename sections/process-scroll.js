@@ -4,16 +4,17 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger, car
   const sceneMount = section.querySelector("[data-process-scene]");
   const word = section.querySelector(".process-word");
   const voidTarget = section.querySelector(".process-void");
+  const worldInside = section.querySelector(".process-world-inside");
   const copy = section.querySelector(".process-copy");
   const cardTrack = section.querySelector(".process-cards");
   const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   if (prefersReducedMotion) {
-    prepareReducedState({ gsap, section, word, voidTarget, copy, cardTrack, cards });
+    prepareReducedState({ gsap, section, word, voidTarget, worldInside, copy, cardTrack, cards });
     return null;
   }
 
-  prepareInitialState({ gsap, section, sceneMount, word, voidTarget, copy, cardTrack, cards });
+  prepareInitialState({ gsap, section, sceneMount, word, voidTarget, worldInside, copy, cardTrack, cards });
 
   const timeline = gsap.timeline({
     defaults: { ease: "none" },
@@ -87,33 +88,66 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger, car
     .to(voidTarget, {
       autoAlpha: 1,
       scale: 1,
+      duration: 0.06
+    }, 0.8)
+    .to(worldInside, {
+      autoAlpha: 0.42,
+      clipPath: "circle(11% at 51.8% 50%)",
+      y: 18,
+      scale: 0.88,
       duration: 0.08
-    }, 0.82)
+    }, 0.81)
     .to(word, {
-      scale: 7.2,
-      xPercent: -6,
-      autoAlpha: 0.12,
-      filter: "blur(7px)",
-      duration: 0.18
-    }, 0.84)
+      scale: 3.4,
+      xPercent: -4.5,
+      autoAlpha: 0.42,
+      filter: "blur(2px)",
+      duration: 0.08
+    }, 0.83)
     .to(voidTarget, {
-      scale: 7,
+      scale: 3.2,
       autoAlpha: 1,
-      duration: 0.18
-    }, 0.84)
-    .to(sceneMount, {
-      scale: 1.18,
-      xPercent: -3,
-      duration: 0.16
+      duration: 0.08
+    }, 0.83)
+    .to(worldInside, {
+      autoAlpha: 1,
+      clipPath: "circle(38% at 51.8% 50%)",
+      y: 0,
+      scale: 0.96,
+      duration: 0.08
     }, 0.86)
-    .to(section, { "--process-section-intensity": 0.45, duration: 0.12 }, 0.9);
+    .to(word, {
+      scale: 8.8,
+      xPercent: -9,
+      autoAlpha: 0.06,
+      filter: "blur(10px)",
+      duration: 0.12
+    }, 0.88)
+    .to(voidTarget, {
+      scale: 9.5,
+      autoAlpha: 1,
+      duration: 0.11
+    }, 0.88)
+    .to(worldInside, {
+      clipPath: "circle(145% at 51.8% 50%)",
+      scale: 1,
+      y: 0,
+      duration: 0.12
+    }, 0.88)
+    .to(sceneMount, {
+      scale: 1.42,
+      xPercent: -5.5,
+      transformOrigin: "51.8% 50%",
+      duration: 0.12
+    }, 0.88)
+    .to(section, { "--process-section-intensity": 0.18, duration: 0.1 }, 0.9);
 
   window.addEventListener("resize", () => ScrollTrigger.refresh());
 
   return timeline;
 }
 
-function prepareInitialState({ gsap, section, sceneMount, word, voidTarget, copy, cardTrack, cards }) {
+function prepareInitialState({ gsap, section, sceneMount, word, voidTarget, worldInside, copy, cardTrack, cards }) {
   section.style.setProperty("--process-section-intensity", 0);
 
   gsap.set(sceneMount, {
@@ -138,6 +172,14 @@ function prepareInitialState({ gsap, section, sceneMount, word, voidTarget, copy
     transformOrigin: "50% 50%"
   });
 
+  gsap.set(worldInside, {
+    autoAlpha: 0,
+    clipPath: "circle(0% at 51.8% 50%)",
+    y: 34,
+    scale: 0.82,
+    transformOrigin: "51.8% 50%"
+  });
+
   gsap.set(copy, { autoAlpha: 0, y: 28 });
   gsap.set(cardTrack, { autoAlpha: 1 });
 
@@ -155,11 +197,12 @@ function prepareInitialState({ gsap, section, sceneMount, word, voidTarget, copy
   });
 }
 
-function prepareReducedState({ gsap, section, word, voidTarget, copy, cardTrack, cards }) {
+function prepareReducedState({ gsap, section, word, voidTarget, worldInside, copy, cardTrack, cards }) {
   section.style.setProperty("--process-section-intensity", 1);
 
   gsap.set(word, { clearProps: "all" });
   gsap.set(voidTarget, { autoAlpha: 0 });
+  gsap.set(worldInside, { autoAlpha: 0 });
   gsap.set(copy, { autoAlpha: 1, y: 0 });
   gsap.set(cardTrack, { autoAlpha: 1 });
   gsap.set(cards, { autoAlpha: 1, x: 0, yPercent: 0, scale: 1, rotateX: 0 });
