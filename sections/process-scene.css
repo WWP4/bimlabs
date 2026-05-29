@@ -1,7 +1,6 @@
 /* =========================================================
    PROCESS SECTION
-   Cinematic C-aperture handoff.
-   The next section lives inside the C and expands to screen.
+   Noomo-inspired vertical camera handoff using DOM layers.
 ========================================================= */
 
 :root {
@@ -9,26 +8,15 @@
   --process-white: #f5f5f0;
   --process-muted: rgba(245, 245, 240, 0.58);
   --process-line: rgba(245, 245, 240, 0.12);
-
   --process-section-intensity: 0;
   --process-intro: 0;
   --process-cards: 0;
   --process-handoff: 0;
-
-  /*
-    This is the C aperture target.
-    On your current PROCESS scale/font, this lands inside the C.
-    If it is slightly off after testing:
-    - increase x to move right
-    - decrease x to move left
-  */
-  --process-aperture-x: 52.6%;
-  --process-aperture-y: 50.5%;
+  --process-c-x: 50%;
+  --process-c-y: 50%;
+  --process-word-origin-x: 50%;
+  --process-word-origin-y: 50%;
 }
-
-/* ================================
-   SECTION BASE
-================================ */
 
 .process-3d {
   position: relative;
@@ -46,41 +34,9 @@
   inset: 0;
   z-index: 0;
   pointer-events: none;
-  background:
-    radial-gradient(
-      circle at var(--process-aperture-x) var(--process-aperture-y),
-      rgba(255, 255, 255, 0.055),
-      rgba(255, 255, 255, 0.018) 18%,
-      rgba(0, 0, 0, 0) 46%
-    ),
-    linear-gradient(
-      to bottom,
-      rgba(0, 0, 0, 0.96),
-      rgba(2, 2, 2, 0.5) 34%,
-      #020202 100%
-    );
-  opacity: calc(0.62 + (var(--process-section-intensity) * 0.38));
+  background: linear-gradient(to bottom, rgba(0,0,0,0.96), rgba(2,2,2,0.48) 30%, #020202 100%);
+  opacity: calc(0.58 + (var(--process-section-intensity) * 0.42));
 }
-
-/* subtle bottom darkness so the pinned section feels deep */
-.process-3d::after {
-  content: "";
-  position: absolute;
-  inset: auto 0 0;
-  height: 34vh;
-  z-index: 8;
-  pointer-events: none;
-  background: linear-gradient(
-    to bottom,
-    rgba(2, 2, 2, 0),
-    rgba(2, 2, 2, 0.88)
-  );
-  opacity: calc(0.42 + (var(--process-handoff) * 0.32));
-}
-
-/* ================================
-   SCENE / BACKGROUND WORD
-================================ */
 
 .process-scene {
   position: absolute;
@@ -89,7 +45,7 @@
   display: grid;
   place-items: center;
   overflow: hidden;
-  perspective: 1200px;
+  perspective: 1100px;
   transform-style: preserve-3d;
   pointer-events: none;
   will-change: transform;
@@ -99,171 +55,90 @@
   position: relative;
   z-index: 1;
   margin: 0;
-
-  /*
-    Use the technical site font instead of the softer brand font.
-    This makes the word feel architectural.
-  */
-  font-family: "IBM Plex Mono", var(--mono, ui-monospace, monospace);
-  font-size: clamp(78px, 16.8vw, 310px);
+  font-family: var(--sans, Manrope, system-ui, sans-serif);
+  font-size: clamp(76px, 17vw, 310px);
   line-height: 0.78;
-  letter-spacing: -0.145em;
-  font-weight: 500;
+  letter-spacing: -0.085em;
+  font-weight: 600;
+  color: rgba(245, 245, 240, 0.9);
   text-transform: uppercase;
   white-space: nowrap;
-
-  color: transparent;
-  -webkit-text-stroke: 1.45px rgba(245, 245, 240, 0.72);
-  text-stroke: 1.45px rgba(245, 245, 240, 0.72);
-
-  text-shadow:
-    0 0 18px rgba(245, 245, 240, 0.08),
-    0 0 72px rgba(245, 245, 240, 0.065);
-
   transform: translate3d(0, 0, -180px) scale(0.46);
-  transform-origin: var(--process-aperture-x) var(--process-aperture-y);
-
+  transform-origin: var(--process-word-origin-x) var(--process-word-origin-y);
   will-change: transform, opacity, filter, letter-spacing;
 }
 
-/* soft inner shadow near the C aperture */
-.process-word::after {
-  content: "";
-  position: absolute;
-  left: var(--process-aperture-x);
-  top: var(--process-aperture-y);
-  width: clamp(180px, 21vw, 390px);
-  aspect-ratio: 1;
-  border-radius: 999px;
-  transform: translate(-50%, -50%);
-  background: radial-gradient(
-    circle,
-    rgba(0, 0, 0, 0.82) 0 36%,
-    rgba(0, 0, 0, 0.38) 56%,
-    rgba(0, 0, 0, 0) 74%
-  );
-  opacity: calc(0.2 + (var(--process-handoff) * 0.55));
-  pointer-events: none;
+.process-word span {
+  display: inline-block;
 }
-
-/* active state gives the outline a cleaner glow */
-.process-3d.is-process-active .process-word {
-  -webkit-text-stroke-color: rgba(245, 245, 240, 0.82);
-  text-stroke-color: rgba(245, 245, 240, 0.82);
-}
-
-/* ================================
-   C APERTURE / NEXT SECTION INSIDE
-================================ */
 
 .process-world-inside {
   position: absolute;
-  left: var(--process-aperture-x);
-  top: var(--process-aperture-y);
+  left: var(--process-c-x);
+  top: var(--process-c-y);
   z-index: 2;
-
   width: 0;
   height: 0;
   overflow: hidden;
   border-radius: 9999px;
-
   background: #050505;
   opacity: 0;
-
-  /*
-    Important:
-    This aperture is physically centered inside the C.
-    JS should only scale width/height/opacity, not move it sideways.
-  */
-  transform: translate(-50%, -50%);
-  transform-origin: 50% 50%;
-
-  box-shadow:
-    0 0 80px rgba(0, 0, 0, 0.9),
-    0 0 160px rgba(245, 245, 240, 0.045),
-    inset 0 0 70px rgba(0, 0, 0, 0.95);
-
+  transform: translate3d(-50%, -50%, -260px);
   pointer-events: none;
   will-change: width, height, transform, opacity, filter;
 }
 
-/*
-  Full-screen next section living behind the C aperture.
-
-  This counter-positioning is the whole trick:
-  the aperture is at 52.6vw / 50.5vh, so the full screen layer is pulled
-  back by that same amount. That makes it look like the section is already
-  sitting behind the C and the C is revealing it.
-*/
 .process-world-inside__inner {
   position: absolute;
   left: 50%;
   top: 50%;
-
   width: 100vw;
   height: 100vh;
-
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
-
   box-sizing: border-box;
-  padding:
-    clamp(90px, 12vw, 160px)
-    max(24px, calc((100vw - 920px) / 2));
-
-  transform: translate(-52.6vw, -50.5vh);
-
-  background:
-    radial-gradient(
-      circle at 52.6% 50.5%,
-      rgba(245, 245, 240, 0.055),
-      rgba(245, 245, 240, 0.015) 28%,
-      rgba(0, 0, 0, 0) 56%
-    ),
-    linear-gradient(135deg, #050505, #020202 60%, #080808);
-
-  color: var(--process-white);
-}
-
-/* optional atmosphere inside the revealed section */
-.process-world-inside__inner::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background:
-    linear-gradient(
-      to right,
-      rgba(245, 245, 240, 0.035) 1px,
-      transparent 1px
-    ),
-    linear-gradient(
-      to bottom,
-      rgba(245, 245, 240, 0.028) 1px,
-      transparent 1px
-    );
-  background-size: 82px 82px;
-  opacity: 0.08;
-  mask-image: radial-gradient(circle at 50% 50%, black, transparent 68%);
+  padding: clamp(90px, 12vw, 160px) max(24px, calc((100vw - 920px) / 2));
+  transform: translate(calc(-1 * var(--process-c-x)), calc(-1 * var(--process-c-y)));
 }
 
 .process-world-inside p {
-  position: relative;
-  z-index: 1;
   margin: 0 0 18px;
-
-  font-family: "IBM Plex Mono", var(--mono, ui-monospace, monospace);
+  font-family: var(--mono, ui-monospace, monospace);
   font-size: 11px;
-  line-height: 1;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-
-  color: rgba(245, 245, 240, 0.5);
+  color: rgba(245,245,240,0.5);
 }
 
 .process-world-inside h2 {
+  margin: 0;
+  max-width: 780px;
+  font-size: clamp(44px, 7vw, 112px);
+  line-height: 0.92;
+  letter-spacing: -0.075em;
+  font-weight: 500;
+  color: var(--process-white);
+}
+
+.process-void {
+  position: absolute;
+  left: var(--process-c-x);
+  top: var(--process-c-y);
+  z-index: 3;
+  width: clamp(96px, 12vw, 230px);
+  aspect-ratio: 1;
+  border-radius: 999px;
+  background: radial-gradient(circle, rgba(0,0,0,0.96) 0 34%, rgba(0,0,0,0.68) 48%, rgba(0,0,0,0.22) 66%, rgba(0,0,0,0) 78%);
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.14);
+  filter: blur(1px);
+  pointer-events: none;
+  will-change: transform, opacity;
+}
+
+.process-overlay {
   position: relative;
   z-index: 1;
   margin: 0;
@@ -316,7 +191,6 @@
   width: min(1380px, calc(100% - 44px));
   height: 100%;
   margin: 0 auto;
-
   pointer-events: none;
   perspective: 1200px;
 }
@@ -326,15 +200,13 @@
   left: 0;
   top: clamp(78px, 12vh, 132px);
   width: min(470px, 42vw);
-
   pointer-events: auto;
   will-change: transform, opacity;
 }
 
 .process-kicker {
   margin: 0 0 18px;
-
-  font-family: "IBM Plex Mono", var(--mono, ui-monospace, monospace);
+  font-family: var(--mono, ui-monospace, monospace);
   font-size: 11px;
   line-height: 1;
   letter-spacing: 0.18em;
@@ -346,26 +218,17 @@
 .process-copy p:not(.process-kicker) {
   margin: 0;
   max-width: 430px;
-
   font-size: clamp(15px, 1.05vw, 17px);
   line-height: 1.62;
   letter-spacing: -0.024em;
-
   color: var(--process-muted);
 }
-
-/* ================================
-   FALLBACK NEXT SECTION STYLE
-   Only used if you add a normal systems section after process.
-================================ */
 
 .systems-handoff {
   min-height: 100svh;
   display: grid;
   place-items: center;
-
   padding: clamp(90px, 12vw, 160px) 24px;
-
   background: #050505;
   color: var(--process-white);
 }
@@ -376,51 +239,23 @@
 
 .systems-handoff p {
   margin: 0 0 18px;
-
-  font-family: "IBM Plex Mono", var(--mono, ui-monospace, monospace);
+  font-family: var(--mono, ui-monospace, monospace);
   font-size: 11px;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-
-  color: rgba(245, 245, 240, 0.5);
+  color: rgba(245,245,240,0.5);
 }
 
 .systems-handoff h2 {
   margin: 0;
   max-width: 780px;
-
   font-size: clamp(44px, 7vw, 112px);
   line-height: 0.92;
   letter-spacing: -0.075em;
   font-weight: 500;
 }
 
-/* ================================
-   RESPONSIVE
-================================ */
-
-@media (max-width: 1100px) {
-  :root {
-    --process-aperture-x: 53.4%;
-    --process-aperture-y: 50.5%;
-  }
-
-  .process-world-inside__inner {
-    transform: translate(-53.4vw, -50.5vh);
-  }
-
-  .process-word {
-    font-size: clamp(74px, 18vw, 230px);
-    letter-spacing: -0.14em;
-  }
-}
-
 @media (max-width: 900px) {
-  :root {
-    --process-aperture-x: 54%;
-    --process-aperture-y: 50.5%;
-  }
-
   .process-overlay {
     width: min(720px, calc(100% - 28px));
   }
@@ -432,39 +267,8 @@
 
   .process-word {
     font-size: clamp(68px, 20vw, 170px);
-    -webkit-text-stroke-width: 1.2px;
-    text-stroke-width: 1.2px;
-  }
-
-  .process-world-inside__inner {
-    padding: 96px 28px;
-    transform: translate(-54vw, -50.5vh);
   }
 }
-
-@media (max-width: 640px) {
-  :root {
-    --process-aperture-x: 54.8%;
-    --process-aperture-y: 50.5%;
-  }
-
-  .process-word {
-    font-size: clamp(64px, 24vw, 140px);
-    letter-spacing: -0.13em;
-  }
-
-  .process-world-inside__inner {
-    transform: translate(-54.8vw, -50.5vh);
-  }
-
-  .process-world-inside h2 {
-    font-size: clamp(42px, 12vw, 76px);
-  }
-}
-
-/* ================================
-   REDUCED MOTION
-================================ */
 
 @media (prefers-reduced-motion: reduce) {
   .process-3d {
@@ -472,10 +276,6 @@
     min-height: 100svh;
     overflow: visible;
     padding: 90px 0;
-  }
-
-  .process-3d::after {
-    display: none;
   }
 
   .process-scene {
@@ -503,11 +303,5 @@
   .process-card {
     transform: none !important;
     filter: none !important;
-  }
-
-  .process-word {
-    color: transparent;
-    -webkit-text-stroke: 1.2px rgba(245, 245, 240, 0.7);
-    text-stroke: 1.2px rgba(245, 245, 240, 0.7);
   }
 }
