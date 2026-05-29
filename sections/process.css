@@ -1162,3 +1162,129 @@
   }
 
 }
+
+
+/* NOOMO-LIKE FEEL OVERRIDE */
+
+.process-work-copy {
+  background: #000;
+}
+
+.process-work-copy::before {
+  background:
+    radial-gradient(circle at 50% 18%, rgba(255,255,255,0.055), transparent 34%),
+    radial-gradient(circle at 50% 72%, rgba(255,255,255,0.025), transparent 42%),
+    linear-gradient(180deg, #020202 0%, #030303 45%, #000 100%);
+}
+
+.process-work-copy::after {
+  opacity: 0;
+}
+
+.process-work-container {
+  min-height: 700vh;
+  padding-top: clamp(130px, 16vh, 190px);
+}
+
+.process-work-top {
+  min-height: 92vh;
+}
+
+.process-work-word {
+  font-size: clamp(110px, 18vw, 460px);
+  opacity: 0.075;
+  letter-spacing: -0.13em;
+  mix-blend-mode: screen;
+  filter: blur(1.5px);
+}
+
+.process-work-intro {
+  max-width: 420px;
+  color: rgba(255,255,255,0.54);
+  font-size: 12px;
+}
+
+.process-work-item {
+  min-height: 128vh;
+}
+
+.process-work-card {
+  width: min(100%, 720px);
+  min-height: clamp(540px, 64vh, 720px);
+  border-color: rgba(255,255,255,0.09);
+  background:
+    linear-gradient(180deg, rgba(12,12,12,0.72), rgba(18,18,18,0.44));
+  box-shadow:
+    0 90px 220px rgba(0,0,0,0.72),
+    inset 0 1px 0 rgba(255,255,255,0.045);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.process-work-card h3 {
+  font-size: clamp(64px, 7vw, 132px);
+  font-weight: 400;
+  line-height: 0.82;
+}
+
+.process-work-card p {
+  color: rgba(255,255,255,0.58);
+  font-size: 13px;
+  max-width: 520px;
+}
+
+.process-work-points li {
+  color: rgba(255,255,255,0.46);
+}
+
+.process-card-btn {
+  background: transparent;
+  border-color: rgba(255,255,255,0.22);
+}
+
+.process-portal-exit {
+  min-height: 460vh;
+  margin-top: -16vh;
+  background: #000;
+}
+
+.process-portal-stage {
+  background:
+    radial-gradient(circle at 50% 50%,
+      rgba(255,255,255,0.025) 0%,
+      rgba(0,0,0,0.34) 38%,
+      #000 100%);
+  perspective: 1900px;
+}
+
+.process-portal-stage::before {
+  opacity: 0.95;
+  background:
+    radial-gradient(circle at 50% 50%,
+      rgba(255,255,255,0.055) 0%,
+      rgba(255,255,255,0.018) 12%,
+      rgba(0,0,0,0.76) 44%,
+      #000 84%);
+}
+
+.process-portal-stage::after {
+  opacity: 0.92;
+}
+
+.portal-booking h2 {
+  font-size: clamp(50px, 7.4vw, 118px);
+  line-height: 0.9;
+}
+
+.booking-sub {
+  color: rgba(255,255,255,0.5);
+}
+
+.booking-form {
+  background:
+    linear-gradient(180deg, rgba(12,12,12,0.62), rgba(18,18,18,0.36));
+  border-color: rgba(255,255,255,0.08);
+  box-shadow:
+    0 80px 220px rgba(0,0,0,0.82),
+    inset 0 1px 0 rgba(255,255,255,0.04);
+}
