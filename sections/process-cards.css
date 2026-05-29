@@ -1,26 +1,21 @@
 /* =========================================================
    PROCESS CARDS
-   Actual process content, revealed left-to-right in the pin.
+   Vertical step cards passing in front of the PROCESS anchor.
 ========================================================= */
 
 .process-cards {
   position: absolute;
-  left: max(24px, 28vw);
-  right: auto;
-  bottom: clamp(48px, 8vh, 92px);
+  inset: 0;
   z-index: 4;
-  display: flex;
-  align-items: stretch;
-  gap: clamp(14px, 1.8vw, 24px);
-  width: max-content;
   pointer-events: none;
-  will-change: transform, opacity;
+  transform-style: preserve-3d;
 }
 
 .process-card {
-  position: relative;
-  flex: 0 0 min(390px, 31vw);
-  min-height: clamp(250px, 35vh, 390px);
+  position: absolute;
+  top: 50%;
+  width: min(430px, 34vw);
+  min-height: clamp(245px, 33vh, 360px);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -28,19 +23,28 @@
   padding: clamp(22px, 2.2vw, 32px);
   border: 1px solid rgba(245, 245, 240, 0.13);
   border-radius: 26px;
-  background: linear-gradient(145deg, rgba(255,255,255,0.09), rgba(255,255,255,0.025)), rgba(8, 8, 8, 0.72);
+  background: linear-gradient(145deg, rgba(255,255,255,0.09), rgba(255,255,255,0.025)), rgba(8, 8, 8, 0.76);
   box-shadow: 0 28px 90px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.08);
   pointer-events: auto;
+  transform-style: preserve-3d;
   will-change: transform, opacity;
+}
+
+.process-card--left {
+  left: clamp(0px, 3vw, 54px);
+}
+
+.process-card--right {
+  right: clamp(0px, 3vw, 54px);
 }
 
 .process-card.is-active {
   border-color: rgba(245, 245, 240, 0.25);
-  background: linear-gradient(145deg, rgba(255,255,255,0.115), rgba(255,255,255,0.034)), rgba(10, 10, 10, 0.78);
+  background: linear-gradient(145deg, rgba(255,255,255,0.115), rgba(255,255,255,0.034)), rgba(10, 10, 10, 0.82);
 }
 
 .process-card.is-past {
-  opacity: 0.76;
+  opacity: 0.72;
 }
 
 .process-card__meta,
@@ -83,31 +87,36 @@
 }
 
 @media (max-width: 900px) {
-  .process-cards {
-    left: 14px;
-    right: 14px;
-    bottom: 22px;
-    width: auto;
-    overflow: visible;
+  .process-card {
+    top: 56%;
+    width: min(430px, calc(100vw - 28px));
+    min-height: 280px;
+    border-radius: 22px;
   }
 
-  .process-card {
-    flex-basis: min(78vw, 430px);
-    min-height: 300px;
-    border-radius: 22px;
+  .process-card--left,
+  .process-card--right {
+    left: 14px;
+    right: auto;
+  }
+
+  .process-card--right {
+    left: auto;
+    right: 14px;
   }
 }
 
 @media (max-width: 640px) {
-  .process-cards {
-    bottom: 18px;
-    gap: 12px;
+  .process-card {
+    width: calc(100vw - 24px);
+    min-height: 270px;
+    padding: 22px;
   }
 
-  .process-card {
-    flex-basis: 82vw;
-    min-height: 280px;
-    padding: 22px;
+  .process-card--left,
+  .process-card--right {
+    left: 12px;
+    right: auto;
   }
 
   .process-card__main h3 {
@@ -116,5 +125,25 @@
 
   .process-card__main p {
     font-size: 14px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .process-cards {
+    position: relative;
+    display: grid;
+    gap: 16px;
+    margin-top: 32px;
+  }
+
+  .process-card,
+  .process-card--left,
+  .process-card--right {
+    position: relative;
+    top: auto;
+    left: auto;
+    right: auto;
+    width: 100%;
+    opacity: 1 !important;
   }
 }

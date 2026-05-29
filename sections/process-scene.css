@@ -1,6 +1,6 @@
 /* =========================================================
    PROCESS SECTION
-   One restrained pinned handoff: real DOM word, clean cards.
+   Noomo-inspired vertical camera handoff using DOM layers.
 ========================================================= */
 
 :root {
@@ -30,8 +30,8 @@
   inset: 0;
   z-index: 0;
   pointer-events: none;
-  background: linear-gradient(to bottom, rgba(0,0,0,0.92), rgba(2,2,2,0.58) 28%, #020202 100%);
-  opacity: calc(0.5 + (var(--process-section-intensity) * 0.5));
+  background: linear-gradient(to bottom, rgba(0,0,0,0.96), rgba(2,2,2,0.48) 30%, #020202 100%);
+  opacity: calc(0.58 + (var(--process-section-intensity) * 0.42));
 }
 
 .process-scene {
@@ -41,25 +41,44 @@
   display: grid;
   place-items: center;
   overflow: hidden;
-  perspective: 900px;
+  perspective: 1100px;
+  transform-style: preserve-3d;
   pointer-events: none;
+  will-change: transform;
 }
 
 .process-word {
   position: relative;
+  z-index: 1;
   margin: 0;
   font-family: var(--sans, Manrope, system-ui, sans-serif);
-  font-size: clamp(70px, 17vw, 300px);
+  font-size: clamp(76px, 17vw, 310px);
   line-height: 0.78;
   letter-spacing: -0.085em;
   font-weight: 600;
-  color: rgba(245, 245, 240, 0.92);
+  color: rgba(245, 245, 240, 0.9);
   text-transform: uppercase;
   white-space: nowrap;
-  transform: translate3d(0, 0, 0) scale(0.72);
+  transform: translate3d(0, 0, -180px) scale(0.46);
+  transform-origin: 52% 50%;
   will-change: transform, opacity, filter, letter-spacing;
 }
 
+.process-void {
+  position: absolute;
+  left: 51.8%;
+  top: 50%;
+  z-index: 2;
+  width: clamp(96px, 12vw, 230px);
+  aspect-ratio: 1;
+  border-radius: 999px;
+  background: radial-gradient(circle, #000 0 38%, rgba(0,0,0,0.94) 52%, rgba(0,0,0,0.46) 64%, rgba(0,0,0,0) 74%);
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.14);
+  filter: blur(1px);
+  pointer-events: none;
+  will-change: transform, opacity;
+}
 
 .process-overlay {
   position: relative;
@@ -67,17 +86,17 @@
   width: min(1380px, calc(100% - 44px));
   height: 100%;
   margin: 0 auto;
-  display: flex;
-  align-items: center;
   pointer-events: none;
+  perspective: 1200px;
 }
 
 .process-copy {
   position: absolute;
   left: 0;
-  top: clamp(82px, 12vh, 136px);
+  top: clamp(78px, 12vh, 132px);
   width: min(470px, 42vw);
   pointer-events: auto;
+  will-change: transform, opacity;
 }
 
 .process-kicker {
@@ -133,18 +152,42 @@
 @media (max-width: 900px) {
   .process-overlay {
     width: min(720px, calc(100% - 28px));
-    align-items: flex-start;
-    padding-top: 90px;
+  }
+
+  .process-copy {
+    top: 86px;
+    width: min(560px, 100%);
+  }
+
+  .process-word {
+    font-size: clamp(68px, 20vw, 170px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .process-3d {
+    height: auto;
+    min-height: 100svh;
+    overflow: visible;
+    padding: 90px 0;
+  }
+
+  .process-scene {
+    position: relative;
+    min-height: 180px;
+  }
+
+  .process-overlay {
+    height: auto;
+    width: min(900px, calc(100% - 28px));
   }
 
   .process-copy {
     position: relative;
     top: auto;
-    width: min(560px, 100%);
+    width: 100%;
   }
-}
 
-@media (prefers-reduced-motion: reduce) {
   .process-word,
   .process-card {
     transform: none !important;
