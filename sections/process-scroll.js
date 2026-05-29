@@ -98,13 +98,14 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger, car
       filter: "blur(10px)",
       duration: 0.06
     }, 0.805)
-    .to(word, {
-      scale: 3.15,
-      xPercent: -3.8,
-      autoAlpha: 0.58,
-      filter: "blur(1.5px)",
-      duration: 0.07
-    }, 0.83)
+.to(word, {
+  scale: 3.15,
+  xPercent: 0,
+  yPercent: 0,
+  autoAlpha: 0.58,
+  filter: "blur(1.5px)",
+  duration: 0.07
+}, 0.83)
     .to(voidTarget, {
       scale: 3.7,
       autoAlpha: 0.86,
@@ -118,13 +119,14 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger, car
       filter: "blur(3px)",
       duration: 0.075
     }, 0.855)
-    .to(word, {
-      scale: 12.5,
-      xPercent: -13.5,
-      autoAlpha: 0,
-      filter: "blur(14px)",
-      duration: 0.14
-    }, 0.89)
+.to(word, {
+  scale: 12.5,
+  xPercent: 0,
+  yPercent: 0,
+  autoAlpha: 0,
+  filter: "blur(14px)",
+  duration: 0.14
+}, 0.89)
     .to(voidTarget, {
       scale: 18,
       autoAlpha: 0,
@@ -148,21 +150,21 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger, car
 function prepareInitialState({ gsap, section, sceneMount, word, voidTarget, worldInside, copy, cardTrack, cards }) {
   section.style.setProperty("--process-section-intensity", 0);
 
-  gsap.set(sceneMount, {
-    scale: 1,
-    xPercent: 0,
-    transformOrigin: "52% 50%"
-  });
+gsap.set(sceneMount, {
+  scale: 1,
+  xPercent: 0,
+  transformOrigin: "50% 50%"
+});
 
-  gsap.set(word, {
-    autoAlpha: 0.28,
-    scale: 0.46,
-    xPercent: 0,
-    yPercent: 28,
-    transformOrigin: "52% 50%",
-    filter: "blur(0px)",
-    letterSpacing: "-0.06em"
-  });
+gsap.set(word, {
+  autoAlpha: 0.28,
+  scale: 0.46,
+  xPercent: 0,
+  yPercent: 28,
+  transformOrigin: "50% 50%",
+  filter: "blur(0px)",
+  letterSpacing: "-0.06em"
+});
 
   gsap.set(voidTarget, {
     autoAlpha: 0,
