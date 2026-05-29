@@ -1,17 +1,25 @@
 // sections/process-scroll.js
 
 export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger, cards }) {
-  const sceneMount = section.querySelector("[data-process-scene]");
-  const word = section.querySelector(".process-word");
-  const aperture = section.querySelector(".process-c-aperture");
-  const worldInside = section.querySelector(".process-world-inside");
-  const apertureLetter = section.querySelector("[data-process-aperture-letter]");
-  const copy = section.querySelector(".process-copy");
-  const cardTrack = section.querySelector(".process-cards");
+  const sceneMount = section?.querySelector("[data-process-scene]");
+  const word = section?.querySelector(".process-word");
+  const aperture = section?.querySelector(".process-c-aperture");
+  const worldInside = section?.querySelector(".process-world-inside");
+  const apertureLetter = section?.querySelector("[data-process-aperture-letter]");
+  const copy = section?.querySelector(".process-copy");
+  const cardTrack = section?.querySelector(".process-cards");
   const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   if (!section || !sceneMount || !word || !aperture || !worldInside || !apertureLetter) {
-    console.warn("[process-scroll] Missing required process elements.");
+    console.warn("[process-scroll] Missing required elements.", {
+      section,
+      sceneMount,
+      word,
+      aperture,
+      worldInside,
+      apertureLetter
+    });
+
     return null;
   }
 
@@ -56,7 +64,12 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger, car
       anticipatePin: 1,
       invalidateOnRefresh: true,
 
+      onRefreshInit: () => {
+        clearWordForMeasurement(word);
+      },
+
       onRefresh: () => {
+        restoreWordAfterMeasurement(word);
         syncApertureAnchor({ section, sceneMount, word, apertureLetter });
       },
 
@@ -72,8 +85,8 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger, car
   });
 
   /*
-    PHASE 1:
-    PROCESS enters and becomes the main background object.
+    PHASE 1
+    PROCESS comes forward and becomes the background world.
   */
   timeline
     .to(section, {
@@ -84,6 +97,7 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger, car
     .to(word, {
       autoAlpha: 0.94,
       scale: 1,
+      xPercent: 0,
       yPercent: 0,
       letterSpacing: "-0.085em",
       filter: "blur(0px)",
@@ -97,7 +111,8 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger, car
     }, 0.08)
 
     .to(word, {
-      scale: 1.22,
+      scale: 1.18,
+      autoAlpha: 0.9,
       duration: 0.22
     }, 0.2)
 
@@ -108,8 +123,8 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger, car
     }, 0.26);
 
   /*
-    PHASE 2:
-    Cards pass in front while PROCESS stays pinned behind them.
+    PHASE 2
+    Cards pass across the PROCESS word.
   */
   cards.forEach((card, index) => {
     const side = index % 2 === 0 ? -1 : 1;
@@ -142,15 +157,14 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger, car
   });
 
   /*
-    PHASE 3:
-    The C aperture opens.
-    This replaces the old .process-void / floating orb.
-    The aperture is the clipped window attached to the C.
+    PHASE 3
+    The aperture opens from the hollow of the C.
+    No dark fake orb. No floating extra circle.
   */
   timeline
     .to(word, {
-      scale: 1.5,
-      autoAlpha: 0.8,
+      scale: 1.38,
+      autoAlpha: 0.82,
       filter: "blur(0px)",
       duration: 0.12
     }, 0.76)
@@ -162,45 +176,45 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger, car
 
     .to(aperture, {
       autoAlpha: 1,
-      width: "5.5vmax",
-      height: "5.5vmax",
-      filter: "blur(8px)",
+      width: "2.6vmax",
+      height: "2.6vmax",
+      filter: "blur(4px)",
       duration: 0.055
-    }, 0.8)
+    }, 0.805)
 
     .to(word, {
-      scale: 2.45,
-      autoAlpha: 0.68,
-      filter: "blur(1px)",
+      scale: 2.05,
+      autoAlpha: 0.7,
+      filter: "blur(0.8px)",
       duration: 0.075
-    }, 0.83)
+    }, 0.835)
 
     .to(aperture, {
-      width: "18vmax",
-      height: "18vmax",
+      width: "10vmax",
+      height: "10vmax",
+      filter: "blur(2px)",
+      duration: 0.075
+    }, 0.85)
+
+    .to(word, {
+      scale: 3.7,
+      autoAlpha: 0.46,
       filter: "blur(3px)",
       duration: 0.075
-    }, 0.845)
-
-    .to(word, {
-      scale: 4.6,
-      autoAlpha: 0.42,
-      filter: "blur(4px)",
-      duration: 0.075
     }, 0.875)
 
     .to(aperture, {
-      width: "56vmax",
-      height: "56vmax",
+      width: "42vmax",
+      height: "42vmax",
       filter: "blur(1px)",
       duration: 0.075
     }, 0.875)
 
     .to(word, {
-      scale: 12.5,
+      scale: 11.5,
       autoAlpha: 0,
       filter: "blur(14px)",
-      duration: 0.14
+      duration: 0.15
     }, 0.91)
 
     .to(aperture, {
@@ -208,7 +222,7 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger, car
       height: "240vmax",
       filter: "blur(0px)",
       autoAlpha: 1,
-      duration: 0.14
+      duration: 0.15
     }, 0.91)
 
     .to(section, {
@@ -236,45 +250,36 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger, car
 }
 
 /*
-  This is the important part.
+  Measures the C and places the aperture in the visual hollow.
 
-  It measures the C span and sets:
-  --process-c-x
-  --process-c-y
-
-  The aperture and PROCESS transform-origin both use the same measured point,
-  so the reveal feels attached to the C instead of floating over it.
+  Important:
+  The C's DOM bounding box is not the same as the visual hole.
+  A value around 0.46-0.52 usually hits the inner hollow.
+  Higher values push the aperture toward the open mouth / E.
 */
 function syncApertureAnchor({ section, sceneMount, word, apertureLetter }) {
   if (!section || !sceneMount || !word || !apertureLetter) return;
 
-  const previousTransform = word.style.transform;
-  const previousLetterSpacing = word.style.letterSpacing;
-  const previousTransformOrigin = word.style.transformOrigin;
-  const previousOpacity = word.style.opacity;
-  const previousVisibility = word.style.visibility;
+  const previous = saveInlineWordState(word);
 
-  word.style.transform = "translate3d(0, 0, 0) scale(1)";
-  word.style.letterSpacing = "-0.085em";
-  word.style.transformOrigin = "50% 50%";
-  word.style.opacity = "1";
-  word.style.visibility = "visible";
+  clearWordForMeasurement(word);
 
   const sceneRect = sceneMount.getBoundingClientRect();
   const wordRect = word.getBoundingClientRect();
   const letterRect = apertureLetter.getBoundingClientRect();
 
   /*
-    These two numbers are the C-mouth tuning.
+    TUNING VALUES:
 
-    X: higher moves the aperture toward the open mouth of the C.
-    Y: 0.50 keeps it vertically centered.
+    If aperture is too far right: lower apertureFactorX.
+    If aperture is too far left: raise apertureFactorX.
+    If aperture is too low: lower apertureFactorY.
+    If aperture is too high: raise apertureFactorY.
 
-    If it is still too far left, change 0.68 to 0.71.
-    If it is too far right, change 0.68 to 0.64.
+    For your screenshot, 0.46 / 0.47 should pull it inside the C hollow.
   */
-  const apertureFactorX = 0.68;
-  const apertureFactorY = 0.5;
+  const apertureFactorX = 0.46;
+  const apertureFactorY = 0.47;
 
   const apertureX = letterRect.left - sceneRect.left + letterRect.width * apertureFactorX;
   const apertureY = letterRect.top - sceneRect.top + letterRect.height * apertureFactorY;
@@ -287,11 +292,7 @@ function syncApertureAnchor({ section, sceneMount, word, apertureLetter }) {
   section.style.setProperty("--process-word-origin-x", `${originX.toFixed(2)}px`);
   section.style.setProperty("--process-word-origin-y", `${originY.toFixed(2)}px`);
 
-  word.style.transform = previousTransform;
-  word.style.letterSpacing = previousLetterSpacing;
-  word.style.transformOrigin = previousTransformOrigin;
-  word.style.opacity = previousOpacity;
-  word.style.visibility = previousVisibility;
+  restoreInlineWordState(word, previous);
 }
 
 function prepareInitialState({
@@ -306,6 +307,9 @@ function prepareInitialState({
   cards
 }) {
   section.style.setProperty("--process-section-intensity", 0);
+  section.style.setProperty("--process-intro", 0);
+  section.style.setProperty("--process-cards", 0);
+  section.style.setProperty("--process-handoff", 0);
 
   gsap.set(sceneMount, {
     scale: 1,
@@ -328,13 +332,15 @@ function prepareInitialState({
     autoAlpha: 0,
     width: "0vmax",
     height: "0vmax",
-    filter: "blur(12px)",
+    filter: "blur(8px)",
+    xPercent: 0,
+    yPercent: 0,
     transformOrigin: "50% 50%"
   });
 
   gsap.set(worldInside, {
     autoAlpha: 1,
-    clearProps: "width,height,left,top,transform,filter"
+    clearProps: "width,height,left,top,right,bottom,transform,filter"
   });
 
   if (copy) {
@@ -375,6 +381,9 @@ function prepareReducedState({
   cards
 }) {
   section.style.setProperty("--process-section-intensity", 1);
+  section.style.setProperty("--process-intro", 1);
+  section.style.setProperty("--process-cards", 1);
+  section.style.setProperty("--process-handoff", 0);
 
   gsap.set(word, {
     clearProps: "all"
@@ -409,7 +418,8 @@ function prepareReducedState({
     x: 0,
     yPercent: 0,
     scale: 1,
-    rotateX: 0
+    rotateX: 0,
+    filter: "none"
   });
 }
 
@@ -418,9 +428,9 @@ function updateByProgress({ progress, scene, ui }) {
   const cards = mapRange(progress, 0.28, 0.8);
   const handoff = mapRange(progress, 0.8, 1);
 
-  scene.setProgress({ intro, cards, handoff });
-  ui.setCardsProgress(cards);
-  ui.softenForHandoff(handoff);
+  scene?.setProgress?.({ intro, cards, handoff });
+  ui?.setCardsProgress?.(cards);
+  ui?.softenForHandoff?.(handoff);
 }
 
 function mapRange(value, start, end) {
@@ -440,4 +450,37 @@ function debounce(fn, wait = 100) {
       fn.apply(this, args);
     }, wait);
   };
+}
+
+function saveInlineWordState(word) {
+  return {
+    transform: word.style.transform,
+    letterSpacing: word.style.letterSpacing,
+    transformOrigin: word.style.transformOrigin,
+    opacity: word.style.opacity,
+    visibility: word.style.visibility,
+    filter: word.style.filter
+  };
+}
+
+function restoreInlineWordState(word, state) {
+  word.style.transform = state.transform;
+  word.style.letterSpacing = state.letterSpacing;
+  word.style.transformOrigin = state.transformOrigin;
+  word.style.opacity = state.opacity;
+  word.style.visibility = state.visibility;
+  word.style.filter = state.filter;
+}
+
+function clearWordForMeasurement(word) {
+  word.style.transform = "translate3d(0, 0, 0) scale(1)";
+  word.style.letterSpacing = "-0.085em";
+  word.style.transformOrigin = "50% 50%";
+  word.style.opacity = "1";
+  word.style.visibility = "visible";
+  word.style.filter = "none";
+}
+
+function restoreWordAfterMeasurement(word) {
+  word.style.transformOrigin = "var(--process-word-origin-x) var(--process-word-origin-y)";
 }
