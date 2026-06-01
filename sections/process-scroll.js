@@ -21,15 +21,9 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger, car
     scrollTrigger: {
       trigger: section,
       start: "top top",
-
-      /*
-        Longer section = slower scroll feeling.
-        Not crazy long, just enough so cards can breathe.
-      */
-      end: () => `+=${Math.max(window.innerHeight * 6.35, 6200)}`,
-
+      end: () => `+=${Math.max(window.innerHeight * 6.6, 6400)}`,
       pin: true,
-      scrub: 0.9,
+      scrub: 0.95,
       anticipatePin: 1,
       invalidateOnRefresh: true,
       onUpdate: (self) => updateByProgress({ progress: self.progress, scene, ui }),
@@ -41,12 +35,15 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger, car
   });
 
   /*
-    Intro:
-    PROCESS grows into position.
-    Copy appears briefly, then clears out so the cards own the scene.
+    INTRO
+    Keep the PROCESS word/copy behavior.
   */
   timeline
-    .to(section, { "--process-section-intensity": 1, duration: 0.12 }, 0)
+    .to(section, {
+      "--process-section-intensity": 1,
+      duration: 0.12
+    }, 0)
+
     .to(word, {
       autoAlpha: 0.9,
       scale: 1,
@@ -54,15 +51,18 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger, car
       letterSpacing: "-0.085em",
       duration: 0.2
     }, 0)
+
     .to(copy, {
       autoAlpha: 1,
       y: 0,
       duration: 0.12
     }, 0.08)
+
     .to(word, {
       scale: 1.18,
       duration: 0.22
     }, 0.2)
+
     .to(copy, {
       autoAlpha: 0,
       y: -24,
@@ -70,74 +70,55 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger, car
     }, 0.27);
 
   /*
-    Cards:
-    Important change:
-    - Cards do NOT all remain strongly visible.
-    - Active card holds.
-    - Past card becomes a quiet ghost.
-    - Earlier cards become almost invisible.
-    - No huge upward flying fade-out.
+    CARDS
+    Clean rhythm:
+    - only one card owns the screen at a time
+    - card holds longer
+    - previous card exits softly
+    - no stack of 4 cards sitting there
   */
+  const cardStart = 0.31;
+  const cardGap = 0.135;
+  const enterDuration = 0.07;
+  const holdDuration = 0.115;
+  const exitDuration = 0.08;
+
   cards.forEach((card, index) => {
     const side = index % 2 === 0 ? -1 : 1;
-    const start = 0.31 + index * 0.14;
+    const start = cardStart + index * cardGap;
 
     timeline
-      // Enter from a controlled fixed position.
       .to(card, {
         autoAlpha: 1,
-        yPercent: 0,
         x: 0,
+        yPercent: 0,
         scale: 1,
         rotateX: 0,
-        duration: 0.095
+        duration: enterDuration
       }, start)
 
-      // Settle larger. This is the "impressive" moment.
       .to(card, {
         autoAlpha: 1,
-        yPercent: 0,
         x: 0,
-        scale: 1.018,
-        rotateX: 0,
-        duration: 0.13
-      }, start + 0.095)
-
-      // Linger without drifting.
-      .to(card, {
-        autoAlpha: 1,
         yPercent: 0,
-        x: 0,
-        scale: 1.018,
+        scale: 1.012,
         rotateX: 0,
-        duration: 0.085
-      }, start + 0.225)
+        duration: holdDuration
+      }, start + enterDuration)
 
-      // Become background, but not a big visible block.
       .to(card, {
-        autoAlpha: 0.13,
-        yPercent: side === -1 ? -10 : 10,
-        x: side * -22,
-        scale: 0.955,
+        autoAlpha: 0,
+        x: side * -26,
+        yPercent: side === -1 ? -14 : 14,
+        scale: 0.965,
         rotateX: 0,
-        duration: 0.105
-      }, start + 0.31)
-
-      // Fade further once the next card owns the scene.
-      .to(card, {
-        autoAlpha: 0.04,
-        yPercent: side === -1 ? -18 : 18,
-        x: side * -34,
-        scale: 0.93,
-        rotateX: 0,
-        duration: 0.095
-      }, start + 0.43);
+        duration: exitDuration
+      }, start + enterDuration + holdDuration);
   });
 
   /*
-    Handoff:
-    Moved later so cards have time to breathe.
-    Kept your same void / worldInside / PROCESS zoom idea.
+    HANDOFF
+    Keep your zoom-through-C idea, just start it after cards finish.
   */
   timeline
     .to(word, {
@@ -148,7 +129,7 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger, car
 
     .to(cards, {
       autoAlpha: 0,
-      duration: 0.08
+      duration: 0.06
     }, 0.865)
 
     .to(voidTarget, {
@@ -217,7 +198,12 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger, car
       duration: 0.1
     }, 0.96);
 
-  window.addEventListener("resize", () => ScrollTrigger.refresh());
+  const refresh = () => ScrollTrigger.refresh();
+  window.addEventListener("resize", refresh);
+
+  timeline.eventCallback("onKill", () => {
+    window.removeEventListener("resize", refresh);
+  });
 
   return timeline;
 }
@@ -268,17 +254,13 @@ function prepareInitialState({ gsap, section, sceneMount, word, voidTarget, worl
   cards.forEach((card, index) => {
     const side = index % 2 === 0 ? -1 : 1;
 
-    /*
-      Cards start close to their final positions.
-      This avoids the floaty "all cards flying through the screen" feeling.
-    */
     gsap.set(card, {
       autoAlpha: 0,
-      x: side * 30,
-      yPercent: 18,
-      scale: 0.96,
+      x: side * 34,
+      yPercent: 22,
+      scale: 0.965,
       rotateX: 0,
-      transformOrigin: "50% 60%"
+      transformOrigin: "50% 58%"
     });
   });
 }
@@ -291,6 +273,7 @@ function prepareReducedState({ gsap, section, word, voidTarget, worldInside, cop
   gsap.set(worldInside, { autoAlpha: 0, filter: "none" });
   gsap.set(copy, { autoAlpha: 1, y: 0 });
   gsap.set(cardTrack, { autoAlpha: 1 });
+
   gsap.set(cards, {
     autoAlpha: 1,
     x: 0,
