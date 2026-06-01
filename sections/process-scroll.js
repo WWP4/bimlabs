@@ -92,7 +92,7 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger, car
     }, 0.79)
     .to(worldInside, {
       autoAlpha: 0,
-      clipPath: "circle(7% at 51.8% 50%)",
+      clipPath: "circle(7% at 49.6% 50%)",
       y: 26,
       scale: 0.86,
       filter: "blur(10px)",
@@ -112,7 +112,7 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger, car
     }, 0.83)
     .to(worldInside, {
       autoAlpha: 0.58,
-      clipPath: "circle(28% at 51.8% 50%)",
+      clipPath: "circle(28% at 49.6% 50%)",
       y: 8,
       scale: 0.94,
       filter: "blur(3px)",
@@ -132,7 +132,7 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger, car
     }, 0.89)
     .to(worldInside, {
       autoAlpha: 1,
-      clipPath: "circle(150% at 51.8% 50%)",
+      clipPath: "circle(150% at 49.6% 50%)",
       scale: 1,
       y: 0,
       filter: "blur(0px)",
@@ -151,7 +151,7 @@ function prepareInitialState({ gsap, section, sceneMount, word, voidTarget, worl
   gsap.set(sceneMount, {
     scale: 1,
     xPercent: 0,
-    transformOrigin: "52% 50%"
+    transformOrigin: "50% 50%"
   });
 
 gsap.set(word, {
@@ -159,7 +159,7 @@ gsap.set(word, {
   scale: 0.46,
   xPercent: 0,
   yPercent: 28,
-  transformOrigin: "52% 50%",
+  transformOrigin: "50% 50%",
   filter: "blur(0px)",
   letterSpacing: "-0.035em"
 });
@@ -172,11 +172,11 @@ gsap.set(word, {
 
   gsap.set(worldInside, {
     autoAlpha: 0,
-    clipPath: "circle(0% at 51.8% 50%)",
+    clipPath: "circle(0% at 49.6% 50%)",
     y: 44,
     scale: 0.8,
     filter: "blur(12px)",
-    transformOrigin: "51.8% 50%"
+    transformOrigin: "49.6% 50%"
   });
 
   gsap.set(copy, { autoAlpha: 0, y: 28 });
