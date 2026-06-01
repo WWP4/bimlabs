@@ -246,3 +246,66 @@
     filter: none !important;
   }
 }
+
+
+
+/* =========================================================
+   PROCESS HANDOFF LAYER FIX
+   Forces the destination section BEHIND the PROCESS word.
+========================================================= */
+
+.process-3d {
+  isolation: isolate;
+}
+
+.process-scene {
+  z-index: 1;
+}
+
+/* Destination / next section layer lives behind the typography */
+.process-world-inside {
+  z-index: 1 !important;
+  mix-blend-mode: normal;
+  pointer-events: none;
+}
+
+/* The dark aperture also sits behind PROCESS, not above it */
+.process-void {
+  z-index: 2 !important;
+  pointer-events: none;
+}
+
+/* PROCESS must always be the foreground mask/lettering */
+.process-word {
+  z-index: 5 !important;
+  color: rgba(245, 245, 240, 0.92);
+  opacity: 1;
+  mix-blend-mode: normal;
+  pointer-events: none;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: geometricPrecision;
+}
+
+/* Make each letter paint as its own clean foreground layer */
+.process-word span {
+  position: relative;
+  z-index: 6;
+}
+
+/* UI/cards stay above background during the card phase */
+.process-overlay {
+  z-index: 6;
+}
+
+/* During the handoff, the scene is still behind the word */
+.process-3d.is-process-active .process-world-inside {
+  z-index: 1 !important;
+}
+
+.process-3d.is-process-active .process-void {
+  z-index: 2 !important;
+}
+
+.process-3d.is-process-active .process-word {
+  z-index: 5 !important;
+}
