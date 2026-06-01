@@ -21,9 +21,15 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger, car
     scrollTrigger: {
       trigger: section,
       start: "top top",
-      end: () => `+=${Math.max(window.innerHeight * 5.4, 5200)}`,
+
+      /*
+        Longer section = slower scroll feeling.
+        Not crazy long, just enough so cards can breathe.
+      */
+      end: () => `+=${Math.max(window.innerHeight * 6.35, 6200)}`,
+
       pin: true,
-      scrub: 0.85,
+      scrub: 0.9,
       anticipatePin: 1,
       invalidateOnRefresh: true,
       onUpdate: (self) => updateByProgress({ progress: self.progress, scene, ui }),
@@ -34,88 +40,123 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger, car
     }
   });
 
+  /*
+    Intro:
+    PROCESS grows into position.
+    Copy appears briefly, then clears out so the cards own the scene.
+  */
   timeline
     .to(section, { "--process-section-intensity": 1, duration: 0.12 }, 0)
     .to(word, {
-      autoAlpha: 0.92,
+      autoAlpha: 0.9,
       scale: 1,
       yPercent: 0,
       letterSpacing: "-0.085em",
       duration: 0.2
     }, 0)
-    .to(copy, { autoAlpha: 1, y: 0, duration: 0.12 }, 0.08)
-    .to(word, { scale: 1.22, duration: 0.22 }, 0.2)
-    .to(copy, { autoAlpha: 0, y: -26, duration: 0.14 }, 0.26);
-
-cards.forEach((card, index) => {
-  const side = index % 2 === 0 ? -1 : 1;
+    .to(copy, {
+      autoAlpha: 1,
+      y: 0,
+      duration: 0.12
+    }, 0.08)
+    .to(word, {
+      scale: 1.18,
+      duration: 0.22
+    }, 0.2)
+    .to(copy, {
+      autoAlpha: 0,
+      y: -24,
+      duration: 0.14
+    }, 0.27);
 
   /*
-    Slower spacing.
-    Each card gets more time on screen:
-    - enters
-    - settles
-    - lingers
-    - gently becomes a background card
+    Cards:
+    Important change:
+    - Cards do NOT all remain strongly visible.
+    - Active card holds.
+    - Past card becomes a quiet ghost.
+    - Earlier cards become almost invisible.
+    - No huge upward flying fade-out.
   */
-  const start = 0.28 + index * 0.115;
+  cards.forEach((card, index) => {
+    const side = index % 2 === 0 ? -1 : 1;
+    const start = 0.31 + index * 0.14;
 
-  timeline
-    // Card enters slowly from its fixed side position.
-    .to(card, {
-      autoAlpha: 1,
-      yPercent: 0,
-      x: 0,
-      scale: 1,
-      rotateX: 0,
-      duration: 0.12
-    }, start)
+    timeline
+      // Enter from a controlled fixed position.
+      .to(card, {
+        autoAlpha: 1,
+        yPercent: 0,
+        x: 0,
+        scale: 1,
+        rotateX: 0,
+        duration: 0.095
+      }, start)
 
-    // Card settles and feels present.
-    .to(card, {
-      yPercent: 0,
-      x: 0,
-      scale: 1.025,
-      rotateX: 0,
-      duration: 0.12
-    }, start + 0.12)
+      // Settle larger. This is the "impressive" moment.
+      .to(card, {
+        autoAlpha: 1,
+        yPercent: 0,
+        x: 0,
+        scale: 1.018,
+        rotateX: 0,
+        duration: 0.13
+      }, start + 0.095)
 
-    // Linger. No movement. This is the important part.
-    .to(card, {
-      autoAlpha: 1,
-      yPercent: 0,
-      x: 0,
-      scale: 1.025,
-      rotateX: 0,
-      duration: 0.13
-    }, start + 0.24)
+      // Linger without drifting.
+      .to(card, {
+        autoAlpha: 1,
+        yPercent: 0,
+        x: 0,
+        scale: 1.018,
+        rotateX: 0,
+        duration: 0.085
+      }, start + 0.225)
 
-    // Instead of fading away, it becomes a quiet background card.
-    .to(card, {
-      autoAlpha: 0.34,
-      yPercent: side === -1 ? -4 : 4,
-      x: side * -10,
-      scale: 0.985,
-      rotateX: 0,
-      duration: 0.11
-    }, start + 0.37);
-});
+      // Become background, but not a big visible block.
+      .to(card, {
+        autoAlpha: 0.13,
+        yPercent: side === -1 ? -10 : 10,
+        x: side * -22,
+        scale: 0.955,
+        rotateX: 0,
+        duration: 0.105
+      }, start + 0.31)
 
+      // Fade further once the next card owns the scene.
+      .to(card, {
+        autoAlpha: 0.04,
+        yPercent: side === -1 ? -18 : 18,
+        x: side * -34,
+        scale: 0.93,
+        rotateX: 0,
+        duration: 0.095
+      }, start + 0.43);
+  });
+
+  /*
+    Handoff:
+    Moved later so cards have time to breathe.
+    Kept your same void / worldInside / PROCESS zoom idea.
+  */
   timeline
     .to(word, {
-      scale: 1.5,
-      autoAlpha: 0.78,
+      scale: 1.42,
+      autoAlpha: 0.76,
       duration: 0.12
-    }, 0.76)
+    }, 0.86)
+
     .to(cards, {
       autoAlpha: 0,
       duration: 0.08
-    }, 0.78)
+    }, 0.865)
+
     .to(voidTarget, {
       autoAlpha: 0.92,
       scale: 1,
       duration: 0.055
-    }, 0.79)
+    }, 0.875)
+
     .to(worldInside, {
       autoAlpha: 0,
       clipPath: "circle(7% at 51.8% 50%)",
@@ -123,39 +164,45 @@ cards.forEach((card, index) => {
       scale: 0.86,
       filter: "blur(10px)",
       duration: 0.06
-    }, 0.805)
-   .to(word, {
-  scale: 3.15,
-  xPercent: -3.8,
-  autoAlpha: 0.88,
-  filter: "blur(0.8px)",
-  duration: 0.07
-}, 0.83)
+    }, 0.885)
+
+    .to(word, {
+      scale: 3.15,
+      xPercent: -3.8,
+      autoAlpha: 0.88,
+      filter: "blur(0.8px)",
+      duration: 0.07
+    }, 0.905)
+
     .to(voidTarget, {
       scale: 3.7,
       autoAlpha: 0.86,
       duration: 0.07
-    }, 0.83)
-   .to(worldInside, {
-  autoAlpha: 0.42,
-  clipPath: "circle(28% at 51.8% 50%)",
-  y: 8,
-  scale: 0.94,
-  filter: "blur(5px)",
-  duration: 0.075
-}, 0.855)
+    }, 0.905)
+
+    .to(worldInside, {
+      autoAlpha: 0.42,
+      clipPath: "circle(28% at 51.8% 50%)",
+      y: 8,
+      scale: 0.94,
+      filter: "blur(5px)",
+      duration: 0.075
+    }, 0.925)
+
     .to(word, {
       scale: 12.5,
       xPercent: -13.5,
       autoAlpha: 0,
       filter: "blur(14px)",
       duration: 0.14
-    }, 0.89)
+    }, 0.95)
+
     .to(voidTarget, {
       scale: 18,
       autoAlpha: 0,
       duration: 0.13
-    }, 0.89)
+    }, 0.95)
+
     .to(worldInside, {
       autoAlpha: 1,
       clipPath: "circle(150% at 51.8% 50%)",
@@ -163,8 +210,12 @@ cards.forEach((card, index) => {
       y: 0,
       filter: "blur(0px)",
       duration: 0.16
-    }, 0.89)
-    .to(section, { "--process-section-intensity": 0.08, duration: 0.1 }, 0.9);
+    }, 0.95)
+
+    .to(section, {
+      "--process-section-intensity": 0.08,
+      duration: 0.1
+    }, 0.96);
 
   window.addEventListener("resize", () => ScrollTrigger.refresh());
 
@@ -205,20 +256,30 @@ function prepareInitialState({ gsap, section, sceneMount, word, voidTarget, worl
     transformOrigin: "51.8% 50%"
   });
 
-  gsap.set(copy, { autoAlpha: 0, y: 28 });
-  gsap.set(cardTrack, { autoAlpha: 1 });
+  gsap.set(copy, {
+    autoAlpha: 0,
+    y: 28
+  });
+
+  gsap.set(cardTrack, {
+    autoAlpha: 1
+  });
 
   cards.forEach((card, index) => {
     const side = index % 2 === 0 ? -1 : 1;
 
-  gsap.set(card, {
-  autoAlpha: 0,
-  x: side * 34,
-  yPercent: 24,
-  scale: 0.96,
-  rotateX: 0,
-  transformOrigin: "50% 60%"
-});
+    /*
+      Cards start close to their final positions.
+      This avoids the floaty "all cards flying through the screen" feeling.
+    */
+    gsap.set(card, {
+      autoAlpha: 0,
+      x: side * 30,
+      yPercent: 18,
+      scale: 0.96,
+      rotateX: 0,
+      transformOrigin: "50% 60%"
+    });
   });
 }
 
@@ -230,13 +291,19 @@ function prepareReducedState({ gsap, section, word, voidTarget, worldInside, cop
   gsap.set(worldInside, { autoAlpha: 0, filter: "none" });
   gsap.set(copy, { autoAlpha: 1, y: 0 });
   gsap.set(cardTrack, { autoAlpha: 1 });
-  gsap.set(cards, { autoAlpha: 1, x: 0, yPercent: 0, scale: 1, rotateX: 0 });
+  gsap.set(cards, {
+    autoAlpha: 1,
+    x: 0,
+    yPercent: 0,
+    scale: 1,
+    rotateX: 0
+  });
 }
 
 function updateByProgress({ progress, scene, ui }) {
   const intro = mapRange(progress, 0.02, 0.22);
-  const cards = mapRange(progress, 0.28, 0.8);
-  const handoff = mapRange(progress, 0.8, 1);
+  const cards = mapRange(progress, 0.28, 0.84);
+  const handoff = mapRange(progress, 0.84, 1);
 
   scene.setProgress({ intro, cards, handoff });
   ui.setCardsProgress(cards);
