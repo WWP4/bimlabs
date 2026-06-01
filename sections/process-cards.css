@@ -1,7 +1,14 @@
 /* =========================================================
    PROCESS CARDS
-   Clean cinematic card layout for PROCESS section
-   Replace entire process-cards.css with this file
+   Editorial BIM Labs card style
+   Uses current class names:
+   .process-cards
+   .process-card
+   .process-card--left
+   .process-card--right
+   .process-card__meta
+   .process-card__main
+   .process-card__actions
 ========================================================= */
 
 .process-cards {
@@ -12,218 +19,294 @@
   transform-style: preserve-3d;
 }
 
-/* Main card */
+/* Main card — based on the older editorial cards */
 .process-card {
   position: absolute;
   top: 52%;
-  width: min(500px, 37vw);
-  min-height: clamp(285px, 37vh, 410px);
+
+  width: min(620px, 42vw);
+  min-height: clamp(300px, 38vh, 430px);
+
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  overflow: hidden;
 
-  padding: clamp(24px, 2.35vw, 38px);
-  border-radius: 28px;
+  padding: clamp(30px, 4.2vw, 56px);
 
-  border: 1px solid rgba(245, 245, 240, 0.14);
+  border: 1px solid rgba(244, 241, 234, 0.11);
+  border-radius: 2px;
 
   background:
     linear-gradient(
-      145deg,
-      rgba(255, 255, 255, 0.095),
-      rgba(255, 255, 255, 0.026)
-    ),
-    rgba(8, 8, 8, 0.80);
+      135deg,
+      rgba(244, 241, 234, 0.047),
+      rgba(244, 241, 234, 0.012) 44%,
+      rgba(244, 241, 234, 0.026)
+    );
 
   box-shadow:
-    0 32px 100px rgba(0, 0, 0, 0.48),
-    inset 0 1px 0 rgba(255, 255, 255, 0.075);
+    0 32px 110px rgba(0, 0, 0, 0.36),
+    inset 0 1px 0 rgba(244, 241, 234, 0.06);
 
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+
+  overflow: hidden;
   pointer-events: auto;
+
   transform-style: preserve-3d;
   will-change: transform, opacity;
+
+  transition:
+    border-color 0.55s ease,
+    background 0.55s ease,
+    box-shadow 0.55s ease;
 }
 
-/* Left/right placement */
+/* Thin top sweep line */
+.process-card::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+
+  height: 1px;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(244, 241, 234, 0.32),
+      transparent
+    );
+
+  opacity: 0;
+  transform: translateX(-35%);
+
+  transition:
+    opacity 0.55s ease,
+    transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Bottom editorial line */
+.process-card::after {
+  content: "";
+  position: absolute;
+  left: 26px;
+  right: 26px;
+  bottom: 20px;
+
+  height: 1px;
+
+  background: rgba(244, 241, 234, 0.1);
+
+  transform: scaleX(0);
+  transform-origin: left center;
+
+  transition: transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.process-card--right::after {
+  transform-origin: right center;
+}
+
+/* Placement */
 .process-card--left {
-  left: clamp(22px, 4.2vw, 76px);
+  left: clamp(24px, 5vw, 88px);
 }
 
 .process-card--right {
-  right: clamp(22px, 4.2vw, 76px);
+  right: clamp(24px, 5vw, 88px);
 }
 
 /* Active card */
 .process-card.is-active {
-  border-color: rgba(245, 245, 240, 0.26);
+  border-color: rgba(244, 241, 234, 0.23);
 
   background:
     linear-gradient(
-      145deg,
-      rgba(255, 255, 255, 0.115),
-      rgba(255, 255, 255, 0.032)
-    ),
-    rgba(10, 10, 10, 0.86);
+      135deg,
+      rgba(244, 241, 234, 0.067),
+      rgba(244, 241, 234, 0.018) 44%,
+      rgba(244, 241, 234, 0.037)
+    );
 
   box-shadow:
-    0 40px 120px rgba(0, 0, 0, 0.56),
-    inset 0 1px 0 rgba(255, 255, 255, 0.095);
+    0 44px 140px rgba(0, 0, 0, 0.46),
+    0 0 46px rgba(244, 241, 234, 0.035),
+    inset 0 1px 0 rgba(244, 241, 234, 0.09);
 }
 
-/* Past cards should feel present but quiet */
+.process-card.is-active::before {
+  opacity: 1;
+  transform: translateX(35%);
+}
+
+.process-card.is-active::after {
+  transform: scaleX(1);
+}
+
+/* Past card should be quiet, not gone, not loud */
 .process-card.is-past {
-  opacity: 0.42;
+  opacity: 0.38;
 }
 
-/* Top/bottom metadata */
+/* Top and bottom small labels */
 .process-card__meta,
 .process-card__actions {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  gap: 18px;
+  justify-content: space-between;
+  gap: 24px;
 
-  color: rgba(245, 245, 240, 0.54);
+  color: rgba(244, 241, 234, 0.34);
   font-family: var(--mono, ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace);
-  font-size: 11px;
+  font-size: 10px;
   line-height: 1;
-  letter-spacing: 0.145em;
+  letter-spacing: 0.28em;
   text-transform: uppercase;
+  white-space: nowrap;
 }
 
-/* Main content */
+/* Main card content */
 .process-card__main {
-  margin: clamp(46px, 7vh, 82px) 0;
+  margin: clamp(42px, 6vh, 70px) 0;
 }
 
 .process-card__main h3 {
   margin: 0;
-  max-width: 92%;
 
-  font-size: clamp(38px, 4.75vw, 72px);
-  line-height: 0.89;
-  letter-spacing: -0.078em;
-  font-weight: 500;
+  max-width: 95%;
 
-  color: rgba(245, 245, 240, 0.97);
+  color: rgba(244, 241, 234, 0.94);
+  font-family: inherit;
+  font-size: clamp(54px, 6.8vw, 118px);
+  font-weight: 400;
+  line-height: 0.78;
+  letter-spacing: -0.095em;
 }
 
 .process-card__main p {
-  max-width: 360px;
-  margin: 22px 0 0;
+  max-width: 455px;
+  margin: clamp(30px, 4.6vh, 46px) 0 0;
 
-  font-size: clamp(14px, 1.02vw, 16px);
-  line-height: 1.58;
-  letter-spacing: -0.024em;
-
-  color: rgba(245, 245, 240, 0.64);
+  color: rgba(244, 241, 234, 0.54);
+  font-size: 14px;
+  line-height: 1.66;
+  letter-spacing: -0.015em;
 }
 
 .process-card__button {
-  color: rgba(245, 245, 240, 0.82);
+  color: rgba(244, 241, 234, 0.62);
 }
 
-/* Prevent text from doubling/ghosting too hard */
+/* Hover — subtle, not bubbly */
+.process-card:hover {
+  border-color: rgba(244, 241, 234, 0.23);
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(244, 241, 234, 0.067),
+      rgba(244, 241, 234, 0.018) 44%,
+      rgba(244, 241, 234, 0.037)
+    );
+
+  box-shadow:
+    0 44px 140px rgba(0, 0, 0, 0.46),
+    0 0 46px rgba(244, 241, 234, 0.035),
+    inset 0 1px 0 rgba(244, 241, 234, 0.09);
+}
+
+.process-card:hover::before {
+  opacity: 1;
+  transform: translateX(35%);
+}
+
+.process-card:hover::after {
+  transform: scaleX(1);
+}
+
+/* Stop weird 3D text ghosting */
+.process-card,
 .process-card * {
   backface-visibility: hidden;
 }
 
 /* =========================================================
-   Desktop safety
+   TABLET
 ========================================================= */
 
-@media (min-width: 1200px) {
+@media (max-width: 1100px) {
   .process-card {
-    width: min(520px, 36vw);
-    min-height: clamp(300px, 38vh, 430px);
-  }
-
-  .process-card__main h3 {
-    font-size: clamp(42px, 4.9vw, 78px);
-  }
-}
-
-/* =========================================================
-   Tablet
-========================================================= */
-
-@media (max-width: 1000px) {
-  .process-card {
-    top: 55%;
-    width: min(460px, calc(100vw - 40px));
-    min-height: 300px;
-    border-radius: 24px;
+    top: 54%;
+    width: min(600px, calc(100vw - 48px));
+    min-height: 320px;
+    padding: 34px 30px;
   }
 
   .process-card--left {
-    left: 20px;
+    left: 24px;
     right: auto;
   }
 
   .process-card--right {
-    right: 20px;
+    right: 24px;
     left: auto;
   }
 
-  .process-card__main {
-    margin: 52px 0;
-  }
-
   .process-card__main h3 {
-    font-size: clamp(40px, 8vw, 64px);
-  }
-
-  .process-card__main p {
-    max-width: 340px;
+    font-size: clamp(54px, 13vw, 104px);
   }
 }
 
 /* =========================================================
-   Mobile
+   MOBILE
 ========================================================= */
 
-@media (max-width: 640px) {
+@media (max-width: 767px) {
   .process-card {
     top: 56%;
-    width: calc(100vw - 24px);
-    min-height: 285px;
-    padding: 22px;
-    border-radius: 22px;
+    width: calc(100vw - 28px);
+    min-height: 300px;
+    padding: 28px 22px 30px;
+
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
   }
 
   .process-card--left,
   .process-card--right {
-    left: 12px;
+    left: 14px;
     right: auto;
-  }
-
-  .process-card__main {
-    margin: 44px 0;
-  }
-
-  .process-card__main h3 {
-    max-width: 100%;
-    font-size: clamp(38px, 12vw, 58px);
-    letter-spacing: -0.075em;
-  }
-
-  .process-card__main p {
-    max-width: 100%;
-    margin-top: 18px;
-    font-size: 14px;
-    line-height: 1.5;
   }
 
   .process-card__meta,
   .process-card__actions {
-    font-size: 10px;
-    letter-spacing: 0.13em;
+    font-size: 9px;
+    letter-spacing: 0.22em;
+  }
+
+  .process-card__main {
+    margin: 42px 0;
+  }
+
+  .process-card__main h3 {
+    font-size: clamp(46px, 16vw, 76px);
+    letter-spacing: -0.082em;
+  }
+
+  .process-card__main p {
+    max-width: 100%;
+    margin-top: 28px;
+    font-size: 13px;
+    line-height: 1.62;
   }
 }
 
 /* =========================================================
-   Reduced motion
+   REDUCED MOTION
 ========================================================= */
 
 @media (prefers-reduced-motion: reduce) {
