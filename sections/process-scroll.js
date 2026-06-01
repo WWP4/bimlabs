@@ -9,15 +9,39 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger, car
   const cardTrack = section.querySelector(".process-cards");
   const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+  if (!section || !gsap || !ScrollTrigger) return null;
+
   if (prefersReducedMotion) {
-    prepareReducedState({ gsap, section, word, voidTarget, worldInside, copy, cardTrack, cards });
+    prepareReducedState({
+      gsap,
+      section,
+      word,
+      voidTarget,
+      worldInside,
+      copy,
+      cardTrack,
+      cards
+    });
+
     return null;
   }
 
-  prepareInitialState({ gsap, section, sceneMount, word, voidTarget, worldInside, copy, cardTrack, cards });
+  prepareInitialState({
+    gsap,
+    section,
+    sceneMount,
+    word,
+    voidTarget,
+    worldInside,
+    copy,
+    cardTrack,
+    cards
+  });
 
   const timeline = gsap.timeline({
-    defaults: { ease: "none" },
+    defaults: {
+      ease: "none"
+    },
     scrollTrigger: {
       trigger: section,
       start: "top top",
@@ -26,7 +50,15 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger, car
       scrub: 0.95,
       anticipatePin: 1,
       invalidateOnRefresh: true,
-      onUpdate: (self) => updateByProgress({ progress: self.progress, scene, ui }),
+
+      onUpdate: (self) => {
+        updateByProgress({
+          progress: self.progress,
+          scene,
+          ui
+        });
+      },
+
       onEnter: () => section.classList.add("is-process-active"),
       onEnterBack: () => section.classList.add("is-process-active"),
       onLeave: () => section.classList.remove("is-process-active"),
@@ -36,7 +68,8 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger, car
 
   /*
     INTRO
-    Keep the PROCESS word/copy behavior.
+    PROCESS word grows into the scene.
+    Copy appears briefly, then clears so cards own the space.
   */
   timeline
     .to(section, {
@@ -47,8 +80,10 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger, car
     .to(word, {
       autoAlpha: 0.9,
       scale: 1,
+      xPercent: 0,
       yPercent: 0,
       letterSpacing: "-0.085em",
+      filter: "blur(0px)",
       duration: 0.2
     }, 0)
 
@@ -71,28 +106,33 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger, car
 
   /*
     CARDS
-    Clean rhythm:
-    - only one card owns the screen at a time
-    - card holds longer
-    - previous card exits softly
-    - no stack of 4 cards sitting there
+    This is the fix.
+
+    Each card gets a clean non-overlapping slot:
+    - enters
+    - holds
+    - exits
+    - gets reset hidden
+
+    No lingering stack.
+    No 0.34 ghost opacity.
+    No two huge cards sitting loudly together.
   */
   const cardStart = 0.31;
-  const cardGap = 0.135;
-  const enterDuration = 0.08;
-  const holdDuration = 0.12;
-  const exitDuration = 0.09;
-  const pastOpacity = 0.04;
+  const cardWindow = 0.135;
 
   cards.forEach((card, index) => {
     const side = index % 2 === 0 ? -1 : 1;
-    const start = cardStart + index * cardGap;
-    const enterEnd = start + enterDuration;
-    const holdEnd = enterEnd + holdDuration;
+
+    const start = cardStart + index * cardWindow;
+    const enterAt = start;
+    const holdAt = start + 0.035;
+    const exitAt = start + 0.095;
+    const goneAt = start + 0.128;
 
     timeline
       .set(card, {
-        zIndex: cards.length - index
+        zIndex: cards.length + index
       }, 0)
 
       .to(card, {
@@ -101,9 +141,9 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger, car
         yPercent: -50,
         scale: 1,
         rotateX: 0,
-        duration: enterDuration,
+        duration: 0.035,
         ease: "power2.out"
-      }, start)
+      }, enterAt)
 
       .to(card, {
         autoAlpha: 1,
@@ -111,48 +151,52 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger, car
         yPercent: -50,
         scale: 1,
         rotateX: 0,
-        duration: holdDuration,
+        duration: 0.06,
         ease: "none"
-      }, enterEnd)
-
-      .to(card, {
-        autoAlpha: pastOpacity,
-        x: side * -18,
-        yPercent: -52,
-        scale: 0.99,
-        rotateX: 0,
-        duration: exitDuration,
-        ease: "power2.inOut"
-      }, holdEnd)
+      }, holdAt)
 
       .to(card, {
         autoAlpha: 0,
-        duration: 0.045,
-        ease: "none"
-      }, holdEnd + exitDuration);
+        x: side * -22,
+        yPercent: -52,
+        scale: 0.985,
+        rotateX: 0,
+        duration: 0.033,
+        ease: "power2.inOut"
+      }, exitAt)
+
+      .set(card, {
+        autoAlpha: 0,
+        x: side * 28,
+        yPercent: -48,
+        scale: 0.99,
+        rotateX: 0
+      }, goneAt);
   });
 
   /*
     HANDOFF
-    Keep your zoom-through-C idea, just start it after cards finish.
+    Kept your PROCESS / void / worldInside zoom idea.
+    Starts after cards finish so it does not fight the card sequence.
   */
   timeline
     .to(word, {
       scale: 1.42,
       autoAlpha: 0.76,
+      filter: "blur(0px)",
       duration: 0.12
-    }, 0.93)
+    }, 0.9)
 
     .to(cards, {
       autoAlpha: 0,
       duration: 0.06
-    }, 0.935)
+    }, 0.905)
 
     .to(voidTarget, {
       autoAlpha: 0.92,
       scale: 1,
       duration: 0.055
-    }, 0.945)
+    }, 0.915)
 
     .to(worldInside, {
       autoAlpha: 0,
@@ -161,7 +205,7 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger, car
       scale: 0.86,
       filter: "blur(10px)",
       duration: 0.06
-    }, 0.955)
+    }, 0.925)
 
     .to(word, {
       scale: 3.15,
@@ -169,13 +213,13 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger, car
       autoAlpha: 0.88,
       filter: "blur(0.8px)",
       duration: 0.07
-    }, 0.975)
+    }, 0.945)
 
     .to(voidTarget, {
       scale: 3.7,
       autoAlpha: 0.86,
       duration: 0.07
-    }, 0.975)
+    }, 0.945)
 
     .to(worldInside, {
       autoAlpha: 0.42,
@@ -184,7 +228,7 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger, car
       scale: 0.94,
       filter: "blur(5px)",
       duration: 0.075
-    }, 0.995)
+    }, 0.965)
 
     .to(word, {
       scale: 12.5,
@@ -192,13 +236,13 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger, car
       autoAlpha: 0,
       filter: "blur(14px)",
       duration: 0.14
-    }, 1.02)
+    }, 0.99)
 
     .to(voidTarget, {
       scale: 18,
       autoAlpha: 0,
       duration: 0.13
-    }, 1.02)
+    }, 0.99)
 
     .to(worldInside, {
       autoAlpha: 1,
@@ -207,14 +251,15 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger, car
       y: 0,
       filter: "blur(0px)",
       duration: 0.16
-    }, 1.02)
+    }, 0.99)
 
     .to(section, {
       "--process-section-intensity": 0.08,
       duration: 0.1
-    }, 1.03);
+    }, 1);
 
   const refresh = () => ScrollTrigger.refresh();
+
   window.addEventListener("resize", refresh);
 
   timeline.eventCallback("onKill", () => {
@@ -224,7 +269,17 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger, car
   return timeline;
 }
 
-function prepareInitialState({ gsap, section, sceneMount, word, voidTarget, worldInside, copy, cardTrack, cards }) {
+function prepareInitialState({
+  gsap,
+  section,
+  sceneMount,
+  word,
+  voidTarget,
+  worldInside,
+  copy,
+  cardTrack,
+  cards
+}) {
   section.style.setProperty("--process-section-intensity", 0);
 
   gsap.set(sceneMount, {
@@ -281,14 +336,39 @@ function prepareInitialState({ gsap, section, sceneMount, word, voidTarget, worl
   });
 }
 
-function prepareReducedState({ gsap, section, word, voidTarget, worldInside, copy, cardTrack, cards }) {
+function prepareReducedState({
+  gsap,
+  section,
+  word,
+  voidTarget,
+  worldInside,
+  copy,
+  cardTrack,
+  cards
+}) {
   section.style.setProperty("--process-section-intensity", 1);
 
-  gsap.set(word, { clearProps: "all" });
-  gsap.set(voidTarget, { autoAlpha: 0 });
-  gsap.set(worldInside, { autoAlpha: 0, filter: "none" });
-  gsap.set(copy, { autoAlpha: 1, y: 0 });
-  gsap.set(cardTrack, { autoAlpha: 1 });
+  gsap.set(word, {
+    clearProps: "all"
+  });
+
+  gsap.set(voidTarget, {
+    autoAlpha: 0
+  });
+
+  gsap.set(worldInside, {
+    autoAlpha: 0,
+    filter: "none"
+  });
+
+  gsap.set(copy, {
+    autoAlpha: 1,
+    y: 0
+  });
+
+  gsap.set(cardTrack, {
+    autoAlpha: 1
+  });
 
   gsap.set(cards, {
     autoAlpha: 1,
@@ -304,7 +384,12 @@ function updateByProgress({ progress, scene, ui }) {
   const cards = mapRange(progress, 0.28, 0.88);
   const handoff = mapRange(progress, 0.88, 1);
 
-  scene.setProgress({ intro, cards, handoff });
+  scene.setProgress({
+    intro,
+    cards,
+    handoff
+  });
+
   ui.setCardsProgress(cards);
   ui.softenForHandoff(handoff);
 }
@@ -312,5 +397,6 @@ function updateByProgress({ progress, scene, ui }) {
 function mapRange(value, start, end) {
   if (value <= start) return 0;
   if (value >= end) return 1;
+
   return (value - start) / (end - start);
 }
