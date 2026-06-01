@@ -53,11 +53,11 @@
   position: relative;
   z-index: 3;
   margin: 0;
-  font-family: var(--sans, Manrope, system-ui, sans-serif);
-  font-size: clamp(76px, 17vw, 310px);
-  line-height: 0.78;
-  letter-spacing: -0.085em;
-  font-weight: 600;
+  font-family: var(--mono, "IBM Plex Mono", ui-monospace, monospace);
+  font-size: clamp(58px, 12vw, 230px);
+  line-height: 0.86;
+  letter-spacing: -0.055em;
+  font-weight: 500;
   color: rgba(245, 245, 240, 0.9);
   text-transform: uppercase;
   white-space: nowrap;
