@@ -36,13 +36,13 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger, car
 
   timeline
     .to(section, { "--process-section-intensity": 1, duration: 0.12 }, 0)
-    .to(word, {
-      autoAlpha: 0.92,
-      scale: 1,
-      yPercent: 0,
-      letterSpacing: "-0.085em",
-      duration: 0.2
-    }, 0)
+.to(word, {
+  autoAlpha: 0.92,
+  scale: 1,
+  yPercent: 0,
+  letterSpacing: "-0.055em",
+  duration: 0.2
+}, 0)
     .to(copy, { autoAlpha: 1, y: 0, duration: 0.12 }, 0.08)
     .to(word, { scale: 1.22, duration: 0.22 }, 0.2)
     .to(copy, { autoAlpha: 0, y: -26, duration: 0.14 }, 0.26);
@@ -154,15 +154,15 @@ function prepareInitialState({ gsap, section, sceneMount, word, voidTarget, worl
     transformOrigin: "52% 50%"
   });
 
-  gsap.set(word, {
-    autoAlpha: 0.28,
-    scale: 0.46,
-    xPercent: 0,
-    yPercent: 28,
-    transformOrigin: "52% 50%",
-    filter: "blur(0px)",
-    letterSpacing: "-0.06em"
-  });
+gsap.set(word, {
+  autoAlpha: 0.28,
+  scale: 0.46,
+  xPercent: 0,
+  yPercent: 28,
+  transformOrigin: "52% 50%",
+  filter: "blur(0px)",
+  letterSpacing: "-0.035em"
+});
 
   gsap.set(voidTarget, {
     autoAlpha: 0,
