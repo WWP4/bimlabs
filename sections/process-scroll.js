@@ -47,33 +47,59 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger, car
     .to(word, { scale: 1.22, duration: 0.22 }, 0.2)
     .to(copy, { autoAlpha: 0, y: -26, duration: 0.14 }, 0.26);
 
-  cards.forEach((card, index) => {
-    const side = index % 2 === 0 ? -1 : 1;
-    const start = 0.3 + index * 0.13;
+cards.forEach((card, index) => {
+  const side = index % 2 === 0 ? -1 : 1;
 
-    timeline
-      .to(card, {
-        autoAlpha: 1,
-        yPercent: 0,
-        x: 0,
-        scale: 1,
-        rotateX: 0,
-        duration: 0.075
-      }, start)
-      .to(card, {
-        yPercent: -10,
-        scale: 1.015,
-        duration: 0.045
-      }, start + 0.075)
-      .to(card, {
-        autoAlpha: 0,
-        yPercent: -86,
-        x: side * -28,
-        scale: 0.95,
-        rotateX: -7,
-        duration: 0.095
-      }, start + 0.13);
-  });
+  /*
+    Slower spacing.
+    Each card gets more time on screen:
+    - enters
+    - settles
+    - lingers
+    - gently becomes a background card
+  */
+  const start = 0.28 + index * 0.115;
+
+  timeline
+    // Card enters slowly from its fixed side position.
+    .to(card, {
+      autoAlpha: 1,
+      yPercent: 0,
+      x: 0,
+      scale: 1,
+      rotateX: 0,
+      duration: 0.12
+    }, start)
+
+    // Card settles and feels present.
+    .to(card, {
+      yPercent: 0,
+      x: 0,
+      scale: 1.025,
+      rotateX: 0,
+      duration: 0.12
+    }, start + 0.12)
+
+    // Linger. No movement. This is the important part.
+    .to(card, {
+      autoAlpha: 1,
+      yPercent: 0,
+      x: 0,
+      scale: 1.025,
+      rotateX: 0,
+      duration: 0.13
+    }, start + 0.24)
+
+    // Instead of fading away, it becomes a quiet background card.
+    .to(card, {
+      autoAlpha: 0.34,
+      yPercent: side === -1 ? -4 : 4,
+      x: side * -10,
+      scale: 0.985,
+      rotateX: 0,
+      duration: 0.11
+    }, start + 0.37);
+});
 
   timeline
     .to(word, {
@@ -185,14 +211,14 @@ function prepareInitialState({ gsap, section, sceneMount, word, voidTarget, worl
   cards.forEach((card, index) => {
     const side = index % 2 === 0 ? -1 : 1;
 
-    gsap.set(card, {
-      autoAlpha: 0,
-      x: side * 46,
-      yPercent: 86,
-      scale: 0.94,
-      rotateX: 8,
-      transformOrigin: "50% 70%"
-    });
+  gsap.set(card, {
+  autoAlpha: 0,
+  x: side * 34,
+  yPercent: 24,
+  scale: 0.96,
+  rotateX: 0,
+  transformOrigin: "50% 60%"
+});
   });
 }
 
