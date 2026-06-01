@@ -79,41 +79,57 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger, car
   */
   const cardStart = 0.31;
   const cardGap = 0.135;
-  const enterDuration = 0.07;
-  const holdDuration = 0.115;
-  const exitDuration = 0.08;
+  const enterDuration = 0.08;
+  const holdDuration = 0.12;
+  const exitDuration = 0.09;
+  const pastOpacity = 0.04;
 
   cards.forEach((card, index) => {
     const side = index % 2 === 0 ? -1 : 1;
     const start = cardStart + index * cardGap;
+    const enterEnd = start + enterDuration;
+    const holdEnd = enterEnd + holdDuration;
 
     timeline
+      .set(card, {
+        zIndex: cards.length - index
+      }, 0)
+
       .to(card, {
         autoAlpha: 1,
         x: 0,
-        yPercent: 0,
+        yPercent: -50,
         scale: 1,
         rotateX: 0,
-        duration: enterDuration
+        duration: enterDuration,
+        ease: "power2.out"
       }, start)
 
       .to(card, {
         autoAlpha: 1,
         x: 0,
-        yPercent: 0,
-        scale: 1.012,
+        yPercent: -50,
+        scale: 1,
         rotateX: 0,
-        duration: holdDuration
-      }, start + enterDuration)
+        duration: holdDuration,
+        ease: "none"
+      }, enterEnd)
+
+      .to(card, {
+        autoAlpha: pastOpacity,
+        x: side * -18,
+        yPercent: -52,
+        scale: 0.99,
+        rotateX: 0,
+        duration: exitDuration,
+        ease: "power2.inOut"
+      }, holdEnd)
 
       .to(card, {
         autoAlpha: 0,
-        x: side * -26,
-        yPercent: side === -1 ? -14 : 14,
-        scale: 0.965,
-        rotateX: 0,
-        duration: exitDuration
-      }, start + enterDuration + holdDuration);
+        duration: 0.045,
+        ease: "none"
+      }, holdEnd + exitDuration);
   });
 
   /*
@@ -125,18 +141,18 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger, car
       scale: 1.42,
       autoAlpha: 0.76,
       duration: 0.12
-    }, 0.86)
+    }, 0.93)
 
     .to(cards, {
       autoAlpha: 0,
       duration: 0.06
-    }, 0.865)
+    }, 0.935)
 
     .to(voidTarget, {
       autoAlpha: 0.92,
       scale: 1,
       duration: 0.055
-    }, 0.875)
+    }, 0.945)
 
     .to(worldInside, {
       autoAlpha: 0,
@@ -145,7 +161,7 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger, car
       scale: 0.86,
       filter: "blur(10px)",
       duration: 0.06
-    }, 0.885)
+    }, 0.955)
 
     .to(word, {
       scale: 3.15,
@@ -153,13 +169,13 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger, car
       autoAlpha: 0.88,
       filter: "blur(0.8px)",
       duration: 0.07
-    }, 0.905)
+    }, 0.975)
 
     .to(voidTarget, {
       scale: 3.7,
       autoAlpha: 0.86,
       duration: 0.07
-    }, 0.905)
+    }, 0.975)
 
     .to(worldInside, {
       autoAlpha: 0.42,
@@ -168,7 +184,7 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger, car
       scale: 0.94,
       filter: "blur(5px)",
       duration: 0.075
-    }, 0.925)
+    }, 0.995)
 
     .to(word, {
       scale: 12.5,
@@ -176,13 +192,13 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger, car
       autoAlpha: 0,
       filter: "blur(14px)",
       duration: 0.14
-    }, 0.95)
+    }, 1.02)
 
     .to(voidTarget, {
       scale: 18,
       autoAlpha: 0,
       duration: 0.13
-    }, 0.95)
+    }, 1.02)
 
     .to(worldInside, {
       autoAlpha: 1,
@@ -191,12 +207,12 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger, car
       y: 0,
       filter: "blur(0px)",
       duration: 0.16
-    }, 0.95)
+    }, 1.02)
 
     .to(section, {
       "--process-section-intensity": 0.08,
       duration: 0.1
-    }, 0.96);
+    }, 1.03);
 
   const refresh = () => ScrollTrigger.refresh();
   window.addEventListener("resize", refresh);
@@ -256,11 +272,11 @@ function prepareInitialState({ gsap, section, sceneMount, word, voidTarget, worl
 
     gsap.set(card, {
       autoAlpha: 0,
-      x: side * 34,
-      yPercent: 22,
-      scale: 0.965,
+      x: side * 28,
+      yPercent: -48,
+      scale: 0.99,
       rotateX: 0,
-      transformOrigin: "50% 58%"
+      transformOrigin: "50% 52%"
     });
   });
 }
@@ -285,8 +301,8 @@ function prepareReducedState({ gsap, section, word, voidTarget, worldInside, cop
 
 function updateByProgress({ progress, scene, ui }) {
   const intro = mapRange(progress, 0.02, 0.22);
-  const cards = mapRange(progress, 0.28, 0.84);
-  const handoff = mapRange(progress, 0.84, 1);
+  const cards = mapRange(progress, 0.28, 0.88);
+  const handoff = mapRange(progress, 0.88, 1);
 
   scene.setProgress({ intro, cards, handoff });
   ui.setCardsProgress(cards);
