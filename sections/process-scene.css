@@ -88,11 +88,20 @@
   content: "";
   position: absolute;
   inset: 0;
-  z-index: -1;
+  z-index: 0;
   background: #050505;
+  pointer-events: none;
+}
+
+.process-world-inside__inner {
+  position: relative;
+  z-index: 1;
+  width: min(920px, 100%);
 }
 
 .process-world-inside p {
+  position: relative;
+  z-index: 1;
   margin: 0 0 18px;
   font-family: var(--mono, ui-monospace, monospace);
   font-size: 11px;
@@ -102,6 +111,8 @@
 }
 
 .process-world-inside h2 {
+  position: relative;
+  z-index: 1;
   margin: 0;
   max-width: 780px;
   font-size: clamp(44px, 7vw, 112px);
