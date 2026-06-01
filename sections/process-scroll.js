@@ -45,9 +45,16 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger, car
     scrollTrigger: {
       trigger: section,
       start: "top top",
-      end: () => `+=${Math.max(window.innerHeight * 6.6, 6400)}`,
+
+      /*
+        Longer pinned distance = smoother process flow.
+        This gives the cards enough scroll space to feel like
+        the user is moving down through the page.
+      */
+      end: () => `+=${Math.max(window.innerHeight * 7.1, 7000)}`,
+
       pin: true,
-      scrub: 0.95,
+      scrub: 1,
       anticipatePin: 1,
       invalidateOnRefresh: true,
 
@@ -68,8 +75,7 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger, car
 
   /*
     INTRO
-    PROCESS word grows into the scene.
-    Copy appears briefly, then clears so cards own the space.
+    PROCESS enters and becomes the anchored background word.
   */
   timeline
     .to(section, {
@@ -78,7 +84,7 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger, car
     }, 0)
 
     .to(word, {
-      autoAlpha: 0.9,
+      autoAlpha: 0.88,
       scale: 1,
       xPercent: 0,
       yPercent: 0,
@@ -94,7 +100,8 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger, car
     }, 0.08)
 
     .to(word, {
-      scale: 1.18,
+      scale: 1.16,
+      autoAlpha: 0.92,
       duration: 0.22
     }, 0.2)
 
@@ -106,78 +113,102 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger, car
 
   /*
     CARDS
-    This is the fix.
+    Page-flow motion:
+    - cards begin below the reading area
+    - move into center/readable zone
+    - linger briefly
+    - continue upward and out
+    - next card enters softly after the previous card starts leaving
 
-    Each card gets a clean non-overlapping slot:
-    - enters
-    - holds
-    - exits
-    - gets reset hidden
-
-    No lingering stack.
-    No 0.34 ghost opacity.
-    No two huge cards sitting loudly together.
+    This gives the user the feeling of scrolling down through the process,
+    not watching cards pop in and out.
   */
-  const cardStart = 0.31;
-  const cardWindow = 0.135;
+  const cardStart = 0.3;
+  const cardGap = 0.14;
 
   cards.forEach((card, index) => {
     const side = index % 2 === 0 ? -1 : 1;
-
-    const start = cardStart + index * cardWindow;
-    const enterAt = start;
-    const holdAt = start + 0.035;
-    const exitAt = start + 0.095;
-    const goneAt = start + 0.128;
+    const start = cardStart + index * cardGap;
 
     timeline
       .set(card, {
         zIndex: cards.length + index
       }, 0)
 
+      /*
+        Enter from below.
+        Low opacity makes the next card feel like it is approaching,
+        but it is not readable yet.
+      */
       .to(card, {
-        autoAlpha: 1,
-        x: 0,
-        yPercent: -50,
-        scale: 1,
+        autoAlpha: 0.18,
+        x: side * 34,
+        yPercent: 34,
+        scale: 0.965,
         rotateX: 0,
-        duration: 0.035,
+        duration: 0.045,
         ease: "power2.out"
-      }, enterAt)
+      }, start)
 
+      /*
+        Move into the reading zone.
+      */
       .to(card, {
         autoAlpha: 1,
         x: 0,
         yPercent: -50,
         scale: 1,
         rotateX: 0,
-        duration: 0.06,
-        ease: "none"
-      }, holdAt)
+        duration: 0.085,
+        ease: "power2.out"
+      }, start + 0.045)
 
+      /*
+        Hold in the reading zone.
+        This is what makes the card feel important.
+      */
+      .to(card, {
+        autoAlpha: 1,
+        x: 0,
+        yPercent: -55,
+        scale: 1,
+        rotateX: 0,
+        duration: 0.085,
+        ease: "none"
+      }, start + 0.13)
+
+      /*
+        Continue upward.
+        This creates the feeling that the user is moving down the page.
+      */
+      .to(card, {
+        autoAlpha: 0.16,
+        x: side * -18,
+        yPercent: -122,
+        scale: 0.975,
+        rotateX: 0,
+        duration: 0.095,
+        ease: "power2.inOut"
+      }, start + 0.215)
+
+      /*
+        Fully clear the card.
+      */
       .to(card, {
         autoAlpha: 0,
-        x: side * -22,
-        yPercent: -52,
-        scale: 0.985,
+        x: side * -28,
+        yPercent: -155,
+        scale: 0.96,
         rotateX: 0,
-        duration: 0.033,
-        ease: "power2.inOut"
-      }, exitAt)
-
-      .set(card, {
-        autoAlpha: 0,
-        x: side * 28,
-        yPercent: -48,
-        scale: 0.99,
-        rotateX: 0
-      }, goneAt);
+        duration: 0.045,
+        ease: "none"
+      }, start + 0.31);
   });
 
   /*
     HANDOFF
-    Kept your PROCESS / void / worldInside zoom idea.
-    Starts after cards finish so it does not fight the card sequence.
+    Kept intact, but starts after the card flow has finished.
+    This preserves your zoom-through-C transition.
   */
   timeline
     .to(word, {
@@ -185,18 +216,18 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger, car
       autoAlpha: 0.76,
       filter: "blur(0px)",
       duration: 0.12
-    }, 0.9)
+    }, 0.91)
 
     .to(cards, {
       autoAlpha: 0,
       duration: 0.06
-    }, 0.905)
+    }, 0.915)
 
     .to(voidTarget, {
       autoAlpha: 0.92,
       scale: 1,
       duration: 0.055
-    }, 0.915)
+    }, 0.925)
 
     .to(worldInside, {
       autoAlpha: 0,
@@ -205,7 +236,7 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger, car
       scale: 0.86,
       filter: "blur(10px)",
       duration: 0.06
-    }, 0.925)
+    }, 0.935)
 
     .to(word, {
       scale: 3.15,
@@ -213,13 +244,13 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger, car
       autoAlpha: 0.88,
       filter: "blur(0.8px)",
       duration: 0.07
-    }, 0.945)
+    }, 0.955)
 
     .to(voidTarget, {
       scale: 3.7,
       autoAlpha: 0.86,
       duration: 0.07
-    }, 0.945)
+    }, 0.955)
 
     .to(worldInside, {
       autoAlpha: 0.42,
@@ -228,7 +259,7 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger, car
       scale: 0.94,
       filter: "blur(5px)",
       duration: 0.075
-    }, 0.965)
+    }, 0.975)
 
     .to(word, {
       scale: 12.5,
@@ -236,13 +267,13 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger, car
       autoAlpha: 0,
       filter: "blur(14px)",
       duration: 0.14
-    }, 0.99)
+    }, 1)
 
     .to(voidTarget, {
       scale: 18,
       autoAlpha: 0,
       duration: 0.13
-    }, 0.99)
+    }, 1)
 
     .to(worldInside, {
       autoAlpha: 1,
@@ -251,12 +282,12 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger, car
       y: 0,
       filter: "blur(0px)",
       duration: 0.16
-    }, 0.99)
+    }, 1)
 
     .to(section, {
       "--process-section-intensity": 0.08,
       duration: 0.1
-    }, 1);
+    }, 1.01);
 
   const refresh = () => ScrollTrigger.refresh();
 
@@ -322,14 +353,18 @@ function prepareInitialState({
     autoAlpha: 1
   });
 
+  /*
+    Cards start below the reading zone.
+    This is what makes the sequence feel like the user is moving down the page.
+  */
   cards.forEach((card, index) => {
     const side = index % 2 === 0 ? -1 : 1;
 
     gsap.set(card, {
       autoAlpha: 0,
-      x: side * 28,
-      yPercent: -48,
-      scale: 0.99,
+      x: side * 34,
+      yPercent: 34,
+      scale: 0.965,
       rotateX: 0,
       transformOrigin: "50% 52%"
     });
