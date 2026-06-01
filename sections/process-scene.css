@@ -12,8 +12,8 @@
   --process-intro: 0;
   --process-cards: 0;
   --process-handoff: 0;
-  --process-c-x: 51.8%;
-  --process-c-y: 50%;
+--process-c-x: 49.6%;
+--process-c-y: 50%;
 }
 
 .process-3d {
@@ -62,7 +62,7 @@
   text-transform: uppercase;
   white-space: nowrap;
   transform: translate3d(0, 0, -180px) scale(0.46);
-  transform-origin: 52% 50%;
+  transform-origin: 50% 50%;
   will-change: transform, opacity, filter, letter-spacing;
 }
 
