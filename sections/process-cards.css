@@ -147,3 +147,135 @@
     opacity: 1 !important;
   }
 }
+
+
+/* =========================================================
+   PROCESS CARD OVERRIDE
+   Bigger, wider, more impressive cards
+   Paste at bottom of CSS file
+========================================================= */
+
+.process-cards {
+  z-index: 5;
+}
+
+.process-card {
+  width: min(560px, 42vw) !important;
+  min-height: clamp(320px, 43vh, 480px) !important;
+  padding: clamp(28px, 2.8vw, 46px) !important;
+  border-radius: 30px !important;
+
+  background:
+    linear-gradient(145deg, rgba(255,255,255,0.11), rgba(255,255,255,0.028)),
+    rgba(8, 8, 8, 0.84) !important;
+
+  border: 1px solid rgba(245, 245, 240, 0.16) !important;
+
+  box-shadow:
+    0 38px 120px rgba(0, 0, 0, 0.52),
+    inset 0 1px 0 rgba(255, 255, 255, 0.085) !important;
+}
+
+/* Push cards slightly wider across the page */
+.process-card--left {
+  left: clamp(18px, 5vw, 92px) !important;
+}
+
+.process-card--right {
+  right: clamp(18px, 5vw, 92px) !important;
+}
+
+/* Active card should feel stronger, not flashy */
+.process-card.is-active {
+  border-color: rgba(245, 245, 240, 0.28) !important;
+
+  background:
+    linear-gradient(145deg, rgba(255,255,255,0.13), rgba(255,255,255,0.035)),
+    rgba(10, 10, 10, 0.88) !important;
+
+  box-shadow:
+    0 44px 140px rgba(0, 0, 0, 0.58),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+}
+
+/* Past cards should stay visible, not disappear */
+.process-card.is-past {
+  opacity: 0.48 !important;
+}
+
+/* More premium spacing inside the card */
+.process-card__main {
+  margin: clamp(58px, 8vh, 104px) 0 !important;
+}
+
+.process-card__main h3 {
+  font-size: clamp(44px, 5.6vw, 86px) !important;
+  line-height: 0.87 !important;
+  letter-spacing: -0.082em !important;
+  font-weight: 500 !important;
+  color: rgba(245, 245, 240, 0.98) !important;
+}
+
+.process-card__main p {
+  max-width: 420px !important;
+  margin-top: 24px !important;
+  font-size: clamp(15px, 1.08vw, 17px) !important;
+  line-height: 1.62 !important;
+  letter-spacing: -0.026em !important;
+  color: rgba(245, 245, 240, 0.66) !important;
+}
+
+.process-card__meta,
+.process-card__actions {
+  font-size: 11px !important;
+  letter-spacing: 0.15em !important;
+  color: rgba(245, 245, 240, 0.56) !important;
+}
+
+/* Mobile/tablet protection */
+@media (max-width: 900px) {
+  .process-card {
+    width: min(520px, calc(100vw - 28px)) !important;
+    min-height: clamp(300px, 42vh, 430px) !important;
+    top: 56% !important;
+    border-radius: 24px !important;
+  }
+
+  .process-card--left {
+    left: 14px !important;
+    right: auto !important;
+  }
+
+  .process-card--right {
+    right: 14px !important;
+    left: auto !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .process-card {
+    width: calc(100vw - 24px) !important;
+    min-height: 300px !important;
+    padding: 24px !important;
+  }
+
+  .process-card--left,
+  .process-card--right {
+    left: 12px !important;
+    right: auto !important;
+  }
+
+  .process-card__main {
+    margin: 48px 0 !important;
+  }
+
+  .process-card__main h3 {
+    font-size: clamp(42px, 13vw, 64px) !important;
+  }
+
+  .process-card__main p {
+    font-size: 14px !important;
+    max-width: 100% !important;
+  }
+}
+
