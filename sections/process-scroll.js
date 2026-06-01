@@ -91,7 +91,7 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger, car
       duration: 0.055
     }, 0.79)
     .to(worldInside, {
-      autoAlpha: 0.22,
+      autoAlpha: 0,
       clipPath: "circle(7% at 51.8% 50%)",
       y: 26,
       scale: 0.86,
@@ -111,7 +111,7 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger, car
       duration: 0.07
     }, 0.83)
     .to(worldInside, {
-      autoAlpha: 0.72,
+      autoAlpha: 0.58,
       clipPath: "circle(28% at 51.8% 50%)",
       y: 8,
       scale: 0.94,
@@ -136,7 +136,7 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger, car
       scale: 1,
       y: 0,
       filter: "blur(0px)",
-      duration: 0.14
+      duration: 0.16
     }, 0.89)
     .to(section, { "--process-section-intensity": 0.08, duration: 0.1 }, 0.9);
 
