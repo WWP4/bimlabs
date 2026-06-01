@@ -98,26 +98,26 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger, car
       filter: "blur(10px)",
       duration: 0.06
     }, 0.805)
-    .to(word, {
-      scale: 3.15,
-      xPercent: -3.8,
-      autoAlpha: 0.58,
-      filter: "blur(1.5px)",
-      duration: 0.07
-    }, 0.83)
+   .to(word, {
+  scale: 3.15,
+  xPercent: -3.8,
+  autoAlpha: 0.88,
+  filter: "blur(0.8px)",
+  duration: 0.07
+}, 0.83)
     .to(voidTarget, {
       scale: 3.7,
       autoAlpha: 0.86,
       duration: 0.07
     }, 0.83)
-    .to(worldInside, {
-      autoAlpha: 0.58,
-      clipPath: "circle(28% at 51.8% 50%)",
-      y: 8,
-      scale: 0.94,
-      filter: "blur(3px)",
-      duration: 0.075
-    }, 0.855)
+   .to(worldInside, {
+  autoAlpha: 0.42,
+  clipPath: "circle(28% at 51.8% 50%)",
+  y: 8,
+  scale: 0.94,
+  filter: "blur(5px)",
+  duration: 0.075
+}, 0.855)
     .to(word, {
       scale: 12.5,
       xPercent: -13.5,
