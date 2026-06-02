@@ -57,7 +57,7 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger, car
       end: () => {
         const introDistance = window.innerHeight * 1.15;
         const cardDistance = Math.max(cardCount, 4) * window.innerHeight * 1.35;
-        const handoffDistance = window.innerHeight * 1.1;
+        const handoffDistance = window.innerHeight * 1.9;
 
         return `+=${Math.max(introDistance + cardDistance + handoffDistance, 5600)}`;
       },
@@ -69,7 +69,7 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger, car
         scrub: true is too direct and makes wheel/touchpad jumps feel harsh.
         0.65 gives the camera a small amount of smoothing without feeling laggy.
       */
-      scrub: 0.65,
+  scrub: 1.15,
 
       anticipatePin: 1,
       invalidateOnRefresh: true,
@@ -241,102 +241,177 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger, car
       }, start + 2.05);
   });
 
+/*
+  HANDOFF
+  Smoother C camera push.
+  No giant jump. No sudden reveal.
+  The zoom is broken into smaller steps so scrolling up/down feels stable.
+*/
+
+const handoffStart = cardsStart + cardCount * cardUnit + 0.45;
+
+timeline
   /*
-    HANDOFF
-    Let it breathe, but do not make it lazy.
+    Start softening the cards before the C move starts.
+    This prevents the handoff from feeling like it suddenly begins.
   */
+  .to(cardTrack, {
+    autoAlpha: 0,
+    duration: 1.05,
+    ease: "power1.inOut"
+  }, handoffStart)
 
-  const handoffStart = cardsStart + cardCount * cardUnit + 0.55;
+  .to(word, {
+    scale: 1.18,
+    xPercent: 0,
+    autoAlpha: 0.82,
+    filter: "blur(0px)",
+    duration: 1.05,
+    ease: "power1.inOut"
+  }, handoffStart)
 
-  timeline
-    .to(word, {
-      scale: 1.24,
-      autoAlpha: 0.78,
-      filter: "blur(0px)",
-      duration: 0.85,
-      ease: "power1.inOut"
-    }, handoffStart)
+  .to(voidTarget, {
+    autoAlpha: 0.36,
+    scale: 0.72,
+    duration: 0.95,
+    ease: "power1.inOut"
+  }, handoffStart + 0.25)
 
-    .to(cardTrack, {
-      autoAlpha: 0,
-      duration: 0.55,
-      ease: "power1.out"
-    }, handoffStart + 0.1)
+  .to(worldInside, {
+    autoAlpha: 0.08,
+    clipPath: "circle(4% at 51.8% 50%)",
+    y: 28,
+    scale: 0.86,
+    filter: "blur(8px)",
+    duration: 0.95,
+    ease: "power1.inOut"
+  }, handoffStart + 0.25)
 
-    .to(voidTarget, {
-      autoAlpha: 0.84,
-      scale: 1,
-      duration: 0.7,
-      ease: "power2.out"
-    }, handoffStart + 0.35)
+  /*
+    Camera begins moving toward the C.
+    Small scale move. No punch.
+  */
+  .to(word, {
+    scale: 1.75,
+    xPercent: -1.8,
+    autoAlpha: 0.88,
+    filter: "blur(0px)",
+    duration: 1.05,
+    ease: "power2.inOut"
+  }, handoffStart + 1.05)
 
-    .to(worldInside, {
-      autoAlpha: 0.12,
-      clipPath: "circle(7% at 51.8% 50%)",
-      y: 26,
-      scale: 0.86,
-      filter: "blur(8px)",
-      duration: 0.7,
-      ease: "power2.out"
-    }, handoffStart + 0.45)
+  .to(voidTarget, {
+    autoAlpha: 0.7,
+    scale: 1.85,
+    duration: 1.05,
+    ease: "power2.inOut"
+  }, handoffStart + 1.05)
 
-    .to(word, {
-      scale: 2.75,
-      xPercent: -3.8,
-      autoAlpha: 0.88,
-      filter: "blur(0.4px)",
-      duration: 0.95,
-      ease: "power2.inOut"
-    }, handoffStart + 1.15)
+  .to(worldInside, {
+    autoAlpha: 0.22,
+    clipPath: "circle(13% at 51.8% 50%)",
+    y: 18,
+    scale: 0.9,
+    filter: "blur(6px)",
+    duration: 1.05,
+    ease: "power2.inOut"
+  }, handoffStart + 1.08)
 
-    .to(voidTarget, {
-      scale: 3.45,
-      autoAlpha: 0.8,
-      duration: 0.95,
-      ease: "power2.inOut"
-    }, handoffStart + 1.15)
+  /*
+    Mid push.
+    This is where the old version jumped too much.
+  */
+  .to(word, {
+    scale: 3.35,
+    xPercent: -4.8,
+    autoAlpha: 0.82,
+    filter: "blur(0.5px)",
+    duration: 1.15,
+    ease: "power2.inOut"
+  }, handoffStart + 2.0)
 
-    .to(worldInside, {
-      autoAlpha: 0.42,
-      clipPath: "circle(30% at 51.8% 50%)",
-      y: 8,
-      scale: 0.94,
-      filter: "blur(4px)",
-      duration: 0.95,
-      ease: "power2.inOut"
-    }, handoffStart + 1.25)
+  .to(voidTarget, {
+    autoAlpha: 0.82,
+    scale: 4.15,
+    duration: 1.15,
+    ease: "power2.inOut"
+  }, handoffStart + 2.0)
 
-    .to(word, {
-      scale: 12.5,
-      xPercent: -13.5,
-      autoAlpha: 0,
-      filter: "blur(12px)",
-      duration: 1.2,
-      ease: "power3.inOut"
-    }, handoffStart + 2.1)
+  .to(worldInside, {
+    autoAlpha: 0.44,
+    clipPath: "circle(34% at 51.8% 50%)",
+    y: 8,
+    scale: 0.94,
+    filter: "blur(3px)",
+    duration: 1.15,
+    ease: "power2.inOut"
+  }, handoffStart + 2.05)
 
-    .to(voidTarget, {
-      scale: 18,
-      autoAlpha: 0,
-      duration: 1.15,
-      ease: "power3.inOut"
-    }, handoffStart + 2.1)
+  /*
+    Deep push.
+    Still big, but no longer a teleport.
+  */
+  .to(word, {
+    scale: 6.8,
+    xPercent: -9.2,
+    autoAlpha: 0.36,
+    filter: "blur(4px)",
+    duration: 1.15,
+    ease: "power2.inOut"
+  }, handoffStart + 3.05)
 
-    .to(worldInside, {
-      autoAlpha: 1,
-      clipPath: "circle(150% at 51.8% 50%)",
-      scale: 1,
-      y: 0,
-      filter: "blur(0px)",
-      duration: 1.2,
-      ease: "power3.inOut"
-    }, handoffStart + 2.18)
+  .to(voidTarget, {
+    autoAlpha: 0.54,
+    scale: 9,
+    duration: 1.15,
+    ease: "power2.inOut"
+  }, handoffStart + 3.05)
 
-    .to(section, {
-      "--process-section-intensity": 0.08,
-      duration: 0.8,
-      ease: "power1.out"
-    }, handoffStart + 2.55);
+  .to(worldInside, {
+    autoAlpha: 0.72,
+    clipPath: "circle(78% at 51.8% 50%)",
+    y: 2,
+    scale: 0.985,
+    filter: "blur(1.5px)",
+    duration: 1.15,
+    ease: "power2.inOut"
+  }, handoffStart + 3.12)
+
+  /*
+    Final pass through the C.
+    The word fades while the inside world becomes the page.
+  */
+  .to(word, {
+    scale: 12.5,
+    xPercent: -13.5,
+    autoAlpha: 0,
+    filter: "blur(12px)",
+    duration: 1.25,
+    ease: "power2.inOut"
+  }, handoffStart + 4.05)
+
+  .to(voidTarget, {
+    scale: 18,
+    autoAlpha: 0,
+    duration: 1.25,
+    ease: "power2.inOut"
+  }, handoffStart + 4.05)
+
+  .to(worldInside, {
+    autoAlpha: 1,
+    clipPath: "circle(150% at 51.8% 50%)",
+    scale: 1,
+    y: 0,
+    filter: "blur(0px)",
+    duration: 1.25,
+    ease: "power2.inOut"
+  }, handoffStart + 4.1)
+
+  .to(section, {
+    "--process-section-intensity": 0.08,
+    duration: 1,
+    ease: "power1.out"
+  }, handoffStart + 4.55);
 
   let resizeTimer = null;
 
