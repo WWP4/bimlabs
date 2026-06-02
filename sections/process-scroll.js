@@ -50,24 +50,24 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger, car
 
       /*
         Keep the sequence cinematic without trapping the page.
-        Shorter distance and lighter scrub make native wheel/touch input
-        feel more responsive instead of locked to a slow rail.
+        The section has enough scroll distance to breathe, while a moderate
+        scrub keeps motion fluid instead of feeling jumpy or locked.
       */
       end: () => {
-        const introDistance = window.innerHeight * 1.1;
-        const cardDistance = Math.max(cardCount, 4) * window.innerHeight * 1.28;
-        const handoffDistance = window.innerHeight * 1.05;
+        const introDistance = window.innerHeight * 1.32;
+        const cardDistance = Math.max(cardCount, 4) * window.innerHeight * 1.62;
+        const handoffDistance = window.innerHeight * 1.22;
 
-        return `+=${Math.max(introDistance + cardDistance + handoffDistance, 6200)}`;
+        return `+=${Math.max(introDistance + cardDistance + handoffDistance, 7600)}`;
       },
 
       pin: true,
 
       /*
-        Low scrub preserves the animation while letting the page respond
-        quickly to normal scroll gestures.
+        Moderate scrub softens wheel/touch input so the cards flow between
+        beats without snapping to every scroll tick.
       */
-      scrub: 0.55,
+      scrub: 1.15,
 
       anticipatePin: 1,
       invalidateOnRefresh: true,
@@ -157,8 +157,8 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger, car
     =========================================================
   */
 
-  const cardsStart = 2.35;
-  const cardUnit = 1.55;
+  const cardsStart = 2.5;
+  const cardUnit = 1.78;
 
   cards.forEach((card, index) => {
     const side = index % 2 === 0 ? -1 : 1;
@@ -208,7 +208,7 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger, car
       }, start + 0.42)
 
       /*
-        Readable hold without making the scroll feel parked.
+        Readable hold with enough time to feel the flow.
       */
       .to(card, {
         autoAlpha: 1,
@@ -216,9 +216,9 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger, car
         yPercent: -56,
         scale: 1,
         filter: "blur(0px)",
-        duration: 0.28,
+        duration: 0.44,
         ease: "none"
-      }, start + 0.98)
+      }, start + 1.06)
 
       /*
         Slow upward movement.
@@ -230,9 +230,9 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger, car
         yPercent: -94,
         scale: 0.992,
         filter: "blur(0px)",
-        duration: 0.3,
+        duration: 0.42,
         ease: "power1.inOut"
-      }, start + 1.26)
+      }, start + 1.5)
 
       /*
         Soft clear.
@@ -243,9 +243,9 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger, car
         yPercent: -148,
         scale: 0.955,
         filter: "blur(7px)",
-        duration: 0.32,
+        duration: 0.4,
         ease: "power1.in"
-      }, start + 1.55);
+      }, start + 1.88);
   });
 
   /*
@@ -256,7 +256,7 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger, car
     =========================================================
   */
 
-  const handoffStart = cardsStart + cardCount * cardUnit + 0.32;
+  const handoffStart = cardsStart + cardCount * cardUnit + 0.42;
 
   timeline
     .to(word, {

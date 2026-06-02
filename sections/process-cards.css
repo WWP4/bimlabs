@@ -14,7 +14,7 @@
 .process-cards {
   position: absolute;
   inset: 0;
-  z-index: 5;
+  z-index: 30;
   pointer-events: none;
   transform-style: preserve-3d;
 }
