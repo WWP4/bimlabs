@@ -50,21 +50,21 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger, car
       start: "top top",
 
       /*
-        This keeps the previous build's faster scroll feel.
-        Not too long. Not lazy. Still enough room for the C handoff.
+        Keep the cinematic pin, but give the sequence enough physical
+        scroll distance to feel calm instead of clicky/snappy.
       */
       end: () => {
-        const base = window.innerHeight * 5.65;
-        return `+=${Math.max(base, 5300)}`;
+        const base = window.innerHeight * 6.45;
+        return `+=${Math.max(base, 6200)}`;
       },
 
       pin: true,
 
       /*
-        This matches the previous feel.
-        Do not push this too high or the section feels delayed.
+        A little more smoothing keeps the existing animation intact while
+        removing the abrupt stop/start feeling between beats.
       */
-      scrub: 0.85,
+      scrub: 1.18,
 
       anticipatePin: 1,
       invalidateOnRefresh: true,
@@ -88,15 +88,15 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger, car
   /*
     =========================================================
     INTRO
-    Keep the previous fast entrance.
-    PROCESS should arrive quickly.
+    PROCESS should still arrive quickly, but with softer easing so the
+    handoff into the section does not feel like a snap.
     =========================================================
   */
 
   timeline
     .to(section, {
       "--process-section-intensity": 1,
-      duration: 0.12
+      duration: 0.16
     }, 0)
 
     .to(word, {
@@ -105,47 +105,41 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger, car
       yPercent: 0,
       letterSpacing: "-0.085em",
       filter: "blur(0px)",
-      duration: 0.2,
-      ease: "power2.out"
+      duration: 0.24,
+      ease: "power3.out"
     }, 0)
 
     .to(copy, {
       autoAlpha: 1,
       y: 0,
-      duration: 0.12,
-      ease: "power2.out"
+      duration: 0.16,
+      ease: "power3.out"
     }, 0.08)
 
     .to(word, {
-      scale: 1.18,
+      scale: 1.12,
       autoAlpha: 0.9,
       duration: 0.22,
-      ease: "power1.inOut"
-    }, 0.2)
+      ease: "sine.inOut"
+    }, 0.22)
 
     .to(copy, {
       autoAlpha: 0,
-      y: -26,
-      duration: 0.14,
-      ease: "power1.inOut"
-    }, 0.26);
+      y: -18,
+      duration: 0.18,
+      ease: "sine.inOut"
+    }, 0.3);
 
   /*
     =========================================================
     CARDS
-    This keeps the previous build's flow:
-    quick vertical pass, not long slow card presentation.
-
-    The old timing was:
-    start = 0.3 + index * 0.13
-    That felt good, but was a little too compressed.
-
-    This version only opens it slightly.
+    Preserve the stacked card animation, but widen the spacing and soften
+    the travel so each card reads like a calm scroll beat instead of a snap.
     =========================================================
   */
 
-  const cardStartBase = 0.31;
-  const cardGap = 0.15;
+  const cardStartBase = 0.32;
+  const cardGap = 0.17;
 
   safeCards.forEach((card, index) => {
     const side = index % 2 === 0 ? -1 : 1;
@@ -164,44 +158,38 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger, car
         scale: 1,
         rotateX: 0,
         filter: "blur(0px)",
-        duration: 0.09,
-        ease: "power2.out",
+        duration: 0.13,
+        ease: "power3.out",
         onStart: () => activateCard(safeCards, card),
         onReverseComplete: () => card.classList.remove("is-active")
       }, start)
 
       .to(card, {
-        yPercent: -10,
-        scale: 1.012,
-        x: side * 4,
-        duration: 0.055,
-        ease: "none"
-      }, start + 0.09)
+        yPercent: -6,
+        scale: 1.006,
+        x: side * 3,
+        duration: 0.11,
+        ease: "sine.inOut"
+      }, start + 0.13)
 
       .to(card, {
         autoAlpha: 0,
-        yPercent: -88,
-        x: side * -28,
-        scale: 0.95,
-        rotateX: -6,
-        filter: "blur(1px)",
-        duration: 0.11,
-        ease: "power1.in",
+        yPercent: -72,
+        x: side * -18,
+        scale: 0.97,
+        rotateX: -3,
+        filter: "blur(0.6px)",
+        duration: 0.18,
+        ease: "sine.inOut",
         onComplete: () => card.classList.remove("is-active")
-      }, start + 0.145);
+      }, start + 0.24);
   });
 
   /*
     =========================================================
     HANDOFF
-    Previous build feel, but less snappy.
-
-    The old version jumped:
-    scale 1.5 -> 3.15 -> 12.5
-    in very tiny durations.
-
-    This keeps the same timing area near the end, but inserts
-    one extra camera step so the C zoom feels smoother.
+    Keep the C / world handoff animation, but stretch the camera beats
+    across a wider range so the push feels intentional rather than abrupt.
     =========================================================
   */
 
@@ -210,22 +198,22 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger, car
       scale: 1.42,
       autoAlpha: 0.78,
       filter: "blur(0px)",
-      duration: 0.1,
-      ease: "power1.inOut"
-    }, 0.755)
+      duration: 0.15,
+      ease: "sine.inOut"
+    }, 1.0)
 
     .to(cardTrack, {
       autoAlpha: 0,
-      duration: 0.08,
-      ease: "power1.out"
-    }, 0.775)
+      duration: 0.14,
+      ease: "sine.out"
+    }, 1.05)
 
     .to(voidTarget, {
       autoAlpha: 0.58,
       scale: 0.82,
-      duration: 0.085,
-      ease: "power1.inOut"
-    }, 0.79)
+      duration: 0.14,
+      ease: "sine.inOut"
+    }, 1.03)
 
     .to(worldInside, {
       autoAlpha: 0.18,
@@ -233,9 +221,9 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger, car
       y: 26,
       scale: 0.86,
       filter: "blur(8px)",
-      duration: 0.085,
-      ease: "power1.inOut"
-    }, 0.8)
+      duration: 0.14,
+      ease: "sine.inOut"
+    }, 1.04)
 
     /*
       First C push.
@@ -245,16 +233,16 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger, car
       xPercent: -2.7,
       autoAlpha: 0.72,
       filter: "blur(0.6px)",
-      duration: 0.095,
-      ease: "power2.inOut"
-    }, 0.835)
+      duration: 0.16,
+      ease: "sine.inOut"
+    }, 1.16)
 
     .to(voidTarget, {
       scale: 2.7,
       autoAlpha: 0.84,
-      duration: 0.095,
-      ease: "power2.inOut"
-    }, 0.835)
+      duration: 0.16,
+      ease: "sine.inOut"
+    }, 1.16)
 
     .to(worldInside, {
       autoAlpha: 0.42,
@@ -262,9 +250,9 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger, car
       y: 12,
       scale: 0.92,
       filter: "blur(4px)",
-      duration: 0.095,
-      ease: "power2.inOut"
-    }, 0.845)
+      duration: 0.16,
+      ease: "sine.inOut"
+    }, 1.18)
 
     /*
       Extra middle step.
@@ -275,16 +263,16 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger, car
       xPercent: -7.2,
       autoAlpha: 0.42,
       filter: "blur(3px)",
-      duration: 0.105,
-      ease: "power2.inOut"
-    }, 0.885)
+      duration: 0.18,
+      ease: "sine.inOut"
+    }, 1.31)
 
     .to(voidTarget, {
       scale: 7.2,
       autoAlpha: 0.58,
-      duration: 0.105,
-      ease: "power2.inOut"
-    }, 0.885)
+      duration: 0.18,
+      ease: "sine.inOut"
+    }, 1.31)
 
     .to(worldInside, {
       autoAlpha: 0.72,
@@ -292,9 +280,9 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger, car
       y: 4,
       scale: 0.98,
       filter: "blur(1.5px)",
-      duration: 0.105,
-      ease: "power2.inOut"
-    }, 0.892)
+      duration: 0.18,
+      ease: "sine.inOut"
+    }, 1.33)
 
     /*
       Final pass through the C.
@@ -304,16 +292,16 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger, car
       xPercent: -13.5,
       autoAlpha: 0,
       filter: "blur(12px)",
-      duration: 0.13,
-      ease: "power2.inOut"
-    }, 0.94)
+      duration: 0.2,
+      ease: "sine.inOut"
+    }, 1.48)
 
     .to(voidTarget, {
       scale: 18,
       autoAlpha: 0,
-      duration: 0.13,
-      ease: "power2.inOut"
-    }, 0.94)
+      duration: 0.2,
+      ease: "sine.inOut"
+    }, 1.48)
 
     .to(worldInside, {
       autoAlpha: 1,
@@ -321,15 +309,15 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger, car
       scale: 1,
       y: 0,
       filter: "blur(0px)",
-      duration: 0.13,
-      ease: "power2.inOut"
-    }, 0.94)
+      duration: 0.2,
+      ease: "sine.inOut"
+    }, 1.48)
 
     .to(section, {
       "--process-section-intensity": 0.08,
-      duration: 0.1,
-      ease: "power1.out"
-    }, 0.955);
+      duration: 0.16,
+      ease: "sine.out"
+    }, 1.58);
 
   let resizeTimer = null;
 
@@ -478,9 +466,9 @@ function prepareReducedState({
 }
 
 function updateByProgress({ progress, scene, ui }) {
-  const intro = mapRange(progress, 0.02, 0.22);
-  const cards = mapRange(progress, 0.28, 0.8);
-  const handoff = mapRange(progress, 0.8, 1);
+  const intro = mapRange(progress, 0.015, 0.2);
+  const cards = mapRange(progress, 0.26, 0.78);
+  const handoff = mapRange(progress, 0.78, 1);
 
   if (scene && typeof scene.setProgress === "function") {
     scene.setProgress({
