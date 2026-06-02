@@ -170,12 +170,15 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger, car
       }, 0)
 
       /*
-        Card begins below the viewport.
-        It is visible barely enough to feel like it is approaching.
+        Card begins below the viewport at full opacity as soon as its
+        sequence starts, so there is no opacity wait before it reads.
       */
+      .set(card, {
+        autoAlpha: 1
+      }, start)
+
       .fromTo(card,
         {
-          autoAlpha: 0,
           x: side * 72,
           yPercent: 88,
           scale: 0.94,
@@ -183,7 +186,6 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger, car
           filter: "blur(8px)"
         },
         {
-          autoAlpha: 0.24,
           x: side * 44,
           yPercent: 48,
           scale: 0.965,
@@ -198,7 +200,6 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger, car
         Card enters the readable zone.
       */
       .to(card, {
-        autoAlpha: 1,
         x: 0,
         yPercent: -50,
         scale: 1,
@@ -211,7 +212,6 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger, car
         Readable hold with enough time to feel the flow.
       */
       .to(card, {
-        autoAlpha: 1,
         x: 0,
         yPercent: -56,
         scale: 1,
@@ -225,7 +225,6 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger, car
         This is the page-flow part.
       */
       .to(card, {
-        autoAlpha: 0.72,
         x: side * -10,
         yPercent: -94,
         scale: 0.992,
@@ -235,17 +234,21 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger, car
       }, start + 1.5)
 
       /*
-        Soft clear.
+        Soft clear keeps the card at full opacity until it leaves, then
+        hides it immediately at the end of its travel.
       */
       .to(card, {
-        autoAlpha: 0,
         x: side * -42,
         yPercent: -148,
         scale: 0.955,
         filter: "blur(7px)",
         duration: 0.4,
         ease: "power1.in"
-      }, start + 1.88);
+      }, start + 1.88)
+
+      .set(card, {
+        autoAlpha: 0
+      }, start + 2.28);
   });
 
   /*

@@ -148,9 +148,9 @@
   transform: scaleX(1);
 }
 
-/* Past cards should still feel present, not disappear */
+/* Cards should stay at full opacity whenever their timeline makes them visible. */
 .process-card.is-past {
-  opacity: 0.28;
+  opacity: 1;
 }
 
 /* Labels */
