@@ -49,31 +49,25 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger, car
       start: "top top",
 
       /*
-        This is the real fix for flow.
-
-        Old version:
-        - long pinned section, but the internal card timeline was compressed.
-
-        New version:
-        - bigger scroll distance
-        - each card gets almost two screens of breathing room
-        - PROCESS intro and C handoff stop fighting the card sequence
+        Keep the sequence responsive.
+        The pinned area is intentionally shorter now so users can move
+        through PROCESS without feeling stuck in a lazy scroll section.
       */
       end: () => {
-        const introDistance = window.innerHeight * 1.65;
-        const cardDistance = Math.max(cardCount, 4) * window.innerHeight * 1.95;
-        const handoffDistance = window.innerHeight * 1.65;
+        const introDistance = window.innerHeight * 0.9;
+        const cardDistance = Math.max(cardCount, 4) * window.innerHeight * 0.95;
+        const handoffDistance = window.innerHeight * 0.85;
 
-        return `+=${Math.max(introDistance + cardDistance + handoffDistance, 9800)}`;
+        return `+=${Math.max(introDistance + cardDistance + handoffDistance, 4600)}`;
       },
 
       pin: true,
 
       /*
-        Higher scrub smooths the camera feel.
-        1 was too direct/snappy.
+        Direct scrub removes the delayed/lazy feel.
+        Scroll input now maps immediately to timeline progress.
       */
-      scrub: 2.15,
+      scrub: true,
 
       anticipatePin: 1,
       invalidateOnRefresh: true,
@@ -155,16 +149,16 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger, car
     Each card now gets:
     - approach
     - enter
-    - readable hold
-    - long upward drift
-    - soft exit
+    - short readable hold
+    - upward drift
+    - quick exit
 
-    This is what makes the user feel like they are scrolling down the page.
+    This keeps the sequence clear while letting users scroll through easily.
     =========================================================
   */
 
-  const cardsStart = 2.65;
-  const cardUnit = 1.9;
+  const cardsStart = 1.9;
+  const cardUnit = 1.18;
 
   cards.forEach((card, index) => {
     const side = index % 2 === 0 ? -1 : 1;
@@ -176,12 +170,15 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger, car
       }, 0)
 
       /*
-        Card begins below the viewport.
-        It is visible barely enough to feel like it is approaching.
+        Card begins below the viewport at full opacity as soon as its
+        sequence starts, so there is no opacity wait before it reads.
       */
+      .set(card, {
+        autoAlpha: 1
+      }, start)
+
       .fromTo(card,
         {
-          autoAlpha: 0,
           x: side * 72,
           yPercent: 88,
           scale: 0.94,
@@ -189,12 +186,11 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger, car
           filter: "blur(8px)"
         },
         {
-          autoAlpha: 0.24,
           x: side * 44,
           yPercent: 48,
           scale: 0.965,
           filter: "blur(4px)",
-          duration: 0.42,
+          duration: 0.28,
           ease: "power1.out"
         },
         start
@@ -204,55 +200,55 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger, car
         Card enters the readable zone.
       */
       .to(card, {
-        autoAlpha: 1,
         x: 0,
         yPercent: -50,
         scale: 1,
         filter: "blur(0px)",
-        duration: 0.62,
+        duration: 0.36,
         ease: "power2.out"
-      }, start + 0.42)
+      }, start + 0.28)
 
       /*
-        Long hold.
-        This gives the user time to actually read.
+        Short hold keeps the section readable without making users wait.
       */
       .to(card, {
-        autoAlpha: 1,
         x: 0,
         yPercent: -56,
         scale: 1,
         filter: "blur(0px)",
-        duration: 0.48,
+        duration: 0.18,
         ease: "none"
-      }, start + 1.04)
+      }, start + 0.64)
 
       /*
-        Slow upward movement.
-        This is the page-flow part.
+        Upward movement.
+        This is the page-flow part without an extended wait.
       */
       .to(card, {
-        autoAlpha: 0.72,
         x: side * -10,
         yPercent: -94,
         scale: 0.992,
         filter: "blur(0px)",
-        duration: 0.34,
+        duration: 0.26,
         ease: "power1.inOut"
-      }, start + 1.52)
+      }, start + 0.82)
 
       /*
-        Soft clear.
+        Soft clear keeps the card at full opacity until it leaves, then
+        hides it immediately at the end of its travel.
       */
       .to(card, {
-        autoAlpha: 0,
         x: side * -42,
         yPercent: -148,
         scale: 0.955,
         filter: "blur(7px)",
-        duration: 0.38,
+        duration: 0.24,
         ease: "power1.in"
-      }, start + 1.86);
+      }, start + 1.08)
+
+      .set(card, {
+        autoAlpha: 0
+      }, start + 1.32);
   });
 
   /*
@@ -263,7 +259,7 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger, car
     =========================================================
   */
 
-  const handoffStart = cardsStart + cardCount * cardUnit + 0.5;
+  const handoffStart = cardsStart + cardCount * cardUnit + 0.28;
 
   timeline
     .to(word, {
