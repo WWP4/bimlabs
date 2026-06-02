@@ -1,0 +1,311 @@
+/* =========================================================
+   PROCESS SECTION
+   Noomo-inspired vertical camera handoff using DOM layers.
+========================================================= */
+
+:root {
+  --process-bg: #020202;
+  --process-white: #f5f5f0;
+  --process-muted: rgba(245, 245, 240, 0.58);
+  --process-line: rgba(245, 245, 240, 0.12);
+  --process-section-intensity: 0;
+  --process-intro: 0;
+  --process-cards: 0;
+  --process-handoff: 0;
+  --process-c-x: 51.8%;
+  --process-c-y: 50%;
+}
+
+.process-3d {
+  position: relative;
+  min-height: 100svh;
+  height: 100svh;
+  overflow: hidden;
+  isolation: isolate;
+  background: var(--process-bg);
+  color: var(--process-white);
+}
+
+.process-3d::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.96), rgba(2,2,2,0.48) 30%, #020202 100%);
+  opacity: calc(0.58 + (var(--process-section-intensity) * 0.42));
+}
+
+.process-scene {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  perspective: 1100px;
+  transform-style: preserve-3d;
+  pointer-events: none;
+  will-change: transform;
+}
+
+.process-word {
+  position: relative;
+  z-index: 3;
+  margin: 0;
+  font-family: var(--sans, Manrope, system-ui, sans-serif);
+  font-size: clamp(76px, 17vw, 310px);
+  line-height: 0.78;
+  letter-spacing: -0.085em;
+  font-weight: 600;
+  color: rgba(245, 245, 240, 0.9);
+  text-transform: uppercase;
+  white-space: nowrap;
+  transform: translate3d(0, 0, -180px) scale(0.46);
+  transform-origin: 52% 50%;
+  will-change: transform, opacity, filter, letter-spacing;
+}
+
+.process-world-inside {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  padding: clamp(90px, 12vw, 160px) 24px;
+  background: transparent;
+  opacity: 0;
+  overflow: hidden;
+  clip-path: circle(0% at var(--process-c-x) var(--process-c-y));
+  transform: translate3d(0, 44px, -260px) scale(0.8);
+  transform-origin: var(--process-c-x) var(--process-c-y);
+  filter: blur(12px);
+  pointer-events: none;
+  will-change: transform, opacity, clip-path, filter;
+}
+
+.process-world-inside::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: #050505;
+}
+
+.process-world-inside p {
+  margin: 0 0 18px;
+  font-family: var(--mono, ui-monospace, monospace);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(245,245,240,0.5);
+}
+
+.process-world-inside h2 {
+  margin: 0;
+  max-width: 780px;
+  font-size: clamp(44px, 7vw, 112px);
+  line-height: 0.92;
+  letter-spacing: -0.075em;
+  font-weight: 500;
+  color: var(--process-white);
+}
+
+.process-void {
+  position: absolute;
+  left: var(--process-c-x);
+  top: var(--process-c-y);
+  z-index: 4;
+  width: clamp(96px, 12vw, 230px);
+  aspect-ratio: 1;
+  border-radius: 999px;
+  background: radial-gradient(circle, rgba(0,0,0,0.96) 0 34%, rgba(0,0,0,0.68) 48%, rgba(0,0,0,0.22) 66%, rgba(0,0,0,0) 78%);
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.14);
+  filter: blur(1px);
+  pointer-events: none;
+  will-change: transform, opacity;
+}
+
+.process-overlay {
+  position: relative;
+  z-index: 3;
+  width: min(1380px, calc(100% - 44px));
+  height: 100%;
+  margin: 0 auto;
+  pointer-events: none;
+  perspective: 1200px;
+}
+
+.process-copy {
+  position: absolute;
+  left: 0;
+  top: clamp(78px, 12vh, 132px);
+  width: min(470px, 42vw);
+  pointer-events: auto;
+  will-change: transform, opacity;
+}
+
+.process-kicker {
+  margin: 0 0 18px;
+  font-family: var(--mono, ui-monospace, monospace);
+  font-size: 11px;
+  line-height: 1;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(245, 245, 240, 0.52);
+}
+
+.process-copy p:not(.process-kicker) {
+  margin: 0;
+  max-width: 430px;
+  font-size: clamp(15px, 1.05vw, 17px);
+  line-height: 1.62;
+  letter-spacing: -0.024em;
+  color: var(--process-muted);
+}
+
+.systems-handoff {
+  min-height: 100svh;
+  display: grid;
+  place-items: center;
+  padding: clamp(90px, 12vw, 160px) 24px;
+  background: #050505;
+  color: var(--process-white);
+}
+
+.systems-handoff__inner {
+  width: min(920px, 100%);
+}
+
+.systems-handoff p {
+  margin: 0 0 18px;
+  font-family: var(--mono, ui-monospace, monospace);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(245,245,240,0.5);
+}
+
+.systems-handoff h2 {
+  margin: 0;
+  max-width: 780px;
+  font-size: clamp(44px, 7vw, 112px);
+  line-height: 0.92;
+  letter-spacing: -0.075em;
+  font-weight: 500;
+}
+
+@media (max-width: 900px) {
+  .process-overlay {
+    width: min(720px, calc(100% - 28px));
+  }
+
+  .process-copy {
+    top: 86px;
+    width: min(560px, 100%);
+  }
+
+  .process-word {
+    font-size: clamp(68px, 20vw, 170px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .process-3d {
+    height: auto;
+    min-height: 100svh;
+    overflow: visible;
+    padding: 90px 0;
+  }
+
+  .process-scene {
+    position: relative;
+    min-height: 180px;
+  }
+
+  .process-world-inside,
+  .process-void {
+    display: none;
+  }
+
+  .process-overlay {
+    height: auto;
+    width: min(900px, calc(100% - 28px));
+  }
+
+  .process-copy {
+    position: relative;
+    top: auto;
+    width: 100%;
+  }
+
+  .process-word,
+  .process-card {
+    transform: none !important;
+    filter: none !important;
+  }
+}
+
+
+
+/* =========================================================
+   PROCESS HANDOFF LAYER FIX
+   Forces the destination section BEHIND the PROCESS word.
+========================================================= */
+
+.process-3d {
+  isolation: isolate;
+}
+
+.process-scene {
+  z-index: 1;
+}
+
+/* Destination / next section layer lives behind the typography */
+.process-world-inside {
+  z-index: 1 !important;
+  mix-blend-mode: normal;
+  pointer-events: none;
+}
+
+/* The dark aperture also sits behind PROCESS, not above it */
+.process-void {
+  z-index: 2 !important;
+  pointer-events: none;
+}
+
+/* PROCESS must always be the foreground mask/lettering */
+.process-word {
+  z-index: 5 !important;
+  color: rgba(245, 245, 240, 0.92);
+  opacity: 1;
+  mix-blend-mode: normal;
+  pointer-events: none;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: geometricPrecision;
+}
+
+/* Make each letter paint as its own clean foreground layer */
+.process-word span {
+  position: relative;
+  z-index: 6;
+}
+
+/* UI/cards stay above background during the card phase */
+.process-overlay {
+  z-index: 6;
+}
+
+/* During the handoff, the scene is still behind the word */
+.process-3d.is-process-active .process-world-inside {
+  z-index: 1 !important;
+}
+
+.process-3d.is-process-active .process-void {
+  z-index: 2 !important;
+}
+
+.process-3d.is-process-active .process-word {
+  z-index: 5 !important;
+}
