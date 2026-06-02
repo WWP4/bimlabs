@@ -11,7 +11,8 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger, car
   const cardTrack = section.querySelector(".process-cards");
   const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  const cardCount = cards?.length || 0;
+  const safeCards = Array.isArray(cards) ? cards : [];
+  const cardCount = safeCards.length;
 
   if (prefersReducedMotion) {
     prepareReducedState({
@@ -22,7 +23,7 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger, car
       worldInside,
       copy,
       cardTrack,
-      cards
+      cards: safeCards
     });
 
     return null;
@@ -37,7 +38,7 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger, car
     worldInside,
     copy,
     cardTrack,
-    cards
+    cards: safeCards
   });
 
   const timeline = gsap.timeline({
@@ -50,26 +51,26 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger, car
       start: "top top",
 
       /*
-        More scroll room = less snapping.
-        This is still performance-friendly because it is one pinned timeline,
-        not a bunch of separate scroll listeners.
+        Fast entrance.
+        Long enough middle and handoff to remove the snappy/buggy feeling.
       */
       end: () => {
-        const introDistance = window.innerHeight * 1.15;
-        const cardDistance = Math.max(cardCount, 4) * window.innerHeight * 1.35;
-        const handoffDistance = window.innerHeight * 1.9;
+        const introDistance = window.innerHeight * 0.65;
+        const cardDistance = Math.max(cardCount, 4) * window.innerHeight * 1.25;
+        const handoffDistance = window.innerHeight * 1.85;
 
-        return `+=${Math.max(introDistance + cardDistance + handoffDistance, 5600)}`;
+        return `+=${Math.max(introDistance + cardDistance + handoffDistance, 5400)}`;
       },
 
       pin: true,
 
       /*
-        This is the biggest fix.
-        scrub: true is too direct and makes wheel/touchpad jumps feel harsh.
-        0.65 gives the camera a small amount of smoothing without feeling laggy.
+        Smooth, but not lazy.
+        true = too snappy.
+        1.15+ = too delayed.
+        0.85 is the better balance for your section.
       */
-  scrub: 1.15,
+      scrub: 0.85,
 
       anticipatePin: 1,
       invalidateOnRefresh: true,
@@ -91,73 +92,78 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger, car
   });
 
   /*
+    =========================================================
     INTRO
-    Let PROCESS arrive smoothly instead of snapping into scale.
+    Fast entry into PROCESS, but eased enough to avoid a slap.
+    =========================================================
   */
 
   timeline
     .to(section, {
       "--process-section-intensity": 1,
-      duration: 0.9
+      duration: 0.55
     }, 0)
 
     .to(word, {
-      autoAlpha: 0.5,
-      scale: 0.7,
+      autoAlpha: 0.56,
+      scale: 0.76,
       xPercent: 0,
-      yPercent: 14,
+      yPercent: 10,
       letterSpacing: "-0.068em",
       filter: "blur(0px)",
-      duration: 0.9,
-      ease: "power1.out"
+      duration: 0.55,
+      ease: "power2.out"
     }, 0)
 
     .to(copy, {
       autoAlpha: 1,
       y: 0,
-      duration: 0.75,
-      ease: "power1.out"
-    }, 0.22)
+      duration: 0.45,
+      ease: "power2.out"
+    }, 0.1)
 
     .to(word, {
-      autoAlpha: 0.86,
+      autoAlpha: 0.9,
       scale: 1,
       yPercent: 0,
       letterSpacing: "-0.085em",
-      duration: 1.15,
+      duration: 0.7,
       ease: "power2.out"
-    }, 0.85)
+    }, 0.45)
 
     .to(word, {
       scale: 1.08,
       autoAlpha: 0.92,
-      duration: 1.1,
+      duration: 0.65,
       ease: "power1.inOut"
-    }, 1.8)
+    }, 1.05)
 
     .to(copy, {
       autoAlpha: 0,
-      y: -28,
-      duration: 0.85,
+      y: -24,
+      duration: 0.5,
       ease: "power1.inOut"
-    }, 2.05);
+    }, 1.2);
 
   /*
+    =========================================================
     CARDS
-    Each card now has a longer approach, smoother center pass,
-    and no tiny aggressive timing chunks.
+    Smooth vertical flow.
+    No tiny hard jumps.
+    Each card gets a real approach, readable pass, and exit.
+    =========================================================
   */
 
-  const cardsStart = 2.25;
+  const cardsStart = 1.45;
   const cardUnit = 1.65;
 
-  cards.forEach((card, index) => {
+  safeCards.forEach((card, index) => {
     const side = index % 2 === 0 ? -1 : 1;
     const start = cardsStart + index * cardUnit;
 
     timeline
       .set(card, {
-        zIndex: cards.length + index,
+        zIndex: safeCards.length + index,
         pointerEvents: "auto"
       }, 0)
 
@@ -165,46 +171,37 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger, car
         {
           autoAlpha: 0,
           x: side * 90,
-          yPercent: 92,
+          yPercent: 96,
           scale: 0.94,
           rotateX: 0,
           filter: "blur(3px)"
         },
         {
           autoAlpha: 1,
-          x: side * 42,
-          yPercent: 42,
+          x: side * 46,
+          yPercent: 46,
           scale: 0.975,
           filter: "blur(1.5px)",
-          duration: 0.52,
+          duration: 0.5,
           ease: "power2.out"
         },
         start
       )
 
-      /*
-        Enter readable center.
-        Longer duration = flow instead of pop.
-      */
       .to(card, {
         x: 0,
         yPercent: -50,
         scale: 1,
         filter: "blur(0px)",
-        duration: 0.72,
+        duration: 0.76,
         ease: "power2.inOut",
-        onStart: () => {
-          cards.forEach((other) => other.classList.remove("is-active"));
-          card.classList.add("is-active");
-        },
-        onReverseComplete: () => {
-          card.classList.remove("is-active");
-        }
-      }, start + 0.5)
+        onStart: () => activateCard(safeCards, card),
+        onReverseComplete: () => card.classList.remove("is-active")
+      }, start + 0.46)
 
       /*
-        Gentle readable drift.
-        This gives the user time to understand the card without making it feel stuck.
+        Tiny readable drift.
+        Not a frozen hold, because frozen holds feel snappy when scrubbed.
       */
       .to(card, {
         x: 0,
@@ -213,11 +210,8 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger, car
         filter: "blur(0px)",
         duration: 0.42,
         ease: "none"
-      }, start + 1.18)
+      }, start + 1.2)
 
-      /*
-        Exit upward.
-      */
       .to(card, {
         x: side * -18,
         yPercent: -108,
@@ -225,7 +219,7 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger, car
         filter: "blur(1px)",
         duration: 0.58,
         ease: "power1.inOut"
-      }, start + 1.6)
+      }, start + 1.62)
 
       .to(card, {
         autoAlpha: 0,
@@ -235,188 +229,181 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger, car
         filter: "blur(3px)",
         duration: 0.38,
         ease: "power1.in",
-        onComplete: () => {
-          card.classList.remove("is-active");
-        }
-      }, start + 2.05);
+        onComplete: () => card.classList.remove("is-active")
+      }, start + 2.06);
   });
 
-/*
-  HANDOFF
-  Smoother C camera push.
-  No giant jump. No sudden reveal.
-  The zoom is broken into smaller steps so scrolling up/down feels stable.
-*/
-
-const handoffStart = cardsStart + cardCount * cardUnit + 0.45;
-
-timeline
   /*
-    Start softening the cards before the C move starts.
-    This prevents the handoff from feeling like it suddenly begins.
+    =========================================================
+    HANDOFF
+    Smooth camera push through the C.
+    The old version jumped too hard from small scale to huge scale.
+    This breaks the zoom into smaller steps.
+    =========================================================
   */
-  .to(cardTrack, {
-    autoAlpha: 0,
-    duration: 1.05,
-    ease: "power1.inOut"
-  }, handoffStart)
 
-  .to(word, {
-    scale: 1.18,
-    xPercent: 0,
-    autoAlpha: 0.82,
-    filter: "blur(0px)",
-    duration: 1.05,
-    ease: "power1.inOut"
-  }, handoffStart)
+  const handoffStart = cardsStart + cardCount * cardUnit + 0.45;
 
-  .to(voidTarget, {
-    autoAlpha: 0.36,
-    scale: 0.72,
-    duration: 0.95,
-    ease: "power1.inOut"
-  }, handoffStart + 0.25)
+  timeline
+    .to(cardTrack, {
+      autoAlpha: 0,
+      duration: 1.05,
+      ease: "power1.inOut"
+    }, handoffStart)
 
-  .to(worldInside, {
-    autoAlpha: 0.08,
-    clipPath: "circle(4% at 51.8% 50%)",
-    y: 28,
-    scale: 0.86,
-    filter: "blur(8px)",
-    duration: 0.95,
-    ease: "power1.inOut"
-  }, handoffStart + 0.25)
+    .to(word, {
+      scale: 1.18,
+      xPercent: 0,
+      autoAlpha: 0.82,
+      filter: "blur(0px)",
+      duration: 1.05,
+      ease: "power1.inOut"
+    }, handoffStart)
 
-  /*
-    Camera begins moving toward the C.
-    Small scale move. No punch.
-  */
-  .to(word, {
-    scale: 1.75,
-    xPercent: -1.8,
-    autoAlpha: 0.88,
-    filter: "blur(0px)",
-    duration: 1.05,
-    ease: "power2.inOut"
-  }, handoffStart + 1.05)
+    .to(voidTarget, {
+      autoAlpha: 0.36,
+      scale: 0.72,
+      duration: 0.95,
+      ease: "power1.inOut"
+    }, handoffStart + 0.25)
 
-  .to(voidTarget, {
-    autoAlpha: 0.7,
-    scale: 1.85,
-    duration: 1.05,
-    ease: "power2.inOut"
-  }, handoffStart + 1.05)
+    .to(worldInside, {
+      autoAlpha: 0.08,
+      clipPath: "circle(4% at 51.8% 50%)",
+      y: 28,
+      scale: 0.86,
+      filter: "blur(8px)",
+      duration: 0.95,
+      ease: "power1.inOut"
+    }, handoffStart + 0.25)
 
-  .to(worldInside, {
-    autoAlpha: 0.22,
-    clipPath: "circle(13% at 51.8% 50%)",
-    y: 18,
-    scale: 0.9,
-    filter: "blur(6px)",
-    duration: 1.05,
-    ease: "power2.inOut"
-  }, handoffStart + 1.08)
+    /*
+      First push toward C.
+    */
+    .to(word, {
+      scale: 1.75,
+      xPercent: -1.8,
+      autoAlpha: 0.88,
+      filter: "blur(0px)",
+      duration: 1.05,
+      ease: "power2.inOut"
+    }, handoffStart + 1.05)
 
-  /*
-    Mid push.
-    This is where the old version jumped too much.
-  */
-  .to(word, {
-    scale: 3.35,
-    xPercent: -4.8,
-    autoAlpha: 0.82,
-    filter: "blur(0.5px)",
-    duration: 1.15,
-    ease: "power2.inOut"
-  }, handoffStart + 2.0)
+    .to(voidTarget, {
+      autoAlpha: 0.7,
+      scale: 1.85,
+      duration: 1.05,
+      ease: "power2.inOut"
+    }, handoffStart + 1.05)
 
-  .to(voidTarget, {
-    autoAlpha: 0.82,
-    scale: 4.15,
-    duration: 1.15,
-    ease: "power2.inOut"
-  }, handoffStart + 2.0)
+    .to(worldInside, {
+      autoAlpha: 0.22,
+      clipPath: "circle(13% at 51.8% 50%)",
+      y: 18,
+      scale: 0.9,
+      filter: "blur(6px)",
+      duration: 1.05,
+      ease: "power2.inOut"
+    }, handoffStart + 1.08)
 
-  .to(worldInside, {
-    autoAlpha: 0.44,
-    clipPath: "circle(34% at 51.8% 50%)",
-    y: 8,
-    scale: 0.94,
-    filter: "blur(3px)",
-    duration: 1.15,
-    ease: "power2.inOut"
-  }, handoffStart + 2.05)
+    /*
+      Middle push.
+    */
+    .to(word, {
+      scale: 3.35,
+      xPercent: -4.8,
+      autoAlpha: 0.82,
+      filter: "blur(0.5px)",
+      duration: 1.15,
+      ease: "power2.inOut"
+    }, handoffStart + 2.0)
 
-  /*
-    Deep push.
-    Still big, but no longer a teleport.
-  */
-  .to(word, {
-    scale: 6.8,
-    xPercent: -9.2,
-    autoAlpha: 0.36,
-    filter: "blur(4px)",
-    duration: 1.15,
-    ease: "power2.inOut"
-  }, handoffStart + 3.05)
+    .to(voidTarget, {
+      autoAlpha: 0.82,
+      scale: 4.15,
+      duration: 1.15,
+      ease: "power2.inOut"
+    }, handoffStart + 2.0)
 
-  .to(voidTarget, {
-    autoAlpha: 0.54,
-    scale: 9,
-    duration: 1.15,
-    ease: "power2.inOut"
-  }, handoffStart + 3.05)
+    .to(worldInside, {
+      autoAlpha: 0.44,
+      clipPath: "circle(34% at 51.8% 50%)",
+      y: 8,
+      scale: 0.94,
+      filter: "blur(3px)",
+      duration: 1.15,
+      ease: "power2.inOut"
+    }, handoffStart + 2.05)
 
-  .to(worldInside, {
-    autoAlpha: 0.72,
-    clipPath: "circle(78% at 51.8% 50%)",
-    y: 2,
-    scale: 0.985,
-    filter: "blur(1.5px)",
-    duration: 1.15,
-    ease: "power2.inOut"
-  }, handoffStart + 3.12)
+    /*
+      Deep push.
+    */
+    .to(word, {
+      scale: 6.8,
+      xPercent: -9.2,
+      autoAlpha: 0.36,
+      filter: "blur(4px)",
+      duration: 1.15,
+      ease: "power2.inOut"
+    }, handoffStart + 3.05)
 
-  /*
-    Final pass through the C.
-    The word fades while the inside world becomes the page.
-  */
-  .to(word, {
-    scale: 12.5,
-    xPercent: -13.5,
-    autoAlpha: 0,
-    filter: "blur(12px)",
-    duration: 1.25,
-    ease: "power2.inOut"
-  }, handoffStart + 4.05)
+    .to(voidTarget, {
+      autoAlpha: 0.54,
+      scale: 9,
+      duration: 1.15,
+      ease: "power2.inOut"
+    }, handoffStart + 3.05)
 
-  .to(voidTarget, {
-    scale: 18,
-    autoAlpha: 0,
-    duration: 1.25,
-    ease: "power2.inOut"
-  }, handoffStart + 4.05)
+    .to(worldInside, {
+      autoAlpha: 0.72,
+      clipPath: "circle(78% at 51.8% 50%)",
+      y: 2,
+      scale: 0.985,
+      filter: "blur(1.5px)",
+      duration: 1.15,
+      ease: "power2.inOut"
+    }, handoffStart + 3.12)
 
-  .to(worldInside, {
-    autoAlpha: 1,
-    clipPath: "circle(150% at 51.8% 50%)",
-    scale: 1,
-    y: 0,
-    filter: "blur(0px)",
-    duration: 1.25,
-    ease: "power2.inOut"
-  }, handoffStart + 4.1)
+    /*
+      Final pass through C.
+    */
+    .to(word, {
+      scale: 12.5,
+      xPercent: -13.5,
+      autoAlpha: 0,
+      filter: "blur(12px)",
+      duration: 1.25,
+      ease: "power2.inOut"
+    }, handoffStart + 4.05)
 
-  .to(section, {
-    "--process-section-intensity": 0.08,
-    duration: 1,
-    ease: "power1.out"
-  }, handoffStart + 4.55);
+    .to(voidTarget, {
+      scale: 18,
+      autoAlpha: 0,
+      duration: 1.25,
+      ease: "power2.inOut"
+    }, handoffStart + 4.05)
+
+    .to(worldInside, {
+      autoAlpha: 1,
+      clipPath: "circle(150% at 51.8% 50%)",
+      scale: 1,
+      y: 0,
+      filter: "blur(0px)",
+      duration: 1.25,
+      ease: "power2.inOut"
+    }, handoffStart + 4.1)
+
+    .to(section, {
+      "--process-section-intensity": 0.08,
+      duration: 1,
+      ease: "power1.out"
+    }, handoffStart + 4.55);
 
   let resizeTimer = null;
 
   const refresh = () => {
     window.clearTimeout(resizeTimer);
+
     resizeTimer = window.setTimeout(() => {
       ScrollTrigger.refresh();
     }, 120);
@@ -430,6 +417,12 @@ timeline
   });
 
   return timeline;
+}
+
+function activateCard(cards, activeCard) {
+  cards.forEach((card) => {
+    card.classList.toggle("is-active", card === activeCard);
+  });
 }
 
 function prepareInitialState({
@@ -498,7 +491,7 @@ function prepareInitialState({
     gsap.set(card, {
       autoAlpha: 0,
       x: side * 90,
-      yPercent: 92,
+      yPercent: 96,
       scale: 0.94,
       rotateX: 0,
       filter: "blur(3px)",
@@ -553,9 +546,16 @@ function prepareReducedState({
 }
 
 function updateByProgress({ progress, scene, ui }) {
-  const intro = mapRange(progress, 0.03, 0.26);
-  const cards = mapRange(progress, 0.23, 0.82);
-  const handoff = mapRange(progress, 0.8, 1);
+  /*
+    This tells your other process modules where we are.
+    Intro is quicker now.
+    Cards still get the main scroll space.
+    Handoff starts late and has room to breathe.
+  */
+
+  const intro = mapRange(progress, 0.02, 0.18);
+  const cards = mapRange(progress, 0.16, 0.76);
+  const handoff = mapRange(progress, 0.74, 1);
 
   if (scene && typeof scene.setProgress === "function") {
     scene.setProgress({
