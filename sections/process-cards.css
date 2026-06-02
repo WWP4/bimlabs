@@ -60,8 +60,7 @@
   transition:
     border-color 0.75s ease,
     background 0.75s ease,
-    box-shadow 0.75s ease,
-    opacity 0.75s ease;
+    box-shadow 0.75s ease;
 }
 
 /* Thin top sweep line */
