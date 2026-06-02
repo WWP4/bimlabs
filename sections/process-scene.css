@@ -49,6 +49,18 @@
   will-change: transform;
 }
 
+.process-scene::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 7;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 52% 50%, rgba(2, 2, 2, 0.16), rgba(2, 2, 2, 0) 34%),
+    linear-gradient(180deg, rgba(2, 2, 2, 0.08), rgba(2, 2, 2, 0.2) 54%, rgba(2, 2, 2, 0.06));
+  opacity: calc(0.18 + (var(--process-section-intensity) * 0.28));
+}
+
 .process-word {
   position: relative;
   z-index: 3;
@@ -129,7 +141,7 @@
 
 .process-overlay {
   position: relative;
-  z-index: 3;
+  z-index: 20;
   width: min(1380px, calc(100% - 44px));
   height: 100%;
   margin: 0 auto;
@@ -292,9 +304,18 @@
   z-index: 6;
 }
 
-/* UI/cards stay above background during the card phase */
+/* UI/cards stay above every PROCESS scene layer during the card phase */
 .process-overlay {
-  z-index: 6;
+  z-index: 20;
+  isolation: isolate;
+}
+
+.process-cards {
+  z-index: 30 !important;
+}
+
+.process-card {
+  z-index: 1;
 }
 
 /* During the handoff, the scene is still behind the word */
