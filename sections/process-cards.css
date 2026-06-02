@@ -1,7 +1,7 @@
 /* =========================================================
    PROCESS CARDS
-   Editorial BIM Labs card style
-   Uses current class names:
+   Long-form cinematic BIM Labs card style
+   Uses:
    .process-cards
    .process-card
    .process-card--left
@@ -19,37 +19,37 @@
   transform-style: preserve-3d;
 }
 
-/* Main card — based on the older editorial cards */
+/* Bigger, longer, slower-feeling cards */
 .process-card {
   position: absolute;
-  top: 52%;
+  top: 50%;
 
-  width: min(620px, 42vw);
-  min-height: clamp(300px, 38vh, 430px);
+  width: min(760px, 46vw);
+  min-height: clamp(620px, 72vh, 860px);
 
   display: flex;
   flex-direction: column;
   justify-content: space-between;
 
-  padding: clamp(30px, 4.2vw, 56px);
+  padding: clamp(42px, 5.2vw, 78px);
 
-  border: 1px solid rgba(244, 241, 234, 0.11);
+  border: 1px solid rgba(244, 241, 234, 0.105);
   border-radius: 2px;
 
   background:
     linear-gradient(
       135deg,
-      rgba(244, 241, 234, 0.047),
-      rgba(244, 241, 234, 0.012) 44%,
-      rgba(244, 241, 234, 0.026)
+      rgba(244, 241, 234, 0.052),
+      rgba(244, 241, 234, 0.011) 42%,
+      rgba(244, 241, 234, 0.03)
     );
 
   box-shadow:
-    0 32px 110px rgba(0, 0, 0, 0.36),
-    inset 0 1px 0 rgba(244, 241, 234, 0.06);
+    0 44px 150px rgba(0, 0, 0, 0.46),
+    inset 0 1px 0 rgba(244, 241, 234, 0.055);
 
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
 
   overflow: hidden;
   pointer-events: auto;
@@ -58,9 +58,10 @@
   will-change: transform, opacity;
 
   transition:
-    border-color 0.55s ease,
-    background 0.55s ease,
-    box-shadow 0.55s ease;
+    border-color 0.75s ease,
+    background 0.75s ease,
+    box-shadow 0.75s ease,
+    opacity 0.75s ease;
 }
 
 /* Thin top sweep line */
@@ -77,25 +78,25 @@
     linear-gradient(
       90deg,
       transparent,
-      rgba(244, 241, 234, 0.32),
+      rgba(244, 241, 234, 0.34),
       transparent
     );
 
   opacity: 0;
-  transform: translateX(-35%);
+  transform: translateX(-42%);
 
   transition:
-    opacity 0.55s ease,
-    transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+    opacity 0.7s ease,
+    transform 1.15s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 /* Bottom editorial line */
 .process-card::after {
   content: "";
   position: absolute;
-  left: 26px;
-  right: 26px;
-  bottom: 20px;
+  left: 34px;
+  right: 34px;
+  bottom: 30px;
 
   height: 1px;
 
@@ -104,55 +105,55 @@
   transform: scaleX(0);
   transform-origin: left center;
 
-  transition: transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: transform 1.05s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .process-card--right::after {
   transform-origin: right center;
 }
 
-/* Placement */
+/* Left / right spacing */
 .process-card--left {
-  left: clamp(24px, 5vw, 88px);
+  left: clamp(24px, 5.5vw, 104px);
 }
 
 .process-card--right {
-  right: clamp(24px, 5vw, 88px);
+  right: clamp(24px, 5.5vw, 104px);
 }
 
 /* Active card */
 .process-card.is-active {
-  border-color: rgba(244, 241, 234, 0.23);
+  border-color: rgba(244, 241, 234, 0.25);
 
   background:
     linear-gradient(
       135deg,
-      rgba(244, 241, 234, 0.067),
-      rgba(244, 241, 234, 0.018) 44%,
-      rgba(244, 241, 234, 0.037)
+      rgba(244, 241, 234, 0.072),
+      rgba(244, 241, 234, 0.016) 42%,
+      rgba(244, 241, 234, 0.042)
     );
 
   box-shadow:
-    0 44px 140px rgba(0, 0, 0, 0.46),
-    0 0 46px rgba(244, 241, 234, 0.035),
-    inset 0 1px 0 rgba(244, 241, 234, 0.09);
+    0 58px 180px rgba(0, 0, 0, 0.56),
+    0 0 58px rgba(244, 241, 234, 0.035),
+    inset 0 1px 0 rgba(244, 241, 234, 0.085);
 }
 
 .process-card.is-active::before {
   opacity: 1;
-  transform: translateX(35%);
+  transform: translateX(42%);
 }
 
 .process-card.is-active::after {
   transform: scaleX(1);
 }
 
-/* Past card should be quiet, not gone, not loud */
+/* Past cards should still feel present, not disappear */
 .process-card.is-past {
-  opacity: 0.38;
+  opacity: 0.28;
 }
 
-/* Top and bottom small labels */
+/* Labels */
 .process-card__meta,
 .process-card__actions {
   display: flex;
@@ -160,68 +161,87 @@
   justify-content: space-between;
   gap: 24px;
 
-  color: rgba(244, 241, 234, 0.34);
+  color: rgba(244, 241, 234, 0.36);
   font-family: var(--mono, ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace);
   font-size: 10px;
   line-height: 1;
-  letter-spacing: 0.28em;
+  letter-spacing: 0.3em;
   text-transform: uppercase;
   white-space: nowrap;
 }
 
 /* Main card content */
 .process-card__main {
-  margin: clamp(42px, 6vh, 70px) 0;
+  margin: clamp(72px, 11vh, 130px) 0;
 }
 
 .process-card__main h3 {
   margin: 0;
 
-  max-width: 95%;
+  max-width: 96%;
 
-  color: rgba(244, 241, 234, 0.94);
+  color: rgba(244, 241, 234, 0.95);
   font-family: inherit;
-  font-size: clamp(54px, 6.8vw, 118px);
+  font-size: clamp(68px, 7.6vw, 138px);
   font-weight: 400;
   line-height: 0.78;
-  letter-spacing: -0.095em;
+  letter-spacing: -0.098em;
 }
 
 .process-card__main p {
-  max-width: 455px;
-  margin: clamp(30px, 4.6vh, 46px) 0 0;
+  max-width: 520px;
+  margin: clamp(42px, 6vh, 68px) 0 0;
 
-  color: rgba(244, 241, 234, 0.54);
-  font-size: 14px;
-  line-height: 1.66;
+  color: rgba(244, 241, 234, 0.56);
+  font-size: 15px;
+  line-height: 1.78;
   letter-spacing: -0.015em;
 }
 
 .process-card__button {
-  color: rgba(244, 241, 234, 0.62);
+  position: relative;
+  color: rgba(244, 241, 234, 0.64);
+  text-decoration: none;
 }
 
-/* Hover — subtle, not bubbly */
+.process-card__button::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -7px;
+  height: 1px;
+  background: rgba(244, 241, 234, 0.46);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.process-card__button:hover::after {
+  transform: scaleX(1);
+}
+
+/* Hover */
 .process-card:hover {
-  border-color: rgba(244, 241, 234, 0.23);
+  border-color: rgba(244, 241, 234, 0.24);
 
   background:
     linear-gradient(
       135deg,
-      rgba(244, 241, 234, 0.067),
-      rgba(244, 241, 234, 0.018) 44%,
-      rgba(244, 241, 234, 0.037)
+      rgba(244, 241, 234, 0.074),
+      rgba(244, 241, 234, 0.018) 42%,
+      rgba(244, 241, 234, 0.042)
     );
 
   box-shadow:
-    0 44px 140px rgba(0, 0, 0, 0.46),
-    0 0 46px rgba(244, 241, 234, 0.035),
-    inset 0 1px 0 rgba(244, 241, 234, 0.09);
+    0 58px 180px rgba(0, 0, 0, 0.56),
+    0 0 58px rgba(244, 241, 234, 0.035),
+    inset 0 1px 0 rgba(244, 241, 234, 0.085);
 }
 
 .process-card:hover::before {
   opacity: 1;
-  transform: translateX(35%);
+  transform: translateX(42%);
 }
 
 .process-card:hover::after {
@@ -240,10 +260,10 @@
 
 @media (max-width: 1100px) {
   .process-card {
-    top: 54%;
-    width: min(600px, calc(100vw - 48px));
-    min-height: 320px;
-    padding: 34px 30px;
+    top: 51%;
+    width: min(680px, calc(100vw - 48px));
+    min-height: clamp(560px, 68vh, 760px);
+    padding: 44px 34px 46px;
   }
 
   .process-card--left {
@@ -256,8 +276,16 @@
     left: auto;
   }
 
+  .process-card__main {
+    margin: 78px 0;
+  }
+
   .process-card__main h3 {
-    font-size: clamp(54px, 13vw, 104px);
+    font-size: clamp(60px, 12vw, 116px);
+  }
+
+  .process-card__main p {
+    max-width: 500px;
   }
 }
 
@@ -267,10 +295,10 @@
 
 @media (max-width: 767px) {
   .process-card {
-    top: 56%;
+    top: 52%;
     width: calc(100vw - 28px);
-    min-height: 300px;
-    padding: 28px 22px 30px;
+    min-height: clamp(520px, 74vh, 680px);
+    padding: 34px 22px 36px;
 
     backdrop-filter: none;
     -webkit-backdrop-filter: none;
@@ -289,19 +317,25 @@
   }
 
   .process-card__main {
-    margin: 42px 0;
+    margin: 66px 0;
   }
 
   .process-card__main h3 {
-    font-size: clamp(46px, 16vw, 76px);
-    letter-spacing: -0.082em;
+    font-size: clamp(48px, 16vw, 82px);
+    letter-spacing: -0.085em;
   }
 
   .process-card__main p {
     max-width: 100%;
-    margin-top: 28px;
+    margin-top: 34px;
     font-size: 13px;
-    line-height: 1.62;
+    line-height: 1.7;
+  }
+
+  .process-card::after {
+    left: 22px;
+    right: 22px;
+    bottom: 24px;
   }
 }
 
@@ -313,7 +347,7 @@
   .process-cards {
     position: relative;
     display: grid;
-    gap: 16px;
+    gap: 18px;
     margin-top: 32px;
   }
 
@@ -325,7 +359,7 @@
     left: auto;
     right: auto;
     width: 100%;
-    min-height: 280px;
+    min-height: 460px;
     opacity: 1 !important;
     transform: none !important;
   }
