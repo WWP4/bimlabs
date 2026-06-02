@@ -1,6 +1,8 @@
 // sections/process-scroll.js
 
 export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger, cards }) {
+  if (!section || !gsap || !ScrollTrigger) return null;
+
   const sceneMount = section.querySelector("[data-process-scene]");
   const word = section.querySelector(".process-word");
   const voidTarget = section.querySelector(".process-void");
@@ -9,7 +11,7 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger, car
   const cardTrack = section.querySelector(".process-cards");
   const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  if (!section || !gsap || !ScrollTrigger) return null;
+  const cardCount = cards?.length || 0;
 
   if (prefersReducedMotion) {
     prepareReducedState({
@@ -47,14 +49,32 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger, car
       start: "top top",
 
       /*
-        Longer pinned distance = smoother process flow.
-        This gives the cards enough scroll space to feel like
-        the user is moving down through the page.
+        This is the real fix for flow.
+
+        Old version:
+        - long pinned section, but the internal card timeline was compressed.
+
+        New version:
+        - bigger scroll distance
+        - each card gets almost two screens of breathing room
+        - PROCESS intro and C handoff stop fighting the card sequence
       */
-      end: () => `+=${Math.max(window.innerHeight * 7.1, 7000)}`,
+      end: () => {
+        const introDistance = window.innerHeight * 1.65;
+        const cardDistance = Math.max(cardCount, 4) * window.innerHeight * 1.95;
+        const handoffDistance = window.innerHeight * 1.65;
+
+        return `+=${Math.max(introDistance + cardDistance + handoffDistance, 9800)}`;
+      },
 
       pin: true,
-      scrub: 1,
+
+      /*
+        Higher scrub smooths the camera feel.
+        1 was too direct/snappy.
+      */
+      scrub: 2.15,
+
       anticipatePin: 1,
       invalidateOnRefresh: true,
 
@@ -74,61 +94,81 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger, car
   });
 
   /*
+    =========================================================
     INTRO
-    PROCESS enters and becomes the anchored background word.
+    PROCESS should not slap the user immediately.
+    It should come forward, settle, and become the background.
+    =========================================================
   */
+
   timeline
     .to(section, {
       "--process-section-intensity": 1,
-      duration: 0.12
+      duration: 0.65
     }, 0)
 
     .to(word, {
-      autoAlpha: 0.88,
-      scale: 1,
+      autoAlpha: 0.52,
+      scale: 0.72,
       xPercent: 0,
-      yPercent: 0,
-      letterSpacing: "-0.085em",
+      yPercent: 12,
+      letterSpacing: "-0.068em",
       filter: "blur(0px)",
-      duration: 0.2
+      duration: 0.7
     }, 0)
 
     .to(copy, {
       autoAlpha: 1,
       y: 0,
-      duration: 0.12
-    }, 0.08)
+      duration: 0.55
+    }, 0.18)
 
     .to(word, {
-      scale: 1.16,
+      autoAlpha: 0.88,
+      scale: 1,
+      yPercent: 0,
+      letterSpacing: "-0.085em",
+      duration: 0.95
+    }, 0.75)
+
+    .to(word, {
+      scale: 1.09,
       autoAlpha: 0.92,
-      duration: 0.22
-    }, 0.2)
+      duration: 0.95
+    }, 1.55)
 
     .to(copy, {
       autoAlpha: 0,
-      y: -24,
-      duration: 0.14
-    }, 0.27);
+      y: -32,
+      duration: 0.65
+    }, 1.85);
 
   /*
+    =========================================================
     CARDS
-    Page-flow motion:
-    - cards begin below the reading area
-    - move into center/readable zone
-    - linger briefly
-    - continue upward and out
-    - next card enters softly after the previous card starts leaving
+    Real page-flow sequence.
 
-    This gives the user the feeling of scrolling down through the process,
-    not watching cards pop in and out.
+    Important:
+    We are no longer using tiny decimal timeline points like 0.3 / 0.14.
+    That made the section feel mechanically timed.
+
+    Each card now gets:
+    - approach
+    - enter
+    - readable hold
+    - long upward drift
+    - soft exit
+
+    This is what makes the user feel like they are scrolling down the page.
+    =========================================================
   */
-  const cardStart = 0.3;
-  const cardGap = 0.14;
+
+  const cardsStart = 2.65;
+  const cardUnit = 1.9;
 
   cards.forEach((card, index) => {
     const side = index % 2 === 0 ? -1 : 1;
-    const start = cardStart + index * cardGap;
+    const start = cardsStart + index * cardUnit;
 
     timeline
       .set(card, {
@@ -136,144 +176,174 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger, car
       }, 0)
 
       /*
-        Enter from below.
-        Low opacity makes the next card feel like it is approaching,
-        but it is not readable yet.
+        Card begins below the viewport.
+        It is visible barely enough to feel like it is approaching.
       */
-      .to(card, {
-        autoAlpha: 0.18,
-        x: side * 34,
-        yPercent: 34,
-        scale: 0.965,
-        rotateX: 0,
-        duration: 0.045,
-        ease: "power2.out"
-      }, start)
+      .fromTo(card,
+        {
+          autoAlpha: 0,
+          x: side * 72,
+          yPercent: 88,
+          scale: 0.94,
+          rotateX: 0,
+          filter: "blur(8px)"
+        },
+        {
+          autoAlpha: 0.24,
+          x: side * 44,
+          yPercent: 48,
+          scale: 0.965,
+          filter: "blur(4px)",
+          duration: 0.42,
+          ease: "power1.out"
+        },
+        start
+      )
 
       /*
-        Move into the reading zone.
+        Card enters the readable zone.
       */
       .to(card, {
         autoAlpha: 1,
         x: 0,
         yPercent: -50,
         scale: 1,
-        rotateX: 0,
-        duration: 0.085,
+        filter: "blur(0px)",
+        duration: 0.62,
         ease: "power2.out"
-      }, start + 0.045)
+      }, start + 0.42)
 
       /*
-        Hold in the reading zone.
-        This is what makes the card feel important.
+        Long hold.
+        This gives the user time to actually read.
       */
       .to(card, {
         autoAlpha: 1,
         x: 0,
-        yPercent: -55,
+        yPercent: -56,
         scale: 1,
-        rotateX: 0,
-        duration: 0.085,
+        filter: "blur(0px)",
+        duration: 0.48,
         ease: "none"
-      }, start + 0.13)
+      }, start + 1.04)
 
       /*
-        Continue upward.
-        This creates the feeling that the user is moving down the page.
+        Slow upward movement.
+        This is the page-flow part.
       */
       .to(card, {
-        autoAlpha: 0.16,
-        x: side * -18,
-        yPercent: -122,
-        scale: 0.975,
-        rotateX: 0,
-        duration: 0.095,
-        ease: "power2.inOut"
-      }, start + 0.215)
+        autoAlpha: 0.72,
+        x: side * -10,
+        yPercent: -94,
+        scale: 0.992,
+        filter: "blur(0px)",
+        duration: 0.34,
+        ease: "power1.inOut"
+      }, start + 1.52)
 
       /*
-        Fully clear the card.
+        Soft clear.
       */
       .to(card, {
         autoAlpha: 0,
-        x: side * -28,
-        yPercent: -155,
-        scale: 0.96,
-        rotateX: 0,
-        duration: 0.045,
-        ease: "none"
-      }, start + 0.31);
+        x: side * -42,
+        yPercent: -148,
+        scale: 0.955,
+        filter: "blur(7px)",
+        duration: 0.38,
+        ease: "power1.in"
+      }, start + 1.86);
   });
 
   /*
+    =========================================================
     HANDOFF
-    Kept intact, but starts after the card flow has finished.
-    This preserves your zoom-through-C transition.
+    Starts only after all cards finish.
+    No more early C zoom.
+    =========================================================
   */
+
+  const handoffStart = cardsStart + cardCount * cardUnit + 0.5;
+
   timeline
     .to(word, {
-      scale: 1.42,
-      autoAlpha: 0.76,
+      scale: 1.26,
+      autoAlpha: 0.78,
       filter: "blur(0px)",
-      duration: 0.12
-    }, 0.91)
+      duration: 0.65,
+      ease: "power1.inOut"
+    }, handoffStart)
 
-    .to(cards, {
+    .to(cardTrack, {
       autoAlpha: 0,
-      duration: 0.06
-    }, 0.915)
+      duration: 0.42,
+      ease: "power1.out"
+    }, handoffStart + 0.1)
 
     .to(voidTarget, {
-      autoAlpha: 0.92,
+      autoAlpha: 0.86,
       scale: 1,
-      duration: 0.055
-    }, 0.925)
+      duration: 0.5,
+      ease: "power1.out"
+    }, handoffStart + 0.26)
 
     .to(worldInside, {
       autoAlpha: 0,
       clipPath: "circle(7% at 51.8% 50%)",
-      y: 26,
+      y: 28,
       scale: 0.86,
       filter: "blur(10px)",
-      duration: 0.06
-    }, 0.935)
+      duration: 0.48,
+      ease: "power1.out"
+    }, handoffStart + 0.36)
 
+    /*
+      First camera push.
+    */
     .to(word, {
-      scale: 3.15,
+      scale: 2.8,
       xPercent: -3.8,
       autoAlpha: 0.88,
-      filter: "blur(0.8px)",
-      duration: 0.07
-    }, 0.955)
+      filter: "blur(0.6px)",
+      duration: 0.72,
+      ease: "power2.inOut"
+    }, handoffStart + 0.9)
 
     .to(voidTarget, {
-      scale: 3.7,
-      autoAlpha: 0.86,
-      duration: 0.07
-    }, 0.955)
+      scale: 3.5,
+      autoAlpha: 0.82,
+      duration: 0.72,
+      ease: "power2.inOut"
+    }, handoffStart + 0.9)
 
     .to(worldInside, {
-      autoAlpha: 0.42,
+      autoAlpha: 0.4,
       clipPath: "circle(28% at 51.8% 50%)",
       y: 8,
       scale: 0.94,
       filter: "blur(5px)",
-      duration: 0.075
-    }, 0.975)
+      duration: 0.72,
+      ease: "power2.inOut"
+    }, handoffStart + 1.03)
 
+    /*
+      Deep zoom through the C.
+    */
     .to(word, {
       scale: 12.5,
       xPercent: -13.5,
       autoAlpha: 0,
       filter: "blur(14px)",
-      duration: 0.14
-    }, 1)
+      duration: 1.05,
+      ease: "power3.inOut"
+    }, handoffStart + 1.72)
 
     .to(voidTarget, {
       scale: 18,
       autoAlpha: 0,
-      duration: 0.13
-    }, 1)
+      duration: 1,
+      ease: "power3.inOut"
+    }, handoffStart + 1.72)
 
     .to(worldInside, {
       autoAlpha: 1,
@@ -281,13 +351,15 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger, car
       scale: 1,
       y: 0,
       filter: "blur(0px)",
-      duration: 0.16
-    }, 1)
+      duration: 1.05,
+      ease: "power3.inOut"
+    }, handoffStart + 1.78)
 
     .to(section, {
       "--process-section-intensity": 0.08,
-      duration: 0.1
-    }, 1.01);
+      duration: 0.7,
+      ease: "power1.out"
+    }, handoffStart + 2.15);
 
   const refresh = () => ScrollTrigger.refresh();
 
@@ -320,13 +392,13 @@ function prepareInitialState({
   });
 
   gsap.set(word, {
-    autoAlpha: 0.28,
-    scale: 0.46,
+    autoAlpha: 0.18,
+    scale: 0.42,
     xPercent: 0,
-    yPercent: 28,
+    yPercent: 34,
     transformOrigin: "52% 50%",
     filter: "blur(0px)",
-    letterSpacing: "-0.06em"
+    letterSpacing: "-0.052em"
   });
 
   gsap.set(voidTarget, {
@@ -346,26 +418,23 @@ function prepareInitialState({
 
   gsap.set(copy, {
     autoAlpha: 0,
-    y: 28
+    y: 32
   });
 
   gsap.set(cardTrack, {
     autoAlpha: 1
   });
 
-  /*
-    Cards start below the reading zone.
-    This is what makes the sequence feel like the user is moving down the page.
-  */
   cards.forEach((card, index) => {
     const side = index % 2 === 0 ? -1 : 1;
 
     gsap.set(card, {
       autoAlpha: 0,
-      x: side * 34,
-      yPercent: 34,
-      scale: 0.965,
+      x: side * 72,
+      yPercent: 88,
+      scale: 0.94,
       rotateX: 0,
+      filter: "blur(8px)",
       transformOrigin: "50% 52%"
     });
   });
@@ -410,23 +479,39 @@ function prepareReducedState({
     x: 0,
     yPercent: 0,
     scale: 1,
-    rotateX: 0
+    rotateX: 0,
+    filter: "none"
   });
 }
 
 function updateByProgress({ progress, scene, ui }) {
-  const intro = mapRange(progress, 0.02, 0.22);
-  const cards = mapRange(progress, 0.28, 0.88);
-  const handoff = mapRange(progress, 0.88, 1);
+  /*
+    These values now match the slower section structure.
 
-  scene.setProgress({
-    intro,
-    cards,
-    handoff
-  });
+    Intro gets more room.
+    Cards get most of the section.
+    Handoff waits until the end.
+  */
 
-  ui.setCardsProgress(cards);
-  ui.softenForHandoff(handoff);
+  const intro = mapRange(progress, 0.03, 0.24);
+  const cards = mapRange(progress, 0.24, 0.82);
+  const handoff = mapRange(progress, 0.82, 1);
+
+  if (scene && typeof scene.setProgress === "function") {
+    scene.setProgress({
+      intro,
+      cards,
+      handoff
+    });
+  }
+
+  if (ui && typeof ui.setCardsProgress === "function") {
+    ui.setCardsProgress(cards);
+  }
+
+  if (ui && typeof ui.softenForHandoff === "function") {
+    ui.softenForHandoff(handoff);
+  }
 }
 
 function mapRange(value, start, end) {
