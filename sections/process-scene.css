@@ -330,3 +330,16 @@
 .process-3d.is-process-active .process-word {
   z-index: 5 !important;
 }
+
+.process-world-inside {
+  contain: layout paint style;
+  backface-visibility: hidden;
+  transform: translateZ(0);
+}
+
+.process-word,
+.process-void,
+.process-card {
+  backface-visibility: hidden;
+  transform-style: preserve-3d;
+}
