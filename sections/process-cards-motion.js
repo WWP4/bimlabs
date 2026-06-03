@@ -2,46 +2,36 @@
 
 /*
   PROCESS CARD MOTION
-  Octotek-inspired pinned portfolio motion.
+  Clean Octotek-inspired panel motion.
 
   Goal:
-  - Panels feel like large work/case-study panels moving through a camera.
-  - Slower drift.
-  - More overlap.
-  - Less "pop in, pop out."
-  - One main ScrollTrigger still controls everything from process-scroll.js.
+  - One main panel at a time.
+  - Slight cinematic overlap, but no stacked mess.
+  - Cards feel like large work/info panels moving through a pinned scene.
+  - Still controlled by the single main process-scroll.js timeline.
 */
 
 const DEFAULT_CARD_CONFIG = {
   phaseStart: 0.28,
   phaseEnd: 0.78,
 
-  enterDuration: 0.14,
-  holdDuration: 0.13,
-  exitDuration: 0.16,
+  sideOffset: 140,
+  exitSideOffset: 110,
 
-  sideOffset: 120,
-  exitSideOffset: 90,
+  enterY: 78,
+  activeY: -4,
+  exitY: -84,
 
-  enterY: 74,
-  holdY: -4,
-  exitY: -78,
-
-  enterScale: 0.84,
+  enterScale: 0.9,
   activeScale: 1,
-  holdScale: 1.035,
-  exitScale: 0.92,
+  exitScale: 0.94,
 
-  enterRotateX: 9,
-  activeRotateX: 0,
-  exitRotateX: -8,
+  enterRotateX: 5,
+  exitRotateX: -5,
 
-  enterRotateZ: 1.8,
-  exitRotateZ: -1.4,
-
-  enterBlur: 10,
+  enterBlur: 8,
   activeBlur: 0,
-  exitBlur: 8
+  exitBlur: 7
 };
 
 export function prepareProcessCards({ gsap, cards, cardTrack }) {
@@ -57,18 +47,18 @@ export function prepareProcessCards({ gsap, cards, cardTrack }) {
 
   cards.forEach((card, index) => {
     const side = getCardSide(index);
-    const depth = getDepth(index);
 
     gsap.set(card, {
       autoAlpha: 0,
       x: side * DEFAULT_CARD_CONFIG.sideOffset,
       yPercent: DEFAULT_CARD_CONFIG.enterY,
-      z: depth,
+      z: -120,
       scale: DEFAULT_CARD_CONFIG.enterScale,
       rotateX: DEFAULT_CARD_CONFIG.enterRotateX,
-      rotateZ: side * DEFAULT_CARD_CONFIG.enterRotateZ,
+      rotateZ: side * 1.2,
       filter: `blur(${DEFAULT_CARD_CONFIG.enterBlur}px)`,
-      transformOrigin: "50% 64%",
+      zIndex: 1,
+      transformOrigin: "50% 62%",
       willChange: "transform, opacity, filter"
     });
   });
@@ -88,85 +78,101 @@ export function addProcessCardMotion({
 
   const totalCards = cards.length;
   const phaseLength = settings.phaseEnd - settings.phaseStart;
-
-  /*
-    Important:
-    We intentionally use overlap.
-    Octotek-style motion feels more like panels passing through a scene,
-    not one isolated card fully finishing before the next begins.
-  */
-  const stepGap = totalCards > 1
-    ? phaseLength / Math.max(totalCards - 0.35, 1)
-    : phaseLength;
+  const slot = phaseLength / totalCards;
 
   cards.forEach((card, index) => {
     const side = getCardSide(index);
-    const depth = getDepth(index);
-    const start = settings.phaseStart + index * stepGap;
 
-    timeline
-      /*
-        Enter from below/side, slightly blurred.
-        This is the "coming into the camera" moment.
-      */
-      .to(card, {
-        autoAlpha: 1,
-        x: side * 20,
-        yPercent: 16,
-        z: depth + 80,
-        scale: 0.94,
-        rotateX: 4,
-        rotateZ: side * 0.65,
-        filter: `blur(${settings.enterBlur * 0.38}px)`,
-        duration: settings.enterDuration,
-        ease: "power3.out"
-      }, start)
+    const slotStart = settings.phaseStart + index * slot;
+    const slotEnd = slotStart + slot;
 
-      /*
-        Hero moment.
-        The card becomes the main panel.
-      */
-      .to(card, {
-        autoAlpha: 1,
-        x: 0,
-        yPercent: settings.holdY,
-        z: depth + 140,
-        scale: settings.activeScale,
-        rotateX: settings.activeRotateX,
-        rotateZ: 0,
-        filter: `blur(${settings.activeBlur}px)`,
-        duration: settings.holdDuration,
-        ease: "power2.out"
-      }, start + settings.enterDuration * 0.72)
+    const enterStart = slotStart;
+    const activeStart = slotStart + slot * 0.24;
+    const exitStart = slotStart + slot * 0.66;
 
-      /*
-        Slight push forward.
-        This makes it feel more like a portfolio/work section instead of a card carousel.
-      */
-      .to(card, {
-        yPercent: -18,
-        z: depth + 210,
-        scale: settings.holdScale,
-        duration: settings.holdDuration,
-        ease: "none"
-      }, start + settings.enterDuration + settings.holdDuration * 0.4)
+    /*
+      Hard reset before this card's moment.
+      This prevents earlier/next cards from staying visible and stacking.
+    */
+    timeline.set(card, {
+      autoAlpha: 0,
+      zIndex: 2
+    }, Math.max(0, enterStart - 0.015));
 
-      /*
-        Exit upward and away.
-        It should feel like the camera keeps moving past the panel.
-      */
-      .to(card, {
-        autoAlpha: 0,
-        x: side * -settings.exitSideOffset,
-        yPercent: settings.exitY,
-        z: depth - 120,
-        scale: settings.exitScale,
-        rotateX: settings.exitRotateX,
-        rotateZ: side * settings.exitRotateZ,
-        filter: `blur(${settings.exitBlur}px)`,
-        duration: settings.exitDuration,
-        ease: "power3.in"
-      }, start + settings.enterDuration + settings.holdDuration);
+    /*
+      Soft pre-entry.
+      Card enters from the side and below, still blurred.
+    */
+    timeline.to(card, {
+      autoAlpha: 0.42,
+      x: side * 48,
+      yPercent: 34,
+      z: -40,
+      scale: 0.94,
+      rotateX: 3,
+      rotateZ: side * 0.5,
+      filter: `blur(${settings.enterBlur * 0.55}px)`,
+      duration: slot * 0.24,
+      ease: "power3.out"
+    }, enterStart);
+
+    /*
+      Main active panel.
+      This is the only moment the card should feel fully readable.
+    */
+    timeline.to(card, {
+      autoAlpha: 1,
+      x: 0,
+      yPercent: settings.activeY,
+      z: 80,
+      scale: settings.activeScale,
+      rotateX: 0,
+      rotateZ: 0,
+      filter: `blur(${settings.activeBlur}px)`,
+      zIndex: 5,
+      duration: slot * 0.34,
+      ease: "power3.out"
+    }, activeStart);
+
+    /*
+      Drift upward while still readable.
+      This gives the Octotek/work-section feeling without stacking everything.
+    */
+    timeline.to(card, {
+      autoAlpha: 0.86,
+      yPercent: -22,
+      z: 110,
+      scale: 1.015,
+      duration: slot * 0.22,
+      ease: "none"
+    }, activeStart + slot * 0.28);
+
+    /*
+      Exit cleanly.
+      By the end of this card's slot, it is fully gone.
+    */
+    timeline.to(card, {
+      autoAlpha: 0,
+      x: side * -settings.exitSideOffset,
+      yPercent: settings.exitY,
+      z: -130,
+      scale: settings.exitScale,
+      rotateX: settings.exitRotateX,
+      rotateZ: side * -1,
+      filter: `blur(${settings.exitBlur}px)`,
+      zIndex: 1,
+      duration: slot * 0.34,
+      ease: "power3.in"
+    }, exitStart);
+
+    /*
+      Hard hide at the end of the slot.
+      This is the safety lock that stops the stacked-card issue.
+    */
+    timeline.set(card, {
+      autoAlpha: 0,
+      zIndex: 1
+    }, slotEnd);
   });
 }
 
@@ -190,6 +196,7 @@ export function clearProcessCardsForReducedMotion({ gsap, cards, cardTrack }) {
       rotateX: 0,
       rotateZ: 0,
       filter: "none",
+      zIndex: "auto",
       clearProps: "willChange"
     });
   }
@@ -214,12 +221,4 @@ export function fadeProcessCardsBeforeHandoff({
 
 function getCardSide(index) {
   return index % 2 === 0 ? -1 : 1;
-}
-
-function getDepth(index) {
-  /*
-    Small alternating depth keeps the movement from feeling flat,
-    but avoids fake/cheesy 3D.
-  */
-  return index % 2 === 0 ? -60 : -110;
 }
