@@ -191,70 +191,60 @@ function addProcessTunnelHandoff({
   */
 
   timeline
-    .to(section, {
-      "--process-handoff": 0.15,
-      duration: 0.04
-    }, 0.8)
-
     .to(word, {
       scale: 1.34,
-      xPercent: -1.4,
+      xPercent: -1.2,
       yPercent: 0,
       autoAlpha: 0.94,
-      duration: 0.075
-    }, 0.82)
-
-    .to(section, {
-      "--process-handoff": 0.35,
-      duration: 0.06
-    }, 0.86)
+      duration: 0.08
+    }, 0.76)
 
     .to(word, {
-      scale: 2.55,
+      scale: 2.8,
       xPercent: -3.8,
-      autoAlpha: 0.96,
+      autoAlpha: 0.98,
       duration: 0.08
-    }, 0.875)
+    }, 0.84)
 
     .to(word, {
-      scale: 5.7,
-      xPercent: -8.3,
+      scale: 6.2,
+      xPercent: -8.8,
       autoAlpha: 1,
-      duration: 0.09
-    }, 0.925)
-
-    .to(section, {
-      "--process-handoff": 0.72,
-      duration: 0.08
-    }, 0.925);
+      duration: 0.07
+    }, 0.895);
 
   if (tunnel) {
     timeline
       .to(tunnel, {
-        autoAlpha: 0.82,
-        scale: 2.15,
+        autoAlpha: 0.5,
+        scale: 1.15,
+        duration: 0.05
+      }, 0.875)
+
+      .to(tunnel, {
+        autoAlpha: 0.96,
+        scale: 4.2,
         duration: 0.075
-      }, 0.935)
+      }, 0.915)
 
       .to(tunnel, {
         autoAlpha: 1,
-        scale: 6.8,
-        duration: 0.1
-      }, 0.965);
+        scale: 12.5,
+        duration: 0.06
+      }, 0.955);
   }
 
   timeline
     .to(word, {
-      scale: 13.5,
-      xPercent: -17.5,
+      scale: 15.5,
+      xPercent: -18.5,
       autoAlpha: 1,
-      duration: 0.11
-    }, 0.965)
+      duration: 0.035
+    }, 0.96)
 
     .to(section, {
-      "--process-handoff": 1,
       "--process-section-intensity": 0.08,
-      duration: 0.08
+      duration: 0.035
     }, 0.965)
 
     /*
@@ -263,15 +253,15 @@ function addProcessTunnelHandoff({
     */
     .to(word, {
       autoAlpha: 0,
-      duration: 0.01
-    }, 0.998);
+      duration: 0.004
+    }, 0.996);
 
   if (tunnel) {
     timeline.to(tunnel, {
       autoAlpha: 0,
-      scale: 11,
-      duration: 0.045
-    }, 0.998);
+      scale: 15,
+      duration: 0.005
+    }, 0.996);
   }
 
   timeline.set(sceneMount, {
@@ -337,10 +327,6 @@ function prepareInitialState({
     visibility, and custom properties to stay intact.
   */
   if (worldInside) {
-    gsap.set(worldInside, {
-      clearProps: "x,y,scale,opacity,visibility,clipPath,filter"
-    });
-
     worldInside.setAttribute("aria-hidden", "true");
     worldInside.classList.remove("is-visible", "is-interactive");
   }
@@ -395,10 +381,6 @@ function prepareReducedState({
   }
 
   if (worldInside) {
-    gsap.set(worldInside, {
-      clearProps: "all"
-    });
-
     worldInside.removeAttribute("aria-hidden");
     worldInside.classList.add("is-visible", "is-interactive");
   }
@@ -419,7 +401,7 @@ function prepareReducedState({
 function updateByProgress({ section, progress, scene, ui }) {
   const intro = mapRange(progress, 0.02, 0.36);
   const cards = mapRange(progress, 0.24, 0.82);
-  const handoff = mapRange(progress, 0.8, 1);
+  const handoff = mapRange(progress, 0.76, 1);
 
   section.style.setProperty("--process-intro", intro.toFixed(4));
   section.style.setProperty("--process-cards", cards.toFixed(4));

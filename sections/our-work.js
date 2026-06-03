@@ -213,17 +213,18 @@ function updateWorkScene() {
     Correct timeline:
     0.00–0.76 = PROCESS cards / word only
     0.76–0.90 = camera starts pushing toward PROCESS
-    0.88–0.96 = Our Work finally reveals through the center/C area
-    0.96–1.00 = Our Work becomes the full website layer
+    0.90–0.97 = Our Work finally reveals through the center/C area
+    0.97–1.00 = Our Work becomes the full website layer
   */
 
   const zoomStart = 0.76;
   const zoomEnd = 0.96;
 
-  const revealStart = 0.88;
-  const revealEnd = 0.965;
+  const revealStart = 0.9;
+  const revealEnd = 0.97;
 
-  const internalStart = 0.965;
+  const takeoverStart = 0.97;
+  const internalStart = 0.97;
   const internalEnd = 1;
 
   const zoomProgress = clamp(
@@ -259,7 +260,7 @@ function updateWorkScene() {
   workTrack.style.setProperty("--work-scroll-progress", internalValue);
 
   const isVisible = revealProgress > 0.01;
-  const isWorkMode = revealProgress > 0.72;
+  const isWorkMode = progress >= takeoverStart;
   const isInteractive = revealProgress >= 0.98;
 
   workWorld.classList.toggle("is-visible", isVisible);
