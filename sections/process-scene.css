@@ -499,3 +499,73 @@
   visibility: hidden !important;
   pointer-events: none !important;
 }
+
+
+
+
+/* =========================================================
+   PROCESS → OUR WORK TUNNEL HANDOFF
+   This gives the zoom a real bridge before Our Work opens.
+========================================================= */
+
+.process-void {
+  position: absolute !important;
+  left: var(--process-c-x, 51.8%) !important;
+  top: var(--process-c-y, 50%) !important;
+  z-index: 4 !important;
+
+  width: clamp(180px, 24vw, 420px) !important;
+  aspect-ratio: 1 !important;
+  border-radius: 999px !important;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(0, 0, 0, 1) 0%,
+      rgba(0, 0, 0, 0.98) 34%,
+      rgba(0, 0, 0, 0.82) 52%,
+      rgba(0, 0, 0, 0.42) 68%,
+      rgba(0, 0, 0, 0) 78%
+    ) !important;
+
+  opacity: 0;
+  visibility: visible !important;
+  pointer-events: none !important;
+
+  transform: translate3d(-50%, -50%, 0) scale(0.2);
+  transform-origin: 50% 50% !important;
+
+  filter: blur(0.5px);
+  will-change: transform, opacity;
+}
+
+/* Add a subtle dark camera edge during the handoff */
+.process-scene::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+
+  background:
+    radial-gradient(
+      circle at var(--process-c-x, 51.8%) var(--process-c-y, 50%),
+      transparent 0%,
+      transparent 34%,
+      rgba(0, 0, 0, 0.42) 62%,
+      rgba(0, 0, 0, 0.94) 100%
+    );
+
+  opacity: calc(var(--process-handoff, 0) * 0.88);
+  transition: opacity 80ms linear;
+}
+
+/* PROCESS still sits above the destination while zooming */
+.process-word {
+  z-index: 5 !important;
+}
+
+/* Our Work stays behind the handoff */
+.process-world-inside {
+  z-index: 1 !important;
+}
