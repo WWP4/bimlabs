@@ -8,11 +8,6 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger }) {
   const copy = section.querySelector(".process-copy");
   const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  if (!section || !sceneMount || !word) {
-    console.warn("[Process] Missing required process elements.");
-    return null;
-  }
-
   if (prefersReducedMotion) {
     prepareReducedState({
       gsap,
@@ -41,21 +36,9 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger }) {
     scrollTrigger: {
       trigger: section,
       start: "top top",
-
-      /*
-        This now respects the real height of the section.
-        Since cards are normal scrolling content, the PROCESS animation should
-        stretch across the actual card scroll instead of finishing too early.
-      */
-      end: () => {
-        const naturalDistance = section.scrollHeight - window.innerHeight;
-        const cinematicMinimum = window.innerHeight * 7.2;
-
-        return `+=${Math.max(naturalDistance, cinematicMinimum, 7200)}`;
-      },
-
+      end: () => `+=${Math.max(window.innerHeight * 5.4, 5200)}`,
       pin: false,
-      scrub: 0.9,
+      scrub: 0.85,
       invalidateOnRefresh: true,
 
       onUpdate: (self) => {
@@ -97,45 +80,33 @@ function addProcessIntro({ timeline, section, word, copy }) {
   timeline
     .to(section, {
       "--process-section-intensity": 1,
-      duration: 0.18
+      duration: 0.12
     }, 0)
-
-    /*
-      Slower PROCESS arrival.
-      It no longer rushes to full size before the longer cards have room to breathe.
-    */
-    .to(word, {
-      autoAlpha: 0.82,
-      scale: 0.78,
-      yPercent: 12,
-      letterSpacing: "-0.072em",
-      duration: 0.18
-    }, 0)
-
-    .to(copy, {
-      autoAlpha: 1,
-      y: 0,
-      duration: 0.16
-    }, 0.08)
 
     .to(word, {
       autoAlpha: 0.92,
       scale: 1,
       yPercent: 0,
       letterSpacing: "-0.085em",
-      duration: 0.24
-    }, 0.18)
+      duration: 0.2
+    }, 0)
+
+    .to(copy, {
+      autoAlpha: 1,
+      y: 0,
+      duration: 0.12
+    }, 0.08)
 
     .to(word, {
-      scale: 1.14,
-      duration: 0.24
-    }, 0.42)
+      scale: 1.22,
+      duration: 0.22
+    }, 0.2)
 
     .to(copy, {
       autoAlpha: 0,
       y: -26,
-      duration: 0.16
-    }, 0.46);
+      duration: 0.14
+    }, 0.26);
 }
 
 function addProcessHandoff({
@@ -145,22 +116,18 @@ function addProcessHandoff({
   voidTarget,
   worldInside
 }) {
-  /*
-    Handoff now starts later.
-    The cards get the middle of the section. The C zoom only takes the final stretch.
-  */
   timeline
     .to(word, {
-      scale: 1.42,
+      scale: 1.5,
       autoAlpha: 0.78,
-      duration: 0.1
-    }, 0.84)
+      duration: 0.12
+    }, 0.76)
 
     .to(voidTarget, {
-      autoAlpha: 0.88,
+      autoAlpha: 0.92,
       scale: 1,
       duration: 0.055
-    }, 0.865)
+    }, 0.79)
 
     .to(worldInside, {
       autoAlpha: 0,
@@ -169,21 +136,21 @@ function addProcessHandoff({
       scale: 0.86,
       filter: "blur(10px)",
       duration: 0.06
-    }, 0.875)
+    }, 0.805)
 
     .to(word, {
-      scale: 3.05,
+      scale: 3.15,
       xPercent: -3.8,
       autoAlpha: 0.88,
       filter: "blur(0.8px)",
-      duration: 0.075
-    }, 0.895)
+      duration: 0.07
+    }, 0.83)
 
     .to(voidTarget, {
       scale: 3.7,
-      autoAlpha: 0.84,
-      duration: 0.075
-    }, 0.895)
+      autoAlpha: 0.86,
+      duration: 0.07
+    }, 0.83)
 
     .to(worldInside, {
       autoAlpha: 0.42,
@@ -191,22 +158,22 @@ function addProcessHandoff({
       y: 8,
       scale: 0.94,
       filter: "blur(5px)",
-      duration: 0.08
-    }, 0.915)
+      duration: 0.075
+    }, 0.855)
 
     .to(word, {
       scale: 12.5,
       xPercent: -13.5,
       autoAlpha: 0,
       filter: "blur(14px)",
-      duration: 0.13
-    }, 0.95)
+      duration: 0.14
+    }, 0.89)
 
     .to(voidTarget, {
       scale: 18,
       autoAlpha: 0,
       duration: 0.13
-    }, 0.95)
+    }, 0.89)
 
     .to(worldInside, {
       autoAlpha: 1,
@@ -214,13 +181,13 @@ function addProcessHandoff({
       scale: 1,
       y: 0,
       filter: "blur(0px)",
-      duration: 0.15
-    }, 0.95)
+      duration: 0.16
+    }, 0.89)
 
     .to(section, {
       "--process-section-intensity": 0.08,
       duration: 0.1
-    }, 0.965);
+    }, 0.9);
 }
 
 function prepareInitialState({
@@ -241,40 +208,34 @@ function prepareInitialState({
   });
 
   gsap.set(word, {
-    autoAlpha: 0.24,
+    autoAlpha: 0.28,
     scale: 0.46,
     xPercent: 0,
-    yPercent: 30,
+    yPercent: 28,
     transformOrigin: "52% 50%",
     filter: "blur(0px)",
     letterSpacing: "-0.06em"
   });
 
-  if (voidTarget) {
-    gsap.set(voidTarget, {
-      autoAlpha: 0,
-      scale: 0.14,
-      transformOrigin: "50% 50%"
-    });
-  }
+  gsap.set(voidTarget, {
+    autoAlpha: 0,
+    scale: 0.14,
+    transformOrigin: "50% 50%"
+  });
 
-  if (worldInside) {
-    gsap.set(worldInside, {
-      autoAlpha: 0,
-      clipPath: "circle(0% at var(--process-c-x) var(--process-c-y))",
-      y: 44,
-      scale: 0.8,
-      filter: "blur(12px)",
-      transformOrigin: "var(--process-c-x) var(--process-c-y)"
-    });
-  }
+  gsap.set(worldInside, {
+    autoAlpha: 0,
+    clipPath: "circle(0% at var(--process-c-x) var(--process-c-y))",
+    y: 44,
+    scale: 0.8,
+    filter: "blur(12px)",
+    transformOrigin: "var(--process-c-x) var(--process-c-y)"
+  });
 
-  if (copy) {
-    gsap.set(copy, {
-      autoAlpha: 0,
-      y: 28
-    });
-  }
+  gsap.set(copy, {
+    autoAlpha: 0,
+    y: 28
+  });
 }
 
 function prepareReducedState({
@@ -291,31 +252,25 @@ function prepareReducedState({
     clearProps: "all"
   });
 
-  if (voidTarget) {
-    gsap.set(voidTarget, {
-      autoAlpha: 0
-    });
-  }
+  gsap.set(voidTarget, {
+    autoAlpha: 0
+  });
 
-  if (worldInside) {
-    gsap.set(worldInside, {
-      autoAlpha: 0,
-      filter: "none"
-    });
-  }
+  gsap.set(worldInside, {
+    autoAlpha: 0,
+    filter: "none"
+  });
 
-  if (copy) {
-    gsap.set(copy, {
-      autoAlpha: 1,
-      y: 0
-    });
-  }
+  gsap.set(copy, {
+    autoAlpha: 1,
+    y: 0
+  });
 }
 
 function updateByProgress({ progress, scene, ui }) {
-  const intro = mapRange(progress, 0.02, 0.46);
-  const cards = mapRange(progress, 0.28, 0.84);
-  const handoff = mapRange(progress, 0.84, 1);
+  const intro = mapRange(progress, 0.02, 0.22);
+  const cards = mapRange(progress, 0.28, 0.8);
+  const handoff = mapRange(progress, 0.8, 1);
 
   scene.setProgress({
     intro,
