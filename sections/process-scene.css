@@ -309,3 +309,17 @@
 .process-3d.is-process-active .process-word {
   z-index: 5 !important;
 }
+
+
+.process-3d {
+  min-height: 560vh;
+  height: auto;
+  overflow: visible;
+}
+
+.process-scene {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+}
+
