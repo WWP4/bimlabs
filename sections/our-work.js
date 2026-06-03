@@ -184,66 +184,95 @@
     animateDetail();
   }
 
-  function updateWorkScene() {
-    ticking = false;
 
-    if (window.innerWidth <= 900 || prefersReducedMotion) {
-      workWorld.classList.add("is-visible", "is-interactive");
-      workWorld.removeAttribute("aria-hidden");
+function updateWorkScene() {
+  ticking = false;
 
-      processSection.style.setProperty("--work-zoom-progress", "1");
-      processSection.style.setProperty("--work-scroll-progress", "0");
-      workWorld.style.setProperty("--work-zoom-progress", "1");
-      workWorld.style.setProperty("--work-scroll-progress", "0");
-      workTrack.style.setProperty("--work-scroll-progress", "0");
+  if (window.innerWidth <= 900 || prefersReducedMotion) {
+    workWorld.classList.add("is-visible", "is-interactive");
+    workWorld.removeAttribute("aria-hidden");
 
-      return;
-    }
+    processSection.classList.add("is-work-mode");
 
-    const progress = getProcessProgress();
+    processSection.style.setProperty("--work-zoom-progress", "1");
+    processSection.style.setProperty("--work-reveal-progress", "1");
+    processSection.style.setProperty("--work-scroll-progress", "0");
 
-    /*
-      Timeline:
-      0.00–0.74 = PROCESS cards/word dominate
-      0.74–0.90 = Our Work zooms in
-      0.90–0.98 = Our Work internally moves
-      0.98–1.00 = section naturally exits
-    */
+    workWorld.style.setProperty("--work-zoom-progress", "1");
+    workWorld.style.setProperty("--work-reveal-progress", "1");
+    workWorld.style.setProperty("--work-scroll-progress", "0");
 
-    const zoomStart = 0.74;
-    const zoomEnd = 0.9;
+    workTrack.style.setProperty("--work-scroll-progress", "0");
 
-    const internalStart = 0.9;
-    const internalEnd = 0.98;
-
-    const zoomProgress = clamp((progress - zoomStart) / (zoomEnd - zoomStart), 0, 1);
-    const internalProgress = clamp((progress - internalStart) / (internalEnd - internalStart), 0, 1);
-
-    const zoomValue = zoomProgress.toFixed(4);
-    const internalValue = internalProgress.toFixed(4);
-
-    processSection.style.setProperty("--work-zoom-progress", zoomValue);
-    processSection.style.setProperty("--work-scroll-progress", internalValue);
-
-    workWorld.style.setProperty("--work-zoom-progress", zoomValue);
-    workWorld.style.setProperty("--work-scroll-progress", internalValue);
-
-    workTrack.style.setProperty("--work-scroll-progress", internalValue);
-
-    const isVisible = zoomProgress > 0.02;
-    const isWorkMode = zoomProgress > 0.84;
-    const isInteractive = zoomProgress >= 0.98;
-
-    workWorld.classList.toggle("is-visible", isVisible);
-    workWorld.classList.toggle("is-interactive", isInteractive);
-    processSection.classList.toggle("is-work-mode", isWorkMode);
-
-    if (isVisible) {
-      workWorld.removeAttribute("aria-hidden");
-    } else {
-      workWorld.setAttribute("aria-hidden", "true");
-    }
+    return;
   }
+
+  const progress = getProcessProgress();
+
+  /*
+    Correct timeline:
+    0.00–0.76 = PROCESS cards / word only
+    0.76–0.90 = camera starts pushing toward PROCESS
+    0.88–0.96 = Our Work finally reveals through the center/C area
+    0.96–1.00 = Our Work becomes the full website layer
+  */
+
+  const zoomStart = 0.76;
+  const zoomEnd = 0.96;
+
+  const revealStart = 0.88;
+  const revealEnd = 0.965;
+
+  const internalStart = 0.965;
+  const internalEnd = 1;
+
+  const zoomProgress = clamp(
+    (progress - zoomStart) / (zoomEnd - zoomStart),
+    0,
+    1
+  );
+
+  const revealProgress = clamp(
+    (progress - revealStart) / (revealEnd - revealStart),
+    0,
+    1
+  );
+
+  const internalProgress = clamp(
+    (progress - internalStart) / (internalEnd - internalStart),
+    0,
+    1
+  );
+
+  const zoomValue = zoomProgress.toFixed(4);
+  const revealValue = revealProgress.toFixed(4);
+  const internalValue = internalProgress.toFixed(4);
+
+  processSection.style.setProperty("--work-zoom-progress", zoomValue);
+  processSection.style.setProperty("--work-reveal-progress", revealValue);
+  processSection.style.setProperty("--work-scroll-progress", internalValue);
+
+  workWorld.style.setProperty("--work-zoom-progress", zoomValue);
+  workWorld.style.setProperty("--work-reveal-progress", revealValue);
+  workWorld.style.setProperty("--work-scroll-progress", internalValue);
+
+  workTrack.style.setProperty("--work-scroll-progress", internalValue);
+
+  const isVisible = revealProgress > 0.01;
+  const isWorkMode = revealProgress > 0.72;
+  const isInteractive = revealProgress >= 0.98;
+
+  workWorld.classList.toggle("is-visible", isVisible);
+  workWorld.classList.toggle("is-interactive", isInteractive);
+  processSection.classList.toggle("is-work-mode", isWorkMode);
+
+  if (isVisible) {
+    workWorld.removeAttribute("aria-hidden");
+  } else {
+    workWorld.setAttribute("aria-hidden", "true");
+  }
+}
+   
 
   function requestUpdate() {
     if (ticking) return;
