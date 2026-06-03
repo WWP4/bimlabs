@@ -1,625 +1,492 @@
-/* ==========================================================
-   BIM LABS STUDIO — OUR WORK INSIDE PROCESS
-   Optimized version.
-   Our Work stays inside the sticky PROCESS scene.
-   No heavy full-screen blur. No release-to-normal-flow logic.
-   ========================================================== */
+/* =========================================================
+   BIM LABS STUDIO — PROCESS SCENE
+   Performance-first cinematic handoff:
+   PROCESS cards → zoom through C/tunnel → Our Work takeover
+========================================================= */
 
-/* ----------------------------------------------------------
-   MAIN ARCHIVE SECTION
-   ---------------------------------------------------------- */
+:root {
+  --process-bg: #020202;
+  --process-white: #f5f5f0;
+  --process-muted: rgba(245, 245, 240, 0.58);
+  --process-line: rgba(245, 245, 240, 0.12);
 
-.work-archive {
+  --process-section-intensity: 0;
+  --process-intro: 0;
+  --process-cards: 0;
+  --process-handoff: 0;
+
+  --process-c-x: 51.8%;
+  --process-c-y: 50%;
+
+  --work-zoom-progress: 0;
+  --work-reveal-progress: 0;
+  --work-scroll-progress: 0;
+}
+
+/* =========================================================
+   OUTER SECTION
+========================================================= */
+
+.process-3d {
   position: relative;
+  min-height: 900vh;
+  height: auto;
+  overflow: visible;
+  isolation: isolate;
+  background: var(--process-bg);
+  color: var(--process-white);
+}
+
+.process-3d::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: #020202;
+  opacity: 1;
+}
+
+/* =========================================================
+   STICKY CAMERA LAYER
+========================================================= */
+
+.process-scene {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+
+  display: grid;
+  place-items: center;
+
   width: 100%;
   height: 100vh;
   min-height: 100vh;
+
   overflow: hidden;
-  color: #f2f2f2;
   background: #020202;
-  font-family: inherit;
-}
 
-/* Lightweight atmosphere */
-.work-archive__bg {
-  position: absolute;
-  inset: -12%;
-  z-index: 1;
+  perspective: 1100px;
+  transform-style: preserve-3d;
+
   pointer-events: none;
-  background:
-    radial-gradient(circle at 72% 24%, rgba(255, 255, 255, 0.055), transparent 30%),
-    radial-gradient(circle at 22% 76%, rgba(255, 255, 255, 0.035), transparent 34%),
-    radial-gradient(circle at 52% 46%, rgba(255, 255, 255, 0.05), transparent 18%);
-  opacity: 0.8;
-  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  contain: layout paint style;
 }
 
-/* This creates the “scrolling inside Our Work” feeling */
-.work-archive__track {
+/* lightweight handoff edge */
+.process-scene::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  pointer-events: none;
+
+  background:
+    radial-gradient(
+      circle at var(--process-c-x) var(--process-c-y),
+      transparent 0%,
+      transparent 24%,
+      rgba(0, 0, 0, 0.3) 54%,
+      rgba(0, 0, 0, 0.92) 100%
+    );
+
+  opacity: calc(var(--process-handoff, 0) * 0.78);
+  transition: opacity 120ms linear;
+}
+
+.process-3d.is-inside-work .process-scene::after,
+.process-3d.is-work-mode .process-scene::after {
+  opacity: 0;
+}
+
+/* =========================================================
+   PROCESS WORD
+========================================================= */
+
+.process-word {
   position: relative;
-  z-index: 2;
-  width: 100%;
-  min-height: 116vh;
-  transform: translate3d(0, calc(var(--work-scroll-progress, 0) * -16vh), 0);
-  will-change: transform;
+  z-index: 6;
+
+  margin: 0;
+
+  font-family: var(--sans, Manrope, system-ui, sans-serif);
+  font-size: clamp(76px, 17vw, 300px);
+  line-height: 0.78;
+  letter-spacing: -0.085em;
+  font-weight: 600;
+
+  color: rgba(245, 245, 240, 0.92);
+  text-transform: uppercase;
+  white-space: nowrap;
+
+  transform: translate3d(0, 0, -180px) scale(0.46);
+  transform-origin: 52% 50%;
+
+  pointer-events: none;
+  mix-blend-mode: normal;
+
+  -webkit-font-smoothing: antialiased;
+  text-rendering: geometricPrecision;
+
+  will-change: transform, opacity;
   backface-visibility: hidden;
 }
 
-/* Editorial grid lines */
-.work-archive::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: 2;
-  pointer-events: none;
-  background:
-    linear-gradient(to right, rgba(255, 255, 255, 0.045) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255, 255, 255, 0.032) 1px, transparent 1px);
-  background-size: 25% 100%, 100% 14.285%;
-  opacity: 0.22;
-}
-
-/* Static vignette */
-.work-archive::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: 3;
-  pointer-events: none;
-  background:
-    linear-gradient(to bottom, rgba(0, 0, 0, 0.94), transparent 18%, transparent 74%, rgba(0, 0, 0, 0.96)),
-    linear-gradient(to right, rgba(0, 0, 0, 0.72), transparent 18%, transparent 80%, rgba(0, 0, 0, 0.82));
-}
-
-.work-archive__shell {
+.process-word span {
   position: relative;
-  z-index: 4;
-  display: grid;
-  grid-template-rows: auto 1fr;
-  width: min(100%, 1880px);
+  z-index: 7;
+}
+
+/* =========================================================
+   OUR WORK DESTINATION LAYER
+   Starts behind PROCESS, then becomes active after handoff.
+========================================================= */
+
+.process-world-inside {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+
+  width: 100%;
   height: 100vh;
-  min-height: 760px;
-  margin: 0 auto;
-  padding: clamp(5rem, 7vw, 8rem) clamp(2rem, 4vw, 4.5rem) clamp(2rem, 4vw, 4rem);
-}
+  min-height: 100vh;
 
-/* ----------------------------------------------------------
-   HEADER
-   ---------------------------------------------------------- */
-
-.work-archive__header {
-  display: grid;
-  grid-template-columns: 1.15fr 0.85fr;
-  align-items: end;
-  gap: clamp(2rem, 5vw, 7rem);
-  padding-bottom: clamp(2rem, 4vw, 4rem);
-}
-
-.work-archive__kicker {
-  margin: 0 0 1.1rem;
-  color: rgba(255, 255, 255, 0.52);
-  font-size: 0.72rem;
-  letter-spacing: 0.26em;
-  text-transform: uppercase;
-}
-
-.work-archive__title {
-  margin: 0;
-  color: rgba(255, 255, 255, 0.09);
-  font-size: clamp(5.8rem, 13vw, 16rem);
-  font-weight: 300;
-  line-height: 0.78;
-  letter-spacing: -0.085em;
-  text-transform: uppercase;
-}
-
-.work-archive__intro {
-  max-width: 38rem;
-  margin: 0 0 0.65rem auto;
-  color: rgba(255, 255, 255, 0.54);
-  font-size: clamp(0.92rem, 1vw, 1.1rem);
-  font-weight: 300;
-  line-height: 1.75;
-}
-
-/* ----------------------------------------------------------
-   BODY LAYOUT
-   ---------------------------------------------------------- */
-
-.work-archive__body {
-  position: relative;
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(22rem, 31vw);
-  min-height: 0;
-  border-top: 1px solid rgba(255, 255, 255, 0.09);
-}
-
-.work-archive__index {
-  position: relative;
-  display: grid;
-  align-content: center;
-  padding-right: clamp(1.5rem, 4vw, 5rem);
-}
-
-.work-archive__index::before {
-  content: "";
-  position: absolute;
-  top: 10%;
-  bottom: 10%;
-  left: clamp(4.5rem, 6vw, 7rem);
-  width: 1px;
-  background: rgba(255, 255, 255, 0.08);
-}
-
-/* ----------------------------------------------------------
-   PROJECT ROWS
-   ---------------------------------------------------------- */
-
-.work-project {
-  position: relative;
-  display: grid;
-  grid-template-columns:
-    minmax(4rem, 0.36fr)
-    minmax(16rem, 1.55fr)
-    minmax(8rem, 0.8fr)
-    minmax(6rem, 0.55fr)
-    minmax(12rem, 1fr);
-  align-items: center;
-  gap: clamp(1rem, 2vw, 2.5rem);
-  width: 100%;
-  min-height: clamp(7rem, 12vh, 9.25rem);
-  padding: 1rem 0;
-  border: 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.075);
-  background: transparent;
-  color: inherit;
-  font: inherit;
-  text-align: left;
-  cursor: pointer;
-}
-
-.work-project::before {
-  content: "";
-  position: absolute;
-  top: 50%;
-  left: clamp(4.5rem, 6vw, 7rem);
-  width: 0.48rem;
-  height: 0.48rem;
-  border: 1px solid rgba(255, 255, 255, 0.22);
-  border-radius: 999px;
-  background: #020202;
-  transform: translate3d(-50%, -50%, 0);
-  transition:
-    border-color 240ms ease,
-    background 240ms ease,
-    transform 240ms ease;
-}
-
-.work-project::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background: linear-gradient(to right, rgba(255, 255, 255, 0.035), transparent 52%);
-  opacity: 0;
-  transition: opacity 240ms ease;
-}
-
-.work-project:hover::after,
-.work-project.is-active::after {
-  opacity: 1;
-}
-
-.work-project:hover::before,
-.work-project.is-active::before {
-  background: #fff;
-  border-color: #fff;
-  transform: translate3d(-50%, -50%, 0) scale(1.08);
-}
-
-.work-project__number {
-  color: rgba(255, 255, 255, 0.62);
-  font-size: 0.82rem;
-  letter-spacing: 0.16em;
-}
-
-.work-project__name {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  width: fit-content;
-  color: rgba(255, 255, 255, 0.84);
-  font-size: clamp(1.35rem, 2.1vw, 2.65rem);
-  font-weight: 300;
-  letter-spacing: -0.055em;
-  line-height: 1.05;
-  transition:
-    color 240ms ease,
-    transform 240ms ease,
-    letter-spacing 240ms ease;
-}
-
-.work-project:hover .work-project__name,
-.work-project.is-active .work-project__name {
-  color: #fff;
-  letter-spacing: -0.07em;
-  transform: translate3d(0.35rem, 0, 0);
-}
-
-.work-project__meta {
-  display: grid;
-  gap: 0.45rem;
-  color: rgba(255, 255, 255, 0.5);
-  font-size: 0.68rem;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-}
-
-.work-project__meta span {
-  color: rgba(255, 255, 255, 0.34);
-}
-
-.work-project__meta strong {
-  color: rgba(255, 255, 255, 0.66);
-  font-size: 0.72rem;
-  font-weight: 400;
-  line-height: 1.45;
-}
-
-/* ----------------------------------------------------------
-   HOVER PREVIEW
-   ---------------------------------------------------------- */
-
-.work-project__preview {
-  position: absolute;
-  left: min(22vw, 27rem);
-  top: 50%;
-  z-index: 12;
-  display: block;
-  width: clamp(10rem, 15vw, 16rem);
-  aspect-ratio: 1.55 / 1;
+  padding: 0;
   overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.16);
-  background: #090909;
-  opacity: 0;
-  transform: translate3d(-0.8rem, -50%, 0) scale(0.96);
-  transition:
-    opacity 220ms ease,
-    transform 260ms cubic-bezier(.2, .8, .2, 1);
+
+  background: #020202;
+
+  opacity: var(--work-reveal-progress, 0);
+  visibility: hidden;
   pointer-events: none;
-  box-shadow: 0 1.2rem 3.2rem rgba(0, 0, 0, 0.42);
+
+  transform:
+    translate3d(0, 0, 0)
+    scale(calc(0.16 + (var(--work-zoom-progress, 0) * 0.84)));
+
+  transform-origin: var(--process-c-x) var(--process-c-y);
+
+  filter: none;
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+  contain: layout paint style;
 }
 
-.work-project__preview img {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  filter: grayscale(1) contrast(1.04) brightness(0.82);
-  transform: translate3d(0, 0, 0) scale(1.03);
-  transition: transform 420ms ease;
+.process-world-inside.is-visible,
+.process-3d.is-work-visible .process-world-inside {
+  visibility: visible;
 }
 
-.work-project:hover .work-project__preview {
+.process-world-inside.is-interactive,
+.process-3d.is-work-interactive .process-world-inside,
+.process-3d.is-inside-work .process-world-inside {
+  pointer-events: auto;
+}
+
+.process-3d.is-inside-work .process-world-inside {
   opacity: 1;
-  transform: translate3d(0, -50%, 0) scale(1);
+  visibility: visible;
+  pointer-events: auto;
+  transform: translate3d(0, 0, 0) scale(1);
 }
 
-.work-project:hover .work-project__preview img {
-  transform: translate3d(0, 0, 0) scale(1.06);
-}
+/* =========================================================
+   TUNNEL / C HANDOFF
+========================================================= */
 
-/* ----------------------------------------------------------
-   DETAIL PANEL
-   ---------------------------------------------------------- */
-
-.work-detail {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  min-height: 0;
-  padding: clamp(2.2rem, 4vw, 4rem);
-  border-left: 1px solid rgba(255, 255, 255, 0.1);
-  background:
-    linear-gradient(to right, rgba(255, 255, 255, 0.025), transparent),
-    rgba(0, 0, 0, 0.24);
-}
-
-.work-detail__close {
+.process-void {
   position: absolute;
-  top: clamp(1.5rem, 2vw, 2.2rem);
-  right: clamp(1.5rem, 2vw, 2.2rem);
-  width: 2rem;
-  height: 2rem;
-  border: 0;
-  background: transparent;
-  color: rgba(255, 255, 255, 0.68);
-  font: inherit;
-  font-size: 1.5rem;
+  left: var(--process-c-x);
+  top: var(--process-c-y);
+  z-index: 5;
+
+  width: clamp(220px, 28vmax, 520px);
+  aspect-ratio: 1;
+  border-radius: 999px;
+
+  background:
+    radial-gradient(
+      circle,
+      #000 0%,
+      #000 36%,
+      rgba(0, 0, 0, 0.92) 52%,
+      rgba(0, 0, 0, 0.56) 70%,
+      rgba(0, 0, 0, 0) 88%
+    );
+
+  opacity: 0;
+  visibility: visible;
+
+  transform: translate3d(-50%, -50%, 0) scale(0.12);
+  transform-origin: 50% 50%;
+
+  pointer-events: none;
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+  contain: layout paint;
+}
+
+.process-void::before {
+  content: "";
+  position: absolute;
+  inset: 11%;
+  border-radius: inherit;
+  border: 1px solid rgba(245, 245, 240, 0.06);
+  pointer-events: none;
+}
+
+.process-void::after {
+  content: "";
+  position: absolute;
+  inset: 24%;
+  border-radius: inherit;
+  background: #000;
+  pointer-events: none;
+}
+
+/* =========================================================
+   PROCESS OVERLAY / COPY / CARDS
+========================================================= */
+
+.process-overlay {
+  position: relative;
+  z-index: 8;
+
+  width: min(1380px, calc(100% - 44px));
+  min-height: 720vh;
+
+  margin: 0 auto;
+
+  pointer-events: none;
+  perspective: 1200px;
+
+  will-change: opacity;
+  backface-visibility: hidden;
+}
+
+.process-copy {
+  position: sticky;
+  top: clamp(78px, 12vh, 132px);
+  z-index: 9;
+
+  width: min(470px, 42vw);
+
+  pointer-events: auto;
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+}
+
+.process-kicker {
+  margin: 0 0 18px;
+
+  font-family: var(--mono, ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace);
+  font-size: 11px;
   line-height: 1;
-  cursor: pointer;
-  transition:
-    color 220ms ease,
-    transform 220ms ease;
-}
-
-.work-detail__close:hover {
-  color: #fff;
-  transform: rotate(90deg);
-}
-
-.work-detail.is-muted {
-  opacity: 0.42;
-}
-
-.work-detail__eyebrow {
-  display: flex;
-  gap: 1.5rem;
-  margin-bottom: clamp(1.7rem, 4vh, 3rem);
-  color: rgba(255, 255, 255, 0.48);
-  font-size: 0.68rem;
   letter-spacing: 0.18em;
   text-transform: uppercase;
+
+  color: rgba(245, 245, 240, 0.52);
 }
 
-.work-detail__title {
-  max-width: 12ch;
-  margin: 0 0 clamp(1.2rem, 2.8vh, 2rem);
-  color: rgba(255, 255, 255, 0.92);
-  font-size: clamp(2.2rem, 4.2vw, 5rem);
-  font-weight: 300;
+.process-copy p:not(.process-kicker) {
+  margin: 0;
+  max-width: 430px;
+
+  font-size: clamp(15px, 1.05vw, 17px);
+  line-height: 1.62;
+  letter-spacing: -0.024em;
+
+  color: var(--process-muted);
+}
+
+.process-cards,
+.process-card {
+  pointer-events: auto;
+}
+
+/* During Our Work takeover, remove cards/copy from interaction and paint */
+.process-3d.is-work-mode .process-overlay,
+.process-3d.is-inside-work .process-overlay {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.process-3d.is-inside-work .process-word {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+/* =========================================================
+   OPTIONAL NEXT SECTION FALLBACK
+========================================================= */
+
+.systems-handoff {
+  min-height: 100svh;
+
+  display: grid;
+  place-items: center;
+
+  padding: clamp(90px, 12vw, 160px) 24px;
+
+  background: #050505;
+  color: var(--process-white);
+}
+
+.systems-handoff__inner {
+  width: min(920px, 100%);
+}
+
+.systems-handoff p {
+  margin: 0 0 18px;
+
+  font-family: var(--mono, ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+
+  color: rgba(245, 245, 240, 0.5);
+}
+
+.systems-handoff h2 {
+  margin: 0;
+  max-width: 780px;
+
+  font-size: clamp(44px, 7vw, 112px);
+  line-height: 0.92;
   letter-spacing: -0.075em;
-  line-height: 0.95;
+  font-weight: 500;
 }
 
-.work-detail__description {
-  max-width: 38rem;
-  margin: 0;
-  color: rgba(255, 255, 255, 0.56);
-  font-size: clamp(0.88rem, 0.95vw, 1rem);
-  font-weight: 300;
-  line-height: 1.85;
-}
-
-.work-detail__section {
-  margin-top: clamp(2rem, 4vh, 3.3rem);
-}
-
-.work-detail__label {
-  margin: 0 0 1.1rem;
-  color: rgba(255, 255, 255, 0.72);
-  font-size: 0.72rem;
-  letter-spacing: 0.19em;
-  text-transform: uppercase;
-}
-
-.work-detail__list {
-  display: grid;
-  gap: 0;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.work-detail__list li {
-  position: relative;
-  padding: 0.9rem 0 0.9rem 1.8rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.085);
-  color: rgba(255, 255, 255, 0.6);
-  font-size: 0.76rem;
-  letter-spacing: 0.13em;
-  text-transform: uppercase;
-}
-
-.work-detail__list li::before {
-  content: "↗";
-  position: absolute;
-  left: 0;
-  top: 0.9rem;
-  color: rgba(255, 255, 255, 0.62);
-}
-
-.work-detail__list li:last-child {
-  border-bottom: 1px solid rgba(255, 255, 255, 0.085);
-}
-
-.work-detail__quote {
-  margin: 0;
-  color: rgba(255, 255, 255, 0.62);
-  font-size: clamp(0.92rem, 1vw, 1.08rem);
-  font-style: italic;
-  font-weight: 300;
-  line-height: 1.75;
-}
-
-.work-detail__client {
-  display: grid;
-  gap: 0.35rem;
-  margin-top: 1.6rem;
-  color: rgba(255, 255, 255, 0.76);
-  font-size: 0.72rem;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-}
-
-.work-detail__client small {
-  color: rgba(255, 255, 255, 0.42);
-  font-size: 0.68rem;
-  line-height: 1.5;
-}
-
-.work-detail__nav {
-  display: flex;
-  justify-content: space-between;
-  gap: 1rem;
-  margin-top: auto;
-  padding-top: clamp(2rem, 4vh, 3rem);
-}
-
-.work-detail__nav button {
-  border: 0;
-  background: transparent;
-  color: rgba(255, 255, 255, 0.46);
-  font: inherit;
-  font-size: 0.72rem;
-  letter-spacing: 0.17em;
-  text-transform: uppercase;
-  cursor: pointer;
-  transition:
-    color 220ms ease,
-    transform 220ms ease;
-}
-
-.work-detail__nav button:hover {
-  color: #fff;
-}
-
-.work-detail__nav button:first-child:hover {
-  transform: translateX(-0.25rem);
-}
-
-.work-detail__nav button:last-child:hover {
-  transform: translateX(0.25rem);
-}
-
-/* Detail update animation — no blur for performance */
-.work-detail.is-changing .work-detail__eyebrow,
-.work-detail.is-changing .work-detail__title,
-.work-detail.is-changing .work-detail__description,
-.work-detail.is-changing .work-detail__section,
-.work-detail.is-changing .work-detail__nav {
-  animation: workDetailFade 260ms ease both;
-}
-
-@keyframes workDetailFade {
-  from {
-    opacity: 0;
-    transform: translate3d(0, 0.6rem, 0);
-  }
-
-  to {
-    opacity: 1;
-    transform: translate3d(0, 0, 0);
-  }
-}
-
-/* ----------------------------------------------------------
+/* =========================================================
    RESPONSIVE
-   ---------------------------------------------------------- */
+========================================================= */
 
 @media (max-width: 1180px) {
-  .work-archive__header {
-    grid-template-columns: 1fr;
+  .process-overlay {
+    width: min(980px, calc(100% - 36px));
   }
 
-  .work-archive__intro {
-    margin-left: 0;
+  .process-copy {
+    width: min(430px, 46vw);
   }
 
-  .work-archive__body {
-    grid-template-columns: 1fr;
-  }
-
-  .work-detail {
-    min-height: 70vh;
-    border-left: 0;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-  }
-
-  .work-project {
-    grid-template-columns: 4rem minmax(12rem, 1.3fr) minmax(8rem, 0.7fr) minmax(5rem, 0.5fr);
-  }
-
-  .work-project__meta:last-child {
-    display: none;
+  .process-word {
+    font-size: clamp(72px, 18vw, 230px);
   }
 }
 
 @media (max-width: 900px) {
-  .work-archive {
+  .process-3d {
+    min-height: auto;
+    overflow: hidden;
+  }
+
+  .process-scene {
+    position: relative;
     height: auto;
-    min-height: 100vh;
+    min-height: 100svh;
+    padding: 90px 0 70px;
     overflow: visible;
   }
 
-  .work-archive__track {
-    min-height: auto;
-    transform: none;
-  }
-
-  .work-archive__shell {
-    height: auto;
-    min-height: 100vh;
-    padding: 5rem 1.25rem 2rem;
-  }
-
-  .work-archive__title {
-    font-size: clamp(4rem, 21vw, 7rem);
-    letter-spacing: -0.08em;
-  }
-
-  .work-archive__intro {
-    font-size: 0.9rem;
-  }
-
-  .work-project {
-    grid-template-columns: 3rem 1fr;
-    gap: 1rem;
-    min-height: 7rem;
-  }
-
-  .work-project__meta {
+  .process-scene::after,
+  .process-void {
     display: none;
   }
 
-  .work-archive__index {
-    padding-right: 0;
+  .process-word {
+    font-size: clamp(68px, 20vw, 170px);
+    transform: none;
+    opacity: 1;
+    visibility: visible;
   }
 
-  .work-archive__index::before {
-    left: 3rem;
+  .process-world-inside {
+    position: relative;
+    visibility: visible;
+    opacity: 1;
+    height: auto;
+    min-height: 100svh;
+    transform: none;
+    pointer-events: auto;
   }
 
-  .work-project::before {
-    left: 3rem;
+  .process-overlay {
+    width: min(720px, calc(100% - 28px));
+    min-height: auto;
+    opacity: 1;
+    visibility: visible;
   }
 
-  .work-project__name {
-    font-size: 1.55rem;
+  .process-copy {
+    position: relative;
+    top: auto;
+    width: min(560px, 100%);
+    margin-bottom: 80px;
   }
 
-  .work-project__preview {
-    left: 0;
-    top: 100%;
-    width: 12rem;
-    transform: translate3d(0, 0.6rem, 0) scale(0.96);
+  .process-3d.is-work-mode .process-overlay,
+  .process-3d.is-inside-work .process-overlay {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
   }
 
-  .work-project:hover .work-project__preview {
-    transform: translate3d(0, 0.9rem, 0) scale(1);
-  }
-
-  .work-detail {
-    padding: 2rem 1.25rem;
-  }
-
-  .work-detail__title {
-    font-size: 3rem;
+  .process-3d.is-inside-work .process-word {
+    visibility: visible;
   }
 }
 
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+
 @media (prefers-reduced-motion: reduce) {
-  .process-world-inside,
-  .work-archive__track,
-  .work-project,
-  .work-project::before,
-  .work-project::after,
-  .work-project__name,
-  .work-project__preview,
-  .work-project__preview img,
-  .work-detail__nav button,
-  .work-detail__close {
-    transition: none !important;
-    animation: none !important;
+  .process-3d {
+    height: auto;
+    min-height: 100svh;
+    overflow: visible;
+    padding: 90px 0;
+  }
+
+  .process-scene {
+    position: relative;
+    min-height: 180px;
+    overflow: visible;
+  }
+
+  .process-scene::after,
+  .process-void {
+    display: none;
+  }
+
+  .process-world-inside {
+    position: relative;
+    visibility: visible;
+    opacity: 1;
+    transform: none;
+    pointer-events: auto;
+  }
+
+  .process-overlay {
+    height: auto;
+    min-height: auto;
+    width: min(900px, calc(100% - 28px));
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .process-copy {
+    position: relative;
+    top: auto;
+    width: 100%;
+  }
+
+  .process-word,
+  .process-card {
+    transform: none !important;
+    filter: none !important;
   }
 }
