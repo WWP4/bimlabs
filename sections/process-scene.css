@@ -170,15 +170,10 @@
 
   transform-origin: var(--process-c-x) var(--process-c-y);
 
-  clip-path:
-    circle(
-      calc(var(--work-reveal-progress, 0) * 150%)
-      at var(--process-c-x) var(--process-c-y)
-    );
-
+  clip-path: none;
   filter: none;
 
-  will-change: transform, opacity, clip-path;
+  will-change: transform, opacity;
   backface-visibility: hidden;
   contain: layout paint style;
 }
@@ -227,17 +222,13 @@
       rgba(0, 0, 0, 0) 88%
     );
 
-  box-shadow:
-    0 0 0 1px rgba(245, 245, 240, 0.035),
-    inset 0 0 42px rgba(245, 245, 240, 0.045);
+  box-shadow: inset 0 0 24px rgba(245, 245, 240, 0.035);
 
   opacity: 0;
   visibility: visible;
 
   transform: translate3d(-50%, -50%, 0) scale(0.12);
   transform-origin: 50% 50%;
-
-  filter: blur(0.5px);
 
   pointer-events: none;
   will-change: transform, opacity;
@@ -257,33 +248,13 @@
 
 .process-void::before {
   border: 1px solid rgba(245, 245, 240, 0.07);
-  box-shadow: inset 0 0 32px rgba(245, 245, 240, 0.03);
+  box-shadow: none;
 }
 
 .process-void::after {
   inset: 22%;
   background: #000;
-  box-shadow: 0 0 42px 24px rgba(0, 0, 0, 0.58);
-}
-
-.process-void::before,
-.process-void::after {
-  content: "";
-  position: absolute;
-  inset: 10%;
-  border-radius: inherit;
-  pointer-events: none;
-}
-
-.process-void::before {
-  border: 1px solid rgba(245, 245, 240, 0.07);
-  box-shadow: inset 0 0 32px rgba(245, 245, 240, 0.03);
-}
-
-.process-void::after {
-  inset: 22%;
-  background: #000;
-  box-shadow: 0 0 42px 24px rgba(0, 0, 0, 0.58);
+  box-shadow: none;
 }
 
 /* =========================================================

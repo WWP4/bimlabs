@@ -2,7 +2,8 @@
 
 export function initProcessUI({ section, cards }) {
   const state = {
-    activeIndex: -1
+    activeIndex: -1,
+    handoffProgress: ""
   };
 
   setupReducedMotion(section);
@@ -30,20 +31,19 @@ export function initProcessUI({ section, cards }) {
     setActiveCard(active);
   }
 
-  function softenForHandoff(progress) {
-    section.style.setProperty("--process-handoff", progress.toFixed(4));
+  function setHandoffProgress(progress) {
+    const value = progress.toFixed(4);
 
-    cards.forEach((card, index) => {
-      const delay = index * 0.06;
-      const local = clamp01((progress - delay) / 0.72);
-      card.style.setProperty("--handoff-soften", local.toFixed(4));
-    });
+    if (state.handoffProgress === value) return;
+
+    state.handoffProgress = value;
+    section.style.setProperty("--process-handoff", value);
   }
 
   return {
     setActiveCard,
     setCardsProgress,
-    softenForHandoff
+    setHandoffProgress
   };
 }
 

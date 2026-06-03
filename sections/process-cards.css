@@ -42,16 +42,12 @@
     rgba(5, 5, 5, 0.68);
 
   box-shadow:
-    0 38px 120px rgba(0, 0, 0, 0.48),
+    0 24px 70px rgba(0, 0, 0, 0.36),
     inset 0 1px 0 rgba(244, 241, 234, 0.065);
-
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
 
   transition:
     border-color 0.55s ease,
     background 0.55s ease,
-    box-shadow 0.55s ease,
     opacity 0.55s ease;
 }
 
@@ -131,8 +127,7 @@
     rgba(6, 6, 6, 0.74);
 
   box-shadow:
-    0 46px 140px rgba(0, 0, 0, 0.52),
-    0 0 46px rgba(244, 241, 234, 0.035),
+    0 28px 80px rgba(0, 0, 0, 0.4),
     inset 0 1px 0 rgba(244, 241, 234, 0.09);
 }
 

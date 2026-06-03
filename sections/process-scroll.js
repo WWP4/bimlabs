@@ -294,10 +294,10 @@ function prepareInitialState({
 }) {
   section.classList.remove("is-work-mode");
 
-  section.style.setProperty("--process-section-intensity", "0");
-  section.style.setProperty("--process-intro", "0");
-  section.style.setProperty("--process-cards", "0");
-  section.style.setProperty("--process-handoff", "0");
+  setProcessVar(section, "--process-section-intensity", "0");
+  setProcessVar(section, "--process-intro", "0");
+  setProcessVar(section, "--process-cards", "0");
+  setProcessVar(section, "--process-handoff", "0");
 
   section.style.setProperty("--work-zoom-progress", "0");
   section.style.setProperty("--work-reveal-progress", "0");
@@ -363,10 +363,10 @@ function prepareReducedState({
   worldInside,
   copy
 }) {
-  section.style.setProperty("--process-section-intensity", "1");
-  section.style.setProperty("--process-intro", "1");
-  section.style.setProperty("--process-cards", "1");
-  section.style.setProperty("--process-handoff", "0");
+  setProcessVar(section, "--process-section-intensity", "1");
+  setProcessVar(section, "--process-intro", "1");
+  setProcessVar(section, "--process-cards", "1");
+  setProcessVar(section, "--process-handoff", "0");
 
   section.style.setProperty("--work-zoom-progress", "1");
   section.style.setProperty("--work-reveal-progress", "1");
@@ -413,9 +413,9 @@ function updateByProgress({ section, progress, scene, ui }) {
   const cards = mapRange(progress, 0.24, 0.82);
   const handoff = mapRange(progress, 0.76, 1);
 
-  section.style.setProperty("--process-intro", intro.toFixed(4));
-  section.style.setProperty("--process-cards", cards.toFixed(4));
-  section.style.setProperty("--process-handoff", handoff.toFixed(4));
+  setProcessVar(section, "--process-intro", intro.toFixed(4));
+  setProcessVar(section, "--process-cards", cards.toFixed(4));
+  setProcessVar(section, "--process-handoff", handoff.toFixed(4));
 
   if (scene?.setProgress) {
     scene.setProgress({
@@ -425,14 +425,27 @@ function updateByProgress({ section, progress, scene, ui }) {
     });
   }
 
-  if (ui?.softenForHandoff) {
-    ui.softenForHandoff(handoff);
-  }
 }
 
 /* =========================================================
    HELPERS
 ========================================================= */
+
+const processVarCache = new WeakMap();
+
+function setProcessVar(element, name, value) {
+  let cache = processVarCache.get(element);
+
+  if (!cache) {
+    cache = new Map();
+    processVarCache.set(element, cache);
+  }
+
+  if (cache.get(name) === value) return;
+
+  cache.set(name, value);
+  element.style.setProperty(name, value);
+}
 
 function mapRange(value, start, end) {
   if (value <= start) return 0;
