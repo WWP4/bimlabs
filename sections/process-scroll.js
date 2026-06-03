@@ -42,19 +42,12 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger }) {
     scrollTrigger: {
       trigger: section,
       start: "top top",
-
-      /*
-        The cards are normal document content now.
-        So this timeline follows the natural height of the section.
-        It should not over-pin or create that "stopped" feeling.
-      */
       end: () => {
         const naturalDistance = Math.max(section.offsetHeight - window.innerHeight, 1);
         const minimumDistance = window.innerHeight * 4.6;
 
         return `+=${Math.max(naturalDistance, minimumDistance, 4200)}`;
       },
-
       pin: false,
       scrub: 0.8,
       invalidateOnRefresh: true,
@@ -85,8 +78,7 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger }) {
     timeline,
     section,
     word,
-    voidTarget,
-    worldInside
+    voidTarget
   });
 
   const refreshOnResize = debounce(() => {
@@ -147,87 +139,57 @@ function addProcessIntro({ timeline, section, word, copy }) {
 
 /* =========================================================
    HANDOFF
-   Only starts near the end.
-   Cards are normal content, so this just handles PROCESS → C zoom.
+   This file now ONLY animates the PROCESS word and void.
+   Our Work is controlled by sections/our-work.js.
+   Do not animate .process-world-inside here.
 ========================================================= */
 
 function addProcessHandoff({
   timeline,
   section,
   word,
-  voidTarget,
-  worldInside
+  voidTarget
 }) {
-  if (!voidTarget || !worldInside) return;
+  if (!voidTarget) return;
 
   timeline
     .to(word, {
-      scale: 1.32,
+      scale: 1.22,
       autoAlpha: 0.78,
-      filter: "blur(0px)",
       duration: 0.08
     }, 0.82)
 
     .to(voidTarget, {
-      autoAlpha: 0.88,
+      autoAlpha: 0.7,
       scale: 1,
       duration: 0.055
     }, 0.845)
 
-    .to(worldInside, {
-      autoAlpha: 0,
-      clipPath: "circle(7% at var(--process-c-x) var(--process-c-y))",
-      y: 24,
-      scale: 0.86,
-      filter: "blur(10px)",
-      duration: 0.06
-    }, 0.855)
-
     .to(word, {
-      scale: 3.05,
+      scale: 2.7,
       xPercent: -3.8,
-      autoAlpha: 0.88,
-      filter: "blur(0.7px)",
-      duration: 0.07
+      autoAlpha: 0.74,
+      duration: 0.08
     }, 0.88)
 
     .to(voidTarget, {
-      scale: 3.55,
-      autoAlpha: 0.84,
-      duration: 0.07
+      scale: 3.2,
+      autoAlpha: 0.72,
+      duration: 0.08
     }, 0.88)
-
-    .to(worldInside, {
-      autoAlpha: 0.42,
-      clipPath: "circle(28% at var(--process-c-x) var(--process-c-y))",
-      y: 8,
-      scale: 0.94,
-      filter: "blur(5px)",
-      duration: 0.075
-    }, 0.905)
 
     .to(word, {
-      scale: 12.5,
-      xPercent: -13.5,
+      scale: 8.5,
+      xPercent: -11,
       autoAlpha: 0,
-      filter: "blur(14px)",
-      duration: 0.13
-    }, 0.945)
+      duration: 0.16
+    }, 0.94)
 
     .to(voidTarget, {
-      scale: 18,
+      scale: 12,
       autoAlpha: 0,
-      duration: 0.13
-    }, 0.945)
-
-    .to(worldInside, {
-      autoAlpha: 1,
-      clipPath: "circle(150% at var(--process-c-x) var(--process-c-y))",
-      scale: 1,
-      y: 0,
-      filter: "blur(0px)",
-      duration: 0.15
-    }, 0.945)
+      duration: 0.16
+    }, 0.94)
 
     .to(section, {
       "--process-section-intensity": 0.08,
@@ -262,33 +224,36 @@ function prepareInitialState({
     xPercent: 0,
     yPercent: 28,
     transformOrigin: "52% 50%",
-    filter: "blur(0px)",
-    letterSpacing: "-0.06em"
+    filter: "none",
+    letterSpacing: "-0.06em",
+    force3D: true
   });
 
   if (voidTarget) {
     gsap.set(voidTarget, {
       autoAlpha: 0,
       scale: 0.14,
-      transformOrigin: "50% 50%"
+      transformOrigin: "50% 50%",
+      force3D: true
     });
   }
 
+  /*
+    Important:
+    Do not set clipPath/filter/scale/opacity on .process-world-inside here.
+    sections/our-work.css and sections/our-work.js own that layer.
+  */
   if (worldInside) {
     gsap.set(worldInside, {
-      autoAlpha: 0,
-      clipPath: "circle(0% at var(--process-c-x) var(--process-c-y))",
-      y: 44,
-      scale: 0.8,
-      filter: "blur(12px)",
-      transformOrigin: "var(--process-c-x) var(--process-c-y)"
+      clearProps: "all"
     });
   }
 
   if (copy) {
     gsap.set(copy, {
       autoAlpha: 0,
-      y: 28
+      y: 28,
+      force3D: true
     });
   }
 }
@@ -319,8 +284,7 @@ function prepareReducedState({
 
   if (worldInside) {
     gsap.set(worldInside, {
-      autoAlpha: 0,
-      filter: "none"
+      clearProps: "all"
     });
   }
 
@@ -335,7 +299,7 @@ function prepareReducedState({
 /* =========================================================
    PROGRESS VARIABLES
    These only update scene/UI softness.
-   They do not animate cards.
+   They do not animate cards or Our Work.
 ========================================================= */
 
 function updateByProgress({ progress, scene, ui }) {
