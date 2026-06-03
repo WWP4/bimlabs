@@ -1,6 +1,7 @@
 /* =========================================================
-   PROCESS SECTION
-   Noomo-inspired vertical camera handoff using DOM layers.
+   BIM LABS STUDIO — PROCESS SCENE
+   Clean camera handoff:
+   PROCESS cards → PROCESS zoom tunnel → Our Work reveal
 ========================================================= */
 
 :root {
@@ -8,19 +9,29 @@
   --process-white: #f5f5f0;
   --process-muted: rgba(245, 245, 240, 0.58);
   --process-line: rgba(245, 245, 240, 0.12);
+
   --process-section-intensity: 0;
   --process-intro: 0;
   --process-cards: 0;
   --process-handoff: 0;
+
   --process-c-x: 51.8%;
   --process-c-y: 50%;
+
+  --work-zoom-progress: 0;
+  --work-reveal-progress: 0;
+  --work-scroll-progress: 0;
 }
+
+/* =========================================================
+   OUTER SECTION
+========================================================= */
 
 .process-3d {
   position: relative;
-  min-height: 100svh;
-  height: 100svh;
-  overflow: hidden;
+  min-height: 980vh;
+  height: auto;
+  overflow: visible;
   isolation: isolate;
   background: var(--process-bg);
   color: var(--process-white);
@@ -32,56 +43,143 @@
   inset: 0;
   z-index: 0;
   pointer-events: none;
-  background: linear-gradient(to bottom, rgba(0,0,0,0.96), rgba(2,2,2,0.48) 30%, #020202 100%);
-  opacity: calc(0.58 + (var(--process-section-intensity) * 0.42));
+
+  background:
+    linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0.96),
+      rgba(2, 2, 2, 0.52) 30%,
+      #020202 100%
+    );
+
+  opacity: calc(0.55 + (var(--process-section-intensity) * 0.45));
 }
 
+/* =========================================================
+   STICKY CAMERA LAYER
+========================================================= */
+
 .process-scene {
-  position: absolute;
-  inset: 0;
+  position: sticky;
+  top: 0;
   z-index: 1;
+
   display: grid;
   place-items: center;
+
+  width: 100%;
+  height: 100vh;
+  min-height: 100vh;
+
   overflow: hidden;
+  background: #020202;
+
   perspective: 1100px;
   transform-style: preserve-3d;
+
   pointer-events: none;
   will-change: transform;
 }
 
+/* Dark camera edge during the handoff */
+.process-scene::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  pointer-events: none;
+
+  background:
+    radial-gradient(
+      circle at var(--process-c-x) var(--process-c-y),
+      transparent 0%,
+      transparent 28%,
+      rgba(0, 0, 0, 0.28) 52%,
+      rgba(0, 0, 0, 0.88) 100%
+    );
+
+  opacity: calc(var(--process-handoff, 0) * 0.92);
+  transition: opacity 80ms linear;
+}
+
+/* =========================================================
+   PROCESS WORD
+========================================================= */
+
 .process-word {
   position: relative;
-  z-index: 3;
+  z-index: 6;
+
   margin: 0;
+
   font-family: var(--sans, Manrope, system-ui, sans-serif);
   font-size: clamp(76px, 17vw, 310px);
   line-height: 0.78;
   letter-spacing: -0.085em;
   font-weight: 600;
-  color: rgba(245, 245, 240, 0.9);
+
+  color: rgba(245, 245, 240, 0.92);
   text-transform: uppercase;
   white-space: nowrap;
+
   transform: translate3d(0, 0, -180px) scale(0.46);
   transform-origin: 52% 50%;
-  will-change: transform, opacity, filter, letter-spacing;
+
+  pointer-events: none;
+  mix-blend-mode: normal;
+
+  -webkit-font-smoothing: antialiased;
+  text-rendering: geometricPrecision;
+
+  will-change: transform, opacity, letter-spacing;
 }
+
+/* If your HTML ever wraps letters in spans, keep them clean */
+.process-word span {
+  position: relative;
+  z-index: 7;
+}
+
+/* =========================================================
+   OUR WORK DESTINATION LAYER
+   Hidden until our-work.js sets --work-reveal-progress.
+========================================================= */
 
 .process-world-inside {
   position: absolute;
   inset: 0;
   z-index: 1;
-  display: grid;
-  place-items: center;
-  padding: clamp(90px, 12vw, 160px) 24px;
-  background: transparent;
-  opacity: 0;
+
+  width: 100%;
+  height: 100vh;
+  min-height: 100vh;
+
+  padding: 0;
   overflow: hidden;
-  clip-path: circle(0% at var(--process-c-x) var(--process-c-y));
-  transform: translate3d(0, 44px, -260px) scale(0.8);
-  transform-origin: var(--process-c-x) var(--process-c-y);
-  filter: blur(12px);
+
+  background: #020202;
+
+  opacity: var(--work-reveal-progress, 0);
+  visibility: hidden;
   pointer-events: none;
-  will-change: transform, opacity, clip-path, filter;
+
+  transform:
+    translate3d(0, 0, 0)
+    scale(calc(0.18 + (var(--work-zoom-progress, 0) * 0.82)));
+
+  transform-origin: var(--process-c-x) var(--process-c-y);
+
+  clip-path:
+    circle(
+      calc(var(--work-reveal-progress, 0) * 150%)
+      at var(--process-c-x) var(--process-c-y)
+    );
+
+  filter: none;
+
+  will-change: transform, opacity, clip-path;
+  backface-visibility: hidden;
+  contain: layout paint style;
 }
 
 .process-world-inside::before {
@@ -89,87 +187,136 @@
   position: absolute;
   inset: 0;
   z-index: -1;
-  background: #050505;
+  background: #020202;
 }
 
-.process-world-inside p {
-  margin: 0 0 18px;
-  font-family: var(--mono, ui-monospace, monospace);
-  font-size: 11px;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: rgba(245,245,240,0.5);
+.process-world-inside.is-visible {
+  visibility: visible;
 }
 
-.process-world-inside h2 {
-  margin: 0;
-  max-width: 780px;
-  font-size: clamp(44px, 7vw, 112px);
-  line-height: 0.92;
-  letter-spacing: -0.075em;
-  font-weight: 500;
-  color: var(--process-white);
+.process-world-inside.is-interactive {
+  pointer-events: auto;
 }
+
+/* =========================================================
+   TUNNEL / APERTURE
+   This is the bridge between PROCESS and Our Work.
+========================================================= */
 
 .process-void {
   position: absolute;
   left: var(--process-c-x);
   top: var(--process-c-y);
-  z-index: 4;
-  width: clamp(96px, 12vw, 230px);
+  z-index: 5;
+
+  width: clamp(180px, 24vw, 420px);
   aspect-ratio: 1;
   border-radius: 999px;
-  background: radial-gradient(circle, rgba(0,0,0,0.96) 0 34%, rgba(0,0,0,0.68) 48%, rgba(0,0,0,0.22) 66%, rgba(0,0,0,0) 78%);
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(0, 0, 0, 1) 0%,
+      rgba(0, 0, 0, 1) 38%,
+      rgba(0, 0, 0, 0.86) 55%,
+      rgba(0, 0, 0, 0.38) 72%,
+      rgba(0, 0, 0, 0) 82%
+    );
+
   opacity: 0;
-  transform: translate(-50%, -50%) scale(0.14);
-  filter: blur(1px);
+  visibility: visible;
+
+  transform: translate3d(-50%, -50%, 0) scale(0.2);
+  transform-origin: 50% 50%;
+
+  filter: blur(0.5px);
+
   pointer-events: none;
   will-change: transform, opacity;
 }
 
+/* =========================================================
+   PROCESS OVERLAY / COPY / CARDS
+========================================================= */
+
 .process-overlay {
   position: relative;
-  z-index: 3;
+  z-index: 8;
+
   width: min(1380px, calc(100% - 44px));
-  height: 100%;
+  height: auto;
+  min-height: 760vh;
+
   margin: 0 auto;
+
   pointer-events: none;
   perspective: 1200px;
 }
 
 .process-copy {
-  position: absolute;
-  left: 0;
+  position: sticky;
   top: clamp(78px, 12vh, 132px);
+  z-index: 9;
+
   width: min(470px, 42vw);
+
   pointer-events: auto;
   will-change: transform, opacity;
 }
 
 .process-kicker {
   margin: 0 0 18px;
-  font-family: var(--mono, ui-monospace, monospace);
+
+  font-family: var(--mono, ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace);
   font-size: 11px;
   line-height: 1;
   letter-spacing: 0.18em;
   text-transform: uppercase;
+
   color: rgba(245, 245, 240, 0.52);
 }
 
 .process-copy p:not(.process-kicker) {
   margin: 0;
   max-width: 430px;
+
   font-size: clamp(15px, 1.05vw, 17px);
   line-height: 1.62;
   letter-spacing: -0.024em;
+
   color: var(--process-muted);
 }
 
+.process-cards,
+.process-card {
+  pointer-events: auto;
+}
+
+/* When Our Work takes over, remove the cards/copy */
+.process-3d.is-work-mode .process-overlay {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+/* Keep PROCESS available to finish the camera move */
+.process-3d.is-work-mode .process-word {
+  visibility: visible;
+  pointer-events: none;
+}
+
+/* =========================================================
+   OPTIONAL NEXT SECTION FALLBACK
+========================================================= */
+
 .systems-handoff {
   min-height: 100svh;
+
   display: grid;
   place-items: center;
+
   padding: clamp(90px, 12vw, 160px) 24px;
+
   background: #050505;
   color: var(--process-white);
 }
@@ -180,36 +327,97 @@
 
 .systems-handoff p {
   margin: 0 0 18px;
-  font-family: var(--mono, ui-monospace, monospace);
+
+  font-family: var(--mono, ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace);
   font-size: 11px;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: rgba(245,245,240,0.5);
+
+  color: rgba(245, 245, 240, 0.5);
 }
 
 .systems-handoff h2 {
   margin: 0;
   max-width: 780px;
+
   font-size: clamp(44px, 7vw, 112px);
   line-height: 0.92;
   letter-spacing: -0.075em;
   font-weight: 500;
 }
 
-@media (max-width: 900px) {
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 1180px) {
   .process-overlay {
-    width: min(720px, calc(100% - 28px));
+    width: min(980px, calc(100% - 36px));
   }
 
   .process-copy {
-    top: 86px;
-    width: min(560px, 100%);
+    width: min(430px, 46vw);
+  }
+
+  .process-word {
+    font-size: clamp(72px, 18vw, 230px);
+  }
+}
+
+@media (max-width: 900px) {
+  .process-3d {
+    min-height: auto;
+    overflow: hidden;
+  }
+
+  .process-scene {
+    position: relative;
+    height: auto;
+    min-height: 100svh;
+    padding: 90px 0 70px;
   }
 
   .process-word {
     font-size: clamp(68px, 20vw, 170px);
+    transform: none;
+  }
+
+  .process-world-inside {
+    position: relative;
+    visibility: visible;
+    opacity: 1;
+    height: auto;
+    min-height: 100svh;
+    clip-path: none;
+    transform: none;
+    pointer-events: auto;
+  }
+
+  .process-void {
+    display: none;
+  }
+
+  .process-overlay {
+    width: min(720px, calc(100% - 28px));
+    min-height: auto;
+  }
+
+  .process-copy {
+    position: relative;
+    top: auto;
+    width: min(560px, 100%);
+    margin-bottom: 80px;
+  }
+
+  .process-3d.is-work-mode .process-overlay {
+    opacity: 1;
+    visibility: visible;
   }
 }
+
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
 
 @media (prefers-reduced-motion: reduce) {
   .process-3d {
@@ -224,13 +432,23 @@
     min-height: 180px;
   }
 
-  .process-world-inside,
-  .process-void {
+  .process-world-inside {
+    position: relative;
+    visibility: visible;
+    opacity: 1;
+    clip-path: none;
+    transform: none;
+    pointer-events: auto;
+  }
+
+  .process-void,
+  .process-scene::after {
     display: none;
   }
 
   .process-overlay {
     height: auto;
+    min-height: auto;
     width: min(900px, calc(100% - 28px));
   }
 
@@ -245,327 +463,4 @@
     transform: none !important;
     filter: none !important;
   }
-}
-
-
-
-/* =========================================================
-   PROCESS HANDOFF LAYER FIX
-   Forces the destination section BEHIND the PROCESS word.
-========================================================= */
-
-.process-3d {
-  isolation: isolate;
-}
-
-.process-scene {
-  z-index: 1;
-}
-
-/* Destination / next section layer lives behind the typography */
-.process-world-inside {
-  z-index: 1 !important;
-  mix-blend-mode: normal;
-  pointer-events: none;
-}
-
-/* The dark aperture also sits behind PROCESS, not above it */
-.process-void {
-  z-index: 2 !important;
-  pointer-events: none;
-}
-
-/* PROCESS must always be the foreground mask/lettering */
-.process-word {
-  z-index: 5 !important;
-  color: rgba(245, 245, 240, 0.92);
-  opacity: 1;
-  mix-blend-mode: normal;
-  pointer-events: none;
-  -webkit-font-smoothing: antialiased;
-  text-rendering: geometricPrecision;
-}
-
-/* Make each letter paint as its own clean foreground layer */
-.process-word span {
-  position: relative;
-  z-index: 6;
-}
-
-/* UI/cards stay above background during the card phase */
-.process-overlay {
-  z-index: 6;
-}
-
-/* During the handoff, the scene is still behind the word */
-.process-3d.is-process-active .process-world-inside {
-  z-index: 1 !important;
-}
-
-.process-3d.is-process-active .process-void {
-  z-index: 2 !important;
-}
-
-.process-3d.is-process-active .process-word {
-  z-index: 5 !important;
-}
-
-
-.process-3d {
-  min-height: 560vh;
-  height: auto;
-  overflow: visible;
-}
-
-.process-scene {
-  position: sticky;
-  top: 0;
-  height: 100svh;
-}
-
-
-
-/* =========================================================
-   PROCESS / OUR WORK VISIBILITY FIX
-   This lets our-work.css + our-work.js control the Our Work layer.
-   Paste at the very bottom of process-scene.css.
-========================================================= */
-
-.process-3d {
-  position: relative;
-  min-height: 980vh !important;
-  height: auto !important;
-  overflow: visible !important;
-  isolation: isolate;
-  background: #020202;
-}
-
-/* Sticky camera layer */
-.process-scene {
-  position: sticky !important;
-  top: 0;
-  z-index: 1;
-  height: 100vh !important;
-  min-height: 100vh !important;
-  overflow: hidden !important;
-  background: #020202;
-  pointer-events: none;
-}
-
-/* PROCESS word sits behind cards, above background */
-.process-word {
-  position: relative;
-  z-index: 3 !important;
-  pointer-events: none;
-}
-
-/* IMPORTANT:
-   Remove the old invisible clip-path/blur setup from process-scene.css.
-   Our Work visibility is controlled by our-work.css and our-work.js now.
-*/
-.process-world-inside {
-  clip-path: none !important;
-  filter: none !important;
-  transform:
-    translate3d(0, 0, 0)
-    scale(calc(0.68 + (var(--work-zoom-progress, 0) * 0.32))) !important;
-  transform-origin: 50% 50% !important;
-  z-index: 4 !important;
-  padding: 0 !important;
-}
-
-/* Dark aperture stays visual only */
-.process-void {
-  z-index: 2 !important;
-  pointer-events: none;
-}
-
-/* Cards must sit above the PROCESS scene */
-.process-overlay {
-  position: relative !important;
-  z-index: 6 !important;
-  width: min(1380px, calc(100% - 44px));
-  height: auto !important;
-  min-height: 760vh;
-  margin: 0 auto;
-  pointer-events: none;
-}
-
-/* Let cards/copy receive hover/click */
-.process-copy,
-.process-cards,
-.process-card {
-  pointer-events: auto;
-}
-
-/* Copy should appear during the process phase */
-.process-copy {
-  position: sticky !important;
-  top: clamp(78px, 12vh, 132px);
-  z-index: 7;
-}
-
-/* Hide cards only when Our Work fully takes over */
-.process-3d.is-work-mode .process-overlay {
-  opacity: 0;
-  visibility: hidden;
-  pointer-events: none;
-}
-
-
-
-/* =========================================================
-   FINAL PROCESS → OUR WORK CAMERA FIX
-   Our Work stays invisible until the user is inside PROCESS.
-   Then it reveals from the PROCESS/C center and becomes scrollable.
-========================================================= */
-
-.process-3d {
-  --work-zoom-progress: 0;
-  --work-reveal-progress: 0;
-  --work-scroll-progress: 0;
-}
-
-/* The destination website lives INSIDE the sticky process scene,
-   but it should not visually appear until the handoff is deep. */
-.process-world-inside {
-  position: absolute !important;
-  inset: 0 !important;
-  z-index: 1 !important;
-
-  width: 100% !important;
-  height: 100vh !important;
-  min-height: 100vh !important;
-
-  padding: 0 !important;
-  overflow: hidden !important;
-
-  background: #020202 !important;
-
-  opacity: var(--work-reveal-progress, 0) !important;
-  visibility: hidden !important;
-  pointer-events: none !important;
-
-  transform:
-    translate3d(0, 0, 0)
-    scale(calc(0.18 + (var(--work-zoom-progress, 0) * 0.82))) !important;
-
-  transform-origin: var(--process-c-x, 51.8%) var(--process-c-y, 50%) !important;
-
-  clip-path: circle(
-    calc(var(--work-reveal-progress, 0) * 150%)
-    at var(--process-c-x, 51.8%) var(--process-c-y, 50%)
-  ) !important;
-
-  filter: none !important;
-  will-change: transform, opacity, clip-path;
-  backface-visibility: hidden;
-  contain: layout paint style;
-}
-
-.process-world-inside.is-visible {
-  visibility: visible !important;
-}
-
-.process-world-inside.is-interactive {
-  pointer-events: auto !important;
-}
-
-/* PROCESS stays on top during the camera move. */
-.process-word {
-  z-index: 5 !important;
-  pointer-events: none !important;
-  will-change: transform, opacity;
-}
-
-/* Hide process cards only when Our Work has actually taken over. */
-.process-3d.is-work-mode .process-overlay {
-  opacity: 0 !important;
-  visibility: hidden !important;
-  pointer-events: none !important;
-}
-
-/* Do not instantly hide the PROCESS word.
-   Let JS fade/scale it so the handoff feels like a zoom, not a cut. */
-.process-3d.is-work-mode .process-word {
-  visibility: visible !important;
-  pointer-events: none !important;
-}
-
-/* The old dark circle/orb is making the transition feel fake.
-   Kill it visually. The reveal now comes from the clipped website layer. */
-.process-void {
-  opacity: 0 !important;
-  visibility: hidden !important;
-  pointer-events: none !important;
-}
-
-
-
-
-/* =========================================================
-   PROCESS → OUR WORK TUNNEL HANDOFF
-   This gives the zoom a real bridge before Our Work opens.
-========================================================= */
-
-.process-void {
-  position: absolute !important;
-  left: var(--process-c-x, 51.8%) !important;
-  top: var(--process-c-y, 50%) !important;
-  z-index: 4 !important;
-
-  width: clamp(180px, 24vw, 420px) !important;
-  aspect-ratio: 1 !important;
-  border-radius: 999px !important;
-
-  background:
-    radial-gradient(
-      circle,
-      rgba(0, 0, 0, 1) 0%,
-      rgba(0, 0, 0, 0.98) 34%,
-      rgba(0, 0, 0, 0.82) 52%,
-      rgba(0, 0, 0, 0.42) 68%,
-      rgba(0, 0, 0, 0) 78%
-    ) !important;
-
-  opacity: 0;
-  visibility: visible !important;
-  pointer-events: none !important;
-
-  transform: translate3d(-50%, -50%, 0) scale(0.2);
-  transform-origin: 50% 50% !important;
-
-  filter: blur(0.5px);
-  will-change: transform, opacity;
-}
-
-/* Add a subtle dark camera edge during the handoff */
-.process-scene::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: 3;
-  pointer-events: none;
-
-  background:
-    radial-gradient(
-      circle at var(--process-c-x, 51.8%) var(--process-c-y, 50%),
-      transparent 0%,
-      transparent 34%,
-      rgba(0, 0, 0, 0.42) 62%,
-      rgba(0, 0, 0, 0.94) 100%
-    );
-
-  opacity: calc(var(--process-handoff, 0) * 0.88);
-  transition: opacity 80ms linear;
-}
-
-/* PROCESS still sits above the destination while zooming */
-.process-word {
-  z-index: 5 !important;
-}
-
-/* Our Work stays behind the handoff */
-.process-world-inside {
-  z-index: 1 !important;
 }
