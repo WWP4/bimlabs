@@ -1,10 +1,12 @@
 /* ==========================================================
    BIM LABS STUDIO — OUR WORK INSIDE PROCESS
-   One page scroll controls:
-   1. PROCESS cards
-   2. Zoom into Our Work
-   3. Internal Our Work movement
-   4. Natural exit after PROCESS ends
+   Optimized version.
+   Page scroll controls:
+   1. Our Work visibility
+   2. Our Work zoom progress
+   3. Internal track movement
+
+   Project details update only from user interaction.
    ========================================================== */
 
 (() => {
@@ -105,6 +107,8 @@
   let ticking = false;
   let changeTimer = null;
 
+  const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
   function clamp(value, min, max) {
     return Math.min(max, Math.max(min, value));
   }
@@ -124,17 +128,19 @@
   function renderServices(items) {
     if (!servicesEl) return;
 
-    servicesEl.innerHTML = "";
+    const fragment = document.createDocumentFragment();
 
     items.forEach((item) => {
       const li = document.createElement("li");
       li.textContent = item;
-      servicesEl.appendChild(li);
+      fragment.appendChild(li);
     });
+
+    servicesEl.replaceChildren(fragment);
   }
 
   function animateDetail() {
-    if (!detail) return;
+    if (!detail || prefersReducedMotion) return;
 
     detail.classList.remove("is-changing");
 
@@ -146,11 +152,16 @@
 
     changeTimer = setTimeout(() => {
       detail.classList.remove("is-changing");
-    }, 460);
+    }, 280);
   }
 
   function setActiveProject(index) {
     const safeIndex = clampIndex(index);
+
+    if (safeIndex === activeIndex && projectButtons[safeIndex]?.classList.contains("is-active")) {
+      return;
+    }
+
     const project = projects[safeIndex];
 
     activeIndex = safeIndex;
@@ -176,33 +187,51 @@
   function updateWorkScene() {
     ticking = false;
 
+    if (window.innerWidth <= 900 || prefersReducedMotion) {
+      workWorld.classList.add("is-visible", "is-interactive");
+      workWorld.removeAttribute("aria-hidden");
+
+      processSection.style.setProperty("--work-zoom-progress", "1");
+      processSection.style.setProperty("--work-scroll-progress", "0");
+      workWorld.style.setProperty("--work-zoom-progress", "1");
+      workWorld.style.setProperty("--work-scroll-progress", "0");
+      workTrack.style.setProperty("--work-scroll-progress", "0");
+
+      return;
+    }
+
     const progress = getProcessProgress();
 
     /*
-      Timeline map:
-      0.00–0.70 = PROCESS cards do their thing
-      0.70–0.86 = Our Work zooms in
-      0.86–0.97 = Our Work internally scrolls
-      0.97–1.00 = finished, page naturally exits PROCESS
+      Timeline:
+      0.00–0.74 = PROCESS cards/word dominate
+      0.74–0.90 = Our Work zooms in
+      0.90–0.98 = Our Work internally moves
+      0.98–1.00 = section naturally exits
     */
 
-    const zoomStart = 0.7;
-    const zoomEnd = 0.86;
+    const zoomStart = 0.74;
+    const zoomEnd = 0.9;
 
-    const internalStart = 0.86;
-    const internalEnd = 0.97;
+    const internalStart = 0.9;
+    const internalEnd = 0.98;
 
     const zoomProgress = clamp((progress - zoomStart) / (zoomEnd - zoomStart), 0, 1);
     const internalProgress = clamp((progress - internalStart) / (internalEnd - internalStart), 0, 1);
 
-    processSection.style.setProperty("--work-zoom-progress", zoomProgress.toFixed(4));
-    processSection.style.setProperty("--work-scroll-progress", internalProgress.toFixed(4));
-    workWorld.style.setProperty("--work-zoom-progress", zoomProgress.toFixed(4));
-    workWorld.style.setProperty("--work-scroll-progress", internalProgress.toFixed(4));
-    workTrack.style.setProperty("--work-scroll-progress", internalProgress.toFixed(4));
+    const zoomValue = zoomProgress.toFixed(4);
+    const internalValue = internalProgress.toFixed(4);
+
+    processSection.style.setProperty("--work-zoom-progress", zoomValue);
+    processSection.style.setProperty("--work-scroll-progress", internalValue);
+
+    workWorld.style.setProperty("--work-zoom-progress", zoomValue);
+    workWorld.style.setProperty("--work-scroll-progress", internalValue);
+
+    workTrack.style.setProperty("--work-scroll-progress", internalValue);
 
     const isVisible = zoomProgress > 0.02;
-    const isWorkMode = zoomProgress > 0.82;
+    const isWorkMode = zoomProgress > 0.84;
     const isInteractive = zoomProgress >= 0.98;
 
     workWorld.classList.toggle("is-visible", isVisible);
@@ -213,22 +242,6 @@
       workWorld.removeAttribute("aria-hidden");
     } else {
       workWorld.setAttribute("aria-hidden", "true");
-    }
-
-    /*
-      Optional active row progression while scrolling through Our Work.
-      Hover/click still overrides visually when the user interacts.
-    */
-    if (internalProgress > 0.05 && internalProgress < 0.98) {
-      const scrollIndex = clamp(
-        Math.floor(internalProgress * projects.length),
-        0,
-        projects.length - 1
-      );
-
-      if (scrollIndex !== activeIndex) {
-        setActiveProject(scrollIndex);
-      }
     }
   }
 
@@ -296,7 +309,7 @@
     updateWorkScene();
 
     window.addEventListener("scroll", requestUpdate, { passive: true });
-    window.addEventListener("resize", requestUpdate);
+    window.addEventListener("resize", requestUpdate, { passive: true });
   }
 
   if (document.readyState === "loading") {
