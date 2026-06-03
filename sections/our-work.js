@@ -1,6 +1,6 @@
 /* ==========================================================
    BIM LABS STUDIO — OUR WORK ARCHIVE
-   Lives inside .process-world-inside
+   Makes the archive interactive and releases it from PROCESS
    ========================================================== */
 
 (() => {
@@ -75,8 +75,11 @@
     }
   ];
 
+  const processSection = document.querySelector(".process-3d");
+  const workWorld = document.querySelector(".process-world-inside");
   const root = document.querySelector(".work-archive");
-  if (!root) return;
+
+  if (!processSection || !workWorld || !root) return;
 
   const projectButtons = Array.from(root.querySelectorAll("[data-work-project]"));
   const detail = root.querySelector(".work-detail");
@@ -95,8 +98,13 @@
 
   let activeIndex = 0;
   let changeTimer = null;
+  let released = false;
 
-  const setChanging = () => {
+  function clampIndex(index) {
+    return (index + projects.length) % projects.length;
+  }
+
+  function setChanging() {
     if (!detail) return;
 
     detail.classList.remove("is-changing");
@@ -109,9 +117,9 @@
     changeTimer = window.setTimeout(() => {
       detail.classList.remove("is-changing");
     }, 460);
-  };
+  }
 
-  const renderServices = (items) => {
+  function renderServices(items) {
     if (!servicesEl) return;
 
     servicesEl.innerHTML = "";
@@ -121,17 +129,19 @@
       li.textContent = item;
       servicesEl.appendChild(li);
     });
-  };
+  }
 
-  const setActiveProject = (index) => {
-    const safeIndex = (index + projects.length) % projects.length;
+  function setActiveProject(index) {
+    const safeIndex = clampIndex(index);
     const project = projects[safeIndex];
 
     activeIndex = safeIndex;
 
     projectButtons.forEach((button, buttonIndex) => {
-      button.classList.toggle("is-active", buttonIndex === safeIndex);
-      button.setAttribute("aria-pressed", buttonIndex === safeIndex ? "true" : "false");
+      const isActive = buttonIndex === safeIndex;
+
+      button.classList.toggle("is-active", isActive);
+      button.setAttribute("aria-pressed", isActive ? "true" : "false");
     });
 
     if (numberEl) numberEl.textContent = project.number;
@@ -143,69 +153,157 @@
 
     renderServices(project.services);
     setChanging();
-  };
+  }
 
-  projectButtons.forEach((button) => {
-    const index = Number(button.dataset.workProject || 0);
+  function releaseOurWork() {
+    if (released) return;
 
-    button.setAttribute("aria-pressed", index === activeIndex ? "true" : "false");
+    released = true;
 
-    button.addEventListener("mouseenter", () => {
-      setActiveProject(index);
+    processSection.classList.add("is-work-mode");
+    workWorld.classList.add("is-visible");
+    workWorld.classList.add("is-released");
+    workWorld.classList.add("is-interactive");
+
+    workWorld.removeAttribute("aria-hidden");
+
+    if (typeof ScrollTrigger !== "undefined") {
+      ScrollTrigger.refresh();
+    }
+  }
+
+  function lockOurWork() {
+    released = false;
+
+    processSection.classList.remove("is-work-mode");
+    workWorld.classList.remove("is-released");
+    workWorld.classList.remove("is-interactive");
+
+    workWorld.setAttribute("aria-hidden", "true");
+
+    if (typeof ScrollTrigger !== "undefined") {
+      ScrollTrigger.refresh();
+    }
+  }
+
+  function setupProjectEvents() {
+    projectButtons.forEach((button) => {
+      const index = Number(button.dataset.workProject || 0);
+
+      button.setAttribute("aria-pressed", index === activeIndex ? "true" : "false");
+
+      button.addEventListener("mouseenter", () => {
+        setActiveProject(index);
+      });
+
+      button.addEventListener("focus", () => {
+        setActiveProject(index);
+      });
+
+      button.addEventListener("click", () => {
+        setActiveProject(index);
+
+        if (detail && window.innerWidth <= 1180) {
+          detail.scrollIntoView({
+            behavior: "smooth",
+            block: "start"
+          });
+        }
+      });
     });
 
-    button.addEventListener("focus", () => {
-      setActiveProject(index);
-    });
+    if (prevBtn) {
+      prevBtn.addEventListener("click", () => {
+        setActiveProject(activeIndex - 1);
+      });
+    }
 
-    button.addEventListener("click", () => {
-      setActiveProject(index);
+    if (nextBtn) {
+      nextBtn.addEventListener("click", () => {
+        setActiveProject(activeIndex + 1);
+      });
+    }
 
-      if (detail && window.innerWidth <= 1180) {
-        detail.scrollIntoView({
-          behavior: "smooth",
-          block: "start"
-        });
+    if (closeBtn) {
+      closeBtn.addEventListener("click", () => {
+        if (!detail) return;
+        detail.classList.toggle("is-muted");
+      });
+    }
+
+    window.addEventListener("keydown", (event) => {
+      if (!released) return;
+
+      if (event.key === "ArrowUp" || event.key === "ArrowLeft") {
+        setActiveProject(activeIndex - 1);
+      }
+
+      if (event.key === "ArrowDown" || event.key === "ArrowRight") {
+        setActiveProject(activeIndex + 1);
       }
     });
-  });
-
-  if (prevBtn) {
-    prevBtn.addEventListener("click", () => {
-      setActiveProject(activeIndex - 1);
-    });
   }
 
-  if (nextBtn) {
-    nextBtn.addEventListener("click", () => {
-      setActiveProject(activeIndex + 1);
-    });
-  }
+  function setupAutoReleaseFallback() {
+    /*
+      This fallback makes OUR WORK usable even if your process-scroll.js
+      does not manually call window.BIMLabsOurWork.release().
+      
+      It watches the PROCESS section and releases OUR WORK once the user
+      reaches the final part of the section.
+    */
 
-  if (closeBtn) {
-    closeBtn.addEventListener("click", () => {
-      if (!detail) return;
-      detail.classList.toggle("is-muted");
-    });
-  }
+    if (typeof ScrollTrigger === "undefined") {
+      window.addEventListener(
+        "scroll",
+        () => {
+          const rect = processSection.getBoundingClientRect();
+          const progress = Math.min(
+            1,
+            Math.max(0, Math.abs(rect.top) / Math.max(1, processSection.offsetHeight - window.innerHeight))
+          );
 
-  window.addEventListener("keydown", (event) => {
-    const world = document.querySelector(".process-world-inside");
-    const isWorkVisible =
-      world &&
-      (world.classList.contains("is-visible") ||
-        window.getComputedStyle(world).visibility === "visible");
+          if (progress > 0.82) {
+            releaseOurWork();
+          }
 
-    if (!isWorkVisible) return;
+          if (progress < 0.68 && rect.top <= 0) {
+            lockOurWork();
+          }
+        },
+        { passive: true }
+      );
 
-    if (event.key === "ArrowUp" || event.key === "ArrowLeft") {
-      setActiveProject(activeIndex - 1);
+      return;
     }
 
-    if (event.key === "ArrowDown" || event.key === "ArrowRight") {
-      setActiveProject(activeIndex + 1);
-    }
-  });
+    ScrollTrigger.create({
+      trigger: processSection,
+      start: "top top",
+      end: "bottom bottom",
+      onUpdate: (self) => {
+        if (self.progress >= 0.82) {
+          releaseOurWork();
+        }
 
-  setActiveProject(0);
+        if (self.progress < 0.68 && self.direction < 0) {
+          lockOurWork();
+        }
+      }
+    });
+  }
+
+  function init() {
+    setupProjectEvents();
+    setActiveProject(0);
+    setupAutoReleaseFallback();
+
+    window.BIMLabsOurWork = {
+      release: releaseOurWork,
+      lock: lockOurWork,
+      setActiveProject
+    };
+  }
+
+  init();
 })();
