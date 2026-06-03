@@ -1,7 +1,15 @@
 /* =========================================================
    BIM LABS STUDIO — PROCESS SCENE
-   Performance-first cinematic handoff:
-   PROCESS cards → zoom through C/tunnel → Our Work takeover
+   Matches current HTML:
+   .process-3d
+     .process-scene
+       .process-word
+       .process-world-inside[data-work-world]
+         .work-archive
+       .process-void
+     .process-overlay
+       .process-copy
+       .process-cards
 ========================================================= */
 
 :root {
@@ -15,6 +23,10 @@
   --process-cards: 0;
   --process-handoff: 0;
 
+  /*
+    This should visually sit around the C in PROCESS.
+    If the tunnel is slightly off, adjust only these two.
+  */
   --process-c-x: 51.8%;
   --process-c-y: 50%;
 
@@ -24,7 +36,7 @@
 }
 
 /* =========================================================
-   OUTER SECTION
+   OUTER PROCESS SECTION
 ========================================================= */
 
 .process-3d {
@@ -44,11 +56,10 @@
   z-index: 0;
   pointer-events: none;
   background: #020202;
-  opacity: 1;
 }
 
 /* =========================================================
-   STICKY CAMERA LAYER
+   STICKY CAMERA SCENE
 ========================================================= */
 
 .process-scene {
@@ -56,12 +67,12 @@
   top: 0;
   z-index: 1;
 
-  display: grid;
-  place-items: center;
-
   width: 100%;
   height: 100vh;
   min-height: 100vh;
+
+  display: grid;
+  place-items: center;
 
   overflow: hidden;
   background: #020202;
@@ -71,10 +82,9 @@
 
   pointer-events: none;
   backface-visibility: hidden;
-  contain: layout paint style;
 }
 
-/* lightweight handoff edge */
+/* Dark camera edge during the final handoff */
 .process-scene::after {
   content: "";
   position: absolute;
@@ -87,16 +97,15 @@
       circle at var(--process-c-x) var(--process-c-y),
       transparent 0%,
       transparent 24%,
-      rgba(0, 0, 0, 0.3) 54%,
-      rgba(0, 0, 0, 0.92) 100%
+      rgba(0, 0, 0, 0.34) 55%,
+      rgba(0, 0, 0, 0.94) 100%
     );
 
   opacity: calc(var(--process-handoff, 0) * 0.78);
-  transition: opacity 120ms linear;
 }
 
-.process-3d.is-inside-work .process-scene::after,
-.process-3d.is-work-mode .process-scene::after {
+.process-3d.is-work-mode .process-scene::after,
+.process-3d.is-inside-work .process-scene::after {
   opacity: 0;
 }
 
@@ -140,7 +149,11 @@
 
 /* =========================================================
    OUR WORK DESTINATION LAYER
-   Starts behind PROCESS, then becomes active after handoff.
+
+   Important fix:
+   Do NOT start this at scale(0.16).
+   That caused the tiny zoomed-out website in the middle.
+   The word/tunnel does the zoom. Our Work should sit full-size behind it.
 ========================================================= */
 
 .process-world-inside {
@@ -157,33 +170,33 @@
 
   background: #020202;
 
-  opacity: var(--work-reveal-progress, 0);
+  opacity: 0;
   visibility: hidden;
   pointer-events: none;
 
-  transform:
-    translate3d(0, 0, 0)
-    scale(calc(0.16 + (var(--work-zoom-progress, 0) * 0.84)));
-
+  transform: translate3d(0, 0, 0) scale(1);
   transform-origin: var(--process-c-x) var(--process-c-y);
 
   filter: none;
-  will-change: transform, opacity;
   backface-visibility: hidden;
-  contain: layout paint style;
 }
 
+/* Visible during the handoff */
 .process-world-inside.is-visible,
 .process-3d.is-work-visible .process-world-inside {
   visibility: visible;
 }
 
+/* Interactive only once process-scroll.js says so */
 .process-world-inside.is-interactive,
 .process-3d.is-work-interactive .process-world-inside,
 .process-3d.is-inside-work .process-world-inside {
   pointer-events: auto;
 }
 
+/* Once the user is “inside” Our Work, make it a real full-size layer */
+.process-3d.is-work-mode .process-world-inside,
+.process-3d.is-work-interactive .process-world-inside,
 .process-3d.is-inside-work .process-world-inside {
   opacity: 1;
   visibility: visible;
@@ -210,8 +223,8 @@
       circle,
       #000 0%,
       #000 36%,
-      rgba(0, 0, 0, 0.92) 52%,
-      rgba(0, 0, 0, 0.56) 70%,
+      rgba(0, 0, 0, 0.94) 52%,
+      rgba(0, 0, 0, 0.58) 70%,
       rgba(0, 0, 0, 0) 88%
     );
 
@@ -224,7 +237,6 @@
   pointer-events: none;
   will-change: transform, opacity;
   backface-visibility: hidden;
-  contain: layout paint;
 }
 
 .process-void::before {
@@ -245,6 +257,10 @@
   pointer-events: none;
 }
 
+.process-3d.is-inside-work .process-void {
+  display: none;
+}
+
 /* =========================================================
    PROCESS OVERLAY / COPY / CARDS
 ========================================================= */
@@ -261,7 +277,6 @@
   pointer-events: none;
   perspective: 1200px;
 
-  will-change: opacity;
   backface-visibility: hidden;
 }
 
@@ -305,7 +320,7 @@
   pointer-events: auto;
 }
 
-/* During Our Work takeover, remove cards/copy from interaction and paint */
+/* Once Our Work takes over, stop painting/using process cards */
 .process-3d.is-work-mode .process-overlay,
 .process-3d.is-inside-work .process-overlay {
   opacity: 0;
@@ -316,47 +331,6 @@
 .process-3d.is-inside-work .process-word {
   visibility: hidden;
   pointer-events: none;
-}
-
-/* =========================================================
-   OPTIONAL NEXT SECTION FALLBACK
-========================================================= */
-
-.systems-handoff {
-  min-height: 100svh;
-
-  display: grid;
-  place-items: center;
-
-  padding: clamp(90px, 12vw, 160px) 24px;
-
-  background: #050505;
-  color: var(--process-white);
-}
-
-.systems-handoff__inner {
-  width: min(920px, 100%);
-}
-
-.systems-handoff p {
-  margin: 0 0 18px;
-
-  font-family: var(--mono, ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace);
-  font-size: 11px;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-
-  color: rgba(245, 245, 240, 0.5);
-}
-
-.systems-handoff h2 {
-  margin: 0;
-  max-width: 780px;
-
-  font-size: clamp(44px, 7vw, 112px);
-  line-height: 0.92;
-  letter-spacing: -0.075em;
-  font-weight: 500;
 }
 
 /* =========================================================
@@ -405,10 +379,11 @@
 
   .process-world-inside {
     position: relative;
-    visibility: visible;
-    opacity: 1;
     height: auto;
     min-height: 100svh;
+
+    opacity: 1;
+    visibility: visible;
     transform: none;
     pointer-events: auto;
   }
@@ -418,6 +393,7 @@
     min-height: auto;
     opacity: 1;
     visibility: visible;
+    pointer-events: auto;
   }
 
   .process-copy {
@@ -464,8 +440,11 @@
 
   .process-world-inside {
     position: relative;
-    visibility: visible;
+    height: auto;
+    min-height: 100svh;
+
     opacity: 1;
+    visibility: visible;
     transform: none;
     pointer-events: auto;
   }
@@ -476,6 +455,7 @@
     width: min(900px, calc(100% - 28px));
     opacity: 1;
     visibility: visible;
+    pointer-events: auto;
   }
 
   .process-copy {
