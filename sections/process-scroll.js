@@ -52,7 +52,9 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger }) {
         return `+=${Math.max(naturalDistance, minimumDistance, 4600)}`;
       },
       pin: false,
-      scrub: true,
+      // A tiny scrub lets GSAP interpolate wheel/touchpad deltas on rAF.
+      // `true` felt stepped on coarse wheels; larger values made reverse scroll lag.
+      scrub: 0.18,
       invalidateOnRefresh: true,
 
       onUpdate: (self) => {
@@ -196,6 +198,7 @@ function addProcessTunnelHandoff({
       xPercent: -1.2,
       yPercent: 0,
       autoAlpha: 0.94,
+      force3D: true,
       duration: 0.08
     }, 0.76)
 
@@ -203,6 +206,7 @@ function addProcessTunnelHandoff({
       scale: 2.8,
       xPercent: -3.8,
       autoAlpha: 0.98,
+      force3D: true,
       duration: 0.08
     }, 0.84)
 
@@ -210,6 +214,7 @@ function addProcessTunnelHandoff({
       scale: 6.2,
       xPercent: -8.8,
       autoAlpha: 1,
+      force3D: true,
       duration: 0.07
     }, 0.895);
 
@@ -218,18 +223,21 @@ function addProcessTunnelHandoff({
       .to(tunnel, {
         autoAlpha: 0.5,
         scale: 1.15,
+        force3D: true,
         duration: 0.05
       }, 0.875)
 
       .to(tunnel, {
         autoAlpha: 0.94,
         scale: 3.15,
+        force3D: true,
         duration: 0.075
       }, 0.915)
 
       .to(tunnel, {
         autoAlpha: 1,
         scale: 6.4,
+        force3D: true,
         duration: 0.025
       }, 0.955);
   }
@@ -239,6 +247,7 @@ function addProcessTunnelHandoff({
       scale: 11.5,
       xPercent: -14.5,
       autoAlpha: 1,
+      force3D: true,
       duration: 0.025
     }, 0.96)
 
@@ -260,6 +269,7 @@ function addProcessTunnelHandoff({
     timeline.to(tunnel, {
       autoAlpha: 0,
       scale: 7.2,
+      force3D: true,
       duration: 0.018
     }, 0.98);
   }

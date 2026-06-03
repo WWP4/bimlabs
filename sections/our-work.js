@@ -109,6 +109,9 @@
   let workVisible = false;
   let workMode = false;
   let workInteractive = false;
+  let lastZoomValue = "";
+  let lastRevealValue = "";
+  let lastInternalValue = "";
 
   const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
@@ -256,15 +259,21 @@ function updateWorkScene() {
   const revealValue = revealProgress.toFixed(4);
   const internalValue = internalProgress.toFixed(4);
 
-  processSection.style.setProperty("--work-zoom-progress", zoomValue);
-  processSection.style.setProperty("--work-reveal-progress", revealValue);
-  processSection.style.setProperty("--work-scroll-progress", internalValue);
+  if (zoomValue !== lastZoomValue) {
+    lastZoomValue = zoomValue;
+    processSection.style.setProperty("--work-zoom-progress", zoomValue);
+  }
 
-  workWorld.style.setProperty("--work-zoom-progress", zoomValue);
-  workWorld.style.setProperty("--work-reveal-progress", revealValue);
-  workWorld.style.setProperty("--work-scroll-progress", internalValue);
+  if (revealValue !== lastRevealValue) {
+    lastRevealValue = revealValue;
+    processSection.style.setProperty("--work-reveal-progress", revealValue);
+  }
 
-  workTrack.style.setProperty("--work-scroll-progress", internalValue);
+  if (internalValue !== lastInternalValue) {
+    lastInternalValue = internalValue;
+    processSection.style.setProperty("--work-scroll-progress", internalValue);
+    workTrack.style.setProperty("--work-scroll-progress", internalValue);
+  }
 
   const nextVisible = workVisible
     ? progress >= revealStart - 0.015
