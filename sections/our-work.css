@@ -676,3 +676,123 @@
     font-size: 3rem;
   }
 }
+
+/* ==========================================================
+   OUR WORK — EMERGENCY STABILITY OVERRIDE
+   Paste at bottom of sections/our-work.css
+   ========================================================== */
+
+.process-3d {
+  position: relative;
+  min-height: 620vh;
+  background: #020202;
+  isolation: isolate;
+}
+
+.process-scene {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  min-height: 100vh;
+  overflow: hidden;
+  background: #020202;
+}
+
+.process-world-inside {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  width: 100%;
+  height: 100vh;
+  min-height: 100vh;
+  overflow: hidden;
+  background: #020202;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform:
+    translate3d(0, 0, 0)
+    scale(calc(0.72 + (var(--work-progress, 0) * 0.28)));
+  transform-origin: 50% 50%;
+  transition:
+    opacity 500ms ease,
+    visibility 500ms ease;
+  will-change: transform, opacity;
+}
+
+.process-world-inside.is-visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+.process-world-inside.is-interactive {
+  pointer-events: auto;
+}
+
+.process-world-inside.is-released {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translate3d(0, 0, 0) scale(1);
+}
+
+.process-3d.is-work-mode .process-word,
+.process-3d.is-work-mode .process-overlay,
+.process-3d.is-work-mode .process-void {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.work-archive {
+  width: 100%;
+  height: 100vh;
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+.work-archive__shell {
+  height: 100vh;
+  min-height: 720px;
+}
+
+.work-project,
+.work-detail,
+.work-detail__nav button,
+.work-detail__close {
+  font-family: inherit;
+}
+
+@media (max-width: 1180px) {
+  .process-3d {
+    min-height: auto;
+  }
+
+  .process-scene {
+    position: relative;
+    height: auto;
+    min-height: 100vh;
+    overflow: visible;
+  }
+
+  .process-world-inside,
+  .process-world-inside.is-visible,
+  .process-world-inside.is-released {
+    position: relative;
+    inset: auto;
+    height: auto;
+    min-height: 100vh;
+    overflow: visible;
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: none;
+  }
+
+  .work-archive,
+  .work-archive__shell {
+    height: auto;
+    min-height: 100vh;
+    overflow: visible;
+  }
+}
