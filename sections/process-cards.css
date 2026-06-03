@@ -1,12 +1,10 @@
 /* =========================================================
    PROCESS CARDS
-   Thin editorial process panels.
+   Thin glass editorial process panels.
    Normal scroll. No card motion JS. No SVG visuals.
 
-   Goal:
-   - PROCESS word stays cinematic behind the content.
-   - Cards scroll naturally like a real section.
-   - Cards feel thinner, longer, more detailed, and high-end.
+   Keeps the current normal-scroll structure,
+   but restores the older glass color/feel.
 ========================================================= */
 
 .process-cards {
@@ -26,46 +24,83 @@
   top: auto;
   width: min(600px, 40vw);
   min-height: clamp(560px, 68vh, 760px);
+
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+
   overflow: hidden;
-  padding: clamp(26px, 2.5vw, 42px);
-  border: 1px solid rgba(245, 245, 240, 0.13);
-  border-radius: 0;
+  padding: clamp(28px, 2.6vw, 44px);
+
+  border: 1px solid rgba(244, 241, 234, 0.115);
+  border-radius: 2px;
+
   background:
-    linear-gradient(180deg, rgba(255,255,255,0.075), rgba(255,255,255,0.018)),
-    rgba(5, 5, 5, 0.88);
+    linear-gradient(
+      135deg,
+      rgba(244, 241, 234, 0.052),
+      rgba(244, 241, 234, 0.014) 44%,
+      rgba(244, 241, 234, 0.032)
+    ),
+    rgba(5, 5, 5, 0.68);
+
   box-shadow:
-    0 46px 124px rgba(0, 0, 0, 0.56),
-    inset 0 1px 0 rgba(255, 255, 255, 0.07);
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
+    0 38px 120px rgba(0, 0, 0, 0.48),
+    inset 0 1px 0 rgba(244, 241, 234, 0.065);
+
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+
+  transition:
+    border-color 0.55s ease,
+    background 0.55s ease,
+    box-shadow 0.55s ease,
+    opacity 0.55s ease;
 }
 
-/* Inner architectural border */
+/* Thin top sweep line */
 .process-card::before {
   content: "";
   position: absolute;
-  inset: clamp(10px, 1vw, 16px);
+  left: 0;
+  right: 0;
+  top: 0;
   z-index: 0;
-  border: 1px solid rgba(245, 245, 240, 0.065);
-  pointer-events: none;
+
+  height: 1px;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(244, 241, 234, 0.32),
+      transparent
+    );
+
+  opacity: 0;
+  transform: translateX(-35%);
+
+  transition:
+    opacity 0.55s ease,
+    transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* Subtle technical texture */
+/* Subtle glass texture / technical field */
 .process-card::after {
   content: "";
   position: absolute;
   inset: 0;
   z-index: 0;
   pointer-events: none;
-  opacity: 0.105;
+
+  opacity: 0.08;
+
   background:
-    linear-gradient(rgba(245,245,240,0.042) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(245,245,240,0.032) 1px, transparent 1px);
+    linear-gradient(rgba(244, 241, 234, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(244, 241, 234, 0.035) 1px, transparent 1px);
+
   background-size: 44px 44px;
-  mask-image: linear-gradient(to bottom, black 0%, black 34%, transparent 86%);
+  mask-image: linear-gradient(to bottom, black 0%, black 30%, transparent 84%);
 }
 
 .process-card > * {
@@ -73,7 +108,7 @@
   z-index: 1;
 }
 
-/* Alternating rhythm */
+/* Alternating layout */
 .process-card--left {
   justify-self: start;
   left: auto;
@@ -84,31 +119,51 @@
   right: auto;
 }
 
-/* These classes can still exist from process-ui.js, but they are only visual now */
-.process-card.is-active {
-  border-color: rgba(245, 245, 240, 0.23);
+/* Active card */
+.process-card.is-active,
+.process-card:hover {
+  border-color: rgba(244, 241, 234, 0.23);
+
   background:
-    linear-gradient(180deg, rgba(255,255,255,0.1), rgba(255,255,255,0.024)),
-    rgba(6, 6, 6, 0.92);
+    linear-gradient(
+      135deg,
+      rgba(244, 241, 234, 0.072),
+      rgba(244, 241, 234, 0.02) 44%,
+      rgba(244, 241, 234, 0.04)
+    ),
+    rgba(6, 6, 6, 0.74);
+
+  box-shadow:
+    0 46px 140px rgba(0, 0, 0, 0.52),
+    0 0 46px rgba(244, 241, 234, 0.035),
+    inset 0 1px 0 rgba(244, 241, 234, 0.09);
+}
+
+.process-card.is-active::before,
+.process-card:hover::before {
+  opacity: 1;
+  transform: translateX(35%);
 }
 
 .process-card.is-past {
-  opacity: 0.78;
+  opacity: 0.76;
 }
 
-/* Top and bottom meta rows */
+/* Top and bottom meta */
 .process-card__meta,
 .process-card__actions {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  gap: 18px;
-  color: rgba(245, 245, 240, 0.52);
+  justify-content: space-between;
+  gap: 24px;
+
+  color: rgba(244, 241, 234, 0.38);
   font-family: var(--mono, ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace);
   font-size: 10px;
   line-height: 1;
-  letter-spacing: 0.16em;
+  letter-spacing: 0.26em;
   text-transform: uppercase;
+  white-space: nowrap;
 }
 
 .process-card__meta span,
@@ -116,7 +171,7 @@
   font-weight: 400;
 }
 
-/* Main card content */
+/* Main content */
 .process-card__main {
   margin: clamp(76px, 12vh, 118px) 0 clamp(34px, 5vh, 58px);
 }
@@ -124,20 +179,23 @@
 .process-card__main h3 {
   max-width: 500px;
   margin: 0;
+
+  color: rgba(244, 241, 234, 0.94);
+  font-family: inherit;
   font-size: clamp(48px, 5.2vw, 88px);
-  line-height: 0.84;
-  letter-spacing: -0.086em;
-  font-weight: 500;
-  color: rgba(245, 245, 240, 0.98);
+  font-weight: 400;
+  line-height: 0.82;
+  letter-spacing: -0.092em;
 }
 
 .process-card__main p {
   max-width: 450px;
-  margin: clamp(24px, 2.6vw, 36px) 0 0;
+  margin: clamp(28px, 3.6vh, 42px) 0 0;
+
+  color: rgba(244, 241, 234, 0.56);
   font-size: clamp(14px, 1vw, 16px);
   line-height: 1.68;
-  letter-spacing: -0.025em;
-  color: rgba(245, 245, 240, 0.62);
+  letter-spacing: -0.018em;
 }
 
 /* Detail blocks */
@@ -146,8 +204,9 @@
   grid-template-columns: 1fr;
   gap: 1px;
   margin-top: clamp(34px, 5vh, 54px);
-  border: 1px solid rgba(245, 245, 240, 0.085);
-  background: rgba(245, 245, 240, 0.055);
+
+  border: 1px solid rgba(244, 241, 234, 0.08);
+  background: rgba(244, 241, 234, 0.055);
 }
 
 .process-card__detail {
@@ -155,9 +214,18 @@
   grid-template-columns: 92px 1fr;
   gap: 18px;
   align-items: start;
+
   min-height: 64px;
   padding: 16px 18px;
-  background: rgba(4, 4, 4, 0.91);
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(244, 241, 234, 0.028),
+      rgba(244, 241, 234, 0.008)
+    ),
+    rgba(4, 4, 4, 0.78);
+
   transition:
     background 420ms cubic-bezier(.16, 1, .3, 1),
     opacity 420ms cubic-bezier(.16, 1, .3, 1),
@@ -166,31 +234,35 @@
 
 .process-card__detail small {
   display: block;
+
   font-family: var(--mono, ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace);
   font-size: 9px;
   line-height: 1;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: rgba(245, 245, 240, 0.36);
+
+  color: rgba(244, 241, 234, 0.34);
 }
 
 .process-card__detail strong {
   display: block;
   max-width: 330px;
+
+  color: rgba(244, 241, 234, 0.68);
   font-size: clamp(13px, 0.92vw, 15px);
   line-height: 1.34;
-  letter-spacing: -0.022em;
+  letter-spacing: -0.02em;
   font-weight: 400;
-  color: rgba(245, 245, 240, 0.76);
-}
-
-/* Quiet hover polish */
-.process-card:hover {
-  border-color: rgba(245, 245, 240, 0.26);
 }
 
 .process-card:hover .process-card__detail {
-  background: rgba(7, 7, 7, 0.95);
+  background:
+    linear-gradient(
+      135deg,
+      rgba(244, 241, 234, 0.038),
+      rgba(244, 241, 234, 0.012)
+    ),
+    rgba(6, 6, 6, 0.84);
 }
 
 .process-card:hover .process-card__detail:nth-child(1) {
@@ -201,17 +273,14 @@
   transform: translateY(-1px);
 }
 
-.process-card:hover .process-card__detail:nth-child(3) {
-  transform: translateY(0);
-}
-
 /* Bottom action */
 .process-card__button {
   position: relative;
   display: inline-flex;
   align-items: center;
   width: fit-content;
-  color: rgba(245, 245, 240, 0.82);
+
+  color: rgba(244, 241, 234, 0.62);
   text-decoration: none;
 }
 
@@ -220,12 +289,15 @@
   position: absolute;
   left: 0;
   bottom: -7px;
+
   width: 100%;
   height: 1px;
+
   background: currentColor;
   transform: scaleX(0.34);
   transform-origin: left;
   opacity: 0.55;
+
   transition:
     transform 450ms cubic-bezier(.16, 1, .3, 1),
     opacity 450ms cubic-bezier(.16, 1, .3, 1);
@@ -237,24 +309,26 @@
   opacity: 1;
 }
 
-/* Optional quiet index if HTML includes .process-card__index */
+/* Quiet background index */
 .process-card__index {
   position: absolute;
   right: clamp(22px, 2vw, 38px);
   bottom: clamp(24px, 2vw, 40px);
   z-index: 0;
+
   font-family: var(--mono, ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace);
   font-size: clamp(54px, 5vw, 94px);
   line-height: 0.75;
   letter-spacing: -0.08em;
-  color: rgba(245, 245, 240, 0.045);
+
+  color: rgba(244, 241, 234, 0.045);
   pointer-events: none;
 }
 
 /* Native CSS reveal only. No card JS. */
 @supports (animation-timeline: view()) {
   .process-card {
-    opacity: 0.3;
+    opacity: 0.34;
     transform: translateY(68px) scale(0.99);
     animation: process-card-native-reveal linear both;
     animation-timeline: view();
@@ -285,7 +359,7 @@
 
   @keyframes process-card-native-reveal {
     from {
-      opacity: 0.3;
+      opacity: 0.34;
       transform: translateY(68px) scale(0.99);
     }
 
@@ -308,7 +382,16 @@
   }
 }
 
-/* Responsive */
+/* Stop weird 3D/text ghosting */
+.process-card,
+.process-card * {
+  backface-visibility: hidden;
+}
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
 @media (max-width: 1180px) {
   .process-cards {
     width: min(980px, calc(100% - 36px));
@@ -355,6 +438,8 @@
 
   .process-card {
     padding: 24px;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
   }
 
   .process-card__main {
@@ -373,6 +458,7 @@
   .process-card__actions {
     font-size: 9px;
     gap: 12px;
+    letter-spacing: 0.2em;
   }
 
   .process-card__detail {
