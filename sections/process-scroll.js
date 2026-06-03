@@ -152,55 +152,75 @@ function addProcessHandoff({
 }) {
   /*
     Tunnel handoff:
-    PROCESS does not fade away.
-    It zooms past the camera until it is naturally off-screen.
-    Any opacity cleanup happens only after the zoom is complete.
+    PROCESS scales past camera.
+    A dark aperture bridges the moment before Our Work fully opens.
+    This avoids the cheap fade AND avoids giant white letter chunks sitting on screen.
   */
 
   if (voidTarget) {
     timeline.set(voidTarget, {
       autoAlpha: 0,
-      scale: 0
+      scale: 0.2,
+      transformOrigin: "50% 50%"
     }, 0);
   }
 
   timeline
     .to(word, {
-      scale: 1.35,
+      scale: 1.32,
       xPercent: -1.5,
-      autoAlpha: 0.92,
+      autoAlpha: 0.94,
       duration: 0.08
     }, 0.82)
 
     .to(word, {
-      scale: 2.8,
+      scale: 2.7,
       xPercent: -4,
       autoAlpha: 0.96,
       duration: 0.08
     }, 0.875)
 
     .to(word, {
-      scale: 6.4,
-      xPercent: -9,
+      scale: 5.8,
+      xPercent: -8.5,
       autoAlpha: 1,
-      duration: 0.1
+      duration: 0.09
     }, 0.925)
 
+    /* Dark tunnel begins while PROCESS is still readable/physical */
+    .to(voidTarget, {
+      autoAlpha: 0.92,
+      scale: 2.8,
+      duration: 0.08
+    }, 0.935)
+
     .to(word, {
-      scale: 16,
-      xPercent: -19,
+      scale: 12,
+      xPercent: -16,
       autoAlpha: 1,
-      duration: 0.13
+      duration: 0.1
+    }, 0.965)
+
+    .to(voidTarget, {
+      autoAlpha: 1,
+      scale: 8,
+      duration: 0.1
     }, 0.965)
 
     /*
-      Cleanup only after PROCESS is already huge/off-camera.
-      The user should not visually notice this.
+      Cleanup after PROCESS is already beyond the camera.
+      This should not look like a visible fade.
     */
     .to(word, {
       autoAlpha: 0,
       duration: 0.01
-    }, 1)
+    }, 0.995)
+
+    .to(voidTarget, {
+      autoAlpha: 0,
+      scale: 12,
+      duration: 0.04
+    }, 0.995)
 
     .to(section, {
       "--process-section-intensity": 0.08,
