@@ -1,12 +1,25 @@
 /* ==========================================================
-   BIM LABS STUDIO — OUR WORK INSIDE PROCESS
-   Optimized version.
-   Page scroll controls:
-   1. Our Work visibility
-   2. Our Work zoom progress
-   3. Internal track movement
+   BIM LABS STUDIO — OUR WORK INTERACTION ONLY
 
-   Project details update only from user interaction.
+   Important:
+   This file does NOT control scroll anymore.
+
+   process-scroll.js owns:
+   - Our Work reveal timing
+   - Our Work visibility
+   - Our Work interactivity
+   - --work-zoom-progress
+   - --work-reveal-progress
+   - --work-scroll-progress
+   - is-work-mode / is-inside-work states
+
+   This file only owns:
+   - project hover
+   - project focus
+   - project click
+   - detail panel content
+   - previous / next controls
+   - keyboard navigation while Our Work is interactive
    ========================================================== */
 
 (() => {
@@ -81,12 +94,12 @@
     }
   ];
 
-  const processSection = document.querySelector(".process-3d");
-  const workWorld = document.querySelector("[data-work-world]");
   const root = document.querySelector(".work-archive");
-  const workTrack = document.querySelector("[data-work-track]");
+  const workWorld =
+    document.querySelector("[data-work-world]") ||
+    document.querySelector(".process-world-inside");
 
-  if (!processSection || !workWorld || !root || !workTrack) return;
+  if (!root) return;
 
   const projectButtons = Array.from(root.querySelectorAll("[data-work-project]"));
   const detail = root.querySelector(".work-detail");
@@ -103,32 +116,23 @@
   const nextBtn = root.querySelector("[data-work-next]");
   const closeBtn = root.querySelector(".work-detail__close");
 
-  let activeIndex = 0;
-  let ticking = false;
-  let changeTimer = null;
-  let workVisible = false;
-  let workMode = false;
-  let workInteractive = false;
-  let lastZoomValue = "";
-  let lastRevealValue = "";
-  let lastInternalValue = "";
-
   const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  function clamp(value, min, max) {
-    return Math.min(max, Math.max(min, value));
-  }
+  let activeIndex = 0;
+  let changeTimer = null;
 
   function clampIndex(index) {
     return (index + projects.length) % projects.length;
   }
 
-  function getProcessProgress() {
-    const rect = processSection.getBoundingClientRect();
-    const scrollable = Math.max(1, processSection.offsetHeight - window.innerHeight);
-    const moved = clamp(-rect.top, 0, scrollable);
+  function isWorkInteractive() {
+    if (!workWorld) return true;
 
-    return moved / scrollable;
+    return (
+      workWorld.classList.contains("is-interactive") ||
+      workWorld.closest(".process-3d")?.classList.contains("is-work-interactive") ||
+      workWorld.closest(".process-3d")?.classList.contains("is-inside-work")
+    );
   }
 
   function renderServices(items) {
@@ -154,21 +158,26 @@
       detail.classList.add("is-changing");
     });
 
-    clearTimeout(changeTimer);
+    window.clearTimeout(changeTimer);
 
-    changeTimer = setTimeout(() => {
+    changeTimer = window.setTimeout(() => {
       detail.classList.remove("is-changing");
     }, 280);
   }
 
   function setActiveProject(index) {
+    if (!projects.length) return;
+
     const safeIndex = clampIndex(index);
-
-    if (safeIndex === activeIndex && projectButtons[safeIndex]?.classList.contains("is-active")) {
-      return;
-    }
-
     const project = projects[safeIndex];
+
+    if (!project) return;
+
+    const alreadyActive =
+      safeIndex === activeIndex &&
+      projectButtons[safeIndex]?.classList.contains("is-active");
+
+    if (alreadyActive) return;
 
     activeIndex = safeIndex;
 
@@ -177,6 +186,12 @@
 
       button.classList.toggle("is-active", isActive);
       button.setAttribute("aria-pressed", isActive ? "true" : "false");
+
+      if (isActive) {
+        button.setAttribute("aria-current", "true");
+      } else {
+        button.removeAttribute("aria-current");
+      }
     });
 
     if (numberEl) numberEl.textContent = project.number;
@@ -190,144 +205,20 @@
     animateDetail();
   }
 
-
-function updateWorkScene() {
-  ticking = false;
-
-  if (window.innerWidth <= 900 || prefersReducedMotion) {
-    workVisible = true;
-    workMode = true;
-    workInteractive = true;
-
-    workWorld.classList.add("is-visible", "is-interactive");
-    workWorld.removeAttribute("aria-hidden");
-
-    processSection.classList.add("is-work-mode");
-
-    processSection.style.setProperty("--work-zoom-progress", "1");
-    processSection.style.setProperty("--work-reveal-progress", "1");
-    processSection.style.setProperty("--work-scroll-progress", "0");
-
-    workWorld.style.setProperty("--work-zoom-progress", "1");
-    workWorld.style.setProperty("--work-reveal-progress", "1");
-    workWorld.style.setProperty("--work-scroll-progress", "0");
-
-    workTrack.style.setProperty("--work-scroll-progress", "0");
-
-    return;
-  }
-
-  const progress = getProcessProgress();
-
-  /*
-    Correct timeline:
-    0.00–0.76 = PROCESS cards / word only
-    0.76–0.90 = camera starts pushing toward PROCESS
-    0.90–0.97 = Our Work finally reveals through the center/C area
-    0.97–1.00 = Our Work becomes the full website layer
-  */
-
-  const zoomStart = 0.76;
-  const zoomEnd = 0.96;
-
-  const revealStart = 0.9;
-  const revealEnd = 0.97;
-
-  const takeoverStart = 0.97;
-  const internalStart = 0.97;
-  const internalEnd = 1;
-
-  const zoomProgress = clamp(
-    (progress - zoomStart) / (zoomEnd - zoomStart),
-    0,
-    1
-  );
-
-  const revealProgress = clamp(
-    (progress - revealStart) / (revealEnd - revealStart),
-    0,
-    1
-  );
-
-  const internalProgress = clamp(
-    (progress - internalStart) / (internalEnd - internalStart),
-    0,
-    1
-  );
-
-  const zoomValue = zoomProgress.toFixed(4);
-  const revealValue = revealProgress.toFixed(4);
-  const internalValue = internalProgress.toFixed(4);
-
-  if (zoomValue !== lastZoomValue) {
-    lastZoomValue = zoomValue;
-    processSection.style.setProperty("--work-zoom-progress", zoomValue);
-  }
-
-  if (revealValue !== lastRevealValue) {
-    lastRevealValue = revealValue;
-    processSection.style.setProperty("--work-reveal-progress", revealValue);
-  }
-
-  if (internalValue !== lastInternalValue) {
-    lastInternalValue = internalValue;
-    processSection.style.setProperty("--work-scroll-progress", internalValue);
-    workTrack.style.setProperty("--work-scroll-progress", internalValue);
-  }
-
-  const nextVisible = workVisible
-    ? progress >= revealStart - 0.015
-    : revealProgress > 0.01;
-
-  const nextWorkMode = workMode
-    ? progress >= takeoverStart - 0.015
-    : progress >= takeoverStart;
-
-  const nextInteractive = workInteractive
-    ? revealProgress >= 0.92
-    : revealProgress >= 0.98;
-
-  if (nextVisible !== workVisible) {
-    workVisible = nextVisible;
-    workWorld.classList.toggle("is-visible", workVisible);
-
-    if (workVisible) {
-      workWorld.removeAttribute("aria-hidden");
-    } else {
-      workWorld.setAttribute("aria-hidden", "true");
-    }
-  }
-
-  if (nextInteractive !== workInteractive) {
-    workInteractive = nextInteractive;
-    workWorld.classList.toggle("is-interactive", workInteractive);
-  }
-
-  if (nextWorkMode !== workMode) {
-    workMode = nextWorkMode;
-    processSection.classList.toggle("is-work-mode", workMode);
-  }
-}
-   
-
-  function requestUpdate() {
-    if (ticking) return;
-
-    ticking = true;
-    requestAnimationFrame(updateWorkScene);
-  }
-
   function setupProjectEvents() {
     projectButtons.forEach((button) => {
       const index = Number(button.dataset.workProject || 0);
 
+      button.setAttribute("type", "button");
       button.setAttribute("aria-pressed", index === activeIndex ? "true" : "false");
 
       button.addEventListener("mouseenter", () => {
+        if (!isWorkInteractive()) return;
         setActiveProject(index);
       });
 
       button.addEventListener("focus", () => {
+        if (!isWorkInteractive()) return;
         setActiveProject(index);
       });
 
@@ -337,18 +228,24 @@ function updateWorkScene() {
     });
 
     if (prevBtn) {
+      prevBtn.setAttribute("type", "button");
+
       prevBtn.addEventListener("click", () => {
         setActiveProject(activeIndex - 1);
       });
     }
 
     if (nextBtn) {
+      nextBtn.setAttribute("type", "button");
+
       nextBtn.addEventListener("click", () => {
         setActiveProject(activeIndex + 1);
       });
     }
 
     if (closeBtn) {
+      closeBtn.setAttribute("type", "button");
+
       closeBtn.addEventListener("click", () => {
         if (!detail) return;
         detail.classList.toggle("is-muted");
@@ -356,29 +253,37 @@ function updateWorkScene() {
     }
 
     window.addEventListener("keydown", (event) => {
-      if (!workWorld.classList.contains("is-interactive")) return;
+      if (!isWorkInteractive()) return;
+
+      const tagName = document.activeElement?.tagName?.toLowerCase();
+      const isTyping =
+        tagName === "input" ||
+        tagName === "textarea" ||
+        document.activeElement?.isContentEditable;
+
+      if (isTyping) return;
 
       if (event.key === "ArrowUp" || event.key === "ArrowLeft") {
+        event.preventDefault();
         setActiveProject(activeIndex - 1);
       }
 
       if (event.key === "ArrowDown" || event.key === "ArrowRight") {
+        event.preventDefault();
         setActiveProject(activeIndex + 1);
       }
     });
   }
 
   function init() {
+    if (!projectButtons.length) return;
+
     setupProjectEvents();
     setActiveProject(0);
-    updateWorkScene();
-
-    window.addEventListener("scroll", requestUpdate, { passive: true });
-    window.addEventListener("resize", requestUpdate, { passive: true });
   }
 
   if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", init);
+    document.addEventListener("DOMContentLoaded", init, { once: true });
   } else {
     init();
   }
