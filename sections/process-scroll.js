@@ -150,51 +150,62 @@ function addProcessHandoff({
   word,
   voidTarget
 }) {
-  if (!voidTarget) return;
+  /*
+    Tunnel handoff:
+    PROCESS does not fade away.
+    It zooms past the camera until it is naturally off-screen.
+    Any opacity cleanup happens only after the zoom is complete.
+  */
+
+  if (voidTarget) {
+    timeline.set(voidTarget, {
+      autoAlpha: 0,
+      scale: 0
+    }, 0);
+  }
 
   timeline
     .to(word, {
-      scale: 1.22,
-      autoAlpha: 0.78,
+      scale: 1.35,
+      xPercent: -1.5,
+      autoAlpha: 0.92,
       duration: 0.08
     }, 0.82)
 
-    .to(voidTarget, {
-      autoAlpha: 0.7,
-      scale: 1,
-      duration: 0.055
-    }, 0.845)
+    .to(word, {
+      scale: 2.8,
+      xPercent: -4,
+      autoAlpha: 0.96,
+      duration: 0.08
+    }, 0.875)
 
     .to(word, {
-      scale: 2.7,
-      xPercent: -3.8,
-      autoAlpha: 0.74,
-      duration: 0.08
-    }, 0.88)
-
-    .to(voidTarget, {
-      scale: 3.2,
-      autoAlpha: 0.72,
-      duration: 0.08
-    }, 0.88)
+      scale: 6.4,
+      xPercent: -9,
+      autoAlpha: 1,
+      duration: 0.1
+    }, 0.925)
 
     .to(word, {
-      scale: 8.5,
-      xPercent: -11,
-      autoAlpha: 0,
-      duration: 0.16
-    }, 0.94)
+      scale: 16,
+      xPercent: -19,
+      autoAlpha: 1,
+      duration: 0.13
+    }, 0.965)
 
-    .to(voidTarget, {
-      scale: 12,
+    /*
+      Cleanup only after PROCESS is already huge/off-camera.
+      The user should not visually notice this.
+    */
+    .to(word, {
       autoAlpha: 0,
-      duration: 0.16
-    }, 0.94)
+      duration: 0.01
+    }, 1)
 
     .to(section, {
       "--process-section-intensity": 0.08,
-      duration: 0.1
-    }, 0.96);
+      duration: 0.08
+    }, 0.97);
 }
 
 /* =========================================================
