@@ -411,3 +411,91 @@
   visibility: hidden;
   pointer-events: none;
 }
+
+
+
+/* =========================================================
+   FINAL PROCESS → OUR WORK CAMERA FIX
+   Our Work stays invisible until the user is inside PROCESS.
+   Then it reveals from the PROCESS/C center and becomes scrollable.
+========================================================= */
+
+.process-3d {
+  --work-zoom-progress: 0;
+  --work-reveal-progress: 0;
+  --work-scroll-progress: 0;
+}
+
+/* The destination website lives INSIDE the sticky process scene,
+   but it should not visually appear until the handoff is deep. */
+.process-world-inside {
+  position: absolute !important;
+  inset: 0 !important;
+  z-index: 1 !important;
+
+  width: 100% !important;
+  height: 100vh !important;
+  min-height: 100vh !important;
+
+  padding: 0 !important;
+  overflow: hidden !important;
+
+  background: #020202 !important;
+
+  opacity: var(--work-reveal-progress, 0) !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+
+  transform:
+    translate3d(0, 0, 0)
+    scale(calc(0.18 + (var(--work-zoom-progress, 0) * 0.82))) !important;
+
+  transform-origin: var(--process-c-x, 51.8%) var(--process-c-y, 50%) !important;
+
+  clip-path: circle(
+    calc(var(--work-reveal-progress, 0) * 150%)
+    at var(--process-c-x, 51.8%) var(--process-c-y, 50%)
+  ) !important;
+
+  filter: none !important;
+  will-change: transform, opacity, clip-path;
+  backface-visibility: hidden;
+  contain: layout paint style;
+}
+
+.process-world-inside.is-visible {
+  visibility: visible !important;
+}
+
+.process-world-inside.is-interactive {
+  pointer-events: auto !important;
+}
+
+/* PROCESS stays on top during the camera move. */
+.process-word {
+  z-index: 5 !important;
+  pointer-events: none !important;
+  will-change: transform, opacity;
+}
+
+/* Hide process cards only when Our Work has actually taken over. */
+.process-3d.is-work-mode .process-overlay {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+/* Do not instantly hide the PROCESS word.
+   Let JS fade/scale it so the handoff feels like a zoom, not a cut. */
+.process-3d.is-work-mode .process-word {
+  visibility: visible !important;
+  pointer-events: none !important;
+}
+
+/* The old dark circle/orb is making the transition feel fake.
+   Kill it visually. The reveal now comes from the clipped website layer. */
+.process-void {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
