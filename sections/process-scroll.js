@@ -52,7 +52,7 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger }) {
         return `+=${Math.max(naturalDistance, minimumDistance, 4600)}`;
       },
       pin: false,
-      scrub: 0.9,
+      scrub: true,
       invalidateOnRefresh: true,
 
       onUpdate: (self) => {
@@ -222,22 +222,22 @@ function addProcessTunnelHandoff({
       }, 0.875)
 
       .to(tunnel, {
-        autoAlpha: 0.96,
-        scale: 4.2,
+        autoAlpha: 0.94,
+        scale: 3.15,
         duration: 0.075
       }, 0.915)
 
       .to(tunnel, {
         autoAlpha: 1,
-        scale: 12.5,
+        scale: 6.4,
         duration: 0.06
       }, 0.955);
   }
 
   timeline
     .to(word, {
-      scale: 15.5,
-      xPercent: -18.5,
+      scale: 11.5,
+      xPercent: -14.5,
       autoAlpha: 1,
       duration: 0.035
     }, 0.96)
@@ -259,7 +259,7 @@ function addProcessTunnelHandoff({
   if (tunnel) {
     timeline.to(tunnel, {
       autoAlpha: 0,
-      scale: 15,
+      scale: 7.2,
       duration: 0.005
     }, 0.996);
   }
