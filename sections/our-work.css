@@ -1,8 +1,8 @@
 /* ==========================================================
    BIM LABS STUDIO — OUR WORK INSIDE PROCESS
-   This file controls the PROCESS → OUR WORK internal scene.
-   Our Work does NOT become a normal page section.
-   It lives inside the sticky PROCESS scene.
+   Optimized version.
+   Our Work stays inside the sticky PROCESS scene.
+   No heavy full-screen blur. No release-to-normal-flow logic.
    ========================================================== */
 
 /* ----------------------------------------------------------
@@ -23,6 +23,7 @@
   min-height: 100vh;
   overflow: hidden;
   background: #020202;
+  contain: paint;
 }
 
 .process-world-inside {
@@ -39,10 +40,11 @@
   pointer-events: none;
   transform:
     translate3d(0, 0, 0)
-    scale(calc(0.54 + (var(--work-zoom-progress, 0) * 0.46)));
+    scale(calc(0.68 + (var(--work-zoom-progress, 0) * 0.32)));
   transform-origin: 50% 50%;
-  filter: blur(calc((1 - var(--work-zoom-progress, 0)) * 16px));
-  will-change: transform, opacity, filter;
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+  contain: layout paint style;
 }
 
 .process-world-inside.is-visible {
@@ -73,21 +75,33 @@
   min-height: 100vh;
   overflow: hidden;
   color: #f2f2f2;
-  background:
-    radial-gradient(circle at 72% 24%, rgba(255, 255, 255, 0.06), transparent 32%),
-    radial-gradient(circle at 22% 76%, rgba(255, 255, 255, 0.035), transparent 34%),
-    #020202;
+  background: #020202;
   font-family: inherit;
 }
 
-/* This is what fakes “scrolling inside” Our Work */
+/* Lightweight atmosphere */
+.work-archive__bg {
+  position: absolute;
+  inset: -12%;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 72% 24%, rgba(255, 255, 255, 0.055), transparent 30%),
+    radial-gradient(circle at 22% 76%, rgba(255, 255, 255, 0.035), transparent 34%),
+    radial-gradient(circle at 52% 46%, rgba(255, 255, 255, 0.05), transparent 18%);
+  opacity: 0.8;
+  transform: translate3d(0, 0, 0);
+}
+
+/* This creates the “scrolling inside Our Work” feeling */
 .work-archive__track {
   position: relative;
   z-index: 2;
   width: 100%;
-  min-height: 132vh;
-  transform: translate3d(0, calc(var(--work-scroll-progress, 0) * -32vh), 0);
+  min-height: 116vh;
+  transform: translate3d(0, calc(var(--work-scroll-progress, 0) * -16vh), 0);
   will-change: transform;
+  backface-visibility: hidden;
 }
 
 /* Editorial grid lines */
@@ -95,16 +109,16 @@
   content: "";
   position: absolute;
   inset: 0;
+  z-index: 2;
   pointer-events: none;
   background:
-    linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+    linear-gradient(to right, rgba(255, 255, 255, 0.045) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.032) 1px, transparent 1px);
   background-size: 25% 100%, 100% 14.285%;
-  opacity: 0.25;
-  mask-image: radial-gradient(circle at 50% 50%, #000 0%, transparent 82%);
+  opacity: 0.22;
 }
 
-/* Vignette */
+/* Static vignette */
 .work-archive::after {
   content: "";
   position: absolute;
@@ -114,19 +128,6 @@
   background:
     linear-gradient(to bottom, rgba(0, 0, 0, 0.94), transparent 18%, transparent 74%, rgba(0, 0, 0, 0.96)),
     linear-gradient(to right, rgba(0, 0, 0, 0.72), transparent 18%, transparent 80%, rgba(0, 0, 0, 0.82));
-}
-
-.work-archive__bg {
-  position: absolute;
-  inset: -20%;
-  z-index: 1;
-  pointer-events: none;
-  background:
-    radial-gradient(circle at 52% 46%, rgba(255, 255, 255, 0.08), transparent 17%),
-    radial-gradient(circle at 70% 34%, rgba(255, 255, 255, 0.045), transparent 24%);
-  filter: blur(28px);
-  opacity: 0.34;
-  transform: scale(1.15);
 }
 
 .work-archive__shell {
@@ -246,12 +247,11 @@
   border: 1px solid rgba(255, 255, 255, 0.22);
   border-radius: 999px;
   background: #020202;
-  transform: translate(-50%, -50%);
+  transform: translate3d(-50%, -50%, 0);
   transition:
-    border-color 350ms ease,
-    background 350ms ease,
-    box-shadow 350ms ease,
-    transform 350ms ease;
+    border-color 240ms ease,
+    background 240ms ease,
+    transform 240ms ease;
 }
 
 .work-project::after {
@@ -261,7 +261,7 @@
   pointer-events: none;
   background: linear-gradient(to right, rgba(255, 255, 255, 0.035), transparent 52%);
   opacity: 0;
-  transition: opacity 350ms ease;
+  transition: opacity 240ms ease;
 }
 
 .work-project:hover::after,
@@ -273,8 +273,7 @@
 .work-project.is-active::before {
   background: #fff;
   border-color: #fff;
-  box-shadow: 0 0 0 0.22rem rgba(255, 255, 255, 0.06);
-  transform: translate(-50%, -50%) scale(1.1);
+  transform: translate3d(-50%, -50%, 0) scale(1.08);
 }
 
 .work-project__number {
@@ -294,16 +293,16 @@
   letter-spacing: -0.055em;
   line-height: 1.05;
   transition:
-    color 350ms ease,
-    transform 350ms ease,
-    letter-spacing 350ms ease;
+    color 240ms ease,
+    transform 240ms ease,
+    letter-spacing 240ms ease;
 }
 
 .work-project:hover .work-project__name,
 .work-project.is-active .work-project__name {
   color: #fff;
   letter-spacing: -0.07em;
-  transform: translateX(0.35rem);
+  transform: translate3d(0.35rem, 0, 0);
 }
 
 .work-project__meta {
@@ -342,12 +341,12 @@
   border: 1px solid rgba(255, 255, 255, 0.16);
   background: #090909;
   opacity: 0;
-  transform: translateY(-50%) translateX(-0.8rem) scale(0.94);
+  transform: translate3d(-0.8rem, -50%, 0) scale(0.96);
   transition:
-    opacity 280ms ease,
-    transform 380ms cubic-bezier(.2, .8, .2, 1);
+    opacity 220ms ease,
+    transform 260ms cubic-bezier(.2, .8, .2, 1);
   pointer-events: none;
-  box-shadow: 0 1.6rem 5rem rgba(0, 0, 0, 0.58);
+  box-shadow: 0 1.2rem 3.2rem rgba(0, 0, 0, 0.42);
 }
 
 .work-project__preview img {
@@ -355,21 +354,18 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  filter: grayscale(1) contrast(1.08) brightness(0.78);
-  transform: scale(1.04);
-  transition:
-    transform 600ms ease,
-    filter 450ms ease;
+  filter: grayscale(1) contrast(1.04) brightness(0.82);
+  transform: translate3d(0, 0, 0) scale(1.03);
+  transition: transform 420ms ease;
 }
 
 .work-project:hover .work-project__preview {
   opacity: 1;
-  transform: translateY(-50%) translateX(0) scale(1);
+  transform: translate3d(0, -50%, 0) scale(1);
 }
 
 .work-project:hover .work-project__preview img {
-  transform: scale(1.08);
-  filter: grayscale(1) contrast(1.14) brightness(0.92);
+  transform: translate3d(0, 0, 0) scale(1.06);
 }
 
 /* ----------------------------------------------------------
@@ -402,8 +398,8 @@
   line-height: 1;
   cursor: pointer;
   transition:
-    color 250ms ease,
-    transform 250ms ease;
+    color 220ms ease,
+    transform 220ms ease;
 }
 
 .work-detail__close:hover {
@@ -529,8 +525,8 @@
   text-transform: uppercase;
   cursor: pointer;
   transition:
-    color 250ms ease,
-    transform 250ms ease;
+    color 220ms ease,
+    transform 220ms ease;
 }
 
 .work-detail__nav button:hover {
@@ -545,26 +541,24 @@
   transform: translateX(0.25rem);
 }
 
-/* Detail update animation */
+/* Detail update animation — no blur for performance */
 .work-detail.is-changing .work-detail__eyebrow,
 .work-detail.is-changing .work-detail__title,
 .work-detail.is-changing .work-detail__description,
 .work-detail.is-changing .work-detail__section,
 .work-detail.is-changing .work-detail__nav {
-  animation: workDetailFade 420ms ease both;
+  animation: workDetailFade 260ms ease both;
 }
 
 @keyframes workDetailFade {
   from {
     opacity: 0;
-    transform: translateY(0.75rem);
-    filter: blur(0.35rem);
+    transform: translate3d(0, 0.6rem, 0);
   }
 
   to {
     opacity: 1;
-    transform: translateY(0);
-    filter: blur(0);
+    transform: translate3d(0, 0, 0);
   }
 }
 
@@ -623,6 +617,7 @@
     pointer-events: auto;
     transform: none;
     filter: none;
+    contain: none;
   }
 
   .work-archive {
@@ -681,11 +676,11 @@
     left: 0;
     top: 100%;
     width: 12rem;
-    transform: translateY(0.6rem) translateX(0) scale(0.96);
+    transform: translate3d(0, 0.6rem, 0) scale(0.96);
   }
 
   .work-project:hover .work-project__preview {
-    transform: translateY(0.9rem) translateX(0) scale(1);
+    transform: translate3d(0, 0.9rem, 0) scale(1);
   }
 
   .work-detail {
