@@ -1,64 +1,57 @@
 /* ==========================================================
-   BIM LABS STUDIO — OUR WORK ARCHIVE
-   Lives inside .process-world-inside
+   BIM LABS STUDIO — OUR WORK INSIDE PROCESS
+   This file controls the PROCESS → OUR WORK internal scene.
+   Our Work does NOT become a normal page section.
+   It lives inside the sticky PROCESS scene.
    ========================================================== */
 
 /* ----------------------------------------------------------
-   ZOOM WORLD STATES
+   PROCESS → OUR WORK STAGED SCROLL
    ---------------------------------------------------------- */
+
+.process-3d {
+  position: relative;
+  min-height: 980vh;
+  background: #020202;
+  isolation: isolate;
+}
+
+.process-scene {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  min-height: 100vh;
+  overflow: hidden;
+  background: #020202;
+}
 
 .process-world-inside {
   position: absolute;
   inset: 0;
-  z-index: 2;
+  z-index: 4;
   width: 100%;
+  height: 100vh;
   min-height: 100vh;
-  height: 100%;
   overflow: hidden;
   background: #020202;
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
-  transform: scale(0.68);
+  transform:
+    translate3d(0, 0, 0)
+    scale(calc(0.54 + (var(--work-zoom-progress, 0) * 0.46)));
   transform-origin: 50% 50%;
-  will-change: transform, opacity;
+  filter: blur(calc((1 - var(--work-zoom-progress, 0)) * 16px));
+  will-change: transform, opacity, filter;
 }
 
-/* Used during the PROCESS zoom reveal */
 .process-world-inside.is-visible {
   opacity: 1;
   visibility: visible;
 }
 
-/* Used after the zoom finishes */
-.process-world-inside.is-released {
-  position: relative;
-  inset: auto;
-  z-index: 10;
-  width: 100%;
-  height: auto;
-  min-height: 100vh;
-  overflow: visible;
-  opacity: 1;
-  visibility: visible;
+.process-world-inside.is-interactive {
   pointer-events: auto;
-  transform: none;
-  will-change: auto;
-}
-
-/* When work mode is active, PROCESS stops trapping the content */
-.process-3d.is-work-mode {
-  height: auto;
-  min-height: 100vh;
-  overflow: visible;
-  background: #020202;
-}
-
-.process-3d.is-work-mode .process-scene {
-  position: relative;
-  height: auto;
-  min-height: 100vh;
-  overflow: visible;
 }
 
 .process-3d.is-work-mode .process-word,
@@ -76,8 +69,8 @@
 .work-archive {
   position: relative;
   width: 100%;
+  height: 100vh;
   min-height: 100vh;
-  height: 100%;
   overflow: hidden;
   color: #f2f2f2;
   background:
@@ -87,10 +80,14 @@
   font-family: inherit;
 }
 
-.process-world-inside.is-released .work-archive {
-  height: auto;
-  min-height: 100vh;
-  overflow: visible;
+/* This is what fakes “scrolling inside” Our Work */
+.work-archive__track {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  min-height: 132vh;
+  transform: translate3d(0, calc(var(--work-scroll-progress, 0) * -32vh), 0);
+  will-change: transform;
 }
 
 /* Editorial grid lines */
@@ -103,7 +100,7 @@
     linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
     linear-gradient(to bottom, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
   background-size: 25% 100%, 100% 14.285%;
-  opacity: 0.26;
+  opacity: 0.25;
   mask-image: radial-gradient(circle at 50% 50%, #000 0%, transparent 82%);
 }
 
@@ -112,15 +109,17 @@
   content: "";
   position: absolute;
   inset: 0;
+  z-index: 3;
   pointer-events: none;
   background:
-    linear-gradient(to bottom, rgba(0, 0, 0, 0.94), transparent 19%, transparent 74%, rgba(0, 0, 0, 0.96)),
+    linear-gradient(to bottom, rgba(0, 0, 0, 0.94), transparent 18%, transparent 74%, rgba(0, 0, 0, 0.96)),
     linear-gradient(to right, rgba(0, 0, 0, 0.72), transparent 18%, transparent 80%, rgba(0, 0, 0, 0.82));
 }
 
 .work-archive__bg {
   position: absolute;
   inset: -20%;
+  z-index: 1;
   pointer-events: none;
   background:
     radial-gradient(circle at 52% 46%, rgba(255, 255, 255, 0.08), transparent 17%),
@@ -132,7 +131,7 @@
 
 .work-archive__shell {
   position: relative;
-  z-index: 2;
+  z-index: 4;
   display: grid;
   grid-template-rows: auto 1fr;
   width: min(100%, 1880px);
@@ -140,11 +139,6 @@
   min-height: 760px;
   margin: 0 auto;
   padding: clamp(5rem, 7vw, 8rem) clamp(2rem, 4vw, 4.5rem) clamp(2rem, 4vw, 4rem);
-}
-
-.process-world-inside.is-released .work-archive__shell {
-  height: auto;
-  min-height: 100vh;
 }
 
 /* ----------------------------------------------------------
@@ -237,6 +231,7 @@
   border-bottom: 1px solid rgba(255, 255, 255, 0.075);
   background: transparent;
   color: inherit;
+  font: inherit;
   text-align: left;
   cursor: pointer;
 }
@@ -331,12 +326,15 @@
   line-height: 1.45;
 }
 
-/* Hover preview */
+/* ----------------------------------------------------------
+   HOVER PREVIEW
+   ---------------------------------------------------------- */
+
 .work-project__preview {
   position: absolute;
   left: min(22vw, 27rem);
   top: 50%;
-  z-index: 6;
+  z-index: 12;
   display: block;
   width: clamp(10rem, 15vw, 16rem);
   aspect-ratio: 1.55 / 1;
@@ -399,6 +397,7 @@
   border: 0;
   background: transparent;
   color: rgba(255, 255, 255, 0.68);
+  font: inherit;
   font-size: 1.5rem;
   line-height: 1;
   cursor: pointer;
@@ -524,6 +523,7 @@
   border: 0;
   background: transparent;
   color: rgba(255, 255, 255, 0.46);
+  font: inherit;
   font-size: 0.72rem;
   letter-spacing: 0.17em;
   text-transform: uppercase;
@@ -573,15 +573,6 @@
    ---------------------------------------------------------- */
 
 @media (max-width: 1180px) {
-  .work-archive {
-    overflow: visible;
-  }
-
-  .work-archive__shell {
-    height: auto;
-    min-height: 100vh;
-  }
-
   .work-archive__header {
     grid-template-columns: 1fr;
   }
@@ -609,16 +600,45 @@
   }
 }
 
-@media (max-width: 780px) {
-  .process-world-inside.is-released {
+@media (max-width: 900px) {
+  .process-3d {
+    min-height: auto;
+  }
+
+  .process-scene {
+    position: relative;
+    height: auto;
+    min-height: 100vh;
     overflow: visible;
+  }
+
+  .process-world-inside {
+    position: relative;
+    inset: auto;
+    height: auto;
+    min-height: 100vh;
+    overflow: visible;
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: none;
+    filter: none;
   }
 
   .work-archive {
+    height: auto;
+    min-height: 100vh;
     overflow: visible;
   }
 
+  .work-archive__track {
+    min-height: auto;
+    transform: none;
+  }
+
   .work-archive__shell {
+    height: auto;
+    min-height: 100vh;
     padding: 5rem 1.25rem 2rem;
   }
 
@@ -677,122 +697,18 @@
   }
 }
 
-/* ==========================================================
-   OUR WORK — EMERGENCY STABILITY OVERRIDE
-   Paste at bottom of sections/our-work.css
-   ========================================================== */
-
-.process-3d {
-  position: relative;
-  min-height: 620vh;
-  background: #020202;
-  isolation: isolate;
-}
-
-.process-scene {
-  position: sticky;
-  top: 0;
-  height: 100vh;
-  min-height: 100vh;
-  overflow: hidden;
-  background: #020202;
-}
-
-.process-world-inside {
-  position: absolute;
-  inset: 0;
-  z-index: 3;
-  width: 100%;
-  height: 100vh;
-  min-height: 100vh;
-  overflow: hidden;
-  background: #020202;
-  opacity: 0;
-  visibility: hidden;
-  pointer-events: none;
-  transform:
-    translate3d(0, 0, 0)
-    scale(calc(0.72 + (var(--work-progress, 0) * 0.28)));
-  transform-origin: 50% 50%;
-  transition:
-    opacity 500ms ease,
-    visibility 500ms ease;
-  will-change: transform, opacity;
-}
-
-.process-world-inside.is-visible {
-  opacity: 1;
-  visibility: visible;
-}
-
-.process-world-inside.is-interactive {
-  pointer-events: auto;
-}
-
-.process-world-inside.is-released {
-  opacity: 1;
-  visibility: visible;
-  pointer-events: auto;
-  transform: translate3d(0, 0, 0) scale(1);
-}
-
-.process-3d.is-work-mode .process-word,
-.process-3d.is-work-mode .process-overlay,
-.process-3d.is-work-mode .process-void {
-  opacity: 0;
-  visibility: hidden;
-  pointer-events: none;
-}
-
-.work-archive {
-  width: 100%;
-  height: 100vh;
-  min-height: 100vh;
-  overflow: hidden;
-}
-
-.work-archive__shell {
-  height: 100vh;
-  min-height: 720px;
-}
-
-.work-project,
-.work-detail,
-.work-detail__nav button,
-.work-detail__close {
-  font-family: inherit;
-}
-
-@media (max-width: 1180px) {
-  .process-3d {
-    min-height: auto;
-  }
-
-  .process-scene {
-    position: relative;
-    height: auto;
-    min-height: 100vh;
-    overflow: visible;
-  }
-
+@media (prefers-reduced-motion: reduce) {
   .process-world-inside,
-  .process-world-inside.is-visible,
-  .process-world-inside.is-released {
-    position: relative;
-    inset: auto;
-    height: auto;
-    min-height: 100vh;
-    overflow: visible;
-    opacity: 1;
-    visibility: visible;
-    pointer-events: auto;
-    transform: none;
-  }
-
-  .work-archive,
-  .work-archive__shell {
-    height: auto;
-    min-height: 100vh;
-    overflow: visible;
+  .work-archive__track,
+  .work-project,
+  .work-project::before,
+  .work-project::after,
+  .work-project__name,
+  .work-project__preview,
+  .work-project__preview img,
+  .work-detail__nav button,
+  .work-detail__close {
+    transition: none !important;
+    animation: none !important;
   }
 }
