@@ -159,7 +159,7 @@
   background: #020202;
 
   opacity: var(--work-reveal-progress, 0);
-  visibility: hidden;
+  visibility: visible;
   pointer-events: none;
 
   transform:
@@ -189,6 +189,8 @@
   background: #020202;
 }
 
+/* .is-visible is still owned by our-work.js for state/ARIA, but the layer
+   remains paint-ready so the late reveal does not flicker on first visibility. */
 .process-world-inside.is-visible {
   visibility: visible;
 }

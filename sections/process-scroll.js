@@ -230,7 +230,7 @@ function addProcessTunnelHandoff({
       .to(tunnel, {
         autoAlpha: 1,
         scale: 6.4,
-        duration: 0.06
+        duration: 0.025
       }, 0.955);
   }
 
@@ -239,12 +239,12 @@ function addProcessTunnelHandoff({
       scale: 11.5,
       xPercent: -14.5,
       autoAlpha: 1,
-      duration: 0.035
+      duration: 0.025
     }, 0.96)
 
     .to(section, {
       "--process-section-intensity": 0.08,
-      duration: 0.035
+      duration: 0.03
     }, 0.965)
 
     /*
@@ -253,15 +253,15 @@ function addProcessTunnelHandoff({
     */
     .to(word, {
       autoAlpha: 0,
-      duration: 0.004
-    }, 0.996);
+      duration: 0.008
+    }, 0.99);
 
   if (tunnel) {
     timeline.to(tunnel, {
       autoAlpha: 0,
       scale: 7.2,
-      duration: 0.005
-    }, 0.996);
+      duration: 0.018
+    }, 0.98);
   }
 
   timeline.set(sceneMount, {

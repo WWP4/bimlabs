@@ -106,6 +106,9 @@
   let activeIndex = 0;
   let ticking = false;
   let changeTimer = null;
+  let workVisible = false;
+  let workMode = false;
+  let workInteractive = false;
 
   const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
@@ -189,6 +192,10 @@ function updateWorkScene() {
   ticking = false;
 
   if (window.innerWidth <= 900 || prefersReducedMotion) {
+    workVisible = true;
+    workMode = true;
+    workInteractive = true;
+
     workWorld.classList.add("is-visible", "is-interactive");
     workWorld.removeAttribute("aria-hidden");
 
@@ -259,18 +266,37 @@ function updateWorkScene() {
 
   workTrack.style.setProperty("--work-scroll-progress", internalValue);
 
-  const isVisible = revealProgress > 0.01;
-  const isWorkMode = progress >= takeoverStart;
-  const isInteractive = revealProgress >= 0.98;
+  const nextVisible = workVisible
+    ? progress >= revealStart - 0.015
+    : revealProgress > 0.01;
 
-  workWorld.classList.toggle("is-visible", isVisible);
-  workWorld.classList.toggle("is-interactive", isInteractive);
-  processSection.classList.toggle("is-work-mode", isWorkMode);
+  const nextWorkMode = workMode
+    ? progress >= takeoverStart - 0.015
+    : progress >= takeoverStart;
 
-  if (isVisible) {
-    workWorld.removeAttribute("aria-hidden");
-  } else {
-    workWorld.setAttribute("aria-hidden", "true");
+  const nextInteractive = workInteractive
+    ? revealProgress >= 0.92
+    : revealProgress >= 0.98;
+
+  if (nextVisible !== workVisible) {
+    workVisible = nextVisible;
+    workWorld.classList.toggle("is-visible", workVisible);
+
+    if (workVisible) {
+      workWorld.removeAttribute("aria-hidden");
+    } else {
+      workWorld.setAttribute("aria-hidden", "true");
+    }
+  }
+
+  if (nextInteractive !== workInteractive) {
+    workInteractive = nextInteractive;
+    workWorld.classList.toggle("is-interactive", workInteractive);
+  }
+
+  if (nextWorkMode !== workMode) {
+    workMode = nextWorkMode;
+    processSection.classList.toggle("is-work-mode", workMode);
   }
 }
    
