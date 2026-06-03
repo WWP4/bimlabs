@@ -1,11 +1,13 @@
 // sections/process-scroll.js
 
 export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger }) {
-  const sceneMount = section.querySelector("[data-process-scene]");
-  const word = section.querySelector(".process-word");
-  const tunnel = section.querySelector(".process-void");
-  const worldInside = section.querySelector(".process-world-inside");
-  const copy = section.querySelector(".process-copy");
+  const sceneMount = section?.querySelector("[data-process-scene]");
+  const word = section?.querySelector(".process-word");
+  const tunnel = section?.querySelector(".process-void");
+  const worldInside = section?.querySelector(".process-world-inside");
+  const workTrack = section?.querySelector("[data-work-track]");
+  const copy = section?.querySelector(".process-copy");
+  const overlay = section?.querySelector(".process-overlay");
 
   const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
@@ -22,7 +24,9 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger }) {
       word,
       tunnel,
       worldInside,
-      copy
+      workTrack,
+      copy,
+      overlay
     });
 
     return null;
@@ -35,7 +39,9 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger }) {
     word,
     tunnel,
     worldInside,
-    copy
+    workTrack,
+    copy,
+    overlay
   });
 
   const timeline = gsap.timeline({
@@ -47,19 +53,19 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger }) {
       start: "top top",
       end: () => {
         const naturalDistance = Math.max(section.offsetHeight - window.innerHeight, 1);
-        const minimumDistance = window.innerHeight * 4.8;
+        const minimumDistance = window.innerHeight * 5.2;
 
-        return `+=${Math.max(naturalDistance, minimumDistance, 4600)}`;
+        return `+=${Math.max(naturalDistance, minimumDistance, 5200)}`;
       },
       pin: false,
-      // A tiny scrub lets GSAP interpolate wheel/touchpad deltas on rAF.
-      // `true` felt stepped on coarse wheels; larger values made reverse scroll lag.
-      scrub: 0.18,
+      scrub: 0.22,
       invalidateOnRefresh: true,
 
       onUpdate: (self) => {
         updateByProgress({
           section,
+          worldInside,
+          workTrack,
           progress: self.progress,
           scene,
           ui
@@ -96,7 +102,9 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger }) {
     section,
     sceneMount,
     word,
-    tunnel
+    tunnel,
+    worldInside,
+    overlay
   });
 
   const refreshOnResize = debounce(() => {
@@ -104,6 +112,10 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger }) {
   }, 160);
 
   window.addEventListener("resize", refreshOnResize);
+
+  timeline.eventCallback("onKill", () => {
+    window.removeEventListener("resize", refreshOnResize);
+  });
 
   return timeline;
 }
@@ -117,50 +129,54 @@ function addProcessIntro({ timeline, section, word, copy }) {
   timeline
     .to(section, {
       "--process-section-intensity": 1,
-      duration: 0.12
+      duration: 0.14
     }, 0)
 
     .to(word, {
-      autoAlpha: 0.78,
-      scale: 0.7,
+      autoAlpha: 0.74,
+      scale: 0.66,
       xPercent: 0,
-      yPercent: 16,
-      letterSpacing: "-0.07em",
-      duration: 0.12
+      yPercent: 15,
+      letterSpacing: "-0.068em",
+      force3D: true,
+      duration: 0.14
     }, 0)
 
     .to(copy, {
       autoAlpha: 1,
       y: 0,
-      duration: 0.12
+      force3D: true,
+      duration: 0.14
     }, 0.055)
 
     .to(word, {
-      autoAlpha: 0.92,
-      scale: 1,
+      autoAlpha: 0.9,
+      scale: 0.96,
       xPercent: 0,
       yPercent: 0,
       letterSpacing: "-0.085em",
+      force3D: true,
       duration: 0.22
-    }, 0.12)
+    }, 0.13)
 
     .to(word, {
-      scale: 1.1,
-      autoAlpha: 0.9,
-      duration: 0.24
-    }, 0.34)
+      scale: 1.06,
+      autoAlpha: 0.88,
+      force3D: true,
+      duration: 0.28
+    }, 0.35)
 
     .to(copy, {
       autoAlpha: 0,
-      y: -24,
+      y: -22,
+      force3D: true,
       duration: 0.16
-    }, 0.39);
+    }, 0.43);
 }
 
 /* =========================================================
-   TUNNEL HANDOFF
-   PROCESS does not visibly fade away.
-   It scales past camera while the tunnel bridges into Our Work.
+   C / TUNNEL HANDOFF
+   This file now owns the full transition into Our Work.
 ========================================================= */
 
 function addProcessTunnelHandoff({
@@ -168,110 +184,165 @@ function addProcessTunnelHandoff({
   section,
   sceneMount,
   word,
-  tunnel
+  tunnel,
+  worldInside,
+  overlay
 }) {
   if (tunnel) {
     timeline.set(tunnel, {
       autoAlpha: 0,
-      scale: 0.2,
+      scale: 0.18,
       transformOrigin: "50% 50%",
+      force3D: true
+    }, 0);
+  }
+
+  if (worldInside) {
+    timeline.set(worldInside, {
+      autoAlpha: 0,
       force3D: true
     }, 0);
   }
 
   /*
     Important:
-    The CSS handles the actual Our Work reveal through:
-    --work-zoom-progress
-    --work-reveal-progress
-    --work-scroll-progress
-
-    This file handles:
-    --process-handoff
-    PROCESS word scale
-    dark tunnel bridge
+    Do not make the final zoom happen in a tiny violent burst.
+    The old file jumped to very large scales too quickly.
+    This version stretches the handoff so it feels more like a camera push.
   */
 
   timeline
     .to(word, {
-      scale: 1.34,
-      xPercent: -1.2,
+      scale: 1.28,
+      xPercent: -0.8,
       yPercent: 0,
       autoAlpha: 0.94,
       force3D: true,
-      duration: 0.08
-    }, 0.76)
+      duration: 0.07
+    }, 0.735)
+
+    .to(section, {
+      "--work-zoom-progress": 0.12,
+      "--work-reveal-progress": 0,
+      duration: 0.07
+    }, 0.735)
 
     .to(word, {
-      scale: 2.8,
-      xPercent: -3.8,
+      scale: 2.15,
+      xPercent: -2.35,
       autoAlpha: 0.98,
       force3D: true,
-      duration: 0.08
-    }, 0.84)
+      duration: 0.09
+    }, 0.805)
+
+    .to(section, {
+      "--work-zoom-progress": 0.32,
+      "--work-reveal-progress": 0.06,
+      duration: 0.09
+    }, 0.805)
 
     .to(word, {
-      scale: 6.2,
-      xPercent: -8.8,
+      scale: 3.9,
+      xPercent: -5.1,
       autoAlpha: 1,
       force3D: true,
-      duration: 0.07
-    }, 0.895);
+      duration: 0.085
+    }, 0.885)
+
+    .to(section, {
+      "--work-zoom-progress": 0.62,
+      "--work-reveal-progress": 0.34,
+      duration: 0.085
+    }, 0.885)
+
+    .to(word, {
+      scale: 6.9,
+      xPercent: -8.6,
+      autoAlpha: 1,
+      force3D: true,
+      duration: 0.055
+    }, 0.945)
+
+    .to(section, {
+      "--work-zoom-progress": 0.86,
+      "--work-reveal-progress": 0.74,
+      duration: 0.055
+    }, 0.945)
+
+    .to(word, {
+      scale: 8.8,
+      xPercent: -10.4,
+      autoAlpha: 0,
+      force3D: true,
+      duration: 0.035
+    }, 0.982)
+
+    .to(section, {
+      "--work-zoom-progress": 1,
+      "--work-reveal-progress": 1,
+      "--work-scroll-progress": 0,
+      "--process-section-intensity": 0.12,
+      duration: 0.035
+    }, 0.982);
 
   if (tunnel) {
     timeline
       .to(tunnel, {
-        autoAlpha: 0.5,
-        scale: 1.15,
-        force3D: true,
-        duration: 0.05
-      }, 0.875)
-
-      .to(tunnel, {
-        autoAlpha: 0.94,
-        scale: 3.15,
+        autoAlpha: 0.24,
+        scale: 0.85,
         force3D: true,
         duration: 0.075
-      }, 0.915)
+      }, 0.83)
+
+      .to(tunnel, {
+        autoAlpha: 0.72,
+        scale: 2.35,
+        force3D: true,
+        duration: 0.105
+      }, 0.9)
 
       .to(tunnel, {
         autoAlpha: 1,
-        scale: 6.4,
+        scale: 4.8,
         force3D: true,
-        duration: 0.025
-      }, 0.955);
+        duration: 0.055
+      }, 0.955)
+
+      .to(tunnel, {
+        autoAlpha: 0,
+        scale: 5.8,
+        force3D: true,
+        duration: 0.035
+      }, 0.985);
   }
 
-  timeline
-    .to(word, {
-      scale: 11.5,
-      xPercent: -14.5,
-      autoAlpha: 1,
-      force3D: true,
-      duration: 0.025
-    }, 0.96)
+  if (worldInside) {
+    timeline
+      .to(worldInside, {
+        autoAlpha: 0.16,
+        force3D: true,
+        duration: 0.08
+      }, 0.875)
 
-    .to(section, {
-      "--process-section-intensity": 0.08,
-      duration: 0.03
-    }, 0.965)
+      .to(worldInside, {
+        autoAlpha: 0.62,
+        force3D: true,
+        duration: 0.085
+      }, 0.93)
 
-    /*
-      Cleanup only after the word has already gone past camera.
-      This should not feel like a visible fade.
-    */
-    .to(word, {
+      .to(worldInside, {
+        autoAlpha: 1,
+        force3D: true,
+        duration: 0.04
+      }, 0.975);
+  }
+
+  if (overlay) {
+    timeline.to(overlay, {
       autoAlpha: 0,
-      duration: 0.008
-    }, 0.99);
-
-  if (tunnel) {
-    timeline.to(tunnel, {
-      autoAlpha: 0,
-      scale: 7.2,
       force3D: true,
-      duration: 0.018
-    }, 0.98);
+      duration: 0.08
+    }, 0.91);
   }
 
   timeline.set(sceneMount, {
@@ -290,18 +361,26 @@ function prepareInitialState({
   word,
   tunnel,
   worldInside,
-  copy
+  workTrack,
+  copy,
+  overlay
 }) {
-  section.classList.remove("is-work-mode");
+  section.classList.remove(
+    "is-process-active",
+    "is-work-mode",
+    "is-work-visible",
+    "is-work-interactive",
+    "is-inside-work"
+  );
 
   setProcessVar(section, "--process-section-intensity", "0");
   setProcessVar(section, "--process-intro", "0");
   setProcessVar(section, "--process-cards", "0");
   setProcessVar(section, "--process-handoff", "0");
 
-  section.style.setProperty("--work-zoom-progress", "0");
-  section.style.setProperty("--work-reveal-progress", "0");
-  section.style.setProperty("--work-scroll-progress", "0");
+  setProcessVar(section, "--work-zoom-progress", "0");
+  setProcessVar(section, "--work-reveal-progress", "0");
+  setProcessVar(section, "--work-scroll-progress", "0");
 
   gsap.set(sceneMount, {
     scale: 1,
@@ -325,26 +404,37 @@ function prepareInitialState({
   if (tunnel) {
     gsap.set(tunnel, {
       autoAlpha: 0,
-      scale: 0.2,
+      scale: 0.18,
       transformOrigin: "50% 50%",
       force3D: true
     });
   }
 
-  /*
-    Do not clear all props on .process-world-inside.
-    The CSS + our-work.js need its clip-path, opacity, transform,
-    visibility, and custom properties to stay intact.
-  */
   if (worldInside) {
     worldInside.setAttribute("aria-hidden", "true");
     worldInside.classList.remove("is-visible", "is-interactive");
+
+    gsap.set(worldInside, {
+      autoAlpha: 0,
+      force3D: true
+    });
+  }
+
+  if (workTrack) {
+    workTrack.style.setProperty("--work-scroll-progress", "0");
   }
 
   if (copy) {
     gsap.set(copy, {
       autoAlpha: 0,
       y: 28,
+      force3D: true
+    });
+  }
+
+  if (overlay) {
+    gsap.set(overlay, {
+      autoAlpha: 1,
       force3D: true
     });
   }
@@ -361,19 +451,26 @@ function prepareReducedState({
   word,
   tunnel,
   worldInside,
-  copy
+  workTrack,
+  copy,
+  overlay
 }) {
   setProcessVar(section, "--process-section-intensity", "1");
   setProcessVar(section, "--process-intro", "1");
   setProcessVar(section, "--process-cards", "1");
   setProcessVar(section, "--process-handoff", "0");
 
-  section.style.setProperty("--work-zoom-progress", "1");
-  section.style.setProperty("--work-reveal-progress", "1");
-  section.style.setProperty("--work-scroll-progress", "0");
+  setProcessVar(section, "--work-zoom-progress", "1");
+  setProcessVar(section, "--work-reveal-progress", "1");
+  setProcessVar(section, "--work-scroll-progress", "0");
 
   section.classList.remove("is-process-active");
-  section.classList.remove("is-work-mode");
+  section.classList.add(
+    "is-work-mode",
+    "is-work-visible",
+    "is-work-interactive",
+    "is-inside-work"
+  );
 
   gsap.set(sceneMount, {
     clearProps: "all"
@@ -393,6 +490,15 @@ function prepareReducedState({
   if (worldInside) {
     worldInside.removeAttribute("aria-hidden");
     worldInside.classList.add("is-visible", "is-interactive");
+
+    gsap.set(worldInside, {
+      autoAlpha: 1,
+      clearProps: "transform"
+    });
+  }
+
+  if (workTrack) {
+    workTrack.style.setProperty("--work-scroll-progress", "0");
   }
 
   if (copy) {
@@ -401,21 +507,66 @@ function prepareReducedState({
       y: 0
     });
   }
+
+  if (overlay) {
+    gsap.set(overlay, {
+      autoAlpha: 1
+    });
+  }
 }
 
 /* =========================================================
    PROGRESS VARIABLES
-   CSS and external UI now receive the same scroll signal.
+   This is now the single scroll source for PROCESS + Our Work.
 ========================================================= */
 
-function updateByProgress({ section, progress, scene, ui }) {
-  const intro = mapRange(progress, 0.02, 0.36);
-  const cards = mapRange(progress, 0.24, 0.82);
-  const handoff = mapRange(progress, 0.76, 1);
+function updateByProgress({ section, worldInside, workTrack, progress, scene, ui }) {
+  const intro = mapRange(progress, 0.02, 0.34);
+  const cards = mapRange(progress, 0.22, 0.76);
+  const handoff = mapRange(progress, 0.735, 1);
+
+  const workZoom = mapRange(progress, 0.735, 0.985);
+  const workReveal = mapRange(progress, 0.86, 0.99);
+
+  /*
+    This is intentionally small. The archive should not fake-scroll hard
+    during the handoff. Once inside Our Work, it should feel stable and ready
+    for continuation.
+  */
+  const workScroll = mapRange(progress, 0.965, 1);
 
   setProcessVar(section, "--process-intro", intro.toFixed(4));
   setProcessVar(section, "--process-cards", cards.toFixed(4));
   setProcessVar(section, "--process-handoff", handoff.toFixed(4));
+
+  setProcessVar(section, "--work-zoom-progress", workZoom.toFixed(4));
+  setProcessVar(section, "--work-reveal-progress", workReveal.toFixed(4));
+  setProcessVar(section, "--work-scroll-progress", workScroll.toFixed(4));
+
+  if (workTrack) {
+    workTrack.style.setProperty("--work-scroll-progress", workScroll.toFixed(4));
+  }
+
+  const workVisible = workReveal > 0.02;
+  const workInteractive = workReveal >= 0.96;
+  const workMode = progress >= 0.972;
+  const insideWork = progress >= 0.99;
+
+  section.classList.toggle("is-work-visible", workVisible);
+  section.classList.toggle("is-work-interactive", workInteractive);
+  section.classList.toggle("is-work-mode", workMode);
+  section.classList.toggle("is-inside-work", insideWork);
+
+  if (worldInside) {
+    worldInside.classList.toggle("is-visible", workVisible);
+    worldInside.classList.toggle("is-interactive", workInteractive);
+
+    if (workVisible) {
+      worldInside.removeAttribute("aria-hidden");
+    } else {
+      worldInside.setAttribute("aria-hidden", "true");
+    }
+  }
 
   if (scene?.setProgress) {
     scene.setProgress({
@@ -425,6 +576,16 @@ function updateByProgress({ section, progress, scene, ui }) {
     });
   }
 
+  if (ui?.setProgress) {
+    ui.setProgress({
+      intro,
+      cards,
+      handoff,
+      workZoom,
+      workReveal,
+      workScroll
+    });
+  }
 }
 
 /* =========================================================
@@ -434,6 +595,8 @@ function updateByProgress({ section, progress, scene, ui }) {
 const processVarCache = new WeakMap();
 
 function setProcessVar(element, name, value) {
+  if (!element) return;
+
   let cache = processVarCache.get(element);
 
   if (!cache) {
@@ -441,10 +604,12 @@ function setProcessVar(element, name, value) {
     processVarCache.set(element, cache);
   }
 
-  if (cache.get(name) === value) return;
+  const stringValue = String(value);
 
-  cache.set(name, value);
-  element.style.setProperty(name, value);
+  if (cache.get(name) === stringValue) return;
+
+  cache.set(name, stringValue);
+  element.style.setProperty(name, stringValue);
 }
 
 function mapRange(value, start, end) {
