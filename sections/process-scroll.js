@@ -1,5 +1,7 @@
 // sections/process-scroll.js
 
+let workTakeoverLocked = false;
+
 export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger }) {
   const sceneMount = section?.querySelector("[data-process-scene]");
   const word = section?.querySelector(".process-word");
@@ -15,6 +17,8 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger }) {
     console.warn("[Process] Missing required process elements.");
     return null;
   }
+
+  workTakeoverLocked = false;
 
   if (prefersReducedMotion) {
     prepareReducedState({
@@ -53,12 +57,12 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger }) {
       start: "top top",
       end: () => {
         const naturalDistance = Math.max(section.offsetHeight - window.innerHeight, 1);
-        const minimumDistance = window.innerHeight * 5.2;
+        const minimumDistance = window.innerHeight * 5.8;
 
-        return `+=${Math.max(naturalDistance, minimumDistance, 5200)}`;
+        return `+=${Math.max(naturalDistance, minimumDistance, 5600)}`;
       },
       pin: false,
-      scrub: 0.22,
+      scrub: 0.24,
       invalidateOnRefresh: true,
 
       onUpdate: (self) => {
@@ -67,6 +71,7 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger }) {
           worldInside,
           workTrack,
           progress: self.progress,
+          direction: self.direction,
           scene,
           ui
         });
@@ -86,6 +91,7 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger }) {
 
       onLeaveBack: () => {
         section.classList.remove("is-process-active");
+        workTakeoverLocked = false;
       }
     }
   });
@@ -115,6 +121,7 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger }) {
 
   timeline.eventCallback("onKill", () => {
     window.removeEventListener("resize", refreshOnResize);
+    workTakeoverLocked = false;
   });
 
   return timeline;
@@ -122,7 +129,6 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger }) {
 
 /* =========================================================
    INTRO
-   PROCESS comes forward, then holds while the cards scroll.
 ========================================================= */
 
 function addProcessIntro({ timeline, section, word, copy }) {
@@ -176,7 +182,6 @@ function addProcessIntro({ timeline, section, word, copy }) {
 
 /* =========================================================
    C / TUNNEL HANDOFF
-   This file now owns the full transition into Our Work.
 ========================================================= */
 
 function addProcessTunnelHandoff({
@@ -203,13 +208,6 @@ function addProcessTunnelHandoff({
       force3D: true
     }, 0);
   }
-
-  /*
-    Important:
-    Do not make the final zoom happen in a tiny violent burst.
-    The old file jumped to very large scales too quickly.
-    This version stretches the handoff so it feels more like a camera push.
-  */
 
   timeline
     .to(word, {
@@ -365,6 +363,8 @@ function prepareInitialState({
   copy,
   overlay
 }) {
+  workTakeoverLocked = false;
+
   section.classList.remove(
     "is-process-active",
     "is-work-mode",
@@ -455,6 +455,8 @@ function prepareReducedState({
   copy,
   overlay
 }) {
+  workTakeoverLocked = true;
+
   setProcessVar(section, "--process-section-intensity", "1");
   setProcessVar(section, "--process-intro", "1");
   setProcessVar(section, "--process-cards", "1");
@@ -516,23 +518,16 @@ function prepareReducedState({
 }
 
 /* =========================================================
-   PROGRESS VARIABLES
-   This is now the single scroll source for PROCESS + Our Work.
+   PROGRESS VARIABLES + WORK LOCK
 ========================================================= */
 
-function updateByProgress({ section, worldInside, workTrack, progress, scene, ui }) {
+function updateByProgress({ section, worldInside, workTrack, progress, direction, scene, ui }) {
   const intro = mapRange(progress, 0.02, 0.34);
   const cards = mapRange(progress, 0.22, 0.76);
   const handoff = mapRange(progress, 0.735, 1);
 
   const workZoom = mapRange(progress, 0.735, 0.985);
   const workReveal = mapRange(progress, 0.86, 0.99);
-
-  /*
-    This is intentionally small. The archive should not fake-scroll hard
-    during the handoff. Once inside Our Work, it should feel stable and ready
-    for continuation.
-  */
   const workScroll = mapRange(progress, 0.965, 1);
 
   setProcessVar(section, "--process-intro", intro.toFixed(4));
@@ -547,10 +542,27 @@ function updateByProgress({ section, worldInside, workTrack, progress, scene, ui
     workTrack.style.setProperty("--work-scroll-progress", workScroll.toFixed(4));
   }
 
-  const workVisible = workReveal > 0.02;
-  const workInteractive = workReveal >= 0.96;
-  const workMode = progress >= 0.972;
-  const insideWork = progress >= 0.99;
+  /*
+    Work takeover lock:
+    - Enter once progress reaches 0.988.
+    - Stay inside even if the user scrolls slightly upward.
+    - Only exit if they scroll back meaningfully below 0.925.
+  */
+  const ENTER_WORK_AT = 0.988;
+  const EXIT_WORK_AT = 0.925;
+
+  if (!workTakeoverLocked && progress >= ENTER_WORK_AT) {
+    workTakeoverLocked = true;
+  }
+
+  if (workTakeoverLocked && direction < 0 && progress <= EXIT_WORK_AT) {
+    workTakeoverLocked = false;
+  }
+
+  const workVisible = workTakeoverLocked || workReveal > 0.02;
+  const workInteractive = workTakeoverLocked || workReveal >= 0.96;
+  const workMode = workTakeoverLocked || progress >= 0.972;
+  const insideWork = workTakeoverLocked;
 
   section.classList.toggle("is-work-visible", workVisible);
   section.classList.toggle("is-work-interactive", workInteractive);
@@ -583,7 +595,8 @@ function updateByProgress({ section, worldInside, workTrack, progress, scene, ui
       handoff,
       workZoom,
       workReveal,
-      workScroll
+      workScroll,
+      insideWork
     });
   }
 }
