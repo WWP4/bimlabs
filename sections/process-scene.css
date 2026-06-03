@@ -323,3 +323,91 @@
   height: 100svh;
 }
 
+
+
+/* =========================================================
+   PROCESS / OUR WORK VISIBILITY FIX
+   This lets our-work.css + our-work.js control the Our Work layer.
+   Paste at the very bottom of process-scene.css.
+========================================================= */
+
+.process-3d {
+  position: relative;
+  min-height: 980vh !important;
+  height: auto !important;
+  overflow: visible !important;
+  isolation: isolate;
+  background: #020202;
+}
+
+/* Sticky camera layer */
+.process-scene {
+  position: sticky !important;
+  top: 0;
+  z-index: 1;
+  height: 100vh !important;
+  min-height: 100vh !important;
+  overflow: hidden !important;
+  background: #020202;
+  pointer-events: none;
+}
+
+/* PROCESS word sits behind cards, above background */
+.process-word {
+  position: relative;
+  z-index: 3 !important;
+  pointer-events: none;
+}
+
+/* IMPORTANT:
+   Remove the old invisible clip-path/blur setup from process-scene.css.
+   Our Work visibility is controlled by our-work.css and our-work.js now.
+*/
+.process-world-inside {
+  clip-path: none !important;
+  filter: none !important;
+  transform:
+    translate3d(0, 0, 0)
+    scale(calc(0.68 + (var(--work-zoom-progress, 0) * 0.32))) !important;
+  transform-origin: 50% 50% !important;
+  z-index: 4 !important;
+  padding: 0 !important;
+}
+
+/* Dark aperture stays visual only */
+.process-void {
+  z-index: 2 !important;
+  pointer-events: none;
+}
+
+/* Cards must sit above the PROCESS scene */
+.process-overlay {
+  position: relative !important;
+  z-index: 6 !important;
+  width: min(1380px, calc(100% - 44px));
+  height: auto !important;
+  min-height: 760vh;
+  margin: 0 auto;
+  pointer-events: none;
+}
+
+/* Let cards/copy receive hover/click */
+.process-copy,
+.process-cards,
+.process-card {
+  pointer-events: auto;
+}
+
+/* Copy should appear during the process phase */
+.process-copy {
+  position: sticky !important;
+  top: clamp(78px, 12vh, 132px);
+  z-index: 7;
+}
+
+/* Hide cards only when Our Work fully takes over */
+.process-3d.is-work-mode .process-overlay {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
