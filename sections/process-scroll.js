@@ -1,19 +1,11 @@
 // sections/process-scroll.js
 
-import {
-  prepareProcessCards,
-  addProcessCardMotion,
-  clearProcessCardsForReducedMotion,
-  fadeProcessCardsBeforeHandoff
-} from "./process-cards-motion.js";
-
-export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger, cards }) {
+export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger }) {
   const sceneMount = section.querySelector("[data-process-scene]");
   const word = section.querySelector(".process-word");
   const voidTarget = section.querySelector(".process-void");
   const worldInside = section.querySelector(".process-world-inside");
   const copy = section.querySelector(".process-copy");
-  const cardTrack = section.querySelector(".process-cards");
   const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   if (prefersReducedMotion) {
@@ -23,9 +15,7 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger, car
       word,
       voidTarget,
       worldInside,
-      copy,
-      cardTrack,
-      cards
+      copy
     });
 
     return null;
@@ -38,9 +28,7 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger, car
     word,
     voidTarget,
     worldInside,
-    copy,
-    cardTrack,
-    cards
+    copy
   });
 
   const timeline = gsap.timeline({
@@ -49,9 +37,8 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger, car
       trigger: section,
       start: "top top",
       end: () => `+=${Math.max(window.innerHeight * 5.4, 5200)}`,
-      pin: true,
+      pin: false,
       scrub: 0.85,
-      anticipatePin: 1,
       invalidateOnRefresh: true,
 
       onUpdate: (self) => {
@@ -76,26 +63,15 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger, car
     copy
   });
 
-  addProcessCardMotion({
-    timeline,
-    cards,
-    config: {
-      phaseStart: 0.3,
-      phaseEnd: 0.76
-    }
-  });
-
   addProcessHandoff({
     timeline,
     section,
     word,
     voidTarget,
-    worldInside,
-    cards
+    worldInside
   });
 
-  const refreshOnResize = () => ScrollTrigger.refresh();
-  window.addEventListener("resize", refreshOnResize);
+  window.addEventListener("resize", () => ScrollTrigger.refresh());
 
   return timeline;
 }
@@ -138,16 +114,8 @@ function addProcessHandoff({
   section,
   word,
   voidTarget,
-  worldInside,
-  cards
+  worldInside
 }) {
-  fadeProcessCardsBeforeHandoff({
-    timeline,
-    cards,
-    at: 0.78,
-    duration: 0.08
-  });
-
   timeline
     .to(word, {
       scale: 1.5,
@@ -229,9 +197,7 @@ function prepareInitialState({
   word,
   voidTarget,
   worldInside,
-  copy,
-  cardTrack,
-  cards
+  copy
 }) {
   section.style.setProperty("--process-section-intensity", 0);
 
@@ -270,12 +236,6 @@ function prepareInitialState({
     autoAlpha: 0,
     y: 28
   });
-
-  prepareProcessCards({
-    gsap,
-    cards,
-    cardTrack
-  });
 }
 
 function prepareReducedState({
@@ -284,9 +244,7 @@ function prepareReducedState({
   word,
   voidTarget,
   worldInside,
-  copy,
-  cardTrack,
-  cards
+  copy
 }) {
   section.style.setProperty("--process-section-intensity", 1);
 
@@ -307,12 +265,6 @@ function prepareReducedState({
     autoAlpha: 1,
     y: 0
   });
-
-  clearProcessCardsForReducedMotion({
-    gsap,
-    cards,
-    cardTrack
-  });
 }
 
 function updateByProgress({ progress, scene, ui }) {
@@ -326,8 +278,9 @@ function updateByProgress({ progress, scene, ui }) {
     handoff
   });
 
-  ui.setCardsProgress(cards);
-  ui.softenForHandoff(handoff);
+  if (ui?.softenForHandoff) {
+    ui.softenForHandoff(handoff);
+  }
 }
 
 function mapRange(value, start, end) {
