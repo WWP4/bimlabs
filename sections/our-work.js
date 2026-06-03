@@ -106,6 +106,12 @@
   let activeIndex = 0;
   let ticking = false;
   let changeTimer = null;
+  let workVisible = false;
+  let workMode = false;
+  let workInteractive = false;
+  let lastZoomValue = "";
+  let lastRevealValue = "";
+  let lastInternalValue = "";
 
   const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
@@ -189,6 +195,10 @@ function updateWorkScene() {
   ticking = false;
 
   if (window.innerWidth <= 900 || prefersReducedMotion) {
+    workVisible = true;
+    workMode = true;
+    workInteractive = true;
+
     workWorld.classList.add("is-visible", "is-interactive");
     workWorld.removeAttribute("aria-hidden");
 
@@ -213,17 +223,18 @@ function updateWorkScene() {
     Correct timeline:
     0.00–0.76 = PROCESS cards / word only
     0.76–0.90 = camera starts pushing toward PROCESS
-    0.88–0.96 = Our Work finally reveals through the center/C area
-    0.96–1.00 = Our Work becomes the full website layer
+    0.90–0.97 = Our Work finally reveals through the center/C area
+    0.97–1.00 = Our Work becomes the full website layer
   */
 
   const zoomStart = 0.76;
   const zoomEnd = 0.96;
 
-  const revealStart = 0.88;
-  const revealEnd = 0.965;
+  const revealStart = 0.9;
+  const revealEnd = 0.97;
 
-  const internalStart = 0.965;
+  const takeoverStart = 0.97;
+  const internalStart = 0.97;
   const internalEnd = 1;
 
   const zoomProgress = clamp(
@@ -248,28 +259,53 @@ function updateWorkScene() {
   const revealValue = revealProgress.toFixed(4);
   const internalValue = internalProgress.toFixed(4);
 
-  processSection.style.setProperty("--work-zoom-progress", zoomValue);
-  processSection.style.setProperty("--work-reveal-progress", revealValue);
-  processSection.style.setProperty("--work-scroll-progress", internalValue);
+  if (zoomValue !== lastZoomValue) {
+    lastZoomValue = zoomValue;
+    processSection.style.setProperty("--work-zoom-progress", zoomValue);
+  }
 
-  workWorld.style.setProperty("--work-zoom-progress", zoomValue);
-  workWorld.style.setProperty("--work-reveal-progress", revealValue);
-  workWorld.style.setProperty("--work-scroll-progress", internalValue);
+  if (revealValue !== lastRevealValue) {
+    lastRevealValue = revealValue;
+    processSection.style.setProperty("--work-reveal-progress", revealValue);
+  }
 
-  workTrack.style.setProperty("--work-scroll-progress", internalValue);
+  if (internalValue !== lastInternalValue) {
+    lastInternalValue = internalValue;
+    processSection.style.setProperty("--work-scroll-progress", internalValue);
+    workTrack.style.setProperty("--work-scroll-progress", internalValue);
+  }
 
-  const isVisible = revealProgress > 0.01;
-  const isWorkMode = revealProgress > 0.72;
-  const isInteractive = revealProgress >= 0.98;
+  const nextVisible = workVisible
+    ? progress >= revealStart - 0.015
+    : revealProgress > 0.01;
 
-  workWorld.classList.toggle("is-visible", isVisible);
-  workWorld.classList.toggle("is-interactive", isInteractive);
-  processSection.classList.toggle("is-work-mode", isWorkMode);
+  const nextWorkMode = workMode
+    ? progress >= takeoverStart - 0.015
+    : progress >= takeoverStart;
 
-  if (isVisible) {
-    workWorld.removeAttribute("aria-hidden");
-  } else {
-    workWorld.setAttribute("aria-hidden", "true");
+  const nextInteractive = workInteractive
+    ? revealProgress >= 0.92
+    : revealProgress >= 0.98;
+
+  if (nextVisible !== workVisible) {
+    workVisible = nextVisible;
+    workWorld.classList.toggle("is-visible", workVisible);
+
+    if (workVisible) {
+      workWorld.removeAttribute("aria-hidden");
+    } else {
+      workWorld.setAttribute("aria-hidden", "true");
+    }
+  }
+
+  if (nextInteractive !== workInteractive) {
+    workInteractive = nextInteractive;
+    workWorld.classList.toggle("is-interactive", workInteractive);
+  }
+
+  if (nextWorkMode !== workMode) {
+    workMode = nextWorkMode;
+    processSection.classList.toggle("is-work-mode", workMode);
   }
 }
    

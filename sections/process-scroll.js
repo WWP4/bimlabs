@@ -52,7 +52,9 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger }) {
         return `+=${Math.max(naturalDistance, minimumDistance, 4600)}`;
       },
       pin: false,
-      scrub: 0.9,
+      // A tiny scrub lets GSAP interpolate wheel/touchpad deltas on rAF.
+      // `true` felt stepped on coarse wheels; larger values made reverse scroll lag.
+      scrub: 0.18,
       invalidateOnRefresh: true,
 
       onUpdate: (self) => {
@@ -191,70 +193,67 @@ function addProcessTunnelHandoff({
   */
 
   timeline
-    .to(section, {
-      "--process-handoff": 0.15,
-      duration: 0.04
-    }, 0.8)
-
     .to(word, {
       scale: 1.34,
-      xPercent: -1.4,
+      xPercent: -1.2,
       yPercent: 0,
       autoAlpha: 0.94,
-      duration: 0.075
-    }, 0.82)
-
-    .to(section, {
-      "--process-handoff": 0.35,
-      duration: 0.06
-    }, 0.86)
+      force3D: true,
+      duration: 0.08
+    }, 0.76)
 
     .to(word, {
-      scale: 2.55,
+      scale: 2.8,
       xPercent: -3.8,
-      autoAlpha: 0.96,
+      autoAlpha: 0.98,
+      force3D: true,
       duration: 0.08
-    }, 0.875)
+    }, 0.84)
 
     .to(word, {
-      scale: 5.7,
-      xPercent: -8.3,
+      scale: 6.2,
+      xPercent: -8.8,
       autoAlpha: 1,
-      duration: 0.09
-    }, 0.925)
-
-    .to(section, {
-      "--process-handoff": 0.72,
-      duration: 0.08
-    }, 0.925);
+      force3D: true,
+      duration: 0.07
+    }, 0.895);
 
   if (tunnel) {
     timeline
       .to(tunnel, {
-        autoAlpha: 0.82,
-        scale: 2.15,
+        autoAlpha: 0.5,
+        scale: 1.15,
+        force3D: true,
+        duration: 0.05
+      }, 0.875)
+
+      .to(tunnel, {
+        autoAlpha: 0.94,
+        scale: 3.15,
+        force3D: true,
         duration: 0.075
-      }, 0.935)
+      }, 0.915)
 
       .to(tunnel, {
         autoAlpha: 1,
-        scale: 6.8,
-        duration: 0.1
-      }, 0.965);
+        scale: 6.4,
+        force3D: true,
+        duration: 0.025
+      }, 0.955);
   }
 
   timeline
     .to(word, {
-      scale: 13.5,
-      xPercent: -17.5,
+      scale: 11.5,
+      xPercent: -14.5,
       autoAlpha: 1,
-      duration: 0.11
-    }, 0.965)
+      force3D: true,
+      duration: 0.025
+    }, 0.96)
 
     .to(section, {
-      "--process-handoff": 1,
       "--process-section-intensity": 0.08,
-      duration: 0.08
+      duration: 0.03
     }, 0.965)
 
     /*
@@ -263,15 +262,16 @@ function addProcessTunnelHandoff({
     */
     .to(word, {
       autoAlpha: 0,
-      duration: 0.01
-    }, 0.998);
+      duration: 0.008
+    }, 0.99);
 
   if (tunnel) {
     timeline.to(tunnel, {
       autoAlpha: 0,
-      scale: 11,
-      duration: 0.045
-    }, 0.998);
+      scale: 7.2,
+      force3D: true,
+      duration: 0.018
+    }, 0.98);
   }
 
   timeline.set(sceneMount, {
@@ -294,10 +294,10 @@ function prepareInitialState({
 }) {
   section.classList.remove("is-work-mode");
 
-  section.style.setProperty("--process-section-intensity", "0");
-  section.style.setProperty("--process-intro", "0");
-  section.style.setProperty("--process-cards", "0");
-  section.style.setProperty("--process-handoff", "0");
+  setProcessVar(section, "--process-section-intensity", "0");
+  setProcessVar(section, "--process-intro", "0");
+  setProcessVar(section, "--process-cards", "0");
+  setProcessVar(section, "--process-handoff", "0");
 
   section.style.setProperty("--work-zoom-progress", "0");
   section.style.setProperty("--work-reveal-progress", "0");
@@ -337,10 +337,6 @@ function prepareInitialState({
     visibility, and custom properties to stay intact.
   */
   if (worldInside) {
-    gsap.set(worldInside, {
-      clearProps: "x,y,scale,opacity,visibility,clipPath,filter"
-    });
-
     worldInside.setAttribute("aria-hidden", "true");
     worldInside.classList.remove("is-visible", "is-interactive");
   }
@@ -367,10 +363,10 @@ function prepareReducedState({
   worldInside,
   copy
 }) {
-  section.style.setProperty("--process-section-intensity", "1");
-  section.style.setProperty("--process-intro", "1");
-  section.style.setProperty("--process-cards", "1");
-  section.style.setProperty("--process-handoff", "0");
+  setProcessVar(section, "--process-section-intensity", "1");
+  setProcessVar(section, "--process-intro", "1");
+  setProcessVar(section, "--process-cards", "1");
+  setProcessVar(section, "--process-handoff", "0");
 
   section.style.setProperty("--work-zoom-progress", "1");
   section.style.setProperty("--work-reveal-progress", "1");
@@ -395,10 +391,6 @@ function prepareReducedState({
   }
 
   if (worldInside) {
-    gsap.set(worldInside, {
-      clearProps: "all"
-    });
-
     worldInside.removeAttribute("aria-hidden");
     worldInside.classList.add("is-visible", "is-interactive");
   }
@@ -419,11 +411,11 @@ function prepareReducedState({
 function updateByProgress({ section, progress, scene, ui }) {
   const intro = mapRange(progress, 0.02, 0.36);
   const cards = mapRange(progress, 0.24, 0.82);
-  const handoff = mapRange(progress, 0.8, 1);
+  const handoff = mapRange(progress, 0.76, 1);
 
-  section.style.setProperty("--process-intro", intro.toFixed(4));
-  section.style.setProperty("--process-cards", cards.toFixed(4));
-  section.style.setProperty("--process-handoff", handoff.toFixed(4));
+  setProcessVar(section, "--process-intro", intro.toFixed(4));
+  setProcessVar(section, "--process-cards", cards.toFixed(4));
+  setProcessVar(section, "--process-handoff", handoff.toFixed(4));
 
   if (scene?.setProgress) {
     scene.setProgress({
@@ -433,14 +425,27 @@ function updateByProgress({ section, progress, scene, ui }) {
     });
   }
 
-  if (ui?.softenForHandoff) {
-    ui.softenForHandoff(handoff);
-  }
 }
 
 /* =========================================================
    HELPERS
 ========================================================= */
+
+const processVarCache = new WeakMap();
+
+function setProcessVar(element, name, value) {
+  let cache = processVarCache.get(element);
+
+  if (!cache) {
+    cache = new Map();
+    processVarCache.set(element, cache);
+  }
+
+  if (cache.get(name) === value) return;
+
+  cache.set(name, value);
+  element.style.setProperty(name, value);
+}
 
 function mapRange(value, start, end) {
   if (value <= start) return 0;
