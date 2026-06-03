@@ -1,6 +1,6 @@
 /* ==========================================================
    BIM LABS STUDIO — OUR WORK ARCHIVE
-   Makes the archive interactive and releases it from PROCESS
+   Stable version: no ScrollTrigger refresh loops
    ========================================================== */
 
 (() => {
@@ -97,26 +97,11 @@
   const closeBtn = root.querySelector(".work-detail__close");
 
   let activeIndex = 0;
+  let ticking = false;
   let changeTimer = null;
-  let released = false;
 
   function clampIndex(index) {
     return (index + projects.length) % projects.length;
-  }
-
-  function setChanging() {
-    if (!detail) return;
-
-    detail.classList.remove("is-changing");
-
-    window.requestAnimationFrame(() => {
-      detail.classList.add("is-changing");
-    });
-
-    window.clearTimeout(changeTimer);
-    changeTimer = window.setTimeout(() => {
-      detail.classList.remove("is-changing");
-    }, 460);
   }
 
   function renderServices(items) {
@@ -131,6 +116,22 @@
     });
   }
 
+  function animateDetail() {
+    if (!detail) return;
+
+    detail.classList.remove("is-changing");
+
+    requestAnimationFrame(() => {
+      detail.classList.add("is-changing");
+    });
+
+    clearTimeout(changeTimer);
+
+    changeTimer = setTimeout(() => {
+      detail.classList.remove("is-changing");
+    }, 460);
+  }
+
   function setActiveProject(index) {
     const safeIndex = clampIndex(index);
     const project = projects[safeIndex];
@@ -139,7 +140,6 @@
 
     projectButtons.forEach((button, buttonIndex) => {
       const isActive = buttonIndex === safeIndex;
-
       button.classList.toggle("is-active", isActive);
       button.setAttribute("aria-pressed", isActive ? "true" : "false");
     });
@@ -152,38 +152,52 @@
     if (roleEl) roleEl.textContent = project.role;
 
     renderServices(project.services);
-    setChanging();
+    animateDetail();
   }
 
-  function releaseOurWork() {
-    if (released) return;
+  function getProcessProgress() {
+    const rect = processSection.getBoundingClientRect();
+    const scrollable = Math.max(1, processSection.offsetHeight - window.innerHeight);
+    const moved = Math.min(scrollable, Math.max(0, -rect.top));
 
-    released = true;
+    return moved / scrollable;
+  }
 
-    processSection.classList.add("is-work-mode");
-    workWorld.classList.add("is-visible");
-    workWorld.classList.add("is-released");
-    workWorld.classList.add("is-interactive");
+  function updateWorkReveal() {
+    ticking = false;
 
-    workWorld.removeAttribute("aria-hidden");
+    const progress = getProcessProgress();
 
-    if (typeof ScrollTrigger !== "undefined") {
-      ScrollTrigger.refresh();
+    const revealStart = 0.72;
+    const releaseStart = 0.88;
+
+    const workProgress = Math.min(
+      1,
+      Math.max(0, (progress - revealStart) / (releaseStart - revealStart))
+    );
+
+    workWorld.style.setProperty("--work-progress", workProgress.toFixed(4));
+
+    const isVisible = progress >= revealStart;
+    const isReleased = progress >= releaseStart;
+
+    workWorld.classList.toggle("is-visible", isVisible);
+    workWorld.classList.toggle("is-interactive", isReleased);
+    workWorld.classList.toggle("is-released", isReleased);
+    processSection.classList.toggle("is-work-mode", isReleased);
+
+    if (!isVisible) {
+      workWorld.setAttribute("aria-hidden", "true");
+    } else {
+      workWorld.removeAttribute("aria-hidden");
     }
   }
 
-  function lockOurWork() {
-    released = false;
+  function requestRevealUpdate() {
+    if (ticking) return;
 
-    processSection.classList.remove("is-work-mode");
-    workWorld.classList.remove("is-released");
-    workWorld.classList.remove("is-interactive");
-
-    workWorld.setAttribute("aria-hidden", "true");
-
-    if (typeof ScrollTrigger !== "undefined") {
-      ScrollTrigger.refresh();
-    }
+    ticking = true;
+    requestAnimationFrame(updateWorkReveal);
   }
 
   function setupProjectEvents() {
@@ -232,7 +246,7 @@
     }
 
     window.addEventListener("keydown", (event) => {
-      if (!released) return;
+      if (!workWorld.classList.contains("is-interactive")) return;
 
       if (event.key === "ArrowUp" || event.key === "ArrowLeft") {
         setActiveProject(activeIndex - 1);
@@ -244,66 +258,24 @@
     });
   }
 
-  function setupAutoReleaseFallback() {
-    /*
-      This fallback makes OUR WORK usable even if your process-scroll.js
-      does not manually call window.BIMLabsOurWork.release().
-      
-      It watches the PROCESS section and releases OUR WORK once the user
-      reaches the final part of the section.
-    */
-
-    if (typeof ScrollTrigger === "undefined") {
-      window.addEventListener(
-        "scroll",
-        () => {
-          const rect = processSection.getBoundingClientRect();
-          const progress = Math.min(
-            1,
-            Math.max(0, Math.abs(rect.top) / Math.max(1, processSection.offsetHeight - window.innerHeight))
-          );
-
-          if (progress > 0.82) {
-            releaseOurWork();
-          }
-
-          if (progress < 0.68 && rect.top <= 0) {
-            lockOurWork();
-          }
-        },
-        { passive: true }
-      );
-
-      return;
-    }
-
-    ScrollTrigger.create({
-      trigger: processSection,
-      start: "top top",
-      end: "bottom bottom",
-      onUpdate: (self) => {
-        if (self.progress >= 0.82) {
-          releaseOurWork();
-        }
-
-        if (self.progress < 0.68 && self.direction < 0) {
-          lockOurWork();
-        }
-      }
-    });
-  }
-
   function init() {
     setupProjectEvents();
     setActiveProject(0);
-    setupAutoReleaseFallback();
+
+    window.addEventListener("scroll", requestRevealUpdate, { passive: true });
+    window.addEventListener("resize", requestRevealUpdate);
+
+    requestRevealUpdate();
 
     window.BIMLabsOurWork = {
-      release: releaseOurWork,
-      lock: lockOurWork,
-      setActiveProject
+      setActiveProject,
+      update: requestRevealUpdate
     };
   }
 
-  init();
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", init);
+  } else {
+    init();
+  }
 })();
