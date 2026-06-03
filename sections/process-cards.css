@@ -1,64 +1,73 @@
+
 /* =========================================================
    PROCESS CARDS
-   High-detail editorial process panels.
-   These sit in front of the PROCESS word and set up the work reveal.
+   Normal-scroll editorial panels.
+   No card motion JS needed.
+
+   Structure:
+   - PROCESS scene stays sticky behind everything.
+   - Cards scroll naturally in the document flow.
+   - Left/right panels create the premium work-section rhythm.
 ========================================================= */
 
 .process-cards {
-  position: absolute;
-  inset: 0;
-  z-index: 4;
-  pointer-events: none;
-  transform-style: preserve-3d;
+  position: relative;
+  z-index: 7;
+  width: min(1380px, calc(100% - 44px));
+  margin: 0 auto;
+  padding: clamp(110vh, 120vh, 128vh) 0 clamp(90vh, 105vh, 118vh);
+  display: grid;
+  gap: clamp(120px, 22vh, 240px);
+  pointer-events: auto;
 }
 
-/* Main panel */
+/* Main editorial panel */
 .process-card {
-  position: absolute;
-  top: 50%;
-  width: min(620px, 42vw);
-  min-height: clamp(420px, 58vh, 620px);
+  position: relative;
+  top: auto;
+  width: min(720px, 48vw);
+  min-height: clamp(460px, 62vh, 680px);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   overflow: hidden;
-  padding: clamp(24px, 2.5vw, 42px);
+  padding: clamp(24px, 2.8vw, 46px);
   border: 1px solid rgba(245, 245, 240, 0.14);
   border-radius: 0;
   background:
-    linear-gradient(180deg, rgba(255,255,255,0.075), rgba(255,255,255,0.018)),
-    rgba(4, 4, 4, 0.84);
+    linear-gradient(180deg, rgba(255, 255, 255, 0.078), rgba(255, 255, 255, 0.02)),
+    rgba(5, 5, 5, 0.86);
   box-shadow:
-    0 44px 120px rgba(0, 0, 0, 0.52),
-    inset 0 1px 0 rgba(255, 255, 255, 0.08);
-  pointer-events: auto;
+    0 44px 120px rgba(0, 0, 0, 0.54),
+    inset 0 1px 0 rgba(255, 255, 255, 0.07);
   transform-style: preserve-3d;
-  will-change: transform, opacity;
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
 }
 
-/* Thin editorial frame */
+/* Fine inner frame */
 .process-card::before {
   content: "";
   position: absolute;
   inset: clamp(10px, 1vw, 16px);
   z-index: 0;
-  border: 1px solid rgba(245, 245, 240, 0.075);
+  border: 1px solid rgba(245, 245, 240, 0.07);
   pointer-events: none;
 }
 
-/* Subtle technical texture */
+/* Subtle grid texture, not glow */
 .process-card::after {
   content: "";
   position: absolute;
   inset: 0;
   z-index: 0;
   pointer-events: none;
-  opacity: 0.18;
+  opacity: 0.14;
   background:
-    linear-gradient(rgba(245,245,240,0.045) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(245,245,240,0.035) 1px, transparent 1px);
+    linear-gradient(rgba(245, 245, 240, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(245, 245, 240, 0.035) 1px, transparent 1px);
   background-size: 42px 42px;
-  mask-image: linear-gradient(to bottom, black 0%, transparent 78%);
+  mask-image: linear-gradient(to bottom, black 0%, black 38%, transparent 88%);
 }
 
 .process-card > * {
@@ -66,32 +75,30 @@
   z-index: 1;
 }
 
-/* Alternating placement */
+/* Left/right rhythm */
 .process-card--left {
-  left: clamp(18px, 4vw, 86px);
+  justify-self: start;
+  left: auto;
 }
 
 .process-card--right {
-  right: clamp(18px, 4vw, 86px);
+  justify-self: end;
+  right: auto;
 }
 
-/* Active state */
+/* Active/past classes can still exist from process-ui.js, but they are visual only */
 .process-card.is-active {
-  border-color: rgba(245, 245, 240, 0.28);
+  border-color: rgba(245, 245, 240, 0.24);
   background:
-    linear-gradient(180deg, rgba(255,255,255,0.105), rgba(255,255,255,0.024)),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.102), rgba(255, 255, 255, 0.026)),
     rgba(6, 6, 6, 0.9);
 }
 
-.process-card.is-active::before {
-  border-color: rgba(245, 245, 240, 0.13);
-}
-
 .process-card.is-past {
-  opacity: 0.58;
+  opacity: 0.78;
 }
 
-/* Top and bottom metadata rows */
+/* Top and bottom metadata */
 .process-card__meta,
 .process-card__actions {
   display: flex;
@@ -99,7 +106,7 @@
   align-items: center;
   gap: 18px;
   color: rgba(245, 245, 240, 0.52);
-  font-family: var(--mono, ui-monospace, monospace);
+  font-family: var(--mono, ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace);
   font-size: 10px;
   line-height: 1;
   letter-spacing: 0.16em;
@@ -113,71 +120,71 @@
   font-weight: 400;
 }
 
-/* Main content */
+/* Main copy area */
 .process-card__main {
-  margin: clamp(42px, 7vh, 82px) 0 clamp(26px, 4vh, 46px);
+  margin: clamp(44px, 7vh, 88px) 0 clamp(28px, 5vh, 54px);
 }
 
 .process-card__main h3 {
-  max-width: 560px;
+  max-width: 620px;
   margin: 0;
-  font-size: clamp(48px, 5.8vw, 96px);
+  font-size: clamp(54px, 6.4vw, 108px);
   line-height: 0.84;
-  letter-spacing: -0.08em;
+  letter-spacing: -0.085em;
   font-weight: 500;
   color: rgba(245, 245, 240, 0.98);
 }
 
 .process-card__main p {
-  max-width: 470px;
-  margin: clamp(22px, 2.4vw, 32px) 0 0;
+  max-width: 520px;
+  margin: clamp(22px, 2.5vw, 34px) 0 0;
   font-size: clamp(15px, 1.12vw, 18px);
   line-height: 1.62;
   letter-spacing: -0.028em;
   color: rgba(245, 245, 240, 0.64);
 }
 
-/* Optional detailed row if your HTML has extra spans/list items */
+/* Optional detail grid for richer panels */
 .process-card__details {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 1px;
-  margin-top: clamp(28px, 4vh, 44px);
+  margin-top: clamp(28px, 4vh, 46px);
   border: 1px solid rgba(245, 245, 240, 0.09);
   background: rgba(245, 245, 240, 0.06);
 }
 
 .process-card__detail {
-  min-height: 82px;
+  min-height: 86px;
   padding: 16px;
-  background: rgba(5, 5, 5, 0.86);
+  background: rgba(5, 5, 5, 0.88);
 }
 
 .process-card__detail small {
   display: block;
   margin-bottom: 12px;
-  font-family: var(--mono, ui-monospace, monospace);
+  font-family: var(--mono, ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace);
   font-size: 9px;
   line-height: 1;
   letter-spacing: 0.15em;
   text-transform: uppercase;
-  color: rgba(245, 245, 240, 0.38);
+  color: rgba(245, 245, 240, 0.36);
 }
 
 .process-card__detail strong {
   display: block;
   font-size: clamp(13px, 0.95vw, 15px);
-  line-height: 1.25;
+  line-height: 1.28;
   letter-spacing: -0.024em;
   font-weight: 400;
   color: rgba(245, 245, 240, 0.78);
 }
 
-/* Optional bullets */
+/* Optional list */
 .process-card__list {
   display: grid;
   gap: 12px;
-  margin: clamp(26px, 4vh, 42px) 0 0;
+  margin: clamp(28px, 4vh, 44px) 0 0;
   padding: 0;
   list-style: none;
 }
@@ -197,15 +204,15 @@
 
 .process-card__list li::before {
   content: attr(data-label);
-  font-family: var(--mono, ui-monospace, monospace);
+  font-family: var(--mono, ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace);
   font-size: 9px;
   line-height: 1.3;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: rgba(245, 245, 240, 0.35);
+  color: rgba(245, 245, 240, 0.34);
 }
 
-/* Bottom action */
+/* Bottom link */
 .process-card__button {
   position: relative;
   display: inline-flex;
@@ -226,7 +233,9 @@
   transform: scaleX(0.35);
   transform-origin: left;
   opacity: 0.55;
-  transition: transform 450ms cubic-bezier(.16, 1, .3, 1), opacity 450ms cubic-bezier(.16, 1, .3, 1);
+  transition:
+    transform 450ms cubic-bezier(.16, 1, .3, 1),
+    opacity 450ms cubic-bezier(.16, 1, .3, 1);
 }
 
 .process-card__button:hover::after {
@@ -234,49 +243,74 @@
   opacity: 1;
 }
 
-/* Tiny corner index feel */
+/* Large quiet index */
 .process-card__index {
   position: absolute;
   right: clamp(22px, 2vw, 38px);
   bottom: clamp(22px, 2vw, 38px);
   z-index: 1;
-  font-family: var(--mono, ui-monospace, monospace);
-  font-size: clamp(42px, 5vw, 82px);
+  font-family: var(--mono, ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace);
+  font-size: clamp(48px, 5vw, 88px);
   line-height: 0.75;
   letter-spacing: -0.08em;
   color: rgba(245, 245, 240, 0.055);
   pointer-events: none;
 }
 
-/* Mobile */
-@media (max-width: 1100px) {
+/* Gentle native CSS reveal only. No JS. */
+@supports (animation-timeline: view()) {
   .process-card {
-    width: min(560px, 46vw);
-    min-height: clamp(380px, 54vh, 560px);
+    opacity: 0.22;
+    transform: translateY(80px) scale(0.985);
+    animation: process-card-native-reveal linear both;
+    animation-timeline: view();
+    animation-range: entry 0% cover 42%;
+  }
+
+  @keyframes process-card-native-reveal {
+    from {
+      opacity: 0.22;
+      transform: translateY(80px) scale(0.985);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+}
+
+/* Responsive */
+@media (max-width: 1180px) {
+  .process-cards {
+    width: min(1000px, calc(100% - 36px));
+  }
+
+  .process-card {
+    width: min(650px, 52vw);
   }
 
   .process-card__main h3 {
-    font-size: clamp(44px, 6vw, 76px);
+    font-size: clamp(50px, 6.8vw, 88px);
   }
 }
 
 @media (max-width: 900px) {
+  .process-cards {
+    width: min(720px, calc(100% - 28px));
+    padding: 96vh 0 90vh;
+    gap: clamp(90px, 16vh, 160px);
+  }
+
   .process-card {
-    top: 56%;
-    width: min(620px, calc(100vw - 28px));
-    min-height: 440px;
+    width: 100%;
+    min-height: auto;
     padding: 28px;
   }
 
   .process-card--left,
   .process-card--right {
-    left: 14px;
-    right: auto;
-  }
-
-  .process-card--right {
-    left: auto;
-    right: 14px;
+    justify-self: stretch;
   }
 
   .process-card__details {
@@ -289,24 +323,22 @@
 }
 
 @media (max-width: 640px) {
+  .process-cards {
+    width: calc(100% - 24px);
+    padding: 88vh 0 82vh;
+    gap: 96px;
+  }
+
   .process-card {
-    width: calc(100vw - 24px);
-    min-height: 430px;
     padding: 24px;
   }
 
-  .process-card--left,
-  .process-card--right {
-    left: 12px;
-    right: auto;
-  }
-
   .process-card__main {
-    margin: 42px 0 28px;
+    margin: 42px 0 30px;
   }
 
   .process-card__main h3 {
-    font-size: clamp(46px, 14vw, 70px);
+    font-size: clamp(46px, 14vw, 72px);
   }
 
   .process-card__main p {
@@ -325,29 +357,22 @@
   }
 
   .process-card__index {
-    font-size: 56px;
+    font-size: 58px;
   }
 }
 
-/* Reduced motion: turn the cinematic panels into normal stacked content */
+/* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
   .process-cards {
-    position: relative;
-    display: grid;
+    padding: 48px 0 90px;
     gap: 18px;
-    margin-top: 32px;
   }
 
   .process-card,
   .process-card--left,
   .process-card--right {
-    position: relative;
-    top: auto;
-    left: auto;
-    right: auto;
-    width: 100%;
-    min-height: auto;
     opacity: 1 !important;
     transform: none !important;
+    animation: none !important;
   }
 }
