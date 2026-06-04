@@ -64,7 +64,7 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger }) {
         return `+=${Math.max(naturalDistance, minimumDistance, 5800)}`;
       },
       pin: false,
-      scrub: 0.24,
+      scrub: 0.75,
       invalidateOnRefresh: true,
 
       onUpdate: (self) => {
@@ -241,7 +241,7 @@ function addProcessTunnelHandoff({
   if (tunnel) {
     timeline.set(tunnel, {
       autoAlpha: 0,
-      scale: 0.18,
+      scale: 0.16,
       transformOrigin: "50% 50%",
       force3D: true
     }, 0);
@@ -257,148 +257,164 @@ function addProcessTunnelHandoff({
   }
 
   /*
-    Timeline shape:
-    0.00–0.72  PROCESS + cards
-    0.72–0.86  camera starts pushing
-    0.86–0.98  tunnel / Our Work reveal
-    0.985+     Our Work takeover
+    New timing:
+    0.00–0.58  PROCESS/cards phase
+    0.58–0.74  slow camera pressure begins
+    0.74–0.92  real zoom
+    0.92–1.00  Our Work takeover
+
+    This avoids the old issue where almost all zoom happened after 0.88.
   */
 
   timeline
     .to(word, {
-      scale: 1.24,
-      xPercent: -0.7,
+      scale: 1.16,
+      xPercent: -0.25,
       yPercent: 0,
-      autoAlpha: 0.94,
+      autoAlpha: 0.92,
       force3D: true,
-      duration: 0.08
-    }, 0.72)
+      duration: 0.16
+    }, 0.58)
 
     .to(section, {
-      "--work-zoom-progress": 0.15,
+      "--work-zoom-progress": 0.08,
       "--work-reveal-progress": 0,
-      duration: 0.08
-    }, 0.72)
+      duration: 0.16
+    }, 0.58)
 
     .to(word, {
-      scale: 2.05,
-      xPercent: -2.1,
-      autoAlpha: 0.98,
+      scale: 1.55,
+      xPercent: -0.85,
+      autoAlpha: 0.96,
       force3D: true,
-      duration: 0.1
-    }, 0.8)
+      duration: 0.14
+    }, 0.68)
 
     .to(section, {
-      "--work-zoom-progress": 0.35,
-      "--work-reveal-progress": 0.08,
-      duration: 0.1
-    }, 0.8)
+      "--work-zoom-progress": 0.22,
+      "--work-reveal-progress": 0.02,
+      duration: 0.14
+    }, 0.68)
 
     .to(word, {
-      scale: 3.7,
-      xPercent: -4.8,
+      scale: 2.25,
+      xPercent: -1.9,
       autoAlpha: 1,
       force3D: true,
-      duration: 0.09
-    }, 0.88)
+      duration: 0.13
+    }, 0.78)
 
     .to(section, {
-      "--work-zoom-progress": 0.66,
+      "--work-zoom-progress": 0.42,
+      "--work-reveal-progress": 0.12,
+      duration: 0.13
+    }, 0.78)
+
+    .to(word, {
+      scale: 3.65,
+      xPercent: -4.1,
+      autoAlpha: 1,
+      force3D: true,
+      duration: 0.11
+    }, 0.865)
+
+    .to(section, {
+      "--work-zoom-progress": 0.68,
       "--work-reveal-progress": 0.42,
-      duration: 0.09
-    }, 0.88)
+      duration: 0.11
+    }, 0.865)
 
     .to(word, {
-      scale: 6.5,
-      xPercent: -8.2,
-      autoAlpha: 1,
+      scale: 5.7,
+      xPercent: -7.2,
+      autoAlpha: 0.82,
       force3D: true,
-      duration: 0.06
-    }, 0.945)
+      duration: 0.075
+    }, 0.935)
 
     .to(section, {
       "--work-zoom-progress": 0.9,
-      "--work-reveal-progress": 0.8,
-      duration: 0.06
-    }, 0.945)
+      "--work-reveal-progress": 0.78,
+      duration: 0.075
+    }, 0.935)
 
     .to(word, {
-      scale: 8.5,
-      xPercent: -10.2,
+      scale: 7.8,
+      xPercent: -9.4,
       autoAlpha: 0,
       force3D: true,
-      duration: 0.035
-    }, 0.982)
+      duration: 0.05
+    }, 0.975)
 
     .to(section, {
       "--work-zoom-progress": 1,
       "--work-reveal-progress": 1,
       "--work-scroll-progress": 0,
       "--process-section-intensity": 0.12,
-      duration: 0.035
-    }, 0.982);
+      duration: 0.05
+    }, 0.975);
 
   if (tunnel) {
     timeline
       .to(tunnel, {
-        autoAlpha: 0.22,
-        scale: 0.82,
+        autoAlpha: 0.16,
+        scale: 0.62,
         force3D: true,
-        duration: 0.08
-      }, 0.82)
+        duration: 0.12
+      }, 0.74)
 
       .to(tunnel, {
-        autoAlpha: 0.72,
-        scale: 2.25,
+        autoAlpha: 0.55,
+        scale: 1.55,
         force3D: true,
-        duration: 0.11
-      }, 0.9)
+        duration: 0.13
+      }, 0.84)
 
       .to(tunnel, {
-        autoAlpha: 1,
-        scale: 4.7,
+        autoAlpha: 0.92,
+        scale: 3.4,
         force3D: true,
-        duration: 0.055
-      }, 0.955)
+        duration: 0.095
+      }, 0.925)
 
       .to(tunnel, {
         autoAlpha: 0,
-        scale: 5.8,
+        scale: 5.4,
         force3D: true,
-        duration: 0.035
+        duration: 0.045
       }, 0.985);
   }
 
   if (worldInside) {
     timeline
       .to(worldInside, {
-        autoAlpha: 0.18,
+        autoAlpha: 0.12,
         scale: 1,
         force3D: true,
-        duration: 0.08
-      }, 0.87)
+        duration: 0.12
+      }, 0.82)
 
       .to(worldInside, {
-        autoAlpha: 0.68,
+        autoAlpha: 0.48,
         scale: 1,
         force3D: true,
-        duration: 0.09
-      }, 0.93)
+        duration: 0.11
+      }, 0.91)
 
       .to(worldInside, {
         autoAlpha: 1,
         scale: 1,
         force3D: true,
-        duration: 0.04
-      }, 0.975);
+        duration: 0.055
+      }, 0.968);
   }
 
   if (overlay) {
     timeline.to(overlay, {
       autoAlpha: 0,
       force3D: true,
-      duration: 0.09
-    }, 0.91);
+      duration: 0.12
+    }, 0.86);
   }
 
   timeline.set(sceneMount, {
@@ -637,14 +653,15 @@ function updateByProgress({
   */
   const effectiveProgress = locked ? 1 : progress;
 
-  const intro = mapRange(effectiveProgress, 0.02, 0.34);
-  const cards = locked ? 1 : mapRange(effectiveProgress, 0.22, 0.76);
-  const handoff = locked ? 1 : mapRange(effectiveProgress, 0.735, 1);
+const intro = mapRange(effectiveProgress, 0.02, 0.3);
+const cards = locked ? 1 : mapRange(effectiveProgress, 0.18, 0.64);
+const handoff = locked ? 1 : mapRange(effectiveProgress, 0.58, 1);
 
-  const workZoom = locked ? 1 : mapRange(effectiveProgress, 0.735, 0.985);
-  const workReveal = locked ? 1 : mapRange(effectiveProgress, 0.86, 0.99);
-  const workScroll = locked ? 0 : mapRange(effectiveProgress, 0.965, 1);
+const workZoom = locked ? 1 : mapRange(effectiveProgress, 0.58, 0.975);
+const workReveal = locked ? 1 : mapRange(effectiveProgress, 0.78, 0.985);
+const workScroll = locked ? 0 : mapRange(effectiveProgress, 0.955, 1);
 
+  
   setProcessVar(section, "--process-intro", intro.toFixed(4));
   setProcessVar(section, "--process-cards", cards.toFixed(4));
   setProcessVar(section, "--process-handoff", handoff.toFixed(4));
