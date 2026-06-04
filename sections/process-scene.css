@@ -1,11 +1,13 @@
 /* =========================================================
    PROCESS SCENE
-   PROCESS word + normal scroll cards + Our Work handoff
+   PROCESS word + normal scrolling cards + Our Work handoff layer
 
-   Rules:
-   - process-scene.css controls the section, PROCESS word, and Our Work aperture.
-   - process-cards.css controls the card design/layout.
-   - Cards are normal content. They are not an overlay animation.
+   Important:
+   - Cards are NOT controlled here.
+   - Cards are NOT hidden here.
+   - process-cards.css owns the actual card layout/design.
+   - JS may still control the PROCESS word and Our Work handoff,
+     but cards are plain page content.
 ========================================================= */
 
 :root {
@@ -16,6 +18,7 @@
 
   --process-section-intensity: 0;
   --process-intro: 0;
+  --process-cards: 0;
   --process-handoff: 0;
 
   --process-c-x: 51.8%;
@@ -48,7 +51,7 @@
     linear-gradient(
       to bottom,
       rgba(0, 0, 0, 0.98),
-      rgba(2, 2, 2, 0.68) 34%,
+      rgba(2, 2, 2, 0.64) 34%,
       #020202 100%
     );
 
@@ -56,7 +59,7 @@
 }
 
 /* =========================================================
-   STICKY PROCESS WORD SCENE
+   PROCESS WORD SCENE
 ========================================================= */
 
 .process-scene {
@@ -82,6 +85,7 @@
   backface-visibility: hidden;
 }
 
+/* Tunnel darkness during the Our Work handoff */
 .process-scene::after {
   content: "";
   position: absolute;
@@ -255,7 +259,7 @@
 
 /* =========================================================
    NORMAL PROCESS CONTENT
-   Intro copy + cards live here as real page content.
+   This is where the intro copy and cards live.
 ========================================================= */
 
 .process-overlay {
@@ -263,26 +267,25 @@
   z-index: 6;
 
   width: min(1380px, calc(100% - 44px));
-  margin: 0 auto;
+  margin: -100svh auto 0;
 
-  min-height: auto;
+  min-height: 100svh;
 
-  pointer-events: auto;
+  pointer-events: none;
   perspective: 1200px;
 
   backface-visibility: hidden;
   will-change: opacity;
 }
 
-/* Intro copy */
+/* Intro copy sits over the sticky PROCESS word */
 .process-copy {
   position: relative;
   z-index: 7;
 
   width: min(470px, 42vw);
-
-  padding-top: clamp(96px, 16vh, 160px);
-  margin-bottom: clamp(120px, 22vh, 220px);
+  padding-top: clamp(78px, 12vh, 132px);
+  margin-bottom: 38vh;
 
   pointer-events: auto;
   will-change: transform, opacity;
@@ -313,24 +316,31 @@
 }
 
 /* =========================================================
-   CARD SAFETY
-   No layout here. Just do not hide them.
+   CARD SAFETY RULES
+   Do not style the cards here beyond visibility protection.
+   process-cards.css owns layout/design.
 ========================================================= */
 
 .process-cards {
+  position: relative;
+  z-index: 8;
+
   visibility: visible;
   opacity: 1;
+
   pointer-events: auto;
 }
 
 .process-card {
   visibility: visible;
   opacity: 1;
+
   pointer-events: auto;
 }
 
 /*
-  Only hide process content after the final Our Work landing.
+  Only hide process UI after the final Our Work landing.
+  Do not hide it merely because Our Work starts becoming visible.
 */
 .process-3d.is-inside-work .process-overlay {
   opacity: 0 !important;
