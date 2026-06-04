@@ -72,48 +72,66 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger, car
       anticipatePin: 1,
       invalidateOnRefresh: true,
 
-      onUpdate: (self) => {
-        updateByProgress({
-          progress: self.progress,
-          section,
-          worldInside,
-          workTrack,
-          scene,
-          ui
-        });
-      },
+ onUpdate: (self) => {
+  updateByProgress({
+    progress: self.progress,
+    section,
+    worldInside,
+    workTrack,
+    scene,
+    ui
+  });
+},
 
-      onEnter: () => {
-        section.classList.add("is-process-active");
-      },
+onEnter: () => {
+  section.classList.add("is-process-active");
+  section.classList.remove("is-inside-work");
+},
 
-      onEnterBack: () => {
-        section.classList.add("is-process-active");
-      },
+onEnterBack: () => {
+  section.classList.add("is-process-active");
 
-      onLeave: () => {
-        section.classList.remove("is-process-active");
-        section.classList.add("is-work-visible", "is-work-interactive", "is-inside-work");
+  /*
+    Important:
+    When scrolling back into the pinned PROCESS section,
+    remove the hard lock so GSAP can control the reverse animation smoothly.
+  */
+  section.classList.remove("is-inside-work");
+},
 
-        if (worldInside) {
-          worldInside.removeAttribute("aria-hidden");
-          worldInside.classList.add("is-visible", "is-interactive");
-        }
-      },
+onLeave: () => {
+  /*
+    Only hard-lock after the pinned timeline is fully finished.
+    This prevents wheel-notch jitter near the end of the animation.
+  */
+  section.classList.remove("is-process-active");
+  section.classList.add("is-work-visible", "is-work-interactive", "is-inside-work");
 
-      onLeaveBack: () => {
-        section.classList.remove(
-          "is-process-active",
-          "is-work-visible",
-          "is-work-interactive",
-          "is-inside-work"
-        );
+  if (worldInside) {
+    worldInside.removeAttribute("aria-hidden");
+    worldInside.classList.add("is-visible", "is-interactive");
+    worldInside.style.pointerEvents = "auto";
+  }
 
-        if (worldInside) {
-          worldInside.setAttribute("aria-hidden", "true");
-          worldInside.classList.remove("is-visible", "is-interactive");
-        }
-      }
+  if (workTrack) {
+    workTrack.style.setProperty("--work-scroll-progress", "0");
+  }
+},
+
+onLeaveBack: () => {
+  section.classList.remove(
+    "is-process-active",
+    "is-work-visible",
+    "is-work-interactive",
+    "is-inside-work"
+  );
+
+  if (worldInside) {
+    worldInside.setAttribute("aria-hidden", "true");
+    worldInside.classList.remove("is-visible", "is-interactive");
+    worldInside.style.pointerEvents = "none";
+  }
+}
     }
   });
 
@@ -374,20 +392,7 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger, car
       duration: 0.14
     }, 1.06)
 
-    .add(() => {
-      section.classList.add("is-work-visible", "is-work-interactive", "is-inside-work");
-
-      if (worldInside) {
-        worldInside.removeAttribute("aria-hidden");
-        worldInside.classList.add("is-visible", "is-interactive");
-        worldInside.style.pointerEvents = "auto";
-      }
-
-      if (workTrack) {
-        workTrack.style.setProperty("--work-scroll-progress", "0");
-      }
-    }, 1.16);
-
+   
   const refresh = debounce(() => {
     ScrollTrigger.refresh();
   }, 160);
@@ -600,13 +605,17 @@ function updateByProgress({
   section.style.setProperty("--process-cards", cards.toFixed(4));
   section.style.setProperty("--process-handoff", handoff.toFixed(4));
 
+  /*
+    Important:
+    Do NOT toggle is-inside-work here.
+    That class is a hard visual lock. If it toggles while the wheel is
+    hovering around the end of the pinned section, the scene jumps.
+  */
   const workVisible = progress >= 0.91;
-  const workInteractive = progress >= 0.992;
-  const insideWork = progress >= 0.996;
+  const workInteractive = progress >= 0.985;
 
   section.classList.toggle("is-work-visible", workVisible);
   section.classList.toggle("is-work-interactive", workInteractive);
-  section.classList.toggle("is-inside-work", insideWork);
 
   if (worldInside) {
     worldInside.classList.toggle("is-visible", workVisible);
@@ -649,7 +658,7 @@ function updateByProgress({
       workZoom: handoff,
       workReveal: mapRange(progress, 0.91, 1),
       workScroll: 0,
-      insideWork
+      insideWork: false
     });
   }
 }
