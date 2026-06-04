@@ -1,6 +1,13 @@
 /* =========================================================
-   PROCESS SECTION
-   Premium pinned camera handoff: PROCESS → cards → C aperture → Our Work
+   PROCESS SCENE
+   PROCESS word + normal scrolling cards + Our Work handoff layer
+
+   Important:
+   - Cards are NOT controlled here.
+   - Cards are NOT hidden here.
+   - process-cards.css owns the actual card layout/design.
+   - JS may still control the PROCESS word and Our Work handoff,
+     but cards are plain page content.
 ========================================================= */
 
 :root {
@@ -24,9 +31,10 @@
 
 .process-3d {
   position: relative;
-  min-height: 500vh;
-  overflow: hidden;
+  min-height: 100svh;
+  overflow: visible;
   isolation: isolate;
+
   background: var(--process-bg);
   color: var(--process-white);
 }
@@ -43,7 +51,7 @@
     linear-gradient(
       to bottom,
       rgba(0, 0, 0, 0.98),
-      rgba(2, 2, 2, 0.6) 34%,
+      rgba(2, 2, 2, 0.64) 34%,
       #020202 100%
     );
 
@@ -51,13 +59,17 @@
 }
 
 /* =========================================================
-   CAMERA SCENE
+   PROCESS WORD SCENE
 ========================================================= */
 
 .process-scene {
-  position: absolute;
-  inset: 0;
+  position: sticky;
+  top: 0;
   z-index: 1;
+
+  width: 100%;
+  height: 100svh;
+  min-height: 100svh;
 
   display: grid;
   place-items: center;
@@ -73,7 +85,7 @@
   backface-visibility: hidden;
 }
 
-/* subtle tunnel darkness */
+/* Tunnel darkness during the Our Work handoff */
 .process-scene::after {
   content: "";
   position: absolute;
@@ -95,73 +107,6 @@
 
 .process-3d.is-inside-work .process-scene::after {
   opacity: 0;
-}
-
-/* =========================================================
-   OUR WORK DESTINATION LAYER
-   Full-screen layer. Does not restyle its inner content.
-========================================================= */
-
-.process-world-inside {
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-
-  width: 100%;
-  height: 100%;
-  min-height: 100svh;
-
-  padding: 0;
-  margin: 0;
-  overflow: hidden;
-
-  background: #020202;
-
-  opacity: 0;
-  visibility: hidden;
-  pointer-events: none;
-
-  transform: translate3d(0, 44px, -260px) scale(0.88);
-  transform-origin: var(--process-c-x) var(--process-c-y);
-
-  clip-path: circle(0% at var(--process-c-x) var(--process-c-y));
-  -webkit-clip-path: circle(0% at var(--process-c-x) var(--process-c-y));
-
-  filter: blur(10px);
-
-  will-change: transform, opacity, clip-path, -webkit-clip-path, filter;
-  backface-visibility: hidden;
-}
-
-/*
-  Prevent this wrapper from turning Our Work into a title-card.
-  Let your Our Work CSS own its own typography/layout.
-*/
-.process-world-inside > * {
-  position: relative;
-}
-
-.process-world-inside.is-visible,
-.process-3d.is-work-visible .process-world-inside {
-  visibility: visible;
-}
-
-.process-world-inside.is-interactive,
-.process-3d.is-work-interactive .process-world-inside,
-.process-3d.is-inside-work .process-world-inside {
-  pointer-events: auto;
-}
-
-.process-3d.is-inside-work .process-world-inside {
-  opacity: 1 !important;
-  visibility: visible !important;
-  pointer-events: auto !important;
-
-  transform: translate3d(0, 0, 0) scale(1) !important;
-  filter: blur(0px) !important;
-
-  clip-path: circle(155% at var(--process-c-x) var(--process-c-y)) !important;
-  -webkit-clip-path: circle(155% at var(--process-c-x) var(--process-c-y)) !important;
 }
 
 /* =========================================================
@@ -209,6 +154,68 @@
 }
 
 /* =========================================================
+   OUR WORK DESTINATION LAYER
+========================================================= */
+
+.process-world-inside {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+
+  width: 100%;
+  height: 100%;
+  min-height: 100svh;
+
+  padding: 0;
+  margin: 0;
+  overflow: hidden;
+
+  background: #020202;
+
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+
+  transform: translate3d(0, 44px, -260px) scale(0.88);
+  transform-origin: var(--process-c-x) var(--process-c-y);
+
+  clip-path: circle(0% at var(--process-c-x) var(--process-c-y));
+  -webkit-clip-path: circle(0% at var(--process-c-x) var(--process-c-y));
+
+  filter: blur(10px);
+
+  will-change: transform, opacity, clip-path, -webkit-clip-path, filter;
+  backface-visibility: hidden;
+}
+
+.process-world-inside > * {
+  position: relative;
+}
+
+.process-world-inside.is-visible,
+.process-3d.is-work-visible .process-world-inside {
+  visibility: visible;
+}
+
+.process-world-inside.is-interactive,
+.process-3d.is-work-interactive .process-world-inside,
+.process-3d.is-inside-work .process-world-inside {
+  pointer-events: auto;
+}
+
+.process-3d.is-inside-work .process-world-inside {
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+
+  transform: translate3d(0, 0, 0) scale(1) !important;
+  filter: blur(0px) !important;
+
+  clip-path: circle(155% at var(--process-c-x) var(--process-c-y)) !important;
+  -webkit-clip-path: circle(155% at var(--process-c-x) var(--process-c-y)) !important;
+}
+
+/* =========================================================
    DARK C APERTURE
 ========================================================= */
 
@@ -251,7 +258,8 @@
 }
 
 /* =========================================================
-   PROCESS OVERLAY / COPY / CARDS
+   NORMAL PROCESS CONTENT
+   This is where the intro copy and cards live.
 ========================================================= */
 
 .process-overlay {
@@ -259,8 +267,9 @@
   z-index: 6;
 
   width: min(1380px, calc(100% - 44px));
-  height: 100%;
-  margin: 0 auto;
+  margin: -100svh auto 0;
+
+  min-height: 100svh;
 
   pointer-events: none;
   perspective: 1200px;
@@ -269,13 +278,14 @@
   will-change: opacity;
 }
 
+/* Intro copy sits over the sticky PROCESS word */
 .process-copy {
-  position: absolute;
-  left: 0;
-  top: clamp(78px, 12vh, 132px);
+  position: relative;
   z-index: 7;
 
   width: min(470px, 42vw);
+  padding-top: clamp(78px, 12vh, 132px);
+  margin-bottom: 38vh;
 
   pointer-events: auto;
   will-change: transform, opacity;
@@ -305,21 +315,32 @@
   color: var(--process-muted);
 }
 
+/* =========================================================
+   CARD SAFETY RULES
+   Do not style the cards here beyond visibility protection.
+   process-cards.css owns layout/design.
+========================================================= */
+
 .process-cards {
+  position: relative;
+  z-index: 8;
+
   visibility: visible;
-  pointer-events: none;
+  opacity: 1;
+
+  pointer-events: auto;
 }
 
 .process-card {
   visibility: visible;
+  opacity: 1;
+
   pointer-events: auto;
-  will-change: transform, opacity;
-  backface-visibility: hidden;
 }
 
 /*
-  Only hide the process UI after the final landing.
-  Do not hide it during is-work-visible.
+  Only hide process UI after the final Our Work landing.
+  Do not hide it merely because Our Work starts becoming visible.
 */
 .process-3d.is-inside-work .process-overlay {
   opacity: 0 !important;
@@ -333,15 +354,16 @@
 
 @media (max-width: 900px) {
   .process-3d {
-    height: auto;
     min-height: 100svh;
     overflow: visible;
   }
 
   .process-scene {
     position: relative;
+    top: auto;
+
     min-height: 100svh;
-    overflow: visible;
+    overflow: hidden;
     padding: 90px 0 70px;
   }
 
@@ -374,17 +396,17 @@
 
   .process-overlay {
     width: min(720px, calc(100% - 28px));
-    height: auto;
+    margin: 0 auto;
+
+    min-height: auto;
     opacity: 1;
     visibility: visible;
     pointer-events: auto;
   }
 
   .process-copy {
-    position: relative;
-    top: auto;
-    left: auto;
     width: min(560px, 100%);
+    padding-top: 0;
     margin-bottom: 80px;
   }
 
@@ -402,7 +424,6 @@
 
 @media (prefers-reduced-motion: reduce) {
   .process-3d {
-    height: auto;
     min-height: 100svh;
     overflow: visible;
     padding: 90px 0;
@@ -410,6 +431,7 @@
 
   .process-scene {
     position: relative;
+    top: auto;
     min-height: 180px;
     overflow: visible;
   }
@@ -421,20 +443,27 @@
   }
 
   .process-overlay {
-    height: auto;
     width: min(900px, calc(100% - 28px));
+    margin: 0 auto;
+    min-height: auto;
   }
 
   .process-copy {
     position: relative;
-    top: auto;
-    left: auto;
     width: 100%;
+    padding-top: 0;
+    margin-bottom: 64px;
   }
 
   .process-word,
   .process-card {
     transform: none !important;
     filter: none !important;
+  }
+
+  .process-cards,
+  .process-card {
+    opacity: 1 !important;
+    visibility: visible !important;
   }
 }
