@@ -14,10 +14,6 @@
   --process-cards: 0;
   --process-handoff: 0;
 
-  /*
-    C target.
-    Adjust only these two if the tunnel feels slightly off-center.
-  */
   --process-c-x: 51.8%;
   --process-c-y: 50%;
 
@@ -74,9 +70,10 @@
 
   pointer-events: none;
   backface-visibility: hidden;
+  contain: paint;
 }
 
-/* Dark camera edge during the C handoff */
+/* dark camera edge during C handoff */
 .process-scene::after {
   content: "";
   position: absolute;
@@ -88,17 +85,102 @@
     radial-gradient(
       circle at var(--process-c-x) var(--process-c-y),
       transparent 0%,
-      transparent 21%,
-      rgba(0, 0, 0, 0.28) 48%,
+      transparent 18%,
+      rgba(0, 0, 0, 0.24) 44%,
       rgba(0, 0, 0, 0.92) 100%
     );
 
-  opacity: calc(var(--process-handoff, 0) * 0.72);
+  opacity: calc(var(--process-handoff, 0) * 0.68);
+  transition: opacity 120ms linear;
 }
 
-.process-3d.is-work-mode .process-scene::after,
 .process-3d.is-inside-work .process-scene::after {
   opacity: 0;
+}
+
+/* =========================================================
+   OUR WORK DESTINATION LAYER
+   This stays behind PROCESS until the final lock.
+========================================================= */
+
+.process-world-inside {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+
+  width: 100%;
+  height: 100vh;
+  min-height: 100vh;
+
+  padding: 0;
+  overflow: hidden;
+
+  background: #020202;
+
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+
+  transform: translate3d(0, 0, 0) scale(1);
+  transform-origin: var(--process-c-x) var(--process-c-y);
+
+  /*
+    Bigger radius avoids the last-frame corner snap.
+    145vmax safely covers all screen corners from the C target.
+  */
+  --work-aperture-radius: calc(0.8vmax + (var(--work-aperture-progress, 0) * 145vmax));
+
+  clip-path: circle(
+    var(--work-aperture-radius)
+    at var(--process-c-x) var(--process-c-y)
+  );
+
+  -webkit-clip-path: circle(
+    var(--work-aperture-radius)
+    at var(--process-c-x) var(--process-c-y)
+  );
+
+  filter: none;
+  backface-visibility: hidden;
+  will-change: opacity, clip-path, -webkit-clip-path;
+}
+
+.process-world-inside.is-visible,
+.process-3d.is-work-visible .process-world-inside {
+  visibility: visible;
+}
+
+/*
+  Important:
+  Work can be visible before it is interactive.
+  This prevents clicks/hover states from firing during the tunnel travel.
+*/
+.process-world-inside.is-interactive,
+.process-3d.is-work-interactive .process-world-inside,
+.process-3d.is-inside-work .process-world-inside {
+  pointer-events: auto;
+}
+
+/*
+  is-work-mode should NOT visually hard-cut the scene.
+  It only arms the destination layer near the end.
+*/
+.process-3d.is-work-mode .process-world-inside {
+  visibility: visible;
+  transform: translate3d(0, 0, 0) scale(1);
+}
+
+/*
+  Full takeover happens only after the JS has visually completed the aperture.
+*/
+.process-3d.is-inside-work .process-world-inside {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translate3d(0, 0, 0) scale(1);
+
+  clip-path: circle(145vmax at var(--process-c-x) var(--process-c-y));
+  -webkit-clip-path: circle(145vmax at var(--process-c-x) var(--process-c-y));
 }
 
 /* =========================================================
@@ -139,96 +221,10 @@
   z-index: 7;
 }
 
-/* =========================================================
-   OUR WORK DESTINATION LAYER
-
-   Important:
-   This layer stays full-size the entire time.
-   The reveal is controlled by the aperture, not by scaling the whole section.
-========================================================= */
-
-.process-world-inside {
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-
-  width: 100%;
-  height: 100vh;
-  min-height: 100vh;
-
-  padding: 0;
-  overflow: hidden;
-
-  background: #020202;
-
-  opacity: 0;
-  visibility: hidden;
-  pointer-events: none;
-
-  transform: translate3d(0, 0, 0) scale(1);
-  transform-origin: var(--process-c-x) var(--process-c-y);
-
-  /*
-    This is the anti-snap fix.
-    The aperture grows almost full-screen through scroll,
-    so the final class lock does not visually jump.
-  */
-  --work-aperture-radius: calc(1.5vmax + (var(--work-aperture-progress, 0) * 118vmax));
-
-  clip-path: circle(
-    var(--work-aperture-radius)
-    at var(--process-c-x) var(--process-c-y)
-  );
-
-  -webkit-clip-path: circle(
-    var(--work-aperture-radius)
-    at var(--process-c-x) var(--process-c-y)
-  );
-
-  filter: none;
-  backface-visibility: hidden;
-  will-change: opacity, clip-path;
-}
-
-.process-world-inside.is-visible,
-.process-3d.is-work-visible .process-world-inside {
-  visibility: visible;
-}
-
-.process-world-inside.is-interactive,
-.process-3d.is-work-interactive .process-world-inside,
-.process-3d.is-inside-work .process-world-inside {
-  pointer-events: auto;
-}
-
-/*
-  Full takeover only after the visual travel is already complete.
-  These classes must not be the animation: while work mode arms near the end,
-  the layer still uses the scroll-driven C aperture. The inside-work lock only
-  preserves the already-full aperture radius.
-*/
-.process-3d.is-work-mode .process-world-inside {
-  opacity: 1;
-  visibility: visible;
-  transform: translate3d(0, 0, 0) scale(1);
-
-  clip-path: circle(var(--work-aperture-radius) at var(--process-c-x) var(--process-c-y));
-  -webkit-clip-path: circle(var(--work-aperture-radius) at var(--process-c-x) var(--process-c-y));
-}
-
-.process-3d.is-inside-work .process-world-inside {
-  opacity: 1;
-  visibility: visible;
-  pointer-events: auto;
-  transform: translate3d(0, 0, 0) scale(1);
-
-  clip-path: circle(var(--work-aperture-radius) at var(--process-c-x) var(--process-c-y));
-  -webkit-clip-path: circle(var(--work-aperture-radius) at var(--process-c-x) var(--process-c-y));
-}
-
-.process-3d.is-work-interactive .process-world-inside {
-  visibility: visible;
-  pointer-events: auto;
+.process-3d.is-inside-work .process-word {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
 }
 
 /* =========================================================
@@ -271,7 +267,7 @@
   position: absolute;
   inset: 11%;
   border-radius: inherit;
-  border: 1px solid rgba(245, 245, 240, 0.06);
+  border: 1px solid rgba(245, 245, 240, 0.055);
   pointer-events: none;
 }
 
@@ -285,7 +281,9 @@
 }
 
 .process-3d.is-inside-work .process-void {
-  display: none;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
 }
 
 /* =========================================================
@@ -305,6 +303,7 @@
   perspective: 1200px;
 
   backface-visibility: hidden;
+  will-change: opacity;
 }
 
 .process-copy {
@@ -347,17 +346,15 @@
   pointer-events: auto;
 }
 
-/* Once Our Work takes over, stop painting/using process content */
-.process-3d.is-work-mode .process-overlay,
+/*
+  Important fix:
+  Do NOT hide the overlay at is-work-mode.
+  That was causing the handoff to feel like a sudden switch.
+*/
 .process-3d.is-inside-work .process-overlay {
-  opacity: 0;
-  visibility: hidden;
-  pointer-events: none;
-}
-
-.process-3d.is-inside-work .process-word {
-  visibility: hidden;
-  pointer-events: none;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
 }
 
 /* =========================================================
@@ -369,8 +366,9 @@
   visibility: visible !important;
   pointer-events: auto !important;
   transform: translate3d(0, 0, 0) scale(1) !important;
-  clip-path: circle(var(--work-aperture-radius) at var(--process-c-x) var(--process-c-y)) !important;
-  -webkit-clip-path: circle(var(--work-aperture-radius) at var(--process-c-x) var(--process-c-y)) !important;
+
+  clip-path: circle(145vmax at var(--process-c-x) var(--process-c-y)) !important;
+  -webkit-clip-path: circle(145vmax at var(--process-c-x) var(--process-c-y)) !important;
 }
 
 .process-3d.is-inside-work .process-word,
@@ -411,6 +409,7 @@
     min-height: 100svh;
     padding: 90px 0 70px;
     overflow: visible;
+    contain: none;
   }
 
   .process-scene::after,
@@ -456,13 +455,14 @@
 
   .process-3d.is-work-mode .process-overlay,
   .process-3d.is-inside-work .process-overlay {
-    opacity: 1;
-    visibility: visible;
-    pointer-events: auto;
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
   }
 
   .process-3d.is-inside-work .process-word {
-    visibility: visible;
+    opacity: 1 !important;
+    visibility: visible !important;
   }
 }
 
@@ -482,6 +482,7 @@
     position: relative;
     min-height: 180px;
     overflow: visible;
+    contain: none;
   }
 
   .process-scene::after,
