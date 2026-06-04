@@ -17,7 +17,7 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger, car
   const cardEls =
     Array.isArray(cards) && cards.length
       ? cards
-      : Array.from(section.querySelectorAll(".process-card"));
+      : Array.from(section.querySelectorAll("[data-process-card]"));
 
   const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
@@ -99,10 +99,6 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger, car
       },
 
       onLeave: () => {
-        /*
-          Do not add is-inside-work here.
-          That class forces CSS !important states and causes the jitter.
-        */
         section.classList.remove("is-process-active");
         section.classList.add("is-work-visible", "is-work-interactive");
 
@@ -199,17 +195,94 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger, car
       0.31
     );
 
+  /*
+    CARDS
+    Fixed:
+    - cards are visible again
+    - cards no longer get permanently hidden
+    - no normal-scroll layout fight
+    - one card appears at a time during the pinned PROCESS section
+  */
+  const cardStart = 0.31;
+  const cardGap = 0.125;
 
+  if (cardTrack) {
+    timeline.to(
+      cardTrack,
+      {
+        autoAlpha: 1,
+        duration: 0.08,
+        ease: "power1.out"
+      },
+      cardStart - 0.04
+    );
+  }
+
+  cardEls.forEach((card, index) => {
+    const side = index % 2 === 0 ? -1 : 1;
+    const start = cardStart + index * cardGap;
+
+    timeline
+      .set(
+        card,
+        {
+          zIndex: 30 + index,
+          visibility: "visible"
+        },
+        0
+      )
+
+      .to(
+        card,
+        {
+          autoAlpha: 1,
+          xPercent: side * 3,
+          yPercent: -50,
+          y: 0,
+          scale: 1,
+          filter: "blur(0px)",
+          force3D: true,
+          duration: 0.09,
+          ease: "power2.out"
+        },
+        start
+      )
+
+      .to(
+        card,
+        {
+          autoAlpha: 1,
+          xPercent: 0,
+          yPercent: -50,
+          y: -8,
+          scale: 1,
+          filter: "blur(0px)",
+          force3D: true,
+          duration: 0.14,
+          ease: "none"
+        },
+        start + 0.08
+      )
+
+      .to(
+        card,
+        {
+          autoAlpha: index === cardEls.length - 1 ? 1 : 0,
+          xPercent: side * -3,
+          yPercent: -50,
+          y: -42,
+          scale: 0.985,
+          filter: "blur(2px)",
+          force3D: true,
+          duration: index === cardEls.length - 1 ? 0.02 : 0.08,
+          ease: "power2.inOut"
+        },
+        start + 0.22
+      );
+  });
 
   /*
     HANDOFF
-
-    This is the actual fix:
-    - Our Work gets opacity 1 early
-    - but clip-path keeps it trapped inside the C
-    - the aperture expands
-    - full screen only happens at the end
-    - no is-inside-work class during scroll
   */
   timeline
     .to(
@@ -255,10 +328,6 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger, car
       0.89
     )
 
-    /*
-      Stage 1:
-      Our Work is visible, but only through a tiny aperture.
-    */
     .to(
       worldInside,
       {
@@ -308,10 +377,6 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger, car
       0.94
     )
 
-    /*
-      Stage 2:
-      Still only inside the aperture.
-    */
     .to(
       worldInside,
       {
@@ -360,10 +425,6 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger, car
       0.99
     )
 
-    /*
-      Stage 3:
-      This is the tunnel moment.
-    */
     .to(
       worldInside,
       {
@@ -413,10 +474,6 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger, car
       1.055
     )
 
-    /*
-      Stage 4:
-      Full screen only here.
-    */
     .to(
       worldInside,
       {
@@ -540,17 +597,23 @@ function prepareInitialState({
     workTrack.style.setProperty("--work-scroll-progress", "0");
   }
 
-cards.forEach((card) => {
-  gsap.set(card, {
-    autoAlpha: 1,
-    visibility: "visible",
-    x: 0,
-    yPercent: 0,
-    scale: 1,
-    rotateX: 0,
-    clearProps: "transform"
+  cards.forEach((card, index) => {
+    const side = index % 2 === 0 ? -1 : 1;
+
+    gsap.set(card, {
+      autoAlpha: 0,
+      visibility: "visible",
+      xPercent: side * 4,
+      yPercent: -50,
+      y: 32,
+      scale: 0.985,
+      rotateX: 0,
+      filter: "blur(3px)",
+      transformOrigin: "50% 52%",
+      force3D: true,
+      clearProps: "display"
+    });
   });
-});
 }
 
 /* =========================================================
@@ -611,16 +674,19 @@ function prepareReducedState({
   if (cardTrack) {
     gsap.set(cardTrack, {
       autoAlpha: 1,
-      visibility: "visible"
+      visibility: "visible",
+      pointerEvents: "auto"
     });
   }
 
   gsap.set(cards, {
     autoAlpha: 1,
-    x: 0,
+    xPercent: 0,
     yPercent: 0,
+    y: 0,
     scale: 1,
-    rotateX: 0
+    rotateX: 0,
+    filter: "none"
   });
 
   if (workTrack) {
@@ -648,20 +714,11 @@ function updateByProgress({
   section.style.setProperty("--process-cards", cards.toFixed(4));
   section.style.setProperty("--process-handoff", handoff.toFixed(4));
 
-  /*
-    Visible early, interactive late.
-    This prevents hover/click states from firing during the zoom.
-  */
   const workVisible = progress >= 0.895;
   const workInteractive = progress >= 0.996;
 
   section.classList.toggle("is-work-visible", workVisible);
   section.classList.toggle("is-work-interactive", workInteractive);
-
-  /*
-    Never allow the hard-lock class during the scrubbed handoff.
-    process-scene.css has !important rules for this class, which can create jumps.
-  */
   section.classList.remove("is-inside-work");
 
   if (worldInside) {
@@ -677,9 +734,6 @@ function updateByProgress({
     worldInside.style.pointerEvents = workInteractive ? "auto" : "none";
   }
 
-  /*
-    Our Work should not scroll/move itself during the PROCESS camera move.
-  */
   if (workTrack) {
     workTrack.style.setProperty("--work-scroll-progress", "0");
   }
