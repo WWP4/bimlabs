@@ -1,6 +1,6 @@
 // sections/process-scroll.js
 
-export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger, cards }) {
+export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger }) {
   if (!section || !gsap || !ScrollTrigger) {
     console.warn("[Process] Missing required process setup.");
     return null;
@@ -11,13 +11,7 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger, car
   const voidTarget = section.querySelector(".process-void");
   const worldInside = section.querySelector(".process-world-inside");
   const copy = section.querySelector(".process-copy");
-  const cardTrack = section.querySelector(".process-cards");
   const workTrack = section.querySelector("[data-work-track]");
-
-  const cardEls =
-    Array.isArray(cards) && cards.length
-      ? cards
-      : Array.from(section.querySelectorAll("[data-process-card]"));
 
   const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
@@ -34,9 +28,7 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger, car
       voidTarget,
       worldInside,
       copy,
-      cardTrack,
-      workTrack,
-      cards: cardEls
+      workTrack
     });
 
     return null;
@@ -50,9 +42,7 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger, car
     voidTarget,
     worldInside,
     copy,
-    cardTrack,
-    workTrack,
-    cards: cardEls
+    workTrack
   });
 
   const timeline = gsap.timeline({
@@ -136,9 +126,8 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger, car
 
   /*
     INTRO ONLY
-
-    The cards are intentionally NOT animated here.
-    They are normal DOM content controlled by process-cards.css.
+    No card logic belongs in this file.
+    Process cards should be plain HTML/CSS content.
   */
   timeline
     .to(
@@ -200,9 +189,8 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger, car
 
   /*
     HANDOFF
-
-    Cards remain normal visible content.
-    The whole card layer fades only when the site enters the final Our Work transition.
+    This only controls PROCESS word, the dark aperture, and Our Work reveal.
+    It does NOT touch .process-cards or .process-card.
   */
   timeline
     .to(
@@ -212,16 +200,6 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger, car
         duration: 0.05
       },
       0.855
-    )
-
-    .to(
-      cardTrack,
-      {
-        autoAlpha: 0,
-        duration: 0.08,
-        ease: "power1.out"
-      },
-      0.865
     )
 
     .to(
@@ -434,9 +412,7 @@ function prepareInitialState({
   voidTarget,
   worldInside,
   copy,
-  cardTrack,
-  workTrack,
-  cards
+  workTrack
 }) {
   section.classList.remove(
     "is-process-active",
@@ -447,7 +423,6 @@ function prepareInitialState({
 
   section.style.setProperty("--process-section-intensity", "0");
   section.style.setProperty("--process-intro", "0");
-  section.style.setProperty("--process-cards", "0");
   section.style.setProperty("--process-handoff", "0");
 
   gsap.set(sceneMount, {
@@ -505,30 +480,6 @@ function prepareInitialState({
     });
   }
 
-  /*
-    Important:
-    The card track and cards are normal layout now.
-    Do not hide, transform, or animate individual cards in JS.
-  */
-  if (cardTrack) {
-    gsap.set(cardTrack, {
-      autoAlpha: 1,
-      visibility: "visible",
-      pointerEvents: "auto",
-      clearProps: "transform"
-    });
-  }
-
-  if (cards && cards.length) {
-    cards.forEach((card) => {
-      gsap.set(card, {
-        autoAlpha: 1,
-        visibility: "visible",
-        clearProps: "transform,filter,x,y,xPercent,yPercent,scale,rotateX"
-      });
-    });
-  }
-
   if (workTrack) {
     workTrack.style.setProperty("--work-scroll-progress", "0");
   }
@@ -545,13 +496,10 @@ function prepareReducedState({
   voidTarget,
   worldInside,
   copy,
-  cardTrack,
-  workTrack,
-  cards
+  workTrack
 }) {
   section.style.setProperty("--process-section-intensity", "1");
   section.style.setProperty("--process-intro", "1");
-  section.style.setProperty("--process-cards", "1");
   section.style.setProperty("--process-handoff", "0");
 
   section.classList.remove(
@@ -589,23 +537,6 @@ function prepareReducedState({
     });
   }
 
-  if (cardTrack) {
-    gsap.set(cardTrack, {
-      autoAlpha: 1,
-      visibility: "visible",
-      pointerEvents: "auto",
-      clearProps: "transform"
-    });
-  }
-
-  if (cards && cards.length) {
-    gsap.set(cards, {
-      autoAlpha: 1,
-      visibility: "visible",
-      clearProps: "transform,filter,x,y,xPercent,yPercent,scale,rotateX"
-    });
-  }
-
   if (workTrack) {
     workTrack.style.setProperty("--work-scroll-progress", "0");
   }
@@ -624,11 +555,9 @@ function updateByProgress({
   ui
 }) {
   const intro = mapRange(progress, 0.02, 0.22);
-  const cards = mapRange(progress, 0.28, 0.84);
   const handoff = mapRange(progress, 0.86, 1);
 
   section.style.setProperty("--process-intro", intro.toFixed(4));
-  section.style.setProperty("--process-cards", cards.toFixed(4));
   section.style.setProperty("--process-handoff", handoff.toFixed(4));
 
   const workVisible = progress >= 0.895;
@@ -663,19 +592,14 @@ function updateByProgress({
   if (scene?.setProgress) {
     scene.setProgress({
       intro,
-      cards,
       handoff
     });
   }
 
   /*
-    Keep compatibility with process-main.js / process UI helpers.
-    This passes progress values, but does not animate DOM cards here.
+    Keep compatibility with any UI helper,
+    but do not send card progress because cards are not JS-controlled.
   */
-  if (ui?.setCardsProgress) {
-    ui.setCardsProgress(cards);
-  }
-
   if (ui?.softenForHandoff) {
     ui.softenForHandoff(handoff);
   }
@@ -683,7 +607,6 @@ function updateByProgress({
   if (ui?.setProgress) {
     ui.setProgress({
       intro,
-      cards,
       handoff,
       workZoom: handoff,
       workReveal: mapRange(progress, 0.895, 1),
