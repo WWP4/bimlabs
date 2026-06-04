@@ -30,9 +30,10 @@
   --process-c-x: 51.8%;
   --process-c-y: 50%;
 
-  --work-zoom-progress: 0;
-  --work-reveal-progress: 0;
-  --work-scroll-progress: 0;
+--work-zoom-progress: 0;
+--work-reveal-progress: 0;
+--work-scroll-progress: 0;
+--work-aperture-progress: 0;
 }
 
 /* =========================================================
@@ -177,9 +178,26 @@
   transform: translate3d(0, 0, 0) scale(1);
   transform-origin: var(--process-c-x) var(--process-c-y);
 
+  /*
+    This is the important part.
+    Our Work exists full-size, but only the C tunnel reveals it.
+  */
+  clip-path: circle(
+    calc(2vmax + (var(--work-aperture-progress, 0) * 22vmax))
+    at var(--process-c-x) var(--process-c-y)
+  );
+
+  -webkit-clip-path: circle(
+    calc(2vmax + (var(--work-aperture-progress, 0) * 22vmax))
+    at var(--process-c-x) var(--process-c-y)
+  );
+
   filter: none;
   backface-visibility: hidden;
+  will-change: opacity, clip-path;
 }
+
+
 
 /* Visible during the handoff */
 .process-world-inside.is-visible,
@@ -194,14 +212,20 @@
   pointer-events: auto;
 }
 
-/* Once the user is “inside” Our Work, make it a real full-size layer */
 .process-3d.is-work-mode .process-world-inside,
-.process-3d.is-work-interactive .process-world-inside,
 .process-3d.is-inside-work .process-world-inside {
   opacity: 1;
   visibility: visible;
   pointer-events: auto;
   transform: translate3d(0, 0, 0) scale(1);
+
+  clip-path: circle(145vmax at var(--process-c-x) var(--process-c-y));
+  -webkit-clip-path: circle(145vmax at var(--process-c-x) var(--process-c-y));
+}
+
+.process-3d.is-work-interactive .process-world-inside {
+  visibility: visible;
+  pointer-events: auto;
 }
 
 /* =========================================================
