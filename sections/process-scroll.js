@@ -135,7 +135,10 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger, car
   });
 
   /*
-    INTRO
+    INTRO ONLY
+
+    The cards are intentionally NOT animated here.
+    They are normal DOM content controlled by process-cards.css.
   */
   timeline
     .to(
@@ -196,93 +199,10 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger, car
     );
 
   /*
-    CARDS
-    Fixed:
-    - cards are visible again
-    - cards no longer get permanently hidden
-    - no normal-scroll layout fight
-    - one card appears at a time during the pinned PROCESS section
-  */
-  const cardStart = 0.31;
-  const cardGap = 0.125;
-
-  if (cardTrack) {
-    timeline.to(
-      cardTrack,
-      {
-        autoAlpha: 1,
-        duration: 0.08,
-        ease: "power1.out"
-      },
-      cardStart - 0.04
-    );
-  }
-
-  cardEls.forEach((card, index) => {
-    const side = index % 2 === 0 ? -1 : 1;
-    const start = cardStart + index * cardGap;
-
-    timeline
-      .set(
-        card,
-        {
-          zIndex: 30 + index,
-          visibility: "visible"
-        },
-        0
-      )
-
-      .to(
-        card,
-        {
-          autoAlpha: 1,
-          xPercent: side * 3,
-          yPercent: -50,
-          y: 0,
-          scale: 1,
-          filter: "blur(0px)",
-          force3D: true,
-          duration: 0.09,
-          ease: "power2.out"
-        },
-        start
-      )
-
-      .to(
-        card,
-        {
-          autoAlpha: 1,
-          xPercent: 0,
-          yPercent: -50,
-          y: -8,
-          scale: 1,
-          filter: "blur(0px)",
-          force3D: true,
-          duration: 0.14,
-          ease: "none"
-        },
-        start + 0.08
-      )
-
-      .to(
-        card,
-        {
-          autoAlpha: index === cardEls.length - 1 ? 1 : 0,
-          xPercent: side * -3,
-          yPercent: -50,
-          y: -42,
-          scale: 0.985,
-          filter: "blur(2px)",
-          force3D: true,
-          duration: index === cardEls.length - 1 ? 0.02 : 0.08,
-          ease: "power2.inOut"
-        },
-        start + 0.22
-      );
-  });
-
-  /*
     HANDOFF
+
+    Cards remain normal visible content.
+    The whole card layer fades only when the site enters the final Our Work transition.
   */
   timeline
     .to(
@@ -585,35 +505,33 @@ function prepareInitialState({
     });
   }
 
+  /*
+    Important:
+    The card track and cards are normal layout now.
+    Do not hide, transform, or animate individual cards in JS.
+  */
   if (cardTrack) {
     gsap.set(cardTrack, {
       autoAlpha: 1,
       visibility: "visible",
-      pointerEvents: "none"
+      pointerEvents: "auto",
+      clearProps: "transform"
+    });
+  }
+
+  if (cards && cards.length) {
+    cards.forEach((card) => {
+      gsap.set(card, {
+        autoAlpha: 1,
+        visibility: "visible",
+        clearProps: "transform,filter,x,y,xPercent,yPercent,scale,rotateX"
+      });
     });
   }
 
   if (workTrack) {
     workTrack.style.setProperty("--work-scroll-progress", "0");
   }
-
-  cards.forEach((card, index) => {
-    const side = index % 2 === 0 ? -1 : 1;
-
-    gsap.set(card, {
-      autoAlpha: 0,
-      visibility: "visible",
-      xPercent: side * 4,
-      yPercent: -50,
-      y: 32,
-      scale: 0.985,
-      rotateX: 0,
-      filter: "blur(3px)",
-      transformOrigin: "50% 52%",
-      force3D: true,
-      clearProps: "display"
-    });
-  });
 }
 
 /* =========================================================
@@ -675,19 +593,18 @@ function prepareReducedState({
     gsap.set(cardTrack, {
       autoAlpha: 1,
       visibility: "visible",
-      pointerEvents: "auto"
+      pointerEvents: "auto",
+      clearProps: "transform"
     });
   }
 
-  gsap.set(cards, {
-    autoAlpha: 1,
-    xPercent: 0,
-    yPercent: 0,
-    y: 0,
-    scale: 1,
-    rotateX: 0,
-    filter: "none"
-  });
+  if (cards && cards.length) {
+    gsap.set(cards, {
+      autoAlpha: 1,
+      visibility: "visible",
+      clearProps: "transform,filter,x,y,xPercent,yPercent,scale,rotateX"
+    });
+  }
 
   if (workTrack) {
     workTrack.style.setProperty("--work-scroll-progress", "0");
@@ -719,6 +636,11 @@ function updateByProgress({
 
   section.classList.toggle("is-work-visible", workVisible);
   section.classList.toggle("is-work-interactive", workInteractive);
+
+  /*
+    Do not add is-inside-work during the scrub.
+    That class has hard CSS states and can create jumps.
+  */
   section.classList.remove("is-inside-work");
 
   if (worldInside) {
@@ -746,6 +668,10 @@ function updateByProgress({
     });
   }
 
+  /*
+    Keep compatibility with process-main.js / process UI helpers.
+    This passes progress values, but does not animate DOM cards here.
+  */
   if (ui?.setCardsProgress) {
     ui.setCardsProgress(cards);
   }
