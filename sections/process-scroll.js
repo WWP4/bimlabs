@@ -59,12 +59,18 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger }) {
       start: "top top",
       end: () => {
         const naturalDistance = Math.max(section.offsetHeight - window.innerHeight, 1);
-        const minimumDistance = window.innerHeight * 6;
+        const minimumDistance = window.innerHeight * 6.4;
 
-        return `+=${Math.max(naturalDistance, minimumDistance, 5800)}`;
+        return `+=${Math.max(naturalDistance, minimumDistance, 6100)}`;
       },
       pin: false,
-      scrub: 0.75,
+
+      /*
+        This is the camera glide.
+        Lower = more direct.
+        Higher = smoother but can feel delayed.
+      */
+      scrub: 1.05,
       invalidateOnRefresh: true,
 
       onUpdate: (self) => {
@@ -96,11 +102,8 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger }) {
       onLeave: () => {
         section.classList.remove("is-process-active");
 
-        /*
-          If the user reaches the end of the PROCESS section, keep them inside
-          Our Work visually instead of letting the timeline flicker backward.
-        */
         state.lockedInsideWork = true;
+
         applyLockedWorkState({
           gsap,
           section,
@@ -171,7 +174,6 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger }) {
 
 /* =========================================================
    INTRO
-   PROCESS comes forward, then holds while the cards scroll.
 ========================================================= */
 
 function addProcessIntro({ timeline, section, word, copy }) {
@@ -182,8 +184,8 @@ function addProcessIntro({ timeline, section, word, copy }) {
     }, 0)
 
     .to(word, {
-      autoAlpha: 0.74,
-      scale: 0.66,
+      autoAlpha: 0.72,
+      scale: 0.64,
       xPercent: 0,
       yPercent: 15,
       letterSpacing: "-0.068em",
@@ -205,28 +207,26 @@ function addProcessIntro({ timeline, section, word, copy }) {
       yPercent: 0,
       letterSpacing: "-0.085em",
       force3D: true,
-      duration: 0.22
+      duration: 0.23
     }, 0.13)
 
     .to(word, {
       scale: 1.06,
       autoAlpha: 0.88,
       force3D: true,
-      duration: 0.28
-    }, 0.35)
+      duration: 0.26
+    }, 0.36)
 
     .to(copy, {
       autoAlpha: 0,
       y: -22,
       force3D: true,
-      duration: 0.16
+      duration: 0.17
     }, 0.43);
 }
 
 /* =========================================================
    C / TUNNEL HANDOFF
-   The PROCESS word/tunnel creates the motion.
-   Our Work stays full-size behind the scene and fades in.
 ========================================================= */
 
 function addProcessTunnelHandoff({
@@ -241,7 +241,7 @@ function addProcessTunnelHandoff({
   if (tunnel) {
     timeline.set(tunnel, {
       autoAlpha: 0,
-      scale: 0.16,
+      scale: 0.14,
       transformOrigin: "50% 50%",
       force3D: true
     }, 0);
@@ -257,164 +257,172 @@ function addProcessTunnelHandoff({
   }
 
   /*
-    New timing:
-    0.00–0.58  PROCESS/cards phase
-    0.58–0.74  slow camera pressure begins
-    0.74–0.92  real zoom
-    0.92–1.00  Our Work takeover
-
-    This avoids the old issue where almost all zoom happened after 0.88.
+    Important:
+    The word starts moving earlier and keeps moving longer.
+    The final lock happens only after the aperture has visually filled the screen.
   */
 
   timeline
     .to(word, {
-      scale: 1.16,
-      xPercent: -0.25,
+      scale: 1.14,
+      xPercent: -0.18,
       yPercent: 0,
-      autoAlpha: 0.92,
+      autoAlpha: 0.91,
       force3D: true,
       duration: 0.16
-    }, 0.58)
+    }, 0.52)
 
     .to(section, {
       "--work-zoom-progress": 0.08,
       "--work-reveal-progress": 0,
+      "--work-aperture-progress": 0.02,
       duration: 0.16
-    }, 0.58)
+    }, 0.52)
 
     .to(word, {
-      scale: 1.55,
-      xPercent: -0.85,
-      autoAlpha: 0.96,
+      scale: 1.46,
+      xPercent: -0.72,
+      autoAlpha: 0.95,
       force3D: true,
-      duration: 0.14
-    }, 0.68)
+      duration: 0.16
+    }, 0.64)
 
     .to(section, {
-      "--work-zoom-progress": 0.22,
-      "--work-reveal-progress": 0.02,
-      duration: 0.14
-    }, 0.68)
+      "--work-zoom-progress": 0.18,
+      "--work-reveal-progress": 0.015,
+      "--work-aperture-progress": 0.07,
+      duration: 0.16
+    }, 0.64)
 
     .to(word, {
-      scale: 2.25,
-      xPercent: -1.9,
+      scale: 2,
+      xPercent: -1.45,
+      autoAlpha: 0.98,
+      force3D: true,
+      duration: 0.15
+    }, 0.75)
+
+    .to(section, {
+      "--work-zoom-progress": 0.34,
+      "--work-reveal-progress": 0.08,
+      "--work-aperture-progress": 0.2,
+      duration: 0.15
+    }, 0.75)
+
+    .to(word, {
+      scale: 3.05,
+      xPercent: -3.1,
       autoAlpha: 1,
       force3D: true,
       duration: 0.13
-    }, 0.78)
+    }, 0.845)
 
     .to(section, {
-      "--work-zoom-progress": 0.42,
-      "--work-reveal-progress": 0.12,
+      "--work-zoom-progress": 0.56,
+      "--work-reveal-progress": 0.28,
+      "--work-aperture-progress": 0.46,
       duration: 0.13
-    }, 0.78)
+    }, 0.845)
 
     .to(word, {
-      scale: 3.65,
-      xPercent: -4.1,
-      autoAlpha: 1,
+      scale: 4.8,
+      xPercent: -5.8,
+      autoAlpha: 0.9,
       force3D: true,
-      duration: 0.11
-    }, 0.865)
+      duration: 0.1
+    }, 0.925)
 
     .to(section, {
-      "--work-zoom-progress": 0.68,
-      "--work-reveal-progress": 0.42,
-      duration: 0.11
-    }, 0.865)
+      "--work-zoom-progress": 0.78,
+      "--work-reveal-progress": 0.62,
+      "--work-aperture-progress": 0.78,
+      duration: 0.1
+    }, 0.925)
 
     .to(word, {
-      scale: 5.7,
-      xPercent: -7.2,
-      autoAlpha: 0.82,
+      scale: 7.2,
+      xPercent: -8.9,
+      autoAlpha: 0.18,
       force3D: true,
-      duration: 0.075
-    }, 0.935)
-
-    .to(section, {
-      "--work-zoom-progress": 0.9,
-      "--work-reveal-progress": 0.78,
-      duration: 0.075
-    }, 0.935)
-
-    .to(word, {
-      scale: 7.8,
-      xPercent: -9.4,
-      autoAlpha: 0,
-      force3D: true,
-      duration: 0.05
+      duration: 0.065
     }, 0.975)
 
     .to(section, {
       "--work-zoom-progress": 1,
       "--work-reveal-progress": 1,
+      "--work-aperture-progress": 1,
       "--work-scroll-progress": 0,
       "--process-section-intensity": 0.12,
-      duration: 0.05
-    }, 0.975);
+      duration: 0.065
+    }, 0.975)
+
+    .to(word, {
+      autoAlpha: 0,
+      force3D: true,
+      duration: 0.02
+    }, 0.995);
 
   if (tunnel) {
     timeline
       .to(tunnel, {
-        autoAlpha: 0.16,
-        scale: 0.62,
-        force3D: true,
-        duration: 0.12
-      }, 0.74)
-
-      .to(tunnel, {
-        autoAlpha: 0.55,
-        scale: 1.55,
+        autoAlpha: 0.12,
+        scale: 0.52,
         force3D: true,
         duration: 0.13
-      }, 0.84)
+      }, 0.7)
 
       .to(tunnel, {
-        autoAlpha: 0.92,
-        scale: 3.4,
+        autoAlpha: 0.46,
+        scale: 1.25,
         force3D: true,
-        duration: 0.095
-      }, 0.925)
+        duration: 0.14
+      }, 0.82)
+
+      .to(tunnel, {
+        autoAlpha: 0.78,
+        scale: 2.7,
+        force3D: true,
+        duration: 0.11
+      }, 0.915)
 
       .to(tunnel, {
         autoAlpha: 0,
         scale: 5.4,
         force3D: true,
-        duration: 0.045
-      }, 0.985);
+        duration: 0.055
+      }, 0.975);
   }
 
   if (worldInside) {
     timeline
       .to(worldInside, {
-        autoAlpha: 0.12,
+        autoAlpha: 0.1,
         scale: 1,
         force3D: true,
-        duration: 0.12
-      }, 0.82)
+        duration: 0.14
+      }, 0.74)
 
       .to(worldInside, {
-        autoAlpha: 0.48,
+        autoAlpha: 0.42,
         scale: 1,
         force3D: true,
-        duration: 0.11
-      }, 0.91)
+        duration: 0.14
+      }, 0.88)
 
       .to(worldInside, {
         autoAlpha: 1,
         scale: 1,
         force3D: true,
-        duration: 0.055
-      }, 0.968);
+        duration: 0.09
+      }, 0.955);
   }
 
   if (overlay) {
     timeline.to(overlay, {
       autoAlpha: 0,
       force3D: true,
-      duration: 0.12
-    }, 0.86);
+      duration: 0.16
+    }, 0.84);
   }
 
   timeline.set(sceneMount, {
@@ -449,11 +457,11 @@ function prepareInitialState({
   setProcessVar(section, "--process-intro", "0");
   setProcessVar(section, "--process-cards", "0");
   setProcessVar(section, "--process-handoff", "0");
- setProcessVar(section, "--work-zoom-progress", "0");
-setProcessVar(section, "--work-reveal-progress", "0");
-setProcessVar(section, "--work-scroll-progress", "0");
-setProcessVar(section, "--work-aperture-progress", "0");
-  
+  setProcessVar(section, "--work-zoom-progress", "0");
+  setProcessVar(section, "--work-reveal-progress", "0");
+  setProcessVar(section, "--work-scroll-progress", "0");
+  setProcessVar(section, "--work-aperture-progress", "0");
+
   gsap.set(sceneMount, {
     scale: 1,
     xPercent: 0,
@@ -477,7 +485,7 @@ setProcessVar(section, "--work-aperture-progress", "0");
   if (tunnel) {
     gsap.set(tunnel, {
       autoAlpha: 0,
-      scale: 0.18,
+      scale: 0.14,
       transformOrigin: "50% 50%",
       force3D: true,
       clearProps: "visibility,pointerEvents"
@@ -539,6 +547,7 @@ function prepareReducedState({
   setProcessVar(section, "--work-zoom-progress", "1");
   setProcessVar(section, "--work-reveal-progress", "1");
   setProcessVar(section, "--work-scroll-progress", "0");
+  setProcessVar(section, "--work-aperture-progress", "1");
 
   section.classList.remove("is-process-active");
   section.classList.add(
@@ -617,16 +626,12 @@ function updateByProgress({
   state
 }) {
   /*
-    This is the lock.
-    The section enters Our Work near the end, but does NOT exit immediately
-    when the user barely scrolls upward.
-
-    Lower EXIT_WORK_AT if you want it to be harder to leave.
+    Lock very late.
+    The transition should already look complete before this fires.
   */
-  const ENTER_WORK_AT = 0.985;
-  const EXIT_WORK_AT = 0.82;
+  const ENTER_WORK_AT = 0.998;
+  const EXIT_WORK_AT = 0.88;
 
-  const goingForward = direction >= 0;
   const goingBackward = direction < 0;
 
   if (!state.lockedInsideWork && progress >= ENTER_WORK_AT) {
@@ -636,6 +641,7 @@ function updateByProgress({
   if (state.lockedInsideWork && goingBackward && progress <= EXIT_WORK_AT) {
     state.lockedInsideWork = false;
     state.lastAppliedMode = "";
+
     releaseLockedWorkState({
       gsap,
       word,
@@ -647,39 +653,39 @@ function updateByProgress({
   }
 
   const locked = state.lockedInsideWork;
-
-  /*
-    If locked, freeze the visual signal at the final state.
-    This is the part the previous version did not fully do.
-  */
   const effectiveProgress = locked ? 1 : progress;
 
-const intro = mapRange(effectiveProgress, 0.02, 0.3);
-const cards = locked ? 1 : mapRange(effectiveProgress, 0.18, 0.64);
-const handoff = locked ? 1 : mapRange(effectiveProgress, 0.58, 1);
+  const intro = mapRange(effectiveProgress, 0.02, 0.3);
+  const cards = locked ? 1 : mapRange(effectiveProgress, 0.18, 0.62);
 
-const workZoom = locked ? 1 : mapRange(effectiveProgress, 0.58, 0.985);
-const workReveal = locked ? 1 : mapRange(effectiveProgress, 0.78, 0.992);
-const workAperture = locked ? 1 : mapRange(effectiveProgress, 0.76, 0.982);
-const workScroll = locked ? 0 : mapRange(effectiveProgress, 0.965, 1);
-  
+  /*
+    Handoff begins earlier but finishes later.
+    This creates travel instead of a quick switch.
+  */
+  const handoff = locked ? 1 : mapRange(effectiveProgress, 0.52, 1);
+
+  const workZoom = locked ? 1 : mapRange(effectiveProgress, 0.54, 0.995);
+  const workReveal = locked ? 1 : mapRange(effectiveProgress, 0.72, 0.996);
+  const workAperture = locked ? 1 : mapRange(effectiveProgress, 0.68, 0.997);
+  const workScroll = locked ? 0 : mapRange(effectiveProgress, 0.975, 1);
+
   setProcessVar(section, "--process-intro", intro.toFixed(4));
   setProcessVar(section, "--process-cards", cards.toFixed(4));
   setProcessVar(section, "--process-handoff", handoff.toFixed(4));
   setProcessVar(section, "--work-zoom-progress", workZoom.toFixed(4));
-  setProcessVar(section, "--work-aperture-progress", workAperture.toFixed(4));
   setProcessVar(section, "--work-reveal-progress", workReveal.toFixed(4));
+  setProcessVar(section, "--work-aperture-progress", workAperture.toFixed(4));
   setProcessVar(section, "--work-scroll-progress", workScroll.toFixed(4));
 
   if (workTrack) {
     workTrack.style.setProperty("--work-scroll-progress", workScroll.toFixed(4));
   }
 
-const workVisible = locked || workReveal > 0.02;
-const workInteractive = locked || workReveal >= 0.985;
-const workMode = locked || effectiveProgress >= 0.992;
-const insideWork = locked;
-  
+  const workVisible = locked || workReveal > 0.015;
+  const workInteractive = locked || effectiveProgress >= 0.997;
+  const workMode = locked || effectiveProgress >= 0.999;
+  const insideWork = locked;
+
   section.classList.toggle("is-work-visible", workVisible);
   section.classList.toggle("is-work-interactive", workInteractive);
   section.classList.toggle("is-work-mode", workMode);
@@ -766,6 +772,11 @@ function applyLockedWorkState({
     "is-inside-work"
   );
 
+  setProcessVar(section, "--work-aperture-progress", "1");
+  setProcessVar(section, "--work-reveal-progress", "1");
+  setProcessVar(section, "--work-zoom-progress", "1");
+  setProcessVar(section, "--work-scroll-progress", "0");
+
   if (worldInside) {
     worldInside.removeAttribute("aria-hidden");
     worldInside.classList.add("is-visible", "is-interactive");
@@ -784,9 +795,6 @@ function applyLockedWorkState({
   if (workTrack) {
     workTrack.style.setProperty("--work-scroll-progress", "0");
   }
-  setProcessVar(section, "--work-aperture-progress", "1");
-setProcessVar(section, "--work-reveal-progress", "1");
-setProcessVar(section, "--work-zoom-progress", "1");
 
   if (word) {
     gsap.set(word, {
@@ -825,12 +833,6 @@ function applyUnlockedState({
 
   state.lastAppliedMode = "unlocked";
 
-  /*
-    Do not clear transform/opacity here.
-    ScrollTrigger will render the timeline at the current scroll position.
-    We only clear properties that were manually forced for lock behavior.
-  */
-
   if (worldInside) {
     gsap.set(worldInside, {
       clearProps: "pointerEvents"
@@ -868,6 +870,7 @@ function releaseLockedWorkState({
 
   if (worldInside) {
     worldInside.classList.remove("is-interactive");
+
     gsap.set(worldInside, {
       clearProps: "pointerEvents"
     });
