@@ -52,10 +52,19 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger }) {
     scrollTrigger: {
       trigger: section,
       start: "top top",
-      end: () => `+=${Math.max(window.innerHeight * 8.4, 7800)}`,
-      pin: true,
-      scrub: 1.18,
-      anticipatePin: 1,
+      end: "bottom bottom",
+
+      /*
+        IMPORTANT:
+        Do NOT pin this section.
+
+        The PROCESS scene is already sticky in CSS.
+        The cards are normal HTML/CSS content.
+        Pinning the whole section stops the cards from naturally scrolling.
+      */
+      pin: false,
+
+      scrub: 1.05,
       invalidateOnRefresh: true,
 
       onUpdate: (self) => {
@@ -126,8 +135,8 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger }) {
 
   /*
     INTRO ONLY
-    No card logic belongs in this file.
-    Process cards should be plain HTML/CSS content.
+    This file does not select, hide, move, fade, or animate cards.
+    Cards stay normal HTML/CSS.
   */
   timeline
     .to(
@@ -189,8 +198,8 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger }) {
 
   /*
     HANDOFF
-    This only controls PROCESS word, the dark aperture, and Our Work reveal.
-    It does NOT touch .process-cards or .process-card.
+    Only controls PROCESS word, aperture, and Our Work reveal.
+    No card logic.
   */
   timeline
     .to(
@@ -567,7 +576,7 @@ function updateByProgress({
   section.classList.toggle("is-work-interactive", workInteractive);
 
   /*
-    Do not add is-inside-work during the scrub.
+    Do not add is-inside-work during scrub.
     That class has hard CSS states and can create jumps.
   */
   section.classList.remove("is-inside-work");
@@ -596,10 +605,6 @@ function updateByProgress({
     });
   }
 
-  /*
-    Keep compatibility with any UI helper,
-    but do not send card progress because cards are not JS-controlled.
-  */
   if (ui?.softenForHandoff) {
     ui.softenForHandoff(handoff);
   }
