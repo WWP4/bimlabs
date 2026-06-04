@@ -629,8 +629,10 @@ function updateByProgress({
     Lock very late.
     The transition should already look complete before this fires.
   */
-  const ENTER_WORK_AT = 0.998;
+  const ENTER_WORK_AT = 0.9994;
   const EXIT_WORK_AT = 0.88;
+  const WORK_MODE_AT = 0.999;
+  const WORK_INTERACTIVE_AT = 0.99935;
 
   const goingBackward = direction < 0;
 
@@ -666,7 +668,7 @@ function updateByProgress({
 
   const workZoom = locked ? 1 : mapRange(effectiveProgress, 0.54, 0.995);
   const workReveal = locked ? 1 : mapRange(effectiveProgress, 0.72, 0.996);
-  const workAperture = locked ? 1 : mapRange(effectiveProgress, 0.68, 0.997);
+  const workAperture = locked ? 1 : mapRange(effectiveProgress, 0.68, 0.9988);
   const workScroll = locked ? 0 : mapRange(effectiveProgress, 0.975, 1);
 
   setProcessVar(section, "--process-intro", intro.toFixed(4));
@@ -682,8 +684,8 @@ function updateByProgress({
   }
 
   const workVisible = locked || workReveal > 0.015;
-  const workInteractive = locked || effectiveProgress >= 0.997;
-  const workMode = locked || effectiveProgress >= 0.999;
+  const workInteractive = locked || effectiveProgress >= WORK_INTERACTIVE_AT;
+  const workMode = locked || effectiveProgress >= WORK_MODE_AT;
   const insideWork = locked;
 
   section.classList.toggle("is-work-visible", workVisible);

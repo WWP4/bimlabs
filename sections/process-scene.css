@@ -173,13 +173,15 @@
     The aperture grows almost full-screen through scroll,
     so the final class lock does not visually jump.
   */
+  --work-aperture-radius: calc(1.5vmax + (var(--work-aperture-progress, 0) * 118vmax));
+
   clip-path: circle(
-    calc(1.5vmax + (var(--work-aperture-progress, 0) * 118vmax))
+    var(--work-aperture-radius)
     at var(--process-c-x) var(--process-c-y)
   );
 
   -webkit-clip-path: circle(
-    calc(1.5vmax + (var(--work-aperture-progress, 0) * 118vmax))
+    var(--work-aperture-radius)
     at var(--process-c-x) var(--process-c-y)
   );
 
@@ -201,17 +203,27 @@
 
 /*
   Full takeover only after the visual travel is already complete.
-  This should not create the transition. It should only preserve the final state.
+  These classes must not be the animation: while work mode arms near the end,
+  the layer still uses the scroll-driven C aperture. The inside-work lock only
+  preserves the already-full aperture radius.
 */
-.process-3d.is-work-mode .process-world-inside,
+.process-3d.is-work-mode .process-world-inside {
+  opacity: 1;
+  visibility: visible;
+  transform: translate3d(0, 0, 0) scale(1);
+
+  clip-path: circle(var(--work-aperture-radius) at var(--process-c-x) var(--process-c-y));
+  -webkit-clip-path: circle(var(--work-aperture-radius) at var(--process-c-x) var(--process-c-y));
+}
+
 .process-3d.is-inside-work .process-world-inside {
   opacity: 1;
   visibility: visible;
   pointer-events: auto;
   transform: translate3d(0, 0, 0) scale(1);
 
-  clip-path: circle(145vmax at var(--process-c-x) var(--process-c-y));
-  -webkit-clip-path: circle(145vmax at var(--process-c-x) var(--process-c-y));
+  clip-path: circle(var(--work-aperture-radius) at var(--process-c-x) var(--process-c-y));
+  -webkit-clip-path: circle(var(--work-aperture-radius) at var(--process-c-x) var(--process-c-y));
 }
 
 .process-3d.is-work-interactive .process-world-inside {
@@ -357,8 +369,8 @@
   visibility: visible !important;
   pointer-events: auto !important;
   transform: translate3d(0, 0, 0) scale(1) !important;
-  clip-path: circle(145vmax at var(--process-c-x) var(--process-c-y)) !important;
-  -webkit-clip-path: circle(145vmax at var(--process-c-x) var(--process-c-y)) !important;
+  clip-path: circle(var(--work-aperture-radius) at var(--process-c-x) var(--process-c-y)) !important;
+  -webkit-clip-path: circle(var(--work-aperture-radius) at var(--process-c-x) var(--process-c-y)) !important;
 }
 
 .process-3d.is-inside-work .process-word,
