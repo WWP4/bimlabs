@@ -1,7 +1,5 @@
 // sections/process-scroll.js
 
-let workTakeoverLocked = false;
-
 export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger }) {
   const sceneMount = section?.querySelector("[data-process-scene]");
   const word = section?.querySelector(".process-word");
@@ -13,12 +11,16 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger }) {
 
   const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+  const state = {
+    lockedInsideWork: false,
+    previousProgress: 0,
+    lastAppliedMode: ""
+  };
+
   if (!section || !sceneMount || !word || !gsap || !ScrollTrigger) {
     console.warn("[Process] Missing required process elements.");
     return null;
   }
-
-  workTakeoverLocked = false;
 
   if (prefersReducedMotion) {
     prepareReducedState({
@@ -57,9 +59,9 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger }) {
       start: "top top",
       end: () => {
         const naturalDistance = Math.max(section.offsetHeight - window.innerHeight, 1);
-        const minimumDistance = window.innerHeight * 5.8;
+        const minimumDistance = window.innerHeight * 6;
 
-        return `+=${Math.max(naturalDistance, minimumDistance, 5600)}`;
+        return `+=${Math.max(naturalDistance, minimumDistance, 5800)}`;
       },
       pin: false,
       scrub: 0.24,
@@ -67,13 +69,19 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger }) {
 
       onUpdate: (self) => {
         updateByProgress({
+          gsap,
           section,
+          sceneMount,
+          word,
+          tunnel,
           worldInside,
           workTrack,
+          overlay,
           progress: self.progress,
           direction: self.direction,
           scene,
-          ui
+          ui,
+          state
         });
       },
 
@@ -87,11 +95,44 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger }) {
 
       onLeave: () => {
         section.classList.remove("is-process-active");
+
+        /*
+          If the user reaches the end of the PROCESS section, keep them inside
+          Our Work visually instead of letting the timeline flicker backward.
+        */
+        state.lockedInsideWork = true;
+        applyLockedWorkState({
+          gsap,
+          section,
+          word,
+          tunnel,
+          worldInside,
+          workTrack,
+          overlay,
+          state
+        });
       },
 
       onLeaveBack: () => {
-        section.classList.remove("is-process-active");
-        workTakeoverLocked = false;
+        state.lockedInsideWork = false;
+        state.lastAppliedMode = "";
+
+        section.classList.remove(
+          "is-process-active",
+          "is-work-visible",
+          "is-work-interactive",
+          "is-work-mode",
+          "is-inside-work"
+        );
+
+        releaseLockedWorkState({
+          gsap,
+          word,
+          tunnel,
+          worldInside,
+          overlay,
+          state
+        });
       }
     }
   });
@@ -121,7 +162,8 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger }) {
 
   timeline.eventCallback("onKill", () => {
     window.removeEventListener("resize", refreshOnResize);
-    workTakeoverLocked = false;
+    state.lockedInsideWork = false;
+    state.lastAppliedMode = "";
   });
 
   return timeline;
@@ -129,6 +171,7 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger }) {
 
 /* =========================================================
    INTRO
+   PROCESS comes forward, then holds while the cards scroll.
 ========================================================= */
 
 function addProcessIntro({ timeline, section, word, copy }) {
@@ -182,6 +225,8 @@ function addProcessIntro({ timeline, section, word, copy }) {
 
 /* =========================================================
    C / TUNNEL HANDOFF
+   The PROCESS word/tunnel creates the motion.
+   Our Work stays full-size behind the scene and fades in.
 ========================================================= */
 
 function addProcessTunnelHandoff({
@@ -205,71 +250,81 @@ function addProcessTunnelHandoff({
   if (worldInside) {
     timeline.set(worldInside, {
       autoAlpha: 0,
+      scale: 1,
+      transformOrigin: "50% 50%",
       force3D: true
     }, 0);
   }
 
+  /*
+    Timeline shape:
+    0.00–0.72  PROCESS + cards
+    0.72–0.86  camera starts pushing
+    0.86–0.98  tunnel / Our Work reveal
+    0.985+     Our Work takeover
+  */
+
   timeline
     .to(word, {
-      scale: 1.28,
-      xPercent: -0.8,
+      scale: 1.24,
+      xPercent: -0.7,
       yPercent: 0,
       autoAlpha: 0.94,
       force3D: true,
-      duration: 0.07
-    }, 0.735)
+      duration: 0.08
+    }, 0.72)
 
     .to(section, {
-      "--work-zoom-progress": 0.12,
+      "--work-zoom-progress": 0.15,
       "--work-reveal-progress": 0,
-      duration: 0.07
-    }, 0.735)
+      duration: 0.08
+    }, 0.72)
 
     .to(word, {
-      scale: 2.15,
-      xPercent: -2.35,
+      scale: 2.05,
+      xPercent: -2.1,
       autoAlpha: 0.98,
       force3D: true,
-      duration: 0.09
-    }, 0.805)
+      duration: 0.1
+    }, 0.8)
 
     .to(section, {
-      "--work-zoom-progress": 0.32,
-      "--work-reveal-progress": 0.06,
-      duration: 0.09
-    }, 0.805)
+      "--work-zoom-progress": 0.35,
+      "--work-reveal-progress": 0.08,
+      duration: 0.1
+    }, 0.8)
 
     .to(word, {
-      scale: 3.9,
-      xPercent: -5.1,
+      scale: 3.7,
+      xPercent: -4.8,
       autoAlpha: 1,
       force3D: true,
-      duration: 0.085
-    }, 0.885)
+      duration: 0.09
+    }, 0.88)
 
     .to(section, {
-      "--work-zoom-progress": 0.62,
-      "--work-reveal-progress": 0.34,
-      duration: 0.085
-    }, 0.885)
+      "--work-zoom-progress": 0.66,
+      "--work-reveal-progress": 0.42,
+      duration: 0.09
+    }, 0.88)
 
     .to(word, {
-      scale: 6.9,
-      xPercent: -8.6,
+      scale: 6.5,
+      xPercent: -8.2,
       autoAlpha: 1,
       force3D: true,
-      duration: 0.055
+      duration: 0.06
     }, 0.945)
 
     .to(section, {
-      "--work-zoom-progress": 0.86,
-      "--work-reveal-progress": 0.74,
-      duration: 0.055
+      "--work-zoom-progress": 0.9,
+      "--work-reveal-progress": 0.8,
+      duration: 0.06
     }, 0.945)
 
     .to(word, {
-      scale: 8.8,
-      xPercent: -10.4,
+      scale: 8.5,
+      xPercent: -10.2,
       autoAlpha: 0,
       force3D: true,
       duration: 0.035
@@ -286,22 +341,22 @@ function addProcessTunnelHandoff({
   if (tunnel) {
     timeline
       .to(tunnel, {
-        autoAlpha: 0.24,
-        scale: 0.85,
+        autoAlpha: 0.22,
+        scale: 0.82,
         force3D: true,
-        duration: 0.075
-      }, 0.83)
+        duration: 0.08
+      }, 0.82)
 
       .to(tunnel, {
         autoAlpha: 0.72,
-        scale: 2.35,
+        scale: 2.25,
         force3D: true,
-        duration: 0.105
+        duration: 0.11
       }, 0.9)
 
       .to(tunnel, {
         autoAlpha: 1,
-        scale: 4.8,
+        scale: 4.7,
         force3D: true,
         duration: 0.055
       }, 0.955)
@@ -317,19 +372,22 @@ function addProcessTunnelHandoff({
   if (worldInside) {
     timeline
       .to(worldInside, {
-        autoAlpha: 0.16,
+        autoAlpha: 0.18,
+        scale: 1,
         force3D: true,
         duration: 0.08
-      }, 0.875)
+      }, 0.87)
 
       .to(worldInside, {
-        autoAlpha: 0.62,
+        autoAlpha: 0.68,
+        scale: 1,
         force3D: true,
-        duration: 0.085
+        duration: 0.09
       }, 0.93)
 
       .to(worldInside, {
         autoAlpha: 1,
+        scale: 1,
         force3D: true,
         duration: 0.04
       }, 0.975);
@@ -339,7 +397,7 @@ function addProcessTunnelHandoff({
     timeline.to(overlay, {
       autoAlpha: 0,
       force3D: true,
-      duration: 0.08
+      duration: 0.09
     }, 0.91);
   }
 
@@ -363,13 +421,11 @@ function prepareInitialState({
   copy,
   overlay
 }) {
-  workTakeoverLocked = false;
-
   section.classList.remove(
     "is-process-active",
-    "is-work-mode",
     "is-work-visible",
     "is-work-interactive",
+    "is-work-mode",
     "is-inside-work"
   );
 
@@ -377,7 +433,6 @@ function prepareInitialState({
   setProcessVar(section, "--process-intro", "0");
   setProcessVar(section, "--process-cards", "0");
   setProcessVar(section, "--process-handoff", "0");
-
   setProcessVar(section, "--work-zoom-progress", "0");
   setProcessVar(section, "--work-reveal-progress", "0");
   setProcessVar(section, "--work-scroll-progress", "0");
@@ -398,7 +453,8 @@ function prepareInitialState({
     transformOrigin: "52% 50%",
     filter: "none",
     letterSpacing: "-0.06em",
-    force3D: true
+    force3D: true,
+    clearProps: "visibility,pointerEvents"
   });
 
   if (tunnel) {
@@ -406,7 +462,8 @@ function prepareInitialState({
       autoAlpha: 0,
       scale: 0.18,
       transformOrigin: "50% 50%",
-      force3D: true
+      force3D: true,
+      clearProps: "visibility,pointerEvents"
     });
   }
 
@@ -416,7 +473,9 @@ function prepareInitialState({
 
     gsap.set(worldInside, {
       autoAlpha: 0,
-      force3D: true
+      scale: 1,
+      force3D: true,
+      clearProps: "pointerEvents"
     });
   }
 
@@ -435,7 +494,8 @@ function prepareInitialState({
   if (overlay) {
     gsap.set(overlay, {
       autoAlpha: 1,
-      force3D: true
+      force3D: true,
+      clearProps: "visibility,pointerEvents"
     });
   }
 }
@@ -455,22 +515,19 @@ function prepareReducedState({
   copy,
   overlay
 }) {
-  workTakeoverLocked = true;
-
   setProcessVar(section, "--process-section-intensity", "1");
   setProcessVar(section, "--process-intro", "1");
   setProcessVar(section, "--process-cards", "1");
   setProcessVar(section, "--process-handoff", "0");
-
   setProcessVar(section, "--work-zoom-progress", "1");
   setProcessVar(section, "--work-reveal-progress", "1");
   setProcessVar(section, "--work-scroll-progress", "0");
 
   section.classList.remove("is-process-active");
   section.classList.add(
-    "is-work-mode",
     "is-work-visible",
     "is-work-interactive",
+    "is-work-mode",
     "is-inside-work"
   );
 
@@ -479,13 +536,16 @@ function prepareReducedState({
   });
 
   gsap.set(word, {
-    clearProps: "all"
+    autoAlpha: 0,
+    visibility: "hidden",
+    pointerEvents: "none"
   });
 
   if (tunnel) {
     gsap.set(tunnel, {
       autoAlpha: 0,
-      scale: 0
+      visibility: "hidden",
+      pointerEvents: "none"
     });
   }
 
@@ -495,7 +555,9 @@ function prepareReducedState({
 
     gsap.set(worldInside, {
       autoAlpha: 1,
-      clearProps: "transform"
+      scale: 1,
+      visibility: "visible",
+      pointerEvents: "auto"
     });
   }
 
@@ -512,28 +574,80 @@ function prepareReducedState({
 
   if (overlay) {
     gsap.set(overlay, {
-      autoAlpha: 1
+      autoAlpha: 0,
+      visibility: "hidden",
+      pointerEvents: "none"
     });
   }
 }
 
 /* =========================================================
-   PROGRESS VARIABLES + WORK LOCK
+   PROGRESS + REAL WORK LOCK
 ========================================================= */
 
-function updateByProgress({ section, worldInside, workTrack, progress, direction, scene, ui }) {
-  const intro = mapRange(progress, 0.02, 0.34);
-  const cards = mapRange(progress, 0.22, 0.76);
-  const handoff = mapRange(progress, 0.735, 1);
+function updateByProgress({
+  gsap,
+  section,
+  word,
+  tunnel,
+  worldInside,
+  workTrack,
+  overlay,
+  progress,
+  direction,
+  scene,
+  ui,
+  state
+}) {
+  /*
+    This is the lock.
+    The section enters Our Work near the end, but does NOT exit immediately
+    when the user barely scrolls upward.
 
-  const workZoom = mapRange(progress, 0.735, 0.985);
-  const workReveal = mapRange(progress, 0.86, 0.99);
-  const workScroll = mapRange(progress, 0.965, 1);
+    Lower EXIT_WORK_AT if you want it to be harder to leave.
+  */
+  const ENTER_WORK_AT = 0.985;
+  const EXIT_WORK_AT = 0.82;
+
+  const goingForward = direction >= 0;
+  const goingBackward = direction < 0;
+
+  if (!state.lockedInsideWork && progress >= ENTER_WORK_AT) {
+    state.lockedInsideWork = true;
+  }
+
+  if (state.lockedInsideWork && goingBackward && progress <= EXIT_WORK_AT) {
+    state.lockedInsideWork = false;
+    state.lastAppliedMode = "";
+    releaseLockedWorkState({
+      gsap,
+      word,
+      tunnel,
+      worldInside,
+      overlay,
+      state
+    });
+  }
+
+  const locked = state.lockedInsideWork;
+
+  /*
+    If locked, freeze the visual signal at the final state.
+    This is the part the previous version did not fully do.
+  */
+  const effectiveProgress = locked ? 1 : progress;
+
+  const intro = mapRange(effectiveProgress, 0.02, 0.34);
+  const cards = locked ? 1 : mapRange(effectiveProgress, 0.22, 0.76);
+  const handoff = locked ? 1 : mapRange(effectiveProgress, 0.735, 1);
+
+  const workZoom = locked ? 1 : mapRange(effectiveProgress, 0.735, 0.985);
+  const workReveal = locked ? 1 : mapRange(effectiveProgress, 0.86, 0.99);
+  const workScroll = locked ? 0 : mapRange(effectiveProgress, 0.965, 1);
 
   setProcessVar(section, "--process-intro", intro.toFixed(4));
   setProcessVar(section, "--process-cards", cards.toFixed(4));
   setProcessVar(section, "--process-handoff", handoff.toFixed(4));
-
   setProcessVar(section, "--work-zoom-progress", workZoom.toFixed(4));
   setProcessVar(section, "--work-reveal-progress", workReveal.toFixed(4));
   setProcessVar(section, "--work-scroll-progress", workScroll.toFixed(4));
@@ -542,27 +656,10 @@ function updateByProgress({ section, worldInside, workTrack, progress, direction
     workTrack.style.setProperty("--work-scroll-progress", workScroll.toFixed(4));
   }
 
-  /*
-    Work takeover lock:
-    - Enter once progress reaches 0.988.
-    - Stay inside even if the user scrolls slightly upward.
-    - Only exit if they scroll back meaningfully below 0.925.
-  */
-  const ENTER_WORK_AT = 0.988;
-  const EXIT_WORK_AT = 0.925;
-
-  if (!workTakeoverLocked && progress >= ENTER_WORK_AT) {
-    workTakeoverLocked = true;
-  }
-
-  if (workTakeoverLocked && direction < 0 && progress <= EXIT_WORK_AT) {
-    workTakeoverLocked = false;
-  }
-
-  const workVisible = workTakeoverLocked || workReveal > 0.02;
-  const workInteractive = workTakeoverLocked || workReveal >= 0.96;
-  const workMode = workTakeoverLocked || progress >= 0.972;
-  const insideWork = workTakeoverLocked;
+  const workVisible = locked || workReveal > 0.02;
+  const workInteractive = locked || workReveal >= 0.96;
+  const workMode = locked || effectiveProgress >= 0.972;
+  const insideWork = locked;
 
   section.classList.toggle("is-work-visible", workVisible);
   section.classList.toggle("is-work-interactive", workInteractive);
@@ -578,6 +675,28 @@ function updateByProgress({ section, worldInside, workTrack, progress, direction
     } else {
       worldInside.setAttribute("aria-hidden", "true");
     }
+  }
+
+  if (locked) {
+    applyLockedWorkState({
+      gsap,
+      section,
+      word,
+      tunnel,
+      worldInside,
+      workTrack,
+      overlay,
+      state
+    });
+  } else {
+    applyUnlockedState({
+      gsap,
+      word,
+      tunnel,
+      worldInside,
+      overlay,
+      state
+    });
   }
 
   if (scene?.setProgress) {
@@ -597,6 +716,156 @@ function updateByProgress({ section, worldInside, workTrack, progress, direction
       workReveal,
       workScroll,
       insideWork
+    });
+  }
+
+  state.previousProgress = progress;
+}
+
+/* =========================================================
+   LOCKED / UNLOCKED VISUAL STATES
+========================================================= */
+
+function applyLockedWorkState({
+  gsap,
+  section,
+  word,
+  tunnel,
+  worldInside,
+  workTrack,
+  overlay,
+  state
+}) {
+  if (state.lastAppliedMode === "locked") return;
+
+  state.lastAppliedMode = "locked";
+
+  section.classList.add(
+    "is-work-visible",
+    "is-work-interactive",
+    "is-work-mode",
+    "is-inside-work"
+  );
+
+  if (worldInside) {
+    worldInside.removeAttribute("aria-hidden");
+    worldInside.classList.add("is-visible", "is-interactive");
+
+    gsap.set(worldInside, {
+      autoAlpha: 1,
+      scale: 1,
+      xPercent: 0,
+      yPercent: 0,
+      visibility: "visible",
+      pointerEvents: "auto",
+      force3D: true
+    });
+  }
+
+  if (workTrack) {
+    workTrack.style.setProperty("--work-scroll-progress", "0");
+  }
+
+  if (word) {
+    gsap.set(word, {
+      autoAlpha: 0,
+      visibility: "hidden",
+      pointerEvents: "none"
+    });
+  }
+
+  if (tunnel) {
+    gsap.set(tunnel, {
+      autoAlpha: 0,
+      visibility: "hidden",
+      pointerEvents: "none"
+    });
+  }
+
+  if (overlay) {
+    gsap.set(overlay, {
+      autoAlpha: 0,
+      visibility: "hidden",
+      pointerEvents: "none"
+    });
+  }
+}
+
+function applyUnlockedState({
+  gsap,
+  word,
+  tunnel,
+  worldInside,
+  overlay,
+  state
+}) {
+  if (state.lastAppliedMode !== "locked") return;
+
+  state.lastAppliedMode = "unlocked";
+
+  /*
+    Do not clear transform/opacity here.
+    ScrollTrigger will render the timeline at the current scroll position.
+    We only clear properties that were manually forced for lock behavior.
+  */
+
+  if (worldInside) {
+    gsap.set(worldInside, {
+      clearProps: "pointerEvents"
+    });
+  }
+
+  if (word) {
+    gsap.set(word, {
+      clearProps: "visibility,pointerEvents"
+    });
+  }
+
+  if (tunnel) {
+    gsap.set(tunnel, {
+      clearProps: "visibility,pointerEvents"
+    });
+  }
+
+  if (overlay) {
+    gsap.set(overlay, {
+      clearProps: "visibility,pointerEvents"
+    });
+  }
+}
+
+function releaseLockedWorkState({
+  gsap,
+  word,
+  tunnel,
+  worldInside,
+  overlay,
+  state
+}) {
+  state.lastAppliedMode = "";
+
+  if (worldInside) {
+    worldInside.classList.remove("is-interactive");
+    gsap.set(worldInside, {
+      clearProps: "pointerEvents"
+    });
+  }
+
+  if (word) {
+    gsap.set(word, {
+      clearProps: "visibility,pointerEvents"
+    });
+  }
+
+  if (tunnel) {
+    gsap.set(tunnel, {
+      clearProps: "visibility,pointerEvents"
+    });
+  }
+
+  if (overlay) {
+    gsap.set(overlay, {
+      clearProps: "visibility,pointerEvents"
     });
   }
 }
