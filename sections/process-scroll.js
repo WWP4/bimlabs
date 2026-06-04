@@ -199,100 +199,7 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger, car
       0.31
     );
 
-  /*
-    CARDS
-  */
-  const cardStart = 0.32;
-  const cardGap = cardEls.length > 4 ? 0.102 : 0.122;
 
-  cardEls.forEach((card, index) => {
-    const side = index % 2 === 0 ? -1 : 1;
-    const start = cardStart + index * cardGap;
-
-    timeline
-      .set(
-        card,
-        {
-          zIndex: 20 + index
-        },
-        0
-      )
-
-      .to(
-        card,
-        {
-          autoAlpha: 0.14,
-          x: side * 28,
-          yPercent: 44,
-          scale: 0.965,
-          rotateX: 0,
-          force3D: true,
-          duration: 0.055,
-          ease: "power2.out"
-        },
-        start
-      )
-
-      .to(
-        card,
-        {
-          autoAlpha: 1,
-          x: 0,
-          yPercent: -44,
-          scale: 1,
-          rotateX: 0,
-          force3D: true,
-          duration: 0.115,
-          ease: "power2.out"
-        },
-        start + 0.045
-      )
-
-      .to(
-        card,
-        {
-          autoAlpha: 1,
-          x: 0,
-          yPercent: -52,
-          scale: 1,
-          rotateX: 0,
-          force3D: true,
-          duration: 0.1,
-          ease: "none"
-        },
-        start + 0.16
-      )
-
-      .to(
-        card,
-        {
-          autoAlpha: 0.22,
-          x: side * -16,
-          yPercent: -116,
-          scale: 0.975,
-          rotateX: 0,
-          force3D: true,
-          duration: 0.105,
-          ease: "power2.inOut"
-        },
-        start + 0.26
-      )
-
-      .to(
-        card,
-        {
-          autoAlpha: 0,
-          x: side * -24,
-          yPercent: -148,
-          scale: 0.96,
-          rotateX: 0,
-          force3D: true,
-          duration: 0.06,
-          ease: "none"
-        },
-        start + 0.36
-      );
-  });
 
   /*
     HANDOFF
@@ -633,21 +540,17 @@ function prepareInitialState({
     workTrack.style.setProperty("--work-scroll-progress", "0");
   }
 
-  cards.forEach((card, index) => {
-    const side = index % 2 === 0 ? -1 : 1;
-
-    gsap.set(card, {
-      autoAlpha: 0,
-      visibility: "visible",
-      x: side * 30,
-      yPercent: 42,
-      scale: 0.965,
-      rotateX: 0,
-      transformOrigin: "50% 52%",
-      force3D: true,
-      clearProps: "display"
-    });
+cards.forEach((card) => {
+  gsap.set(card, {
+    autoAlpha: 1,
+    visibility: "visible",
+    x: 0,
+    yPercent: 0,
+    scale: 1,
+    rotateX: 0,
+    clearProps: "transform"
   });
+});
 }
 
 /* =========================================================
