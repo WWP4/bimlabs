@@ -1,6 +1,6 @@
 /* =========================================================
    PROCESS SECTION
-   Premium camera handoff: PROCESS word → C aperture → Our Work
+   Premium pinned camera handoff: PROCESS → cards → C aperture → Our Work
 ========================================================= */
 
 :root {
@@ -40,11 +40,11 @@
   pointer-events: none;
 
   background:
-    radial-gradient(circle at 50% 45%, rgba(255,255,255,0.035), transparent 34%),
+    radial-gradient(circle at 50% 46%, rgba(245, 245, 240, 0.032), transparent 34%),
     linear-gradient(
       to bottom,
-      rgba(0,0,0,0.96),
-      rgba(2,2,2,0.56) 34%,
+      rgba(0, 0, 0, 0.98),
+      rgba(2, 2, 2, 0.6) 34%,
       #020202 100%
     );
 
@@ -64,16 +64,17 @@
   place-items: center;
 
   overflow: hidden;
+  background: #020202;
+
   perspective: 1100px;
   transform-style: preserve-3d;
   pointer-events: none;
 
-  background: #020202;
   will-change: transform;
   backface-visibility: hidden;
 }
 
-/* subtle edge darkening during tunnel */
+/* subtle tunnel darkness */
 .process-scene::after {
   content: "";
   position: absolute;
@@ -90,7 +91,7 @@
       rgba(0, 0, 0, 0.9) 100%
     );
 
-  opacity: calc(var(--process-handoff, 0) * 0.58);
+  opacity: calc(var(--process-handoff, 0) * 0.56);
 }
 
 .process-3d.is-inside-work .process-scene::after {
@@ -99,7 +100,7 @@
 
 /* =========================================================
    OUR WORK DESTINATION LAYER
-   Critical fix: this no longer styles the inside content.
+   Full-screen layer. Does not restyle its inner content.
 ========================================================= */
 
 .process-world-inside {
@@ -113,35 +114,34 @@
 
   padding: 0;
   margin: 0;
+  overflow: hidden;
 
   background: #020202;
-  overflow: hidden;
 
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
 
-  transform: translate3d(0, 44px, -260px) scale(0.8);
+  transform: translate3d(0, 44px, -260px) scale(0.88);
   transform-origin: var(--process-c-x) var(--process-c-y);
 
   clip-path: circle(0% at var(--process-c-x) var(--process-c-y));
   -webkit-clip-path: circle(0% at var(--process-c-x) var(--process-c-y));
 
-  filter: blur(12px);
+  filter: blur(10px);
 
   will-change: transform, opacity, clip-path, -webkit-clip-path, filter;
   backface-visibility: hidden;
 }
 
-/* Do not let old destination-card styles destroy Our Work */
-.process-world-inside p,
-.process-world-inside h1,
-.process-world-inside h2,
-.process-world-inside h3 {
-  max-width: none;
+/*
+  Prevent this wrapper from turning Our Work into a title-card.
+  Let your Our Work CSS own its own typography/layout.
+*/
+.process-world-inside > * {
+  position: relative;
 }
 
-/* Visible during handoff, but not clickable until final lock */
 .process-world-inside.is-visible,
 .process-3d.is-work-visible .process-world-inside {
   visibility: visible;
@@ -161,8 +161,8 @@
   transform: translate3d(0, 0, 0) scale(1) !important;
   filter: blur(0px) !important;
 
-  clip-path: circle(150% at var(--process-c-x) var(--process-c-y)) !important;
-  -webkit-clip-path: circle(150% at var(--process-c-x) var(--process-c-y)) !important;
+  clip-path: circle(155% at var(--process-c-x) var(--process-c-y)) !important;
+  -webkit-clip-path: circle(155% at var(--process-c-x) var(--process-c-y)) !important;
 }
 
 /* =========================================================
@@ -226,10 +226,10 @@
   background:
     radial-gradient(
       circle,
-      rgba(0,0,0,0.98) 0 34%,
-      rgba(0,0,0,0.72) 48%,
-      rgba(0,0,0,0.24) 66%,
-      rgba(0,0,0,0) 78%
+      rgba(0, 0, 0, 0.98) 0 34%,
+      rgba(0, 0, 0, 0.72) 48%,
+      rgba(0, 0, 0, 0.24) 66%,
+      rgba(0, 0, 0, 0) 78%
     );
 
   opacity: 0;
@@ -306,11 +306,22 @@
   color: var(--process-muted);
 }
 
-.process-cards,
-.process-card {
-  pointer-events: auto;
+.process-cards {
+  visibility: visible;
+  pointer-events: none;
 }
 
+.process-card {
+  visibility: visible;
+  pointer-events: auto;
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+}
+
+/*
+  Only hide the process UI after the final landing.
+  Do not hide it during is-work-visible.
+*/
 .process-3d.is-inside-work .process-overlay {
   opacity: 0 !important;
   visibility: hidden !important;
@@ -376,6 +387,13 @@
     left: auto;
     width: min(560px, 100%);
     margin-bottom: 80px;
+  }
+
+  .process-3d.is-inside-work .process-overlay,
+  .process-3d.is-inside-work .process-word {
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
   }
 }
 
