@@ -24,8 +24,7 @@
 
 .process-3d {
   position: relative;
-  height: 100svh;
-  min-height: 100svh;
+  min-height: 500vh;
   overflow: hidden;
   isolation: isolate;
   background: var(--process-bg);
