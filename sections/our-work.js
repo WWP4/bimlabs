@@ -1,26 +1,16 @@
 /* ==========================================================
    BIM LABS STUDIO — OUR WORK INTERACTION ONLY
 
-   Important:
-   This file does NOT control scroll anymore.
+   This file does NOT control scroll.
+   process-scroll.js owns the PROCESS → Our Work reveal.
 
-   process-scroll.js owns:
-   - Our Work reveal timing
-   - Our Work visibility
-   - Our Work interactivity
-   - --work-zoom-progress
-   - --work-reveal-progress
-   - --work-scroll-progress
-   - is-work-mode / is-inside-work states
-
-   This file only owns:
-   - project hover
-   - project focus
+   This file owns:
+   - project hover preview
    - project click
-   - detail panel content
-   - previous / next controls
-   - keyboard navigation while Our Work is interactive
-   ========================================================== */
+   - detail panel open / close
+   - prev / next controls
+   - keyboard navigation when Our Work is interactive
+========================================================== */
 
 (() => {
   const projects = [
@@ -119,6 +109,7 @@
   const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   let activeIndex = 0;
+  let detailIsOpen = false;
   let changeTimer = null;
 
   function clampIndex(index) {
@@ -128,10 +119,12 @@
   function isWorkInteractive() {
     if (!workWorld) return true;
 
+    const processSection = workWorld.closest(".process-3d");
+
     return (
       workWorld.classList.contains("is-interactive") ||
-      workWorld.closest(".process-3d")?.classList.contains("is-work-interactive") ||
-      workWorld.closest(".process-3d")?.classList.contains("is-inside-work")
+      processSection?.classList.contains("is-work-interactive") ||
+      processSection?.classList.contains("is-inside-work")
     );
   }
 
@@ -162,27 +155,26 @@
 
     changeTimer = window.setTimeout(() => {
       detail.classList.remove("is-changing");
-    }, 280);
+    }, 260);
   }
 
-  function setActiveProject(index) {
-    if (!projects.length) return;
+  function clearPreviewStates() {
+    projectButtons.forEach((button) => {
+      button.classList.remove("is-previewing");
+    });
+  }
 
+  function setPreviewProject(index) {
     const safeIndex = clampIndex(index);
-    const project = projects[safeIndex];
-
-    if (!project) return;
-
-    const alreadyActive =
-      safeIndex === activeIndex &&
-      projectButtons[safeIndex]?.classList.contains("is-active");
-
-    if (alreadyActive) return;
-
-    activeIndex = safeIndex;
 
     projectButtons.forEach((button, buttonIndex) => {
-      const isActive = buttonIndex === safeIndex;
+      button.classList.toggle("is-previewing", buttonIndex === safeIndex);
+    });
+  }
+
+  function setActiveButton(index) {
+    projectButtons.forEach((button, buttonIndex) => {
+      const isActive = buttonIndex === index;
 
       button.classList.toggle("is-active", isActive);
       button.setAttribute("aria-pressed", isActive ? "true" : "false");
@@ -193,6 +185,19 @@
         button.removeAttribute("aria-current");
       }
     });
+  }
+
+  function renderProject(index) {
+    if (!projects.length) return;
+
+    const safeIndex = clampIndex(index);
+    const project = projects[safeIndex];
+
+    if (!project) return;
+
+    activeIndex = safeIndex;
+
+    setActiveButton(safeIndex);
 
     if (numberEl) numberEl.textContent = project.number;
     if (titleEl) titleEl.textContent = project.title;
@@ -202,7 +207,50 @@
     if (roleEl) roleEl.textContent = project.role;
 
     renderServices(project.services);
+  }
+
+  function openDetail(index) {
+    renderProject(index);
+
+    detailIsOpen = true;
+    root.classList.add("has-open-detail");
+
+    if (detail) {
+      detail.classList.add("is-open");
+      detail.classList.remove("is-muted");
+      detail.removeAttribute("aria-hidden");
+    }
+
+    clearPreviewStates();
     animateDetail();
+  }
+
+  function closeDetail() {
+    detailIsOpen = false;
+    root.classList.remove("has-open-detail");
+
+    if (detail) {
+      detail.classList.remove("is-open", "is-muted", "is-changing");
+      detail.setAttribute("aria-hidden", "true");
+    }
+
+    projectButtons.forEach((button) => {
+      button.classList.remove("is-active", "is-previewing");
+      button.setAttribute("aria-pressed", "false");
+      button.removeAttribute("aria-current");
+    });
+  }
+
+  function moveProject(delta) {
+    const nextIndex = clampIndex(activeIndex + delta);
+
+    if (detailIsOpen) {
+      openDetail(nextIndex);
+      return;
+    }
+
+    setPreviewProject(nextIndex);
+    activeIndex = nextIndex;
   }
 
   function setupProjectEvents() {
@@ -210,20 +258,30 @@
       const index = Number(button.dataset.workProject || 0);
 
       button.setAttribute("type", "button");
-      button.setAttribute("aria-pressed", index === activeIndex ? "true" : "false");
+      button.setAttribute("aria-pressed", "false");
+      button.removeAttribute("aria-current");
 
       button.addEventListener("mouseenter", () => {
         if (!isWorkInteractive()) return;
-        setActiveProject(index);
+        setPreviewProject(index);
       });
 
       button.addEventListener("focus", () => {
         if (!isWorkInteractive()) return;
-        setActiveProject(index);
+        setPreviewProject(index);
+      });
+
+      button.addEventListener("mouseleave", () => {
+        button.classList.remove("is-previewing");
+      });
+
+      button.addEventListener("blur", () => {
+        button.classList.remove("is-previewing");
       });
 
       button.addEventListener("click", () => {
-        setActiveProject(index);
+        if (!isWorkInteractive()) return;
+        openDetail(index);
       });
     });
 
@@ -231,7 +289,8 @@
       prevBtn.setAttribute("type", "button");
 
       prevBtn.addEventListener("click", () => {
-        setActiveProject(activeIndex - 1);
+        if (!isWorkInteractive()) return;
+        openDetail(activeIndex - 1);
       });
     }
 
@@ -239,7 +298,8 @@
       nextBtn.setAttribute("type", "button");
 
       nextBtn.addEventListener("click", () => {
-        setActiveProject(activeIndex + 1);
+        if (!isWorkInteractive()) return;
+        openDetail(activeIndex + 1);
       });
     }
 
@@ -247,8 +307,7 @@
       closeBtn.setAttribute("type", "button");
 
       closeBtn.addEventListener("click", () => {
-        if (!detail) return;
-        detail.classList.toggle("is-muted");
+        closeDetail();
       });
     }
 
@@ -263,14 +322,21 @@
 
       if (isTyping) return;
 
+      if (event.key === "Escape" && detailIsOpen) {
+        event.preventDefault();
+        closeDetail();
+        return;
+      }
+
       if (event.key === "ArrowUp" || event.key === "ArrowLeft") {
         event.preventDefault();
-        setActiveProject(activeIndex - 1);
+        moveProject(-1);
+        return;
       }
 
       if (event.key === "ArrowDown" || event.key === "ArrowRight") {
         event.preventDefault();
-        setActiveProject(activeIndex + 1);
+        moveProject(1);
       }
     });
   }
@@ -279,7 +345,13 @@
     if (!projectButtons.length) return;
 
     setupProjectEvents();
-    setActiveProject(0);
+
+    /*
+      Preload the first project content into the hidden detail panel,
+      but do not open the panel until the user clicks a project.
+    */
+    renderProject(0);
+    closeDetail();
   }
 
   if (document.readyState === "loading") {
