@@ -470,3 +470,20 @@
     filter: none !important;
   }
 }
+
+
+.process-3d.is-inside-work .process-world-inside {
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+  transform: translate3d(0, 0, 0) scale(1) !important;
+}
+
+.process-3d.is-inside-work .process-word,
+.process-3d.is-inside-work .process-void,
+.process-3d.is-inside-work .process-overlay {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
