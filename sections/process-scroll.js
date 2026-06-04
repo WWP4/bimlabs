@@ -1,21 +1,15 @@
 // sections/process-scroll.js
 
-export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger }) {
+export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger, cards = [] }) {
   const sceneMount = section?.querySelector("[data-process-scene]");
   const word = section?.querySelector(".process-word");
-  const tunnel = section?.querySelector(".process-void");
+  const voidTarget = section?.querySelector(".process-void");
   const worldInside = section?.querySelector(".process-world-inside");
-  const workTrack = section?.querySelector("[data-work-track]");
   const copy = section?.querySelector(".process-copy");
-  const overlay = section?.querySelector(".process-overlay");
+  const cardTrack = section?.querySelector(".process-cards");
+  const workTrack = section?.querySelector("[data-work-track]");
 
   const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-  const state = {
-    lockedInsideWork: false,
-    lastAppliedMode: "",
-    previousProgress: 0
-  };
 
   if (!section || !sceneMount || !word || !gsap || !ScrollTrigger) {
     console.warn("[Process] Missing required process elements.");
@@ -26,13 +20,13 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger }) {
     prepareReducedState({
       gsap,
       section,
-      sceneMount,
       word,
-      tunnel,
+      voidTarget,
       worldInside,
-      workTrack,
       copy,
-      overlay
+      cardTrack,
+      workTrack,
+      cards
     });
 
     return null;
@@ -43,11 +37,12 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger }) {
     section,
     sceneMount,
     word,
-    tunnel,
+    voidTarget,
     worldInside,
-    workTrack,
     copy,
-    overlay
+    cardTrack,
+    workTrack,
+    cards
   });
 
   const timeline = gsap.timeline({
@@ -57,42 +52,20 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger }) {
     scrollTrigger: {
       trigger: section,
       start: "top top",
-      end: () => {
-        const naturalDistance = Math.max(section.offsetHeight - window.innerHeight, 1);
-        const cinematicDistance = window.innerHeight * 7.15;
-
-        return `+=${Math.max(naturalDistance, cinematicDistance, 6800)}`;
-      },
-
-      /*
-        Do not pin here if the parent section already handles the sticky/pinned structure.
-        This file controls the camera, not layout ownership.
-      */
-      pin: false,
-
-      /*
-        0.8 - 0.95 is the sweet spot:
-        smooth enough to remove frame-by-frame scroll,
-        not so delayed that it feels disconnected.
-      */
-      scrub: 0.88,
-      invalidateOnRefresh: true,
+      end: () => `+=${Math.max(window.innerHeight * 7.15, 7100)}`,
+      pin: true,
+      scrub: 0.95,
       anticipatePin: 1,
+      invalidateOnRefresh: true,
 
       onUpdate: (self) => {
         updateByProgress({
-          gsap,
+          progress: self.progress,
           section,
-          word,
-          tunnel,
           worldInside,
           workTrack,
-          overlay,
-          progress: self.progress,
-          direction: self.direction,
           scene,
-          ui,
-          state
+          ui
         });
       },
 
@@ -106,371 +79,271 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger }) {
 
       onLeave: () => {
         section.classList.remove("is-process-active");
-        state.lockedInsideWork = true;
-
-        applyLockedWorkState({
-          gsap,
-          section,
-          word,
-          tunnel,
-          worldInside,
-          workTrack,
-          overlay,
-          state
-        });
+        section.classList.add("is-inside-work", "is-work-visible", "is-work-interactive");
       },
 
       onLeaveBack: () => {
-        state.lockedInsideWork = false;
-        state.lastAppliedMode = "";
-
         section.classList.remove(
           "is-process-active",
+          "is-inside-work",
           "is-work-visible",
-          "is-work-interactive",
-          "is-work-mode",
-          "is-inside-work"
+          "is-work-interactive"
         );
-
-        releaseLockedWorkState({
-          gsap,
-          word,
-          tunnel,
-          worldInside,
-          overlay,
-          state
-        });
       }
     }
   });
 
-  addProcessIntro({
-    timeline,
-    section,
-    word,
-    copy
-  });
-
-  addProcessTunnelHandoff({
-    timeline,
-    section,
-    sceneMount,
-    word,
-    tunnel,
-    worldInside,
-    overlay
-  });
-
-  const refreshOnResize = debounce(() => {
-    ScrollTrigger.refresh();
-  }, 180);
-
-  window.addEventListener("resize", refreshOnResize);
-
-  timeline.eventCallback("onKill", () => {
-    window.removeEventListener("resize", refreshOnResize);
-    state.lockedInsideWork = false;
-    state.lastAppliedMode = "";
-  });
-
-  return timeline;
-}
-
-/* =========================================================
-   INTRO
-========================================================= */
-
-function addProcessIntro({ timeline, section, word, copy }) {
+  /*
+    INTRO
+    This is close to the old version because that part felt better.
+  */
   timeline
     .to(section, {
       "--process-section-intensity": 1,
-      duration: 0.14
+      duration: 0.12
     }, 0)
 
     .to(word, {
-      autoAlpha: 0.64,
-      scale: 0.58,
+      autoAlpha: 0.88,
+      scale: 1,
       xPercent: 0,
-      yPercent: 18,
-      letterSpacing: "-0.062em",
+      yPercent: 0,
+      letterSpacing: "-0.085em",
+      filter: "blur(0px)",
       force3D: true,
-      duration: 0.14
+      duration: 0.2
     }, 0)
 
     .to(copy, {
       autoAlpha: 1,
       y: 0,
       force3D: true,
-      duration: 0.16
-    }, 0.055)
+      duration: 0.12
+    }, 0.08)
 
     .to(word, {
-      autoAlpha: 0.9,
-      scale: 0.92,
-      xPercent: 0,
-      yPercent: 0,
-      letterSpacing: "-0.083em",
-      force3D: true,
-      duration: 0.24
-    }, 0.14)
-
-    .to(word, {
-      scale: 1.04,
+      scale: 1.16,
       autoAlpha: 0.92,
       force3D: true,
       duration: 0.22
-    }, 0.38)
+    }, 0.2)
 
     .to(copy, {
       autoAlpha: 0,
       y: -24,
       force3D: true,
-      duration: 0.18
-    }, 0.46);
-}
-
-/* =========================================================
-   C / TUNNEL HANDOFF
-========================================================= */
-
-function addProcessTunnelHandoff({
-  timeline,
-  section,
-  sceneMount,
-  word,
-  tunnel,
-  worldInside,
-  overlay
-}) {
-  if (tunnel) {
-    timeline.set(tunnel, {
-      autoAlpha: 0,
-      scale: 0.16,
-      transformOrigin: "50% 50%",
-      force3D: true
-    }, 0);
-  }
-
-  if (worldInside) {
-    timeline.set(worldInside, {
-      autoAlpha: 0,
-      scale: 1.035,
-      xPercent: 0,
-      yPercent: 0,
-      transformOrigin: "50% 50%",
-      force3D: true
-    }, 0);
-  }
+      duration: 0.14
+    }, 0.27);
 
   /*
-    The handoff is intentionally stretched.
-    The important fix:
-    - Our Work starts appearing earlier, but quietly.
-    - It does not become "the section" until the camera has already passed through.
-    - The word fades only at the very end.
+    CARDS
+    Old flow kept because it felt more like scrolling through the page.
   */
+  const cardStart = 0.3;
+  const cardGap = 0.14;
 
+  cards.forEach((card, index) => {
+    const side = index % 2 === 0 ? -1 : 1;
+    const start = cardStart + index * cardGap;
+
+    timeline
+      .set(card, {
+        zIndex: cards.length + index
+      }, 0)
+
+      .to(card, {
+        autoAlpha: 0.18,
+        x: side * 34,
+        yPercent: 34,
+        scale: 0.965,
+        rotateX: 0,
+        force3D: true,
+        duration: 0.045,
+        ease: "power2.out"
+      }, start)
+
+      .to(card, {
+        autoAlpha: 1,
+        x: 0,
+        yPercent: -50,
+        scale: 1,
+        rotateX: 0,
+        force3D: true,
+        duration: 0.085,
+        ease: "power2.out"
+      }, start + 0.045)
+
+      .to(card, {
+        autoAlpha: 1,
+        x: 0,
+        yPercent: -55,
+        scale: 1,
+        rotateX: 0,
+        force3D: true,
+        duration: 0.085,
+        ease: "none"
+      }, start + 0.13)
+
+      .to(card, {
+        autoAlpha: 0.16,
+        x: side * -18,
+        yPercent: -122,
+        scale: 0.975,
+        rotateX: 0,
+        force3D: true,
+        duration: 0.095,
+        ease: "power2.inOut"
+      }, start + 0.215)
+
+      .to(card, {
+        autoAlpha: 0,
+        x: side * -28,
+        yPercent: -155,
+        scale: 0.96,
+        rotateX: 0,
+        force3D: true,
+        duration: 0.045,
+        ease: "none"
+      }, start + 0.31);
+  });
+
+  /*
+    HANDOFF
+    This keeps the old premium-feeling camera move,
+    but the destination is now a real full-screen Our Work layer.
+  */
   timeline
-    .to(word, {
-      scale: 1.1,
-      xPercent: -0.12,
-      yPercent: 0,
-      autoAlpha: 0.96,
-      force3D: true,
-      duration: 0.16
-    }, 0.54)
-
     .to(section, {
-      "--work-zoom-progress": 0.06,
-      "--work-reveal-progress": 0,
-      "--work-aperture-progress": 0.01,
-      duration: 0.16
-    }, 0.54)
+      "--process-handoff": 0.16,
+      duration: 0.04
+    }, 0.9)
 
     .to(word, {
-      scale: 1.34,
-      xPercent: -0.48,
-      yPercent: 0,
-      autoAlpha: 1,
-      force3D: true,
-      duration: 0.15
-    }, 0.66)
-
-    .to(section, {
-      "--work-zoom-progress": 0.14,
-      "--work-reveal-progress": 0.01,
-      "--work-aperture-progress": 0.045,
-      duration: 0.15
-    }, 0.66)
-
-    .to(word, {
-      scale: 1.76,
-      xPercent: -1.05,
-      yPercent: 0,
-      autoAlpha: 1,
-      force3D: true,
-      duration: 0.14
-    }, 0.765)
-
-    .to(section, {
-      "--work-zoom-progress": 0.26,
-      "--work-reveal-progress": 0.045,
-      "--work-aperture-progress": 0.14,
-      duration: 0.14
-    }, 0.765)
-
-    .to(word, {
-      scale: 2.48,
-      xPercent: -2.1,
-      yPercent: 0,
-      autoAlpha: 1,
+      scale: 1.42,
+      autoAlpha: 0.78,
+      filter: "blur(0px)",
       force3D: true,
       duration: 0.12
-    }, 0.855)
+    }, 0.91)
 
-    .to(section, {
-      "--work-zoom-progress": 0.44,
-      "--work-reveal-progress": 0.16,
-      "--work-aperture-progress": 0.34,
-      duration: 0.12
-    }, 0.855)
+    .to(cards, {
+      autoAlpha: 0,
+      duration: 0.06
+    }, 0.915)
 
-    .to(word, {
-      scale: 3.72,
-      xPercent: -4.0,
-      yPercent: 0,
-      autoAlpha: 0.96,
+    .to(voidTarget, {
+      autoAlpha: 0.9,
+      scale: 1,
       force3D: true,
-      duration: 0.085
-    }, 0.928)
+      duration: 0.055
+    }, 0.925)
 
-    .to(section, {
-      "--work-zoom-progress": 0.68,
-      "--work-reveal-progress": 0.46,
-      "--work-aperture-progress": 0.68,
-      duration: 0.085
-    }, 0.928)
-
-    .to(word, {
-      scale: 5.7,
-      xPercent: -6.9,
-      yPercent: 0,
-      autoAlpha: 0.54,
+    .to(worldInside, {
+      autoAlpha: 0,
+      visibility: "visible",
+      clipPath: "circle(7% at 51.8% 50%)",
+      webkitClipPath: "circle(7% at 51.8% 50%)",
+      y: 26,
+      scale: 0.86,
+      filter: "blur(10px)",
       force3D: true,
-      duration: 0.052
-    }, 0.972)
+      duration: 0.06
+    }, 0.935)
 
     .to(section, {
-      "--work-zoom-progress": 0.9,
-      "--work-reveal-progress": 0.86,
-      "--work-aperture-progress": 0.94,
-      duration: 0.052
-    }, 0.972)
+      "--process-handoff": 0.42,
+      duration: 0.07
+    }, 0.945)
 
     .to(word, {
-      scale: 7.8,
-      xPercent: -9.6,
-      yPercent: 0,
+      scale: 3.15,
+      xPercent: -3.8,
+      autoAlpha: 0.88,
+      filter: "blur(0.8px)",
+      force3D: true,
+      duration: 0.07
+    }, 0.955)
+
+    .to(voidTarget, {
+      scale: 3.7,
+      autoAlpha: 0.86,
+      force3D: true,
+      duration: 0.07
+    }, 0.955)
+
+    .to(worldInside, {
+      autoAlpha: 0.42,
+      clipPath: "circle(28% at 51.8% 50%)",
+      webkitClipPath: "circle(28% at 51.8% 50%)",
+      y: 8,
+      scale: 0.94,
+      filter: "blur(5px)",
+      force3D: true,
+      duration: 0.075
+    }, 0.975)
+
+    .to(section, {
+      "--process-handoff": 0.84,
+      duration: 0.08
+    }, 0.985)
+
+    .to(word, {
+      scale: 12.5,
+      xPercent: -13.5,
+      autoAlpha: 0,
+      filter: "blur(14px)",
+      force3D: true,
+      duration: 0.14
+    }, 1)
+
+    .to(voidTarget, {
+      scale: 18,
       autoAlpha: 0,
       force3D: true,
-      duration: 0.024
-    }, 0.993)
+      duration: 0.13
+    }, 1)
+
+    .to(worldInside, {
+      autoAlpha: 1,
+      clipPath: "circle(150% at 51.8% 50%)",
+      webkitClipPath: "circle(150% at 51.8% 50%)",
+      scale: 1,
+      y: 0,
+      filter: "blur(0px)",
+      force3D: true,
+      duration: 0.16
+    }, 1)
 
     .to(section, {
-      "--work-zoom-progress": 1,
-      "--work-reveal-progress": 1,
-      "--work-aperture-progress": 1,
-      "--work-scroll-progress": 0,
       "--process-section-intensity": 0.08,
-      duration: 0.024
-    }, 0.993);
+      "--process-handoff": 1,
+      duration: 0.1
+    }, 1.01)
 
-  if (tunnel) {
-    timeline
-      .to(tunnel, {
-        autoAlpha: 0.08,
-        scale: 0.44,
-        force3D: true,
-        duration: 0.12
-      }, 0.69)
+    .add(() => {
+      section.classList.add("is-work-visible", "is-work-interactive", "is-inside-work");
 
-      .to(tunnel, {
-        autoAlpha: 0.28,
-        scale: 0.95,
-        force3D: true,
-        duration: 0.13
-      }, 0.82)
+      if (worldInside) {
+        worldInside.removeAttribute("aria-hidden");
+        worldInside.classList.add("is-visible", "is-interactive");
+      }
 
-      .to(tunnel, {
-        autoAlpha: 0.62,
-        scale: 2.05,
-        force3D: true,
-        duration: 0.1
-      }, 0.925)
+      if (workTrack) {
+        workTrack.style.setProperty("--work-scroll-progress", "0");
+      }
+    }, 1.08);
 
-      .to(tunnel, {
-        autoAlpha: 0,
-        scale: 4.8,
-        force3D: true,
-        duration: 0.058
-      }, 0.972);
-  }
+  const refresh = debounce(() => {
+    ScrollTrigger.refresh();
+  }, 150);
 
-  if (worldInside) {
-    timeline
-      .to(worldInside, {
-        autoAlpha: 0.04,
-        scale: 1.03,
-        force3D: true,
-        duration: 0.11
-      }, 0.76)
+  window.addEventListener("resize", refresh);
 
-      .to(worldInside, {
-        autoAlpha: 0.16,
-        scale: 1.022,
-        force3D: true,
-        duration: 0.12
-      }, 0.875)
+  timeline.eventCallback("onKill", () => {
+    window.removeEventListener("resize", refresh);
+  });
 
-      .to(worldInside, {
-        autoAlpha: 0.58,
-        scale: 1.01,
-        force3D: true,
-        duration: 0.09
-      }, 0.945)
-
-      .to(worldInside, {
-        autoAlpha: 1,
-        scale: 1,
-        force3D: true,
-        duration: 0.045
-      }, 0.985);
-  }
-
-  if (overlay) {
-    timeline
-      .to(overlay, {
-        autoAlpha: 0.72,
-        force3D: true,
-        duration: 0.08
-      }, 0.7)
-
-      .to(overlay, {
-        autoAlpha: 0.18,
-        force3D: true,
-        duration: 0.13
-      }, 0.89)
-
-      .to(overlay, {
-        autoAlpha: 0,
-        force3D: true,
-        duration: 0.05
-      }, 0.97);
-  }
-
-  timeline.set(sceneMount, {
-    clearProps: "filter"
-  }, 1);
+  return timeline;
 }
 
 /* =========================================================
@@ -482,56 +355,48 @@ function prepareInitialState({
   section,
   sceneMount,
   word,
-  tunnel,
+  voidTarget,
   worldInside,
-  workTrack,
   copy,
-  overlay
+  cardTrack,
+  workTrack,
+  cards
 }) {
   section.classList.remove(
     "is-process-active",
     "is-work-visible",
     "is-work-interactive",
-    "is-work-mode",
     "is-inside-work"
   );
 
-  setProcessVar(section, "--process-section-intensity", "0");
-  setProcessVar(section, "--process-intro", "0");
-  setProcessVar(section, "--process-cards", "0");
-  setProcessVar(section, "--process-handoff", "0");
-  setProcessVar(section, "--work-zoom-progress", "0");
-  setProcessVar(section, "--work-reveal-progress", "0");
-  setProcessVar(section, "--work-scroll-progress", "0");
-  setProcessVar(section, "--work-aperture-progress", "0");
+  section.style.setProperty("--process-section-intensity", 0);
+  section.style.setProperty("--process-handoff", 0);
 
   gsap.set(sceneMount, {
     scale: 1,
     xPercent: 0,
-    yPercent: 0,
     transformOrigin: "52% 50%",
     force3D: true
   });
 
   gsap.set(word, {
-    autoAlpha: 0.24,
+    autoAlpha: 0.28,
     scale: 0.46,
     xPercent: 0,
     yPercent: 28,
     transformOrigin: "52% 50%",
-    filter: "none",
+    filter: "blur(0px)",
     letterSpacing: "-0.06em",
     force3D: true,
     clearProps: "visibility,pointerEvents"
   });
 
-  if (tunnel) {
-    gsap.set(tunnel, {
+  if (voidTarget) {
+    gsap.set(voidTarget, {
       autoAlpha: 0,
-      scale: 0.16,
+      scale: 0.14,
       transformOrigin: "50% 50%",
-      force3D: true,
-      clearProps: "visibility,pointerEvents"
+      force3D: true
     });
   }
 
@@ -541,16 +406,16 @@ function prepareInitialState({
 
     gsap.set(worldInside, {
       autoAlpha: 0,
-      scale: 1.035,
-      xPercent: 0,
-      yPercent: 0,
-      force3D: true,
-      pointerEvents: "none"
+      visibility: "hidden",
+      pointerEvents: "none",
+      clipPath: "circle(0% at 51.8% 50%)",
+      webkitClipPath: "circle(0% at 51.8% 50%)",
+      y: 44,
+      scale: 0.8,
+      filter: "blur(12px)",
+      transformOrigin: "51.8% 50%",
+      force3D: true
     });
-  }
-
-  if (workTrack) {
-    workTrack.style.setProperty("--work-scroll-progress", "0");
   }
 
   if (copy) {
@@ -561,13 +426,29 @@ function prepareInitialState({
     });
   }
 
-  if (overlay) {
-    gsap.set(overlay, {
-      autoAlpha: 1,
-      force3D: true,
-      clearProps: "visibility,pointerEvents"
+  if (cardTrack) {
+    gsap.set(cardTrack, {
+      autoAlpha: 1
     });
   }
+
+  if (workTrack) {
+    workTrack.style.setProperty("--work-scroll-progress", "0");
+  }
+
+  cards.forEach((card, index) => {
+    const side = index % 2 === 0 ? -1 : 1;
+
+    gsap.set(card, {
+      autoAlpha: 0,
+      x: side * 34,
+      yPercent: 34,
+      scale: 0.965,
+      rotateX: 0,
+      transformOrigin: "50% 52%",
+      force3D: true
+    });
+  });
 }
 
 /* =========================================================
@@ -577,46 +458,26 @@ function prepareInitialState({
 function prepareReducedState({
   gsap,
   section,
-  sceneMount,
   word,
-  tunnel,
+  voidTarget,
   worldInside,
-  workTrack,
   copy,
-  overlay
+  cardTrack,
+  workTrack,
+  cards
 }) {
-  setProcessVar(section, "--process-section-intensity", "1");
-  setProcessVar(section, "--process-intro", "1");
-  setProcessVar(section, "--process-cards", "1");
-  setProcessVar(section, "--process-handoff", "1");
-  setProcessVar(section, "--work-zoom-progress", "1");
-  setProcessVar(section, "--work-reveal-progress", "1");
-  setProcessVar(section, "--work-scroll-progress", "0");
-  setProcessVar(section, "--work-aperture-progress", "1");
+  section.style.setProperty("--process-section-intensity", 1);
+  section.style.setProperty("--process-handoff", 1);
 
-  section.classList.remove("is-process-active");
-  section.classList.add(
-    "is-work-visible",
-    "is-work-interactive",
-    "is-work-mode",
-    "is-inside-work"
-  );
+  section.classList.add("is-work-visible", "is-work-interactive", "is-inside-work");
 
-  gsap.set(sceneMount, {
+  gsap.set(word, {
     clearProps: "all"
   });
 
-  gsap.set(word, {
-    autoAlpha: 0,
-    visibility: "hidden",
-    pointerEvents: "none"
-  });
-
-  if (tunnel) {
-    gsap.set(tunnel, {
-      autoAlpha: 0,
-      visibility: "hidden",
-      pointerEvents: "none"
+  if (voidTarget) {
+    gsap.set(voidTarget, {
+      autoAlpha: 0
     });
   }
 
@@ -626,14 +487,14 @@ function prepareReducedState({
 
     gsap.set(worldInside, {
       autoAlpha: 1,
-      scale: 1,
       visibility: "visible",
-      pointerEvents: "auto"
+      pointerEvents: "auto",
+      filter: "none",
+      clipPath: "circle(150% at 51.8% 50%)",
+      webkitClipPath: "circle(150% at 51.8% 50%)",
+      scale: 1,
+      y: 0
     });
-  }
-
-  if (workTrack) {
-    workTrack.style.setProperty("--work-scroll-progress", "0");
   }
 
   if (copy) {
@@ -643,102 +504,50 @@ function prepareReducedState({
     });
   }
 
-  if (overlay) {
-    gsap.set(overlay, {
-      autoAlpha: 0,
-      visibility: "hidden",
-      pointerEvents: "none"
+  if (cardTrack) {
+    gsap.set(cardTrack, {
+      autoAlpha: 1
     });
   }
+
+  if (workTrack) {
+    workTrack.style.setProperty("--work-scroll-progress", "0");
+  }
+
+  gsap.set(cards, {
+    autoAlpha: 1,
+    x: 0,
+    yPercent: 0,
+    scale: 1,
+    rotateX: 0
+  });
 }
 
 /* =========================================================
-   PROGRESS + REAL WORK LOCK
+   PROGRESS HOOKS
 ========================================================= */
 
 function updateByProgress({
-  gsap,
+  progress,
   section,
-  word,
-  tunnel,
   worldInside,
   workTrack,
-  overlay,
-  progress,
-  direction,
   scene,
-  ui,
-  state
+  ui
 }) {
-  /*
-    This is the biggest fix.
+  const intro = mapRange(progress, 0.02, 0.22);
+  const cards = mapRange(progress, 0.28, 0.88);
+  const handoff = mapRange(progress, 0.88, 1);
 
-    Before, the lock/interactivity happened at basically 99.9%,
-    but the visual state was fighting it. That made it feel like a snap.
+  section.style.setProperty("--process-intro", intro.toFixed(4));
+  section.style.setProperty("--process-cards", cards.toFixed(4));
+  section.style.setProperty("--process-handoff", handoff.toFixed(4));
 
-    Now:
-    - Visual reveal starts around 72%.
-    - Handoff camera finishes from 96% to 100%.
-    - Real pointer interaction only turns on at the final landing.
-    - When scrolling back up, we release earlier so it feels reversible.
-  */
-
-  const ENTER_WORK_AT = 0.9988;
-  const EXIT_WORK_AT = 0.905;
-  const WORK_MODE_AT = 0.992;
-  const WORK_INTERACTIVE_AT = 0.9988;
-
-  const goingBackward = direction < 0;
-
-  if (!state.lockedInsideWork && progress >= ENTER_WORK_AT) {
-    state.lockedInsideWork = true;
-  }
-
-  if (state.lockedInsideWork && goingBackward && progress <= EXIT_WORK_AT) {
-    state.lockedInsideWork = false;
-    state.lastAppliedMode = "";
-
-    releaseLockedWorkState({
-      gsap,
-      word,
-      tunnel,
-      worldInside,
-      overlay,
-      state
-    });
-  }
-
-  const locked = state.lockedInsideWork;
-  const effectiveProgress = locked ? 1 : progress;
-
-  const intro = mapRange(effectiveProgress, 0.02, 0.3);
-  const cards = locked ? 1 : mapRange(effectiveProgress, 0.18, 0.62);
-  const handoff = locked ? 1 : smooth(mapRange(effectiveProgress, 0.52, 1));
-
-  const workZoom = locked ? 1 : smooth(mapRange(effectiveProgress, 0.54, 0.998));
-  const workReveal = locked ? 1 : smooth(mapRange(effectiveProgress, 0.72, 0.997));
-  const workAperture = locked ? 1 : smooth(mapRange(effectiveProgress, 0.68, 0.999));
-  const workScroll = locked ? 0 : mapRange(effectiveProgress, 0.982, 1);
-
-  setProcessVar(section, "--process-intro", intro.toFixed(4));
-  setProcessVar(section, "--process-cards", cards.toFixed(4));
-  setProcessVar(section, "--process-handoff", handoff.toFixed(4));
-  setProcessVar(section, "--work-zoom-progress", workZoom.toFixed(4));
-  setProcessVar(section, "--work-reveal-progress", workReveal.toFixed(4));
-  setProcessVar(section, "--work-aperture-progress", workAperture.toFixed(4));
-  setProcessVar(section, "--work-scroll-progress", workScroll.toFixed(4));
-
-  if (workTrack) {
-    workTrack.style.setProperty("--work-scroll-progress", workScroll.toFixed(4));
-  }
-
-  const workVisible = locked || workReveal > 0.02;
-  const workMode = locked || effectiveProgress >= WORK_MODE_AT;
-  const workInteractive = locked || effectiveProgress >= WORK_INTERACTIVE_AT;
-  const insideWork = locked;
+  const workVisible = progress >= 0.935;
+  const workInteractive = progress >= 0.995;
+  const insideWork = progress >= 0.998;
 
   section.classList.toggle("is-work-visible", workVisible);
-  section.classList.toggle("is-work-mode", workMode);
   section.classList.toggle("is-work-interactive", workInteractive);
   section.classList.toggle("is-inside-work", insideWork);
 
@@ -752,33 +561,15 @@ function updateByProgress({
       worldInside.setAttribute("aria-hidden", "true");
     }
 
-    if (!workInteractive && !locked) {
-      gsap.set(worldInside, {
-        pointerEvents: "none"
-      });
+    if (!workInteractive) {
+      worldInside.style.pointerEvents = "none";
+    } else {
+      worldInside.style.pointerEvents = "auto";
     }
   }
 
-  if (locked) {
-    applyLockedWorkState({
-      gsap,
-      section,
-      word,
-      tunnel,
-      worldInside,
-      workTrack,
-      overlay,
-      state
-    });
-  } else {
-    applyUnlockedState({
-      gsap,
-      word,
-      tunnel,
-      worldInside,
-      overlay,
-      state
-    });
+  if (workTrack) {
+    workTrack.style.setProperty("--work-scroll-progress", "0");
   }
 
   if (scene?.setProgress) {
@@ -789,193 +580,25 @@ function updateByProgress({
     });
   }
 
+  if (ui?.setCardsProgress) {
+    ui.setCardsProgress(cards);
+  }
+
+  if (ui?.softenForHandoff) {
+    ui.softenForHandoff(handoff);
+  }
+
   if (ui?.setProgress) {
     ui.setProgress({
       intro,
       cards,
       handoff,
-      workZoom,
-      workReveal,
-      workScroll,
+      workZoom: handoff,
+      workReveal: mapRange(progress, 0.935, 1),
+      workScroll: 0,
       insideWork
     });
   }
-
-  state.previousProgress = progress;
-}
-
-/* =========================================================
-   LOCKED / UNLOCKED VISUAL STATES
-========================================================= */
-
-function applyLockedWorkState({
-  gsap,
-  section,
-  word,
-  tunnel,
-  worldInside,
-  workTrack,
-  overlay,
-  state
-}) {
-  if (state.lastAppliedMode === "locked") return;
-
-  state.lastAppliedMode = "locked";
-
-  section.classList.add(
-    "is-work-visible",
-    "is-work-interactive",
-    "is-work-mode",
-    "is-inside-work"
-  );
-
-  setProcessVar(section, "--work-aperture-progress", "1");
-  setProcessVar(section, "--work-reveal-progress", "1");
-  setProcessVar(section, "--work-zoom-progress", "1");
-  setProcessVar(section, "--work-scroll-progress", "0");
-
-  if (worldInside) {
-    worldInside.removeAttribute("aria-hidden");
-    worldInside.classList.add("is-visible", "is-interactive");
-
-    gsap.set(worldInside, {
-      autoAlpha: 1,
-      scale: 1,
-      xPercent: 0,
-      yPercent: 0,
-      visibility: "visible",
-      pointerEvents: "auto",
-      force3D: true
-    });
-  }
-
-  if (workTrack) {
-    workTrack.style.setProperty("--work-scroll-progress", "0");
-  }
-
-  if (word) {
-    gsap.set(word, {
-      autoAlpha: 0,
-      visibility: "hidden",
-      pointerEvents: "none"
-    });
-  }
-
-  if (tunnel) {
-    gsap.set(tunnel, {
-      autoAlpha: 0,
-      visibility: "hidden",
-      pointerEvents: "none"
-    });
-  }
-
-  if (overlay) {
-    gsap.set(overlay, {
-      autoAlpha: 0,
-      visibility: "hidden",
-      pointerEvents: "none"
-    });
-  }
-}
-
-function applyUnlockedState({
-  gsap,
-  word,
-  tunnel,
-  worldInside,
-  overlay,
-  state
-}) {
-  if (state.lastAppliedMode !== "locked") return;
-
-  state.lastAppliedMode = "unlocked";
-
-  if (worldInside) {
-    gsap.set(worldInside, {
-      pointerEvents: "none",
-      clearProps: "visibility"
-    });
-  }
-
-  if (word) {
-    gsap.set(word, {
-      clearProps: "visibility,pointerEvents"
-    });
-  }
-
-  if (tunnel) {
-    gsap.set(tunnel, {
-      clearProps: "visibility,pointerEvents"
-    });
-  }
-
-  if (overlay) {
-    gsap.set(overlay, {
-      clearProps: "visibility,pointerEvents"
-    });
-  }
-}
-
-function releaseLockedWorkState({
-  gsap,
-  word,
-  tunnel,
-  worldInside,
-  overlay,
-  state
-}) {
-  state.lastAppliedMode = "";
-
-  if (worldInside) {
-    worldInside.classList.remove("is-interactive");
-
-    gsap.set(worldInside, {
-      pointerEvents: "none",
-      clearProps: "visibility"
-    });
-  }
-
-  if (word) {
-    gsap.set(word, {
-      clearProps: "visibility,pointerEvents"
-    });
-  }
-
-  if (tunnel) {
-    gsap.set(tunnel, {
-      clearProps: "visibility,pointerEvents"
-    });
-  }
-
-  if (overlay) {
-    gsap.set(overlay, {
-      clearProps: "visibility,pointerEvents"
-    });
-  }
-}
-
-/* =========================================================
-   HELPERS
-========================================================= */
-
-const processVarCache = new WeakMap();
-
-function setProcessVar(element, name, value) {
-  if (!element) return;
-
-  let cache = processVarCache.get(element);
-
-  if (!cache) {
-    cache = new Map();
-    processVarCache.set(element, cache);
-  }
-
-  const stringValue = String(value);
-
-  if (cache.get(name) === stringValue) return;
-
-  cache.set(name, stringValue);
-  element.style.setProperty(name, stringValue);
 }
 
 function mapRange(value, start, end) {
@@ -983,11 +606,6 @@ function mapRange(value, start, end) {
   if (value >= end) return 1;
 
   return (value - start) / (end - start);
-}
-
-function smooth(value) {
-  const t = Math.min(Math.max(value, 0), 1);
-  return t * t * (3 - 2 * t);
 }
 
 function debounce(fn, wait = 120) {
