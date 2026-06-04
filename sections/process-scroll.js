@@ -449,10 +449,11 @@ function prepareInitialState({
   setProcessVar(section, "--process-intro", "0");
   setProcessVar(section, "--process-cards", "0");
   setProcessVar(section, "--process-handoff", "0");
-  setProcessVar(section, "--work-zoom-progress", "0");
-  setProcessVar(section, "--work-reveal-progress", "0");
-  setProcessVar(section, "--work-scroll-progress", "0");
-
+ setProcessVar(section, "--work-zoom-progress", "0");
+setProcessVar(section, "--work-reveal-progress", "0");
+setProcessVar(section, "--work-scroll-progress", "0");
+setProcessVar(section, "--work-aperture-progress", "0");
+  
   gsap.set(sceneMount, {
     scale: 1,
     xPercent: 0,
@@ -657,15 +658,16 @@ const intro = mapRange(effectiveProgress, 0.02, 0.3);
 const cards = locked ? 1 : mapRange(effectiveProgress, 0.18, 0.64);
 const handoff = locked ? 1 : mapRange(effectiveProgress, 0.58, 1);
 
-const workZoom = locked ? 1 : mapRange(effectiveProgress, 0.58, 0.975);
-const workReveal = locked ? 1 : mapRange(effectiveProgress, 0.78, 0.985);
-const workScroll = locked ? 0 : mapRange(effectiveProgress, 0.955, 1);
-
+const workZoom = locked ? 1 : mapRange(effectiveProgress, 0.58, 0.985);
+const workReveal = locked ? 1 : mapRange(effectiveProgress, 0.78, 0.992);
+const workAperture = locked ? 1 : mapRange(effectiveProgress, 0.76, 0.982);
+const workScroll = locked ? 0 : mapRange(effectiveProgress, 0.965, 1);
   
   setProcessVar(section, "--process-intro", intro.toFixed(4));
   setProcessVar(section, "--process-cards", cards.toFixed(4));
   setProcessVar(section, "--process-handoff", handoff.toFixed(4));
   setProcessVar(section, "--work-zoom-progress", workZoom.toFixed(4));
+  setProcessVar(section, "--work-aperture-progress", workAperture.toFixed(4));
   setProcessVar(section, "--work-reveal-progress", workReveal.toFixed(4));
   setProcessVar(section, "--work-scroll-progress", workScroll.toFixed(4));
 
@@ -673,11 +675,11 @@ const workScroll = locked ? 0 : mapRange(effectiveProgress, 0.955, 1);
     workTrack.style.setProperty("--work-scroll-progress", workScroll.toFixed(4));
   }
 
-  const workVisible = locked || workReveal > 0.02;
-  const workInteractive = locked || workReveal >= 0.96;
-  const workMode = locked || effectiveProgress >= 0.972;
-  const insideWork = locked;
-
+const workVisible = locked || workReveal > 0.02;
+const workInteractive = locked || workReveal >= 0.985;
+const workMode = locked || effectiveProgress >= 0.992;
+const insideWork = locked;
+  
   section.classList.toggle("is-work-visible", workVisible);
   section.classList.toggle("is-work-interactive", workInteractive);
   section.classList.toggle("is-work-mode", workMode);
@@ -782,6 +784,9 @@ function applyLockedWorkState({
   if (workTrack) {
     workTrack.style.setProperty("--work-scroll-progress", "0");
   }
+  setProcessVar(section, "--work-aperture-progress", "1");
+setProcessVar(section, "--work-reveal-progress", "1");
+setProcessVar(section, "--work-zoom-progress", "1");
 
   if (word) {
     gsap.set(word, {
