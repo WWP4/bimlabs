@@ -720,3 +720,54 @@
     animation: none !important;
   }
 }
+
+
+
+
+/* ----------------------------------------------------------
+   DETAIL PANEL CLOSED / OPEN STATE
+---------------------------------------------------------- */
+
+.work-detail {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translate3d(1.25rem, 0, 0);
+  transition:
+    opacity 260ms ease,
+    visibility 260ms ease,
+    transform 320ms cubic-bezier(.16, 1, .3, 1);
+}
+
+.work-detail.is-open,
+.work-archive.has-open-detail .work-detail {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translate3d(0, 0, 0);
+}
+
+.work-archive:not(.has-open-detail) .work-detail {
+  border-left-color: rgba(255, 255, 255, 0.045);
+  background: transparent;
+}
+
+.work-archive:not(.has-open-detail) .work-archive__index {
+  padding-right: clamp(2rem, 7vw, 9rem);
+}
+
+.work-project.is-previewing::after {
+  opacity: 1;
+}
+
+.work-project.is-previewing::before {
+  background: #fff;
+  border-color: #fff;
+  transform: translate3d(-50%, -50%, 0) scale(1.06);
+}
+
+.work-project.is-previewing .work-project__name {
+  color: #fff;
+  letter-spacing: -0.068em;
+  transform: translate3d(0.28rem, 0, 0);
+}
