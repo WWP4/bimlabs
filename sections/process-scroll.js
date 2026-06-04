@@ -13,8 +13,8 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger }) {
 
   const state = {
     lockedInsideWork: false,
-    previousProgress: 0,
-    lastAppliedMode: ""
+    lastAppliedMode: "",
+    previousProgress: 0
   };
 
   if (!section || !sceneMount || !word || !gsap || !ScrollTrigger) {
@@ -59,25 +59,30 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger }) {
       start: "top top",
       end: () => {
         const naturalDistance = Math.max(section.offsetHeight - window.innerHeight, 1);
-        const minimumDistance = window.innerHeight * 6.4;
+        const cinematicDistance = window.innerHeight * 7.15;
 
-        return `+=${Math.max(naturalDistance, minimumDistance, 6100)}`;
+        return `+=${Math.max(naturalDistance, cinematicDistance, 6800)}`;
       },
+
+      /*
+        Do not pin here if the parent section already handles the sticky/pinned structure.
+        This file controls the camera, not layout ownership.
+      */
       pin: false,
 
       /*
-        This is the camera glide.
-        Lower = more direct.
-        Higher = smoother but can feel delayed.
+        0.8 - 0.95 is the sweet spot:
+        smooth enough to remove frame-by-frame scroll,
+        not so delayed that it feels disconnected.
       */
-      scrub: 1.05,
+      scrub: 0.88,
       invalidateOnRefresh: true,
+      anticipatePin: 1,
 
       onUpdate: (self) => {
         updateByProgress({
           gsap,
           section,
-          sceneMount,
           word,
           tunnel,
           worldInside,
@@ -101,7 +106,6 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger }) {
 
       onLeave: () => {
         section.classList.remove("is-process-active");
-
         state.lockedInsideWork = true;
 
         applyLockedWorkState({
@@ -159,7 +163,7 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger }) {
 
   const refreshOnResize = debounce(() => {
     ScrollTrigger.refresh();
-  }, 160);
+  }, 180);
 
   window.addEventListener("resize", refreshOnResize);
 
@@ -184,11 +188,11 @@ function addProcessIntro({ timeline, section, word, copy }) {
     }, 0)
 
     .to(word, {
-      autoAlpha: 0.72,
-      scale: 0.64,
+      autoAlpha: 0.64,
+      scale: 0.58,
       xPercent: 0,
-      yPercent: 15,
-      letterSpacing: "-0.068em",
+      yPercent: 18,
+      letterSpacing: "-0.062em",
       force3D: true,
       duration: 0.14
     }, 0)
@@ -197,32 +201,32 @@ function addProcessIntro({ timeline, section, word, copy }) {
       autoAlpha: 1,
       y: 0,
       force3D: true,
-      duration: 0.14
+      duration: 0.16
     }, 0.055)
 
     .to(word, {
       autoAlpha: 0.9,
-      scale: 0.96,
+      scale: 0.92,
       xPercent: 0,
       yPercent: 0,
-      letterSpacing: "-0.085em",
+      letterSpacing: "-0.083em",
       force3D: true,
-      duration: 0.23
-    }, 0.13)
+      duration: 0.24
+    }, 0.14)
 
     .to(word, {
-      scale: 1.06,
-      autoAlpha: 0.88,
+      scale: 1.04,
+      autoAlpha: 0.92,
       force3D: true,
-      duration: 0.26
-    }, 0.36)
+      duration: 0.22
+    }, 0.38)
 
     .to(copy, {
       autoAlpha: 0,
-      y: -22,
+      y: -24,
       force3D: true,
-      duration: 0.17
-    }, 0.43);
+      duration: 0.18
+    }, 0.46);
 }
 
 /* =========================================================
@@ -241,7 +245,7 @@ function addProcessTunnelHandoff({
   if (tunnel) {
     timeline.set(tunnel, {
       autoAlpha: 0,
-      scale: 0.14,
+      scale: 0.16,
       transformOrigin: "50% 50%",
       force3D: true
     }, 0);
@@ -250,179 +254,218 @@ function addProcessTunnelHandoff({
   if (worldInside) {
     timeline.set(worldInside, {
       autoAlpha: 0,
-      scale: 1,
+      scale: 1.035,
+      xPercent: 0,
+      yPercent: 0,
       transformOrigin: "50% 50%",
       force3D: true
     }, 0);
   }
 
   /*
-    Important:
-    The word starts moving earlier and keeps moving longer.
-    The final lock happens only after the aperture has visually filled the screen.
+    The handoff is intentionally stretched.
+    The important fix:
+    - Our Work starts appearing earlier, but quietly.
+    - It does not become "the section" until the camera has already passed through.
+    - The word fades only at the very end.
   */
 
   timeline
     .to(word, {
-      scale: 1.14,
-      xPercent: -0.18,
+      scale: 1.1,
+      xPercent: -0.12,
       yPercent: 0,
-      autoAlpha: 0.91,
+      autoAlpha: 0.96,
       force3D: true,
       duration: 0.16
-    }, 0.52)
+    }, 0.54)
 
     .to(section, {
-      "--work-zoom-progress": 0.08,
+      "--work-zoom-progress": 0.06,
       "--work-reveal-progress": 0,
-      "--work-aperture-progress": 0.02,
+      "--work-aperture-progress": 0.01,
       duration: 0.16
-    }, 0.52)
+    }, 0.54)
 
     .to(word, {
-      scale: 1.46,
-      xPercent: -0.72,
-      autoAlpha: 0.95,
-      force3D: true,
-      duration: 0.16
-    }, 0.64)
-
-    .to(section, {
-      "--work-zoom-progress": 0.18,
-      "--work-reveal-progress": 0.015,
-      "--work-aperture-progress": 0.07,
-      duration: 0.16
-    }, 0.64)
-
-    .to(word, {
-      scale: 2,
-      xPercent: -1.45,
-      autoAlpha: 0.98,
-      force3D: true,
-      duration: 0.15
-    }, 0.75)
-
-    .to(section, {
-      "--work-zoom-progress": 0.34,
-      "--work-reveal-progress": 0.08,
-      "--work-aperture-progress": 0.2,
-      duration: 0.15
-    }, 0.75)
-
-    .to(word, {
-      scale: 3.05,
-      xPercent: -3.1,
+      scale: 1.34,
+      xPercent: -0.48,
+      yPercent: 0,
       autoAlpha: 1,
       force3D: true,
-      duration: 0.13
-    }, 0.845)
+      duration: 0.15
+    }, 0.66)
 
     .to(section, {
-      "--work-zoom-progress": 0.56,
-      "--work-reveal-progress": 0.28,
-      "--work-aperture-progress": 0.46,
-      duration: 0.13
-    }, 0.845)
+      "--work-zoom-progress": 0.14,
+      "--work-reveal-progress": 0.01,
+      "--work-aperture-progress": 0.045,
+      duration: 0.15
+    }, 0.66)
 
     .to(word, {
-      scale: 4.8,
-      xPercent: -5.8,
-      autoAlpha: 0.9,
+      scale: 1.76,
+      xPercent: -1.05,
+      yPercent: 0,
+      autoAlpha: 1,
       force3D: true,
-      duration: 0.1
-    }, 0.925)
+      duration: 0.14
+    }, 0.765)
 
     .to(section, {
-      "--work-zoom-progress": 0.78,
-      "--work-reveal-progress": 0.62,
-      "--work-aperture-progress": 0.78,
-      duration: 0.1
-    }, 0.925)
+      "--work-zoom-progress": 0.26,
+      "--work-reveal-progress": 0.045,
+      "--work-aperture-progress": 0.14,
+      duration: 0.14
+    }, 0.765)
 
     .to(word, {
-      scale: 7.2,
-      xPercent: -8.9,
-      autoAlpha: 0.18,
+      scale: 2.48,
+      xPercent: -2.1,
+      yPercent: 0,
+      autoAlpha: 1,
       force3D: true,
-      duration: 0.065
-    }, 0.975)
+      duration: 0.12
+    }, 0.855)
+
+    .to(section, {
+      "--work-zoom-progress": 0.44,
+      "--work-reveal-progress": 0.16,
+      "--work-aperture-progress": 0.34,
+      duration: 0.12
+    }, 0.855)
+
+    .to(word, {
+      scale: 3.72,
+      xPercent: -4.0,
+      yPercent: 0,
+      autoAlpha: 0.96,
+      force3D: true,
+      duration: 0.085
+    }, 0.928)
+
+    .to(section, {
+      "--work-zoom-progress": 0.68,
+      "--work-reveal-progress": 0.46,
+      "--work-aperture-progress": 0.68,
+      duration: 0.085
+    }, 0.928)
+
+    .to(word, {
+      scale: 5.7,
+      xPercent: -6.9,
+      yPercent: 0,
+      autoAlpha: 0.54,
+      force3D: true,
+      duration: 0.052
+    }, 0.972)
+
+    .to(section, {
+      "--work-zoom-progress": 0.9,
+      "--work-reveal-progress": 0.86,
+      "--work-aperture-progress": 0.94,
+      duration: 0.052
+    }, 0.972)
+
+    .to(word, {
+      scale: 7.8,
+      xPercent: -9.6,
+      yPercent: 0,
+      autoAlpha: 0,
+      force3D: true,
+      duration: 0.024
+    }, 0.993)
 
     .to(section, {
       "--work-zoom-progress": 1,
       "--work-reveal-progress": 1,
       "--work-aperture-progress": 1,
       "--work-scroll-progress": 0,
-      "--process-section-intensity": 0.12,
-      duration: 0.065
-    }, 0.975)
-
-    .to(word, {
-      autoAlpha: 0,
-      force3D: true,
-      duration: 0.02
-    }, 0.995);
+      "--process-section-intensity": 0.08,
+      duration: 0.024
+    }, 0.993);
 
   if (tunnel) {
     timeline
       .to(tunnel, {
-        autoAlpha: 0.12,
-        scale: 0.52,
+        autoAlpha: 0.08,
+        scale: 0.44,
         force3D: true,
-        duration: 0.13
-      }, 0.7)
+        duration: 0.12
+      }, 0.69)
 
       .to(tunnel, {
-        autoAlpha: 0.46,
-        scale: 1.25,
+        autoAlpha: 0.28,
+        scale: 0.95,
         force3D: true,
-        duration: 0.14
+        duration: 0.13
       }, 0.82)
 
       .to(tunnel, {
-        autoAlpha: 0.78,
-        scale: 2.7,
+        autoAlpha: 0.62,
+        scale: 2.05,
         force3D: true,
-        duration: 0.11
-      }, 0.915)
+        duration: 0.1
+      }, 0.925)
 
       .to(tunnel, {
         autoAlpha: 0,
-        scale: 5.4,
+        scale: 4.8,
         force3D: true,
-        duration: 0.055
-      }, 0.975);
+        duration: 0.058
+      }, 0.972);
   }
 
   if (worldInside) {
     timeline
       .to(worldInside, {
-        autoAlpha: 0.1,
-        scale: 1,
+        autoAlpha: 0.04,
+        scale: 1.03,
         force3D: true,
-        duration: 0.14
-      }, 0.74)
+        duration: 0.11
+      }, 0.76)
 
       .to(worldInside, {
-        autoAlpha: 0.42,
-        scale: 1,
+        autoAlpha: 0.16,
+        scale: 1.022,
         force3D: true,
-        duration: 0.14
-      }, 0.88)
+        duration: 0.12
+      }, 0.875)
+
+      .to(worldInside, {
+        autoAlpha: 0.58,
+        scale: 1.01,
+        force3D: true,
+        duration: 0.09
+      }, 0.945)
 
       .to(worldInside, {
         autoAlpha: 1,
         scale: 1,
         force3D: true,
-        duration: 0.09
-      }, 0.955);
+        duration: 0.045
+      }, 0.985);
   }
 
   if (overlay) {
-    timeline.to(overlay, {
-      autoAlpha: 0,
-      force3D: true,
-      duration: 0.16
-    }, 0.84);
+    timeline
+      .to(overlay, {
+        autoAlpha: 0.72,
+        force3D: true,
+        duration: 0.08
+      }, 0.7)
+
+      .to(overlay, {
+        autoAlpha: 0.18,
+        force3D: true,
+        duration: 0.13
+      }, 0.89)
+
+      .to(overlay, {
+        autoAlpha: 0,
+        force3D: true,
+        duration: 0.05
+      }, 0.97);
   }
 
   timeline.set(sceneMount, {
@@ -485,7 +528,7 @@ function prepareInitialState({
   if (tunnel) {
     gsap.set(tunnel, {
       autoAlpha: 0,
-      scale: 0.14,
+      scale: 0.16,
       transformOrigin: "50% 50%",
       force3D: true,
       clearProps: "visibility,pointerEvents"
@@ -498,9 +541,11 @@ function prepareInitialState({
 
     gsap.set(worldInside, {
       autoAlpha: 0,
-      scale: 1,
+      scale: 1.035,
+      xPercent: 0,
+      yPercent: 0,
       force3D: true,
-      clearProps: "pointerEvents"
+      pointerEvents: "none"
     });
   }
 
@@ -543,7 +588,7 @@ function prepareReducedState({
   setProcessVar(section, "--process-section-intensity", "1");
   setProcessVar(section, "--process-intro", "1");
   setProcessVar(section, "--process-cards", "1");
-  setProcessVar(section, "--process-handoff", "0");
+  setProcessVar(section, "--process-handoff", "1");
   setProcessVar(section, "--work-zoom-progress", "1");
   setProcessVar(section, "--work-reveal-progress", "1");
   setProcessVar(section, "--work-scroll-progress", "0");
@@ -626,13 +671,22 @@ function updateByProgress({
   state
 }) {
   /*
-    Lock very late.
-    The transition should already look complete before this fires.
+    This is the biggest fix.
+
+    Before, the lock/interactivity happened at basically 99.9%,
+    but the visual state was fighting it. That made it feel like a snap.
+
+    Now:
+    - Visual reveal starts around 72%.
+    - Handoff camera finishes from 96% to 100%.
+    - Real pointer interaction only turns on at the final landing.
+    - When scrolling back up, we release earlier so it feels reversible.
   */
-  const ENTER_WORK_AT = 0.9994;
-  const EXIT_WORK_AT = 0.88;
-  const WORK_MODE_AT = 0.999;
-  const WORK_INTERACTIVE_AT = 0.99935;
+
+  const ENTER_WORK_AT = 0.9988;
+  const EXIT_WORK_AT = 0.905;
+  const WORK_MODE_AT = 0.992;
+  const WORK_INTERACTIVE_AT = 0.9988;
 
   const goingBackward = direction < 0;
 
@@ -659,17 +713,12 @@ function updateByProgress({
 
   const intro = mapRange(effectiveProgress, 0.02, 0.3);
   const cards = locked ? 1 : mapRange(effectiveProgress, 0.18, 0.62);
+  const handoff = locked ? 1 : smooth(mapRange(effectiveProgress, 0.52, 1));
 
-  /*
-    Handoff begins earlier but finishes later.
-    This creates travel instead of a quick switch.
-  */
-  const handoff = locked ? 1 : mapRange(effectiveProgress, 0.52, 1);
-
-  const workZoom = locked ? 1 : mapRange(effectiveProgress, 0.54, 0.995);
-  const workReveal = locked ? 1 : mapRange(effectiveProgress, 0.72, 0.996);
-  const workAperture = locked ? 1 : mapRange(effectiveProgress, 0.68, 0.9988);
-  const workScroll = locked ? 0 : mapRange(effectiveProgress, 0.975, 1);
+  const workZoom = locked ? 1 : smooth(mapRange(effectiveProgress, 0.54, 0.998));
+  const workReveal = locked ? 1 : smooth(mapRange(effectiveProgress, 0.72, 0.997));
+  const workAperture = locked ? 1 : smooth(mapRange(effectiveProgress, 0.68, 0.999));
+  const workScroll = locked ? 0 : mapRange(effectiveProgress, 0.982, 1);
 
   setProcessVar(section, "--process-intro", intro.toFixed(4));
   setProcessVar(section, "--process-cards", cards.toFixed(4));
@@ -683,14 +732,14 @@ function updateByProgress({
     workTrack.style.setProperty("--work-scroll-progress", workScroll.toFixed(4));
   }
 
-  const workVisible = locked || workReveal > 0.015;
-  const workInteractive = locked || effectiveProgress >= WORK_INTERACTIVE_AT;
+  const workVisible = locked || workReveal > 0.02;
   const workMode = locked || effectiveProgress >= WORK_MODE_AT;
+  const workInteractive = locked || effectiveProgress >= WORK_INTERACTIVE_AT;
   const insideWork = locked;
 
   section.classList.toggle("is-work-visible", workVisible);
-  section.classList.toggle("is-work-interactive", workInteractive);
   section.classList.toggle("is-work-mode", workMode);
+  section.classList.toggle("is-work-interactive", workInteractive);
   section.classList.toggle("is-inside-work", insideWork);
 
   if (worldInside) {
@@ -701,6 +750,12 @@ function updateByProgress({
       worldInside.removeAttribute("aria-hidden");
     } else {
       worldInside.setAttribute("aria-hidden", "true");
+    }
+
+    if (!workInteractive && !locked) {
+      gsap.set(worldInside, {
+        pointerEvents: "none"
+      });
     }
   }
 
@@ -837,7 +892,8 @@ function applyUnlockedState({
 
   if (worldInside) {
     gsap.set(worldInside, {
-      clearProps: "pointerEvents"
+      pointerEvents: "none",
+      clearProps: "visibility"
     });
   }
 
@@ -874,7 +930,8 @@ function releaseLockedWorkState({
     worldInside.classList.remove("is-interactive");
 
     gsap.set(worldInside, {
-      clearProps: "pointerEvents"
+      pointerEvents: "none",
+      clearProps: "visibility"
     });
   }
 
@@ -926,6 +983,11 @@ function mapRange(value, start, end) {
   if (value >= end) return 1;
 
   return (value - start) / (end - start);
+}
+
+function smooth(value) {
+  const t = Math.min(Math.max(value, 0), 1);
+  return t * t * (3 - 2 * t);
 }
 
 function debounce(fn, wait = 120) {
