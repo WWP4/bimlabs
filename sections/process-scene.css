@@ -457,3 +457,85 @@
     visibility: visible !important;
   }
 }
+
+
+
+
+/* =========================================================
+   FORCE PROCESS CARDS TO FRONT LAYER
+   Cards stay visible over PROCESS word / scene.
+========================================================= */
+
+.process-3d {
+  position: relative;
+  overflow: visible;
+}
+
+.process-scene {
+  z-index: 1;
+}
+
+.process-word {
+  z-index: 2;
+}
+
+.process-world-inside {
+  z-index: 3;
+}
+
+.process-void {
+  z-index: 4;
+}
+
+.process-overlay {
+  position: relative;
+  z-index: 20;
+
+  width: min(1380px, calc(100% - 44px));
+  margin: -100svh auto 0;
+
+  min-height: 420vh;
+
+  pointer-events: none;
+}
+
+.process-copy {
+  position: relative;
+  z-index: 21;
+  pointer-events: auto;
+}
+
+.process-cards {
+  position: relative;
+  z-index: 30;
+
+  padding-top: 118vh;
+  padding-bottom: 120vh;
+
+  visibility: visible !important;
+  opacity: 1 !important;
+
+  pointer-events: auto;
+}
+
+.process-card {
+  position: relative;
+  z-index: 31;
+
+  visibility: visible !important;
+  opacity: 1 !important;
+
+  pointer-events: auto;
+}
+
+/* Make sure Our Work does not cover cards until final handoff */
+.process-3d:not(.is-work-interactive) .process-world-inside {
+  pointer-events: none !important;
+}
+
+/* Only hide cards once the final Our Work state is actually active */
+.process-3d.is-inside-work .process-overlay {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
