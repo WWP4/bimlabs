@@ -1,19 +1,20 @@
 /* ==========================================================
    BIM LABS STUDIO — OUR WORK ARCHIVE
-   Fits current HTML structure:
-   .work-archive__bg
-   .work-archive__track
-   .work-archive__shell
-   .work-archive__header
-   .work-archive__body
-   .work-project__meta
+   Stable destination layer for PROCESS → Our Work handoff
+
+   Important:
+   This file does NOT control the PROCESS zoom.
+   process-scroll.js owns the handoff.
+   This CSS keeps Our Work stable so it does not zoom/snap/glitch.
 ========================================================== */
 
 .work-archive {
   position: relative;
+
   width: 100%;
   height: 100vh;
   min-height: 100vh;
+
   overflow: hidden;
 
   color: #f3f1eb;
@@ -26,6 +27,9 @@
   --work-faint: rgba(245, 245, 240, 0.22);
   --work-line: rgba(245, 245, 240, 0.075);
   --work-line-strong: rgba(245, 245, 240, 0.14);
+
+  backface-visibility: hidden;
+  transform: translate3d(0, 0, 0);
 }
 
 /* ----------------------------------------------------------
@@ -36,13 +40,20 @@
   position: absolute;
   inset: 0;
   z-index: 0;
+
   pointer-events: none;
 
   background:
-    radial-gradient(circle at 50% 46%, rgba(255, 255, 255, 0.04), transparent 32%),
-    radial-gradient(circle at 72% 56%, rgba(255, 255, 255, 0.022), transparent 24%),
-    radial-gradient(circle at 30% 60%, rgba(255, 255, 255, 0.018), transparent 28%),
-    linear-gradient(to bottom, rgba(0, 0, 0, 0.96), #020202 26%, #020202 74%, rgba(0, 0, 0, 0.96));
+    radial-gradient(circle at 50% 46%, rgba(255, 255, 255, 0.034), transparent 31%),
+    radial-gradient(circle at 72% 56%, rgba(255, 255, 255, 0.018), transparent 24%),
+    radial-gradient(circle at 30% 60%, rgba(255, 255, 255, 0.014), transparent 28%),
+    linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0.98),
+      #020202 28%,
+      #020202 74%,
+      rgba(0, 0, 0, 0.98)
+    );
 
   opacity: 1;
 }
@@ -52,7 +63,7 @@
   position: absolute;
   inset: 14% 10%;
 
-  border: 1px solid rgba(245, 245, 240, 0.025);
+  border: 1px solid rgba(245, 245, 240, 0.022);
   opacity: 0.7;
 }
 
@@ -62,16 +73,16 @@
   inset: 0;
 
   background:
-    linear-gradient(to right, transparent, rgba(245, 245, 240, 0.018), transparent),
+    linear-gradient(to right, transparent, rgba(245, 245, 240, 0.014), transparent),
     repeating-linear-gradient(
       to bottom,
-      rgba(255, 255, 255, 0.012) 0,
-      rgba(255, 255, 255, 0.012) 1px,
+      rgba(255, 255, 255, 0.01) 0,
+      rgba(255, 255, 255, 0.01) 1px,
       transparent 1px,
       transparent 8px
     );
 
-  opacity: 0.13;
+  opacity: 0.11;
   mix-blend-mode: screen;
 }
 
@@ -86,8 +97,15 @@
   width: 100%;
   height: 100%;
 
-  transform: translate3d(0, calc(var(--work-scroll-progress, 0) * -4vh), 0);
+  /*
+    Important:
+    Do not use --work-scroll-progress here.
+    The PROCESS handoff is already moving/scaling the parent wrapper.
+    Moving this inner track creates the zoom-in / zoom-out glitch.
+  */
+  transform: translate3d(0, 0, 0);
   backface-visibility: hidden;
+  will-change: auto;
 }
 
 .process-3d.is-inside-work .work-archive__track,
@@ -98,6 +116,7 @@
 
 .work-archive__shell {
   position: relative;
+
   display: grid;
   grid-template-rows: auto 1fr;
   gap: clamp(3rem, 6vh, 5.5rem);
@@ -217,11 +236,20 @@
   text-transform: uppercase;
 }
 
+/* ----------------------------------------------------------
+   PROJECT ROW
+---------------------------------------------------------- */
+
 .work-project {
   position: relative;
 
   display: grid;
-  grid-template-columns: 4rem minmax(14rem, 1fr) minmax(7.5rem, 10rem) minmax(4.25rem, 5.5rem) minmax(8rem, 11rem);
+  grid-template-columns:
+    4rem
+    minmax(14rem, 1fr)
+    minmax(7.5rem, 10rem)
+    minmax(4.25rem, 5.5rem)
+    minmax(8rem, 11rem);
   gap: clamp(0.8rem, 1.4vw, 1.25rem);
   align-items: center;
 
@@ -240,6 +268,9 @@
 
   appearance: none;
   cursor: pointer;
+
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
 }
 
 .work-project:last-child {
@@ -251,11 +282,12 @@
   position: absolute;
   inset: 0;
 
-  background: rgba(245, 245, 240, 0.026);
+  background: rgba(245, 245, 240, 0.024);
   opacity: 0;
 
   transform: scaleX(0.975);
   transform-origin: center;
+
   transition:
     opacity 220ms ease,
     transform 320ms cubic-bezier(.16, 1, .3, 1);
@@ -274,6 +306,7 @@
 
   transform: scaleX(0.64);
   transform-origin: left;
+
   transition:
     opacity 220ms ease,
     transform 360ms cubic-bezier(.16, 1, .3, 1);
@@ -467,7 +500,6 @@
     border-color 280ms ease;
 }
 
-/* Dormant state before click */
 .work-detail::before {
   content: "Select a project";
   position: absolute;
@@ -490,11 +522,11 @@
     transform 260ms cubic-bezier(.16, 1, .3, 1);
 }
 
-/* Hide all real detail content until JS opens it */
 .work-detail > * {
   opacity: 0;
   visibility: hidden;
   transform: translate3d(0.65rem, 0, 0);
+
   transition:
     opacity 260ms ease,
     visibility 260ms ease,
@@ -731,16 +763,20 @@
 ---------------------------------------------------------- */
 
 @media (max-width: 1180px) {
-  .work-archive {
-    height: auto;
+  /*
+    When Our Work is inside the PROCESS handoff, keep it fixed-size.
+    Do not let responsive auto-height fight the zoom layer.
+  */
+  .process-world-inside .work-archive {
+    height: 100vh;
     min-height: 100vh;
-    overflow: visible;
+    overflow: hidden;
   }
 
-  .work-archive__track {
-    height: auto;
+  .process-world-inside .work-archive__track {
+    height: 100%;
     min-height: 100vh;
-    transform: none;
+    transform: translate3d(0, 0, 0);
   }
 
   .work-archive__shell {
