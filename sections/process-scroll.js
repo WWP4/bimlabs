@@ -11,7 +11,6 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger }) {
   const voidTarget = section.querySelector(".process-void");
   const worldInside = section.querySelector(".process-world-inside");
   const copy = section.querySelector(".process-copy");
-  
 
   const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
@@ -27,8 +26,7 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger }) {
       word,
       voidTarget,
       worldInside,
-      copy,
-      
+      copy
     });
 
     return null;
@@ -41,8 +39,7 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger }) {
     word,
     voidTarget,
     worldInside,
-    copy,
-    workTrack
+    copy
   });
 
   const timeline = gsap.timeline({
@@ -53,17 +50,7 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger }) {
       trigger: section,
       start: "top top",
       end: "bottom bottom",
-
-      /*
-        IMPORTANT:
-        Do NOT pin this section.
-
-        The PROCESS scene is already sticky in CSS.
-        The cards are normal HTML/CSS content.
-        Pinning the whole section stops the cards from naturally scrolling.
-      */
       pin: false,
-
       scrub: 1.05,
       invalidateOnRefresh: true,
 
@@ -79,16 +66,12 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger }) {
 
       onEnter: () => {
         section.classList.add("is-process-active");
-        section.classList.remove("is-inside-work");
+        section.classList.remove("is-inside-work", "is-work-interactive");
       },
 
       onEnterBack: () => {
         section.classList.add("is-process-active");
-
-        section.classList.remove(
-          "is-work-interactive",
-          "is-inside-work"
-        );
+        section.classList.remove("is-work-interactive", "is-inside-work");
 
         if (worldInside) {
           worldInside.classList.remove("is-interactive");
@@ -96,19 +79,17 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger }) {
         }
       },
 
-    onLeave: () => {
-  section.classList.remove("is-process-active");
-  section.classList.add("is-work-visible");
-  section.classList.remove("is-work-interactive", "is-inside-work");
+      onLeave: () => {
+        section.classList.remove("is-process-active");
+        section.classList.add("is-work-visible");
+        section.classList.remove("is-work-interactive", "is-inside-work");
 
-  if (worldInside) {
-    worldInside.removeAttribute("aria-hidden");
-    worldInside.classList.add("is-visible");
-    worldInside.classList.remove("is-interactive");
-    worldInside.style.pointerEvents = "none";
-  }
-},
-
+        if (worldInside) {
+          worldInside.removeAttribute("aria-hidden");
+          worldInside.classList.add("is-visible");
+          worldInside.classList.remove("is-interactive");
+          worldInside.style.pointerEvents = "none";
+        }
       },
 
       onLeaveBack: () => {
@@ -124,17 +105,13 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger }) {
           worldInside.classList.remove("is-visible", "is-interactive");
           worldInside.style.pointerEvents = "none";
         }
-
-        if (workTrack) {
-          workTrack.style.setProperty("--work-scroll-progress", "0");
-        }
       }
     }
   });
 
   /*
     INTRO ONLY
-    This file does not select, hide, move, fade, or animate cards.
+    This file does not select, hide, move, fade, or animate process cards.
     Cards stay normal HTML/CSS.
   */
   timeline
@@ -197,8 +174,12 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger }) {
 
   /*
     HANDOFF
-    Only controls PROCESS word, aperture, and Our Work reveal.
-    No card logic.
+    This only controls:
+    - PROCESS word
+    - void/aperture
+    - transition preview layer
+
+    The real #our-work section lives after PROCESS and scrolls normally.
   */
   timeline
     .to(
@@ -244,6 +225,7 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger }) {
         y: 26,
         scale: 0.9,
         filter: "blur(7px)",
+        pointerEvents: "none",
         force3D: true,
         duration: 0.08
       },
@@ -292,6 +274,7 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger }) {
         y: 12,
         scale: 0.955,
         filter: "blur(3.5px)",
+        pointerEvents: "none",
         force3D: true,
         duration: 0.09
       },
@@ -340,6 +323,7 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger }) {
         y: 2,
         scale: 0.992,
         filter: "blur(1.1px)",
+        pointerEvents: "none",
         force3D: true,
         duration: 0.1
       },
@@ -389,6 +373,7 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger }) {
         y: 0,
         scale: 1,
         filter: "blur(0px)",
+        pointerEvents: "none",
         force3D: true,
         duration: 0.16
       },
@@ -419,7 +404,7 @@ function prepareInitialState({
   word,
   voidTarget,
   worldInside,
-  copy,
+  copy
 }) {
   section.classList.remove(
     "is-process-active",
@@ -474,6 +459,7 @@ function prepareInitialState({
       y: 44,
       scale: 0.88,
       filter: "blur(10px)",
+      pointerEvents: "none",
       transformOrigin: "51.8% 50%",
       force3D: true
     });
@@ -486,7 +472,6 @@ function prepareInitialState({
       force3D: true
     });
   }
-
 }
 
 /* =========================================================
@@ -499,8 +484,7 @@ function prepareReducedState({
   word,
   voidTarget,
   worldInside,
-  copy,
-  
+  copy
 }) {
   section.style.setProperty("--process-section-intensity", "1");
   section.style.setProperty("--process-intro", "1");
@@ -525,6 +509,7 @@ function prepareReducedState({
   if (worldInside) {
     worldInside.setAttribute("aria-hidden", "true");
     worldInside.classList.remove("is-visible", "is-interactive");
+    worldInside.style.pointerEvents = "none";
 
     gsap.set(worldInside, {
       autoAlpha: 0,
@@ -540,7 +525,6 @@ function prepareReducedState({
       y: 0
     });
   }
-
 }
 
 /* =========================================================
@@ -556,36 +540,24 @@ function updateByProgress({
 }) {
   const intro = mapRange(progress, 0.02, 0.22);
   const handoff = mapRange(progress, 0.86, 1);
+  const workVisible = progress >= 0.895;
 
   section.style.setProperty("--process-intro", intro.toFixed(4));
   section.style.setProperty("--process-handoff", handoff.toFixed(4));
 
-const workVisible = progress >= 0.895;
-
-section.classList.toggle("is-work-visible", workVisible);
-section.classList.remove("is-work-interactive");
-
-  /*
-    Do not add is-inside-work during scrub.
-    That class has hard CSS states and can create jumps.
-  */
-  section.classList.remove("is-inside-work");
+  section.classList.toggle("is-work-visible", workVisible);
+  section.classList.remove("is-work-interactive", "is-inside-work");
 
   if (worldInside) {
     worldInside.classList.toggle("is-visible", workVisible);
-worldInside.classList.remove("is-interactive");
+    worldInside.classList.remove("is-interactive");
+    worldInside.style.pointerEvents = "none";
 
     if (workVisible) {
       worldInside.removeAttribute("aria-hidden");
     } else {
       worldInside.setAttribute("aria-hidden", "true");
     }
-
-    worldInside.style.pointerEvents = "none";
-  }
-
-  if (workTrack) {
-    workTrack.style.setProperty("--work-scroll-progress", "0");
   }
 
   if (scene?.setProgress) {
