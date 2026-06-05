@@ -1,27 +1,22 @@
 /* ==========================================================
    BIM LABS STUDIO — OUR WORK ARCHIVE
-   Noomo-inspired archive rows / dark BIM Labs system
-   process-scroll.js owns the PROCESS → Our Work reveal
+   Scroll-safe archive section
+   process-scroll.js owns PROCESS → Our Work reveal
 ========================================================== */
 
 .work-archive {
   position: relative;
   width: 100%;
-  height: 100vh;
   min-height: 100vh;
-  overflow: hidden;
+  height: auto;
+  overflow: visible;
+
   color: #f3f1eb;
   background: #020202;
   font-family: inherit;
 
-  --work-text: rgba(245, 245, 240, 0.9);
-  --work-soft: rgba(245, 245, 240, 0.56);
-  --work-muted: rgba(245, 245, 240, 0.34);
-  --work-faint: rgba(245, 245, 240, 0.18);
   --work-line: rgba(245, 245, 240, 0.11);
-
-  transform: translate3d(0, 0, 0);
-  backface-visibility: hidden;
+  --work-muted: rgba(245, 245, 240, 0.36);
 }
 
 /* BACKGROUND */
@@ -43,14 +38,12 @@
   position: absolute;
   inset: 13% 8%;
   border: 1px solid rgba(245, 245, 240, 0.03);
-  opacity: 0.8;
 }
 
 .work-archive__bg::after {
   content: "";
   position: absolute;
   inset: 0;
-
   background:
     linear-gradient(to right, transparent, rgba(245, 245, 240, 0.018), transparent),
     repeating-linear-gradient(
@@ -60,7 +53,6 @@
       transparent 1px,
       transparent 9px
     );
-
   opacity: 0.12;
   mix-blend-mode: screen;
 }
@@ -71,24 +63,24 @@
   position: relative;
   z-index: 1;
 
-  display: grid;
-  grid-template-rows: auto 1fr auto;
-  gap: clamp(3rem, 6vh, 5.5rem);
+  width: min(92rem, calc(100% - 8rem));
+  min-height: 100vh;
+  height: auto;
 
-  width: min(90rem, calc(100% - 8rem));
-  height: 100vh;
   margin: 0 auto;
-  padding: clamp(7rem, 12vh, 10rem) 0 clamp(5rem, 8vh, 7rem);
+  padding: clamp(6rem, 10vh, 8rem) 0 clamp(5rem, 8vh, 7rem);
 }
 
 /* HEADER */
 
 .work-archive__header {
   display: grid;
-  grid-template-columns: minmax(0, 48rem) minmax(16rem, 26rem);
+  grid-template-columns: minmax(18rem, 30rem) minmax(16rem, 24rem);
   justify-content: space-between;
   align-items: end;
   gap: clamp(3rem, 7vw, 8rem);
+
+  margin-bottom: clamp(3rem, 7vh, 5.5rem);
 }
 
 .work-archive__kicker {
@@ -104,24 +96,23 @@
 }
 
 .work-archive__title {
-  max-width: 50rem;
   margin: 0;
 
   color: rgba(245, 245, 240, 0.86);
-  font-size: clamp(2.8rem, 5.5vw, 6.4rem);
+  font-size: clamp(3.5rem, 7vw, 8rem);
   font-weight: 300;
   letter-spacing: -0.075em;
-  line-height: 0.9;
+  line-height: 0.88;
 }
 
 .work-archive__intro {
-  max-width: 25rem;
-  margin: 0 0 0.2rem;
+  max-width: 22rem;
+  margin: 0;
 
   color: rgba(245, 245, 240, 0.46);
-  font-size: clamp(0.72rem, 0.78vw, 0.88rem);
+  font-size: clamp(0.78rem, 0.85vw, 0.96rem);
   font-weight: 300;
-  line-height: 1.75;
+  line-height: 1.7;
   letter-spacing: -0.012em;
 }
 
@@ -130,7 +121,6 @@
 .work-archive__list {
   position: relative;
   display: grid;
-  align-self: center;
   width: 100%;
 }
 
@@ -143,7 +133,7 @@
   gap: 2rem;
 
   width: 100%;
-  min-height: clamp(4.5rem, 8vh, 6.15rem);
+  min-height: clamp(4.6rem, 8vh, 6.15rem);
   padding: 0;
 
   border: 0;
@@ -155,8 +145,6 @@
 
   cursor: pointer;
   appearance: none;
-
-  transform: translate3d(0, 0, 0);
 }
 
 .work-project:last-child {
@@ -186,13 +174,6 @@
   transform: scaleY(1);
 }
 
-.work-project:focus-visible {
-  outline: 1px solid rgba(245, 245, 240, 0.22);
-  outline-offset: 0.35rem;
-}
-
-/* ROW MAIN */
-
 .work-project__main {
   position: relative;
   z-index: 2;
@@ -205,12 +186,9 @@
 }
 
 .work-project__number {
-  flex: 0 0 auto;
-
   color: rgba(245, 245, 240, 0.42);
   font-family: var(--mono, "IBM Plex Mono", ui-monospace, monospace);
   font-size: 0.68rem;
-  font-weight: 400;
   letter-spacing: 0.12em;
 }
 
@@ -299,7 +277,7 @@
   transform: translate3d(0.35rem, 0, 0);
 }
 
-/* PREVIEW IMAGE */
+/* PREVIEW */
 
 .work-project__preview {
   position: fixed;
@@ -330,10 +308,9 @@
   display: block;
   width: 100%;
   height: 100%;
-
   object-fit: cover;
-  filter: grayscale(1) brightness(0.72) contrast(1.08);
 
+  filter: grayscale(1) brightness(0.72) contrast(1.08);
   transform: scale(1.04);
 
   transition:
@@ -358,22 +335,23 @@
 /* DETAIL PANEL */
 
 .work-detail {
-  position: absolute;
-  right: 0;
-  bottom: clamp(4rem, 8vh, 7rem);
-  z-index: 20;
+  position: fixed;
+  right: clamp(2rem, 5vw, 5rem);
+  bottom: clamp(2rem, 6vh, 5rem);
+  z-index: 70;
 
-  width: min(26rem, 34vw);
-  min-height: 28rem;
+  width: min(26rem, calc(100vw - 4rem));
+  max-height: min(78vh, 42rem);
+  overflow: auto;
+
   padding: 2.25rem;
 
   border: 1px solid rgba(245, 245, 240, 0.08);
-  background:
-    linear-gradient(
-      to bottom,
-      rgba(10, 10, 10, 0.86),
-      rgba(3, 3, 3, 0.92)
-    );
+  background: linear-gradient(
+    to bottom,
+    rgba(10, 10, 10, 0.9),
+    rgba(3, 3, 3, 0.96)
+  );
 
   box-shadow: 0 2rem 5rem rgba(0, 0, 0, 0.7);
   backdrop-filter: blur(16px);
@@ -389,35 +367,12 @@
     transform 360ms cubic-bezier(.16, 1, .3, 1);
 }
 
-.work-detail::before {
-  content: "Select a project";
-  position: absolute;
-  right: 0;
-  top: -2rem;
-
-  color: rgba(245, 245, 240, 0.28);
-  font-family: var(--mono, "IBM Plex Mono", ui-monospace, monospace);
-  font-size: 0.54rem;
-  font-weight: 500;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-}
-
 .work-detail.is-open,
 .work-archive.has-open-detail .work-detail {
   opacity: 1;
   visibility: visible;
   pointer-events: auto;
   transform: translate3d(0, 0, 0);
-}
-
-.work-detail.is-open::before,
-.work-archive.has-open-detail .work-detail::before {
-  content: "Project detail";
-}
-
-.work-detail.is-changing {
-  animation: workDetailChange 300ms cubic-bezier(.16, 1, .3, 1) both;
 }
 
 .work-detail__close {
@@ -437,16 +392,10 @@
   line-height: 1;
 
   cursor: pointer;
-  appearance: none;
-
-  transition:
-    color 180ms ease,
-    transform 180ms ease;
 }
 
 .work-detail__close:hover {
   color: rgba(245, 245, 240, 0.86);
-  transform: rotate(90deg);
 }
 
 .work-detail__eyebrow {
@@ -459,7 +408,6 @@
   font-family: var(--mono, "IBM Plex Mono", ui-monospace, monospace);
   font-size: 0.54rem;
   letter-spacing: 0.18em;
-  line-height: 1;
   text-transform: uppercase;
 }
 
@@ -495,7 +443,6 @@
   font-family: var(--mono, "IBM Plex Mono", ui-monospace, monospace);
   font-size: 0.52rem;
   letter-spacing: 0.18em;
-  line-height: 1;
   text-transform: uppercase;
 }
 
@@ -540,16 +487,13 @@
 .work-detail__client span {
   color: rgba(245, 245, 240, 0.66);
   font-size: 0.66rem;
-  font-weight: 300;
 }
 
 .work-detail__client small {
   color: rgba(245, 245, 240, 0.34);
   font-family: var(--mono, "IBM Plex Mono", ui-monospace, monospace);
   font-size: 0.5rem;
-  font-weight: 400;
   letter-spacing: 0.16em;
-  line-height: 1.4;
   text-transform: uppercase;
 }
 
@@ -568,42 +512,16 @@
   font-family: var(--mono, "IBM Plex Mono", ui-monospace, monospace);
   font-size: 0.52rem;
   letter-spacing: 0.18em;
-  line-height: 1;
   text-transform: uppercase;
 
   cursor: pointer;
-  appearance: none;
-
-  transition:
-    color 180ms ease,
-    transform 180ms ease;
 }
 
 .work-detail__nav button:hover {
   color: rgba(245, 245, 240, 0.88);
 }
 
-.work-detail__nav button:first-child:hover {
-  transform: translateX(-0.2rem);
-}
-
-.work-detail__nav button:last-child:hover {
-  transform: translateX(0.2rem);
-}
-
-@keyframes workDetailChange {
-  0% {
-    opacity: 0.55;
-    transform: translate3d(0.5rem, 0, 0);
-  }
-
-  100% {
-    opacity: 1;
-    transform: translate3d(0, 0, 0);
-  }
-}
-
-/* PROCESS WORLD STATE HELPERS */
+/* PROCESS STATE */
 
 .process-world-inside[aria-hidden="true"] .work-archive {
   pointer-events: none;
@@ -613,6 +531,16 @@
 .process-3d.is-work-interactive .work-archive,
 .process-3d.is-inside-work .work-archive {
   pointer-events: auto;
+  height: auto;
+  min-height: 100vh;
+  overflow: visible;
+}
+
+.process-world-inside.is-interactive .work-archive__shell,
+.process-3d.is-work-interactive .work-archive__shell,
+.process-3d.is-inside-work .work-archive__shell {
+  height: auto;
+  min-height: 100vh;
 }
 
 /* RESPONSIVE */
@@ -620,66 +548,31 @@
 @media (max-width: 1180px) {
   .work-archive__shell {
     width: min(60rem, calc(100% - 3rem));
-    padding: 6rem 0 4rem;
   }
 
   .work-archive__header {
     grid-template-columns: 1fr;
-    align-items: start;
     gap: 1.75rem;
-  }
-
-  .work-archive__intro {
-    max-width: 30rem;
   }
 
   .work-project {
     grid-template-columns: minmax(0, 1fr) auto;
   }
 
-  .work-project__hover {
-    display: none;
-  }
-
+  .work-project__hover,
   .work-project__preview {
     display: none;
-  }
-
-  .work-detail {
-    width: min(30rem, calc(100% - 3rem));
-    right: 1.5rem;
-    bottom: 3rem;
   }
 }
 
 @media (max-width: 760px) {
-  .work-archive {
-    height: auto;
-    min-height: 100vh;
-    overflow: visible;
-  }
-
-  .process-world-inside .work-archive {
-    height: 100vh;
-    min-height: 100vh;
-    overflow: hidden;
-  }
-
   .work-archive__shell {
     width: calc(100% - 2rem);
-    height: auto;
-    min-height: 100vh;
     padding: 5rem 0 3rem;
-    gap: 3rem;
-  }
-
-  .process-world-inside .work-archive__shell {
-    height: 100vh;
-    overflow: hidden;
   }
 
   .work-archive__title {
-    font-size: clamp(2.4rem, 13vw, 4rem);
+    font-size: clamp(3rem, 14vw, 5rem);
   }
 
   .work-project {
@@ -691,10 +584,6 @@
     gap: 1rem;
   }
 
-  .work-project__number {
-    font-size: 0.62rem;
-  }
-
   .work-project__name {
     font-size: clamp(1rem, 5vw, 1.25rem);
   }
@@ -702,31 +591,14 @@
   .work-detail {
     left: 1rem;
     right: 1rem;
-    bottom: 2rem;
+    bottom: 1rem;
     width: auto;
-    max-height: 70vh;
-    overflow: auto;
+    max-height: 72vh;
     padding: 2rem 1.5rem;
   }
 
   .work-detail__nav {
     flex-direction: column;
-    gap: 0.8rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .work-archive__shell {
-    width: calc(100% - 1.5rem);
-  }
-
-  .work-project__arrow {
-    font-size: 0.9rem;
-  }
-
-  .work-detail__description,
-  .work-detail__quote {
-    font-size: 0.64rem;
   }
 }
 
@@ -740,9 +612,7 @@
   .work-project__arrow,
   .work-project__preview,
   .work-project__preview img,
-  .work-detail,
-  .work-detail__close,
-  .work-detail__nav button {
+  .work-detail {
     transition: none !important;
     animation: none !important;
   }
