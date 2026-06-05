@@ -162,156 +162,187 @@
 
 
     
-    <div class="process-world-inside" data-work-world aria-hidden="true">
-  <section class="work-archive" id="our-work" aria-labelledby="work-archive-title">
-    <div class="work-archive__bg" aria-hidden="true"></div>
+   <!-- ======================================================
+     PROCESS → OUR WORK REVEAL LAYER
+     This stays inside the PROCESS section.
+     It is visual only. Do not put buttons/details inside here.
+====================================================== -->
 
-    <div class="work-archive__shell">
-      <header class="work-archive__header">
-        <p class="work-archive__kicker">/// Selected work</p>
+<div class="process-world-inside" data-work-world aria-hidden="true">
+  <div class="work-reveal-preview" aria-hidden="true">
+    <div class="work-reveal-preview__bg"></div>
 
-        <h2 id="work-archive-title" class="work-archive__title">
-          Four real projects. Digital systems, websites, and workflows built with restraint.
-        </h2>
+    <div class="work-reveal-preview__shell">
+      <p class="work-reveal-preview__kicker">/// Selected work</p>
 
-        <p class="work-archive__intro">
-          A curated archive of selected BIM Labs work — from client portals and quote systems
-          to brand-facing websites, AI workflows, and internal operating layers.
-        </p>
-      </header>
+      <h2 class="work-reveal-preview__title">
+        Four real projects. Digital systems, websites, and workflows built with restraint.
+      </h2>
 
-      <div class="work-archive__list" role="list" aria-label="Selected BIM Labs Studio projects">
-        <button class="work-project is-active" type="button" data-work-project="0" role="listitem">
-          <span class="work-project__main">
-            <span class="work-project__number">01</span>
-            <span class="work-project__name">Wonder World Portal</span>
-          </span>
-
-          <span class="work-project__hover">
-            <span>Client Portal</span>
-            <span>2024</span>
-            <span>Web / Systems / Portal</span>
-          </span>
-
-          <span class="work-project__arrow">→</span>
-
-          <span class="work-project__preview" aria-hidden="true">
-            <img src="designs/work/wonder-world.jpg" alt="">
-          </span>
-        </button>
-
-        <button class="work-project" type="button" data-work-project="1" role="listitem">
-          <span class="work-project__main">
-            <span class="work-project__number">02</span>
-            <span class="work-project__name">Momentum Athlete</span>
-          </span>
-
-          <span class="work-project__hover">
-            <span>Sports Platform</span>
-            <span>2024</span>
-            <span>Brand / Web / UX/UI</span>
-          </span>
-
-          <span class="work-project__arrow">→</span>
-
-          <span class="work-project__preview" aria-hidden="true">
-            <img src="designs/work/momentum-athlete.jpg" alt="">
-          </span>
-        </button>
-
-        <button class="work-project" type="button" data-work-project="2" role="listitem">
-          <span class="work-project__main">
-            <span class="work-project__number">03</span>
-            <span class="work-project__name">Orynd AI</span>
-          </span>
-
-          <span class="work-project__hover">
-            <span>AI Platform</span>
-            <span>2023</span>
-            <span>Brand / Web / Product</span>
-          </span>
-
-          <span class="work-project__arrow">→</span>
-
-          <span class="work-project__preview" aria-hidden="true">
-            <img src="designs/work/orynd-ai.jpg" alt="">
-          </span>
-        </button>
-
-        <button class="work-project" type="button" data-work-project="3" role="listitem">
-          <span class="work-project__main">
-            <span class="work-project__number">04</span>
-            <span class="work-project__name">CashFlowSwami</span>
-          </span>
-
-          <span class="work-project__hover">
-            <span>Fintech Platform</span>
-            <span>2023</span>
-            <span>Brand / Web / Systems</span>
-          </span>
-
-          <span class="work-project__arrow">→</span>
-
-          <span class="work-project__preview" aria-hidden="true">
-            <img src="designs/work/cashflow-swami.jpg" alt="">
-          </span>
-        </button>
+      <div class="work-reveal-preview__list">
+        <span>01&nbsp;&nbsp;Wonder World Portal</span>
+        <span>02&nbsp;&nbsp;Momentum Athlete</span>
+        <span>03&nbsp;&nbsp;Orynd AI</span>
+        <span>04&nbsp;&nbsp;CashFlowSwami</span>
       </div>
-
-      <aside class="work-detail" aria-label="Project details">
-        <button class="work-detail__close" type="button" aria-label="Close project details">
-          ×
-        </button>
-
-        <p class="work-detail__eyebrow">
-          <span data-work-detail-number>01</span>
-          <span>Featured project</span>
-        </p>
-
-        <h3 class="work-detail__title" data-work-detail-title>
-          Wonder World Portal
-        </h3>
-
-        <p class="work-detail__description" data-work-detail-description>
-          We designed and built a private operating layer for Wonder World,
-          bringing quotes, products, lead flow, installer coordination, and
-          customer-facing resources into one cleaner system.
-        </p>
-
-        <div class="work-detail__section">
-          <p class="work-detail__label">Deliverables</p>
-
-          <ul class="work-detail__list" data-work-detail-services>
-            <li>Client portal architecture</li>
-            <li>Product and quote system</li>
-            <li>Installer finder workflow</li>
-            <li>CRM and internal dashboard</li>
-            <li>Frontend design and development</li>
-          </ul>
-        </div>
-
-        <div class="work-detail__section">
-          <p class="work-detail__label">Client review</p>
-
-          <blockquote class="work-detail__quote" data-work-detail-review>
-            “BIM Labs Studio helped us turn a scattered sales process into a cleaner system.”
-          </blockquote>
-
-          <div class="work-detail__client">
-            <span data-work-detail-client>Wonder World Playsets</span>
-            <small data-work-detail-role>Commercial playground distributor</small>
-          </div>
-        </div>
-
-        <div class="work-detail__nav">
-          <button type="button" data-work-prev>← Prev project</button>
-          <button type="button" data-work-next>Next project →</button>
-        </div>
-      </aside>
     </div>
-  </section>
+  </div>
 </div>
 
+
+<!-- ======================================================
+     REAL OUR WORK SECTION
+     Put this AFTER the closing </section> of PROCESS.
+     This is the actual scrollable/clickable section.
+====================================================== -->
+
+<section class="work-archive" id="our-work" aria-labelledby="work-archive-title">
+  <div class="work-archive__bg" aria-hidden="true"></div>
+
+  <div class="work-archive__shell">
+    <header class="work-archive__header">
+      <p class="work-archive__kicker">/// Selected work</p>
+
+      <h2 id="work-archive-title" class="work-archive__title">
+        Four real projects. Digital systems, websites, and workflows built with restraint.
+      </h2>
+
+      <p class="work-archive__intro">
+        A curated archive of selected BIM Labs work — from client portals and quote systems
+        to brand-facing websites, AI workflows, and internal operating layers.
+      </p>
+    </header>
+
+    <div class="work-archive__list" role="list" aria-label="Selected BIM Labs Studio projects">
+      <button class="work-project is-active" type="button" data-work-project="0" role="listitem">
+        <span class="work-project__main">
+          <span class="work-project__number">01</span>
+          <span class="work-project__name">Wonder World Portal</span>
+        </span>
+
+        <span class="work-project__hover">
+          <span>Client Portal</span>
+          <span>2024</span>
+          <span>Web / Systems / Portal</span>
+        </span>
+
+        <span class="work-project__arrow">→</span>
+
+        <span class="work-project__preview" aria-hidden="true">
+          <img src="designs/work/wonder-world.jpg" alt="">
+        </span>
+      </button>
+
+      <button class="work-project" type="button" data-work-project="1" role="listitem">
+        <span class="work-project__main">
+          <span class="work-project__number">02</span>
+          <span class="work-project__name">Momentum Athlete</span>
+        </span>
+
+        <span class="work-project__hover">
+          <span>Sports Platform</span>
+          <span>2024</span>
+          <span>Brand / Web / UX/UI</span>
+        </span>
+
+        <span class="work-project__arrow">→</span>
+
+        <span class="work-project__preview" aria-hidden="true">
+          <img src="designs/work/momentum-athlete.jpg" alt="">
+        </span>
+      </button>
+
+      <button class="work-project" type="button" data-work-project="2" role="listitem">
+        <span class="work-project__main">
+          <span class="work-project__number">03</span>
+          <span class="work-project__name">Orynd AI</span>
+        </span>
+
+        <span class="work-project__hover">
+          <span>AI Platform</span>
+          <span>2023</span>
+          <span>Brand / Web / Product</span>
+        </span>
+
+        <span class="work-project__arrow">→</span>
+
+        <span class="work-project__preview" aria-hidden="true">
+          <img src="designs/work/orynd-ai.jpg" alt="">
+        </span>
+      </button>
+
+      <button class="work-project" type="button" data-work-project="3" role="listitem">
+        <span class="work-project__main">
+          <span class="work-project__number">04</span>
+          <span class="work-project__name">CashFlowSwami</span>
+        </span>
+
+        <span class="work-project__hover">
+          <span>Fintech Platform</span>
+          <span>2023</span>
+          <span>Brand / Web / Systems</span>
+        </span>
+
+        <span class="work-project__arrow">→</span>
+
+        <span class="work-project__preview" aria-hidden="true">
+          <img src="designs/work/cashflow-swami.jpg" alt="">
+        </span>
+      </button>
+    </div>
+
+    <aside class="work-detail" aria-label="Project details">
+      <button class="work-detail__close" type="button" aria-label="Close project details">
+        ×
+      </button>
+
+      <p class="work-detail__eyebrow">
+        <span data-work-detail-number>01</span>
+        <span>Featured project</span>
+      </p>
+
+      <h3 class="work-detail__title" data-work-detail-title>
+        Wonder World Portal
+      </h3>
+
+      <p class="work-detail__description" data-work-detail-description>
+        We designed and built a private operating layer for Wonder World,
+        bringing quotes, products, lead flow, installer coordination, and
+        customer-facing resources into one cleaner system.
+      </p>
+
+      <div class="work-detail__section">
+        <p class="work-detail__label">Deliverables</p>
+
+        <ul class="work-detail__list" data-work-detail-services>
+          <li>Client portal architecture</li>
+          <li>Product and quote system</li>
+          <li>Installer finder workflow</li>
+          <li>CRM and internal dashboard</li>
+          <li>Frontend design and development</li>
+        </ul>
+      </div>
+
+      <div class="work-detail__section">
+        <p class="work-detail__label">Client review</p>
+
+        <blockquote class="work-detail__quote" data-work-detail-review>
+          “BIM Labs Studio helped us turn a scattered sales process into a cleaner system.”
+        </blockquote>
+
+        <div class="work-detail__client">
+          <span data-work-detail-client>Wonder World Playsets</span>
+          <small data-work-detail-role>Commercial playground distributor</small>
+        </div>
+      </div>
+
+      <div class="work-detail__nav">
+        <button type="button" data-work-prev>← Prev project</button>
+        <button type="button" data-work-next>Next project →</button>
+      </div>
+    </aside>
+  </div>
+</section>
 
 
 
