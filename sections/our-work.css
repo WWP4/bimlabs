@@ -1,70 +1,49 @@
 /* ==========================================================
    BIM LABS STUDIO — OUR WORK ARCHIVE
-   Stable destination layer for PROCESS → Our Work handoff
-
-   Important:
-   This file does NOT control the PROCESS zoom.
-   process-scroll.js owns the handoff.
-   This CSS keeps Our Work stable so it does not zoom/snap/glitch.
+   Noomo-inspired archive rows / dark BIM Labs system
+   process-scroll.js owns the PROCESS → Our Work reveal
 ========================================================== */
 
 .work-archive {
   position: relative;
-
   width: 100%;
   height: 100vh;
   min-height: 100vh;
-
   overflow: hidden;
-
   color: #f3f1eb;
   background: #020202;
   font-family: inherit;
 
   --work-text: rgba(245, 245, 240, 0.9);
-  --work-soft: rgba(245, 245, 240, 0.54);
-  --work-muted: rgba(245, 245, 240, 0.38);
-  --work-faint: rgba(245, 245, 240, 0.22);
-  --work-line: rgba(245, 245, 240, 0.075);
-  --work-line-strong: rgba(245, 245, 240, 0.14);
+  --work-soft: rgba(245, 245, 240, 0.56);
+  --work-muted: rgba(245, 245, 240, 0.34);
+  --work-faint: rgba(245, 245, 240, 0.18);
+  --work-line: rgba(245, 245, 240, 0.11);
 
-  backface-visibility: hidden;
   transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
 }
 
-/* ----------------------------------------------------------
-   BACKGROUND / DEPTH
----------------------------------------------------------- */
+/* BACKGROUND */
 
 .work-archive__bg {
   position: absolute;
   inset: 0;
   z-index: 0;
-
   pointer-events: none;
 
   background:
-    radial-gradient(circle at 50% 46%, rgba(255, 255, 255, 0.034), transparent 31%),
-    radial-gradient(circle at 72% 56%, rgba(255, 255, 255, 0.018), transparent 24%),
-    radial-gradient(circle at 30% 60%, rgba(255, 255, 255, 0.014), transparent 28%),
-    linear-gradient(
-      to bottom,
-      rgba(0, 0, 0, 0.98),
-      #020202 28%,
-      #020202 74%,
-      rgba(0, 0, 0, 0.98)
-    );
-
-  opacity: 1;
+    radial-gradient(circle at 50% 44%, rgba(255, 255, 255, 0.04), transparent 34%),
+    radial-gradient(circle at 74% 52%, rgba(255, 255, 255, 0.018), transparent 26%),
+    linear-gradient(to bottom, #020202, #000 45%, #020202);
 }
 
 .work-archive__bg::before {
   content: "";
   position: absolute;
-  inset: 14% 10%;
-
-  border: 1px solid rgba(245, 245, 240, 0.022);
-  opacity: 0.7;
+  inset: 13% 8%;
+  border: 1px solid rgba(245, 245, 240, 0.03);
+  opacity: 0.8;
 }
 
 .work-archive__bg::after {
@@ -73,79 +52,49 @@
   inset: 0;
 
   background:
-    linear-gradient(to right, transparent, rgba(245, 245, 240, 0.014), transparent),
+    linear-gradient(to right, transparent, rgba(245, 245, 240, 0.018), transparent),
     repeating-linear-gradient(
       to bottom,
-      rgba(255, 255, 255, 0.01) 0,
-      rgba(255, 255, 255, 0.01) 1px,
+      rgba(255, 255, 255, 0.012) 0,
+      rgba(255, 255, 255, 0.012) 1px,
       transparent 1px,
-      transparent 8px
+      transparent 9px
     );
 
-  opacity: 0.11;
+  opacity: 0.12;
   mix-blend-mode: screen;
 }
 
-/* ----------------------------------------------------------
-   TRACK / SHELL
----------------------------------------------------------- */
-
-.work-archive__track {
-  position: relative;
-  z-index: 1;
-
-  width: 100%;
-  height: 100%;
-
-  /*
-    Important:
-    Do not use --work-scroll-progress here.
-    The PROCESS handoff is already moving/scaling the parent wrapper.
-    Moving this inner track creates the zoom-in / zoom-out glitch.
-  */
-  transform: translate3d(0, 0, 0);
-  backface-visibility: hidden;
-  will-change: auto;
-}
-
-.process-3d.is-inside-work .work-archive__track,
-.process-3d.is-work-interactive .work-archive__track,
-.process-world-inside.is-interactive .work-archive__track {
-  transform: translate3d(0, 0, 0);
-}
+/* SHELL */
 
 .work-archive__shell {
   position: relative;
+  z-index: 1;
 
   display: grid;
-  grid-template-rows: auto 1fr;
+  grid-template-rows: auto 1fr auto;
   gap: clamp(3rem, 6vh, 5.5rem);
 
-  width: min(82rem, calc(100% - 12rem));
-  min-height: 100vh;
-
+  width: min(90rem, calc(100% - 8rem));
+  height: 100vh;
   margin: 0 auto;
-  padding: clamp(8rem, 14vh, 11rem) 0 clamp(6rem, 10vh, 8rem);
+  padding: clamp(7rem, 12vh, 10rem) 0 clamp(5rem, 8vh, 7rem);
 }
 
-/* ----------------------------------------------------------
-   HEADER
----------------------------------------------------------- */
+/* HEADER */
 
 .work-archive__header {
-  position: relative;
-
   display: grid;
-  grid-template-columns: minmax(14rem, 22rem) minmax(14rem, 26rem);
+  grid-template-columns: minmax(0, 48rem) minmax(16rem, 26rem);
   justify-content: space-between;
   align-items: end;
-  gap: clamp(2rem, 5vw, 6rem);
+  gap: clamp(3rem, 7vw, 8rem);
 }
 
 .work-archive__kicker {
-  margin: 0 0 0.85rem;
+  margin: 0 0 1rem;
 
-  color: rgba(245, 245, 240, 0.34);
+  color: var(--work-muted);
   font-family: var(--mono, "IBM Plex Mono", ui-monospace, monospace);
   font-size: 0.58rem;
   font-weight: 500;
@@ -154,162 +103,79 @@
   text-transform: uppercase;
 }
 
-.work-archive__kicker::before {
-  content: "/// ";
-  color: rgba(245, 245, 240, 0.44);
-}
-
 .work-archive__title {
+  max-width: 50rem;
   margin: 0;
 
-  color: rgba(245, 245, 240, 0.82);
-  font-size: clamp(2.4rem, 4vw, 5rem);
+  color: rgba(245, 245, 240, 0.86);
+  font-size: clamp(2.8rem, 5.5vw, 6.4rem);
   font-weight: 300;
   letter-spacing: -0.075em;
   line-height: 0.9;
 }
 
 .work-archive__intro {
-  max-width: 24rem;
-  margin: 0;
+  max-width: 25rem;
+  margin: 0 0 0.2rem;
 
   color: rgba(245, 245, 240, 0.46);
-  font-size: clamp(0.72rem, 0.78vw, 0.86rem);
+  font-size: clamp(0.72rem, 0.78vw, 0.88rem);
   font-weight: 300;
   line-height: 1.75;
   letter-spacing: -0.012em;
 }
 
-/* ----------------------------------------------------------
-   BODY
----------------------------------------------------------- */
+/* ARCHIVE LIST */
 
-.work-archive__body {
-  position: relative;
-
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(15rem, 22rem);
-  gap: clamp(3rem, 6vw, 7rem);
-
-  align-items: center;
-  min-height: 34rem;
-}
-
-/* ----------------------------------------------------------
-   PROJECT INDEX
----------------------------------------------------------- */
-
-.work-archive__index {
+.work-archive__list {
   position: relative;
   display: grid;
-  min-width: 0;
+  align-self: center;
+  width: 100%;
 }
-
-.work-archive__index::before {
-  content: "";
-  position: absolute;
-  left: 4rem;
-  top: -1.35rem;
-  right: 0;
-  height: 1px;
-
-  background: linear-gradient(
-    to right,
-    rgba(245, 245, 240, 0.12),
-    rgba(245, 245, 240, 0.035),
-    transparent
-  );
-}
-
-.work-archive__index::after {
-  content: "Project / Category / Year / Services";
-  position: absolute;
-  left: 4rem;
-  top: -2.65rem;
-
-  color: rgba(245, 245, 240, 0.25);
-  font-family: var(--mono, "IBM Plex Mono", ui-monospace, monospace);
-  font-size: 0.52rem;
-  font-weight: 500;
-  letter-spacing: 0.2em;
-  line-height: 1;
-  text-transform: uppercase;
-}
-
-/* ----------------------------------------------------------
-   PROJECT ROW
----------------------------------------------------------- */
 
 .work-project {
   position: relative;
 
   display: grid;
-  grid-template-columns:
-    4rem
-    minmax(14rem, 1fr)
-    minmax(7.5rem, 10rem)
-    minmax(4.25rem, 5.5rem)
-    minmax(8rem, 11rem);
-  gap: clamp(0.8rem, 1.4vw, 1.25rem);
+  grid-template-columns: minmax(0, 1fr) auto auto;
   align-items: center;
+  gap: 2rem;
 
   width: 100%;
-  min-height: clamp(4.2rem, 7vh, 5.25rem);
+  min-height: clamp(4.5rem, 8vh, 6.15rem);
   padding: 0;
 
   border: 0;
-  border-top: 1px solid rgba(245, 245, 240, 0.055);
-  border-radius: 0;
-
+  border-top: 1px solid var(--work-line);
   background: transparent;
   color: inherit;
   font: inherit;
   text-align: left;
 
-  appearance: none;
   cursor: pointer;
+  appearance: none;
 
   transform: translate3d(0, 0, 0);
-  backface-visibility: hidden;
 }
 
 .work-project:last-child {
-  border-bottom: 1px solid rgba(245, 245, 240, 0.055);
+  border-bottom: 1px solid var(--work-line);
 }
 
 .work-project::before {
   content: "";
   position: absolute;
   inset: 0;
+  z-index: -1;
 
-  background: rgba(245, 245, 240, 0.024);
+  background: rgba(245, 245, 240, 0.028);
   opacity: 0;
-
-  transform: scaleX(0.975);
-  transform-origin: center;
+  transform: scaleY(0.82);
 
   transition:
     opacity 220ms ease,
     transform 320ms cubic-bezier(.16, 1, .3, 1);
-}
-
-.work-project::after {
-  content: "";
-  position: absolute;
-  left: 4rem;
-  right: 0;
-  bottom: -1px;
-  height: 1px;
-
-  background: rgba(245, 245, 240, 0.12);
-  opacity: 0;
-
-  transform: scaleX(0.64);
-  transform-origin: left;
-
-  transition:
-    opacity 220ms ease,
-    transform 360ms cubic-bezier(.16, 1, .3, 1);
 }
 
 .work-project:hover::before,
@@ -317,52 +183,52 @@
 .work-project.is-previewing::before,
 .work-project.is-active::before {
   opacity: 1;
-  transform: scaleX(1);
-}
-
-.work-project:hover::after,
-.work-project:focus-visible::after,
-.work-project.is-previewing::after,
-.work-project.is-active::after {
-  opacity: 1;
-  transform: scaleX(1);
+  transform: scaleY(1);
 }
 
 .work-project:focus-visible {
-  outline: 1px solid rgba(245, 245, 240, 0.24);
+  outline: 1px solid rgba(245, 245, 240, 0.22);
   outline-offset: 0.35rem;
 }
 
-.work-project__number {
+/* ROW MAIN */
+
+.work-project__main {
   position: relative;
-  z-index: 1;
+  z-index: 2;
+
+  display: flex;
+  align-items: baseline;
+  gap: clamp(1.2rem, 2vw, 2rem);
+
+  min-width: 0;
+}
+
+.work-project__number {
+  flex: 0 0 auto;
 
   color: rgba(245, 245, 240, 0.42);
   font-family: var(--mono, "IBM Plex Mono", ui-monospace, monospace);
   font-size: 0.68rem;
   font-weight: 400;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.12em;
 }
 
 .work-project__name {
-  position: relative;
-  z-index: 2;
+  overflow: hidden;
 
-  display: inline-flex;
-  align-items: center;
-  width: fit-content;
-  min-width: 0;
-
-  color: rgba(245, 245, 240, 0.74);
-  font-size: clamp(0.96rem, 1vw, 1.18rem);
+  color: rgba(245, 245, 240, 0.68);
+  font-size: clamp(1.15rem, 1.65vw, 2rem);
   font-weight: 300;
-  letter-spacing: -0.038em;
+  letter-spacing: -0.055em;
   line-height: 1;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 
   transition:
     color 220ms ease,
-    transform 280ms cubic-bezier(.16, 1, .3, 1),
-    letter-spacing 280ms ease;
+    transform 320ms cubic-bezier(.16, 1, .3, 1),
+    letter-spacing 320ms ease;
 }
 
 .work-project:hover .work-project__name,
@@ -370,79 +236,94 @@
 .work-project.is-previewing .work-project__name,
 .work-project.is-active .work-project__name {
   color: rgba(255, 255, 255, 0.96);
-  letter-spacing: -0.05em;
-  transform: translate3d(0.28rem, 0, 0);
+  letter-spacing: -0.07em;
+  transform: translate3d(0.35rem, 0, 0);
 }
 
-/* Current HTML uses .work-project__meta three times */
-.work-project__meta {
+/* HOVER META */
+
+.work-project__hover {
   position: relative;
-  z-index: 1;
+  z-index: 2;
 
-  display: grid;
-  gap: 0.42rem;
-  min-width: 0;
-}
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: clamp(1rem, 2vw, 2.25rem);
 
-.work-project__meta span {
-  color: rgba(245, 245, 240, 0.25);
+  color: rgba(245, 245, 240, 0.42);
   font-family: var(--mono, "IBM Plex Mono", ui-monospace, monospace);
-  font-size: 0.48rem;
+  font-size: 0.56rem;
   font-weight: 500;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.14em;
   line-height: 1;
   text-transform: uppercase;
-}
-
-.work-project__meta strong {
-  overflow: hidden;
-
-  color: rgba(245, 245, 240, 0.45);
-  font-size: 0.62rem;
-  font-weight: 300;
-  letter-spacing: -0.01em;
-  line-height: 1.2;
   white-space: nowrap;
-  text-overflow: ellipsis;
-
-  transition: color 220ms ease;
-}
-
-.work-project:hover .work-project__meta strong,
-.work-project:focus-visible .work-project__meta strong,
-.work-project.is-previewing .work-project__meta strong,
-.work-project.is-active .work-project__meta strong {
-  color: rgba(245, 245, 240, 0.7);
-}
-
-/* ----------------------------------------------------------
-   HOVER PREVIEW IMAGE
----------------------------------------------------------- */
-
-.work-project__preview {
-  position: fixed;
-  left: min(68vw, calc(100vw - 17rem));
-  top: 42vh;
-  z-index: 40;
-
-  display: block;
-  width: clamp(9rem, 12vw, 13rem);
-  aspect-ratio: 1.55 / 1;
-
-  overflow: hidden;
-
-  border: 1px solid rgba(245, 245, 240, 0.08);
-  background: #070707;
 
   opacity: 0;
-  transform: translate3d(0, 0.8rem, 0) scale(0.96);
-
-  pointer-events: none;
-  box-shadow: 0 2rem 5rem rgba(0, 0, 0, 0.66);
+  transform: translate3d(0.75rem, 0, 0);
 
   transition:
     opacity 220ms ease,
     transform 320ms cubic-bezier(.16, 1, .3, 1);
+}
+
+.work-project:hover .work-project__hover,
+.work-project:focus-visible .work-project__hover,
+.work-project.is-previewing .work-project__hover,
+.work-project.is-active .work-project__hover {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+
+/* ARROW */
+
+.work-project__arrow {
+  position: relative;
+  z-index: 2;
+
+  color: rgba(245, 245, 240, 0.44);
+  font-size: 1.05rem;
+  line-height: 1;
+
+  transition:
+    color 220ms ease,
+    transform 320ms cubic-bezier(.16, 1, .3, 1);
+}
+
+.work-project:hover .work-project__arrow,
+.work-project:focus-visible .work-project__arrow,
+.work-project.is-previewing .work-project__arrow,
+.work-project.is-active .work-project__arrow {
+  color: rgba(255, 255, 255, 0.88);
+  transform: translate3d(0.35rem, 0, 0);
+}
+
+/* PREVIEW IMAGE */
+
+.work-project__preview {
+  position: fixed;
+  left: min(66vw, calc(100vw - 18rem));
+  top: 42vh;
+  z-index: 40;
+
+  display: block;
+  width: clamp(10rem, 13vw, 15rem);
+  aspect-ratio: 1.45 / 1;
+
+  overflow: hidden;
+  border: 1px solid rgba(245, 245, 240, 0.1);
+  background: #070707;
+
+  opacity: 0;
+  transform: translate3d(0, 0.85rem, 0) scale(0.96);
+  pointer-events: none;
+
+  box-shadow: 0 2rem 5rem rgba(0, 0, 0, 0.68);
+
+  transition:
+    opacity 220ms ease,
+    transform 340ms cubic-bezier(.16, 1, .3, 1);
 }
 
 .work-project__preview img {
@@ -451,107 +332,88 @@
   height: 100%;
 
   object-fit: cover;
-  filter: grayscale(1) brightness(0.68) contrast(1.08);
+  filter: grayscale(1) brightness(0.72) contrast(1.08);
 
   transform: scale(1.04);
-  transition: transform 620ms cubic-bezier(.16, 1, .3, 1);
+
+  transition:
+    transform 680ms cubic-bezier(.16, 1, .3, 1),
+    filter 320ms ease;
 }
 
 .work-project:hover .work-project__preview,
 .work-project:focus-visible .work-project__preview,
 .work-project.is-previewing .work-project__preview {
-  opacity: 0.76;
+  opacity: 0.82;
   transform: translate3d(0, 0, 0) scale(1);
 }
 
 .work-project:hover .work-project__preview img,
 .work-project:focus-visible .work-project__preview img,
 .work-project.is-previewing .work-project__preview img {
-  transform: scale(1.08);
+  transform: scale(1.09);
+  filter: grayscale(1) brightness(0.82) contrast(1.12);
 }
 
-/* ----------------------------------------------------------
-   DETAIL RAIL
----------------------------------------------------------- */
+/* DETAIL PANEL */
 
 .work-detail {
-  position: relative;
-  align-self: stretch;
+  position: absolute;
+  right: 0;
+  bottom: clamp(4rem, 8vh, 7rem);
+  z-index: 20;
 
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+  width: min(26rem, 34vw);
+  min-height: 28rem;
+  padding: 2.25rem;
 
-  min-width: 0;
-  min-height: 27rem;
+  border: 1px solid rgba(245, 245, 240, 0.08);
+  background:
+    linear-gradient(
+      to bottom,
+      rgba(10, 10, 10, 0.86),
+      rgba(3, 3, 3, 0.92)
+    );
 
-  padding-left: clamp(2rem, 4vw, 4rem);
+  box-shadow: 0 2rem 5rem rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(16px);
 
-  border-left: 1px solid rgba(245, 245, 240, 0.055);
-  background: transparent;
-
-  opacity: 0.36;
-  filter: blur(0.2px);
+  opacity: 0;
+  visibility: hidden;
   pointer-events: none;
+  transform: translate3d(1.4rem, 0, 0);
 
   transition:
     opacity 280ms ease,
-    filter 280ms ease,
-    border-color 280ms ease;
+    visibility 280ms ease,
+    transform 360ms cubic-bezier(.16, 1, .3, 1);
 }
 
 .work-detail::before {
   content: "Select a project";
   position: absolute;
-  top: 50%;
-  left: clamp(2rem, 4vw, 4rem);
+  right: 0;
+  top: -2rem;
 
-  color: rgba(245, 245, 240, 0.34);
+  color: rgba(245, 245, 240, 0.28);
   font-family: var(--mono, "IBM Plex Mono", ui-monospace, monospace);
-  font-size: 0.56rem;
+  font-size: 0.54rem;
   font-weight: 500;
   letter-spacing: 0.2em;
-  line-height: 1;
   text-transform: uppercase;
-
-  opacity: 1;
-  transform: translate3d(0, -50%, 0);
-
-  transition:
-    opacity 220ms ease,
-    transform 260ms cubic-bezier(.16, 1, .3, 1);
-}
-
-.work-detail > * {
-  opacity: 0;
-  visibility: hidden;
-  transform: translate3d(0.65rem, 0, 0);
-
-  transition:
-    opacity 260ms ease,
-    visibility 260ms ease,
-    transform 320ms cubic-bezier(.16, 1, .3, 1);
 }
 
 .work-detail.is-open,
 .work-archive.has-open-detail .work-detail {
   opacity: 1;
-  filter: none;
+  visibility: visible;
   pointer-events: auto;
-  border-left-color: rgba(245, 245, 240, 0.09);
+  transform: translate3d(0, 0, 0);
 }
 
 .work-detail.is-open::before,
 .work-archive.has-open-detail .work-detail::before {
-  opacity: 0;
-  transform: translate3d(0.4rem, -50%, 0);
-}
-
-.work-detail.is-open > *,
-.work-archive.has-open-detail .work-detail > * {
-  opacity: 1;
-  visibility: visible;
-  transform: translate3d(0, 0, 0);
+  content: "Project detail";
 }
 
 .work-detail.is-changing {
@@ -560,8 +422,8 @@
 
 .work-detail__close {
   position: absolute;
-  top: calc(50% - 15rem);
-  right: 0;
+  top: 1.1rem;
+  right: 1.15rem;
 
   width: 1.7rem;
   height: 1.7rem;
@@ -574,8 +436,8 @@
   font-size: 1.15rem;
   line-height: 1;
 
-  appearance: none;
   cursor: pointer;
+  appearance: none;
 
   transition:
     color 180ms ease,
@@ -583,7 +445,7 @@
 }
 
 .work-detail__close:hover {
-  color: rgba(245, 245, 240, 0.84);
+  color: rgba(245, 245, 240, 0.86);
   transform: rotate(90deg);
 }
 
@@ -591,9 +453,9 @@
   display: flex;
   gap: 0.85rem;
 
-  margin-bottom: 1.1rem;
+  margin: 0 0 1.1rem;
 
-  color: rgba(245, 245, 240, 0.36);
+  color: rgba(245, 245, 240, 0.38);
   font-family: var(--mono, "IBM Plex Mono", ui-monospace, monospace);
   font-size: 0.54rem;
   letter-spacing: 0.18em;
@@ -602,28 +464,28 @@
 }
 
 .work-detail__title {
-  max-width: 15rem;
-  margin: 0 0 1.3rem;
+  max-width: 18rem;
+  margin: 0 0 1.25rem;
 
-  color: rgba(245, 245, 240, 0.84);
-  font-size: clamp(1.32rem, 1.65vw, 1.95rem);
+  color: rgba(245, 245, 240, 0.86);
+  font-size: clamp(1.45rem, 1.9vw, 2.2rem);
   font-weight: 300;
-  letter-spacing: -0.05em;
-  line-height: 1;
+  letter-spacing: -0.06em;
+  line-height: 0.95;
 }
 
 .work-detail__description {
-  max-width: 16rem;
+  max-width: 20rem;
   margin: 0;
 
   color: rgba(245, 245, 240, 0.5);
-  font-size: 0.68rem;
+  font-size: 0.7rem;
   font-weight: 300;
-  line-height: 1.68;
+  line-height: 1.7;
 }
 
 .work-detail__section {
-  margin-top: 1.9rem;
+  margin-top: 1.8rem;
 }
 
 .work-detail__label {
@@ -659,7 +521,7 @@
 }
 
 .work-detail__quote {
-  max-width: 16rem;
+  max-width: 20rem;
   margin: 0;
 
   color: rgba(245, 245, 240, 0.46);
@@ -672,15 +534,13 @@
 .work-detail__client {
   display: grid;
   gap: 0.32rem;
-
   margin-top: 1rem;
 }
 
 .work-detail__client span {
-  color: rgba(245, 245, 240, 0.62);
+  color: rgba(245, 245, 240, 0.66);
   font-size: 0.66rem;
   font-weight: 300;
-  letter-spacing: -0.01em;
 }
 
 .work-detail__client small {
@@ -696,14 +556,13 @@
 .work-detail__nav {
   display: flex;
   gap: 1rem;
-
   margin-top: 2rem;
 }
 
 .work-detail__nav button {
   border: 0;
   background: transparent;
-  color: rgba(245, 245, 240, 0.4);
+  color: rgba(245, 245, 240, 0.42);
 
   font: inherit;
   font-family: var(--mono, "IBM Plex Mono", ui-monospace, monospace);
@@ -712,8 +571,8 @@
   line-height: 1;
   text-transform: uppercase;
 
-  appearance: none;
   cursor: pointer;
+  appearance: none;
 
   transition:
     color 180ms ease,
@@ -721,7 +580,7 @@
 }
 
 .work-detail__nav button:hover {
-  color: rgba(245, 245, 240, 0.86);
+  color: rgba(245, 245, 240, 0.88);
 }
 
 .work-detail__nav button:first-child:hover {
@@ -744,9 +603,7 @@
   }
 }
 
-/* ----------------------------------------------------------
-   PROCESS WORLD STATE HELPERS
----------------------------------------------------------- */
+/* PROCESS WORLD STATE HELPERS */
 
 .process-world-inside[aria-hidden="true"] .work-archive {
   pointer-events: none;
@@ -758,131 +615,98 @@
   pointer-events: auto;
 }
 
-/* ----------------------------------------------------------
-   RESPONSIVE
----------------------------------------------------------- */
+/* RESPONSIVE */
 
 @media (max-width: 1180px) {
-  /*
-    When Our Work is inside the PROCESS handoff, keep it fixed-size.
-    Do not let responsive auto-height fight the zoom layer.
-  */
-  .process-world-inside .work-archive {
-    height: 100vh;
-    min-height: 100vh;
-    overflow: hidden;
-  }
-
-  .process-world-inside .work-archive__track {
-    height: 100%;
-    min-height: 100vh;
-    transform: translate3d(0, 0, 0);
-  }
-
   .work-archive__shell {
-    width: min(52rem, calc(100% - 3rem));
+    width: min(60rem, calc(100% - 3rem));
     padding: 6rem 0 4rem;
   }
 
   .work-archive__header {
     grid-template-columns: 1fr;
     align-items: start;
+    gap: 1.75rem;
   }
 
   .work-archive__intro {
-    max-width: 27rem;
-  }
-
-  .work-archive__body {
-    grid-template-columns: 1fr;
-    gap: 3rem;
-    align-items: start;
+    max-width: 30rem;
   }
 
   .work-project {
-    grid-template-columns: 3.5rem minmax(12rem, 1fr) minmax(7rem, 9rem) minmax(4rem, 5rem);
+    grid-template-columns: minmax(0, 1fr) auto;
   }
 
-  .work-project__meta:nth-of-type(4) {
+  .work-project__hover {
     display: none;
-  }
-
-  .work-detail {
-    min-height: 18rem;
-    padding: 2.25rem 0 0;
-    border-left: 0;
-    border-top: 1px solid rgba(245, 245, 240, 0.06);
-  }
-
-  .work-detail::before {
-    left: 0;
-    top: 4rem;
-  }
-
-  .work-detail__close {
-    top: 2.2rem;
-    right: 0;
-  }
-
-  .work-detail__title,
-  .work-detail__description,
-  .work-detail__quote {
-    max-width: 28rem;
   }
 
   .work-project__preview {
     display: none;
   }
+
+  .work-detail {
+    width: min(30rem, calc(100% - 3rem));
+    right: 1.5rem;
+    bottom: 3rem;
+  }
 }
 
 @media (max-width: 760px) {
+  .work-archive {
+    height: auto;
+    min-height: 100vh;
+    overflow: visible;
+  }
+
+  .process-world-inside .work-archive {
+    height: 100vh;
+    min-height: 100vh;
+    overflow: hidden;
+  }
+
   .work-archive__shell {
     width: calc(100% - 2rem);
+    height: auto;
+    min-height: 100vh;
     padding: 5rem 0 3rem;
     gap: 3rem;
   }
 
-  .work-archive__header {
-    gap: 1.5rem;
+  .process-world-inside .work-archive__shell {
+    height: 100vh;
+    overflow: hidden;
   }
 
   .work-archive__title {
     font-size: clamp(2.4rem, 13vw, 4rem);
   }
 
-  .work-archive__index::before,
-  .work-archive__index::after {
-    display: none;
-  }
-
   .work-project {
-    grid-template-columns: 2.7rem minmax(0, 1fr) 4.5rem;
     min-height: 4.75rem;
+    gap: 1rem;
   }
 
-  .work-project__meta {
-    display: none;
+  .work-project__main {
+    gap: 1rem;
   }
 
-  .work-project__meta:nth-of-type(3) {
-    display: grid;
-  }
-
-  .work-project__meta:nth-of-type(3) span {
-    display: none;
-  }
-
-  .work-project__meta:nth-of-type(3) strong {
-    text-align: right;
-    font-size: 0.58rem;
+  .work-project__number {
+    font-size: 0.62rem;
   }
 
   .work-project__name {
-    font-size: 1rem;
+    font-size: clamp(1rem, 5vw, 1.25rem);
   }
 
   .work-detail {
-    min-height: 20rem;
+    left: 1rem;
+    right: 1rem;
+    bottom: 2rem;
+    width: auto;
+    max-height: 70vh;
+    overflow: auto;
+    padding: 2rem 1.5rem;
   }
 
   .work-detail__nav {
@@ -896,12 +720,8 @@
     width: calc(100% - 1.5rem);
   }
 
-  .work-project {
-    grid-template-columns: 2.4rem minmax(0, 1fr);
-  }
-
-  .work-project__meta:nth-of-type(3) {
-    display: none;
+  .work-project__arrow {
+    font-size: 0.9rem;
   }
 
   .work-detail__description,
@@ -910,22 +730,17 @@
   }
 }
 
-/* ----------------------------------------------------------
-   REDUCED MOTION
----------------------------------------------------------- */
+/* REDUCED MOTION */
 
 @media (prefers-reduced-motion: reduce) {
-  .work-archive__track,
   .work-project,
   .work-project::before,
-  .work-project::after,
   .work-project__name,
-  .work-project__meta strong,
+  .work-project__hover,
+  .work-project__arrow,
   .work-project__preview,
   .work-project__preview img,
   .work-detail,
-  .work-detail::before,
-  .work-detail > *,
   .work-detail__close,
   .work-detail__nav button {
     transition: none !important;
