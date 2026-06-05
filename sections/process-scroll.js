@@ -109,9 +109,6 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger }) {
   }
 },
 
-        if (workTrack) {
-          workTrack.style.setProperty("--work-scroll-progress", "0");
-        }
       },
 
       onLeaveBack: () => {
