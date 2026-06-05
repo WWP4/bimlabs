@@ -11,7 +11,7 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger }) {
   const voidTarget = section.querySelector(".process-void");
   const worldInside = section.querySelector(".process-world-inside");
   const copy = section.querySelector(".process-copy");
-  const workTrack = section.querySelector("[data-work-track]");
+  
 
   const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
@@ -28,7 +28,7 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger }) {
       voidTarget,
       worldInside,
       copy,
-      workTrack
+      
     });
 
     return null;
@@ -72,7 +72,6 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger }) {
           progress: self.progress,
           section,
           worldInside,
-          workTrack,
           scene,
           ui
         });
@@ -97,15 +96,18 @@ export function initProcessScroll({ section, scene, ui, gsap, ScrollTrigger }) {
         }
       },
 
-      onLeave: () => {
-        section.classList.remove("is-process-active");
-        section.classList.add("is-work-visible", "is-work-interactive");
+    onLeave: () => {
+  section.classList.remove("is-process-active");
+  section.classList.add("is-work-visible");
+  section.classList.remove("is-work-interactive", "is-inside-work");
 
-        if (worldInside) {
-          worldInside.removeAttribute("aria-hidden");
-          worldInside.classList.add("is-visible", "is-interactive");
-          worldInside.style.pointerEvents = "auto";
-        }
+  if (worldInside) {
+    worldInside.removeAttribute("aria-hidden");
+    worldInside.classList.add("is-visible");
+    worldInside.classList.remove("is-interactive");
+    worldInside.style.pointerEvents = "none";
+  }
+},
 
         if (workTrack) {
           workTrack.style.setProperty("--work-scroll-progress", "0");
@@ -421,7 +423,6 @@ function prepareInitialState({
   voidTarget,
   worldInside,
   copy,
-  workTrack
 }) {
   section.classList.remove(
     "is-process-active",
@@ -489,9 +490,6 @@ function prepareInitialState({
     });
   }
 
-  if (workTrack) {
-    workTrack.style.setProperty("--work-scroll-progress", "0");
-  }
 }
 
 /* =========================================================
@@ -505,7 +503,7 @@ function prepareReducedState({
   voidTarget,
   worldInside,
   copy,
-  workTrack
+  
 }) {
   section.style.setProperty("--process-section-intensity", "1");
   section.style.setProperty("--process-intro", "1");
@@ -546,9 +544,6 @@ function prepareReducedState({
     });
   }
 
-  if (workTrack) {
-    workTrack.style.setProperty("--work-scroll-progress", "0");
-  }
 }
 
 /* =========================================================
@@ -559,7 +554,6 @@ function updateByProgress({
   progress,
   section,
   worldInside,
-  workTrack,
   scene,
   ui
 }) {
@@ -569,11 +563,10 @@ function updateByProgress({
   section.style.setProperty("--process-intro", intro.toFixed(4));
   section.style.setProperty("--process-handoff", handoff.toFixed(4));
 
-  const workVisible = progress >= 0.895;
-  const workInteractive = progress >= 0.996;
+const workVisible = progress >= 0.895;
 
-  section.classList.toggle("is-work-visible", workVisible);
-  section.classList.toggle("is-work-interactive", workInteractive);
+section.classList.toggle("is-work-visible", workVisible);
+section.classList.remove("is-work-interactive");
 
   /*
     Do not add is-inside-work during scrub.
@@ -583,7 +576,7 @@ function updateByProgress({
 
   if (worldInside) {
     worldInside.classList.toggle("is-visible", workVisible);
-    worldInside.classList.toggle("is-interactive", workInteractive);
+worldInside.classList.remove("is-interactive");
 
     if (workVisible) {
       worldInside.removeAttribute("aria-hidden");
@@ -591,7 +584,7 @@ function updateByProgress({
       worldInside.setAttribute("aria-hidden", "true");
     }
 
-    worldInside.style.pointerEvents = workInteractive ? "auto" : "none";
+    worldInside.style.pointerEvents = "none";
   }
 
   if (workTrack) {
