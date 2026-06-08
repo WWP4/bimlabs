@@ -13,11 +13,11 @@
       description:
         "A private operating layer built to organize quotes, products, lead flow, installer coordination, and customer-facing resources.",
       constraint:
-        "Sales, quotes, product information, and project coordination were scattered across too many disconnected tools, making the process harder to manage and present clearly.",
+        "Wonder World needed a cleaner way to manage quotes, products, project details, and customer-facing resources without everything feeling scattered.",
       solution:
-        "We created a cleaner internal system that brought quote flow, products, customer resources, and operational tools into one more usable digital layer.",
+        "We brought the core sales and project workflow into one more usable digital layer.",
       result:
-        "A more organized digital operating system that made the sales and planning process easier to understand, manage, and present.",
+        "The team gained a more organized system for managing project information and presenting the business more professionally.",
       services: [
         "Client portal architecture",
         "Product and quote system",
@@ -26,7 +26,7 @@
         "Frontend design and development"
       ],
       review:
-        "BIM Labs Studio helped us turn a scattered sales process into a cleaner system. The portal gave our team a stronger way to manage quotes, products, and customer information.",
+        "BIM Labs Studio helped us turn a scattered sales process into a cleaner system.",
       client: "Wonder World Playsets",
       role: "Commercial playground distributor"
     },
@@ -38,11 +38,11 @@
       description:
         "A sharper digital platform for athlete performance, training resources, course access, and brand presentation.",
       constraint:
-        "The offer needed to feel more serious and structured, while making the platform easier for athletes and partners to understand.",
+        "Momentum Athlete needed the offer to feel more serious, structured, and easier for athletes and partners to understand.",
       solution:
-        "We shaped a cleaner platform direction with clearer hierarchy, stronger presentation, and a more polished digital experience.",
+        "We shaped a cleaner platform direction with stronger hierarchy, clearer presentation, and a more polished digital experience.",
       result:
-        "A more credible and understandable digital presence that better supported the platform’s positioning and user flow.",
+        "The platform became easier to understand and felt more credible from the first impression.",
       services: [
         "Platform experience direction",
         "Course system structure",
@@ -51,7 +51,7 @@
         "Frontend build support"
       ],
       review:
-        "The work gave our platform a more polished and professional direction. It made the experience easier to understand and helped the brand feel more serious.",
+        "The work gave our platform a more polished and professional direction.",
       client: "Momentum Athlete",
       role: "Athlete performance platform"
     },
@@ -63,11 +63,11 @@
       description:
         "A focused AI product presence built around clarity, positioning, and interface structure.",
       constraint:
-        "The product concept was complex, and the challenge was making the offer feel credible, clear, and easier to trust.",
+        "The product idea was complex and needed to feel credible, clear, and easier to trust.",
       solution:
-        "We simplified the product narrative and shaped the interface around positioning, trust, and clarity instead of visual noise.",
+        "We simplified the product narrative and shaped the interface around positioning, trust, and clarity.",
       result:
-        "A cleaner digital presence that made the platform easier to explain and more ready for real users.",
+        "The platform became easier to explain and more ready for real users.",
       services: [
         "AI product positioning",
         "Brand direction",
@@ -76,7 +76,7 @@
         "Conversion-focused layout"
       ],
       review:
-        "BIM Labs Studio helped simplify a complex idea into a cleaner digital presence. The final direction made the platform easier to explain and easier to trust.",
+        "BIM Labs Studio helped simplify a complex idea into a cleaner digital presence.",
       client: "Orynd AI",
       role: "AI platform"
     },
@@ -86,13 +86,13 @@
       year: "2023",
       title: "CashFlowSwami",
       description:
-        "A more focused fintech-facing web experience built around trust, simple messaging, and a cleaner path from attention to action.",
+        "A focused fintech-facing web experience built around trust, simple messaging, and a cleaner path from attention to action.",
       constraint:
         "The offer needed stronger digital credibility and a clearer path from first impression to understanding the service.",
       solution:
-        "We created a cleaner presentation layer with simpler messaging, a stronger interface direction, and a more intentional conversion path.",
+        "We created a cleaner presentation layer with simpler messaging, stronger interface direction, and a more intentional conversion path.",
       result:
-        "A site experience that made the business feel more legitimate, easier to trust, and easier to present.",
+        "The site made the business feel more legitimate, easier to trust, and easier to present.",
       services: [
         "Landing page strategy",
         "Fintech brand presentation",
@@ -101,14 +101,13 @@
         "Frontend development"
       ],
       review:
-        "The project helped us move from a rough idea to something that looked and felt legitimate. The site made the offer clearer and easier to present.",
+        "The project helped us move from a rough idea to something that looked and felt legitimate.",
       client: "CashFlowSwami",
       role: "Fintech platform"
     }
   ];
 
   const root = document.querySelector(".work-archive");
-
   if (!root) return;
 
   const projectButtons = Array.from(root.querySelectorAll("[data-work-project]"));
@@ -181,12 +180,7 @@
     if (!button) return;
 
     button.classList.remove("is-glitching");
-
-    /*
-      Forces the animation to restart cleanly.
-    */
     void button.offsetWidth;
-
     button.classList.add("is-glitching");
 
     window.clearTimeout(glitchTimer);
@@ -231,8 +225,6 @@
   }
 
   function renderProject(index) {
-    if (!projects.length) return;
-
     const safeIndex = clampIndex(index);
     const project = projects[safeIndex];
 
@@ -423,9 +415,21 @@
     });
   }
 
+  function moveTestimonialHigher() {
+    const inner = root.querySelector(".work-detail__inner");
+    const testimonial = root.querySelector(".work-detail__testimonial");
+    const proofGrid = root.querySelector(".work-detail__proof-grid");
+    const description = root.querySelector(".work-detail__description");
+
+    if (!inner || !testimonial || !proofGrid || !description) return;
+
+    inner.insertBefore(testimonial, proofGrid);
+  }
+
   function init() {
     if (!projectButtons.length) return;
 
+    moveTestimonialHigher();
     setupProjectEvents();
     renderProject(0);
     closeDetail();
