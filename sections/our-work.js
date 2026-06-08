@@ -65,7 +65,7 @@
       constraint:
         "The product concept was complex, and the challenge was making the offer feel credible, clear, and easier to trust.",
       solution:
-        "We simplified the product narrative and shaped the interface around positioning, trust, and clarity rather than visual noise.",
+        "We simplified the product narrative and shaped the interface around positioning, trust, and clarity instead of visual noise.",
       result:
         "A cleaner digital presence that made the platform easier to explain and more ready for real users.",
       services: [
@@ -108,9 +108,6 @@
   ];
 
   const root = document.querySelector(".work-archive");
-  const workWorld =
-    document.querySelector("[data-work-world]") ||
-    document.querySelector(".process-world-inside");
 
   if (!root) return;
 
@@ -143,18 +140,6 @@
 
   function clampIndex(index) {
     return (index + projects.length) % projects.length;
-  }
-
-  function isWorkInteractive() {
-    if (!workWorld) return true;
-
-    const processSection = workWorld.closest(".process-3d");
-
-    return (
-      workWorld.classList.contains("is-interactive") ||
-      processSection?.classList.contains("is-work-interactive") ||
-      processSection?.classList.contains("is-inside-work")
-    );
   }
 
   function renderServices(items) {
@@ -192,17 +177,23 @@
 
     const safeIndex = clampIndex(index);
     const button = projectButtons[safeIndex];
+
     if (!button) return;
 
     button.classList.remove("is-glitching");
+
+    /*
+      Forces the animation to restart cleanly.
+    */
     void button.offsetWidth;
+
     button.classList.add("is-glitching");
 
     window.clearTimeout(glitchTimer);
 
     glitchTimer = window.setTimeout(() => {
       button.classList.remove("is-glitching");
-    }, 700);
+    }, 720);
   }
 
   function clearPreviewStates() {
@@ -215,9 +206,7 @@
     const safeIndex = clampIndex(index);
 
     projectButtons.forEach((button, buttonIndex) => {
-      const isPreviewing = buttonIndex === safeIndex;
-      button.classList.toggle("is-previewing", isPreviewing);
-      button.classList.toggle("is-glitching", false);
+      button.classList.toggle("is-previewing", buttonIndex === safeIndex);
     });
 
     root.dataset.workActive = String(safeIndex);
@@ -269,19 +258,21 @@
   }
 
   function openDetail(index) {
-    renderProject(index);
+    const safeIndex = clampIndex(index);
+
+    renderProject(safeIndex);
 
     detailIsOpen = true;
     root.classList.add("has-open-detail");
 
     if (detail) {
       detail.classList.add("is-open");
-      detail.classList.remove("is-muted");
+      detail.classList.remove("is-muted", "is-changing");
       detail.setAttribute("aria-hidden", "false");
     }
 
     clearPreviewStates();
-    pulseSignalGlitch(activeIndex);
+    pulseSignalGlitch(safeIndex);
     animateDetailChange();
   }
 
@@ -296,6 +287,7 @@
 
     projectButtons.forEach((button, index) => {
       const isActive = index === activeIndex;
+
       button.classList.toggle("is-active", isActive);
       button.classList.remove("is-previewing", "is-glitching");
       button.setAttribute("aria-pressed", isActive ? "true" : "false");
@@ -327,17 +319,20 @@
       const index = Number(button.dataset.workProject || 0);
 
       button.setAttribute("type", "button");
-      button.setAttribute("aria-pressed", "false");
-      button.removeAttribute("aria-current");
+      button.setAttribute("aria-pressed", index === activeIndex ? "true" : "false");
+
+      if (index === activeIndex) {
+        button.setAttribute("aria-current", "true");
+      } else {
+        button.removeAttribute("aria-current");
+      }
 
       button.addEventListener("mouseenter", () => {
-        if (!isWorkInteractive()) return;
         activeIndex = index;
         setPreviewProject(index);
       });
 
       button.addEventListener("focus", () => {
-        if (!isWorkInteractive()) return;
         activeIndex = index;
         setPreviewProject(index);
       });
@@ -352,8 +347,8 @@
         button.classList.remove("is-previewing", "is-glitching");
       });
 
-      button.addEventListener("click", () => {
-        if (!isWorkInteractive()) return;
+      button.addEventListener("click", (event) => {
+        event.preventDefault();
         openDetail(index);
       });
     });
@@ -361,8 +356,9 @@
     if (prevBtn) {
       prevBtn.setAttribute("type", "button");
 
-      prevBtn.addEventListener("click", () => {
-        if (!isWorkInteractive()) return;
+      prevBtn.addEventListener("click", (event) => {
+        event.preventDefault();
+        event.stopPropagation();
         openDetail(activeIndex - 1);
       });
     }
@@ -370,8 +366,9 @@
     if (nextBtn) {
       nextBtn.setAttribute("type", "button");
 
-      nextBtn.addEventListener("click", () => {
-        if (!isWorkInteractive()) return;
+      nextBtn.addEventListener("click", (event) => {
+        event.preventDefault();
+        event.stopPropagation();
         openDetail(activeIndex + 1);
       });
     }
@@ -379,7 +376,9 @@
     if (closeBtn) {
       closeBtn.setAttribute("type", "button");
 
-      closeBtn.addEventListener("click", () => {
+      closeBtn.addEventListener("click", (event) => {
+        event.preventDefault();
+        event.stopPropagation();
         closeDetail();
       });
     }
@@ -396,9 +395,8 @@
     });
 
     window.addEventListener("keydown", (event) => {
-      if (!isWorkInteractive()) return;
-
       const tagName = document.activeElement?.tagName?.toLowerCase();
+
       const isTyping =
         tagName === "input" ||
         tagName === "textarea" ||
