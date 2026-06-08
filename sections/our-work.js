@@ -1,6 +1,6 @@
 /* ==========================================================
    BIM LABS STUDIO — OUR WORK
-   Archive interaction + right drawer + subtle signal glitch
+   Archive interaction + premium drawer + signal glitch
 ========================================================== */
 
 (() => {
@@ -13,11 +13,11 @@
       description:
         "A private operating layer built to organize quotes, products, lead flow, installer coordination, and customer-facing resources.",
       constraint:
-        "Wonder World needed a cleaner way to manage quotes, products, project details, and customer-facing resources without everything feeling scattered.",
+        "Wonder World needed one cleaner place to manage quote requests, product information, project details, and customer-facing resources.",
       solution:
-        "We brought the core sales and project workflow into one more usable digital layer.",
+        "We brought the core sales and project workflow into a more usable digital layer with cleaner structure and less friction.",
       result:
-        "The team gained a more organized system for managing project information and presenting the business more professionally.",
+        "The business had a stronger operating system for managing project information and presenting the offer more professionally.",
       services: [
         "Client portal architecture",
         "Product and quote system",
@@ -26,7 +26,7 @@
         "Frontend design and development"
       ],
       review:
-        "BIM Labs Studio helped us turn a scattered sales process into a cleaner system.",
+        "The portal made our process feel organized, easier to manage, and easier to present to customers.",
       client: "Wonder World Playsets",
       role: "Commercial playground distributor"
     },
@@ -38,9 +38,9 @@
       description:
         "A sharper digital platform for athlete performance, training resources, course access, and brand presentation.",
       constraint:
-        "Momentum Athlete needed the offer to feel more serious, structured, and easier for athletes and partners to understand.",
+        "Momentum Athlete needed the platform to feel more serious, structured, and easier for athletes and partners to understand.",
       solution:
-        "We shaped a cleaner platform direction with stronger hierarchy, clearer presentation, and a more polished digital experience.",
+        "We shaped a cleaner experience with stronger hierarchy, clearer presentation, and a more polished digital direction.",
       result:
         "The platform became easier to understand and felt more credible from the first impression.",
       services: [
@@ -51,7 +51,7 @@
         "Frontend build support"
       ],
       review:
-        "The work gave our platform a more polished and professional direction.",
+        "The platform finally felt clear, premium, and easier to present to partners.",
       client: "Momentum Athlete",
       role: "Athlete performance platform"
     },
@@ -63,9 +63,9 @@
       description:
         "A focused AI product presence built around clarity, positioning, and interface structure.",
       constraint:
-        "The product idea was complex and needed to feel credible, clear, and easier to trust.",
+        "The product idea was complex and needed to feel credible, clear, and easier to trust without overwhelming the user.",
       solution:
-        "We simplified the product narrative and shaped the interface around positioning, trust, and clarity.",
+        "We simplified the product narrative and shaped the interface around positioning, trust, and direct next steps.",
       result:
         "The platform became easier to explain and more ready for real users.",
       services: [
@@ -76,7 +76,7 @@
         "Conversion-focused layout"
       ],
       review:
-        "BIM Labs Studio helped simplify a complex idea into a cleaner digital presence.",
+        "The site made the product easier to explain without making the idea feel smaller.",
       client: "Orynd AI",
       role: "AI platform"
     },
@@ -101,7 +101,7 @@
         "Frontend development"
       ],
       review:
-        "The project helped us move from a rough idea to something that looked and felt legitimate.",
+        "The site helped the offer feel real, polished, and ready to show people.",
       client: "CashFlowSwami",
       role: "Fintech platform"
     }
@@ -136,9 +136,36 @@
   let detailIsOpen = false;
   let changeTimer = null;
   let glitchTimer = null;
+  let scrollYBeforeLock = 0;
 
   function clampIndex(index) {
     return (index + projects.length) % projects.length;
+  }
+
+  function lockPageScroll() {
+    scrollYBeforeLock = window.scrollY || window.pageYOffset || 0;
+
+    document.documentElement.classList.add("work-drawer-lock");
+    document.body.classList.add("work-drawer-lock");
+
+    document.body.style.position = "fixed";
+    document.body.style.top = `-${scrollYBeforeLock}px`;
+    document.body.style.left = "0";
+    document.body.style.right = "0";
+    document.body.style.width = "100%";
+  }
+
+  function unlockPageScroll() {
+    document.documentElement.classList.remove("work-drawer-lock");
+    document.body.classList.remove("work-drawer-lock");
+
+    document.body.style.position = "";
+    document.body.style.top = "";
+    document.body.style.left = "";
+    document.body.style.right = "";
+    document.body.style.width = "";
+
+    window.scrollTo(0, scrollYBeforeLock);
   }
 
   function renderServices(items) {
@@ -168,7 +195,7 @@
 
     changeTimer = window.setTimeout(() => {
       detail.classList.remove("is-changing");
-    }, 280);
+    }, 300);
   }
 
   function pulseSignalGlitch(index) {
@@ -180,14 +207,19 @@
     if (!button) return;
 
     button.classList.remove("is-glitching");
+
+    /*
+      Forces the animation to restart every time.
+    */
     void button.offsetWidth;
+
     button.classList.add("is-glitching");
 
     window.clearTimeout(glitchTimer);
 
     glitchTimer = window.setTimeout(() => {
       button.classList.remove("is-glitching");
-    }, 720);
+    }, 760);
   }
 
   function clearPreviewStates() {
@@ -263,6 +295,7 @@
       detail.setAttribute("aria-hidden", "false");
     }
 
+    lockPageScroll();
     clearPreviewStates();
     pulseSignalGlitch(safeIndex);
     animateDetailChange();
@@ -292,6 +325,7 @@
     });
 
     root.dataset.workActive = String(activeIndex);
+    unlockPageScroll();
   }
 
   function moveProject(delta) {
@@ -304,6 +338,17 @@
 
     activeIndex = nextIndex;
     setPreviewProject(nextIndex);
+  }
+
+  function moveTestimonialHigher() {
+    const inner = root.querySelector(".work-detail__inner");
+    const testimonial = root.querySelector(".work-detail__testimonial");
+    const proofGrid = root.querySelector(".work-detail__proof-grid");
+    const description = root.querySelector(".work-detail__description");
+
+    if (!inner || !testimonial || !proofGrid || !description) return;
+
+    inner.insertBefore(testimonial, proofGrid);
   }
 
   function setupProjectEvents() {
@@ -413,17 +458,6 @@
         moveProject(1);
       }
     });
-  }
-
-  function moveTestimonialHigher() {
-    const inner = root.querySelector(".work-detail__inner");
-    const testimonial = root.querySelector(".work-detail__testimonial");
-    const proofGrid = root.querySelector(".work-detail__proof-grid");
-    const description = root.querySelector(".work-detail__description");
-
-    if (!inner || !testimonial || !proofGrid || !description) return;
-
-    inner.insertBefore(testimonial, proofGrid);
   }
 
   function init() {
