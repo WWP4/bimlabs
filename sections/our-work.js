@@ -1,6 +1,6 @@
 /* ==========================================================
    BIM LABS STUDIO — OUR WORK
-   Archive interaction + premium drawer + signal glitch
+   Archive interaction + premium drawer + real signal text glitch
 ========================================================== */
 
 (() => {
@@ -136,21 +136,120 @@
   let detailIsOpen = false;
   let changeTimer = null;
   let glitchTimer = null;
-  let lockedScrollY = 0;
 
   function clampIndex(index) {
     return (index + projects.length) % projects.length;
   }
 
-  function lockSiteScroll() {
-  document.documentElement.classList.add("work-drawer-lock");
-  document.body.classList.add("work-drawer-lock");
-}
+  /* ==========================================================
+     SCROLL LOCK
+     Does not use body position: fixed so it will not jump to top.
+  ========================================================== */
 
-function unlockSiteScroll() {
-  document.documentElement.classList.remove("work-drawer-lock");
-  document.body.classList.remove("work-drawer-lock");
-}
+  function lockSiteScroll() {
+    document.documentElement.classList.add("work-drawer-lock");
+    document.body.classList.add("work-drawer-lock");
+  }
+
+  function unlockSiteScroll() {
+    document.documentElement.classList.remove("work-drawer-lock");
+    document.body.classList.remove("work-drawer-lock");
+  }
+
+  /* ==========================================================
+     REAL SAME-TEXT SIGNAL GLITCH
+     No random symbols. Same text, duplicated layers, sliced offsets.
+  ========================================================== */
+
+  function buildGlitchText(el) {
+    if (!el || el.dataset.glitchBuilt === "true") return;
+
+    const text = el.textContent.trim();
+
+    if (!text) return;
+
+    el.dataset.text = text;
+    el.dataset.glitchBuilt = "true";
+
+    el.innerHTML = `
+      <span class="glitch-word__base">${text}</span>
+      <span class="glitch-word__layer glitch-word__layer--a" aria-hidden="true">${text}</span>
+      <span class="glitch-word__layer glitch-word__layer--b" aria-hidden="true">${text}</span>
+      <span class="glitch-word__layer glitch-word__layer--c" aria-hidden="true">${text}</span>
+    `;
+  }
+
+  function updateGlitchText(el, text) {
+    if (!el) return;
+
+    const cleanText = String(text || "").trim();
+
+    el.dataset.text = cleanText;
+    el.dataset.glitchBuilt = "false";
+    el.textContent = cleanText;
+
+    buildGlitchText(el);
+  }
+
+  function triggerSignalGlitch(el) {
+    if (!el || prefersReducedMotion) return;
+
+    buildGlitchText(el);
+
+    el.style.setProperty("--glitch-x1", `${(Math.random() * 10 - 5).toFixed(2)}px`);
+    el.style.setProperty("--glitch-x2", `${(Math.random() * 16 - 8).toFixed(2)}px`);
+    el.style.setProperty("--glitch-x3", `${(Math.random() * 6 - 3).toFixed(2)}px`);
+    el.style.setProperty("--glitch-y1", `${(Math.random() * 2 - 1).toFixed(2)}px`);
+    el.style.setProperty("--glitch-y2", `${(Math.random() * 3 - 1.5).toFixed(2)}px`);
+
+    el.classList.remove("is-live-glitch");
+
+    void el.offsetWidth;
+
+    el.classList.add("is-live-glitch");
+
+    window.setTimeout(() => {
+      el.classList.remove("is-live-glitch");
+    }, 300);
+  }
+
+  function triggerProjectGlitch(button) {
+    if (!button || prefersReducedMotion) return;
+
+    const name = button.querySelector(".work-project__name");
+    const number = button.querySelector(".work-project__number");
+
+    button.classList.remove("is-glitching");
+
+    void button.offsetWidth;
+
+    button.classList.add("is-glitching");
+
+    triggerSignalGlitch(name);
+    triggerSignalGlitch(number);
+
+    window.clearTimeout(glitchTimer);
+
+    glitchTimer = window.setTimeout(() => {
+      button.classList.remove("is-glitching");
+    }, 340);
+  }
+
+  function triggerDrawerGlitch() {
+    if (!detail || prefersReducedMotion) return;
+
+    const drawerTitle = detail.querySelector("[data-work-detail-title]");
+    const drawerMeta = detail.querySelector(".work-detail__eyebrow");
+    const drawerQuote = detail.querySelector("[data-work-detail-review]");
+
+    triggerSignalGlitch(drawerMeta);
+    triggerSignalGlitch(drawerTitle);
+    triggerSignalGlitch(drawerQuote);
+  }
+
+  /* ==========================================================
+     RENDER
+  ========================================================== */
 
   function renderServices(items) {
     if (!servicesEl) return;
@@ -164,28 +263,6 @@ function unlockSiteScroll() {
     });
 
     servicesEl.replaceChildren(fragment);
-  }
-
-  function restartGlitch(button) {
-    if (!button || prefersReducedMotion) return;
-
-    button.classList.remove("is-glitching");
-
-    void button.offsetWidth;
-
-    button.classList.add("is-glitching");
-
-    window.clearTimeout(glitchTimer);
-
-    glitchTimer = window.setTimeout(() => {
-      button.classList.remove("is-glitching");
-    }, 720);
-  }
-
-  function clearPreviewStates() {
-    projectButtons.forEach((button) => {
-      button.classList.remove("is-previewing", "is-glitching");
-    });
   }
 
   function setActiveButton(index) {
@@ -205,24 +282,6 @@ function unlockSiteScroll() {
     root.dataset.workActive = String(index);
   }
 
-  function setPreviewProject(index) {
-    const safeIndex = clampIndex(index);
-
-    projectButtons.forEach((button, buttonIndex) => {
-      const isPreviewing = buttonIndex === safeIndex;
-
-      button.classList.toggle("is-previewing", isPreviewing);
-
-      if (isPreviewing) {
-        restartGlitch(button);
-      } else {
-        button.classList.remove("is-glitching");
-      }
-    });
-
-    root.dataset.workActive = String(safeIndex);
-  }
-
   function renderProject(index) {
     const safeIndex = clampIndex(index);
     const project = projects[safeIndex];
@@ -233,19 +292,21 @@ function unlockSiteScroll() {
 
     setActiveButton(safeIndex);
 
-    if (numberEl) numberEl.textContent = project.number;
+    if (numberEl) updateGlitchText(numberEl, project.number);
     if (typeEl) typeEl.textContent = project.type;
     if (yearEl) yearEl.textContent = project.year;
-    if (titleEl) titleEl.textContent = project.title;
+    if (titleEl) updateGlitchText(titleEl, project.title);
     if (descriptionEl) descriptionEl.textContent = project.description;
     if (constraintEl) constraintEl.textContent = project.constraint;
     if (solutionEl) solutionEl.textContent = project.solution;
     if (resultEl) resultEl.textContent = project.result;
-    if (reviewEl) reviewEl.textContent = `“${project.review}”`;
+    if (reviewEl) updateGlitchText(reviewEl, `“${project.review}”`);
     if (clientEl) clientEl.textContent = project.client;
     if (roleEl) roleEl.textContent = project.role;
 
     renderServices(project.services);
+
+    buildGlitchText(root.querySelector(".work-detail__eyebrow"));
   }
 
   function animateDetailChange() {
@@ -264,6 +325,34 @@ function unlockSiteScroll() {
     }, 300);
   }
 
+  function clearPreviewStates() {
+    projectButtons.forEach((button) => {
+      button.classList.remove("is-previewing", "is-glitching");
+    });
+  }
+
+  function setPreviewProject(index) {
+    const safeIndex = clampIndex(index);
+
+    projectButtons.forEach((button, buttonIndex) => {
+      const isPreviewing = buttonIndex === safeIndex;
+
+      button.classList.toggle("is-previewing", isPreviewing);
+
+      if (isPreviewing) {
+        triggerProjectGlitch(button);
+      } else {
+        button.classList.remove("is-glitching");
+      }
+    });
+
+    root.dataset.workActive = String(safeIndex);
+  }
+
+  /* ==========================================================
+     DRAWER
+  ========================================================== */
+
   function openDetail(index) {
     const safeIndex = clampIndex(index);
 
@@ -280,8 +369,12 @@ function unlockSiteScroll() {
 
     lockSiteScroll();
     clearPreviewStates();
-    restartGlitch(projectButtons[safeIndex]);
+    triggerProjectGlitch(projectButtons[safeIndex]);
     animateDetailChange();
+
+    requestAnimationFrame(() => {
+      triggerDrawerGlitch();
+    });
   }
 
   function closeDetail() {
@@ -333,6 +426,21 @@ function unlockSiteScroll() {
     inner.insertBefore(testimonial, proofGrid);
   }
 
+  function prepareGlitchTargets() {
+    projectButtons.forEach((button) => {
+      buildGlitchText(button.querySelector(".work-project__name"));
+      buildGlitchText(button.querySelector(".work-project__number"));
+    });
+
+    buildGlitchText(root.querySelector("[data-work-detail-title]"));
+    buildGlitchText(root.querySelector(".work-detail__eyebrow"));
+    buildGlitchText(root.querySelector("[data-work-detail-review]"));
+  }
+
+  /* ==========================================================
+     EVENTS
+  ========================================================== */
+
   function setupProjectEvents() {
     projectButtons.forEach((button) => {
       const index = Number(button.dataset.workProject || 0);
@@ -348,23 +456,27 @@ function unlockSiteScroll() {
 
       button.addEventListener("mouseenter", () => {
         if (detailIsOpen) return;
+
         activeIndex = index;
         setPreviewProject(index);
       });
 
       button.addEventListener("focus", () => {
         if (detailIsOpen) return;
+
         activeIndex = index;
         setPreviewProject(index);
       });
 
       button.addEventListener("mouseleave", () => {
         if (detailIsOpen) return;
+
         button.classList.remove("is-previewing", "is-glitching");
       });
 
       button.addEventListener("blur", () => {
         if (detailIsOpen) return;
+
         button.classList.remove("is-previewing", "is-glitching");
       });
 
@@ -380,6 +492,7 @@ function unlockSiteScroll() {
       prevBtn.addEventListener("click", (event) => {
         event.preventDefault();
         event.stopPropagation();
+
         openDetail(activeIndex - 1);
       });
     }
@@ -390,6 +503,7 @@ function unlockSiteScroll() {
       nextBtn.addEventListener("click", (event) => {
         event.preventDefault();
         event.stopPropagation();
+
         openDetail(activeIndex + 1);
       });
     }
@@ -400,6 +514,7 @@ function unlockSiteScroll() {
       closeBtn.addEventListener("click", (event) => {
         event.preventDefault();
         event.stopPropagation();
+
         closeDetail();
       });
     }
@@ -450,6 +565,7 @@ function unlockSiteScroll() {
     reorderDrawerLayout();
     setupProjectEvents();
     renderProject(0);
+    prepareGlitchTargets();
     closeDetail();
   }
 
