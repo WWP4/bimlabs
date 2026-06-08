@@ -1681,3 +1681,156 @@ body.work-drawer-lock {
   }
 }
 
+
+/* ==========================================================
+   REAL TEXT SIGNAL GLITCH — SAME TEXT, SLICED
+   Add at very bottom of our-work.css
+========================================================== */
+
+.glitch-word__base,
+.glitch-word__layer {
+  display: block;
+}
+
+.work-project__name,
+.work-project__number,
+.work-detail__title,
+.work-detail__eyebrow,
+.work-detail__quote {
+  position: relative;
+  isolation: isolate;
+}
+
+.glitch-word__base {
+  position: relative;
+  z-index: 1;
+}
+
+.glitch-word__layer {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+
+  opacity: 0;
+  pointer-events: none;
+  mix-blend-mode: screen;
+}
+
+.glitch-word__layer--a {
+  color: rgba(255, 255, 255, 0.96);
+  clip-path: inset(0 0 68% 0);
+}
+
+.glitch-word__layer--b {
+  color: rgba(0, 0, 0, 0.95);
+  clip-path: inset(38% 0 28% 0);
+}
+
+.glitch-word__layer--c {
+  color: rgba(255, 255, 255, 0.82);
+  clip-path: inset(76% 0 6% 0);
+}
+
+.is-live-glitch .glitch-word__layer--a {
+  animation: signalSliceA 280ms steps(2, end) 1;
+}
+
+.is-live-glitch .glitch-word__layer--b {
+  animation: signalSliceB 280ms steps(2, end) 1;
+}
+
+.is-live-glitch .glitch-word__layer--c {
+  animation: signalSliceC 280ms steps(2, end) 1;
+}
+
+.is-live-glitch .glitch-word__base {
+  animation: signalBaseFlicker 280ms steps(2, end) 1;
+}
+
+@keyframes signalBaseFlicker {
+  0% {
+    filter: none;
+    transform: translate3d(0, 0, 0);
+  }
+
+  20% {
+    filter: contrast(1.08) brightness(1.05);
+    transform: translate3d(0.2px, 0, 0);
+  }
+
+  45% {
+    filter: contrast(1.14);
+    transform: translate3d(-0.4px, 0, 0);
+  }
+
+  100% {
+    filter: none;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes signalSliceA {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 0, 0);
+  }
+
+  12% {
+    opacity: 1;
+    transform: translate3d(var(--glitch-x1), var(--glitch-y1), 0);
+  }
+
+  34% {
+    opacity: 1;
+    transform: translate3d(calc(var(--glitch-x1) * -0.6), 0, 0);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes signalSliceB {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 0, 0);
+  }
+
+  18% {
+    opacity: 0.92;
+    transform: translate3d(var(--glitch-x2), var(--glitch-y2), 0);
+  }
+
+  42% {
+    opacity: 0.75;
+    transform: translate3d(calc(var(--glitch-x2) * -0.5), 0, 0);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes signalSliceC {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 0, 0);
+  }
+
+  24% {
+    opacity: 1;
+    transform: translate3d(var(--glitch-x3), 0, 0);
+  }
+
+  46% {
+    opacity: 0.86;
+    transform: translate3d(calc(var(--glitch-x3) * -1), 0, 0);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate3d(0, 0, 0);
+  }
+}
