@@ -1,6 +1,6 @@
 /* ==========================================================
    BIM LABS STUDIO — OUR WORK
-   Real section + PROCESS transition preview
+   Premium archive + right drawer interaction
 ========================================================== */
 
 /* ==========================================================
@@ -35,8 +35,8 @@
   z-index: 0;
 
   background:
-    radial-gradient(circle at 50% 44%, rgba(255, 255, 255, 0.055), transparent 34%),
-    radial-gradient(circle at 72% 54%, rgba(255, 255, 255, 0.025), transparent 28%),
+    radial-gradient(circle at 50% 44%, rgba(255, 255, 255, 0.045), transparent 34%),
+    radial-gradient(circle at 72% 54%, rgba(255, 255, 255, 0.02), transparent 28%),
     linear-gradient(to bottom, #020202, #000 48%, #020202);
 }
 
@@ -44,7 +44,7 @@
   content: "";
   position: absolute;
   inset: 13% 8%;
-  border: 1px solid rgba(245, 245, 240, 0.035);
+  border: 1px solid rgba(245, 245, 240, 0.03);
 }
 
 .work-reveal-preview__bg::after {
@@ -53,16 +53,16 @@
   inset: 0;
 
   background:
-    linear-gradient(to right, transparent, rgba(245, 245, 240, 0.018), transparent),
+    linear-gradient(to right, transparent, rgba(245, 245, 240, 0.014), transparent),
     repeating-linear-gradient(
       to bottom,
-      rgba(255, 255, 255, 0.012) 0,
-      rgba(255, 255, 255, 0.012) 1px,
+      rgba(255, 255, 255, 0.01) 0,
+      rgba(255, 255, 255, 0.01) 1px,
       transparent 1px,
       transparent 9px
     );
 
-  opacity: 0.12;
+  opacity: 0.1;
   mix-blend-mode: screen;
 }
 
@@ -126,11 +126,8 @@
   text-transform: uppercase;
 }
 
-
 /* ==========================================================
-   REAL OUR WORK SECTION
-   This lives AFTER the PROCESS section.
-   Scrolls naturally.
+   REAL OUR WORK ARCHIVE
 ========================================================== */
 
 .work-archive {
@@ -138,9 +135,8 @@
   z-index: 4;
 
   width: 100%;
-  min-height: 120vh;
-  height: auto;
-  overflow: visible;
+  min-height: 160vh;
+  overflow: clip;
 
   margin-top: -1px;
 
@@ -150,48 +146,128 @@
 
   isolation: isolate;
 
-  --work-line: rgba(245, 245, 240, 0.11);
-  --work-muted: rgba(245, 245, 240, 0.36);
+  --work-line: rgba(245, 245, 240, 0.105);
+  --work-line-soft: rgba(245, 245, 240, 0.045);
+  --work-muted: rgba(245, 245, 240, 0.38);
+  --work-faint: rgba(245, 245, 240, 0.2);
+  --work-text: rgba(245, 245, 240, 0.86);
+  --work-white: rgba(255, 255, 255, 0.96);
 }
 
-/* BACKGROUND */
+/* ONE CONTINUOUS ENVIRONMENT */
 
-.work-archive__bg {
+.work-archive__environment {
   position: absolute;
   inset: 0;
   z-index: 0;
+  overflow: hidden;
   pointer-events: none;
 
   background:
-    radial-gradient(circle at 50% 20%, rgba(255, 255, 255, 0.035), transparent 32%),
-    radial-gradient(circle at 70% 52%, rgba(255, 255, 255, 0.018), transparent 28%),
-    linear-gradient(to bottom, #020202, #000 48%, #020202);
+    radial-gradient(circle at 50% 17%, rgba(255, 255, 255, 0.042), transparent 30%),
+    radial-gradient(circle at 78% 56%, rgba(255, 255, 255, 0.022), transparent 28%),
+    radial-gradient(circle at 18% 72%, rgba(255, 255, 255, 0.016), transparent 26%),
+    linear-gradient(to bottom, #020202 0%, #000 46%, #020202 100%);
 }
 
-.work-archive__bg::before {
+.work-archive__environment::before {
   content: "";
   position: absolute;
-  inset: 12% 7%;
-  border: 1px solid rgba(245, 245, 240, 0.03);
+  inset: 9% 6% 7%;
+
+  border: 1px solid rgba(245, 245, 240, 0.026);
+  opacity: 0.9;
 }
 
-.work-archive__bg::after {
+.work-archive__environment::after {
   content: "";
   position: absolute;
   inset: 0;
 
   background:
-    linear-gradient(to right, transparent, rgba(245, 245, 240, 0.016), transparent),
+    linear-gradient(to right, transparent, rgba(245, 245, 240, 0.014), transparent),
     repeating-linear-gradient(
       to bottom,
-      rgba(255, 255, 255, 0.01) 0,
-      rgba(255, 255, 255, 0.01) 1px,
+      rgba(255, 255, 255, 0.009) 0,
+      rgba(255, 255, 255, 0.009) 1px,
       transparent 1px,
-      transparent 10px
+      transparent 11px
     );
 
-  opacity: 0.11;
+  opacity: 0.12;
   mix-blend-mode: screen;
+}
+
+.work-archive__depth {
+  position: absolute;
+  inset: 8% 5%;
+
+  background:
+    linear-gradient(to right, transparent 0 17%, rgba(245, 245, 240, 0.025) 17.1%, transparent 17.25%),
+    linear-gradient(to right, transparent 0 39%, rgba(245, 245, 240, 0.018) 39.1%, transparent 39.25%),
+    linear-gradient(to right, transparent 0 69%, rgba(245, 245, 240, 0.018) 69.1%, transparent 69.25%),
+    linear-gradient(to bottom, transparent 0 22%, rgba(245, 245, 240, 0.018) 22.1%, transparent 22.25%),
+    linear-gradient(to bottom, transparent 0 64%, rgba(245, 245, 240, 0.014) 64.1%, transparent 64.25%);
+
+  opacity: 0.7;
+}
+
+.work-archive__grid {
+  position: absolute;
+  left: 7%;
+  right: 7%;
+  bottom: 11%;
+  height: 42vh;
+
+  border: 1px solid rgba(245, 245, 240, 0.025);
+  opacity: 0.34;
+
+  transform: perspective(760px) rotateX(64deg);
+  transform-origin: bottom center;
+
+  background:
+    linear-gradient(rgba(245, 245, 240, 0.032) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(245, 245, 240, 0.032) 1px, transparent 1px);
+
+  background-size: 4.5rem 4.5rem;
+  mask-image: linear-gradient(to top, black, transparent 88%);
+}
+
+.work-archive__signal {
+  position: absolute;
+  height: 1px;
+  width: min(34rem, 46vw);
+
+  background: linear-gradient(
+    to right,
+    transparent,
+    rgba(245, 245, 240, 0.12),
+    transparent
+  );
+
+  opacity: 0;
+  transform: translate3d(-1.2rem, 0, 0) scaleX(0.7);
+  transform-origin: left center;
+
+  transition:
+    opacity 420ms ease,
+    transform 760ms cubic-bezier(.16, 1, .3, 1);
+}
+
+.work-archive__signal--one {
+  top: 54%;
+  left: 11%;
+}
+
+.work-archive__signal--two {
+  top: 68%;
+  right: 7%;
+}
+
+.work-archive:has(.work-project:hover) .work-archive__signal,
+.work-archive.has-open-detail .work-archive__signal {
+  opacity: 1;
+  transform: translate3d(0, 0, 0) scaleX(1);
 }
 
 /* SHELL */
@@ -204,23 +280,23 @@
   min-height: 100vh;
 
   margin: 0 auto;
-  padding: clamp(7rem, 12vh, 10rem) 0 clamp(6rem, 10vh, 8rem);
+  padding: clamp(8rem, 15vh, 13rem) 0 clamp(7rem, 12vh, 10rem);
 }
 
-/* HEADER */
+/* STAGE 1 — ARRIVAL */
 
-.work-archive__header {
+.work-archive__arrival {
   display: grid;
-  grid-template-columns: minmax(18rem, 30rem) minmax(16rem, 24rem);
-  justify-content: space-between;
-  align-items: end;
-  gap: clamp(3rem, 7vw, 8rem);
+  align-content: center;
 
-  margin-bottom: clamp(3rem, 7vh, 5.5rem);
+  min-height: 72vh;
+  max-width: 74rem;
+
+  margin: 0;
 }
 
 .work-archive__kicker {
-  margin: 0 0 1rem;
+  margin: 0 0 clamp(1rem, 2vh, 1.5rem);
 
   color: var(--work-muted);
   font-family: var(--mono, "IBM Plex Mono", ui-monospace, monospace);
@@ -232,27 +308,47 @@
 }
 
 .work-archive__title {
+  max-width: 76rem;
   margin: 0;
 
   color: rgba(245, 245, 240, 0.86);
-  font-size: clamp(3.5rem, 7vw, 8rem);
+  font-size: clamp(3.65rem, 7.8vw, 9.5rem);
   font-weight: 300;
-  letter-spacing: -0.075em;
-  line-height: 0.88;
+  letter-spacing: -0.085em;
+  line-height: 0.86;
+
+  text-wrap: balance;
+}
+
+/* STAGE 2 — REVEAL */
+
+.work-archive__body {
+  display: grid;
+  grid-template-columns: minmax(12rem, 22rem) minmax(0, 1fr);
+  gap: clamp(3rem, 8vw, 9rem);
+  align-items: start;
+
+  padding-top: clamp(2rem, 8vh, 6rem);
 }
 
 .work-archive__intro {
-  max-width: 22rem;
-  margin: 0;
+  position: sticky;
+  top: clamp(7rem, 14vh, 10rem);
 
-  color: rgba(245, 245, 240, 0.46);
-  font-size: clamp(0.78rem, 0.85vw, 0.96rem);
-  font-weight: 300;
-  line-height: 1.7;
-  letter-spacing: -0.012em;
+  max-width: 20rem;
 }
 
-/* ARCHIVE LIST */
+.work-archive__intro p {
+  margin: 0;
+
+  color: rgba(245, 245, 240, 0.44);
+  font-size: clamp(0.78rem, 0.86vw, 0.98rem);
+  font-weight: 300;
+  line-height: 1.75;
+  letter-spacing: -0.015em;
+}
+
+/* STAGE 3 — PROJECT ARCHIVE */
 
 .work-archive__list {
   position: relative;
@@ -269,7 +365,7 @@
   gap: 2rem;
 
   width: 100%;
-  min-height: clamp(4.6rem, 8vh, 6.15rem);
+  min-height: clamp(5.25rem, 9.5vh, 7.1rem);
   padding: 0;
 
   border: 0;
@@ -293,13 +389,41 @@
   inset: 0;
   z-index: -1;
 
-  background: rgba(245, 245, 240, 0.028);
+  background:
+    linear-gradient(to right, rgba(245, 245, 240, 0.04), transparent 72%),
+    linear-gradient(to bottom, transparent, rgba(245, 245, 240, 0.018), transparent);
+
   opacity: 0;
   transform: scaleY(0.82);
 
   transition:
-    opacity 220ms ease,
-    transform 320ms cubic-bezier(.16, 1, .3, 1);
+    opacity 240ms ease,
+    transform 420ms cubic-bezier(.16, 1, .3, 1);
+}
+
+.work-project::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+
+  height: 1px;
+
+  background: linear-gradient(
+    to right,
+    rgba(245, 245, 240, 0.62),
+    rgba(245, 245, 240, 0.08),
+    transparent
+  );
+
+  opacity: 0;
+  transform: scaleX(0.22);
+  transform-origin: left center;
+
+  transition:
+    opacity 260ms ease,
+    transform 520ms cubic-bezier(.16, 1, .3, 1);
 }
 
 .work-project:hover::before,
@@ -308,6 +432,14 @@
 .work-project.is-active::before {
   opacity: 1;
   transform: scaleY(1);
+}
+
+.work-project:hover::after,
+.work-project:focus-visible::after,
+.work-project.is-previewing::after,
+.work-project.is-active::after {
+  opacity: 1;
+  transform: scaleX(1);
 }
 
 .work-project__main {
@@ -322,9 +454,9 @@
 }
 
 .work-project__number {
-  color: rgba(245, 245, 240, 0.42);
+  color: rgba(245, 245, 240, 0.38);
   font-family: var(--mono, "IBM Plex Mono", ui-monospace, monospace);
-  font-size: 0.68rem;
+  font-size: 0.66rem;
   letter-spacing: 0.12em;
 }
 
@@ -332,26 +464,52 @@
   overflow: hidden;
 
   color: rgba(245, 245, 240, 0.68);
-  font-size: clamp(1.15rem, 1.65vw, 2rem);
+  font-size: clamp(1.25rem, 2.1vw, 2.55rem);
   font-weight: 300;
-  letter-spacing: -0.055em;
-  line-height: 1;
+  letter-spacing: -0.065em;
+  line-height: 0.95;
   white-space: nowrap;
   text-overflow: ellipsis;
 
   transition:
     color 220ms ease,
-    transform 320ms cubic-bezier(.16, 1, .3, 1),
-    letter-spacing 320ms ease;
+    transform 420ms cubic-bezier(.16, 1, .3, 1),
+    letter-spacing 420ms ease;
 }
 
 .work-project:hover .work-project__name,
 .work-project:focus-visible .work-project__name,
 .work-project.is-previewing .work-project__name,
 .work-project.is-active .work-project__name {
-  color: rgba(255, 255, 255, 0.96);
-  letter-spacing: -0.07em;
-  transform: translate3d(0.35rem, 0, 0);
+  color: var(--work-white);
+  letter-spacing: -0.08em;
+  transform: translate3d(0.45rem, 0, 0);
+}
+
+/* SUBTLE SIGNAL INTERFERENCE — NOT RGB */
+
+.work-project:hover .work-project__name,
+.work-project.is-previewing .work-project__name {
+  animation: workSignalText 900ms steps(2, end) 1;
+}
+
+@keyframes workSignalText {
+  0% {
+    text-shadow: none;
+  }
+
+  10% {
+    text-shadow: 0.055em 0 rgba(255, 255, 255, 0.18);
+  }
+
+  12% {
+    text-shadow: -0.035em 0 rgba(255, 255, 255, 0.12);
+  }
+
+  16%,
+  100% {
+    text-shadow: none;
+  }
 }
 
 /* HOVER META */
@@ -375,11 +533,11 @@
   white-space: nowrap;
 
   opacity: 0;
-  transform: translate3d(0.75rem, 0, 0);
+  transform: translate3d(0.85rem, 0, 0);
 
   transition:
     opacity 220ms ease,
-    transform 320ms cubic-bezier(.16, 1, .3, 1);
+    transform 420ms cubic-bezier(.16, 1, .3, 1);
 }
 
 .work-project:hover .work-project__hover,
@@ -396,13 +554,13 @@
   position: relative;
   z-index: 2;
 
-  color: rgba(245, 245, 240, 0.44);
+  color: rgba(245, 245, 240, 0.42);
   font-size: 1.05rem;
   line-height: 1;
 
   transition:
     color 220ms ease,
-    transform 320ms cubic-bezier(.16, 1, .3, 1);
+    transform 420ms cubic-bezier(.16, 1, .3, 1);
 }
 
 .work-project:hover .work-project__arrow,
@@ -410,15 +568,15 @@
 .work-project.is-previewing .work-project__arrow,
 .work-project.is-active .work-project__arrow {
   color: rgba(255, 255, 255, 0.88);
-  transform: translate3d(0.35rem, 0, 0);
+  transform: translate3d(0.45rem, 0, 0);
 }
 
-/* PREVIEW IMAGE */
+/* HOVER PREVIEW */
 
 .work-project__preview {
   position: fixed;
-  left: min(66vw, calc(100vw - 18rem));
-  top: 42vh;
+  left: min(63vw, calc(100vw - 22rem));
+  top: 43vh;
   z-index: 60;
 
   display: block;
@@ -437,7 +595,7 @@
 
   transition:
     opacity 220ms ease,
-    transform 340ms cubic-bezier(.16, 1, .3, 1);
+    transform 440ms cubic-bezier(.16, 1, .3, 1);
 }
 
 .work-project__preview img {
@@ -446,18 +604,18 @@
   height: 100%;
   object-fit: cover;
 
-  filter: grayscale(1) brightness(0.72) contrast(1.08);
+  filter: grayscale(1) brightness(0.7) contrast(1.08);
   transform: scale(1.04);
 
   transition:
-    transform 680ms cubic-bezier(.16, 1, .3, 1),
+    transform 760ms cubic-bezier(.16, 1, .3, 1),
     filter 320ms ease;
 }
 
 .work-project:hover .work-project__preview,
 .work-project:focus-visible .work-project__preview,
 .work-project.is-previewing .work-project__preview {
-  opacity: 0.82;
+  opacity: 0.78;
   transform: translate3d(0, 0, 0) scale(1);
 }
 
@@ -468,39 +626,73 @@
   filter: grayscale(1) brightness(0.82) contrast(1.12);
 }
 
-/* DETAIL PANEL */
+/* ==========================================================
+   RIGHT DRAWER MODAL
+========================================================== */
 
 .work-detail {
   position: fixed;
-  right: clamp(2rem, 5vw, 5rem);
-  bottom: clamp(2rem, 6vh, 5rem);
-  z-index: 80;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 100;
 
-  width: min(26rem, calc(100vw - 4rem));
-  max-height: min(78vh, 42rem);
-  overflow: auto;
+  width: min(34rem, 100vw);
+  height: 100vh;
 
-  padding: 2.25rem;
+  overflow: hidden;
 
-  border: 1px solid rgba(245, 245, 240, 0.08);
-  background: linear-gradient(
-    to bottom,
-    rgba(10, 10, 10, 0.9),
-    rgba(3, 3, 3, 0.96)
-  );
+  border-left: 1px solid rgba(245, 245, 240, 0.1);
+  background:
+    linear-gradient(to bottom, rgba(13, 13, 13, 0.94), rgba(3, 3, 3, 0.985)),
+    radial-gradient(circle at 40% 0%, rgba(255, 255, 255, 0.055), transparent 34%);
 
-  box-shadow: 0 2rem 5rem rgba(0, 0, 0, 0.7);
-  backdrop-filter: blur(16px);
+  box-shadow: -2rem 0 6rem rgba(0, 0, 0, 0.72);
+  backdrop-filter: blur(18px);
 
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
-  transform: translate3d(1.4rem, 0, 0);
+  transform: translate3d(104%, 0, 0);
 
   transition:
-    opacity 280ms ease,
-    visibility 280ms ease,
-    transform 360ms cubic-bezier(.16, 1, .3, 1);
+    opacity 260ms ease,
+    visibility 260ms ease,
+    transform 520ms cubic-bezier(.16, 1, .3, 1);
+}
+
+.work-detail::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+
+  background:
+    linear-gradient(to right, rgba(245, 245, 240, 0.04), transparent 26%),
+    repeating-linear-gradient(
+      to bottom,
+      rgba(255, 255, 255, 0.012) 0,
+      rgba(255, 255, 255, 0.012) 1px,
+      transparent 1px,
+      transparent 10px
+    );
+
+  opacity: 0.18;
+  pointer-events: none;
+}
+
+.work-detail::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  right: min(34rem, 100vw);
+  z-index: -1;
+
+  background: rgba(0, 0, 0, 0.42);
+  opacity: 0;
+  pointer-events: none;
+
+  transition: opacity 260ms ease;
 }
 
 .work-detail.is-open,
@@ -511,80 +703,147 @@
   transform: translate3d(0, 0, 0);
 }
 
+.work-detail.is-open::after,
+.work-archive.has-open-detail .work-detail::after {
+  opacity: 1;
+}
+
+.work-detail__inner {
+  position: relative;
+  z-index: 1;
+
+  height: 100%;
+  overflow-y: auto;
+
+  padding: clamp(2rem, 5vw, 3.25rem);
+  padding-top: clamp(4rem, 8vh, 5.5rem);
+
+  scrollbar-width: thin;
+  scrollbar-color: rgba(245, 245, 240, 0.18) transparent;
+}
+
+.work-detail__inner::-webkit-scrollbar {
+  width: 7px;
+}
+
+.work-detail__inner::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.work-detail__inner::-webkit-scrollbar-thumb {
+  background: rgba(245, 245, 240, 0.14);
+}
+
 .work-detail__close {
   position: absolute;
-  top: 1.1rem;
-  right: 1.15rem;
+  top: 1.25rem;
+  right: 1.35rem;
+  z-index: 3;
 
-  width: 1.7rem;
-  height: 1.7rem;
+  display: grid;
+  place-items: center;
 
-  border: 0;
-  background: transparent;
-  color: rgba(245, 245, 240, 0.34);
+  width: 2rem;
+  height: 2rem;
+
+  border: 1px solid rgba(245, 245, 240, 0.08);
+  background: rgba(255, 255, 255, 0.025);
+  color: rgba(245, 245, 240, 0.48);
 
   font: inherit;
   font-size: 1.15rem;
   line-height: 1;
 
   cursor: pointer;
+
+  transition:
+    color 180ms ease,
+    border-color 180ms ease,
+    background 180ms ease;
 }
 
 .work-detail__close:hover {
-  color: rgba(245, 245, 240, 0.86);
+  color: rgba(245, 245, 240, 0.9);
+  border-color: rgba(245, 245, 240, 0.18);
+  background: rgba(255, 255, 255, 0.045);
 }
 
 .work-detail__eyebrow {
   display: flex;
-  gap: 0.85rem;
+  flex-wrap: wrap;
+  gap: 0.75rem;
 
-  margin: 0 0 1.1rem;
+  margin: 0 0 1.2rem;
 
-  color: rgba(245, 245, 240, 0.38);
+  color: rgba(245, 245, 240, 0.36);
   font-family: var(--mono, "IBM Plex Mono", ui-monospace, monospace);
-  font-size: 0.54rem;
-  letter-spacing: 0.18em;
+  font-size: 0.53rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  line-height: 1.3;
   text-transform: uppercase;
 }
 
 .work-detail__title {
-  max-width: 18rem;
+  max-width: 23rem;
   margin: 0 0 1.25rem;
 
-  color: rgba(245, 245, 240, 0.86);
-  font-size: clamp(1.45rem, 1.9vw, 2.2rem);
+  color: rgba(245, 245, 240, 0.9);
+  font-size: clamp(2rem, 4vw, 3.6rem);
   font-weight: 300;
-  letter-spacing: -0.06em;
-  line-height: 0.95;
+  letter-spacing: -0.075em;
+  line-height: 0.9;
 }
 
 .work-detail__description {
-  max-width: 20rem;
-  margin: 0;
+  max-width: 25rem;
+  margin: 0 0 2.4rem;
 
-  color: rgba(245, 245, 240, 0.5);
-  font-size: 0.7rem;
+  color: rgba(245, 245, 240, 0.52);
+  font-size: 0.78rem;
   font-weight: 300;
-  line-height: 1.7;
+  line-height: 1.75;
+  letter-spacing: -0.01em;
 }
 
-.work-detail__section {
-  margin-top: 1.8rem;
+.work-detail__proof-grid {
+  display: grid;
+  gap: 0;
+  margin-top: 2rem;
+
+  border-top: 1px solid rgba(245, 245, 240, 0.095);
+}
+
+.work-detail__block {
+  padding: 1.35rem 0;
+  border-bottom: 1px solid rgba(245, 245, 240, 0.08);
 }
 
 .work-detail__label {
-  margin: 0 0 0.8rem;
+  margin: 0 0 0.72rem;
 
-  color: rgba(245, 245, 240, 0.34);
+  color: rgba(245, 245, 240, 0.36);
   font-family: var(--mono, "IBM Plex Mono", ui-monospace, monospace);
   font-size: 0.52rem;
+  font-weight: 500;
   letter-spacing: 0.18em;
+  line-height: 1;
   text-transform: uppercase;
+}
+
+.work-detail__block p:not(.work-detail__label) {
+  max-width: 25rem;
+  margin: 0;
+
+  color: rgba(245, 245, 240, 0.52);
+  font-size: 0.7rem;
+  font-weight: 300;
+  line-height: 1.68;
 }
 
 .work-detail__list {
   display: grid;
-  gap: 0.48rem;
+  gap: 0.5rem;
 
   margin: 0;
   padding: 0;
@@ -592,37 +851,46 @@
 }
 
 .work-detail__list li {
-  color: rgba(245, 245, 240, 0.48);
-  font-size: 0.62rem;
+  color: rgba(245, 245, 240, 0.5);
+  font-size: 0.66rem;
   font-weight: 300;
-  line-height: 1.4;
+  line-height: 1.45;
 }
 
 .work-detail__list li::before {
   content: "— ";
-  color: rgba(245, 245, 240, 0.3);
+  color: rgba(245, 245, 240, 0.32);
+}
+
+.work-detail__testimonial {
+  margin-top: 2rem;
+  padding: 1.55rem;
+
+  border: 1px solid rgba(245, 245, 240, 0.085);
+  background: rgba(255, 255, 255, 0.025);
 }
 
 .work-detail__quote {
-  max-width: 20rem;
+  max-width: 25rem;
   margin: 0;
 
-  color: rgba(245, 245, 240, 0.46);
-  font-size: 0.66rem;
+  color: rgba(245, 245, 240, 0.58);
+  font-size: 0.78rem;
   font-style: italic;
   font-weight: 300;
-  line-height: 1.65;
+  line-height: 1.68;
+  letter-spacing: -0.01em;
 }
 
 .work-detail__client {
   display: grid;
   gap: 0.32rem;
-  margin-top: 1rem;
+  margin-top: 1.15rem;
 }
 
 .work-detail__client span {
-  color: rgba(245, 245, 240, 0.66);
-  font-size: 0.66rem;
+  color: rgba(245, 245, 240, 0.72);
+  font-size: 0.72rem;
 }
 
 .work-detail__client small {
@@ -635,8 +903,13 @@
 
 .work-detail__nav {
   display: flex;
+  justify-content: space-between;
   gap: 1rem;
-  margin-top: 2rem;
+
+  margin-top: 2.25rem;
+  padding-top: 1.25rem;
+
+  border-top: 1px solid rgba(245, 245, 240, 0.08);
 }
 
 .work-detail__nav button {
@@ -647,14 +920,52 @@
   font: inherit;
   font-family: var(--mono, "IBM Plex Mono", ui-monospace, monospace);
   font-size: 0.52rem;
+  font-weight: 500;
   letter-spacing: 0.18em;
   text-transform: uppercase;
 
   cursor: pointer;
+
+  transition:
+    color 180ms ease,
+    transform 220ms cubic-bezier(.16, 1, .3, 1);
 }
 
 .work-detail__nav button:hover {
   color: rgba(245, 245, 240, 0.88);
+  transform: translate3d(0, -1px, 0);
+}
+
+/* DETAIL CHANGE MICRO-ANIMATION */
+
+.work-detail.is-changing .work-detail__title,
+.work-detail.is-changing .work-detail__description,
+.work-detail.is-changing .work-detail__proof-grid,
+.work-detail.is-changing .work-detail__testimonial {
+  animation: workDetailChange 260ms cubic-bezier(.16, 1, .3, 1) both;
+}
+
+@keyframes workDetailChange {
+  from {
+    opacity: 0;
+    transform: translate3d(0.5rem, 0, 0);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+/* BACKDROP EFFECT WHEN DRAWER IS OPEN */
+
+.work-archive.has-open-detail .work-archive__arrival,
+.work-archive.has-open-detail .work-archive__body {
+  filter: brightness(0.72);
+}
+
+.work-archive.has-open-detail .work-project__preview {
+  opacity: 0 !important;
 }
 
 /* RESPONSIVE */
@@ -665,9 +976,15 @@
     width: min(60rem, calc(100% - 3rem));
   }
 
-  .work-archive__header {
+  .work-archive__body {
     grid-template-columns: 1fr;
-    gap: 1.75rem;
+    gap: 2.5rem;
+  }
+
+  .work-archive__intro {
+    position: relative;
+    top: auto;
+    max-width: 28rem;
   }
 
   .work-project {
@@ -684,7 +1001,18 @@
   .work-reveal-preview__shell,
   .work-archive__shell {
     width: calc(100% - 2rem);
-    padding: 5rem 0 3rem;
+  }
+
+  .work-archive {
+    min-height: auto;
+  }
+
+  .work-archive__shell {
+    padding: 6rem 0 5rem;
+  }
+
+  .work-archive__arrival {
+    min-height: 64vh;
   }
 
   .work-reveal-preview__title,
@@ -692,14 +1020,12 @@
     font-size: clamp(3rem, 14vw, 5rem);
   }
 
-  .work-reveal-preview__list span {
-    padding: 1rem 0;
-    font-size: 0.54rem;
-    letter-spacing: 0.13em;
+  .work-archive__body {
+    padding-top: 1rem;
   }
 
   .work-project {
-    min-height: 4.75rem;
+    min-height: 4.9rem;
     gap: 1rem;
   }
 
@@ -708,16 +1034,32 @@
   }
 
   .work-project__name {
-    font-size: clamp(1rem, 5vw, 1.25rem);
+    font-size: clamp(1.08rem, 5.4vw, 1.45rem);
+    letter-spacing: -0.055em;
+  }
+
+  .work-project__number {
+    font-size: 0.58rem;
   }
 
   .work-detail {
-    left: 1rem;
-    right: 1rem;
-    bottom: 1rem;
-    width: auto;
-    max-height: 72vh;
-    padding: 2rem 1.5rem;
+    width: 100vw;
+  }
+
+  .work-detail::after {
+    display: none;
+  }
+
+  .work-detail__inner {
+    padding: 4.25rem 1.35rem 2rem;
+  }
+
+  .work-detail__title {
+    font-size: clamp(2rem, 11vw, 3.2rem);
+  }
+
+  .work-detail__testimonial {
+    padding: 1.25rem;
   }
 
   .work-detail__nav {
@@ -730,12 +1072,19 @@
 @media (prefers-reduced-motion: reduce) {
   .work-project,
   .work-project::before,
+  .work-project::after,
   .work-project__name,
   .work-project__hover,
   .work-project__arrow,
   .work-project__preview,
   .work-project__preview img,
-  .work-detail {
+  .work-detail,
+  .work-detail::after,
+  .work-archive__signal,
+  .work-detail__title,
+  .work-detail__description,
+  .work-detail__proof-grid,
+  .work-detail__testimonial {
     transition: none !important;
     animation: none !important;
   }
