@@ -15,9 +15,9 @@
       constraint:
         "Wonder World needed one cleaner place to manage quote requests, product information, project details, and customer-facing resources.",
       solution:
-        "We brought the core sales and project workflow into a more usable digital layer with cleaner structure and less friction.",
+        "We brought the core sales and project workflow into a more usable digital layer with clearer structure and less friction.",
       result:
-        "The business had a stronger operating system for managing project information and presenting the offer more professionally.",
+        "The business gained a stronger operating system for managing project information and presenting the offer more professionally.",
       services: [
         "Client portal architecture",
         "Product and quote system",
@@ -26,7 +26,7 @@
         "Frontend design and development"
       ],
       review:
-        "The portal made our process feel organized, easier to manage, and easier to present to customers.",
+        "The portal made our process feel more organized, easier to manage, and easier to present to customers.",
       client: "Wonder World Playsets",
       role: "Commercial playground distributor"
     },
@@ -136,36 +136,10 @@
   let detailIsOpen = false;
   let changeTimer = null;
   let glitchTimer = null;
-  let scrollYBeforeLock = 0;
+  let lockedScrollY = 0;
 
   function clampIndex(index) {
     return (index + projects.length) % projects.length;
-  }
-
-  function lockPageScroll() {
-    scrollYBeforeLock = window.scrollY || window.pageYOffset || 0;
-
-    document.documentElement.classList.add("work-drawer-lock");
-    document.body.classList.add("work-drawer-lock");
-
-    document.body.style.position = "fixed";
-    document.body.style.top = `-${scrollYBeforeLock}px`;
-    document.body.style.left = "0";
-    document.body.style.right = "0";
-    document.body.style.width = "100%";
-  }
-
-  function unlockPageScroll() {
-    document.documentElement.classList.remove("work-drawer-lock");
-    document.body.classList.remove("work-drawer-lock");
-
-    document.body.style.position = "";
-    document.body.style.top = "";
-    document.body.style.left = "";
-    document.body.style.right = "";
-    document.body.style.width = "";
-
-    window.scrollTo(0, scrollYBeforeLock);
   }
 
   function renderServices(items) {
@@ -180,63 +154,6 @@
     });
 
     servicesEl.replaceChildren(fragment);
-  }
-
-  function animateDetailChange() {
-    if (!detail || prefersReducedMotion) return;
-
-    detail.classList.remove("is-changing");
-
-    requestAnimationFrame(() => {
-      detail.classList.add("is-changing");
-    });
-
-    window.clearTimeout(changeTimer);
-
-    changeTimer = window.setTimeout(() => {
-      detail.classList.remove("is-changing");
-    }, 300);
-  }
-
-  function pulseSignalGlitch(index) {
-    if (prefersReducedMotion) return;
-
-    const safeIndex = clampIndex(index);
-    const button = projectButtons[safeIndex];
-
-    if (!button) return;
-
-    button.classList.remove("is-glitching");
-
-    /*
-      Forces the animation to restart every time.
-    */
-    void button.offsetWidth;
-
-    button.classList.add("is-glitching");
-
-    window.clearTimeout(glitchTimer);
-
-    glitchTimer = window.setTimeout(() => {
-      button.classList.remove("is-glitching");
-    }, 760);
-  }
-
-  function clearPreviewStates() {
-    projectButtons.forEach((button) => {
-      button.classList.remove("is-previewing", "is-glitching");
-    });
-  }
-
-  function setPreviewProject(index) {
-    const safeIndex = clampIndex(index);
-
-    projectButtons.forEach((button, buttonIndex) => {
-      button.classList.toggle("is-previewing", buttonIndex === safeIndex);
-    });
-
-    root.dataset.workActive = String(safeIndex);
-    pulseSignalGlitch(safeIndex);
   }
 
   function setActiveButton(index) {
@@ -256,14 +173,48 @@
     root.dataset.workActive = String(index);
   }
 
+  function restartGlitch(button) {
+    if (!button || prefersReducedMotion) return;
+
+    button.classList.remove("is-glitching");
+    void button.offsetWidth;
+    button.classList.add("is-glitching");
+
+    clearTimeout(glitchTimer);
+    glitchTimer = setTimeout(() => {
+      button.classList.remove("is-glitching");
+    }, 720);
+  }
+
+  function clearPreviewStates() {
+    projectButtons.forEach((button) => {
+      button.classList.remove("is-previewing", "is-glitching");
+    });
+  }
+
+  function setPreviewProject(index) {
+    const safeIndex = clampIndex(index);
+
+    projectButtons.forEach((button, buttonIndex) => {
+      const isPreviewing = buttonIndex === safeIndex;
+      button.classList.toggle("is-previewing", isPreviewing);
+
+      if (isPreviewing) {
+        restartGlitch(button);
+      } else {
+        button.classList.remove("is-glitching");
+      }
+    });
+
+    root.dataset.workActive = String(safeIndex);
+  }
+
   function renderProject(index) {
     const safeIndex = clampIndex(index);
     const project = projects[safeIndex];
-
     if (!project) return;
 
     activeIndex = safeIndex;
-
     setActiveButton(safeIndex);
 
     if (numberEl) numberEl.textContent = project.number;
@@ -281,23 +232,69 @@
     renderServices(project.services);
   }
 
+  function animateDetailChange() {
+    if (!detail || prefersReducedMotion) return;
+
+    detail.classList.remove("is-changing");
+
+    requestAnimationFrame(() => {
+      detail.classList.add("is-changing");
+    });
+
+    clearTimeout(changeTimer);
+    changeTimer = setTimeout(() => {
+      detail.classList.remove("is-changing");
+    }, 280);
+  }
+
+  function lockSiteScroll() {
+    if (document.body.classList.contains("work-drawer-lock")) return;
+
+    lockedScrollY = window.scrollY || window.pageYOffset || 0;
+
+    document.documentElement.classList.add("work-drawer-lock");
+    document.body.classList.add("work-drawer-lock");
+
+    document.body.style.position = "fixed";
+    document.body.style.top = `-${lockedScrollY}px`;
+    document.body.style.left = "0";
+    document.body.style.right = "0";
+    document.body.style.width = "100%";
+  }
+
+  function unlockSiteScroll() {
+    document.documentElement.classList.remove("work-drawer-lock");
+    document.body.classList.remove("work-drawer-lock");
+
+    document.body.style.position = "";
+    document.body.style.top = "";
+    document.body.style.left = "";
+    document.body.style.right = "";
+    document.body.style.width = "";
+
+    window.scrollTo(0, lockedScrollY);
+  }
+
   function openDetail(index) {
     const safeIndex = clampIndex(index);
 
     renderProject(safeIndex);
-
     detailIsOpen = true;
+
     root.classList.add("has-open-detail");
 
     if (detail) {
       detail.classList.add("is-open");
-      detail.classList.remove("is-muted", "is-changing");
+      detail.classList.remove("is-changing");
       detail.setAttribute("aria-hidden", "false");
     }
 
-    lockPageScroll();
+    lockSiteScroll();
     clearPreviewStates();
-    pulseSignalGlitch(safeIndex);
+
+    const activeButton = projectButtons[safeIndex];
+    restartGlitch(activeButton);
+
     animateDetailChange();
   }
 
@@ -306,7 +303,7 @@
     root.classList.remove("has-open-detail");
 
     if (detail) {
-      detail.classList.remove("is-open", "is-muted", "is-changing");
+      detail.classList.remove("is-open", "is-changing");
       detail.setAttribute("aria-hidden", "true");
     }
 
@@ -325,7 +322,7 @@
     });
 
     root.dataset.workActive = String(activeIndex);
-    unlockPageScroll();
+    unlockSiteScroll();
   }
 
   function moveProject(delta) {
@@ -344,9 +341,8 @@
     const inner = root.querySelector(".work-detail__inner");
     const testimonial = root.querySelector(".work-detail__testimonial");
     const proofGrid = root.querySelector(".work-detail__proof-grid");
-    const description = root.querySelector(".work-detail__description");
 
-    if (!inner || !testimonial || !proofGrid || !description) return;
+    if (!inner || !testimonial || !proofGrid) return;
 
     inner.insertBefore(testimonial, proofGrid);
   }
@@ -360,16 +356,16 @@
 
       if (index === activeIndex) {
         button.setAttribute("aria-current", "true");
-      } else {
-        button.removeAttribute("aria-current");
       }
 
       button.addEventListener("mouseenter", () => {
+        if (detailIsOpen) return;
         activeIndex = index;
         setPreviewProject(index);
       });
 
       button.addEventListener("focus", () => {
+        if (detailIsOpen) return;
         activeIndex = index;
         setPreviewProject(index);
       });
@@ -391,8 +387,6 @@
     });
 
     if (prevBtn) {
-      prevBtn.setAttribute("type", "button");
-
       prevBtn.addEventListener("click", (event) => {
         event.preventDefault();
         event.stopPropagation();
@@ -401,8 +395,6 @@
     }
 
     if (nextBtn) {
-      nextBtn.setAttribute("type", "button");
-
       nextBtn.addEventListener("click", (event) => {
         event.preventDefault();
         event.stopPropagation();
@@ -411,8 +403,6 @@
     }
 
     if (closeBtn) {
-      closeBtn.setAttribute("type", "button");
-
       closeBtn.addEventListener("click", (event) => {
         event.preventDefault();
         event.stopPropagation();
@@ -433,7 +423,6 @@
 
     window.addEventListener("keydown", (event) => {
       const tagName = document.activeElement?.tagName?.toLowerCase();
-
       const isTyping =
         tagName === "input" ||
         tagName === "textarea" ||
@@ -447,13 +436,13 @@
         return;
       }
 
-      if (event.key === "ArrowUp" || event.key === "ArrowLeft") {
+      if (event.key === "ArrowLeft" || event.key === "ArrowUp") {
         event.preventDefault();
         moveProject(-1);
         return;
       }
 
-      if (event.key === "ArrowDown" || event.key === "ArrowRight") {
+      if (event.key === "ArrowRight" || event.key === "ArrowDown") {
         event.preventDefault();
         moveProject(1);
       }
