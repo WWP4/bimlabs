@@ -440,54 +440,86 @@
       </button>
     </div>
 
-    <aside class="work-detail" aria-label="Project details">
+    <aside class="work-detail" aria-label="Project details" aria-hidden="true">
       <button class="work-detail__close" type="button" aria-label="Close project details">
         ×
       </button>
 
-      <p class="work-detail__eyebrow">
-        <span data-work-detail-number>01</span>
-        <span>Featured project</span>
-      </p>
+      <div class="work-detail__inner">
+        <header class="work-detail__hero">
+          <p class="work-detail__eyebrow">
+            <span data-work-detail-number>01</span>
+            <span>/</span>
+            <span data-work-detail-type>Client Portal</span>
+            <span>-/</span>
+            <span data-work-detail-year>2024</span>
+          </p>
 
-      <h3 class="work-detail__title" data-work-detail-title>
-        Wonder World Portal
-      </h3>
+          <h3 class="work-detail__title" data-work-detail-title>
+            Wonder World Portal
+          </h3>
 
-      <p class="work-detail__description" data-work-detail-description>
-        We designed and built a private operating layer for Wonder World,
-        bringing quotes, products, lead flow, installer coordination, and
-        customer-facing resources into one cleaner system.
-      </p>
+          <p class="work-detail__description" data-work-detail-description>
+            A private operating layer built to organize quotes, products, lead flow,
+            installer coordination, and customer-facing resources.
+          </p>
+        </header>
 
-      <div class="work-detail__section">
-        <p class="work-detail__label">Deliverables</p>
+        <section class="work-detail__testimonial" aria-label="Client review">
+          <p class="work-detail__label">Client review</p>
 
-        <ul class="work-detail__list" data-work-detail-services>
-          <li>Client portal architecture</li>
-          <li>Product and quote system</li>
-          <li>Installer finder workflow</li>
-          <li>CRM and internal dashboard</li>
-          <li>Frontend design and development</li>
-        </ul>
-      </div>
+          <blockquote class="work-detail__quote" data-work-detail-review>
+            “The portal made our process feel organized, easier to manage, and easier to present to customers.”
+          </blockquote>
 
-      <div class="work-detail__section">
-        <p class="work-detail__label">Client review</p>
+          <div class="work-detail__client">
+            <span data-work-detail-client>Wonder World Playsets</span>
+            <small data-work-detail-role>Commercial playground distributor</small>
+          </div>
+        </section>
 
-        <blockquote class="work-detail__quote" data-work-detail-review>
-          “BIM Labs Studio helped us turn a scattered sales process into a cleaner system.”
-        </blockquote>
+        <div class="work-detail__proof-grid" aria-label="Project proof points">
+          <section class="work-detail__block">
+            <p class="work-detail__label">Customer constraint</p>
+            <p data-work-detail-constraint>
+              Wonder World needed one cleaner place to manage quote requests,
+              product information, project details, and customer-facing resources.
+            </p>
+          </section>
 
-        <div class="work-detail__client">
-          <span data-work-detail-client>Wonder World Playsets</span>
-          <small data-work-detail-role>Commercial playground distributor</small>
+          <section class="work-detail__block">
+            <p class="work-detail__label">What we solved</p>
+            <p data-work-detail-solution>
+              We brought the core sales and project workflow into a more usable
+              digital layer with clearer structure and less friction.
+            </p>
+          </section>
+
+          <section class="work-detail__block">
+            <p class="work-detail__label">Result</p>
+            <p data-work-detail-result>
+              The business gained a stronger operating system for managing project
+              information and presenting the offer more professionally.
+            </p>
+          </section>
+
+          <section class="work-detail__block">
+            <p class="work-detail__label">Deliverables</p>
+
+            <ul class="work-detail__list" data-work-detail-services>
+              <li>Client portal architecture</li>
+              <li>Product and quote system</li>
+              <li>Installer finder workflow</li>
+              <li>CRM and internal dashboard</li>
+              <li>Frontend design and development</li>
+            </ul>
+          </section>
         </div>
-      </div>
 
-      <div class="work-detail__nav">
-        <button type="button" data-work-prev>← Prev project</button>
-        <button type="button" data-work-next>Next project →</button>
+        <div class="work-detail__nav" aria-label="Project navigation">
+          <button type="button" data-work-prev>← Prev project</button>
+          <button type="button" data-work-next>Next project →</button>
+        </div>
       </div>
     </aside>
   </div>
