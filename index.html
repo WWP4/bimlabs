@@ -344,140 +344,71 @@
      Put this AFTER the closing </section> of PROCESS.
      This is the actual scrollable/clickable archive section.
 ====================================================== -->
+<!-- ======================================================
+     PROCESS → OUR WORK REVEAL SECTION
+     This is a visual section-to-section bridge.
+     It lives inside PROCESS, but it previews entry into OUR WORK.
+     No buttons. No drawer. No clickable project details.
+====================================================== -->
 
-<section class="work-archive" id="our-work" aria-labelledby="work-archive-title" data-work-active="0">
-  <div class="work-archive__environment" aria-hidden="true">
-    <div class="work-archive__depth"></div>
-    <div class="work-archive__grid"></div>
-    <div class="work-archive__signal work-archive__signal--one"></div>
-    <div class="work-archive__signal work-archive__signal--two"></div>
+<section
+  class="process-world-inside work-reveal-section"
+  data-work-world
+  aria-hidden="true"
+>
+  <div class="work-reveal-section__bg"></div>
+
+  <div class="work-reveal-section__system" aria-hidden="true">
+    <span class="work-reveal-section__guide work-reveal-section__guide--left"></span>
+    <span class="work-reveal-section__guide work-reveal-section__guide--right"></span>
+
+    <span class="work-reveal-section__marker work-reveal-section__marker--one">// 01</span>
+    <span class="work-reveal-section__marker work-reveal-section__marker--two">// 02</span>
+    <span class="work-reveal-section__marker work-reveal-section__marker--three">// 03</span>
+    <span class="work-reveal-section__marker work-reveal-section__marker--four">// 04</span>
+
+    <span class="work-reveal-section__cross work-reveal-section__cross--one">+</span>
+    <span class="work-reveal-section__cross work-reveal-section__cross--two">+</span>
+    <span class="work-reveal-section__cross work-reveal-section__cross--three">+</span>
+    <span class="work-reveal-section__cross work-reveal-section__cross--four">+</span>
   </div>
 
-  <div class="work-archive__shell">
-    <header class="work-archive__arrival">
-      <p class="work-archive__kicker">/// Selected work</p>
+  <div class="work-reveal-section__inner">
+    <p class="work-reveal-section__kicker">/// Archive entrance</p>
 
-      <h2 id="work-archive-title" class="work-archive__title">
-        Four real projects. Digital systems, websites, and workflows built with restraint.
-      </h2>
-    </header>
+    <h2 class="work-reveal-section__title">
+      Explore the work
+    </h2>
 
-    <div class="work-archive__body">
-      <div class="work-archive__intro">
-        <p>
-          A quiet archive of working systems, interfaces, portals, and brand-facing
-          digital infrastructure built directly through BIM Labs Studio.
-        </p>
-      </div>
+    <span class="work-reveal-section__divider" aria-hidden="true"></span>
 
-      <div class="work-archive__list" role="list" aria-label="Selected BIM Labs Studio projects">
-        <button class="work-project is-active" type="button" data-work-project="0" role="listitem">
-          <span class="work-project__main">
-            <span class="work-project__number">01</span>
-            <span class="work-project__name">Wonder World Portal</span>
-          </span>
+    <p class="work-reveal-section__copy">
+      Real projects, working systems, and interfaces built with restraint.
+    </p>
+  </div>
 
-          <span class="work-project__hover">
-            <span>Client Portal</span>
-            <span>2024</span>
-            <span>Web / Systems / Portal</span>
-          </span>
+  <div class="work-reveal-section__index" aria-hidden="true">
+    <span>
+      <strong>01</strong>
+      Wonder World Portal
+    </span>
 
-          <span class="work-project__arrow">→</span>
+    <span>
+      <strong>02</strong>
+      Momentum Athlete
+    </span>
 
-          <span class="work-project__preview" aria-hidden="true">
-            <img src="designs/work/wonder-world.jpg" alt="">
-          </span>
-        </button>
+    <span>
+      <strong>03</strong>
+      Orynd AI
+    </span>
 
-        <button class="work-project" type="button" data-work-project="1" role="listitem">
-          <span class="work-project__main">
-            <span class="work-project__number">02</span>
-            <span class="work-project__name">Momentum Athlete</span>
-          </span>
-
-          <span class="work-project__hover">
-            <span>Sports Platform</span>
-            <span>2024</span>
-            <span>Brand / Web / UX/UI</span>
-          </span>
-
-          <span class="work-project__arrow">→</span>
-
-          <span class="work-project__preview" aria-hidden="true">
-            <img src="designs/work/momentum-athlete.jpg" alt="">
-          </span>
-        </button>
-
-        <button class="work-project" type="button" data-work-project="2" role="listitem">
-          <span class="work-project__main">
-            <span class="work-project__number">03</span>
-            <span class="work-project__name">Orynd AI</span>
-          </span>
-
-          <span class="work-project__hover">
-            <span>AI Platform</span>
-            <span>2023</span>
-            <span>Brand / Web / Product</span>
-          </span>
-
-          <span class="work-project__arrow">→</span>
-
-          <span class="work-project__preview" aria-hidden="true">
-            <img src="designs/work/orynd-ai.jpg" alt="">
-          </span>
-        </button>
-
-        <button class="work-project" type="button" data-work-project="3" role="listitem">
-          <span class="work-project__main">
-            <span class="work-project__number">04</span>
-            <span class="work-project__name">CashFlowSwami</span>
-          </span>
-
-          <span class="work-project__hover">
-            <span>Fintech Platform</span>
-            <span>2023</span>
-            <span>Brand / Web / Systems</span>
-          </span>
-
-          <span class="work-project__arrow">→</span>
-
-          <span class="work-project__preview" aria-hidden="true">
-            <img src="designs/work/cashflow-swami.jpg" alt="">
-          </span>
-        </button>
-      </div>
-    </div>
-
-    <aside class="work-detail" aria-label="Project details" aria-hidden="true">
-      <button class="work-detail__close" type="button" aria-label="Close project details">
-        ×
-      </button>
-
-      <div class="work-detail__inner">
-        <p class="work-detail__eyebrow">
-          <span data-work-detail-number>01</span>
-          <span data-work-detail-type>Client Portal</span>
-          <span data-work-detail-year>2024</span>
-        </p>
-
-        <h3 class="work-detail__title" data-work-detail-title>
-          Wonder World Portal
-        </h3>
-
-        <p class="work-detail__description" data-work-detail-description>
-          A private operating layer built to organize quotes, products, lead flow,
-          installer coordination, and customer-facing resources.
-        </p>
-
-        <div class="work-detail__proof-grid">
-          <section class="work-detail__block">
-            <p class="work-detail__label">Customer constraint</p>
-            <p data-work-detail-constraint>
-              Sales, quotes, product information, and project coordination were scattered
-              across too many disconnected tools.
-            </p>
-          </section>
+    <span>
+      <strong>04</strong>
+      CashFlowSwami
+    </span>
+  </div>
+</section>
 
           <section class="work-detail__block">
             <p class="work-detail__label">What we solved</p>
