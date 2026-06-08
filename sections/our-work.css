@@ -1186,3 +1186,37 @@
     left: -0.75rem;
   }
 }
+
+
+html.work-drawer-lock,
+body.work-drawer-lock {
+  overflow: hidden !important;
+  overscroll-behavior: none;
+}
+
+.work-project.is-glitching .work-project__name {
+  animation: workSignalText 700ms steps(2, end) 1;
+}
+
+.work-detail {
+  width: min(44rem, 100vw);
+}
+
+.work-detail::after {
+  right: min(44rem, 100vw);
+}
+
+.work-detail__inner {
+  padding-left: clamp(2.75rem, 4.8vw, 4.5rem);
+  padding-right: clamp(2.75rem, 4.8vw, 4.5rem);
+}
+
+@media (max-width: 900px) {
+  .work-detail {
+    width: 100vw;
+  }
+
+  .work-detail::after {
+    display: none;
+  }
+}
