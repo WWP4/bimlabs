@@ -26,7 +26,7 @@
         "Frontend design and development"
       ],
       review:
-        "The portal made our process feel more organized, easier to manage, and easier to present to customers.",
+        "The portal made our process feel organized, easier to manage, and easier to present to customers.",
       client: "Wonder World Playsets",
       role: "Commercial playground distributor"
     },
@@ -142,111 +142,6 @@
     return (index + projects.length) % projects.length;
   }
 
-  function renderServices(items) {
-    if (!servicesEl) return;
-
-    const fragment = document.createDocumentFragment();
-
-    items.forEach((item) => {
-      const li = document.createElement("li");
-      li.textContent = item;
-      fragment.appendChild(li);
-    });
-
-    servicesEl.replaceChildren(fragment);
-  }
-
-  function setActiveButton(index) {
-    projectButtons.forEach((button, buttonIndex) => {
-      const isActive = buttonIndex === index;
-
-      button.classList.toggle("is-active", isActive);
-      button.setAttribute("aria-pressed", isActive ? "true" : "false");
-
-      if (isActive) {
-        button.setAttribute("aria-current", "true");
-      } else {
-        button.removeAttribute("aria-current");
-      }
-    });
-
-    root.dataset.workActive = String(index);
-  }
-
-  function restartGlitch(button) {
-    if (!button || prefersReducedMotion) return;
-
-    button.classList.remove("is-glitching");
-    void button.offsetWidth;
-    button.classList.add("is-glitching");
-
-    clearTimeout(glitchTimer);
-    glitchTimer = setTimeout(() => {
-      button.classList.remove("is-glitching");
-    }, 720);
-  }
-
-  function clearPreviewStates() {
-    projectButtons.forEach((button) => {
-      button.classList.remove("is-previewing", "is-glitching");
-    });
-  }
-
-  function setPreviewProject(index) {
-    const safeIndex = clampIndex(index);
-
-    projectButtons.forEach((button, buttonIndex) => {
-      const isPreviewing = buttonIndex === safeIndex;
-      button.classList.toggle("is-previewing", isPreviewing);
-
-      if (isPreviewing) {
-        restartGlitch(button);
-      } else {
-        button.classList.remove("is-glitching");
-      }
-    });
-
-    root.dataset.workActive = String(safeIndex);
-  }
-
-  function renderProject(index) {
-    const safeIndex = clampIndex(index);
-    const project = projects[safeIndex];
-    if (!project) return;
-
-    activeIndex = safeIndex;
-    setActiveButton(safeIndex);
-
-    if (numberEl) numberEl.textContent = project.number;
-    if (typeEl) typeEl.textContent = project.type;
-    if (yearEl) yearEl.textContent = project.year;
-    if (titleEl) titleEl.textContent = project.title;
-    if (descriptionEl) descriptionEl.textContent = project.description;
-    if (constraintEl) constraintEl.textContent = project.constraint;
-    if (solutionEl) solutionEl.textContent = project.solution;
-    if (resultEl) resultEl.textContent = project.result;
-    if (reviewEl) reviewEl.textContent = `“${project.review}”`;
-    if (clientEl) clientEl.textContent = project.client;
-    if (roleEl) roleEl.textContent = project.role;
-
-    renderServices(project.services);
-  }
-
-  function animateDetailChange() {
-    if (!detail || prefersReducedMotion) return;
-
-    detail.classList.remove("is-changing");
-
-    requestAnimationFrame(() => {
-      detail.classList.add("is-changing");
-    });
-
-    clearTimeout(changeTimer);
-    changeTimer = setTimeout(() => {
-      detail.classList.remove("is-changing");
-    }, 280);
-  }
-
   function lockSiteScroll() {
     if (document.body.classList.contains("work-drawer-lock")) return;
 
@@ -275,26 +170,135 @@
     window.scrollTo(0, lockedScrollY);
   }
 
+  function renderServices(items) {
+    if (!servicesEl) return;
+
+    const fragment = document.createDocumentFragment();
+
+    items.forEach((item) => {
+      const li = document.createElement("li");
+      li.textContent = item;
+      fragment.appendChild(li);
+    });
+
+    servicesEl.replaceChildren(fragment);
+  }
+
+  function restartGlitch(button) {
+    if (!button || prefersReducedMotion) return;
+
+    button.classList.remove("is-glitching");
+
+    void button.offsetWidth;
+
+    button.classList.add("is-glitching");
+
+    window.clearTimeout(glitchTimer);
+
+    glitchTimer = window.setTimeout(() => {
+      button.classList.remove("is-glitching");
+    }, 720);
+  }
+
+  function clearPreviewStates() {
+    projectButtons.forEach((button) => {
+      button.classList.remove("is-previewing", "is-glitching");
+    });
+  }
+
+  function setActiveButton(index) {
+    projectButtons.forEach((button, buttonIndex) => {
+      const isActive = buttonIndex === index;
+
+      button.classList.toggle("is-active", isActive);
+      button.setAttribute("aria-pressed", isActive ? "true" : "false");
+
+      if (isActive) {
+        button.setAttribute("aria-current", "true");
+      } else {
+        button.removeAttribute("aria-current");
+      }
+    });
+
+    root.dataset.workActive = String(index);
+  }
+
+  function setPreviewProject(index) {
+    const safeIndex = clampIndex(index);
+
+    projectButtons.forEach((button, buttonIndex) => {
+      const isPreviewing = buttonIndex === safeIndex;
+
+      button.classList.toggle("is-previewing", isPreviewing);
+
+      if (isPreviewing) {
+        restartGlitch(button);
+      } else {
+        button.classList.remove("is-glitching");
+      }
+    });
+
+    root.dataset.workActive = String(safeIndex);
+  }
+
+  function renderProject(index) {
+    const safeIndex = clampIndex(index);
+    const project = projects[safeIndex];
+
+    if (!project) return;
+
+    activeIndex = safeIndex;
+
+    setActiveButton(safeIndex);
+
+    if (numberEl) numberEl.textContent = project.number;
+    if (typeEl) typeEl.textContent = project.type;
+    if (yearEl) yearEl.textContent = project.year;
+    if (titleEl) titleEl.textContent = project.title;
+    if (descriptionEl) descriptionEl.textContent = project.description;
+    if (constraintEl) constraintEl.textContent = project.constraint;
+    if (solutionEl) solutionEl.textContent = project.solution;
+    if (resultEl) resultEl.textContent = project.result;
+    if (reviewEl) reviewEl.textContent = `“${project.review}”`;
+    if (clientEl) clientEl.textContent = project.client;
+    if (roleEl) roleEl.textContent = project.role;
+
+    renderServices(project.services);
+  }
+
+  function animateDetailChange() {
+    if (!detail || prefersReducedMotion) return;
+
+    detail.classList.remove("is-changing");
+
+    requestAnimationFrame(() => {
+      detail.classList.add("is-changing");
+    });
+
+    window.clearTimeout(changeTimer);
+
+    changeTimer = window.setTimeout(() => {
+      detail.classList.remove("is-changing");
+    }, 300);
+  }
+
   function openDetail(index) {
     const safeIndex = clampIndex(index);
 
     renderProject(safeIndex);
-    detailIsOpen = true;
 
+    detailIsOpen = true;
     root.classList.add("has-open-detail");
 
     if (detail) {
       detail.classList.add("is-open");
-      detail.classList.remove("is-changing");
+      detail.classList.remove("is-muted", "is-changing");
       detail.setAttribute("aria-hidden", "false");
     }
 
     lockSiteScroll();
     clearPreviewStates();
-
-    const activeButton = projectButtons[safeIndex];
-    restartGlitch(activeButton);
-
+    restartGlitch(projectButtons[safeIndex]);
     animateDetailChange();
   }
 
@@ -303,7 +307,7 @@
     root.classList.remove("has-open-detail");
 
     if (detail) {
-      detail.classList.remove("is-open", "is-changing");
+      detail.classList.remove("is-open", "is-muted", "is-changing");
       detail.setAttribute("aria-hidden", "true");
     }
 
@@ -337,7 +341,7 @@
     setPreviewProject(nextIndex);
   }
 
-  function moveTestimonialHigher() {
+  function reorderDrawerLayout() {
     const inner = root.querySelector(".work-detail__inner");
     const testimonial = root.querySelector(".work-detail__testimonial");
     const proofGrid = root.querySelector(".work-detail__proof-grid");
@@ -356,6 +360,8 @@
 
       if (index === activeIndex) {
         button.setAttribute("aria-current", "true");
+      } else {
+        button.removeAttribute("aria-current");
       }
 
       button.addEventListener("mouseenter", () => {
@@ -387,6 +393,8 @@
     });
 
     if (prevBtn) {
+      prevBtn.setAttribute("type", "button");
+
       prevBtn.addEventListener("click", (event) => {
         event.preventDefault();
         event.stopPropagation();
@@ -395,6 +403,8 @@
     }
 
     if (nextBtn) {
+      nextBtn.setAttribute("type", "button");
+
       nextBtn.addEventListener("click", (event) => {
         event.preventDefault();
         event.stopPropagation();
@@ -403,6 +413,8 @@
     }
 
     if (closeBtn) {
+      closeBtn.setAttribute("type", "button");
+
       closeBtn.addEventListener("click", (event) => {
         event.preventDefault();
         event.stopPropagation();
@@ -423,6 +435,7 @@
 
     window.addEventListener("keydown", (event) => {
       const tagName = document.activeElement?.tagName?.toLowerCase();
+
       const isTyping =
         tagName === "input" ||
         tagName === "textarea" ||
@@ -452,7 +465,7 @@
   function init() {
     if (!projectButtons.length) return;
 
-    moveTestimonialHigher();
+    reorderDrawerLayout();
     setupProjectEvents();
     renderProject(0);
     closeDetail();
