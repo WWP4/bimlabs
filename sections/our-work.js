@@ -157,95 +157,152 @@
   }
 
   /* ==========================================================
-     REAL SAME-TEXT SIGNAL GLITCH
-     No random symbols. Same text, duplicated layers, sliced offsets.
-  ========================================================== */
+   PHYSICAL TEXT SIGNAL GLITCH
+   Same text. Real letters warp. No random symbols.
+========================================================== */
 
-  function buildGlitchText(el) {
-    if (!el || el.dataset.glitchBuilt === "true") return;
+function escapeHTML(value) {
+  return String(value)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
 
-    const text = el.textContent.trim();
+function buildGlitchText(el) {
+  if (!el || el.dataset.glitchBuilt === "true") return;
 
-    if (!text) return;
+  const text = el.textContent.trim();
+  if (!text) return;
 
-    el.dataset.text = text;
-    el.dataset.glitchBuilt = "true";
+  el.dataset.text = text;
+  el.dataset.glitchBuilt = "true";
 
-    el.innerHTML = `
-      <span class="glitch-word__base">${text}</span>
-      <span class="glitch-word__layer glitch-word__layer--a" aria-hidden="true">${text}</span>
-      <span class="glitch-word__layer glitch-word__layer--b" aria-hidden="true">${text}</span>
-      <span class="glitch-word__layer glitch-word__layer--c" aria-hidden="true">${text}</span>
-    `;
-  }
+  const letters = Array.from(text)
+    .map((char, index) => {
+      if (char === " ") {
+        return `<span class="glitch-letter glitch-letter--space" style="--i:${index}">&nbsp;</span>`;
+      }
 
-  function updateGlitchText(el, text) {
-    if (!el) return;
+      return `
+        <span class="glitch-letter" style="--i:${index}">
+          ${escapeHTML(char)}
+        </span>
+      `;
+    })
+    .join("");
 
-    const cleanText = String(text || "").trim();
+  el.innerHTML = `
+    <span class="glitch-word__base">${letters}</span>
+    <span class="glitch-word__layer glitch-word__layer--a" aria-hidden="true">${letters}</span>
+    <span class="glitch-word__layer glitch-word__layer--b" aria-hidden="true">${letters}</span>
+    <span class="glitch-word__layer glitch-word__layer--c" aria-hidden="true">${letters}</span>
+  `;
+}
 
-    el.dataset.text = cleanText;
-    el.dataset.glitchBuilt = "false";
-    el.textContent = cleanText;
+function updateGlitchText(el, text) {
+  if (!el) return;
 
-    buildGlitchText(el);
-  }
+  const cleanText = String(text || "").trim();
 
-  function triggerSignalGlitch(el) {
-    if (!el || prefersReducedMotion) return;
+  el.dataset.text = cleanText;
+  el.dataset.glitchBuilt = "false";
+  el.textContent = cleanText;
 
-    buildGlitchText(el);
+  buildGlitchText(el);
+}
 
-    el.style.setProperty("--glitch-x1", `${(Math.random() * 10 - 5).toFixed(2)}px`);
-    el.style.setProperty("--glitch-x2", `${(Math.random() * 16 - 8).toFixed(2)}px`);
-    el.style.setProperty("--glitch-x3", `${(Math.random() * 6 - 3).toFixed(2)}px`);
-    el.style.setProperty("--glitch-y1", `${(Math.random() * 2 - 1).toFixed(2)}px`);
-    el.style.setProperty("--glitch-y2", `${(Math.random() * 3 - 1.5).toFixed(2)}px`);
+function setLetterWarpVariables(el) {
+  if (!el) return;
 
+  const letters = Array.from(el.querySelectorAll(".glitch-letter:not(.glitch-letter--space)"));
+
+  letters.forEach((letter) => {
+    const force = Math.random();
+
+    const x = (Math.random() * 18 - 9).toFixed(2);
+    const y = (Math.random() * 6 - 3).toFixed(2);
+    const skew = (Math.random() * 22 - 11).toFixed(2);
+    const rotate = (Math.random() * 5 - 2.5).toFixed(2);
+    const scaleX = (0.86 + Math.random() * 0.34).toFixed(2);
+    const scaleY = (0.9 + Math.random() * 0.22).toFixed(2);
+
+    letter.style.setProperty("--warp-x", `${x}px`);
+    letter.style.setProperty("--warp-y", `${y}px`);
+    letter.style.setProperty("--warp-skew", `${skew}deg`);
+    letter.style.setProperty("--warp-rotate", `${rotate}deg`);
+    letter.style.setProperty("--warp-scale-x", scaleX);
+    letter.style.setProperty("--warp-scale-y", scaleY);
+
+    /*
+      Stronger distortion bias for round letters:
+      O, o, C, D, A, R, P, Q, 0
+      This makes letters like the O in Orynd physically warp harder.
+    */
+    const raw = letter.textContent.trim().toLowerCase();
+    const isRoundOrStructural = ["o", "c", "d", "a", "r", "p", "q", "0"].includes(raw);
+
+    letter.classList.toggle("glitch-letter--heavy", isRoundOrStructural || force > 0.68);
+  });
+}
+
+function triggerSignalGlitch(el) {
+  if (!el || prefersReducedMotion) return;
+
+  buildGlitchText(el);
+  setLetterWarpVariables(el);
+
+  el.style.setProperty("--glitch-x1", `${(Math.random() * 16 - 8).toFixed(2)}px`);
+  el.style.setProperty("--glitch-x2", `${(Math.random() * 24 - 12).toFixed(2)}px`);
+  el.style.setProperty("--glitch-x3", `${(Math.random() * 10 - 5).toFixed(2)}px`);
+  el.style.setProperty("--glitch-y1", `${(Math.random() * 3 - 1.5).toFixed(2)}px`);
+  el.style.setProperty("--glitch-y2", `${(Math.random() * 5 - 2.5).toFixed(2)}px`);
+
+  el.classList.remove("is-live-glitch");
+
+  void el.offsetWidth;
+
+  el.classList.add("is-live-glitch");
+
+  window.setTimeout(() => {
     el.classList.remove("is-live-glitch");
+  }, 520);
+}
 
-    void el.offsetWidth;
+function triggerProjectGlitch(button) {
+  if (!button || prefersReducedMotion) return;
 
-    el.classList.add("is-live-glitch");
+  const name = button.querySelector(".work-project__name");
+  const number = button.querySelector(".work-project__number");
 
-    window.setTimeout(() => {
-      el.classList.remove("is-live-glitch");
-    }, 300);
-  }
+  button.classList.remove("is-glitching");
 
-  function triggerProjectGlitch(button) {
-    if (!button || prefersReducedMotion) return;
+  void button.offsetWidth;
 
-    const name = button.querySelector(".work-project__name");
-    const number = button.querySelector(".work-project__number");
+  button.classList.add("is-glitching");
 
+  triggerSignalGlitch(name);
+  triggerSignalGlitch(number);
+
+  window.clearTimeout(glitchTimer);
+
+  glitchTimer = window.setTimeout(() => {
     button.classList.remove("is-glitching");
+  }, 560);
+}
 
-    void button.offsetWidth;
+function triggerDrawerGlitch() {
+  if (!detail || prefersReducedMotion) return;
 
-    button.classList.add("is-glitching");
+  const drawerTitle = detail.querySelector("[data-work-detail-title]");
+  const drawerMeta = detail.querySelector(".work-detail__eyebrow");
+  const drawerQuote = detail.querySelector("[data-work-detail-review]");
 
-    triggerSignalGlitch(name);
-    triggerSignalGlitch(number);
-
-    window.clearTimeout(glitchTimer);
-
-    glitchTimer = window.setTimeout(() => {
-      button.classList.remove("is-glitching");
-    }, 340);
-  }
-
-  function triggerDrawerGlitch() {
-    if (!detail || prefersReducedMotion) return;
-
-    const drawerTitle = detail.querySelector("[data-work-detail-title]");
-    const drawerMeta = detail.querySelector(".work-detail__eyebrow");
-    const drawerQuote = detail.querySelector("[data-work-detail-review]");
-
-    triggerSignalGlitch(drawerMeta);
-    triggerSignalGlitch(drawerTitle);
-    triggerSignalGlitch(drawerQuote);
-  }
+  triggerSignalGlitch(drawerMeta);
+  triggerSignalGlitch(drawerTitle);
+  triggerSignalGlitch(drawerQuote);
+}
 
   /* ==========================================================
      RENDER
