@@ -632,3 +632,232 @@ function triggerDrawerGlitch() {
     init();
   }
 })();
+
+
+
+
+
+/* ==========================================================
+   PROCESS → OUR WORK TRUE PIXEL LOCK
+   Paste at very bottom of our-work.js
+========================================================== */
+
+(() => {
+  const section = document.querySelector(".work-transition-lock");
+  const canvas = document.querySelector("[data-work-pixel-canvas]");
+  const copy = document.querySelector("[data-work-pixel-copy]");
+  const title = document.querySelector("[data-work-pixel-title]");
+  const ghostArchive = document.querySelector("[data-work-ghost-archive]");
+
+  if (!section || !canvas || !title) return;
+
+  const ctx = canvas.getContext("2d", { alpha: true });
+  const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  const state = {
+    width: 0,
+    height: 0,
+    dpr: 1,
+    progress: 0,
+    particles: []
+  };
+
+  function clamp(value, min, max) {
+    return Math.max(min, Math.min(max, value));
+  }
+
+  function lerp(a, b, t) {
+    return a + (b - a) * t;
+  }
+
+  function easeOutCubic(t) {
+    return 1 - Math.pow(1 - t, 3);
+  }
+
+  function easeInOutCubic(t) {
+    return t < 0.5
+      ? 4 * t * t * t
+      : 1 - Math.pow(-2 * t + 2, 3) / 2;
+  }
+
+  function resizeCanvas() {
+    state.dpr = Math.min(window.devicePixelRatio || 1, 2);
+    state.width = section.offsetWidth;
+    state.height = section.offsetHeight;
+
+    canvas.width = Math.floor(state.width * state.dpr);
+    canvas.height = Math.floor(state.height * state.dpr);
+    canvas.style.width = `${state.width}px`;
+    canvas.style.height = `${state.height}px`;
+
+    ctx.setTransform(state.dpr, 0, 0, state.dpr, 0, 0);
+
+    buildParticles();
+  }
+
+  function getFont() {
+    const titleStyles = window.getComputedStyle(title);
+    return `${titleStyles.fontWeight} ${titleStyles.fontSize} ${titleStyles.fontFamily}`;
+  }
+
+  function buildParticles() {
+    const text = title.textContent.trim();
+    if (!text) return;
+
+    const offscreen = document.createElement("canvas");
+    const offCtx = offscreen.getContext("2d", { willReadFrequently: true });
+
+    const titleRect = title.getBoundingClientRect();
+    const sectionRect = section.getBoundingClientRect();
+
+    const offWidth = Math.ceil(titleRect.width + 160);
+    const offHeight = Math.ceil(titleRect.height + 120);
+
+    offscreen.width = offWidth;
+    offscreen.height = offHeight;
+
+    offCtx.clearRect(0, 0, offWidth, offHeight);
+    offCtx.fillStyle = "#ffffff";
+    offCtx.textAlign = "center";
+    offCtx.textBaseline = "middle";
+    offCtx.font = getFont();
+    offCtx.fillText(text, offWidth / 2, offHeight / 2);
+
+    const pixels = offCtx.getImageData(0, 0, offWidth, offHeight).data;
+    const gap = window.innerWidth < 760 ? 6 : 4;
+
+    const startX = titleRect.left - sectionRect.left + titleRect.width / 2 - offWidth / 2;
+    const startY = titleRect.top - sectionRect.top + titleRect.height / 2 - offHeight / 2;
+
+    const archiveRect = ghostArchive
+      ? ghostArchive.getBoundingClientRect()
+      : titleRect;
+
+    const archiveStartX = ghostArchive
+      ? archiveRect.left - sectionRect.left
+      : state.width * 0.22;
+
+    const archiveStartY = ghostArchive
+      ? archiveRect.top - sectionRect.top
+      : state.height * 0.64;
+
+    const archiveWidth = ghostArchive
+      ? archiveRect.width
+      : state.width * 0.56;
+
+    const rowHeight = ghostArchive
+      ? archiveRect.height / 4
+      : 42;
+
+    const particles = [];
+
+    for (let y = 0; y < offHeight; y += gap) {
+      for (let x = 0; x < offWidth; x += gap) {
+        const index = (y * offWidth + x) * 4;
+        const alpha = pixels[index + 3];
+
+        if (alpha < 40) continue;
+
+        const baseX = startX + x;
+        const baseY = startY + y;
+
+        const row = Math.floor(Math.random() * 4);
+        const lineChance = Math.random();
+
+        let targetX;
+        let targetY;
+
+        if (lineChance > 0.28) {
+          targetX = archiveStartX + Math.random() * archiveWidth;
+          targetY = archiveStartY + row * rowHeight + Math.random() * 2;
+        } else {
+          targetX = archiveStartX + Math.random() * archiveWidth;
+          targetY = archiveStartY + row * rowHeight + 18 + Math.random() * 22;
+        }
+
+        particles.push({
+          x: baseX,
+          y: baseY,
+          originX: baseX,
+          originY: baseY,
+          explodeX: baseX + (Math.random() - 0.5) * state.width * 0.48,
+          explodeY: baseY + (Math.random() - 0.5) * state.height * 0.34,
+          targetX,
+          targetY,
+          size: Math.random() * 1.15 + 0.65,
+          alpha: alpha / 255,
+          delay: Math.random() * 0.08
+        });
+      }
+    }
+
+    state.particles = particles;
+  }
+
+  function updateProgress() {
+    const rect = section.getBoundingClientRect();
+    const start = window.innerHeight * 0.72;
+    const end = -window.innerHeight * 0.18;
+    const raw = (start - rect.top) / (start - end);
+
+    state.progress = prefersReducedMotion ? 1 : clamp(raw, 0, 1);
+
+    const p = state.progress;
+
+    section.classList.toggle("is-pixel-breaking", p > 0.18);
+    section.classList.toggle("is-archive-forming", p > 0.62);
+
+    if (copy) {
+      copy.style.opacity = String(1 - clamp((p - 0.16) / 0.2, 0, 1));
+      copy.style.filter = `blur(${clamp((p - 0.2) / 0.2, 0, 1) * 8}px)`;
+    }
+  }
+
+  function draw() {
+    updateProgress();
+
+    ctx.clearRect(0, 0, state.width, state.height);
+
+    const p = state.progress;
+    const breakT = easeInOutCubic(clamp((p - 0.16) / 0.36, 0, 1));
+    const formT = easeOutCubic(clamp((p - 0.52) / 0.38, 0, 1));
+    const fadeOut = 1 - clamp((p - 0.88) / 0.12, 0, 1);
+
+    ctx.globalCompositeOperation = "lighter";
+
+    for (const particle of state.particles) {
+      const localForm = easeOutCubic(clamp(formT - particle.delay, 0, 1));
+
+      let x = lerp(particle.originX, particle.explodeX, breakT);
+      let y = lerp(particle.originY, particle.explodeY, breakT);
+
+      x = lerp(x, particle.targetX, localForm);
+      y = lerp(y, particle.targetY, localForm);
+
+      const alpha = particle.alpha * fadeOut * (0.7 + Math.random() * 0.3);
+
+      ctx.globalAlpha = alpha;
+      ctx.fillStyle = "#ffffff";
+      ctx.fillRect(x, y, particle.size, particle.size);
+    }
+
+    ctx.globalAlpha = 1;
+    ctx.globalCompositeOperation = "source-over";
+
+    requestAnimationFrame(draw);
+  }
+
+  let resizeTimer;
+
+  window.addEventListener(
+    "resize",
+    () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(resizeCanvas, 150);
+    },
+    { passive: true }
+  );
+
+  resizeCanvas();
+  draw();
+})();
