@@ -1527,3 +1527,157 @@ body.work-drawer-lock {
     grid-template-columns: 1fr;
   }
 }
+
+
+/* ==========================================================
+   OUR WORK — HIGH TECH TYPOGRAPHY + B/W GLITCH HOVER
+   Add at very bottom of our-work.css
+========================================================== */
+
+.work-archive {
+  --tech-font: var(--mono, "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace);
+  --clean-font: "Manrope", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+/* Make the archive feel more technical */
+.work-archive,
+.work-project,
+.work-detail {
+  font-family: var(--tech-font);
+}
+
+/* Keep large editorial titles clean but still sharp */
+.work-archive__title,
+.work-project__name,
+.work-detail__title {
+  font-family: var(--clean-font);
+}
+
+/* Make supporting drawer copy feel more technical */
+.work-detail__description,
+.work-detail__block p:not(.work-detail__label),
+.work-detail__list li,
+.work-detail__client span,
+.work-detail__client small,
+.work-archive__intro p {
+  font-family: var(--tech-font);
+  letter-spacing: -0.035em;
+}
+
+/* Keep labels very high-tech */
+.work-archive__kicker,
+.work-detail__eyebrow,
+.work-detail__label,
+.work-detail__nav button,
+.work-project__number,
+.work-project__hover {
+  font-family: var(--tech-font);
+  letter-spacing: 0.18em;
+}
+
+/* Quote stays premium/editorial, not robotic */
+.work-detail__quote {
+  font-family: Georgia, "Times New Roman", serif;
+}
+
+/* ==========================================================
+   BLACK + WHITE SIGNAL GLITCH
+   Subtle, not RGB, not hacker
+========================================================== */
+
+.work-project__name,
+.work-detail__title,
+.work-archive__title {
+  position: relative;
+}
+
+/* Project hover glitch */
+.work-project:hover .work-project__name,
+.work-project:focus-visible .work-project__name,
+.work-project.is-previewing .work-project__name,
+.work-project.is-glitching .work-project__name {
+  animation: bimTextSignal 720ms steps(2, end) 1;
+}
+
+/* Drawer title change glitch */
+.work-detail.is-changing .work-detail__title {
+  animation: bimTextSignalLarge 620ms steps(2, end) 1;
+}
+
+/* Optional: title gets a tiny signal hit when drawer opens */
+.work-archive.has-open-detail .work-project.is-active .work-project__name {
+  animation: bimTextSignal 720ms steps(2, end) 1;
+}
+
+@keyframes bimTextSignal {
+  0% {
+    text-shadow: none;
+    filter: none;
+    transform: translate3d(0.45rem, 0, 0);
+  }
+
+  9% {
+    text-shadow:
+      1px 0 rgba(255, 255, 255, 0.32),
+      -1px 0 rgba(0, 0, 0, 0.9);
+    filter: contrast(1.14);
+  }
+
+  13% {
+    text-shadow:
+      -2px 0 rgba(255, 255, 255, 0.22),
+      2px 0 rgba(0, 0, 0, 0.85);
+    transform: translate3d(0.62rem, -0.01rem, 0);
+  }
+
+  18% {
+    text-shadow:
+      1px 0 rgba(255, 255, 255, 0.26),
+      -1px 0 rgba(0, 0, 0, 0.9);
+    transform: translate3d(0.34rem, 0.01rem, 0);
+  }
+
+  24%,
+  100% {
+    text-shadow: none;
+    filter: none;
+    transform: translate3d(0.45rem, 0, 0);
+  }
+}
+
+@keyframes bimTextSignalLarge {
+  0% {
+    text-shadow: none;
+    filter: none;
+    transform: translate3d(0, 0, 0);
+  }
+
+  8% {
+    text-shadow:
+      2px 0 rgba(255, 255, 255, 0.22),
+      -2px 0 rgba(0, 0, 0, 0.95);
+    filter: contrast(1.12);
+  }
+
+  12% {
+    text-shadow:
+      -3px 0 rgba(255, 255, 255, 0.18),
+      3px 0 rgba(0, 0, 0, 0.9);
+    transform: translate3d(-0.04rem, 0, 0);
+  }
+
+  17% {
+    text-shadow:
+      1px 0 rgba(255, 255, 255, 0.18),
+      -1px 0 rgba(0, 0, 0, 0.9);
+    transform: translate3d(0.035rem, 0, 0);
+  }
+
+  24%,
+  100% {
+    text-shadow: none;
+    filter: none;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
