@@ -2103,3 +2103,469 @@ body.work-drawer-lock {
     transform: translate3d(0, 0, 0);
   }
 }
+
+
+/* ==========================================================
+   PROCESS → OUR WORK REVEAL SECTION
+   Visual section-to-section bridge.
+   Lives inside PROCESS. Not clickable.
+========================================================== */
+
+.process-world-inside,
+.work-reveal-section {
+  pointer-events: none;
+}
+
+.work-reveal-section {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  overflow: hidden;
+
+  color: #f3f1eb;
+  background: #020202;
+  font-family: inherit;
+
+  isolation: isolate;
+
+  --reveal-line: rgba(245, 245, 240, 0.075);
+  --reveal-line-soft: rgba(245, 245, 240, 0.035);
+  --reveal-muted: rgba(245, 245, 240, 0.36);
+  --reveal-text: rgba(245, 245, 240, 0.88);
+}
+
+/* BACKGROUND ENVIRONMENT */
+
+.work-reveal-section__bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+
+  background:
+    radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.05), transparent 31%),
+    radial-gradient(circle at 50% 62%, rgba(255, 255, 255, 0.022), transparent 44%),
+    linear-gradient(to bottom, #020202, #000 50%, #020202);
+}
+
+.work-reveal-section__bg::before {
+  content: "";
+  position: absolute;
+  inset: 12% 8% 8%;
+
+  border: 1px solid rgba(245, 245, 240, 0.026);
+}
+
+.work-reveal-section__bg::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+
+  background:
+    repeating-linear-gradient(
+      to bottom,
+      rgba(255, 255, 255, 0.009) 0,
+      rgba(255, 255, 255, 0.009) 1px,
+      transparent 1px,
+      transparent 10px
+    ),
+    linear-gradient(
+      to right,
+      transparent,
+      rgba(245, 245, 240, 0.016),
+      transparent
+    );
+
+  opacity: 0.12;
+  mix-blend-mode: screen;
+}
+
+/* SYSTEM MARKERS */
+
+.work-reveal-section__system {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.work-reveal-section__guide {
+  position: absolute;
+  top: 20%;
+  bottom: 13%;
+
+  width: 1px;
+
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    rgba(245, 245, 240, 0.11),
+    transparent
+  );
+
+  opacity: 0.5;
+  transform-origin: top;
+
+  animation: revealGuideDraw 1800ms cubic-bezier(.16, 1, .3, 1) both;
+}
+
+.work-reveal-section__guide--left {
+  left: 16.5%;
+}
+
+.work-reveal-section__guide--right {
+  right: 16.5%;
+  animation-delay: 160ms;
+}
+
+.work-reveal-section__marker {
+  position: absolute;
+
+  color: rgba(245, 245, 240, 0.34);
+  font-family: var(--mono, "IBM Plex Mono", ui-monospace, monospace);
+  font-size: 0.56rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  line-height: 1;
+
+  opacity: 0;
+  animation: revealMarkerScan 2600ms steps(2, end) infinite;
+}
+
+.work-reveal-section__marker--one {
+  left: 8%;
+  top: 24%;
+  animation-delay: 220ms;
+}
+
+.work-reveal-section__marker--two {
+  right: 8%;
+  top: 24%;
+  animation-delay: 380ms;
+}
+
+.work-reveal-section__marker--three {
+  right: 8%;
+  bottom: 22%;
+  animation-delay: 540ms;
+}
+
+.work-reveal-section__marker--four {
+  left: 8%;
+  bottom: 22%;
+  animation-delay: 700ms;
+}
+
+.work-reveal-section__cross {
+  position: absolute;
+
+  color: rgba(245, 245, 240, 0.23);
+  font-family: var(--mono, "IBM Plex Mono", ui-monospace, monospace);
+  font-size: 1rem;
+  line-height: 1;
+
+  opacity: 0.32;
+}
+
+.work-reveal-section__cross--one {
+  left: 5%;
+  top: 16%;
+}
+
+.work-reveal-section__cross--two {
+  right: 5%;
+  top: 16%;
+}
+
+.work-reveal-section__cross--three {
+  left: 5%;
+  bottom: 10%;
+}
+
+.work-reveal-section__cross--four {
+  right: 5%;
+  bottom: 10%;
+}
+
+/* CENTER EDITORIAL CONTENT */
+
+.work-reveal-section__inner {
+  position: relative;
+  z-index: 2;
+
+  display: grid;
+  place-items: center;
+  align-content: center;
+
+  width: min(76rem, calc(100% - 6rem));
+  min-height: 100vh;
+
+  margin: 0 auto;
+  padding: clamp(5rem, 9vh, 8rem) 0;
+
+  text-align: center;
+}
+
+.work-reveal-section__kicker {
+  margin: 0 0 clamp(1.7rem, 4vh, 2.8rem);
+
+  color: var(--reveal-muted);
+  font-family: var(--mono, "IBM Plex Mono", ui-monospace, monospace);
+  font-size: 0.6rem;
+  font-weight: 500;
+  letter-spacing: 0.26em;
+  line-height: 1;
+  text-transform: uppercase;
+
+  opacity: 0;
+  transform: translate3d(0, 0.75rem, 0);
+
+  animation: revealFadeUp 900ms cubic-bezier(.16, 1, .3, 1) 180ms both;
+}
+
+.work-reveal-section__title {
+  max-width: 62rem;
+  margin: 0;
+
+  color: var(--reveal-text);
+  font-size: clamp(4rem, 8vw, 9.4rem);
+  font-weight: 300;
+  letter-spacing: -0.085em;
+  line-height: 0.9;
+
+  opacity: 0;
+  transform: translate3d(0, 1.1rem, 0);
+
+  animation:
+    revealFadeUp 1000ms cubic-bezier(.16, 1, .3, 1) 320ms both,
+    revealTitleSignal 1200ms steps(2, end) 980ms 1;
+}
+
+.work-reveal-section__divider {
+  display: block;
+
+  width: 1px;
+  height: clamp(1.7rem, 4vh, 2.8rem);
+
+  margin: clamp(1.8rem, 4vh, 2.8rem) 0 clamp(1.5rem, 3vh, 2.1rem);
+
+  background: rgba(245, 245, 240, 0.42);
+
+  opacity: 0;
+  transform: scaleY(0);
+  transform-origin: top;
+
+  animation: revealDividerDraw 900ms cubic-bezier(.16, 1, .3, 1) 650ms both;
+}
+
+.work-reveal-section__copy {
+  max-width: 34rem;
+  margin: 0;
+
+  color: rgba(245, 245, 240, 0.48);
+  font-size: clamp(0.9rem, 1vw, 1.08rem);
+  font-weight: 300;
+  line-height: 1.65;
+  letter-spacing: -0.02em;
+
+  opacity: 0;
+  transform: translate3d(0, 0.75rem, 0);
+
+  animation: revealFadeUp 900ms cubic-bezier(.16, 1, .3, 1) 780ms both;
+}
+
+/* BOTTOM ARCHIVE INDEX — HINT ONLY */
+
+.work-reveal-section__index {
+  position: absolute;
+  left: 4rem;
+  right: 4rem;
+  bottom: clamp(2.5rem, 6vh, 4.5rem);
+  z-index: 2;
+
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+
+  border-top: 1px solid rgba(245, 245, 240, 0.07);
+  border-bottom: 1px solid rgba(245, 245, 240, 0.045);
+
+  opacity: 0;
+  transform: translate3d(0, 1rem, 0);
+
+  animation: revealFadeUp 900ms cubic-bezier(.16, 1, .3, 1) 920ms both;
+}
+
+.work-reveal-section__index span {
+  position: relative;
+
+  display: grid;
+  gap: 0.6rem;
+
+  min-height: 4.7rem;
+  padding: 1.15rem 1rem;
+
+  border-left: 1px solid rgba(245, 245, 240, 0.055);
+
+  color: rgba(245, 245, 240, 0.46);
+  font-family: var(--mono, "IBM Plex Mono", ui-monospace, monospace);
+  font-size: 0.58rem;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+.work-reveal-section__index span:first-child {
+  border-left: 0;
+}
+
+.work-reveal-section__index span::after {
+  content: "";
+  width: 1.2rem;
+  height: 1px;
+
+  background: rgba(245, 245, 240, 0.42);
+}
+
+.work-reveal-section__index strong {
+  color: rgba(245, 245, 240, 0.7);
+  font-size: 0.58rem;
+  font-weight: 500;
+}
+
+/* ANIMATIONS */
+
+@keyframes revealFadeUp {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 1rem, 0);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes revealDividerDraw {
+  from {
+    opacity: 0;
+    transform: scaleY(0);
+  }
+
+  to {
+    opacity: 1;
+    transform: scaleY(1);
+  }
+}
+
+@keyframes revealGuideDraw {
+  from {
+    opacity: 0;
+    transform: scaleY(0);
+  }
+
+  to {
+    opacity: 0.5;
+    transform: scaleY(1);
+  }
+}
+
+@keyframes revealMarkerScan {
+  0%,
+  8% {
+    opacity: 0;
+    transform: translate3d(0, -0.35rem, 0);
+  }
+
+  12%,
+  38% {
+    opacity: 0.45;
+    transform: translate3d(0, 0, 0);
+  }
+
+  44%,
+  100% {
+    opacity: 0.18;
+    transform: translate3d(0, 0.25rem, 0);
+  }
+}
+
+@keyframes revealTitleSignal {
+  0%,
+  100% {
+    text-shadow: none;
+    filter: none;
+  }
+
+  8% {
+    text-shadow:
+      2px 0 rgba(255, 255, 255, 0.22),
+      -2px 0 rgba(0, 0, 0, 0.9);
+    filter: contrast(1.18);
+  }
+
+  12% {
+    text-shadow:
+      -3px 0 rgba(255, 255, 255, 0.16),
+      3px 0 rgba(0, 0, 0, 0.95);
+  }
+
+  18% {
+    text-shadow:
+      1px 0 rgba(255, 255, 255, 0.18),
+      -1px 0 rgba(0, 0, 0, 0.9);
+  }
+
+  24% {
+    text-shadow: none;
+    filter: none;
+  }
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 900px) {
+  .work-reveal-section__inner {
+    width: calc(100% - 2rem);
+  }
+
+  .work-reveal-section__title {
+    font-size: clamp(3.5rem, 14vw, 6rem);
+  }
+
+  .work-reveal-section__copy {
+    max-width: 26rem;
+    font-size: 0.92rem;
+  }
+
+  .work-reveal-section__index {
+    left: 1rem;
+    right: 1rem;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .work-reveal-section__index span {
+    min-height: 3.8rem;
+    font-size: 0.52rem;
+  }
+
+  .work-reveal-section__marker,
+  .work-reveal-section__guide {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .work-reveal-section__kicker,
+  .work-reveal-section__title,
+  .work-reveal-section__divider,
+  .work-reveal-section__copy,
+  .work-reveal-section__index,
+  .work-reveal-section__guide,
+  .work-reveal-section__marker {
+    animation: none !important;
+    opacity: 1;
+    transform: none;
+  }
+}
+
