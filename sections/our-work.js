@@ -1,6 +1,6 @@
 /* ==========================================================
    BIM LABS STUDIO — OUR WORK
-   Clean archive interaction + image-first drawer
+   Clean archive + scrollable case-study drawer
 ========================================================== */
 
 (() => {
@@ -135,12 +135,14 @@
   const nextBtn = root.querySelector("[data-work-next]");
   const closeBtn = root.querySelector(".work-detail__close");
 
-  const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const prefersReducedMotion = window.matchMedia(
+    "(prefers-reduced-motion: reduce)"
+  ).matches;
 
   let activeIndex = 0;
   let detailIsOpen = false;
   let changeTimer = null;
-  let glitchTimer = null;
+  let lastFocusedElement = null;
 
   function clampIndex(index) {
     return (index + projects.length) % projects.length;
@@ -170,25 +172,9 @@
     servicesEl.replaceChildren(fragment);
   }
 
-  function restartGlitch(button) {
-    if (!button || prefersReducedMotion) return;
-
-    button.classList.remove("is-glitching");
-
-    void button.offsetWidth;
-
-    button.classList.add("is-glitching");
-
-    window.clearTimeout(glitchTimer);
-
-    glitchTimer = window.setTimeout(() => {
-      button.classList.remove("is-glitching");
-    }, 700);
-  }
-
   function clearPreviewStates() {
     projectButtons.forEach((button) => {
-      button.classList.remove("is-previewing", "is-glitching");
+      button.classList.remove("is-previewing", "is-active");
     });
   }
 
@@ -213,15 +199,7 @@
     const safeIndex = clampIndex(index);
 
     projectButtons.forEach((button, buttonIndex) => {
-      const isPreviewing = buttonIndex === safeIndex;
-
-      button.classList.toggle("is-previewing", isPreviewing);
-
-      if (isPreviewing) {
-        restartGlitch(button);
-      } else {
-        button.classList.remove("is-glitching");
-      }
+      button.classList.toggle("is-previewing", buttonIndex === safeIndex);
     });
 
     root.dataset.workActive = String(safeIndex);
@@ -234,7 +212,6 @@
     if (!project) return;
 
     activeIndex = safeIndex;
-
     setActiveButton(safeIndex);
 
     if (numberEl) numberEl.textContent = project.number;
@@ -242,18 +219,17 @@
     if (yearEl) yearEl.textContent = project.year;
     if (titleEl) titleEl.textContent = project.title;
     if (descriptionEl) descriptionEl.textContent = project.description;
-
-    if (imageEl) {
-      imageEl.src = project.image;
-      imageEl.alt = `${project.title} project preview`;
-    }
-
     if (constraintEl) constraintEl.textContent = project.constraint;
     if (solutionEl) solutionEl.textContent = project.solution;
     if (resultEl) resultEl.textContent = project.result;
     if (reviewEl) reviewEl.textContent = `“${project.review}”`;
     if (clientEl) clientEl.textContent = project.client;
     if (roleEl) roleEl.textContent = project.role;
+
+    if (imageEl) {
+      imageEl.src = project.image;
+      imageEl.alt = `${project.title} project preview`;
+    }
 
     renderServices(project.services);
   }
@@ -271,27 +247,37 @@
 
     changeTimer = window.setTimeout(() => {
       detail.classList.remove("is-changing");
-    }, 280);
+    }, 260);
+  }
+
+  function resetDrawerScroll() {
+    if (!detail) return;
+    detail.scrollTo({ top: 0, behavior: "auto" });
   }
 
   function openDetail(index) {
     const safeIndex = clampIndex(index);
 
+    lastFocusedElement = document.activeElement;
+
     renderProject(safeIndex);
+    resetDrawerScroll();
 
     detailIsOpen = true;
     root.classList.add("has-open-detail");
 
     if (detail) {
       detail.classList.add("is-open");
-      detail.classList.remove("is-muted");
       detail.setAttribute("aria-hidden", "false");
     }
 
     lockSiteScroll();
     clearPreviewStates();
-    restartGlitch(projectButtons[safeIndex]);
     animateDetailChange();
+
+    window.setTimeout(() => {
+      closeBtn?.focus({ preventScroll: true });
+    }, 120);
   }
 
   function closeDetail() {
@@ -301,13 +287,17 @@
     root.classList.remove("has-open-detail");
 
     if (detail) {
-      detail.classList.remove("is-open", "is-muted", "is-changing");
+      detail.classList.remove("is-open", "is-changing");
       detail.setAttribute("aria-hidden", "true");
     }
 
     clearPreviewStates();
     setActiveButton(activeIndex);
     unlockSiteScroll();
+
+    if (lastFocusedElement && typeof lastFocusedElement.focus === "function") {
+      lastFocusedElement.focus({ preventScroll: true });
+    }
   }
 
   function moveProject(delta) {
@@ -315,7 +305,7 @@
 
     if (detailIsOpen) {
       renderProject(nextIndex);
-      restartGlitch(projectButtons[nextIndex]);
+      resetDrawerScroll();
       animateDetailChange();
       return;
     }
@@ -348,13 +338,13 @@
       button.addEventListener("mouseleave", () => {
         if (detailIsOpen) return;
 
-        button.classList.remove("is-previewing", "is-glitching");
+        button.classList.remove("is-previewing");
       });
 
       button.addEventListener("blur", () => {
         if (detailIsOpen) return;
 
-        button.classList.remove("is-previewing", "is-glitching");
+        button.classList.remove("is-previewing");
       });
 
       button.addEventListener("click", (event) => {
@@ -404,18 +394,23 @@
       detail.addEventListener("click", (event) => {
         event.stopPropagation();
       });
+
+      detail.addEventListener(
+        "wheel",
+        (event) => {
+          event.stopPropagation();
+        },
+        { passive: true }
+      );
+
+      detail.addEventListener(
+        "touchmove",
+        (event) => {
+          event.stopPropagation();
+        },
+        { passive: true }
+      );
     }
-
-    document.addEventListener("click", (event) => {
-      if (!detailIsOpen) return;
-
-      const clickedProject = event.target.closest?.("[data-work-project]");
-      const clickedDrawer = event.target.closest?.(".work-detail");
-
-      if (!clickedProject && !clickedDrawer) {
-        closeDetail();
-      }
-    });
   }
 
   function setupKeyboardControls() {
@@ -434,6 +429,8 @@
         closeDetail();
         return;
       }
+
+      if (!detailIsOpen) return;
 
       if (event.key === "ArrowLeft" || event.key === "ArrowUp") {
         event.preventDefault();
@@ -478,7 +475,7 @@
     renderProject(0);
     setActiveButton(0);
 
-    detail.classList.remove("is-open", "is-muted", "is-changing");
+    detail.classList.remove("is-open", "is-changing");
     detail.setAttribute("aria-hidden", "true");
 
     root.classList.remove("has-open-detail");
