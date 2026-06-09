@@ -1549,3 +1549,99 @@ body.work-drawer-lock {
     max-width: 100% !important;
   }
 }
+
+
+
+
+
+
+/* ==========================================================
+   DRAWER MOTION — slower, heavier, more premium
+========================================================== */
+
+.work-detail {
+  transform: translate3d(108%, 0, 0) !important;
+
+  transition:
+    opacity 420ms ease,
+    visibility 420ms ease,
+    transform 900ms cubic-bezier(.19, 1, .22, 1) !important;
+
+  will-change: transform, opacity;
+}
+
+.work-detail.is-open,
+.work-archive.has-open-detail .work-detail {
+  opacity: 1 !important;
+  visibility: visible !important;
+  transform: translate3d(0, 0, 0) !important;
+
+  transition:
+    opacity 520ms ease,
+    visibility 520ms ease,
+    transform 1050ms cubic-bezier(.19, 1, .22, 1) !important;
+}
+
+/* background dim should also breathe in, not snap */
+.work-archive.has-open-detail::before {
+  animation: workDrawerVeilIn 780ms cubic-bezier(.19, 1, .22, 1) both;
+}
+
+@keyframes workDrawerVeilIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+/* inner content follows the drawer, feels less instant */
+.work-detail.is-open .work-detail__inner,
+.work-archive.has-open-detail .work-detail__inner {
+  animation: workDrawerContentIn 950ms cubic-bezier(.19, 1, .22, 1) 120ms both;
+}
+
+@keyframes workDrawerContentIn {
+  from {
+    opacity: 0;
+    transform: translate3d(1.35rem, 0, 0);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+/* remove cheap content flicker when switching projects */
+.work-detail.is-changing .work-detail__title,
+.work-detail.is-changing .work-detail__description,
+.work-detail.is-changing .work-detail__testimonial,
+.work-detail.is-changing .work-detail__proof-grid {
+  animation: none !important;
+  filter: none !important;
+}
+
+/* mobile should rise slower too */
+@media (max-width: 760px) {
+  .work-detail {
+    transform: translate3d(0, 108%, 0) !important;
+
+    transition:
+      opacity 420ms ease,
+      visibility 420ms ease,
+      transform 900ms cubic-bezier(.19, 1, .22, 1) !important;
+  }
+
+  .work-detail.is-open,
+  .work-archive.has-open-detail .work-detail {
+    transform: translate3d(0, 0, 0) !important;
+
+    transition:
+      opacity 520ms ease,
+      visibility 520ms ease,
+      transform 1050ms cubic-bezier(.19, 1, .22, 1) !important;
+  }
+}
