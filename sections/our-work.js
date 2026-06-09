@@ -1,6 +1,6 @@
 /* ==========================================================
    BIM LABS STUDIO — OUR WORK
-   Archive interaction + premium drawer + signal glitch
+   Clean archive interaction + wide drawer
 ========================================================== */
 
 (() => {
@@ -136,23 +136,34 @@
   let detailIsOpen = false;
   let changeTimer = null;
   let glitchTimer = null;
-  let lockedScrollY = 0;
 
   function clampIndex(index) {
     return (index + projects.length) % projects.length;
   }
 
-function lockSiteScroll() {
-  lockedScrollY = window.scrollY || window.pageYOffset || 0;
+  function lockSiteScroll() {
+    document.documentElement.classList.add("work-drawer-lock");
+    document.body.classList.add("work-drawer-lock");
+  }
 
-  document.documentElement.classList.add("work-drawer-lock");
-  document.body.classList.add("work-drawer-lock");
-}
+  function unlockSiteScroll() {
+    document.documentElement.classList.remove("work-drawer-lock");
+    document.body.classList.remove("work-drawer-lock");
+  }
 
-function unlockSiteScroll() {
-  document.documentElement.classList.remove("work-drawer-lock");
-  document.body.classList.remove("work-drawer-lock");
-}
+  function renderServices(items = []) {
+    if (!servicesEl) return;
+
+    const fragment = document.createDocumentFragment();
+
+    items.forEach((item) => {
+      const li = document.createElement("li");
+      li.textContent = item;
+      fragment.appendChild(li);
+    });
+
+    servicesEl.replaceChildren(fragment);
+  }
 
   function restartGlitch(button) {
     if (!button || prefersReducedMotion) return;
@@ -167,7 +178,7 @@ function unlockSiteScroll() {
 
     glitchTimer = window.setTimeout(() => {
       button.classList.remove("is-glitching");
-    }, 720);
+    }, 700);
   }
 
   function clearPreviewStates() {
@@ -249,7 +260,7 @@ function unlockSiteScroll() {
 
     changeTimer = window.setTimeout(() => {
       detail.classList.remove("is-changing");
-    }, 300);
+    }, 280);
   }
 
   function openDetail(index) {
@@ -258,11 +269,12 @@ function unlockSiteScroll() {
     renderProject(safeIndex);
 
     detailIsOpen = true;
+
     root.classList.add("has-open-detail");
 
     if (detail) {
       detail.classList.add("is-open");
-      detail.classList.remove("is-muted", "is-changing");
+      detail.classList.remove("is-muted");
       detail.setAttribute("aria-hidden", "false");
     }
 
@@ -273,7 +285,10 @@ function unlockSiteScroll() {
   }
 
   function closeDetail() {
+    if (!detailIsOpen) return;
+
     detailIsOpen = false;
+
     root.classList.remove("has-open-detail");
 
     if (detail) {
@@ -281,21 +296,8 @@ function unlockSiteScroll() {
       detail.setAttribute("aria-hidden", "true");
     }
 
-    projectButtons.forEach((button, index) => {
-      const isActive = index === activeIndex;
-
-      button.classList.toggle("is-active", isActive);
-      button.classList.remove("is-previewing", "is-glitching");
-      button.setAttribute("aria-pressed", isActive ? "true" : "false");
-
-      if (isActive) {
-        button.setAttribute("aria-current", "true");
-      } else {
-        button.removeAttribute("aria-current");
-      }
-    });
-
-    root.dataset.workActive = String(activeIndex);
+    clearPreviewStates();
+    setActiveButton(activeIndex);
     unlockSiteScroll();
   }
 
@@ -303,7 +305,9 @@ function unlockSiteScroll() {
     const nextIndex = clampIndex(activeIndex + delta);
 
     if (detailIsOpen) {
-      openDetail(nextIndex);
+      renderProject(nextIndex);
+      restartGlitch(projectButtons[nextIndex]);
+      animateDetailChange();
       return;
     }
 
@@ -318,57 +322,62 @@ function unlockSiteScroll() {
 
     if (!inner || !testimonial || !proofGrid) return;
 
-    inner.insertBefore(testimonial, proofGrid);
+    if (testimonial.nextElementSibling !== proofGrid) {
+      inner.insertBefore(testimonial, proofGrid);
+    }
   }
 
-  function setupProjectEvents() {
+  function setupProjectButtons() {
     projectButtons.forEach((button) => {
       const index = Number(button.dataset.workProject || 0);
 
       button.setAttribute("type", "button");
       button.setAttribute("aria-pressed", index === activeIndex ? "true" : "false");
 
-      if (index === activeIndex) {
-        button.setAttribute("aria-current", "true");
-      } else {
-        button.removeAttribute("aria-current");
-      }
-
       button.addEventListener("mouseenter", () => {
         if (detailIsOpen) return;
+
         activeIndex = index;
         setPreviewProject(index);
       });
 
       button.addEventListener("focus", () => {
         if (detailIsOpen) return;
+
         activeIndex = index;
         setPreviewProject(index);
       });
 
       button.addEventListener("mouseleave", () => {
         if (detailIsOpen) return;
+
         button.classList.remove("is-previewing", "is-glitching");
       });
 
       button.addEventListener("blur", () => {
         if (detailIsOpen) return;
+
         button.classList.remove("is-previewing", "is-glitching");
       });
 
       button.addEventListener("click", (event) => {
         event.preventDefault();
+        event.stopPropagation();
+
         openDetail(index);
       });
     });
+  }
 
+  function setupDrawerControls() {
     if (prevBtn) {
       prevBtn.setAttribute("type", "button");
 
       prevBtn.addEventListener("click", (event) => {
         event.preventDefault();
         event.stopPropagation();
-        openDetail(activeIndex - 1);
+
+        moveProject(-1);
       });
     }
 
@@ -378,7 +387,8 @@ function unlockSiteScroll() {
       nextBtn.addEventListener("click", (event) => {
         event.preventDefault();
         event.stopPropagation();
-        openDetail(activeIndex + 1);
+
+        moveProject(1);
       });
     }
 
@@ -388,27 +398,36 @@ function unlockSiteScroll() {
       closeBtn.addEventListener("click", (event) => {
         event.preventDefault();
         event.stopPropagation();
+
         closeDetail();
       });
     }
 
+    if (detail) {
+      detail.addEventListener("click", (event) => {
+        event.stopPropagation();
+      });
+    }
+
     document.addEventListener("click", (event) => {
-      if (!detailIsOpen || !detail) return;
+      if (!detailIsOpen) return;
 
-      const clickedInsideDrawer = detail.contains(event.target);
       const clickedProject = event.target.closest?.("[data-work-project]");
+      const clickedDrawer = event.target.closest?.(".work-detail");
 
-      if (!clickedInsideDrawer && !clickedProject) {
+      if (!clickedProject && !clickedDrawer) {
         closeDetail();
       }
     });
+  }
 
+  function setupKeyboardControls() {
     window.addEventListener("keydown", (event) => {
-      const tagName = document.activeElement?.tagName?.toLowerCase();
+      const activeTag = document.activeElement?.tagName?.toLowerCase();
 
       const isTyping =
-        tagName === "input" ||
-        tagName === "textarea" ||
+        activeTag === "input" ||
+        activeTag === "textarea" ||
         document.activeElement?.isContentEditable;
 
       if (isTyping) return;
@@ -432,13 +451,37 @@ function unlockSiteScroll() {
     });
   }
 
+  function disableBrokenPreviewImages() {
+    const previews = root.querySelectorAll(".work-project__preview img");
+
+    previews.forEach((img) => {
+      img.addEventListener("error", () => {
+        const preview = img.closest(".work-project__preview");
+
+        if (preview) {
+          preview.style.display = "none";
+        }
+      });
+    });
+  }
+
   function init() {
-    if (!projectButtons.length) return;
+    if (!projectButtons.length || !detail) return;
 
     reorderDrawerLayout();
-    setupProjectEvents();
+    setupProjectButtons();
+    setupDrawerControls();
+    setupKeyboardControls();
+    disableBrokenPreviewImages();
+
     renderProject(0);
-    closeDetail();
+    setActiveButton(0);
+
+    detail.classList.remove("is-open", "is-muted", "is-changing");
+    detail.setAttribute("aria-hidden", "true");
+
+    root.classList.remove("has-open-detail");
+    unlockSiteScroll();
   }
 
   if (document.readyState === "loading") {
