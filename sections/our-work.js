@@ -142,47 +142,17 @@
     return (index + projects.length) % projects.length;
   }
 
-  function lockSiteScroll() {
-    if (document.body.classList.contains("work-drawer-lock")) return;
+function lockSiteScroll() {
+  lockedScrollY = window.scrollY || window.pageYOffset || 0;
 
-    lockedScrollY = window.scrollY || window.pageYOffset || 0;
+  document.documentElement.classList.add("work-drawer-lock");
+  document.body.classList.add("work-drawer-lock");
+}
 
-    document.documentElement.classList.add("work-drawer-lock");
-    document.body.classList.add("work-drawer-lock");
-
-    document.body.style.position = "fixed";
-    document.body.style.top = `-${lockedScrollY}px`;
-    document.body.style.left = "0";
-    document.body.style.right = "0";
-    document.body.style.width = "100%";
-  }
-
-  function unlockSiteScroll() {
-    document.documentElement.classList.remove("work-drawer-lock");
-    document.body.classList.remove("work-drawer-lock");
-
-    document.body.style.position = "";
-    document.body.style.top = "";
-    document.body.style.left = "";
-    document.body.style.right = "";
-    document.body.style.width = "";
-
-    window.scrollTo(0, lockedScrollY);
-  }
-
-  function renderServices(items) {
-    if (!servicesEl) return;
-
-    const fragment = document.createDocumentFragment();
-
-    items.forEach((item) => {
-      const li = document.createElement("li");
-      li.textContent = item;
-      fragment.appendChild(li);
-    });
-
-    servicesEl.replaceChildren(fragment);
-  }
+function unlockSiteScroll() {
+  document.documentElement.classList.remove("work-drawer-lock");
+  document.body.classList.remove("work-drawer-lock");
+}
 
   function restartGlitch(button) {
     if (!button || prefersReducedMotion) return;
