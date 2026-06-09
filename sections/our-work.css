@@ -1,11 +1,10 @@
 /* ==========================================================
    BIM LABS STUDIO — OUR WORK
-   Clean real section + process preview + premium drawer
+   Modern project list + image-first case-study drawer
 ========================================================== */
 
 /* ==========================================================
-   PROCESS → OUR WORK TRANSITION PREVIEW
-   Visual only. Lives inside .process-world-inside.
+   PROCESS → OUR WORK PREVIEW
 ========================================================== */
 
 .process-world-inside {
@@ -17,14 +16,12 @@
   width: 100%;
   min-height: 100vh;
   overflow: hidden;
-
-  color: #f3f1eb;
+  color: #f4f1ea;
   background: #000;
   font-family: inherit;
-
   pointer-events: none;
 
-  --work-preview-line: rgba(245, 245, 240, 0.09);
+  --work-preview-line: rgba(245, 245, 240, 0.08);
   --work-preview-muted: rgba(245, 245, 240, 0.34);
 }
 
@@ -32,34 +29,14 @@
   position: absolute;
   inset: 0;
   z-index: 0;
-
-  background:
-    radial-gradient(circle at 50% 44%, rgba(255, 255, 255, 0.04), transparent 34%),
-    linear-gradient(to bottom, #000, #000);
+  background: #000;
 }
 
 .work-reveal-preview__bg::before {
   content: "";
   position: absolute;
   inset: 13% 8%;
-  border: 1px solid rgba(245, 245, 240, 0.035);
-}
-
-.work-reveal-preview__bg::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-
-  background:
-    repeating-linear-gradient(
-      to bottom,
-      rgba(255, 255, 255, 0.01) 0,
-      rgba(255, 255, 255, 0.01) 1px,
-      transparent 1px,
-      transparent 10px
-    );
-
-  opacity: 0.08;
+  border: 1px solid rgba(245, 245, 240, 0.03);
 }
 
 .work-reveal-preview__shell {
@@ -79,7 +56,6 @@
 
 .work-reveal-preview__kicker {
   margin: 0;
-
   color: var(--work-preview-muted);
   font-family: var(--mono, "IBM Plex Mono", ui-monospace, monospace);
   font-size: 0.58rem;
@@ -92,7 +68,6 @@
 .work-reveal-preview__title {
   max-width: 62rem;
   margin: 0;
-
   color: rgba(245, 245, 240, 0.84);
   font-size: clamp(3.5rem, 7vw, 8rem);
   font-weight: 300;
@@ -109,7 +84,6 @@
 .work-reveal-preview__list span {
   display: block;
   padding: 1.1rem 0;
-
   border-bottom: 1px solid var(--work-preview-line);
 
   color: rgba(245, 245, 240, 0.48);
@@ -131,19 +105,17 @@
 
   width: 100%;
   min-height: 120vh;
-  height: auto;
   overflow: visible;
 
   margin-top: -1px;
 
-  color: #f3f1eb;
+  color: #f4f1ea;
   background: #000;
   font-family: inherit;
-
   isolation: isolate;
 
-  --work-line: rgba(245, 245, 240, 0.11);
-  --work-muted: rgba(245, 245, 240, 0.36);
+  --work-line: rgba(245, 245, 240, 0.1);
+  --work-muted: rgba(245, 245, 240, 0.38);
 }
 
 .work-archive__bg {
@@ -151,34 +123,7 @@
   inset: 0;
   z-index: 0;
   pointer-events: none;
-
-  background:
-    radial-gradient(circle at 50% 20%, rgba(255, 255, 255, 0.026), transparent 32%),
-    linear-gradient(to bottom, #000, #000);
-}
-
-.work-archive__bg::before {
-  content: "";
-  position: absolute;
-  inset: 12% 7%;
-  border: 1px solid rgba(245, 245, 240, 0.03);
-}
-
-.work-archive__bg::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-
-  background:
-    repeating-linear-gradient(
-      to bottom,
-      rgba(255, 255, 255, 0.008) 0,
-      rgba(255, 255, 255, 0.008) 1px,
-      transparent 1px,
-      transparent 10px
-    );
-
-  opacity: 0.08;
+  background: #000;
 }
 
 .work-archive__shell {
@@ -191,6 +136,8 @@
   margin: 0 auto;
   padding: clamp(7rem, 12vh, 10rem) 0 clamp(6rem, 10vh, 8rem);
 }
+
+/* HEADER */
 
 .work-archive__header {
   display: grid;
@@ -218,7 +165,7 @@
   margin: 0;
 
   color: rgba(245, 245, 240, 0.86);
-  font-size: clamp(3.5rem, 7vw, 8rem);
+  font-size: clamp(3.25rem, 6.5vw, 7.5rem);
   font-weight: 300;
   letter-spacing: -0.075em;
   line-height: 0.88;
@@ -254,7 +201,7 @@
   gap: 2rem;
 
   width: 100%;
-  min-height: clamp(4.6rem, 8vh, 6.15rem);
+  min-height: clamp(5.2rem, 9vh, 7rem);
   padding: 0;
 
   border: 0;
@@ -278,13 +225,10 @@
   inset: 0;
   z-index: -1;
 
-  background: rgba(245, 245, 240, 0.026);
+  background: rgba(255, 255, 255, 0.022);
   opacity: 0;
-  transform: scaleY(0.82);
 
-  transition:
-    opacity 280ms ease,
-    transform 420ms cubic-bezier(.16, 1, .3, 1);
+  transition: opacity 320ms ease;
 }
 
 .work-project:hover::before,
@@ -292,7 +236,6 @@
 .work-project.is-previewing::before,
 .work-project.is-active::before {
   opacity: 1;
-  transform: scaleY(1);
 }
 
 .work-project__main {
@@ -309,34 +252,32 @@
 .work-project__number {
   color: rgba(245, 245, 240, 0.42);
   font-family: var(--mono, "IBM Plex Mono", ui-monospace, monospace);
-  font-size: 0.68rem;
+  font-size: 0.66rem;
   letter-spacing: 0.12em;
 }
 
 .work-project__name {
   overflow: hidden;
 
-  color: rgba(245, 245, 240, 0.68);
-  font-size: clamp(1.15rem, 1.65vw, 2rem);
+  color: rgba(245, 245, 240, 0.48);
+  font-size: clamp(1.15rem, 1.55vw, 1.85rem);
   font-weight: 300;
-  letter-spacing: -0.055em;
+  letter-spacing: -0.045em;
   line-height: 1;
   white-space: nowrap;
   text-overflow: ellipsis;
 
   transition:
-    color 280ms ease,
-    transform 420ms cubic-bezier(.16, 1, .3, 1),
-    letter-spacing 420ms ease;
+    color 320ms ease,
+    transform 420ms cubic-bezier(.16, 1, .3, 1);
 }
 
 .work-project:hover .work-project__name,
 .work-project:focus-visible .work-project__name,
 .work-project.is-previewing .work-project__name,
 .work-project.is-active .work-project__name {
-  color: rgba(255, 255, 255, 0.96);
-  letter-spacing: -0.07em;
-  transform: translate3d(0.35rem, 0, 0);
+  color: rgba(255, 255, 255, 0.94);
+  transform: translate3d(0.28rem, 0, 0);
 }
 
 .work-project__hover {
@@ -348,9 +289,9 @@
   justify-content: flex-end;
   gap: clamp(1rem, 2vw, 2.25rem);
 
-  color: rgba(245, 245, 240, 0.42);
+  color: rgba(245, 245, 240, 0.36);
   font-family: var(--mono, "IBM Plex Mono", ui-monospace, monospace);
-  font-size: 0.56rem;
+  font-size: 0.52rem;
   font-weight: 500;
   letter-spacing: 0.14em;
   line-height: 1;
@@ -358,10 +299,10 @@
   white-space: nowrap;
 
   opacity: 0;
-  transform: translate3d(0.75rem, 0, 0);
+  transform: translate3d(0.6rem, 0, 0);
 
   transition:
-    opacity 280ms ease,
+    opacity 320ms ease,
     transform 420ms cubic-bezier(.16, 1, .3, 1);
 }
 
@@ -377,12 +318,12 @@
   position: relative;
   z-index: 2;
 
-  color: rgba(245, 245, 240, 0.44);
+  color: rgba(245, 245, 240, 0.38);
   font-size: 1.05rem;
   line-height: 1;
 
   transition:
-    color 280ms ease,
+    color 320ms ease,
     transform 420ms cubic-bezier(.16, 1, .3, 1);
 }
 
@@ -390,11 +331,11 @@
 .work-project:focus-visible .work-project__arrow,
 .work-project.is-previewing .work-project__arrow,
 .work-project.is-active .work-project__arrow {
-  color: rgba(255, 255, 255, 0.88);
+  color: rgba(255, 255, 255, 0.82);
   transform: translate3d(0.35rem, 0, 0);
 }
 
-/* Optional hover image preview */
+/* HOVER PREVIEW */
 
 .work-project__preview {
   position: fixed;
@@ -442,16 +383,8 @@
   transform: translate3d(0, 0, 0) scale(1);
 }
 
-.work-project:hover .work-project__preview img,
-.work-project:focus-visible .work-project__preview img,
-.work-project.is-previewing .work-project__preview img {
-  transform: scale(1.09);
-  filter: grayscale(1) brightness(0.82) contrast(1.12);
-}
-
 /* ==========================================================
    DRAWER LOCK
-   JS only adds/removes this class. No body fixed. No scroll jump.
 ========================================================== */
 
 html.work-drawer-lock,
@@ -460,8 +393,7 @@ body.work-drawer-lock {
   overscroll-behavior: none;
 }
 
-/* Click-off capture layer. Intentionally almost invisible. */
-
+/* very faint click-off layer */
 .work-archive.has-open-detail {
   z-index: 2147483000;
 }
@@ -472,88 +404,71 @@ body.work-drawer-lock {
   inset: 0;
   z-index: 2147483001;
 
-  background: rgba(0, 0, 0, 0.08);
-  opacity: 1;
-
+  background: rgba(0, 0, 0, 0.16);
   pointer-events: auto;
+
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
 }
 
 /* ==========================================================
-   PREMIUM DRAWER
+   MODERN IMAGE-FIRST DRAWER
 ========================================================== */
 
 .work-detail {
   position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: auto;
+  inset: 0 0 0 auto;
 
   z-index: 2147483002;
 
-  width: min(62vw, 72rem);
-  min-width: 54rem;
+  width: min(58vw, 66rem);
+  min-width: 50rem;
   height: 100vh;
   height: 100dvh;
   max-height: none;
 
   padding: 0;
+
   overflow-x: hidden;
   overflow-y: auto;
+  overscroll-behavior: contain;
+  touch-action: pan-y;
 
-  scrollbar-width: none;
-  -ms-overflow-style: none;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(245, 245, 240, 0.28) transparent;
 
   border: 0;
   border-left: 1px solid rgba(245, 245, 240, 0.12);
 
   background: #000;
 
-  box-shadow: -4rem 0 10rem rgba(0, 0, 0, 0.72);
-
-  backdrop-filter: none;
-  -webkit-backdrop-filter: none;
+  box-shadow: -3rem 0 8rem rgba(0, 0, 0, 0.68);
 
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
 
-  transform: translate3d(108%, 0, 0);
+  transform: translate3d(104%, 0, 0);
 
   transition:
-    opacity 780ms ease,
-    visibility 0s linear 900ms,
-    transform 1050ms cubic-bezier(.19, 1, .22, 1);
+    opacity 620ms ease,
+    visibility 0s linear 860ms,
+    transform 950ms cubic-bezier(.19, 1, .22, 1);
 
   will-change: transform, opacity;
 }
 
 .work-detail::-webkit-scrollbar {
-  display: none;
+  width: 6px;
 }
 
-.work-detail::before {
-  content: "";
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-
-  width: min(62vw, 72rem);
-  min-width: 54rem;
-
-  z-index: -1;
-  pointer-events: none;
-
-  background:
-    radial-gradient(circle at 18% 0%, rgba(255, 255, 255, 0.035), transparent 34%),
-    linear-gradient(180deg, #000, #000);
+.work-detail::-webkit-scrollbar-track {
+  background: transparent;
 }
 
-.work-detail::after {
-  display: none;
+.work-detail::-webkit-scrollbar-thumb {
+  background: rgba(245, 245, 240, 0.22);
+  border-radius: 999px;
 }
 
 .work-detail.is-open,
@@ -565,30 +480,29 @@ body.work-drawer-lock {
   transform: translate3d(0, 0, 0);
 
   transition:
-    opacity 780ms ease,
+    opacity 640ms ease,
     visibility 0s linear 0s,
-    transform 1150ms cubic-bezier(.19, 1, .22, 1);
+    transform 1050ms cubic-bezier(.19, 1, .22, 1);
 }
 
 .work-detail__inner {
-  min-height: 100%;
+  min-height: 125vh;
   padding:
-    clamp(5.4rem, 8vh, 6.6rem)
-    clamp(4.8rem, 6.5vw, 7.5rem)
-    clamp(4.2rem, 7vh, 5.8rem);
+    clamp(4.6rem, 7vh, 5.6rem)
+    clamp(2.8rem, 4.5vw, 5rem)
+    clamp(3rem, 7vh, 4.8rem);
 }
 
-/* Subtle content entrance only when opening */
-
+/* subtle content load */
 .work-detail.is-open .work-detail__inner,
 .work-archive.has-open-detail .work-detail__inner {
-  animation: workDrawerContentIn 1050ms cubic-bezier(.19, 1, .22, 1) 120ms both;
+  animation: workDrawerContentIn 920ms cubic-bezier(.19, 1, .22, 1) 110ms both;
 }
 
 @keyframes workDrawerContentIn {
   from {
     opacity: 0;
-    transform: translate3d(1.15rem, 0, 0);
+    transform: translate3d(0.85rem, 0, 0);
   }
 
   to {
@@ -603,112 +517,135 @@ body.work-drawer-lock {
 
 .work-detail__close {
   position: fixed;
-  top: 1.8rem;
-  right: 2rem;
+  top: 1.55rem;
+  right: 1.65rem;
   z-index: 2147483003;
 
   display: grid;
   place-items: center;
 
-  width: 2.55rem;
-  height: 2.55rem;
+  width: 2.35rem;
+  height: 2.35rem;
 
-  border: 1px solid rgba(245, 245, 240, 0.16);
-  background: #000;
-  color: rgba(245, 245, 240, 0.72);
+  border: 0;
+  background: transparent;
+  color: rgba(245, 245, 240, 0.74);
 
   font: inherit;
-  font-size: 1rem;
+  font-size: 1.25rem;
   line-height: 1;
 
   cursor: pointer;
-
-  transition:
-    color 240ms ease,
-    border-color 240ms ease,
-    background 240ms ease;
 }
 
 .work-detail__close:hover {
-  border-color: rgba(245, 245, 240, 0.32);
-  background: rgba(255, 255, 255, 0.035);
-  color: rgba(255, 255, 255, 0.92);
+  color: rgba(255, 255, 255, 0.96);
 }
 
 .work-detail__eyebrow {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 0.55rem;
+  gap: 0.52rem;
 
-  margin: 0 0 2rem;
+  margin: 0 0 1.1rem;
 
-  color: rgba(245, 245, 240, 0.5);
+  color: rgba(245, 245, 240, 0.48);
   font-family: var(--mono, "IBM Plex Mono", ui-monospace, monospace);
-  font-size: 0.56rem;
-  font-weight: 600;
-  letter-spacing: 0.22em;
+  font-size: 0.52rem;
+  font-weight: 500;
+  letter-spacing: 0.18em;
   line-height: 1.4;
   text-transform: uppercase;
 }
 
 .work-detail__title {
-  max-width: 44rem;
-  margin: 0 0 1.55rem;
+  max-width: 36rem;
+  margin: 0 0 0.95rem;
 
   color: rgba(255, 255, 255, 0.94);
-  font-size: clamp(4.2rem, 6vw, 7.5rem);
+  font-size: clamp(2.8rem, 4.4vw, 5rem);
   font-weight: 300;
-  letter-spacing: -0.092em;
-  line-height: 0.84;
+  letter-spacing: -0.07em;
+  line-height: 0.92;
 }
 
 .work-detail__description {
-  max-width: 43rem;
-  margin: 0 0 clamp(2.7rem, 5vh, 3.5rem);
+  max-width: 36rem;
+  margin: 0 0 1.55rem;
 
-  color: rgba(245, 245, 240, 0.62);
-  font-size: 0.96rem;
+  color: rgba(245, 245, 240, 0.56);
+  font-size: 0.82rem;
   font-weight: 300;
-  line-height: 1.8;
-  letter-spacing: -0.01em;
+  line-height: 1.65;
+  letter-spacing: -0.005em;
 }
 
-.work-detail__label {
-  margin: 0 0 1.05rem;
+/* IMAGE */
 
-  color: rgba(245, 245, 240, 0.38);
-  font-family: var(--mono, "IBM Plex Mono", ui-monospace, monospace);
-  font-size: 0.53rem;
-  font-weight: 600;
-  letter-spacing: 0.21em;
-  line-height: 1;
-  text-transform: uppercase;
+.work-detail__media {
+  position: relative;
+
+  width: 100%;
+  aspect-ratio: 16 / 9;
+
+  margin: 0 0 1.15rem;
+
+  overflow: hidden;
+
+  border: 1px solid rgba(245, 245, 240, 0.11);
+  border-radius: 0.25rem;
+  background: #030303;
 }
 
-/* Quote */
+.work-detail__media img {
+  display: block;
+
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+  object-position: center;
+
+  filter: grayscale(1) contrast(1.06) brightness(0.78);
+  transform: scale(1.01);
+}
+
+.work-detail__media.is-missing {
+  display: none;
+}
+
+/* MID INFO ROW */
+
+.work-detail__mid {
+  display: grid;
+  grid-template-columns: minmax(15rem, 0.8fr) minmax(18rem, 1.2fr);
+  gap: 1rem;
+
+  margin-bottom: 1.2rem;
+}
+
+/* TESTIMONIAL */
 
 .work-detail__testimonial {
   position: relative;
 
-  margin: 0 0 clamp(2.8rem, 5vh, 3.7rem);
-  padding: clamp(2.3rem, 4vw, 3.2rem) clamp(2.4rem, 4vw, 3.7rem);
+  margin: 0;
+  padding: 1.15rem 1.25rem;
 
-  border: 1px solid rgba(245, 245, 240, 0.12);
+  border: 1px solid rgba(245, 245, 240, 0.1);
   background: #000;
-
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.035);
 }
 
 .work-detail__testimonial::before {
   content: "“";
   position: absolute;
-  top: 1.1rem;
-  left: 1.4rem;
+  top: 0.72rem;
+  left: 0.92rem;
 
-  color: rgba(245, 245, 240, 0.11);
+  color: rgba(245, 245, 240, 0.15);
   font-family: Georgia, serif;
-  font-size: clamp(4rem, 5vw, 6.5rem);
+  font-size: 2.7rem;
   line-height: 1;
 }
 
@@ -720,16 +657,16 @@ body.work-drawer-lock {
   position: relative;
   z-index: 1;
 
-  max-width: 43rem;
-  margin: 0 0 0 clamp(1.5rem, 3vw, 3.3rem);
+  max-width: 22rem;
+  margin: 0 0 0 1.15rem;
 
-  color: rgba(245, 245, 240, 0.8);
+  color: rgba(245, 245, 240, 0.74);
   font-family: Georgia, "Times New Roman", serif;
-  font-size: clamp(1.65rem, 2.3vw, 2.7rem);
+  font-size: clamp(0.88rem, 1vw, 1.12rem);
   font-style: normal;
   font-weight: 400;
-  letter-spacing: -0.04em;
-  line-height: 1.35;
+  letter-spacing: -0.025em;
+  line-height: 1.5;
 }
 
 .work-detail__client {
@@ -737,110 +674,176 @@ body.work-drawer-lock {
   z-index: 1;
 
   display: grid;
-  gap: 0.32rem;
+  gap: 0.2rem;
 
   width: fit-content;
-  margin-top: 1.8rem;
-  margin-left: auto;
-  padding-right: 0.4rem;
+  margin-top: 0.85rem;
+  margin-left: 1.15rem;
 }
 
 .work-detail__client span {
-  color: rgba(245, 245, 240, 0.82);
-  font-size: 0.82rem;
+  color: rgba(245, 245, 240, 0.74);
+  font-size: 0.62rem;
 }
 
 .work-detail__client small {
-  color: rgba(245, 245, 240, 0.42);
+  color: rgba(245, 245, 240, 0.38);
   font-family: var(--mono, "IBM Plex Mono", ui-monospace, monospace);
-  font-size: 0.54rem;
-  letter-spacing: 0.04em;
-  text-transform: none;
+  font-size: 0.42rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
 }
 
-/* Proof grid */
+/* PROOF GRID */
 
 .work-detail__proof-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  align-items: start;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: stretch;
   gap: 0;
 
-  margin-top: 0;
-  padding-bottom: clamp(2.3rem, 4.5vh, 3.1rem);
+  margin: 0 0 1.2rem;
 
-  border-bottom: 1px solid rgba(245, 245, 240, 0.09);
+  border: 1px solid rgba(245, 245, 240, 0.09);
+  background: #000;
 }
 
 .work-detail__block {
-  padding: 0 clamp(1.15rem, 1.8vw, 1.85rem);
-
+  padding: 1rem 1.15rem;
   border: 0;
-  border-left: 1px solid rgba(245, 245, 240, 0.09);
+  border-left: 1px solid rgba(245, 245, 240, 0.08);
+  border-top: 1px solid rgba(245, 245, 240, 0.08);
 }
 
-.work-detail__block:first-child {
-  padding-left: 0;
+.work-detail__block:nth-child(1),
+.work-detail__block:nth-child(2) {
+  border-top: 0;
+}
+
+.work-detail__block:nth-child(odd) {
   border-left: 0;
+}
+
+.work-detail__label {
+  margin: 0 0 0.58rem;
+
+  color: rgba(245, 245, 240, 0.4);
+  font-family: var(--mono, "IBM Plex Mono", ui-monospace, monospace);
+  font-size: 0.45rem;
+  font-weight: 600;
+  letter-spacing: 0.17em;
+  line-height: 1.25;
+  text-transform: uppercase;
 }
 
 .work-detail__block p:not(.work-detail__label) {
-  max-width: 17rem;
+  max-width: 20rem;
   margin: 0;
 
-  color: rgba(245, 245, 240, 0.58);
-  font-size: 0.8rem;
+  color: rgba(245, 245, 240, 0.52);
+  font-size: 0.66rem;
   font-weight: 300;
-  line-height: 1.78;
+  line-height: 1.6;
 }
 
-/* Deliverables full row */
+/* Deliverables row */
 
 .work-detail__block:has(.work-detail__list) {
   grid-column: 1 / -1;
-
-  margin-top: clamp(2.7rem, 5vh, 3.7rem);
-  padding: clamp(2rem, 4vh, 2.8rem) 0 0;
-
-  border-left: 0;
-  border-top: 1px solid rgba(245, 245, 240, 0.09);
-}
-
-.work-detail__block:has(.work-detail__list) .work-detail__label {
-  margin-bottom: 1.6rem;
 }
 
 .work-detail__list {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0.85rem clamp(2.5rem, 5vw, 5rem);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.7rem 1.2rem;
 
   margin: 0;
   padding: 0;
-
   list-style: none;
 }
 
 .work-detail__list li {
   color: rgba(245, 245, 240, 0.52);
-  font-size: 0.76rem;
+  font-size: 0.62rem;
   font-weight: 300;
-  line-height: 1.5;
+  line-height: 1.4;
 }
 
 .work-detail__list li::before {
-  content: "→  ";
-  color: rgba(245, 245, 240, 0.45);
+  content: "• ";
+  color: rgba(245, 245, 240, 0.42);
 }
 
-/* Drawer nav */
+/* ==========================================================
+   METRICS — SVG STYLE
+   Add this section in HTML later if you want real stats cards.
+========================================================== */
+
+.work-detail__metrics {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+
+  margin: 0 0 1.2rem;
+
+  border: 1px solid rgba(245, 245, 240, 0.09);
+  background: #000;
+}
+
+.work-metric {
+  padding: 1rem;
+  border-left: 1px solid rgba(245, 245, 240, 0.08);
+}
+
+.work-metric:first-child {
+  border-left: 0;
+}
+
+.work-metric strong {
+  display: block;
+  margin-bottom: 0.25rem;
+
+  color: rgba(255, 255, 255, 0.9);
+  font-size: clamp(1.25rem, 1.6vw, 1.85rem);
+  font-weight: 300;
+  letter-spacing: -0.05em;
+  line-height: 1;
+}
+
+.work-metric span {
+  display: block;
+
+  color: rgba(245, 245, 240, 0.38);
+  font-family: var(--mono, "IBM Plex Mono", ui-monospace, monospace);
+  font-size: 0.42rem;
+  font-weight: 500;
+  letter-spacing: 0.13em;
+  line-height: 1.35;
+  text-transform: uppercase;
+}
+
+.work-metric svg {
+  display: block;
+  width: 100%;
+  height: 2.4rem;
+  margin-top: 0.7rem;
+  color: rgba(245, 245, 240, 0.72);
+}
+
+.work-metric svg path,
+.work-metric svg line,
+.work-metric svg circle {
+  vector-effect: non-scaling-stroke;
+}
+
+/* NAV */
 
 .work-detail__nav {
   display: flex;
-  gap: 1.25rem;
+  justify-content: space-between;
+  gap: 1.1rem;
 
-  margin-top: 2.8rem;
-  padding-top: 1.4rem;
+  margin-top: 1.25rem;
+  padding-top: 1rem;
 
   border-top: 1px solid rgba(245, 245, 240, 0.08);
 }
@@ -852,64 +855,33 @@ body.work-drawer-lock {
 
   font: inherit;
   font-family: var(--mono, "IBM Plex Mono", ui-monospace, monospace);
-  font-size: 0.52rem;
+  font-size: 0.46rem;
   font-weight: 500;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.17em;
   text-transform: uppercase;
 
   cursor: pointer;
 
-  transition:
-    color 240ms ease,
-    transform 300ms cubic-bezier(.16, 1, .3, 1);
+  transition: color 240ms ease;
 }
 
 .work-detail__nav button:hover {
   color: rgba(245, 245, 240, 0.88);
-  transform: translate3d(0.12rem, 0, 0);
 }
 
-/* Kill cheap change glitch */
+/* remove cheap change glitch */
 
 .work-detail.is-changing .work-detail__title,
 .work-detail.is-changing .work-detail__description,
 .work-detail.is-changing .work-detail__testimonial,
-.work-detail.is-changing .work-detail__proof-grid {
+.work-detail.is-changing .work-detail__proof-grid,
+.work-detail.is-changing .work-detail__media {
   animation: none;
   filter: none;
 }
 
-/* Text signal glitch only on list item */
-
 .work-project.is-glitching .work-project__name {
-  animation: workSignalText 700ms steps(2, end) 1;
-}
-
-@keyframes workSignalText {
-  0% {
-    opacity: 1;
-    transform: translate3d(0.35rem, 0, 0);
-  }
-
-  18% {
-    opacity: 0.62;
-    transform: translate3d(0.62rem, -1px, 0);
-  }
-
-  34% {
-    opacity: 0.92;
-    transform: translate3d(0.18rem, 1px, 0);
-  }
-
-  52% {
-    opacity: 0.7;
-    transform: translate3d(0.52rem, 0, 0);
-  }
-
-  100% {
-    opacity: 1;
-    transform: translate3d(0.35rem, 0, 0);
-  }
+  animation: none;
 }
 
 /* ==========================================================
@@ -917,17 +889,16 @@ body.work-drawer-lock {
 ========================================================== */
 
 @media (max-width: 1240px) {
-  .work-detail,
-  .work-detail::before {
+  .work-detail {
     width: min(78rem, 100vw);
     min-width: 0;
   }
 
   .work-detail__inner {
     padding:
-      5.5rem
-      clamp(2.5rem, 6vw, 5rem)
-      4.25rem;
+      5.4rem
+      clamp(2rem, 5vw, 4rem)
+      4.2rem;
   }
 }
 
@@ -953,22 +924,17 @@ body.work-drawer-lock {
 }
 
 @media (max-width: 900px) {
-  .work-detail__title {
-    font-size: clamp(3.5rem, 13vw, 5.7rem);
-  }
-
-  .work-detail__quote {
-    margin-left: 1.4rem;
-    font-size: clamp(1.25rem, 6vw, 1.8rem);
+  .work-detail__mid {
+    grid-template-columns: 1fr;
   }
 
   .work-detail__proof-grid {
     grid-template-columns: 1fr;
-    padding-bottom: 2rem;
   }
 
-  .work-detail__block {
-    padding: 1.3rem 0;
+  .work-detail__block,
+  .work-detail__block:nth-child(2),
+  .work-detail__block:nth-child(odd) {
     border-left: 0;
     border-top: 1px solid rgba(245, 245, 240, 0.08);
   }
@@ -977,12 +943,17 @@ body.work-drawer-lock {
     border-top: 0;
   }
 
-  .work-detail__block p:not(.work-detail__label) {
-    max-width: 100%;
+  .work-detail__metrics {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .work-detail__block:has(.work-detail__list) .work-detail__list {
-    grid-template-columns: 1fr;
+  .work-metric {
+    border-left: 0;
+    border-top: 1px solid rgba(245, 245, 240, 0.08);
+  }
+
+  .work-metric:first-child {
+    border-top: 0;
   }
 }
 
@@ -998,12 +969,6 @@ body.work-drawer-lock {
     font-size: clamp(3rem, 14vw, 5rem);
   }
 
-  .work-reveal-preview__list span {
-    padding: 1rem 0;
-    font-size: 0.54rem;
-    letter-spacing: 0.13em;
-  }
-
   .work-project {
     min-height: 4.75rem;
     gap: 1rem;
@@ -1017,15 +982,11 @@ body.work-drawer-lock {
     font-size: clamp(1rem, 5vw, 1.25rem);
   }
 
-  .work-detail,
-  .work-detail::before {
+  .work-detail {
     inset: 0;
     width: 100vw;
     min-width: 0;
-  }
-
-  .work-detail {
-    transform: translate3d(0, 108%, 0);
+    transform: translate3d(0, 104%, 0);
   }
 
   .work-detail.is-open,
@@ -1034,7 +995,8 @@ body.work-drawer-lock {
   }
 
   .work-detail__inner {
-    padding: 5rem 1.25rem 2.75rem;
+    min-height: 140vh;
+    padding: 5rem 1.15rem 3rem;
   }
 
   .work-detail__close {
@@ -1043,19 +1005,19 @@ body.work-drawer-lock {
   }
 
   .work-detail__title {
-    font-size: clamp(3rem, 15vw, 4.8rem);
+    font-size: clamp(2.8rem, 14vw, 4.6rem);
   }
 
   .work-detail__description {
-    font-size: 0.88rem;
+    font-size: 0.78rem;
   }
 
-  .work-detail__testimonial {
-    padding: 2rem 1.35rem;
+  .work-detail__media {
+    aspect-ratio: 4 / 3;
   }
 
-  .work-detail__quote {
-    margin-left: 1rem;
+  .work-detail__metrics {
+    grid-template-columns: 1fr;
   }
 
   .work-detail__nav {
@@ -1081,319 +1043,4 @@ body.work-drawer-lock {
     transition: none;
     animation: none;
   }
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* ==========================================================
-   DRAWER CONTENT — IMAGE-FIRST CASE STUDY
-========================================================== */
-
-.work-detail__inner {
-  min-height: 100%;
-  padding:
-    clamp(4.8rem, 7vh, 5.8rem)
-    clamp(3.2rem, 5vw, 5.4rem)
-    clamp(3rem, 6vh, 4.5rem);
-}
-
-.work-detail__close {
-  position: fixed;
-  top: 1.55rem;
-  right: 1.7rem;
-  z-index: 2147483003;
-
-  display: grid;
-  place-items: center;
-
-  width: 2.35rem;
-  height: 2.35rem;
-
-  border: 1px solid rgba(245, 245, 240, 0.14);
-  background: #000;
-  color: rgba(245, 245, 240, 0.68);
-
-  font: inherit;
-  font-size: 0.95rem;
-  line-height: 1;
-
-  cursor: pointer;
-}
-
-.work-detail__eyebrow {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.48rem;
-
-  margin: 0 0 1.25rem;
-
-  color: rgba(245, 245, 240, 0.45);
-  font-family: var(--mono, "IBM Plex Mono", ui-monospace, monospace);
-  font-size: 0.5rem;
-  font-weight: 600;
-  letter-spacing: 0.2em;
-  line-height: 1.4;
-  text-transform: uppercase;
-}
-
-.work-detail__title {
-  max-width: 34rem;
-  margin: 0 0 1rem;
-
-  color: rgba(255, 255, 255, 0.94);
-  font-size: clamp(2.8rem, 4.4vw, 5rem);
-  font-weight: 300;
-  letter-spacing: -0.085em;
-  line-height: 0.88;
-}
-
-.work-detail__description {
-  max-width: 35rem;
-  margin: 0 0 1.8rem;
-
-  color: rgba(245, 245, 240, 0.56);
-  font-size: 0.78rem;
-  font-weight: 300;
-  line-height: 1.65;
-  letter-spacing: -0.005em;
-}
-
-/* Big project preview image */
-
-.work-detail__media {
-  position: relative;
-
-  width: 100%;
-  aspect-ratio: 16 / 9;
-
-  margin: 0 0 1.65rem;
-
-  overflow: hidden;
-
-  border: 1px solid rgba(245, 245, 240, 0.11);
-  background: #030303;
-}
-
-.work-detail__media::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-
-  background:
-    linear-gradient(to bottom, rgba(255, 255, 255, 0.04), transparent 28%),
-    linear-gradient(to top, rgba(0, 0, 0, 0.32), transparent 34%);
-
-  pointer-events: none;
-}
-
-.work-detail__media img {
-  display: block;
-
-  width: 100%;
-  height: 100%;
-
-  object-fit: cover;
-  object-position: center;
-
-  filter: grayscale(1) contrast(1.08) brightness(0.82);
-  transform: scale(1.01);
-}
-
-/* Smaller testimonial */
-
-.work-detail__testimonial {
-  position: relative;
-
-  margin: 0 0 1.8rem;
-  padding: 1.25rem 1.4rem;
-
-  border: 1px solid rgba(245, 245, 240, 0.1);
-  background: #000;
-}
-
-.work-detail__testimonial::before {
-  content: "“";
-  position: absolute;
-  top: 0.8rem;
-  left: 0.95rem;
-
-  color: rgba(245, 245, 240, 0.1);
-  font-family: Georgia, serif;
-  font-size: 3.3rem;
-  line-height: 1;
-}
-
-.work-detail__testimonial .work-detail__label {
-  display: none;
-}
-
-.work-detail__quote {
-  position: relative;
-  z-index: 1;
-
-  max-width: 34rem;
-  margin: 0 0 0 1.4rem;
-
-  color: rgba(245, 245, 240, 0.72);
-  font-family: Georgia, "Times New Roman", serif;
-  font-size: clamp(0.95rem, 1.15vw, 1.25rem);
-  font-style: normal;
-  font-weight: 400;
-  letter-spacing: -0.03em;
-  line-height: 1.45;
-}
-
-.work-detail__client {
-  position: relative;
-  z-index: 1;
-
-  display: grid;
-  gap: 0.24rem;
-
-  width: fit-content;
-  margin-top: 0.9rem;
-  margin-left: auto;
-}
-
-.work-detail__client span {
-  color: rgba(245, 245, 240, 0.74);
-  font-size: 0.68rem;
-}
-
-.work-detail__client small {
-  color: rgba(245, 245, 240, 0.38);
-  font-family: var(--mono, "IBM Plex Mono", ui-monospace, monospace);
-  font-size: 0.46rem;
-  letter-spacing: 0.04em;
-  text-transform: none;
-}
-
-/* Smaller proof grid */
-
-.work-detail__proof-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  align-items: start;
-  gap: 0;
-
-  margin-top: 0;
-  padding-bottom: 1.7rem;
-
-  border-bottom: 1px solid rgba(245, 245, 240, 0.08);
-}
-
-.work-detail__block {
-  padding: 0 clamp(0.85rem, 1.4vw, 1.35rem);
-
-  border: 0;
-  border-left: 1px solid rgba(245, 245, 240, 0.08);
-}
-
-.work-detail__block:first-child {
-  padding-left: 0;
-  border-left: 0;
-}
-
-.work-detail__label {
-  margin: 0 0 0.75rem;
-
-  color: rgba(245, 245, 240, 0.35);
-  font-family: var(--mono, "IBM Plex Mono", ui-monospace, monospace);
-  font-size: 0.46rem;
-  font-weight: 600;
-  letter-spacing: 0.18em;
-  line-height: 1;
-  text-transform: uppercase;
-}
-
-.work-detail__block p:not(.work-detail__label) {
-  max-width: 14rem;
-  margin: 0;
-
-  color: rgba(245, 245, 240, 0.52);
-  font-size: 0.66rem;
-  font-weight: 300;
-  line-height: 1.62;
-}
-
-/* Deliverables smaller */
-
-.work-detail__block:has(.work-detail__list) {
-  grid-column: 1 / -1;
-
-  margin-top: 1.75rem;
-  padding: 1.6rem 0 0;
-
-  border-left: 0;
-  border-top: 1px solid rgba(245, 245, 240, 0.08);
-}
-
-.work-detail__block:has(.work-detail__list) .work-detail__label {
-  margin-bottom: 1rem;
-}
-
-.work-detail__list {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0.62rem clamp(2rem, 4vw, 4rem);
-
-  margin: 0;
-  padding: 0;
-
-  list-style: none;
-}
-
-.work-detail__list li {
-  color: rgba(245, 245, 240, 0.5);
-  font-size: 0.64rem;
-  font-weight: 300;
-  line-height: 1.42;
-}
-
-.work-detail__list li::before {
-  content: "→  ";
-  color: rgba(245, 245, 240, 0.42);
-}
-
-/* Smaller nav */
-
-.work-detail__nav {
-  display: flex;
-  gap: 1.1rem;
-
-  margin-top: 1.85rem;
-  padding-top: 1.1rem;
-
-  border-top: 1px solid rgba(245, 245, 240, 0.07);
-}
-
-.work-detail__nav button {
-  border: 0;
-  background: transparent;
-  color: rgba(245, 245, 240, 0.4);
-
-  font: inherit;
-  font-family: var(--mono, "IBM Plex Mono", ui-monospace, monospace);
-  font-size: 0.46rem;
-  font-weight: 500;
-  letter-spacing: 0.17em;
-  text-transform: uppercase;
-
-  cursor: pointer;
 }
