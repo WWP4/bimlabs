@@ -1,6 +1,6 @@
 /* ==========================================================
    BIM LABS STUDIO — OUR WORK
-   Modern project list + image-first case-study drawer
+   Minimal archive + clean scrollable case-study drawer
 ========================================================== */
 
 /* ==========================================================
@@ -137,7 +137,9 @@
   padding: clamp(7rem, 12vh, 10rem) 0 clamp(6rem, 10vh, 8rem);
 }
 
-/* HEADER */
+/* ==========================================================
+   HEADER
+========================================================== */
 
 .work-archive__header {
   display: grid;
@@ -335,7 +337,9 @@
   transform: translate3d(0.35rem, 0, 0);
 }
 
-/* HOVER PREVIEW */
+/* ==========================================================
+   SMALL HOVER PREVIEW
+========================================================== */
 
 .work-project__preview {
   position: fixed;
@@ -384,35 +388,28 @@
 }
 
 /* ==========================================================
-   DRAWER LOCK
+   DRAWER LOCK — NO DARK OVERLAY
 ========================================================== */
 
 html.work-drawer-lock,
 body.work-drawer-lock {
   overflow: hidden;
+  height: 100%;
   overscroll-behavior: none;
 }
 
-/* very faint click-off layer */
 .work-archive.has-open-detail {
   z-index: 2147483000;
 }
 
+/* important: no fake overlay */
 .work-archive.has-open-detail::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  z-index: 2147483001;
-
-  background: rgba(0, 0, 0, 0.16);
-  pointer-events: auto;
-
-  backdrop-filter: none;
-  -webkit-backdrop-filter: none;
+  display: none;
+  content: none;
 }
 
 /* ==========================================================
-   MODERN IMAGE-FIRST DRAWER
+   CASE STUDY DRAWER
 ========================================================== */
 
 .work-detail {
@@ -425,13 +422,13 @@ body.work-drawer-lock {
   min-width: 50rem;
   height: 100vh;
   height: 100dvh;
-  max-height: none;
 
   padding: 0;
 
   overflow-x: hidden;
   overflow-y: auto;
   overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
   touch-action: pan-y;
 
   scrollbar-width: thin;
@@ -440,9 +437,15 @@ body.work-drawer-lock {
   border: 0;
   border-left: 1px solid rgba(245, 245, 240, 0.12);
 
-  background: #000;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.018),
+      rgba(255, 255, 255, 0) 18rem
+    ),
+    #020202;
 
-  box-shadow: -3rem 0 8rem rgba(0, 0, 0, 0.68);
+  box-shadow: -2.5rem 0 6rem rgba(0, 0, 0, 0.58);
 
   opacity: 0;
   visibility: hidden;
@@ -451,9 +454,9 @@ body.work-drawer-lock {
   transform: translate3d(104%, 0, 0);
 
   transition:
-    opacity 620ms ease,
-    visibility 0s linear 860ms,
-    transform 950ms cubic-bezier(.19, 1, .22, 1);
+    opacity 520ms ease,
+    visibility 0s linear 760ms,
+    transform 820ms cubic-bezier(.19, 1, .22, 1);
 
   will-change: transform, opacity;
 }
@@ -480,29 +483,28 @@ body.work-drawer-lock {
   transform: translate3d(0, 0, 0);
 
   transition:
-    opacity 640ms ease,
+    opacity 540ms ease,
     visibility 0s linear 0s,
-    transform 1050ms cubic-bezier(.19, 1, .22, 1);
+    transform 900ms cubic-bezier(.19, 1, .22, 1);
 }
 
 .work-detail__inner {
-  min-height: 125vh;
+  min-height: auto;
   padding:
     clamp(4.6rem, 7vh, 5.6rem)
-    clamp(2.8rem, 4.5vw, 5rem)
-    clamp(3rem, 7vh, 4.8rem);
+    clamp(2.3rem, 4vw, 4.6rem)
+    6rem;
 }
 
-/* subtle content load */
 .work-detail.is-open .work-detail__inner,
 .work-archive.has-open-detail .work-detail__inner {
-  animation: workDrawerContentIn 920ms cubic-bezier(.19, 1, .22, 1) 110ms both;
+  animation: workDrawerContentIn 740ms cubic-bezier(.19, 1, .22, 1) 80ms both;
 }
 
 @keyframes workDrawerContentIn {
   from {
     opacity: 0;
-    transform: translate3d(0.85rem, 0, 0);
+    transform: translate3d(0.7rem, 0, 0);
   }
 
   to {
@@ -512,35 +514,52 @@ body.work-drawer-lock {
 }
 
 /* ==========================================================
-   DRAWER CONTENT
+   DRAWER CLOSE
 ========================================================== */
 
 .work-detail__close {
-  position: fixed;
-  top: 1.55rem;
-  right: 1.65rem;
-  z-index: 2147483003;
+  position: sticky;
+  top: 1rem;
+  float: right;
+  z-index: 10;
 
   display: grid;
   place-items: center;
 
   width: 2.35rem;
   height: 2.35rem;
+  margin: -3.2rem -1.2rem 1rem auto;
 
-  border: 0;
-  background: transparent;
+  border: 1px solid rgba(245, 245, 240, 0.1);
+  border-radius: 999px;
+
+  background: rgba(0, 0, 0, 0.72);
   color: rgba(245, 245, 240, 0.74);
 
   font: inherit;
-  font-size: 1.25rem;
+  font-size: 1.15rem;
   line-height: 1;
 
   cursor: pointer;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+
+  transition:
+    color 220ms ease,
+    border-color 220ms ease,
+    background 220ms ease;
 }
 
-.work-detail__close:hover {
+.work-detail__close:hover,
+.work-detail__close:focus-visible {
   color: rgba(255, 255, 255, 0.96);
+  border-color: rgba(245, 245, 240, 0.2);
+  background: rgba(12, 12, 12, 0.92);
 }
+
+/* ==========================================================
+   DRAWER HEADER
+========================================================== */
 
 .work-detail__eyebrow {
   display: flex;
@@ -548,11 +567,11 @@ body.work-drawer-lock {
   align-items: center;
   gap: 0.52rem;
 
-  margin: 0 0 1.1rem;
+  margin: 0 0 1rem;
 
   color: rgba(245, 245, 240, 0.48);
   font-family: var(--mono, "IBM Plex Mono", ui-monospace, monospace);
-  font-size: 0.52rem;
+  font-size: 0.5rem;
   font-weight: 500;
   letter-spacing: 0.18em;
   line-height: 1.4;
@@ -564,24 +583,26 @@ body.work-drawer-lock {
   margin: 0 0 0.95rem;
 
   color: rgba(255, 255, 255, 0.94);
-  font-size: clamp(2.8rem, 4.4vw, 5rem);
+  font-size: clamp(2.6rem, 4.1vw, 4.8rem);
   font-weight: 300;
   letter-spacing: -0.07em;
   line-height: 0.92;
 }
 
 .work-detail__description {
-  max-width: 36rem;
-  margin: 0 0 1.55rem;
+  max-width: 35rem;
+  margin: 0 0 1.4rem;
 
   color: rgba(245, 245, 240, 0.56);
-  font-size: 0.82rem;
+  font-size: 0.8rem;
   font-weight: 300;
   line-height: 1.65;
   letter-spacing: -0.005em;
 }
 
-/* IMAGE */
+/* ==========================================================
+   DRAWER IMAGE
+========================================================== */
 
 .work-detail__media {
   position: relative;
@@ -589,12 +610,12 @@ body.work-drawer-lock {
   width: 100%;
   aspect-ratio: 16 / 9;
 
-  margin: 0 0 1.15rem;
+  margin: 0 0 1.1rem;
 
   overflow: hidden;
 
   border: 1px solid rgba(245, 245, 240, 0.11);
-  border-radius: 0.25rem;
+  border-radius: 0.28rem;
   background: #030303;
 }
 
@@ -615,37 +636,37 @@ body.work-drawer-lock {
   display: none;
 }
 
-/* MID INFO ROW */
+/* ==========================================================
+   TESTIMONIAL + PROOF
+========================================================== */
 
 .work-detail__mid {
   display: grid;
-  grid-template-columns: minmax(15rem, 0.8fr) minmax(18rem, 1.2fr);
+  grid-template-columns: minmax(14rem, 0.8fr) minmax(18rem, 1.2fr);
   gap: 1rem;
 
-  margin-bottom: 1.2rem;
+  margin-bottom: 1.1rem;
 }
-
-/* TESTIMONIAL */
 
 .work-detail__testimonial {
   position: relative;
 
   margin: 0;
-  padding: 1.15rem 1.25rem;
+  padding: 1.05rem 1.15rem;
 
   border: 1px solid rgba(245, 245, 240, 0.1);
-  background: #000;
+  background: rgba(255, 255, 255, 0.012);
 }
 
 .work-detail__testimonial::before {
   content: "“";
   position: absolute;
-  top: 0.72rem;
-  left: 0.92rem;
+  top: 0.65rem;
+  left: 0.85rem;
 
-  color: rgba(245, 245, 240, 0.15);
+  color: rgba(245, 245, 240, 0.14);
   font-family: Georgia, serif;
-  font-size: 2.7rem;
+  font-size: 2.55rem;
   line-height: 1;
 }
 
@@ -658,11 +679,11 @@ body.work-drawer-lock {
   z-index: 1;
 
   max-width: 22rem;
-  margin: 0 0 0 1.15rem;
+  margin: 0 0 0 1.05rem;
 
   color: rgba(245, 245, 240, 0.74);
   font-family: Georgia, "Times New Roman", serif;
-  font-size: clamp(0.88rem, 1vw, 1.12rem);
+  font-size: clamp(0.84rem, 0.95vw, 1.04rem);
   font-style: normal;
   font-weight: 400;
   letter-spacing: -0.025em;
@@ -678,23 +699,21 @@ body.work-drawer-lock {
 
   width: fit-content;
   margin-top: 0.85rem;
-  margin-left: 1.15rem;
+  margin-left: 1.05rem;
 }
 
 .work-detail__client span {
   color: rgba(245, 245, 240, 0.74);
-  font-size: 0.62rem;
+  font-size: 0.6rem;
 }
 
 .work-detail__client small {
   color: rgba(245, 245, 240, 0.38);
   font-family: var(--mono, "IBM Plex Mono", ui-monospace, monospace);
-  font-size: 0.42rem;
+  font-size: 0.4rem;
   letter-spacing: 0.06em;
   text-transform: uppercase;
 }
-
-/* PROOF GRID */
 
 .work-detail__proof-grid {
   display: grid;
@@ -702,14 +721,14 @@ body.work-drawer-lock {
   align-items: stretch;
   gap: 0;
 
-  margin: 0 0 1.2rem;
+  margin: 0 0 1.1rem;
 
   border: 1px solid rgba(245, 245, 240, 0.09);
-  background: #000;
+  background: rgba(255, 255, 255, 0.01);
 }
 
 .work-detail__block {
-  padding: 1rem 1.15rem;
+  padding: 0.95rem 1.05rem;
   border: 0;
   border-left: 1px solid rgba(245, 245, 240, 0.08);
   border-top: 1px solid rgba(245, 245, 240, 0.08);
@@ -725,11 +744,11 @@ body.work-drawer-lock {
 }
 
 .work-detail__label {
-  margin: 0 0 0.58rem;
+  margin: 0 0 0.52rem;
 
   color: rgba(245, 245, 240, 0.4);
   font-family: var(--mono, "IBM Plex Mono", ui-monospace, monospace);
-  font-size: 0.45rem;
+  font-size: 0.43rem;
   font-weight: 600;
   letter-spacing: 0.17em;
   line-height: 1.25;
@@ -741,13 +760,12 @@ body.work-drawer-lock {
   margin: 0;
 
   color: rgba(245, 245, 240, 0.52);
-  font-size: 0.66rem;
+  font-size: 0.64rem;
   font-weight: 300;
-  line-height: 1.6;
+  line-height: 1.58;
 }
 
-/* Deliverables row */
-
+/* deliverables row */
 .work-detail__block:has(.work-detail__list) {
   grid-column: 1 / -1;
 }
@@ -755,7 +773,7 @@ body.work-drawer-lock {
 .work-detail__list {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.7rem 1.2rem;
+  gap: 0.65rem 1.1rem;
 
   margin: 0;
   padding: 0;
@@ -764,7 +782,7 @@ body.work-drawer-lock {
 
 .work-detail__list li {
   color: rgba(245, 245, 240, 0.52);
-  font-size: 0.62rem;
+  font-size: 0.6rem;
   font-weight: 300;
   line-height: 1.4;
 }
@@ -775,22 +793,21 @@ body.work-drawer-lock {
 }
 
 /* ==========================================================
-   METRICS — SVG STYLE
-   Add this section in HTML later if you want real stats cards.
+   OPTIONAL METRICS
 ========================================================== */
 
 .work-detail__metrics {
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
 
-  margin: 0 0 1.2rem;
+  margin: 0 0 1.1rem;
 
   border: 1px solid rgba(245, 245, 240, 0.09);
-  background: #000;
+  background: rgba(255, 255, 255, 0.01);
 }
 
 .work-metric {
-  padding: 1rem;
+  padding: 0.95rem;
   border-left: 1px solid rgba(245, 245, 240, 0.08);
 }
 
@@ -803,7 +820,7 @@ body.work-drawer-lock {
   margin-bottom: 0.25rem;
 
   color: rgba(255, 255, 255, 0.9);
-  font-size: clamp(1.25rem, 1.6vw, 1.85rem);
+  font-size: clamp(1.2rem, 1.45vw, 1.7rem);
   font-weight: 300;
   letter-spacing: -0.05em;
   line-height: 1;
@@ -814,7 +831,7 @@ body.work-drawer-lock {
 
   color: rgba(245, 245, 240, 0.38);
   font-family: var(--mono, "IBM Plex Mono", ui-monospace, monospace);
-  font-size: 0.42rem;
+  font-size: 0.4rem;
   font-weight: 500;
   letter-spacing: 0.13em;
   line-height: 1.35;
@@ -835,14 +852,16 @@ body.work-drawer-lock {
   vector-effect: non-scaling-stroke;
 }
 
-/* NAV */
+/* ==========================================================
+   DRAWER NAV
+========================================================== */
 
 .work-detail__nav {
   display: flex;
   justify-content: space-between;
   gap: 1.1rem;
 
-  margin-top: 1.25rem;
+  margin-top: 1.2rem;
   padding-top: 1rem;
 
   border-top: 1px solid rgba(245, 245, 240, 0.08);
@@ -855,33 +874,53 @@ body.work-drawer-lock {
 
   font: inherit;
   font-family: var(--mono, "IBM Plex Mono", ui-monospace, monospace);
-  font-size: 0.46rem;
+  font-size: 0.45rem;
   font-weight: 500;
   letter-spacing: 0.17em;
   text-transform: uppercase;
 
   cursor: pointer;
 
-  transition: color 240ms ease;
+  transition:
+    color 240ms ease,
+    transform 240ms ease;
 }
 
-.work-detail__nav button:hover {
+.work-detail__nav button:hover,
+.work-detail__nav button:focus-visible {
   color: rgba(245, 245, 240, 0.88);
 }
 
-/* remove cheap change glitch */
+.work-detail__nav button:first-child:hover {
+  transform: translate3d(-0.15rem, 0, 0);
+}
+
+.work-detail__nav button:last-child:hover {
+  transform: translate3d(0.15rem, 0, 0);
+}
+
+/* ==========================================================
+   CHANGE STATE
+========================================================== */
 
 .work-detail.is-changing .work-detail__title,
 .work-detail.is-changing .work-detail__description,
 .work-detail.is-changing .work-detail__testimonial,
 .work-detail.is-changing .work-detail__proof-grid,
 .work-detail.is-changing .work-detail__media {
-  animation: none;
-  filter: none;
+  animation: workDetailSoftChange 260ms ease both;
 }
 
-.work-project.is-glitching .work-project__name {
-  animation: none;
+@keyframes workDetailSoftChange {
+  from {
+    opacity: 0.72;
+    transform: translate3d(0.25rem, 0, 0);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
 }
 
 /* ==========================================================
@@ -995,17 +1034,16 @@ body.work-drawer-lock {
   }
 
   .work-detail__inner {
-    min-height: 140vh;
-    padding: 5rem 1.15rem 3rem;
+    padding: 5rem 1.15rem 4rem;
   }
 
   .work-detail__close {
-    top: 1rem;
-    right: 1rem;
+    top: 0.85rem;
+    margin-right: 0;
   }
 
   .work-detail__title {
-    font-size: clamp(2.8rem, 14vw, 4.6rem);
+    font-size: clamp(2.6rem, 13vw, 4.4rem);
   }
 
   .work-detail__description {
