@@ -1,6 +1,6 @@
 /* ==========================================================
    BIM LABS STUDIO — OUR WORK
-   Clean archive interaction + wide drawer
+   Clean archive interaction + image-first drawer
 ========================================================== */
 
 (() => {
@@ -10,6 +10,7 @@
       type: "Client Portal",
       year: "2024",
       title: "Wonder World Portal",
+      image: "assets/showcase/project-portal.png",
       description:
         "A private operating layer built to organize quotes, products, lead flow, installer coordination, and customer-facing resources.",
       constraint:
@@ -35,6 +36,7 @@
       type: "Sports Platform",
       year: "2024",
       title: "Momentum Athlete",
+      image: "assets/showcase/momentum.png",
       description:
         "A sharper digital platform for athlete performance, training resources, course access, and brand presentation.",
       constraint:
@@ -60,6 +62,7 @@
       type: "AI Platform",
       year: "2023",
       title: "Orynd AI",
+      image: "assets/showcase/orynd-ai.png",
       description:
         "A focused AI product presence built around clarity, positioning, and interface structure.",
       constraint:
@@ -82,28 +85,29 @@
     },
     {
       number: "04",
-      type: "Fintech Platform",
-      year: "2023",
-      title: "CashFlowSwami",
+      type: "Interactive System",
+      year: "2024",
+      title: "3D Install Tool",
+      image: "assets/showcase/3d-install-tool.png",
       description:
-        "A focused fintech-facing web experience built around trust, simple messaging, and a cleaner path from attention to action.",
+        "A visual system built to make complex installation planning easier to understand through a cleaner interactive preview layer.",
       constraint:
-        "The offer needed stronger digital credibility and a clearer path from first impression to understanding the service.",
+        "The workflow needed a more visual way to explain installation details without overwhelming the customer or relying only on static notes.",
       solution:
-        "We created a cleaner presentation layer with simpler messaging, stronger interface direction, and a more intentional conversion path.",
+        "We shaped the experience around a clearer visual preview, simplified interface structure, and more direct project understanding.",
       result:
-        "The site made the business feel more legitimate, easier to trust, and easier to present.",
+        "The tool made the project feel easier to understand, easier to explain, and more polished from the first interaction.",
       services: [
-        "Landing page strategy",
-        "Fintech brand presentation",
-        "Interface design",
-        "Lead path structure",
-        "Frontend development"
+        "3D visual direction",
+        "Interactive interface structure",
+        "Project preview system",
+        "Frontend implementation",
+        "UX simplification"
       ],
       review:
-        "The site helped the offer feel real, polished, and ready to show people.",
-      client: "CashFlowSwami",
-      role: "Fintech platform"
+        "The visual tool made the project easier to explain and easier for people to understand quickly.",
+      client: "BIM Labs Studio",
+      role: "Interactive project system"
     }
   ];
 
@@ -118,6 +122,7 @@
   const yearEl = root.querySelector("[data-work-detail-year]");
   const titleEl = root.querySelector("[data-work-detail-title]");
   const descriptionEl = root.querySelector("[data-work-detail-description]");
+  const imageEl = root.querySelector("[data-work-detail-image]");
   const constraintEl = root.querySelector("[data-work-detail-constraint]");
   const solutionEl = root.querySelector("[data-work-detail-solution]");
   const resultEl = root.querySelector("[data-work-detail-result]");
@@ -237,6 +242,12 @@
     if (yearEl) yearEl.textContent = project.year;
     if (titleEl) titleEl.textContent = project.title;
     if (descriptionEl) descriptionEl.textContent = project.description;
+
+    if (imageEl) {
+      imageEl.src = project.image;
+      imageEl.alt = `${project.title} project preview`;
+    }
+
     if (constraintEl) constraintEl.textContent = project.constraint;
     if (solutionEl) solutionEl.textContent = project.solution;
     if (resultEl) resultEl.textContent = project.result;
@@ -269,7 +280,6 @@
     renderProject(safeIndex);
 
     detailIsOpen = true;
-
     root.classList.add("has-open-detail");
 
     if (detail) {
@@ -288,7 +298,6 @@
     if (!detailIsOpen) return;
 
     detailIsOpen = false;
-
     root.classList.remove("has-open-detail");
 
     if (detail) {
@@ -313,18 +322,6 @@
 
     activeIndex = nextIndex;
     setPreviewProject(nextIndex);
-  }
-
-  function reorderDrawerLayout() {
-    const inner = root.querySelector(".work-detail__inner");
-    const testimonial = root.querySelector(".work-detail__testimonial");
-    const proofGrid = root.querySelector(".work-detail__proof-grid");
-
-    if (!inner || !testimonial || !proofGrid) return;
-
-    if (testimonial.nextElementSibling !== proofGrid) {
-      inner.insertBefore(testimonial, proofGrid);
-    }
   }
 
   function setupProjectButtons() {
@@ -451,15 +448,20 @@
     });
   }
 
-  function disableBrokenPreviewImages() {
-    const previews = root.querySelectorAll(".work-project__preview img");
+  function disableBrokenImages() {
+    const images = root.querySelectorAll("img");
 
-    previews.forEach((img) => {
+    images.forEach((img) => {
       img.addEventListener("error", () => {
         const preview = img.closest(".work-project__preview");
 
         if (preview) {
           preview.style.display = "none";
+          return;
+        }
+
+        if (img.matches("[data-work-detail-image]")) {
+          img.closest(".work-detail__media")?.classList.add("is-missing");
         }
       });
     });
@@ -468,11 +470,10 @@
   function init() {
     if (!projectButtons.length || !detail) return;
 
-    reorderDrawerLayout();
     setupProjectButtons();
     setupDrawerControls();
     setupKeyboardControls();
-    disableBrokenPreviewImages();
+    disableBrokenImages();
 
     renderProject(0);
     setActiveButton(0);
