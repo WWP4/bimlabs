@@ -2098,3 +2098,66 @@
     max-height: 70rem !important;
   }
 }
+
+
+
+/* ==========================================================
+   FIX — PUSH WORK ARCHIVE LOWER AFTER TRUST CARDS
+   Gives the flying card section room to finish before archive appears.
+========================================================== */
+
+.work-archive {
+  padding-top: clamp(10rem, 24vh, 20rem);
+}
+
+.work-archive__shell {
+  padding-top: clamp(7rem, 13vh, 12rem);
+}
+
+/* Makes the archive feel like it forms out of black instead of sitting
+   directly under the testimonial/flying-card section. */
+.work-archive::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: clamp(12rem, 28vh, 24rem);
+  z-index: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    to bottom,
+    #000 0%,
+    #000 42%,
+    rgba(0, 0, 0, 0.82) 68%,
+    rgba(0, 0, 0, 0) 100%
+  );
+}
+
+.work-archive__bg,
+.work-archive__shell {
+  position: relative;
+}
+
+.work-archive__shell {
+  z-index: 2;
+}
+
+/* Desktop: more cinematic gap */
+@media (min-width: 901px) {
+  .work-archive {
+    margin-top: clamp(6rem, 14vh, 12rem);
+  }
+}
+
+/* Mobile: do not create a huge dead gap */
+@media (max-width: 900px) {
+  .work-archive {
+    margin-top: 0;
+    padding-top: 6rem;
+  }
+
+  .work-archive__shell {
+    padding-top: 4rem;
+  }
+}
