@@ -1802,3 +1802,109 @@ body.work-drawer-lock {
     transform: none !important;
   }
 }
+
+
+
+
+
+
+/* ==========================================================
+   GLOBAL BLACK UNIFICATION
+   Keeps the whole site feeling like one continuous world.
+========================================================== */
+
+:root {
+  --site-black: #000000;
+  --site-black-soft: #000000;
+}
+
+html,
+body {
+  background: var(--site-black) !important;
+}
+
+main,
+section,
+.hero,
+.salo-showcase,
+.bim-showcase,
+.process-3d,
+.process-scene,
+.process-overlay,
+.work-trust,
+.work-trust__sticky,
+.bim-trust,
+.bim-trust__sticky,
+.work-archive,
+.work-archive__bg,
+.work-detail {
+  background-color: var(--site-black) !important;
+}
+
+/* remove obvious section seams */
+section {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+/* make transitions blend instead of looking boxed */
+.hero,
+.salo-showcase,
+.process-3d,
+.work-trust,
+.work-archive {
+  box-shadow: none !important;
+  border-top: 0 !important;
+  border-bottom: 0 !important;
+}
+
+/* kill accidental thin separator lines between sections */
+.hero::before,
+.hero::after,
+.salo-showcase::before,
+.salo-showcase::after,
+.process-3d::before,
+.process-3d::after,
+.work-trust::before,
+.work-trust::after,
+.work-archive::before,
+.work-archive::after {
+  border: 0;
+}
+
+/* keep atmosphere, but make it subtle so it does not create section blocks */
+.work-trust__sticky,
+.bim-trust__sticky {
+  background:
+    radial-gradient(circle at 68% 55%, rgba(255, 255, 255, 0.035), transparent 28rem),
+    radial-gradient(circle at 22% 34%, rgba(255, 255, 255, 0.022), transparent 24rem),
+    #000000 !important;
+}
+
+.work-archive__bg {
+  background: #000000 !important;
+}
+
+/* soft fade between major scroll moments */
+.process-3d,
+.work-trust,
+.work-archive {
+  position: relative;
+}
+
+.process-3d::after,
+.work-trust::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 16vh;
+  pointer-events: none;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0),
+    #000000
+  ) !important;
+  z-index: 20;
+}
