@@ -2656,3 +2656,18 @@ body.work-drawer-lock {
     transform: none !important;
   }
 }
+
+
+
+
+/* Kill old drawer behavior after JS rebuild */
+.work-detail,
+.work-drawer-lock {
+  display: none !important;
+}
+
+html.work-drawer-lock,
+body.work-drawer-lock {
+  overflow: auto !important;
+  height: auto !important;
+}
