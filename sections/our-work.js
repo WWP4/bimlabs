@@ -1,6 +1,6 @@
 /* ==========================================================
    BIM LABS STUDIO — OUR WORK
-   Clean archive + scrollable case-study drawer
+   Noomo-style trust bridge + clean archive + scrollable drawer
 ========================================================== */
 
 (() => {
@@ -114,6 +114,10 @@
   const root = document.querySelector(".work-archive");
   if (!root) return;
 
+  const prefersReducedMotion = window.matchMedia(
+    "(prefers-reduced-motion: reduce)"
+  ).matches;
+
   const projectButtons = Array.from(root.querySelectorAll("[data-work-project]"));
   const detail = root.querySelector(".work-detail");
 
@@ -135,10 +139,6 @@
   const nextBtn = root.querySelector("[data-work-next]");
   const closeBtn = root.querySelector(".work-detail__close");
 
-  const prefersReducedMotion = window.matchMedia(
-    "(prefers-reduced-motion: reduce)"
-  ).matches;
-
   let activeIndex = 0;
   let detailIsOpen = false;
   let changeTimer = null;
@@ -156,6 +156,96 @@
   function unlockSiteScroll() {
     document.documentElement.classList.remove("work-drawer-lock");
     document.body.classList.remove("work-drawer-lock");
+  }
+
+  function escapeHtml(value = "") {
+    return String(value)
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+      .replaceAll('"', "&quot;")
+      .replaceAll("'", "&#039;");
+  }
+
+  function injectTrustBridge() {
+    if (document.querySelector(".work-trust")) return;
+
+    const section = document.createElement("section");
+    section.className = "work-trust";
+    section.setAttribute("aria-label", "Client trust");
+
+    const cards = projects
+      .map((project, index) => {
+        return `
+          <article class="work-trust-card" data-work-trust-card="${index}">
+            <p class="work-trust-card__logo">${escapeHtml(project.client)}</p>
+            <blockquote>“${escapeHtml(project.review)}”</blockquote>
+            <footer>
+              <strong>${escapeHtml(project.title)}</strong>
+              <span>${escapeHtml(project.role)}</span>
+            </footer>
+          </article>
+        `;
+      })
+      .join("");
+
+    section.innerHTML = `
+      <div class="work-trust__sticky">
+        <div class="work-trust__bg-text" aria-hidden="true">
+          GOOD WORK<br>
+          IS BUILT<br>
+          WITH TRUST.
+        </div>
+
+        <div class="work-trust__copy">
+          <p>
+            We build with clients who need more than a nice-looking website. They need
+            clearer systems, sharper presentation, and digital work that makes the
+            business easier to understand.
+          </p>
+        </div>
+
+        <div class="work-trust__track" data-work-trust-track>
+          ${cards}
+        </div>
+      </div>
+    `;
+
+    root.parentNode.insertBefore(section, root);
+  }
+
+  function setupWorkTrustScroll() {
+    const section = document.querySelector(".work-trust");
+    const track = document.querySelector("[data-work-trust-track]");
+
+    if (!section || !track || prefersReducedMotion) return;
+
+    let ticking = false;
+
+    function update() {
+      const rect = section.getBoundingClientRect();
+      const maxScroll = Math.max(section.offsetHeight - window.innerHeight, 1);
+      const progress = Math.min(Math.max(-rect.top / maxScroll, 0), 1);
+      const travel = Math.max(
+        track.scrollWidth - window.innerWidth + window.innerWidth * 0.3,
+        0
+      );
+
+      track.style.transform = `translate3d(${-progress * travel}px, 0, 0)`;
+
+      ticking = false;
+    }
+
+    function requestUpdate() {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(update);
+    }
+
+    window.addEventListener("scroll", requestUpdate, { passive: true });
+    window.addEventListener("resize", requestUpdate);
+
+    update();
   }
 
   function renderServices(items = []) {
@@ -337,13 +427,11 @@
 
       button.addEventListener("mouseleave", () => {
         if (detailIsOpen) return;
-
         button.classList.remove("is-previewing");
       });
 
       button.addEventListener("blur", () => {
         if (detailIsOpen) return;
-
         button.classList.remove("is-previewing");
       });
 
@@ -467,10 +555,13 @@
   function init() {
     if (!projectButtons.length || !detail) return;
 
+    injectTrustBridge();
+
     setupProjectButtons();
     setupDrawerControls();
     setupKeyboardControls();
     disableBrokenImages();
+    setupWorkTrustScroll();
 
     renderProject(0);
     setActiveButton(0);
