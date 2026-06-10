@@ -1,12 +1,10 @@
 /* ==========================================================
-   BIM LABS STUDIO — OUR WORK
-   Trust bridge + clean archive
-   - Injects section before archive
-   - Flying cards on scroll
-   - Clean <details> archive rows
-   - No drawer
-   - No overlay
-   - No body scroll lock
+   BIM LABS — OUR WORK SAFE VERSION
+   - Injects trust cards before archive
+   - Does NOT delete other sections
+   - Does NOT touch process/testimonials
+   - Does NOT body lock
+   - Does NOT transform the whole archive shell
 ========================================================== */
 
 (() => {
@@ -15,40 +13,29 @@
   const archive = document.querySelector(".work-archive");
   if (!archive) return;
 
-  const prefersReducedMotion = window.matchMedia(
-    "(prefers-reduced-motion: reduce)"
-  ).matches;
-
+  const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const mobileQuery = window.matchMedia("(max-width: 900px)");
 
   const projects = [
     {
       number: "01",
       client: "Wonder World Playsets",
-      title: "Wonder World Portal",
-      type: "Portal / CRM / Quote Flow",
-      year: "2024"
+      type: "Portal / CRM / Quote Flow"
     },
     {
       number: "02",
       client: "Momentum Athlete",
-      title: "Momentum Athlete",
-      type: "Web / Courses / Stripe",
-      year: "2024"
+      type: "Web / Courses / Stripe"
     },
     {
       number: "03",
       client: "Orynd AI",
-      title: "Orynd AI",
-      type: "Brand / Product / UX",
-      year: "2023"
+      type: "Brand / Product / UX"
     },
     {
       number: "04",
       client: "BIM Labs Studio",
-      title: "3D Install Tool",
-      type: "3D / Visual Tool / UX",
-      year: "2024"
+      type: "3D / Visual Tool / UX"
     }
   ];
 
@@ -66,12 +53,6 @@
       : 1 - Math.pow(-2 * value + 2, 3) / 2;
   }
 
-  function bezier3(p0, p1, p2, t) {
-    const a = lerp(p0, p1, t);
-    const b = lerp(p1, p2, t);
-    return lerp(a, b, t);
-  }
-
   function escapeHtml(value = "") {
     return String(value)
       .replaceAll("&", "&amp;")
@@ -81,25 +62,31 @@
       .replaceAll("'", "&#039;");
   }
 
+  function getScrollProgress(section) {
+    const rect = section.getBoundingClientRect();
+    const viewport = window.innerHeight || document.documentElement.clientHeight;
+    const travel = Math.max(section.offsetHeight - viewport, 1);
+
+    return clamp(-rect.top / travel, 0, 1);
+  }
+
   /* ==========================================================
-     TRUST BRIDGE INJECTION
+     TRUST SECTION
   ========================================================== */
 
-  function injectTrustBridge() {
-    const oldTrust =
-      document.querySelector(".bim-trust") ||
-      document.querySelector(".work-trust");
-
-    if (oldTrust) oldTrust.remove();
+  function injectTrustSection() {
+    const existingSafeTrust = document.querySelector("[data-work-trust-section]");
+    if (existingSafeTrust) return existingSafeTrust;
 
     const section = document.createElement("section");
     section.className = "work-trust";
+    section.dataset.workTrustSection = "true";
     section.setAttribute("aria-label", "Client trust");
 
     const cards = projects
       .map((project) => {
         return `
-          <article class="work-trust-card" data-trust-card>
+          <article class="work-trust-card" data-work-trust-card>
             <span>${escapeHtml(project.number)}</span>
             <strong>${escapeHtml(project.client)}</strong>
             <p>${escapeHtml(project.type)}</p>
@@ -113,9 +100,7 @@
         <div class="work-trust__copy">
           <p class="work-trust__kicker">Client trust</p>
 
-          <h2>
-            Real work should feel clear before it ever feels loud.
-          </h2>
+          <h2>Real work should feel clear before it ever feels loud.</h2>
 
           <p>
             Before the archive, project signals move through the frame —
@@ -130,18 +115,14 @@
     `;
 
     archive.parentNode.insertBefore(section, archive);
+    return section;
   }
 
-  /* ==========================================================
-     TRUST CARD SCROLL ANIMATION
-  ========================================================== */
+  function setupTrustCards(section) {
+    const cards = Array.from(section.querySelectorAll("[data-work-trust-card]"));
+    const copy = section.querySelector(".work-trust__copy");
 
-  function setupTrustCards() {
-    const section = document.querySelector(".work-trust");
-    const cards = Array.from(document.querySelectorAll("[data-trust-card]"));
-    const copy = document.querySelector(".work-trust__copy");
-
-    if (!section || !cards.length) return;
+    if (!cards.length) return;
 
     if (prefersReducedMotion || mobileQuery.matches) {
       cards.forEach((card) => {
@@ -150,159 +131,80 @@
         card.style.transform = "none";
       });
 
-      if (copy) {
-        copy.style.opacity = "";
-        copy.style.transform = "";
-      }
-
       return;
     }
 
-    const cardSettings = [
-      {
-        startX: 118,
-        midX: 50,
-        endX: -54,
-        startY: 23,
-        midY: 2,
-        endY: 16,
-        startRotate: 8,
-        midRotate: -2,
-        endRotate: -9,
-        delay: 0,
-        span: 0.9,
-        depth: 0,
-        scale: 1
-      },
-      {
-        startX: 136,
-        midX: 62,
-        endX: -42,
-        startY: 14,
-        midY: -6,
-        endY: 8,
-        startRotate: 5,
-        midRotate: 1,
-        endRotate: -6,
-        delay: 0.06,
-        span: 0.9,
-        depth: 26,
-        scale: 1.02
-      },
-      {
-        startX: 154,
-        midX: 74,
-        endX: -30,
-        startY: 18,
-        midY: -8,
-        endY: 10,
-        startRotate: 3,
-        midRotate: -1,
-        endRotate: -5,
-        delay: 0.12,
-        span: 0.9,
-        depth: 42,
-        scale: 1.035
-      },
-      {
-        startX: 172,
-        midX: 86,
-        endX: -18,
-        startY: 26,
-        midY: 4,
-        endY: 17,
-        startRotate: 7,
-        midRotate: 2,
-        endRotate: -3,
-        delay: 0.18,
-        span: 0.9,
-        depth: 14,
-        scale: 1.01
-      }
+    const settings = [
+      { sx: 116, mx: 48, ex: -54, sy: 24, my: 4, ey: 16, sr: 8, mr: -2, er: -9, d: 0 },
+      { sx: 134, mx: 60, ex: -42, sy: 15, my: -5, ey: 9, sr: 5, mr: 1, er: -6, d: 0.06 },
+      { sx: 152, mx: 72, ex: -30, sy: 18, my: -7, ey: 10, sr: 3, mr: -1, er: -5, d: 0.12 },
+      { sx: 170, mx: 84, ex: -18, sy: 26, my: 3, ey: 17, sr: 7, mr: 2, er: -3, d: 0.18 }
     ];
 
-    let targetProgress = 0;
-    let currentProgress = 0;
+    let target = 0;
+    let current = 0;
     let raf = null;
 
-    function getProgress() {
-      const rect = section.getBoundingClientRect();
-      const viewport = window.innerHeight || document.documentElement.clientHeight;
-      const travel = Math.max(section.offsetHeight - viewport, 1);
-
-      return clamp(-rect.top / travel, 0, 1);
+    function bezier(a, b, c, t) {
+      return lerp(lerp(a, b, t), lerp(b, c, t), t);
     }
 
     function render(progress) {
       cards.forEach((card, index) => {
-        const setting = cardSettings[index] || cardSettings[cardSettings.length - 1];
-
-        const raw = clamp((progress - setting.delay) / setting.span, 0, 1);
+        const s = settings[index] || settings[settings.length - 1];
+        const raw = clamp((progress - s.d) / 0.9, 0, 1);
         const t = easeInOutCubic(raw);
 
-        const x = bezier3(setting.startX, setting.midX, setting.endX, t);
-        const y = bezier3(setting.startY, setting.midY, setting.endY, t);
-        const rotate = bezier3(
-          setting.startRotate,
-          setting.midRotate,
-          setting.endRotate,
-          t
-        );
+        const x = bezier(s.sx, s.mx, s.ex, t);
+        const y = bezier(s.sy, s.my, s.ey, t);
+        const r = bezier(s.sr, s.mr, s.er, t);
+        const float = Math.sin(progress * Math.PI * 2 + index * 0.8) * 0.18;
 
-        const float = Math.sin(progress * Math.PI * 2 + index * 0.9) * 0.18;
-        const opacity = raw <= 0.02 ? lerp(0.72, 1, raw / 0.02) : 1;
-
-        card.style.opacity = String(opacity);
+        card.style.opacity = "1";
         card.style.visibility = "visible";
         card.style.zIndex = String(20 + index);
         card.style.transform = `
-          translate3d(${x}vw, calc(${y}vh + ${float}rem), ${setting.depth}px)
-          rotate(${rotate}deg)
-          scale(${setting.scale})
+          translate3d(${x}vw, calc(${y}vh + ${float}rem), ${index * 14}px)
+          rotate(${r}deg)
         `;
       });
 
       if (copy) {
-        copy.style.opacity = String(lerp(1, 0.58, progress));
-        copy.style.transform = `
-          translate3d(0, ${lerp(0, -4.5, progress)}vh, 0)
-          scale(${lerp(1, 0.985, progress)})
-        `;
+        copy.style.opacity = String(lerp(1, 0.62, progress));
+        copy.style.transform = `translate3d(0, ${lerp(0, -3.5, progress)}vh, 0)`;
       }
     }
 
-    function animate() {
-      currentProgress = lerp(currentProgress, targetProgress, 0.055);
-      render(currentProgress);
+    function tick() {
+      current = lerp(current, target, 0.055);
+      render(current);
 
-      if (Math.abs(targetProgress - currentProgress) > 0.0005) {
-        raf = window.requestAnimationFrame(animate);
+      if (Math.abs(target - current) > 0.0005) {
+        raf = window.requestAnimationFrame(tick);
       } else {
-        currentProgress = targetProgress;
-        render(currentProgress);
         raf = null;
       }
     }
 
-    function requestUpdate() {
-      targetProgress = getProgress();
+    function update() {
+      target = getScrollProgress(section);
 
       if (!raf) {
-        raf = window.requestAnimationFrame(animate);
+        raf = window.requestAnimationFrame(tick);
       }
     }
 
-    window.addEventListener("scroll", requestUpdate, { passive: true });
-    window.addEventListener("resize", requestUpdate);
-    window.addEventListener("orientationchange", requestUpdate);
+    window.addEventListener("scroll", update, { passive: true });
+    window.addEventListener("resize", update);
+    window.addEventListener("orientationchange", update);
 
-    targetProgress = getProgress();
-    currentProgress = targetProgress;
-    render(currentProgress);
+    target = getScrollProgress(section);
+    current = target;
+    render(current);
   }
 
   /* ==========================================================
-     ARCHIVE DETAILS BEHAVIOR
+     ARCHIVE ROWS
   ========================================================== */
 
   function setupArchiveRows() {
@@ -311,18 +213,15 @@
 
     if (!rows.length) return;
 
-    function setActiveRow(row) {
+    function setActive(row) {
       rows.forEach((item) => {
-        const isActive = item === row;
-        item.classList.toggle("is-active", isActive);
+        item.classList.toggle("is-active", item === row);
       });
     }
 
-    function closeOtherRows(activeRow) {
+    function closeOthers(activeRow) {
       rows.forEach((row) => {
-        if (row !== activeRow) {
-          row.removeAttribute("open");
-        }
+        if (row !== activeRow) row.removeAttribute("open");
       });
     }
 
@@ -330,39 +229,19 @@
       const summary = row.querySelector(".work-project__summary");
       if (!summary) return;
 
-      if (row.hasAttribute("open")) {
-        setActiveRow(row);
-      }
+      if (row.hasAttribute("open")) setActive(row);
 
       summary.addEventListener("click", () => {
         const willOpen = !row.hasAttribute("open");
 
         window.requestAnimationFrame(() => {
           if (willOpen) {
-            closeOtherRows(row);
-            setActiveRow(row);
+            closeOthers(row);
+            setActive(row);
           } else {
             row.classList.remove("is-active");
           }
         });
-      });
-
-      summary.addEventListener("mouseenter", () => {
-        if (mobileQuery.matches) return;
-        row.classList.add("is-hovering");
-      });
-
-      summary.addEventListener("mouseleave", () => {
-        row.classList.remove("is-hovering");
-      });
-
-      summary.addEventListener("focus", () => {
-        if (mobileQuery.matches) return;
-        row.classList.add("is-hovering");
-      });
-
-      summary.addEventListener("blur", () => {
-        row.classList.remove("is-hovering");
       });
 
       summary.addEventListener("keydown", (event) => {
@@ -372,37 +251,34 @@
 
         const direction = event.key === "ArrowDown" ? 1 : -1;
         const nextIndex = (index + direction + summaries.length) % summaries.length;
+
         summaries[nextIndex]?.focus();
       });
     });
   }
 
-  /* ==========================================================
-     ARCHIVE SCROLL LOCK FEEL
-     Uses sticky + progress. Does not freeze body scroll.
-  ========================================================== */
+  function revealArchiveRows() {
+    const rows = Array.from(archive.querySelectorAll(".work-project"));
 
-  function setupArchiveScroll() {
+    rows.forEach((row, index) => {
+      window.setTimeout(() => {
+        row.classList.add("is-visible");
+      }, prefersReducedMotion ? 0 : index * 80);
+    });
+  }
+
+  function setupArchiveScrollFeel() {
     const rows = Array.from(archive.querySelectorAll(".work-project"));
     const header = archive.querySelector(".work-archive__header");
-    const shell = archive.querySelector(".work-archive__shell");
 
     if (!rows.length || prefersReducedMotion || mobileQuery.matches) {
-      rows.forEach((row) => row.classList.add("is-visible"));
+      revealArchiveRows();
       return;
     }
 
-    let targetProgress = 0;
-    let currentProgress = 0;
+    let target = 0;
+    let current = 0;
     let raf = null;
-
-    function getProgress() {
-      const rect = archive.getBoundingClientRect();
-      const viewport = window.innerHeight || document.documentElement.clientHeight;
-      const travel = Math.max(archive.offsetHeight - viewport, 1);
-
-      return clamp(-rect.top / travel, 0, 1);
-    }
 
     function render(progress) {
       const activeIndex = Math.round(progress * (rows.length - 1));
@@ -411,80 +287,62 @@
         const distance = Math.abs(index - activeIndex);
 
         row.classList.add("is-visible");
-
-        if (!row.matches(":hover") && document.activeElement !== row.querySelector("summary")) {
-          row.style.opacity =
-            index === activeIndex ? "1" : distance === 1 ? "0.58" : "0.36";
-
-          row.style.transform = `
-            translate3d(0, ${distance * 4}px, 0)
-          `;
-        }
+        row.style.opacity = index === activeIndex ? "1" : distance === 1 ? "0.62" : "0.42";
+        row.style.transform = `translate3d(0, ${distance * 3}px, 0)`;
       });
 
       if (header) {
-        header.style.opacity = String(lerp(1, 0.72, progress));
-        header.style.transform = `translate3d(0, ${lerp(0, -16, progress)}px, 0)`;
-      }
-
-      if (shell) {
-        shell.style.transform = `translate3d(0, ${lerp(8, -8, progress)}px, 0)`;
+        header.style.opacity = String(lerp(1, 0.78, progress));
+        header.style.transform = `translate3d(0, ${lerp(0, -10, progress)}px, 0)`;
       }
     }
 
-    function animate() {
-      currentProgress = lerp(currentProgress, targetProgress, 0.07);
-      render(currentProgress);
+    function tick() {
+      current = lerp(current, target, 0.07);
+      render(current);
 
-      if (Math.abs(targetProgress - currentProgress) > 0.0005) {
-        raf = window.requestAnimationFrame(animate);
+      if (Math.abs(target - current) > 0.0005) {
+        raf = window.requestAnimationFrame(tick);
       } else {
-        currentProgress = targetProgress;
-        render(currentProgress);
         raf = null;
       }
     }
 
-    function requestUpdate() {
-      targetProgress = getProgress();
+    function update() {
+      target = getScrollProgress(archive);
 
       if (!raf) {
-        raf = window.requestAnimationFrame(animate);
+        raf = window.requestAnimationFrame(tick);
       }
     }
 
-    window.addEventListener("scroll", requestUpdate, { passive: true });
-    window.addEventListener("resize", requestUpdate);
-    window.addEventListener("orientationchange", requestUpdate);
+    window.addEventListener("scroll", update, { passive: true });
+    window.addEventListener("resize", update);
+    window.addEventListener("orientationchange", update);
 
-    targetProgress = getProgress();
-    currentProgress = targetProgress;
-    render(currentProgress);
+    target = getScrollProgress(archive);
+    current = target;
+    render(current);
   }
 
-  /* ==========================================================
-     CLEANUP OLD STATES
-  ========================================================== */
-
-  function cleanupOldWorkStates() {
+  function cleanupOnlyArchiveDrawerStuff() {
     archive.classList.remove("has-open-detail");
+
+    const oldDrawerInsideArchive = archive.querySelector(".work-detail");
+    if (oldDrawerInsideArchive) oldDrawerInsideArchive.remove();
 
     document.documentElement.classList.remove("work-drawer-lock");
     document.body.classList.remove("work-drawer-lock");
-
-    const oldDrawer = archive.querySelector(".work-detail");
-    if (oldDrawer) oldDrawer.remove();
-
-    const oldInjectedTrust = document.querySelector(".bim-trust");
-    if (oldInjectedTrust) oldInjectedTrust.remove();
   }
 
   function init() {
-    cleanupOldWorkStates();
-    injectTrustBridge();
-    setupTrustCards();
+    cleanupOnlyArchiveDrawerStuff();
+
+    const trustSection = injectTrustSection();
+
+    setupTrustCards(trustSection);
     setupArchiveRows();
-    setupArchiveScroll();
+    setupArchiveScrollFeel();
 
     archive.classList.add("is-ready");
   }
