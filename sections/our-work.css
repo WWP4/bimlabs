@@ -1,12 +1,21 @@
-/* ==========================================================
-   BIM LABS — OUR WORK / TRUST / PROCESS BRIDGE
-   Clean rebuild. No duplicate trust systems.
-========================================================== */
+
 
 /* ==========================================================
-   PROCESS → WORK TRANSITION LAYER
-   Visual bridge only. Not the real archive.
+   PROCESS → OUR WORK PREVIEW
 ========================================================== */
+
+.process-world-inside {
+  pointer-events: none;
+}
+
+
+
+
+/* ======================================================
+   PROCESS → WORK TRANSITION LAYER
+   This is not the real archive.
+   It is only a visual bridge from PROCESS into proof.
+====================================================== */
 
 .process-world-inside {
   position: absolute;
@@ -19,37 +28,23 @@
 .work-reveal-preview {
   position: absolute;
   inset: 0;
-
   display: grid;
   place-items: center;
-
   background:
     radial-gradient(circle at 50% 48%, rgba(255, 255, 255, 0.08), transparent 34%),
-    radial-gradient(circle at 50% 62%, rgba(255, 255, 255, 0.035), transparent 48%),
+    radial-gradient(circle at 50% 60%, rgba(255, 255, 255, 0.035), transparent 48%),
     #000;
-
   color: #fff;
-
   opacity: 0;
   transform: scale(0.96);
-
   will-change: opacity, transform;
-}
-
-/* JS can trigger either of these */
-.process-3d.is-work-reveal .work-reveal-preview,
-.process-world-inside.is-active .work-reveal-preview {
-  opacity: 1;
-  transform: scale(1);
 }
 
 .work-reveal-preview__field {
   position: absolute;
   inset: 12vh 10vw;
-
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 999px;
-
   opacity: 0.6;
 }
 
@@ -57,15 +52,9 @@
 .work-reveal-preview__field::after {
   content: "";
   position: absolute;
-
+  inset: 14%;
   border: 1px solid rgba(255, 255, 255, 0.055);
   border-radius: inherit;
-
-  pointer-events: none;
-}
-
-.work-reveal-preview__field::before {
-  inset: 14%;
 }
 
 .work-reveal-preview__field::after {
@@ -75,24 +64,19 @@
 
 .work-reveal-preview__system {
   position: relative;
-
   width: min(52vw, 760px);
   height: min(34vw, 420px);
 }
 
 .work-node {
   position: absolute;
-
   width: clamp(58px, 6vw, 104px);
   height: clamp(58px, 6vw, 104px);
-
   border: 1px solid rgba(255, 255, 255, 0.24);
-  border-radius: 999px;
-
+  border-radius: 50%;
   background:
     radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.22), transparent 7%),
     radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.08), transparent 42%);
-
   box-shadow:
     0 0 42px rgba(255, 255, 255, 0.06),
     inset 0 0 32px rgba(255, 255, 255, 0.035);
@@ -101,17 +85,13 @@
 .work-node::after {
   content: "";
   position: absolute;
-  left: 50%;
-  top: 50%;
-
+  inset: 50%;
   width: 4px;
   height: 4px;
-
-  border-radius: 999px;
+  border-radius: 50%;
   background: #fff;
-
-  opacity: 0.9;
   transform: translate(-50%, -50%);
+  opacity: 0.9;
 }
 
 .work-node--one {
@@ -136,18 +116,14 @@
 
 .work-line {
   position: absolute;
-
   height: 1px;
-
   transform-origin: left center;
-
   background: linear-gradient(
     90deg,
     transparent,
     rgba(255, 255, 255, 0.5),
     transparent
   );
-
   opacity: 0.42;
 }
 
@@ -176,80 +152,97 @@
   position: absolute;
   left: clamp(24px, 7vw, 110px);
   bottom: clamp(34px, 8vh, 92px);
-
   max-width: 460px;
 }
 
 .work-reveal-preview__kicker {
   margin: 0 0 14px;
-
-  color: rgba(255, 255, 255, 0.44);
-
-  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-family: "IBM Plex Mono", monospace;
   font-size: 11px;
-  font-weight: 500;
   letter-spacing: 0.18em;
-  line-height: 1;
   text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.44);
 }
 
 .work-reveal-preview__statement {
   margin: 0;
-
-  color: rgba(255, 255, 255, 0.92);
-
-  font-family: "Manrope", system-ui, sans-serif;
+  font-family: "Manrope", sans-serif;
   font-size: clamp(34px, 5vw, 82px);
-  font-weight: 400;
-  letter-spacing: -0.07em;
   line-height: 0.94;
+  letter-spacing: -0.07em;
+  color: rgba(255, 255, 255, 0.92);
 }
 
 .work-reveal-preview__signals {
   position: absolute;
   right: clamp(24px, 7vw, 110px);
   bottom: clamp(38px, 8vh, 96px);
-
   display: flex;
   flex-direction: column;
   align-items: flex-end;
   gap: 10px;
-
-  color: rgba(255, 255, 255, 0.42);
-
-  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-family: "IBM Plex Mono", monospace;
   font-size: 11px;
-  font-weight: 500;
   letter-spacing: 0.16em;
-  line-height: 1;
   text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.42);
 }
 
 .work-reveal-preview__signals span {
   display: block;
-
-  min-width: 160px;
   padding-top: 10px;
-
   border-top: 1px solid rgba(255, 255, 255, 0.12);
-
+  min-width: 160px;
   text-align: right;
 }
 
+/* Optional active state if your JS adds visibility */
+.process-3d.is-work-reveal .work-reveal-preview,
+.process-world-inside.is-active .work-reveal-preview {
+  opacity: 1;
+  transform: scale(1);
+}
+
+@media (max-width: 800px) {
+  .work-reveal-preview__system {
+    width: 82vw;
+    height: 54vw;
+  }
+
+  .work-reveal-preview__copy {
+    left: 24px;
+    right: 24px;
+    bottom: 96px;
+  }
+
+  .work-reveal-preview__signals {
+    left: 24px;
+    right: 24px;
+    bottom: 28px;
+    align-items: flex-start;
+  }
+
+  .work-reveal-preview__signals span {
+    min-width: 0;
+    width: 100%;
+    text-align: left;
+  }
+}
+
+
+
 /* ==========================================================
-   TRUST BRIDGE
+   TRUST BRIDGE — NOOMO-INSPIRED, BIM LABS VERSION
 ========================================================== */
 
 .work-trust {
   position: relative;
   z-index: 3;
-
-  min-height: 360vh;
+  min-height: 265vh;
   overflow: clip;
 
-  background: #000;
   color: #f4f1ea;
-
+  background: #000;
   font-family: inherit;
 }
 
@@ -269,11 +262,10 @@
 .work-trust__bg-text {
   position: absolute;
   left: clamp(1.2rem, 2.2vw, 2.6rem);
-  top: 16vh;
+  top: 18vh;
   z-index: 1;
 
-  color: rgba(255, 255, 255, 0.92);
-
+  color: rgba(255, 255, 255, 0.95);
   font-size: clamp(4.5rem, 9.1vw, 11.8rem);
   font-weight: 300;
   letter-spacing: -0.085em;
@@ -288,7 +280,7 @@
   position: absolute;
   right: clamp(1.2rem, 4vw, 4.2rem);
   top: 27vh;
-  z-index: 20;
+  z-index: 5;
 
   width: min(21.5rem, 32vw);
 }
@@ -296,62 +288,75 @@
 .work-trust__copy p {
   margin: 0;
 
-  color: rgba(245, 245, 240, 0.62);
-
+  color: rgba(245, 245, 240, 0.66);
   font-size: clamp(0.78rem, 0.88vw, 0.98rem);
   font-weight: 300;
-  letter-spacing: -0.018em;
   line-height: 1.58;
+  letter-spacing: -0.018em;
 }
 
 .work-trust__track {
   position: absolute;
-  inset: 0;
-  z-index: 10;
+  left: 7vw;
+  top: 44vh;
+  z-index: 4;
 
-  display: block;
+  display: flex;
+  align-items: flex-start;
+  gap: clamp(2.5rem, 5.5vw, 7rem);
 
-  width: 100%;
-  height: 100%;
+  width: max-content;
 
-  pointer-events: none;
-  perspective: 1200px;
-  transform-style: preserve-3d;
+  transform: translate3d(0, 0, 0);
+  will-change: transform;
 }
 
 .work-trust-card {
-  position: absolute;
-  left: 0;
-  top: 36vh;
+  position: relative;
 
   display: flex;
   flex-direction: column;
   justify-content: space-between;
 
-  width: clamp(20rem, 25vw, 30rem);
-  min-height: clamp(22rem, 45vh, 32rem);
+  width: clamp(18rem, 22vw, 26rem);
+  min-height: clamp(20rem, 42vh, 29rem);
   padding: clamp(1.45rem, 2vw, 2.15rem);
 
   border: 1px solid rgba(245, 245, 240, 0.13);
-  border-radius: 0.42rem;
+  border-radius: 0.38rem;
 
   background:
     linear-gradient(145deg, rgba(255, 255, 255, 0.13), rgba(255, 255, 255, 0.035)),
     rgba(255, 255, 255, 0.055);
 
   box-shadow:
-    0 2rem 5rem rgba(0, 0, 0, 0.55),
+    0 2rem 5rem rgba(0, 0, 0, 0.5),
     inset 0 1px 0 rgba(255, 255, 255, 0.13);
 
   backdrop-filter: blur(18px);
   -webkit-backdrop-filter: blur(18px);
 
-  opacity: 1;
+  transform: rotate(var(--card-rotate, 0deg));
+}
 
-  pointer-events: auto;
-  backface-visibility: hidden;
-  transform-style: preserve-3d;
-  will-change: transform;
+.work-trust-card:nth-child(1) {
+  --card-rotate: -2.4deg;
+  margin-top: 4.6rem;
+}
+
+.work-trust-card:nth-child(2) {
+  --card-rotate: 1.4deg;
+  margin-top: -1.2rem;
+}
+
+.work-trust-card:nth-child(3) {
+  --card-rotate: -1.15deg;
+  margin-top: 2.4rem;
+}
+
+.work-trust-card:nth-child(4) {
+  --card-rotate: 2.1deg;
+  margin-top: 6.1rem;
 }
 
 .work-trust-card::before {
@@ -361,28 +366,14 @@
   z-index: -1;
 
   border-radius: inherit;
-  background: rgba(0, 0, 0, 0.16);
-
+  background: rgba(0, 0, 0, 0.1);
   filter: blur(1rem);
-}
-
-.work-trust-card::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: -2;
-
-  border-radius: inherit;
-  background: rgba(255, 255, 255, 0.04);
-
-  transform: translate3d(0.45rem, 0.45rem, -1px);
 }
 
 .work-trust-card__logo {
   margin: 0 0 2rem;
 
   color: rgba(255, 255, 255, 0.92);
-
   font-size: clamp(1.25rem, 1.65vw, 2rem);
   font-weight: 600;
   letter-spacing: -0.055em;
@@ -393,23 +384,20 @@
   margin: 0;
 
   color: rgba(245, 245, 240, 0.74);
-
   font-size: clamp(0.88rem, 1.02vw, 1.14rem);
   font-weight: 300;
-  letter-spacing: -0.025em;
   line-height: 1.5;
+  letter-spacing: -0.025em;
 }
 
 .work-trust-card footer {
   display: grid;
   gap: 0.35rem;
-
   margin-top: 2rem;
 }
 
 .work-trust-card strong {
   color: rgba(255, 255, 255, 0.78);
-
   font-size: 0.62rem;
   font-weight: 600;
   letter-spacing: 0.03em;
@@ -419,7 +407,6 @@
 
 .work-trust-card span {
   color: rgba(245, 245, 240, 0.39);
-
   font-size: 0.68rem;
   font-weight: 300;
   line-height: 1.35;
@@ -428,19 +415,17 @@
 .work-trust::after {
   content: "";
   position: absolute;
-  left: 0;
   right: 0;
   bottom: -1px;
+  left: 0;
 
   height: 20rem;
-
   background: linear-gradient(to bottom, transparent, #000);
-
   pointer-events: none;
 }
 
 /* ==========================================================
-   REAL OUR WORK ARCHIVE
+   REAL OUR WORK SECTION
 ========================================================== */
 
 .work-archive {
@@ -453,9 +438,8 @@
 
   margin-top: -1px;
 
-  background: #000;
   color: #f4f1ea;
-
+  background: #000;
   font-family: inherit;
   isolation: isolate;
 
@@ -467,10 +451,8 @@
   position: absolute;
   inset: 0;
   z-index: 0;
-
-  background: #000;
-
   pointer-events: none;
+  background: #000;
 }
 
 .work-archive__shell {
@@ -485,12 +467,12 @@
 }
 
 /* ==========================================================
-   ARCHIVE HEADER
+   HEADER
 ========================================================== */
 
 .work-archive__header {
   display: grid;
-  grid-template-columns: minmax(18rem, 34rem) minmax(16rem, 24rem);
+  grid-template-columns: minmax(18rem, 30rem) minmax(16rem, 24rem);
   justify-content: space-between;
   align-items: end;
   gap: clamp(3rem, 7vw, 8rem);
@@ -502,7 +484,6 @@
   margin: 0 0 1rem;
 
   color: var(--work-muted);
-
   font-family: var(--mono, "IBM Plex Mono", ui-monospace, monospace);
   font-size: 0.58rem;
   font-weight: 500;
@@ -515,7 +496,6 @@
   margin: 0;
 
   color: rgba(245, 245, 240, 0.86);
-
   font-size: clamp(3.25rem, 6.5vw, 7.5rem);
   font-weight: 300;
   letter-spacing: -0.075em;
@@ -527,11 +507,10 @@
   margin: 0;
 
   color: rgba(245, 245, 240, 0.46);
-
   font-size: clamp(0.78rem, 0.85vw, 0.96rem);
   font-weight: 300;
-  letter-spacing: -0.012em;
   line-height: 1.7;
+  letter-spacing: -0.012em;
 }
 
 /* ==========================================================
@@ -540,9 +519,7 @@
 
 .work-archive__list {
   position: relative;
-
   display: grid;
-
   width: 100%;
 }
 
@@ -560,10 +537,8 @@
 
   border: 0;
   border-top: 1px solid var(--work-line);
-
   background: transparent;
   color: inherit;
-
   font: inherit;
   text-align: left;
 
@@ -582,7 +557,6 @@
   z-index: -1;
 
   background: rgba(255, 255, 255, 0.022);
-
   opacity: 0;
 
   transition: opacity 320ms ease;
@@ -608,7 +582,6 @@
 
 .work-project__number {
   color: rgba(245, 245, 240, 0.42);
-
   font-family: var(--mono, "IBM Plex Mono", ui-monospace, monospace);
   font-size: 0.66rem;
   letter-spacing: 0.12em;
@@ -618,7 +591,6 @@
   overflow: hidden;
 
   color: rgba(245, 245, 240, 0.48);
-
   font-size: clamp(1.15rem, 1.55vw, 1.85rem);
   font-weight: 300;
   letter-spacing: -0.045em;
@@ -649,7 +621,6 @@
   gap: clamp(1rem, 2vw, 2.25rem);
 
   color: rgba(245, 245, 240, 0.36);
-
   font-family: var(--mono, "IBM Plex Mono", ui-monospace, monospace);
   font-size: 0.52rem;
   font-weight: 500;
@@ -679,7 +650,6 @@
   z-index: 2;
 
   color: rgba(245, 245, 240, 0.38);
-
   font-size: 1.05rem;
   line-height: 1;
 
@@ -707,22 +677,18 @@
   z-index: 60;
 
   display: block;
-
   width: clamp(10rem, 13vw, 15rem);
   aspect-ratio: 1.45 / 1;
 
   overflow: hidden;
-
   border: 1px solid rgba(245, 245, 240, 0.1);
-
   background: #000;
 
   opacity: 0;
   transform: translate3d(0, 0.85rem, 0) scale(0.96);
+  pointer-events: none;
 
   box-shadow: 0 2rem 5rem rgba(0, 0, 0, 0.68);
-
-  pointer-events: none;
 
   transition:
     opacity 280ms ease,
@@ -731,10 +697,8 @@
 
 .work-project__preview img {
   display: block;
-
   width: 100%;
   height: 100%;
-
   object-fit: cover;
 
   filter: grayscale(1) brightness(0.72) contrast(1.08);
@@ -753,13 +717,13 @@
 }
 
 /* ==========================================================
-   DRAWER LOCK
+   DRAWER LOCK — NO DARK OVERLAY
 ========================================================== */
 
 html.work-drawer-lock,
 body.work-drawer-lock {
-  height: 100%;
   overflow: hidden;
+  height: 100%;
   overscroll-behavior: none;
 }
 
@@ -779,16 +743,24 @@ body.work-drawer-lock {
 .work-detail {
   position: fixed;
   inset: 0 0 0 auto;
+
   z-index: 2147483002;
 
   width: min(58vw, 66rem);
   min-width: 50rem;
   height: 100vh;
   height: 100dvh;
+
   padding: 0;
 
   overflow-x: hidden;
   overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-y;
+
+  scrollbar-width: thin;
+  scrollbar-color: rgba(245, 245, 240, 0.28) transparent;
 
   border: 0;
   border-left: 1px solid rgba(245, 245, 240, 0.12);
@@ -804,13 +776,6 @@ body.work-drawer-lock {
   pointer-events: none;
 
   transform: translate3d(104%, 0, 0);
-
-  overscroll-behavior: contain;
-  -webkit-overflow-scrolling: touch;
-  touch-action: pan-y;
-
-  scrollbar-width: thin;
-  scrollbar-color: rgba(245, 245, 240, 0.28) transparent;
 
   transition:
     opacity 520ms ease,
@@ -829,8 +794,8 @@ body.work-drawer-lock {
 }
 
 .work-detail::-webkit-scrollbar-thumb {
-  border-radius: 999px;
   background: rgba(245, 245, 240, 0.22);
+  border-radius: 999px;
 }
 
 .work-detail.is-open,
@@ -849,7 +814,6 @@ body.work-drawer-lock {
 
 .work-detail__inner {
   min-height: auto;
-
   padding:
     clamp(4.6rem, 7vh, 5.6rem)
     clamp(2.3rem, 4vw, 4.6rem)
@@ -901,7 +865,6 @@ body.work-drawer-lock {
   line-height: 1;
 
   cursor: pointer;
-
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
 
@@ -913,9 +876,9 @@ body.work-drawer-lock {
 
 .work-detail__close:hover,
 .work-detail__close:focus-visible {
+  color: rgba(255, 255, 255, 0.96);
   border-color: rgba(245, 245, 240, 0.2);
   background: rgba(12, 12, 12, 0.92);
-  color: rgba(255, 255, 255, 0.96);
 }
 
 /* ==========================================================
@@ -931,7 +894,6 @@ body.work-drawer-lock {
   margin: 0 0 1rem;
 
   color: rgba(245, 245, 240, 0.48);
-
   font-family: var(--mono, "IBM Plex Mono", ui-monospace, monospace);
   font-size: 0.5rem;
   font-weight: 500;
@@ -945,7 +907,6 @@ body.work-drawer-lock {
   margin: 0 0 0.95rem;
 
   color: rgba(255, 255, 255, 0.94);
-
   font-size: clamp(2.6rem, 4.1vw, 4.8rem);
   font-weight: 300;
   letter-spacing: -0.07em;
@@ -957,11 +918,10 @@ body.work-drawer-lock {
   margin: 0 0 1.4rem;
 
   color: rgba(245, 245, 240, 0.56);
-
   font-size: 0.8rem;
   font-weight: 300;
-  letter-spacing: -0.005em;
   line-height: 1.65;
+  letter-spacing: -0.005em;
 }
 
 /* ==========================================================
@@ -973,13 +933,13 @@ body.work-drawer-lock {
 
   width: 100%;
   aspect-ratio: 16 / 9;
+
   margin: 0 0 1.1rem;
 
   overflow: hidden;
 
   border: 1px solid rgba(245, 245, 240, 0.11);
   border-radius: 0.28rem;
-
   background: #030303;
 }
 
@@ -1004,14 +964,21 @@ body.work-drawer-lock {
    TESTIMONIAL + PROOF
 ========================================================== */
 
+.work-detail__mid {
+  display: grid;
+  grid-template-columns: minmax(14rem, 0.8fr) minmax(18rem, 1.2fr);
+  gap: 1rem;
+
+  margin-bottom: 1.1rem;
+}
+
 .work-detail__testimonial {
   position: relative;
 
-  margin: 0 0 1.1rem;
+  margin: 0;
   padding: 1.05rem 1.15rem;
 
   border: 1px solid rgba(245, 245, 240, 0.1);
-
   background: rgba(255, 255, 255, 0.012);
 }
 
@@ -1022,7 +989,6 @@ body.work-drawer-lock {
   left: 0.85rem;
 
   color: rgba(245, 245, 240, 0.14);
-
   font-family: Georgia, serif;
   font-size: 2.55rem;
   line-height: 1;
@@ -1036,11 +1002,10 @@ body.work-drawer-lock {
   position: relative;
   z-index: 1;
 
-  max-width: 28rem;
+  max-width: 22rem;
   margin: 0 0 0 1.05rem;
 
   color: rgba(245, 245, 240, 0.74);
-
   font-family: Georgia, "Times New Roman", serif;
   font-size: clamp(0.84rem, 0.95vw, 1.04rem);
   font-style: normal;
@@ -1063,13 +1028,11 @@ body.work-drawer-lock {
 
 .work-detail__client span {
   color: rgba(245, 245, 240, 0.74);
-
   font-size: 0.6rem;
 }
 
 .work-detail__client small {
   color: rgba(245, 245, 240, 0.38);
-
   font-family: var(--mono, "IBM Plex Mono", ui-monospace, monospace);
   font-size: 0.4rem;
   letter-spacing: 0.06em;
@@ -1085,13 +1048,11 @@ body.work-drawer-lock {
   margin: 0 0 1.1rem;
 
   border: 1px solid rgba(245, 245, 240, 0.09);
-
   background: rgba(255, 255, 255, 0.01);
 }
 
 .work-detail__block {
   padding: 0.95rem 1.05rem;
-
   border: 0;
   border-left: 1px solid rgba(245, 245, 240, 0.08);
   border-top: 1px solid rgba(245, 245, 240, 0.08);
@@ -1106,15 +1067,10 @@ body.work-drawer-lock {
   border-left: 0;
 }
 
-.work-detail__block:has(.work-detail__list) {
-  grid-column: 1 / -1;
-}
-
 .work-detail__label {
   margin: 0 0 0.52rem;
 
   color: rgba(245, 245, 240, 0.4);
-
   font-family: var(--mono, "IBM Plex Mono", ui-monospace, monospace);
   font-size: 0.43rem;
   font-weight: 600;
@@ -1128,10 +1084,13 @@ body.work-drawer-lock {
   margin: 0;
 
   color: rgba(245, 245, 240, 0.52);
-
   font-size: 0.64rem;
   font-weight: 300;
   line-height: 1.58;
+}
+
+.work-detail__block:has(.work-detail__list) {
+  grid-column: 1 / -1;
 }
 
 .work-detail__list {
@@ -1141,13 +1100,11 @@ body.work-drawer-lock {
 
   margin: 0;
   padding: 0;
-
   list-style: none;
 }
 
 .work-detail__list li {
   color: rgba(245, 245, 240, 0.52);
-
   font-size: 0.6rem;
   font-weight: 300;
   line-height: 1.4;
@@ -1156,6 +1113,66 @@ body.work-drawer-lock {
 .work-detail__list li::before {
   content: "• ";
   color: rgba(245, 245, 240, 0.42);
+}
+
+/* ==========================================================
+   OPTIONAL METRICS
+========================================================== */
+
+.work-detail__metrics {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+
+  margin: 0 0 1.1rem;
+
+  border: 1px solid rgba(245, 245, 240, 0.09);
+  background: rgba(255, 255, 255, 0.01);
+}
+
+.work-metric {
+  padding: 0.95rem;
+  border-left: 1px solid rgba(245, 245, 240, 0.08);
+}
+
+.work-metric:first-child {
+  border-left: 0;
+}
+
+.work-metric strong {
+  display: block;
+  margin-bottom: 0.25rem;
+
+  color: rgba(255, 255, 255, 0.9);
+  font-size: clamp(1.2rem, 1.45vw, 1.7rem);
+  font-weight: 300;
+  letter-spacing: -0.05em;
+  line-height: 1;
+}
+
+.work-metric span {
+  display: block;
+
+  color: rgba(245, 245, 240, 0.38);
+  font-family: var(--mono, "IBM Plex Mono", ui-monospace, monospace);
+  font-size: 0.4rem;
+  font-weight: 500;
+  letter-spacing: 0.13em;
+  line-height: 1.35;
+  text-transform: uppercase;
+}
+
+.work-metric svg {
+  display: block;
+  width: 100%;
+  height: 2.4rem;
+  margin-top: 0.7rem;
+  color: rgba(245, 245, 240, 0.72);
+}
+
+.work-metric svg path,
+.work-metric svg line,
+.work-metric svg circle {
+  vector-effect: non-scaling-stroke;
 }
 
 /* ==========================================================
@@ -1206,7 +1223,7 @@ body.work-drawer-lock {
 }
 
 /* ==========================================================
-   PROJECT CHANGE STATE
+   CHANGE STATE
 ========================================================== */
 
 .work-detail.is-changing .work-detail__title,
@@ -1248,6 +1265,7 @@ body.work-drawer-lock {
 }
 
 @media (max-width: 1180px) {
+  .work-reveal-preview__shell,
   .work-archive__shell {
     width: min(60rem, calc(100% - 3rem));
   }
@@ -1268,39 +1286,12 @@ body.work-drawer-lock {
 }
 
 @media (max-width: 900px) {
-  .work-reveal-preview__system {
-    width: 82vw;
-    height: 54vw;
-  }
-
-  .work-reveal-preview__copy {
-    left: 24px;
-    right: 24px;
-    bottom: 96px;
-  }
-
-  .work-reveal-preview__signals {
-    left: 24px;
-    right: 24px;
-    bottom: 28px;
-
-    align-items: flex-start;
-  }
-
-  .work-reveal-preview__signals span {
-    width: 100%;
-    min-width: 0;
-
-    text-align: left;
-  }
-
   .work-trust {
     min-height: auto;
   }
 
   .work-trust__sticky {
     position: relative;
-
     height: auto;
     min-height: 100vh;
     padding: 6rem 1rem 5rem;
@@ -1310,7 +1301,6 @@ body.work-drawer-lock {
     position: relative;
     left: auto;
     top: auto;
-
     margin-bottom: 2rem;
 
     font-size: clamp(4rem, 18vw, 7rem);
@@ -1321,33 +1311,31 @@ body.work-drawer-lock {
     position: relative;
     right: auto;
     top: auto;
-
     width: min(24rem, 100%);
     margin-bottom: 2rem;
   }
 
   .work-trust__track {
     position: relative;
-    inset: auto;
+    left: auto;
+    top: auto;
 
     display: grid;
     gap: 1rem;
 
     width: 100%;
-    height: auto;
-
-    perspective: none;
+    transform: none !important;
   }
 
   .work-trust-card {
-    position: relative;
-    left: auto;
-    top: auto;
-
     width: 100%;
     min-height: 18rem;
+    margin-top: 0 !important;
+    transform: none;
+  }
 
-    transform: none !important;
+  .work-detail__mid {
+    grid-template-columns: 1fr;
   }
 
   .work-detail__proof-grid {
@@ -1364,14 +1352,29 @@ body.work-drawer-lock {
   .work-detail__block:first-child {
     border-top: 0;
   }
+
+  .work-detail__metrics {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .work-metric {
+    border-left: 0;
+    border-top: 1px solid rgba(245, 245, 240, 0.08);
+  }
+
+  .work-metric:first-child {
+    border-top: 0;
+  }
 }
 
 @media (max-width: 760px) {
+  .work-reveal-preview__shell,
   .work-archive__shell {
     width: calc(100% - 2rem);
     padding: 5rem 0 3rem;
   }
 
+  .work-reveal-preview__title,
   .work-archive__title {
     font-size: clamp(3rem, 14vw, 5rem);
   }
@@ -1391,10 +1394,8 @@ body.work-drawer-lock {
 
   .work-detail {
     inset: 0;
-
     width: 100vw;
     min-width: 0;
-
     transform: translate3d(0, 104%, 0);
   }
 
@@ -1424,6 +1425,10 @@ body.work-drawer-lock {
     aspect-ratio: 4 / 3;
   }
 
+  .work-detail__metrics {
+    grid-template-columns: 1fr;
+  }
+
   .work-detail__nav {
     flex-direction: column;
   }
@@ -1434,7 +1439,6 @@ body.work-drawer-lock {
 ========================================================== */
 
 @media (prefers-reduced-motion: reduce) {
-  .work-reveal-preview,
   .work-project,
   .work-project::before,
   .work-project__name,
@@ -1447,8 +1451,722 @@ body.work-drawer-lock {
   .work-detail__nav button,
   .work-trust__track,
   .work-trust-card {
+    transition: none;
+    animation: none;
+    transform: none !important;
+  }
+}
+
+
+/* ==========================================================
+   FIX — INDIVIDUAL FLYING TRUST CARDS
+   Makes cards move independently instead of one rigid track.
+========================================================== */
+
+.work-trust__track {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+
+  display: block;
+  width: 100%;
+  height: 100%;
+
+  transform: none !important;
+  pointer-events: none;
+}
+
+.work-trust-card {
+  position: absolute;
+  left: 0;
+  top: 38vh;
+
+  width: clamp(18rem, 22vw, 26rem);
+  min-height: clamp(20rem, 42vh, 29rem);
+
+  pointer-events: auto;
+  will-change: transform;
+  transform-style: preserve-3d;
+
+  transition: none;
+}
+
+.work-trust-card:nth-child(1),
+.work-trust-card:nth-child(2),
+.work-trust-card:nth-child(3),
+.work-trust-card:nth-child(4) {
+  margin-top: 0 !important;
+}
+
+/* card depth like Noomo */
+.work-trust-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+
+  border-radius: inherit;
+  background: rgba(255, 255, 255, 0.04);
+  transform: translate3d(0.45rem, 0.45rem, -1px);
+  filter: blur(0.2px);
+}
+
+/* make background headline sit behind cards */
+.work-trust__bg-text {
+  z-index: 1;
+}
+
+.work-trust__copy {
+  z-index: 20;
+}
+
+/* keep mobile simple */
+@media (max-width: 900px) {
+  .work-trust__track {
+    position: relative;
+    inset: auto;
+
+    display: grid;
+    gap: 1rem;
+
+    height: auto;
+  }
+
+  .work-trust-card {
+    position: relative;
+    top: auto;
+    left: auto;
+
+    width: 100%;
+    min-height: 18rem;
+
+    transform: none !important;
+  }
+}
+
+
+@media (min-width: 901px) {
+  .work-trust__track {
+    position: absolute !important;
+    inset: 0 !important;
+    display: block !important;
+    width: 100% !important;
+    height: 100% !important;
+    transform: none !important;
+    pointer-events: none !important;
+  }
+
+  .work-trust-card {
+    position: absolute !important;
+    left: 0 !important;
+    top: 38vh !important;
+    margin-top: 0 !important;
+    pointer-events: auto !important;
+    will-change: transform, opacity !important;
+    transition: none !important;
+  }
+}
+
+
+
+
+/* ==========================================================
+   BIM TRUST BRIDGE — CLEAN REBUILD
+   No old .work-trust conflicts. No GSAP needed.
+========================================================== */
+
+.bim-trust {
+  position: relative;
+  z-index: 3;
+  min-height: 320vh;
+  overflow: clip;
+  background: #000;
+  color: #f4f1ea;
+  font-family: inherit;
+}
+
+.bim-trust__sticky {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 68% 55%, rgba(255, 255, 255, 0.055), transparent 26rem),
+    radial-gradient(circle at 22% 34%, rgba(255, 255, 255, 0.035), transparent 22rem),
+    #000;
+}
+
+.bim-trust__headline {
+  position: absolute;
+  left: clamp(1.1rem, 2.2vw, 2.6rem);
+  top: 15vh;
+  z-index: 1;
+
+  margin: 0;
+
+  color: rgba(255, 255, 255, 0.92);
+  font-size: clamp(4.4rem, 9.2vw, 12rem);
+  font-weight: 300;
+  letter-spacing: -0.085em;
+  line-height: 0.84;
+  white-space: nowrap;
+
+  pointer-events: none;
+  user-select: none;
+  will-change: transform, opacity;
+}
+
+.bim-trust__copy {
+  position: absolute;
+  right: clamp(1.2rem, 4vw, 4.4rem);
+  top: 27vh;
+  z-index: 30;
+
+  width: min(21.5rem, 32vw);
+
+  will-change: transform, opacity;
+}
+
+.bim-trust__copy p {
+  margin: 0;
+  color: rgba(245, 245, 240, 0.62);
+  font-size: clamp(0.78rem, 0.88vw, 0.98rem);
+  font-weight: 300;
+  line-height: 1.58;
+  letter-spacing: -0.018em;
+}
+
+.bim-trust__stage {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+
+  pointer-events: none;
+  perspective: 1000px;
+  transform-style: preserve-3d;
+}
+
+.bim-trust-card {
+  position: absolute;
+  left: 0;
+  top: 39vh;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  width: clamp(18rem, 22vw, 26rem);
+  min-height: clamp(19rem, 41vh, 28rem);
+  padding: clamp(1.45rem, 2vw, 2.15rem);
+
+  border: 1px solid rgba(245, 245, 240, 0.13);
+  border-radius: 0.42rem;
+
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.032)),
+    rgba(255, 255, 255, 0.055);
+
+  box-shadow:
+    0 2rem 5rem rgba(0, 0, 0, 0.55),
+    inset 0 1px 0 rgba(255, 255, 255, 0.13);
+
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+
+  opacity: 0;
+  pointer-events: auto;
+  will-change: transform, opacity;
+  transform-style: preserve-3d;
+}
+
+.bim-trust-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+
+  border-radius: inherit;
+  background: rgba(0, 0, 0, 0.18);
+  filter: blur(1rem);
+}
+
+.bim-trust-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+
+  border-radius: inherit;
+  background: rgba(255, 255, 255, 0.04);
+  transform: translate3d(0.45rem, 0.45rem, -1px);
+}
+
+.bim-trust-card__logo {
+  margin: 0 0 2rem;
+
+  color: rgba(255, 255, 255, 0.92);
+  font-size: clamp(1.2rem, 1.6vw, 2rem);
+  font-weight: 600;
+  letter-spacing: -0.055em;
+  line-height: 1;
+}
+
+.bim-trust-card blockquote {
+  margin: 0;
+
+  color: rgba(245, 245, 240, 0.74);
+  font-size: clamp(0.88rem, 1vw, 1.12rem);
+  font-weight: 300;
+  line-height: 1.5;
+  letter-spacing: -0.025em;
+}
+
+.bim-trust-card footer {
+  display: grid;
+  gap: 0.35rem;
+  margin-top: 2rem;
+}
+
+.bim-trust-card strong {
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.bim-trust-card span {
+  color: rgba(245, 245, 240, 0.39);
+  font-size: 0.68rem;
+  font-weight: 300;
+  line-height: 1.35;
+}
+
+.bim-trust::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  bottom: -1px;
+  left: 0;
+
+  height: 20rem;
+  background: linear-gradient(to bottom, transparent, #000);
+  pointer-events: none;
+}
+
+@media (max-width: 900px) {
+  .bim-trust {
+    min-height: auto;
+  }
+
+  .bim-trust__sticky {
+    position: relative;
+    height: auto;
+    min-height: 100vh;
+    padding: 6rem 1rem 5rem;
+  }
+
+  .bim-trust__headline {
+    position: relative;
+    left: auto;
+    top: auto;
+
+    margin-bottom: 2rem;
+
+    font-size: clamp(4rem, 18vw, 7rem);
+    white-space: normal;
+  }
+
+  .bim-trust__copy {
+    position: relative;
+    right: auto;
+    top: auto;
+
+    width: min(24rem, 100%);
+    margin-bottom: 2rem;
+  }
+
+  .bim-trust__stage {
+    position: relative;
+    inset: auto;
+
+    display: grid;
+    gap: 1rem;
+
+    perspective: none;
+  }
+
+  .bim-trust-card {
+    position: relative;
+    left: auto;
+    top: auto;
+
+    width: 100%;
+    min-height: 18rem;
+
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bim-trust-card,
+  .bim-trust__headline,
+  .bim-trust__copy {
     transition: none !important;
     animation: none !important;
     transform: none !important;
+  }
+}
+
+
+
+.bim-trust {
+  min-height: 380vh;
+}
+
+.bim-trust__stage {
+  perspective: 1200px;
+  transform-style: preserve-3d;
+}
+
+@media (max-width: 900px) {
+  .bim-trust {
+    min-height: auto;
+  }
+}
+
+
+
+
+/* ==========================================================
+   TIGHTER NOOMO-LIKE CARD PACKING
+========================================================== */
+
+.bim-trust {
+  min-height: 340vh;
+}
+
+.bim-trust-card {
+  width: clamp(16.5rem, 18.5vw, 21.5rem);
+  min-height: clamp(18rem, 38vh, 25rem);
+}
+
+.bim-trust__stage {
+  perspective: 1200px;
+  transform-style: preserve-3d;
+}
+
+@media (max-width: 900px) {
+  .bim-trust {
+    min-height: auto;
+  }
+
+  .bim-trust-card {
+    width: 100%;
+    min-height: 18rem;
+  }
+}
+
+
+
+
+/* ==========================================================
+   TRUST CARDS — REAL FLOW, NO FADE
+========================================================== */
+
+.bim-trust {
+  min-height: 390vh;
+  overflow: clip;
+}
+
+.bim-trust__stage {
+  perspective: 1200px;
+  transform-style: preserve-3d;
+  overflow: visible;
+}
+
+.bim-trust-card {
+  opacity: 1;
+  will-change: transform;
+  backface-visibility: hidden;
+}
+
+
+
+
+
+/* ==========================================================
+   TRUST CARDS — BIGGER / HIGHER / SLOWER FLOW
+========================================================== */
+
+.bim-trust {
+  min-height: 460vh;
+  overflow: clip;
+}
+
+.bim-trust__stage {
+  perspective: 1200px;
+  transform-style: preserve-3d;
+  overflow: visible;
+}
+
+.bim-trust-card {
+  width: clamp(20rem, 25vw, 30rem);
+  min-height: clamp(22rem, 45vh, 32rem);
+
+  opacity: 1;
+  will-change: transform;
+  backface-visibility: hidden;
+}
+
+@media (max-width: 900px) {
+  .bim-trust {
+    min-height: auto;
+  }
+
+  .bim-trust-card {
+    width: 100%;
+    min-height: 18rem;
+  }
+}
+
+
+
+
+
+/* ======================================================
+   SAFE PATCH — PROCESS → WORK TRANSITION LAYER ONLY
+   Add this at the VERY BOTTOM of sections/our-work.css
+   Do not replace the full CSS file.
+====================================================== */
+
+.process-world-inside {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+/* Keep hidden unless process JS turns it on */
+.work-reveal-preview {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+
+  background:
+    radial-gradient(circle at 50% 48%, rgba(255, 255, 255, 0.08), transparent 34%),
+    radial-gradient(circle at 50% 62%, rgba(255, 255, 255, 0.035), transparent 48%),
+    #000;
+
+  color: #fff;
+  opacity: 0;
+  transform: scale(0.96);
+  transition:
+    opacity 700ms ease,
+    transform 900ms cubic-bezier(.16, 1, .3, 1);
+}
+
+/* These are the only two reveal hooks */
+.process-3d.is-work-reveal .work-reveal-preview,
+.process-world-inside.is-active .work-reveal-preview {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.work-reveal-preview__field {
+  position: absolute;
+  inset: 12vh 10vw;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 999px;
+  opacity: 0.6;
+}
+
+.work-reveal-preview__field::before,
+.work-reveal-preview__field::after {
+  content: "";
+  position: absolute;
+  border: 1px solid rgba(255, 255, 255, 0.055);
+  border-radius: inherit;
+}
+
+.work-reveal-preview__field::before {
+  inset: 14%;
+}
+
+.work-reveal-preview__field::after {
+  inset: 29%;
+  opacity: 0.7;
+}
+
+.work-reveal-preview__system {
+  position: relative;
+  width: min(52vw, 760px);
+  height: min(34vw, 420px);
+}
+
+.work-node {
+  position: absolute;
+  width: clamp(58px, 6vw, 104px);
+  height: clamp(58px, 6vw, 104px);
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  border-radius: 999px;
+  background:
+    radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.22), transparent 7%),
+    radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.08), transparent 42%);
+  box-shadow:
+    0 0 42px rgba(255, 255, 255, 0.06),
+    inset 0 0 32px rgba(255, 255, 255, 0.035);
+}
+
+.work-node::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 4px;
+  height: 4px;
+  border-radius: 999px;
+  background: #fff;
+  opacity: 0.9;
+  transform: translate(-50%, -50%);
+}
+
+.work-node--one {
+  left: 4%;
+  top: 46%;
+}
+
+.work-node--two {
+  left: 34%;
+  top: 16%;
+}
+
+.work-node--three {
+  right: 25%;
+  bottom: 14%;
+}
+
+.work-node--four {
+  right: 2%;
+  top: 38%;
+}
+
+.work-line {
+  position: absolute;
+  height: 1px;
+  transform-origin: left center;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.5),
+    transparent
+  );
+  opacity: 0.42;
+}
+
+.work-line--one {
+  left: 13%;
+  top: 52%;
+  width: 32%;
+  transform: rotate(-24deg);
+}
+
+.work-line--two {
+  left: 42%;
+  top: 31%;
+  width: 28%;
+  transform: rotate(31deg);
+}
+
+.work-line--three {
+  right: 9%;
+  top: 53%;
+  width: 31%;
+  transform: rotate(-18deg);
+}
+
+.work-reveal-preview__copy {
+  position: absolute;
+  left: clamp(24px, 7vw, 110px);
+  bottom: clamp(34px, 8vh, 92px);
+  max-width: 460px;
+}
+
+.work-reveal-preview__kicker {
+  margin: 0 0 14px;
+  color: rgba(255, 255, 255, 0.44);
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.work-reveal-preview__statement {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.92);
+  font-family: "Manrope", system-ui, sans-serif;
+  font-size: clamp(34px, 5vw, 82px);
+  font-weight: 400;
+  letter-spacing: -0.07em;
+  line-height: 0.94;
+}
+
+.work-reveal-preview__signals {
+  position: absolute;
+  right: clamp(24px, 7vw, 110px);
+  bottom: clamp(38px, 8vh, 96px);
+
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 10px;
+
+  color: rgba(255, 255, 255, 0.42);
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.work-reveal-preview__signals span {
+  display: block;
+  min-width: 160px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  text-align: right;
+}
+
+@media (max-width: 800px) {
+  .work-reveal-preview__system {
+    width: 82vw;
+    height: 54vw;
+  }
+
+  .work-reveal-preview__copy {
+    left: 24px;
+    right: 24px;
+    bottom: 96px;
+  }
+
+  .work-reveal-preview__signals {
+    left: 24px;
+    right: 24px;
+    bottom: 28px;
+    align-items: flex-start;
+  }
+
+  .work-reveal-preview__signals span {
+    width: 100%;
+    min-width: 0;
+    text-align: left;
   }
 }
