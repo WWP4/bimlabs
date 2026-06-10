@@ -1753,3 +1753,42 @@ body.work-drawer-lock {
   will-change: transform;
   backface-visibility: hidden;
 }
+
+
+
+
+
+/* ==========================================================
+   TRUST CARDS — BIGGER / HIGHER / SLOWER FLOW
+========================================================== */
+
+.bim-trust {
+  min-height: 460vh;
+  overflow: clip;
+}
+
+.bim-trust__stage {
+  perspective: 1200px;
+  transform-style: preserve-3d;
+  overflow: visible;
+}
+
+.bim-trust-card {
+  width: clamp(20rem, 25vw, 30rem);
+  min-height: clamp(22rem, 45vh, 32rem);
+
+  opacity: 1;
+  will-change: transform;
+  backface-visibility: hidden;
+}
+
+@media (max-width: 900px) {
+  .bim-trust {
+    min-height: auto;
+  }
+
+  .bim-trust-card {
+    width: 100%;
+    min-height: 18rem;
+  }
+}
