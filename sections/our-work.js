@@ -274,97 +274,90 @@ function setupWorkTrustScroll() {
   }
 
   /*
-    REAL NOOMO-STYLE FLOW:
-    - Cards start offscreen/bottom-right
-    - They travel through the visible section
-    - They exit offscreen/left
-    - No fading
-    - Scroll up reverses the exact same path
+    BIM TRUST FLOW:
+    - Bigger cards
+    - Higher in viewport
+    - Slower eased movement
+    - No zooming / pulsing
+    - Enters from bottom-right abyss
+    - Exits fully into left abyss
   */
 
   const cardSettings = [
     {
-      startX: 112,
-      midX: 45,
-      endX: -36,
+      startX: 118,
+      midX: 46,
+      endX: -58,
 
-      startY: 38,
-      peakY: 13,
-      endY: 28,
+      startY: 25,
+      peakY: 4,
+      endY: 18,
 
-      startRotate: 9,
+      startRotate: 8,
       midRotate: -2,
-      endRotate: -8,
+      endRotate: -9,
 
-      startScale: 0.98,
-      midScale: 1.03,
-      endScale: 0.99,
+      scale: 1,
 
-      delay: 0.00,
-      span: 0.82,
+      delay: 0.0,
+      span: 0.92,
       depth: 0
     },
     {
-      startX: 128,
+      startX: 136,
       midX: 58,
-      endX: -22,
+      endX: -46,
 
-      startY: 29,
-      peakY: 2,
-      endY: 17,
+      startY: 17,
+      peakY: -5,
+      endY: 9,
 
-      startRotate: 6,
-      midRotate: 1.5,
-      endRotate: -5,
+      startRotate: 5,
+      midRotate: 1,
+      endRotate: -6,
 
-      startScale: 0.96,
-      midScale: 1,
-      endScale: 0.97,
+      scale: 1,
 
       delay: 0.06,
-      span: 0.82,
+      span: 0.92,
       depth: 18
     },
     {
-      startX: 146,
+      startX: 154,
       midX: 70,
-      endX: -8,
+      endX: -34,
 
-      startY: 31,
-      peakY: 0,
-      endY: 15,
+      startY: 18,
+      peakY: -7,
+      endY: 8,
 
-      startRotate: 4,
+      startRotate: 3,
       midRotate: -1,
-      endRotate: -4,
+      endRotate: -5,
 
-      startScale: 0.98,
-      midScale: 1.04,
-      endScale: 0.99,
+      scale: 1,
 
       delay: 0.12,
-      span: 0.82,
-      depth: 34
+      span: 0.92,
+      depth: 32
     },
     {
-      startX: 164,
+      startX: 172,
       midX: 82,
-      endX: 6,
+      endX: -22,
 
-      startY: 39,
-      peakY: 12,
-      endY: 25,
+      startY: 25,
+      peakY: 3,
+      endY: 16,
 
-      startRotate: 8,
+      startRotate: 7,
       midRotate: 2,
-      endRotate: -2,
+      endRotate: -3,
 
-      startScale: 0.94,
-      midScale: 0.99,
-      endScale: 0.96,
+      scale: 1,
 
       delay: 0.18,
-      span: 0.82,
+      span: 0.92,
       depth: 10
     }
   ];
@@ -418,14 +411,7 @@ function setupWorkTrustScroll() {
         t
       );
 
-      const scale = bezier3(
-        s.startScale,
-        s.midScale,
-        s.endScale,
-        t
-      );
-
-      const float = Math.sin(progress * Math.PI * 2 + index * 0.85) * 0.38;
+      const float = Math.sin(progress * Math.PI * 2 + index * 0.85) * 0.22;
 
       card.style.opacity = "1";
       card.style.visibility = "visible";
@@ -434,26 +420,30 @@ function setupWorkTrustScroll() {
       card.style.transform = `
         translate3d(${x}vw, calc(${y}vh + ${float}rem), ${s.depth}px)
         rotate(${rotate}deg)
-        scale(${scale})
+        scale(${s.scale})
       `;
     });
 
     if (headline) {
-      headline.style.opacity = String(lerp(0.92, 0.48, progress));
-      headline.style.transform = `translate3d(0, ${lerp(0, -4, progress)}vh, 0)`;
+      headline.style.opacity = String(lerp(0.92, 0.5, progress));
+      headline.style.transform = `translate3d(0, ${lerp(0, -3.5, progress)}vh, 0)`;
     }
 
     if (copy) {
-      copy.style.opacity = String(lerp(1, 0.72, progress));
-      copy.style.transform = `translate3d(0, ${lerp(0, -2.2, progress)}vh, 0)`;
+      copy.style.opacity = String(lerp(1, 0.76, progress));
+      copy.style.transform = `translate3d(0, ${lerp(0, -1.8, progress)}vh, 0)`;
     }
   }
 
   function animate() {
-    currentProgress = lerp(currentProgress, targetProgress, 0.065);
+    /*
+      Smaller number = slower/smoother catch-up.
+      Previous was faster. This feels heavier and more premium.
+    */
+    currentProgress = lerp(currentProgress, targetProgress, 0.045);
     render(currentProgress);
 
-    if (Math.abs(targetProgress - currentProgress) > 0.0005) {
+    if (Math.abs(targetProgress - currentProgress) > 0.0004) {
       raf = window.requestAnimationFrame(animate);
     } else {
       currentProgress = targetProgress;
