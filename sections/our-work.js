@@ -1,121 +1,19 @@
 /* ==========================================================
    BIM LABS STUDIO — OUR WORK
-   Trust cards + inline archive expand
-   No drawer. No overlay. No scroll lock.
+   Trust bridge + clean archive
+   - Injects section before archive
+   - Flying cards on scroll
+   - Clean <details> archive rows
+   - No drawer
+   - No overlay
+   - No body scroll lock
 ========================================================== */
 
 (() => {
   "use strict";
 
-  const projects = [
-    {
-      number: "01",
-      type: "Client Portal",
-      year: "2024",
-      title: "Wonder World Portal",
-      image: "assets/showcase/project-portal.png",
-      description:
-        "A private operating layer built to organize quotes, products, lead flow, installer coordination, and customer-facing resources.",
-      constraint:
-        "Wonder World needed one cleaner place to manage quote requests, product information, project details, and customer-facing resources.",
-      solution:
-        "We brought the core sales and project workflow into a more usable digital layer with clearer structure and less friction.",
-      result:
-        "The business gained a stronger operating system for managing project information and presenting the offer more professionally.",
-      services: [
-        "Client portal architecture",
-        "Product and quote system",
-        "Installer finder workflow",
-        "CRM and internal dashboard",
-        "Frontend design and development"
-      ],
-      review:
-        "The portal made our process feel organized, easier to manage, and easier to present to customers.",
-      client: "Wonder World Playsets",
-      role: "Commercial playground distributor"
-    },
-    {
-      number: "02",
-      type: "Sports Platform",
-      year: "2024",
-      title: "Momentum Athlete",
-      image: "assets/showcase/momentum.png",
-      description:
-        "A sharper digital platform for athlete performance, training resources, course access, and brand presentation.",
-      constraint:
-        "Momentum Athlete needed the platform to feel more serious, structured, and easier for athletes and partners to understand.",
-      solution:
-        "We shaped a cleaner experience with stronger hierarchy, clearer presentation, and a more polished digital direction.",
-      result:
-        "The platform became easier to understand and felt more credible from the first impression.",
-      services: [
-        "Platform experience direction",
-        "Course system structure",
-        "Landing page design",
-        "Stripe payment flow",
-        "Frontend build support"
-      ],
-      review:
-        "The platform finally felt clear, premium, and easier to present to partners.",
-      client: "Momentum Athlete",
-      role: "Athlete performance platform"
-    },
-    {
-      number: "03",
-      type: "AI Platform",
-      year: "2023",
-      title: "Orynd AI",
-      image: "assets/showcase/orynd-ai.png",
-      description:
-        "A focused AI product presence built around clarity, positioning, and interface structure.",
-      constraint:
-        "The product idea was complex and needed to feel credible, clear, and easier to trust without overwhelming the user.",
-      solution:
-        "We simplified the product narrative and shaped the interface around positioning, trust, and direct next steps.",
-      result:
-        "The platform became easier to explain and more ready for real users.",
-      services: [
-        "AI product positioning",
-        "Brand direction",
-        "Website interface",
-        "Product narrative",
-        "Conversion-focused layout"
-      ],
-      review:
-        "The site made the product easier to explain without making the idea feel smaller.",
-      client: "Orynd AI",
-      role: "AI platform"
-    },
-    {
-      number: "04",
-      type: "Interactive System",
-      year: "2024",
-      title: "3D Install Tool",
-      image: "assets/showcase/3d-install-tool.png",
-      description:
-        "A visual system built to make complex installation planning easier to understand through a cleaner interactive preview layer.",
-      constraint:
-        "The workflow needed a more visual way to explain installation details without overwhelming the customer or relying only on static notes.",
-      solution:
-        "We shaped the experience around a clearer visual preview, simplified interface structure, and more direct project understanding.",
-      result:
-        "The tool made the project feel easier to understand, easier to explain, and more polished from the first interaction.",
-      services: [
-        "3D visual direction",
-        "Interactive interface structure",
-        "Project preview system",
-        "Frontend implementation",
-        "UX simplification"
-      ],
-      review:
-        "The visual tool made the project easier to explain and easier for people to understand quickly.",
-      client: "BIM Labs Studio",
-      role: "Interactive project system"
-    }
-  ];
-
-  const root = document.querySelector(".work-archive");
-  if (!root) return;
+  const archive = document.querySelector(".work-archive");
+  if (!archive) return;
 
   const prefersReducedMotion = window.matchMedia(
     "(prefers-reduced-motion: reduce)"
@@ -123,7 +21,36 @@
 
   const mobileQuery = window.matchMedia("(max-width: 900px)");
 
-  let activeIndex = 0;
+  const projects = [
+    {
+      number: "01",
+      client: "Wonder World Playsets",
+      title: "Wonder World Portal",
+      type: "Portal / CRM / Quote Flow",
+      year: "2024"
+    },
+    {
+      number: "02",
+      client: "Momentum Athlete",
+      title: "Momentum Athlete",
+      type: "Web / Courses / Stripe",
+      year: "2024"
+    },
+    {
+      number: "03",
+      client: "Orynd AI",
+      title: "Orynd AI",
+      type: "Brand / Product / UX",
+      year: "2023"
+    },
+    {
+      number: "04",
+      client: "BIM Labs Studio",
+      title: "3D Install Tool",
+      type: "3D / Visual Tool / UX",
+      year: "2024"
+    }
+  ];
 
   function clamp(value, min, max) {
     return Math.min(Math.max(value, min), max);
@@ -133,8 +60,16 @@
     return start + (end - start) * amount;
   }
 
-  function clampIndex(index) {
-    return (index + projects.length) % projects.length;
+  function easeInOutCubic(value) {
+    return value < 0.5
+      ? 4 * value * value * value
+      : 1 - Math.pow(-2 * value + 2, 3) / 2;
+  }
+
+  function bezier3(p0, p1, p2, t) {
+    const a = lerp(p0, p1, t);
+    const b = lerp(p1, p2, t);
+    return lerp(a, b, t);
   }
 
   function escapeHtml(value = "") {
@@ -147,67 +82,64 @@
   }
 
   /* ==========================================================
-     TRUST BRIDGE
+     TRUST BRIDGE INJECTION
   ========================================================== */
 
   function injectTrustBridge() {
-    document.querySelector(".work-trust")?.remove();
+    const oldTrust =
+      document.querySelector(".bim-trust") ||
+      document.querySelector(".work-trust");
 
-    if (document.querySelector(".bim-trust")) return;
+    if (oldTrust) oldTrust.remove();
 
     const section = document.createElement("section");
-    section.className = "bim-trust";
+    section.className = "work-trust";
     section.setAttribute("aria-label", "Client trust");
 
     const cards = projects
-      .map((project, index) => {
+      .map((project) => {
         return `
-          <article class="bim-trust-card" data-bim-trust-card="${index}">
-            <p class="bim-trust-card__logo">${escapeHtml(project.client)}</p>
-
-            <blockquote>
-              “${escapeHtml(project.review)}”
-            </blockquote>
-
-            <footer>
-              <strong>${escapeHtml(project.title)}</strong>
-              <span>${escapeHtml(project.role)}</span>
-            </footer>
+          <article class="work-trust-card" data-trust-card>
+            <span>${escapeHtml(project.number)}</span>
+            <strong>${escapeHtml(project.client)}</strong>
+            <p>${escapeHtml(project.type)}</p>
           </article>
         `;
       })
       .join("");
 
     section.innerHTML = `
-      <div class="bim-trust__sticky">
-        <h2 class="bim-trust__headline" aria-hidden="true">
-          GOOD WORK<br>
-          IS BUILT<br>
-          WITH TRUST.
-        </h2>
+      <div class="work-trust__sticky">
+        <div class="work-trust__copy">
+          <p class="work-trust__kicker">Client trust</p>
 
-        <div class="bim-trust__copy">
+          <h2>
+            Real work should feel clear before it ever feels loud.
+          </h2>
+
           <p>
-            We build with clients who need more than a nice-looking website.
-            They need clearer systems, sharper presentation, and digital work
-            that makes the business easier to understand.
+            Before the archive, project signals move through the frame —
+            proof that the work is built around systems, outcomes, and trust.
           </p>
         </div>
 
-        <div class="bim-trust__stage">
+        <div class="work-trust__stage" aria-hidden="true">
           ${cards}
         </div>
       </div>
     `;
 
-    root.parentNode.insertBefore(section, root);
+    archive.parentNode.insertBefore(section, archive);
   }
 
-  function setupWorkTrustScroll() {
-    const section = document.querySelector(".bim-trust");
-    const cards = Array.from(document.querySelectorAll("[data-bim-trust-card]"));
-    const headline = document.querySelector(".bim-trust__headline");
-    const copy = document.querySelector(".bim-trust__copy");
+  /* ==========================================================
+     TRUST CARD SCROLL ANIMATION
+  ========================================================== */
+
+  function setupTrustCards() {
+    const section = document.querySelector(".work-trust");
+    const cards = Array.from(document.querySelectorAll("[data-trust-card]"));
+    const copy = document.querySelector(".work-trust__copy");
 
     if (!section || !cards.length) return;
 
@@ -217,11 +149,6 @@
         card.style.visibility = "visible";
         card.style.transform = "none";
       });
-
-      if (headline) {
-        headline.style.opacity = "";
-        headline.style.transform = "";
-      }
 
       if (copy) {
         copy.style.opacity = "";
@@ -234,59 +161,63 @@
     const cardSettings = [
       {
         startX: 118,
-        midX: 46,
-        endX: -58,
-        startY: 25,
-        peakY: 4,
-        endY: 18,
+        midX: 50,
+        endX: -54,
+        startY: 23,
+        midY: 2,
+        endY: 16,
         startRotate: 8,
         midRotate: -2,
         endRotate: -9,
         delay: 0,
-        span: 0.92,
-        depth: 0
+        span: 0.9,
+        depth: 0,
+        scale: 1
       },
       {
         startX: 136,
-        midX: 58,
-        endX: -46,
-        startY: 17,
-        peakY: -5,
-        endY: 9,
+        midX: 62,
+        endX: -42,
+        startY: 14,
+        midY: -6,
+        endY: 8,
         startRotate: 5,
         midRotate: 1,
         endRotate: -6,
         delay: 0.06,
-        span: 0.92,
-        depth: 18
+        span: 0.9,
+        depth: 26,
+        scale: 1.02
       },
       {
         startX: 154,
-        midX: 70,
-        endX: -34,
+        midX: 74,
+        endX: -30,
         startY: 18,
-        peakY: -7,
-        endY: 8,
+        midY: -8,
+        endY: 10,
         startRotate: 3,
         midRotate: -1,
         endRotate: -5,
         delay: 0.12,
-        span: 0.92,
-        depth: 32
+        span: 0.9,
+        depth: 42,
+        scale: 1.035
       },
       {
         startX: 172,
-        midX: 82,
-        endX: -22,
-        startY: 25,
-        peakY: 3,
-        endY: 16,
+        midX: 86,
+        endX: -18,
+        startY: 26,
+        midY: 4,
+        endY: 17,
         startRotate: 7,
         midRotate: 2,
         endRotate: -3,
         delay: 0.18,
-        span: 0.92,
-        depth: 10
+        span: 0.9,
+        depth: 14,
+        scale: 1.01
       }
     ];
 
@@ -294,19 +225,7 @@
     let currentProgress = 0;
     let raf = null;
 
-    function easeInOutCubic(value) {
-      return value < 0.5
-        ? 4 * value * value * value
-        : 1 - Math.pow(-2 * value + 2, 3) / 2;
-    }
-
-    function bezier3(p0, p1, p2, t) {
-      const a = lerp(p0, p1, t);
-      const b = lerp(p1, p2, t);
-      return lerp(a, b, t);
-    }
-
-    function getSectionProgress() {
+    function getProgress() {
       const rect = section.getBoundingClientRect();
       const viewport = window.innerHeight || document.documentElement.clientHeight;
       const travel = Math.max(section.offsetHeight - viewport, 1);
@@ -316,305 +235,44 @@
 
     function render(progress) {
       cards.forEach((card, index) => {
-        const s = cardSettings[index] || cardSettings[cardSettings.length - 1];
+        const setting = cardSettings[index] || cardSettings[cardSettings.length - 1];
 
-        const raw = clamp((progress - s.delay) / s.span, 0, 1);
+        const raw = clamp((progress - setting.delay) / setting.span, 0, 1);
         const t = easeInOutCubic(raw);
 
-        const x = bezier3(s.startX, s.midX, s.endX, t);
-        const y = bezier3(s.startY, s.peakY, s.endY, t);
-        const rotate = bezier3(s.startRotate, s.midRotate, s.endRotate, t);
-        const float = Math.sin(progress * Math.PI * 2 + index * 0.85) * 0.22;
+        const x = bezier3(setting.startX, setting.midX, setting.endX, t);
+        const y = bezier3(setting.startY, setting.midY, setting.endY, t);
+        const rotate = bezier3(
+          setting.startRotate,
+          setting.midRotate,
+          setting.endRotate,
+          t
+        );
 
-        card.style.opacity = "1";
+        const float = Math.sin(progress * Math.PI * 2 + index * 0.9) * 0.18;
+        const opacity = raw <= 0.02 ? lerp(0.72, 1, raw / 0.02) : 1;
+
+        card.style.opacity = String(opacity);
         card.style.visibility = "visible";
-        card.style.zIndex = String(30 + index);
+        card.style.zIndex = String(20 + index);
         card.style.transform = `
-          translate3d(${x}vw, calc(${y}vh + ${float}rem), ${s.depth}px)
+          translate3d(${x}vw, calc(${y}vh + ${float}rem), ${setting.depth}px)
           rotate(${rotate}deg)
-          scale(1)
+          scale(${setting.scale})
         `;
       });
 
-      if (headline) {
-        headline.style.opacity = String(lerp(0.92, 0.5, progress));
-        headline.style.transform = `translate3d(0, ${lerp(0, -3.5, progress)}vh, 0)`;
-      }
-
       if (copy) {
-        copy.style.opacity = String(lerp(1, 0.76, progress));
-        copy.style.transform = `translate3d(0, ${lerp(0, -1.8, progress)}vh, 0)`;
+        copy.style.opacity = String(lerp(1, 0.58, progress));
+        copy.style.transform = `
+          translate3d(0, ${lerp(0, -4.5, progress)}vh, 0)
+          scale(${lerp(1, 0.985, progress)})
+        `;
       }
     }
 
     function animate() {
-      currentProgress = lerp(currentProgress, targetProgress, 0.045);
-      render(currentProgress);
-
-      if (Math.abs(targetProgress - currentProgress) > 0.0004) {
-        raf = window.requestAnimationFrame(animate);
-      } else {
-        currentProgress = targetProgress;
-        render(currentProgress);
-        raf = null;
-      }
-    }
-
-    function requestUpdate() {
-      targetProgress = getSectionProgress();
-
-      if (!raf) {
-        raf = window.requestAnimationFrame(animate);
-      }
-    }
-
-    window.addEventListener("scroll", requestUpdate, { passive: true });
-    window.addEventListener("resize", requestUpdate);
-    window.addEventListener("orientationchange", requestUpdate);
-
-    targetProgress = getSectionProgress();
-    currentProgress = targetProgress;
-    render(currentProgress);
-  }
-
-  /* ==========================================================
-     INLINE ARCHIVE
-  ========================================================== */
-
-  function createInlineDetail(project) {
-    return `
-      <div class="work-project__detail">
-        <figure class="work-project__media">
-          <img src="${escapeHtml(project.image)}" alt="${escapeHtml(project.title)} project preview" />
-        </figure>
-
-        <div class="work-project__case">
-          <p class="work-project__eyebrow">
-            Case ${escapeHtml(project.number)} / ${escapeHtml(project.type)} / ${escapeHtml(project.year)}
-          </p>
-
-          <p class="work-project__description">
-            ${escapeHtml(project.description)}
-          </p>
-
-          <div class="work-project__proof" aria-label="${escapeHtml(project.title)} proof points">
-            <section>
-              <p>Constraint</p>
-              <span>${escapeHtml(project.constraint)}</span>
-            </section>
-
-            <section>
-              <p>What we built</p>
-              <span>${escapeHtml(project.solution)}</span>
-            </section>
-
-            <section>
-              <p>Result</p>
-              <span>${escapeHtml(project.result)}</span>
-            </section>
-          </div>
-
-          <ul class="work-project__services" aria-label="${escapeHtml(project.title)} services">
-            ${project.services.map((service) => `<li>${escapeHtml(service)}</li>`).join("")}
-          </ul>
-
-          <blockquote class="work-project__quote">
-            “${escapeHtml(project.review)}”
-          </blockquote>
-        </div>
-      </div>
-    `;
-  }
-
-  function upgradeArchiveMarkup() {
-    const buttons = Array.from(root.querySelectorAll("[data-work-project]"));
-
-    buttons.forEach((button, buttonIndex) => {
-      const parsedIndex = Number(button.dataset.workProject);
-      const index = Number.isFinite(parsedIndex) ? clampIndex(parsedIndex) : buttonIndex;
-      const project = projects[index];
-
-      if (!project) return;
-
-      let article = button.closest(".work-project");
-
-      /*
-        Your current HTML uses button.work-project.
-        This converts each button into an article row without needing you to remake HTML.
-      */
-      if (!article || article === button) {
-        article = document.createElement("article");
-        article.className = button.className;
-        article.classList.remove("is-previewing");
-        article.dataset.workProjectItem = String(index);
-
-        button.className = "work-project__bar";
-        button.removeAttribute("role");
-
-        button.parentNode.insertBefore(article, button);
-        article.appendChild(button);
-      }
-
-      article.dataset.workProjectItem = String(index);
-
-      button.dataset.workProject = String(index);
-      button.setAttribute("type", "button");
-      button.setAttribute("aria-expanded", index === 0 ? "true" : "false");
-
-      if (!article.querySelector(".work-project__detail")) {
-        article.insertAdjacentHTML("beforeend", createInlineDetail(project));
-      }
-    });
-
-    root.querySelector(".work-detail")?.remove();
-    root.classList.remove("has-open-detail");
-    document.documentElement.classList.remove("work-drawer-lock");
-    document.body.classList.remove("work-drawer-lock");
-  }
-
-  function getProjectItems() {
-    return Array.from(root.querySelectorAll("[data-work-project-item]"));
-  }
-
-  function getProjectButtons() {
-    return Array.from(root.querySelectorAll(".work-project__bar[data-work-project]"));
-  }
-
-  function clearPreviewStates() {
-    getProjectButtons().forEach((button) => {
-      button.classList.remove("is-previewing", "is-active");
-    });
-  }
-
-  function setActiveProject(index, scrollToProject = false) {
-    const items = getProjectItems();
-    const buttons = getProjectButtons();
-
-    if (!items.length) return;
-
-    const safeIndex = clampIndex(index);
-    activeIndex = safeIndex;
-
-    items.forEach((item, itemIndex) => {
-      const isActive = itemIndex === safeIndex;
-      item.classList.toggle("is-active", isActive);
-      item.classList.toggle("is-expanded", isActive);
-      item.classList.add("is-visible");
-    });
-
-    buttons.forEach((button, buttonIndex) => {
-      const isActive = buttonIndex === safeIndex;
-      button.classList.toggle("is-active", isActive);
-      button.classList.remove("is-previewing");
-      button.setAttribute("aria-expanded", isActive ? "true" : "false");
-      button.setAttribute("aria-pressed", isActive ? "true" : "false");
-
-      if (isActive) {
-        button.setAttribute("aria-current", "true");
-      } else {
-        button.removeAttribute("aria-current");
-      }
-    });
-
-    root.dataset.workActive = String(safeIndex);
-
-    if (scrollToProject && mobileQuery.matches) {
-      items[safeIndex]?.scrollIntoView({
-        behavior: prefersReducedMotion ? "auto" : "smooth",
-        block: "start"
-      });
-    }
-  }
-
-  function setupProjectButtons() {
-    const buttons = getProjectButtons();
-
-    buttons.forEach((button, buttonIndex) => {
-      const parsedIndex = Number(button.dataset.workProject);
-      const index = Number.isFinite(parsedIndex) ? clampIndex(parsedIndex) : buttonIndex;
-
-      button.addEventListener("mouseenter", () => {
-        if (mobileQuery.matches) return;
-
-        clearPreviewStates();
-        button.classList.add("is-previewing");
-      });
-
-      button.addEventListener("focus", () => {
-        if (mobileQuery.matches) return;
-
-        clearPreviewStates();
-        button.classList.add("is-previewing");
-      });
-
-      button.addEventListener("mouseleave", () => {
-        button.classList.remove("is-previewing");
-      });
-
-      button.addEventListener("blur", () => {
-        button.classList.remove("is-previewing");
-      });
-
-      button.addEventListener("click", (event) => {
-        event.preventDefault();
-        event.stopPropagation();
-
-        setActiveProject(index, true);
-      });
-    });
-  }
-
-  function setupArchiveScroll() {
-    const items = getProjectItems();
-    const header = root.querySelector(".work-archive__header");
-
-    if (!items.length || prefersReducedMotion) return;
-
-    let targetProgress = 0;
-    let currentProgress = 0;
-    let raf = null;
-
-    function getArchiveProgress() {
-      const rect = root.getBoundingClientRect();
-      const viewport = window.innerHeight || document.documentElement.clientHeight;
-      const travel = Math.max(root.offsetHeight - viewport, 1);
-
-      return clamp(-rect.top / travel, 0, 1);
-    }
-
-    function render(progress) {
-      if (!mobileQuery.matches) {
-        const nextIndex = Math.round(progress * (items.length - 1));
-        setActiveProject(nextIndex, false);
-
-        if (header) {
-          header.style.opacity = String(lerp(1, 0.68, progress));
-          header.style.transform = `translate3d(0, ${lerp(0, -18, progress)}px, 0)`;
-        }
-
-        items.forEach((item, index) => {
-          const distance = Math.abs(index - activeIndex);
-
-          item.style.opacity =
-            index === activeIndex ? "1" : distance === 1 ? "0.56" : "0.34";
-
-          item.style.transform = `translate3d(0, ${distance * 3}px, 0)`;
-        });
-      } else {
-        if (header) {
-          header.style.opacity = "";
-          header.style.transform = "";
-        }
-
-        items.forEach((item) => {
-          item.style.opacity = "";
-          item.style.transform = "";
-        });
-      }
-    }
-
-    function animate() {
-      currentProgress = lerp(currentProgress, targetProgress, 0.075);
+      currentProgress = lerp(currentProgress, targetProgress, 0.055);
       render(currentProgress);
 
       if (Math.abs(targetProgress - currentProgress) > 0.0005) {
@@ -627,7 +285,7 @@
     }
 
     function requestUpdate() {
-      targetProgress = getArchiveProgress();
+      targetProgress = getProgress();
 
       if (!raf) {
         raf = window.requestAnimationFrame(animate);
@@ -638,78 +296,197 @@
     window.addEventListener("resize", requestUpdate);
     window.addEventListener("orientationchange", requestUpdate);
 
-    targetProgress = getArchiveProgress();
+    targetProgress = getProgress();
     currentProgress = targetProgress;
     render(currentProgress);
   }
 
-  function disableBrokenImages() {
-    const images = root.querySelectorAll("img");
+  /* ==========================================================
+     ARCHIVE DETAILS BEHAVIOR
+  ========================================================== */
 
-    images.forEach((img) => {
-      img.addEventListener("error", () => {
-        const preview = img.closest(".work-project__preview");
+  function setupArchiveRows() {
+    const rows = Array.from(archive.querySelectorAll(".work-project"));
+    const summaries = Array.from(archive.querySelectorAll(".work-project__summary"));
 
-        if (preview) {
-          preview.style.display = "none";
-          return;
+    if (!rows.length) return;
+
+    function setActiveRow(row) {
+      rows.forEach((item) => {
+        const isActive = item === row;
+        item.classList.toggle("is-active", isActive);
+      });
+    }
+
+    function closeOtherRows(activeRow) {
+      rows.forEach((row) => {
+        if (row !== activeRow) {
+          row.removeAttribute("open");
         }
+      });
+    }
 
-        const media = img.closest(".work-project__media");
+    rows.forEach((row, index) => {
+      const summary = row.querySelector(".work-project__summary");
+      if (!summary) return;
 
-        if (media) {
-          media.style.display = "none";
-        }
+      if (row.hasAttribute("open")) {
+        setActiveRow(row);
+      }
+
+      summary.addEventListener("click", () => {
+        const willOpen = !row.hasAttribute("open");
+
+        window.requestAnimationFrame(() => {
+          if (willOpen) {
+            closeOtherRows(row);
+            setActiveRow(row);
+          } else {
+            row.classList.remove("is-active");
+          }
+        });
+      });
+
+      summary.addEventListener("mouseenter", () => {
+        if (mobileQuery.matches) return;
+        row.classList.add("is-hovering");
+      });
+
+      summary.addEventListener("mouseleave", () => {
+        row.classList.remove("is-hovering");
+      });
+
+      summary.addEventListener("focus", () => {
+        if (mobileQuery.matches) return;
+        row.classList.add("is-hovering");
+      });
+
+      summary.addEventListener("blur", () => {
+        row.classList.remove("is-hovering");
+      });
+
+      summary.addEventListener("keydown", (event) => {
+        if (event.key !== "ArrowDown" && event.key !== "ArrowUp") return;
+
+        event.preventDefault();
+
+        const direction = event.key === "ArrowDown" ? 1 : -1;
+        const nextIndex = (index + direction + summaries.length) % summaries.length;
+        summaries[nextIndex]?.focus();
       });
     });
   }
 
-  function setupKeyboardControls() {
-    window.addEventListener("keydown", (event) => {
-      const activeTag = document.activeElement?.tagName?.toLowerCase();
+  /* ==========================================================
+     ARCHIVE SCROLL LOCK FEEL
+     Uses sticky + progress. Does not freeze body scroll.
+  ========================================================== */
 
-      const isTyping =
-        activeTag === "input" ||
-        activeTag === "textarea" ||
-        document.activeElement?.isContentEditable;
+  function setupArchiveScroll() {
+    const rows = Array.from(archive.querySelectorAll(".work-project"));
+    const header = archive.querySelector(".work-archive__header");
+    const shell = archive.querySelector(".work-archive__shell");
 
-      if (isTyping) return;
+    if (!rows.length || prefersReducedMotion || mobileQuery.matches) {
+      rows.forEach((row) => row.classList.add("is-visible"));
+      return;
+    }
 
-      if (event.key === "ArrowLeft" || event.key === "ArrowUp") {
-        event.preventDefault();
-        setActiveProject(activeIndex - 1, true);
-        return;
+    let targetProgress = 0;
+    let currentProgress = 0;
+    let raf = null;
+
+    function getProgress() {
+      const rect = archive.getBoundingClientRect();
+      const viewport = window.innerHeight || document.documentElement.clientHeight;
+      const travel = Math.max(archive.offsetHeight - viewport, 1);
+
+      return clamp(-rect.top / travel, 0, 1);
+    }
+
+    function render(progress) {
+      const activeIndex = Math.round(progress * (rows.length - 1));
+
+      rows.forEach((row, index) => {
+        const distance = Math.abs(index - activeIndex);
+
+        row.classList.add("is-visible");
+
+        if (!row.matches(":hover") && document.activeElement !== row.querySelector("summary")) {
+          row.style.opacity =
+            index === activeIndex ? "1" : distance === 1 ? "0.58" : "0.36";
+
+          row.style.transform = `
+            translate3d(0, ${distance * 4}px, 0)
+          `;
+        }
+      });
+
+      if (header) {
+        header.style.opacity = String(lerp(1, 0.72, progress));
+        header.style.transform = `translate3d(0, ${lerp(0, -16, progress)}px, 0)`;
       }
 
-      if (event.key === "ArrowRight" || event.key === "ArrowDown") {
-        event.preventDefault();
-        setActiveProject(activeIndex + 1, true);
+      if (shell) {
+        shell.style.transform = `translate3d(0, ${lerp(8, -8, progress)}px, 0)`;
       }
-    });
+    }
+
+    function animate() {
+      currentProgress = lerp(currentProgress, targetProgress, 0.07);
+      render(currentProgress);
+
+      if (Math.abs(targetProgress - currentProgress) > 0.0005) {
+        raf = window.requestAnimationFrame(animate);
+      } else {
+        currentProgress = targetProgress;
+        render(currentProgress);
+        raf = null;
+      }
+    }
+
+    function requestUpdate() {
+      targetProgress = getProgress();
+
+      if (!raf) {
+        raf = window.requestAnimationFrame(animate);
+      }
+    }
+
+    window.addEventListener("scroll", requestUpdate, { passive: true });
+    window.addEventListener("resize", requestUpdate);
+    window.addEventListener("orientationchange", requestUpdate);
+
+    targetProgress = getProgress();
+    currentProgress = targetProgress;
+    render(currentProgress);
   }
 
-  function revealRows() {
-    const items = getProjectItems();
+  /* ==========================================================
+     CLEANUP OLD STATES
+  ========================================================== */
 
-    items.forEach((item, index) => {
-      window.setTimeout(() => {
-        item.classList.add("is-visible");
-      }, index * 90);
-    });
+  function cleanupOldWorkStates() {
+    archive.classList.remove("has-open-detail");
+
+    document.documentElement.classList.remove("work-drawer-lock");
+    document.body.classList.remove("work-drawer-lock");
+
+    const oldDrawer = archive.querySelector(".work-detail");
+    if (oldDrawer) oldDrawer.remove();
+
+    const oldInjectedTrust = document.querySelector(".bim-trust");
+    if (oldInjectedTrust) oldInjectedTrust.remove();
   }
 
   function init() {
+    cleanupOldWorkStates();
     injectTrustBridge();
-    setupWorkTrustScroll();
-
-    upgradeArchiveMarkup();
-    setupProjectButtons();
+    setupTrustCards();
+    setupArchiveRows();
     setupArchiveScroll();
-    setupKeyboardControls();
-    disableBrokenImages();
-    revealRows();
 
-    setActiveProject(0, false);
+    archive.classList.add("is-ready");
   }
 
   if (document.readyState === "loading") {
