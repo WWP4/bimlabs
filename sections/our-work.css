@@ -1,6 +1,5 @@
-/* ==========================================================
    BIM LABS STUDIO — OUR WORK
-   Minimal archive + clean scrollable case-study drawer
+   Noomo-style trust bridge + archive + clean scrollable drawer
 ========================================================== */
 
 /* ==========================================================
@@ -93,6 +92,199 @@
   letter-spacing: 0.16em;
   line-height: 1;
   text-transform: uppercase;
+}
+
+/* ==========================================================
+   TRUST BRIDGE — NOOMO-INSPIRED, BIM LABS VERSION
+========================================================== */
+
+.work-trust {
+  position: relative;
+  z-index: 3;
+  min-height: 265vh;
+  overflow: clip;
+
+  color: #f4f1ea;
+  background: #000;
+  font-family: inherit;
+}
+
+.work-trust__sticky {
+  position: sticky;
+  top: 0;
+
+  height: 100vh;
+  overflow: hidden;
+
+  background:
+    radial-gradient(circle at 64% 58%, rgba(245, 245, 240, 0.065), transparent 25rem),
+    radial-gradient(circle at 24% 34%, rgba(245, 245, 240, 0.035), transparent 20rem),
+    #000;
+}
+
+.work-trust__bg-text {
+  position: absolute;
+  left: clamp(1.2rem, 2.2vw, 2.6rem);
+  top: 18vh;
+  z-index: 1;
+
+  color: rgba(255, 255, 255, 0.95);
+  font-size: clamp(4.5rem, 9.1vw, 11.8rem);
+  font-weight: 300;
+  letter-spacing: -0.085em;
+  line-height: 0.84;
+  white-space: nowrap;
+
+  pointer-events: none;
+  user-select: none;
+}
+
+.work-trust__copy {
+  position: absolute;
+  right: clamp(1.2rem, 4vw, 4.2rem);
+  top: 27vh;
+  z-index: 5;
+
+  width: min(21.5rem, 32vw);
+}
+
+.work-trust__copy p {
+  margin: 0;
+
+  color: rgba(245, 245, 240, 0.66);
+  font-size: clamp(0.78rem, 0.88vw, 0.98rem);
+  font-weight: 300;
+  line-height: 1.58;
+  letter-spacing: -0.018em;
+}
+
+.work-trust__track {
+  position: absolute;
+  left: 7vw;
+  top: 44vh;
+  z-index: 4;
+
+  display: flex;
+  align-items: flex-start;
+  gap: clamp(2.5rem, 5.5vw, 7rem);
+
+  width: max-content;
+
+  transform: translate3d(0, 0, 0);
+  will-change: transform;
+}
+
+.work-trust-card {
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  width: clamp(18rem, 22vw, 26rem);
+  min-height: clamp(20rem, 42vh, 29rem);
+  padding: clamp(1.45rem, 2vw, 2.15rem);
+
+  border: 1px solid rgba(245, 245, 240, 0.13);
+  border-radius: 0.38rem;
+
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.13), rgba(255, 255, 255, 0.035)),
+    rgba(255, 255, 255, 0.055);
+
+  box-shadow:
+    0 2rem 5rem rgba(0, 0, 0, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.13);
+
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+
+  transform: rotate(var(--card-rotate, 0deg));
+}
+
+.work-trust-card:nth-child(1) {
+  --card-rotate: -2.4deg;
+  margin-top: 4.6rem;
+}
+
+.work-trust-card:nth-child(2) {
+  --card-rotate: 1.4deg;
+  margin-top: -1.2rem;
+}
+
+.work-trust-card:nth-child(3) {
+  --card-rotate: -1.15deg;
+  margin-top: 2.4rem;
+}
+
+.work-trust-card:nth-child(4) {
+  --card-rotate: 2.1deg;
+  margin-top: 6.1rem;
+}
+
+.work-trust-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+
+  border-radius: inherit;
+  background: rgba(0, 0, 0, 0.1);
+  filter: blur(1rem);
+}
+
+.work-trust-card__logo {
+  margin: 0 0 2rem;
+
+  color: rgba(255, 255, 255, 0.92);
+  font-size: clamp(1.25rem, 1.65vw, 2rem);
+  font-weight: 600;
+  letter-spacing: -0.055em;
+  line-height: 1;
+}
+
+.work-trust-card blockquote {
+  margin: 0;
+
+  color: rgba(245, 245, 240, 0.74);
+  font-size: clamp(0.88rem, 1.02vw, 1.14rem);
+  font-weight: 300;
+  line-height: 1.5;
+  letter-spacing: -0.025em;
+}
+
+.work-trust-card footer {
+  display: grid;
+  gap: 0.35rem;
+  margin-top: 2rem;
+}
+
+.work-trust-card strong {
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.work-trust-card span {
+  color: rgba(245, 245, 240, 0.39);
+  font-size: 0.68rem;
+  font-weight: 300;
+  line-height: 1.35;
+}
+
+.work-trust::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  bottom: -1px;
+  left: 0;
+
+  height: 20rem;
+  background: linear-gradient(to bottom, transparent, #000);
+  pointer-events: none;
 }
 
 /* ==========================================================
@@ -402,7 +594,6 @@ body.work-drawer-lock {
   z-index: 2147483000;
 }
 
-/* important: no fake overlay */
 .work-archive.has-open-detail::before {
   display: none;
   content: none;
@@ -438,11 +629,7 @@ body.work-drawer-lock {
   border-left: 1px solid rgba(245, 245, 240, 0.12);
 
   background:
-    linear-gradient(
-      180deg,
-      rgba(255, 255, 255, 0.018),
-      rgba(255, 255, 255, 0) 18rem
-    ),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.018), rgba(255, 255, 255, 0) 18rem),
     #020202;
 
   box-shadow: -2.5rem 0 6rem rgba(0, 0, 0, 0.58);
@@ -765,7 +952,6 @@ body.work-drawer-lock {
   line-height: 1.58;
 }
 
-/* deliverables row */
 .work-detail__block:has(.work-detail__list) {
   grid-column: 1 / -1;
 }
@@ -963,6 +1149,54 @@ body.work-drawer-lock {
 }
 
 @media (max-width: 900px) {
+  .work-trust {
+    min-height: auto;
+  }
+
+  .work-trust__sticky {
+    position: relative;
+    height: auto;
+    min-height: 100vh;
+    padding: 6rem 1rem 5rem;
+  }
+
+  .work-trust__bg-text {
+    position: relative;
+    left: auto;
+    top: auto;
+    margin-bottom: 2rem;
+
+    font-size: clamp(4rem, 18vw, 7rem);
+    white-space: normal;
+  }
+
+  .work-trust__copy {
+    position: relative;
+    right: auto;
+    top: auto;
+    width: min(24rem, 100%);
+    margin-bottom: 2rem;
+  }
+
+  .work-trust__track {
+    position: relative;
+    left: auto;
+    top: auto;
+
+    display: grid;
+    gap: 1rem;
+
+    width: 100%;
+    transform: none !important;
+  }
+
+  .work-trust-card {
+    width: 100%;
+    min-height: 18rem;
+    margin-top: 0 !important;
+    transform: none;
+  }
+
   .work-detail__mid {
     grid-template-columns: 1fr;
   }
@@ -1077,8 +1311,11 @@ body.work-drawer-lock {
   .work-project__preview img,
   .work-detail,
   .work-detail__inner,
-  .work-detail__nav button {
+  .work-detail__nav button,
+  .work-trust__track,
+  .work-trust-card {
     transition: none;
     animation: none;
+    transform: none !important;
   }
 }
