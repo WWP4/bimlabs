@@ -187,152 +187,140 @@
      TRUST BRIDGE
   ========================================================== */
 
-  function injectTrustBridge() {
-    if (document.querySelector(".work-trust")) return;
+function injectTrustBridge() {
+  document.querySelector(".work-trust")?.remove();
 
-    const section = document.createElement("section");
-    section.className = "work-trust";
-    section.setAttribute("aria-label", "Client trust");
+  if (document.querySelector(".bim-trust")) return;
 
-    const cards = projects
-      .map((project, index) => {
-        return `
-          <article class="work-trust-card" data-work-trust-card="${index}">
-            <p class="work-trust-card__logo">${escapeHtml(project.client)}</p>
+  const section = document.createElement("section");
+  section.className = "bim-trust";
+  section.setAttribute("aria-label", "Client trust");
 
-            <blockquote>
-              “${escapeHtml(project.review)}”
-            </blockquote>
+  const cards = projects
+    .map((project, index) => {
+      return `
+        <article class="bim-trust-card" data-bim-trust-card="${index}">
+          <p class="bim-trust-card__logo">${escapeHtml(project.client)}</p>
 
-            <footer>
-              <strong>${escapeHtml(project.title)}</strong>
-              <span>${escapeHtml(project.role)}</span>
-            </footer>
-          </article>
-        `;
-      })
-      .join("");
+          <blockquote>
+            “${escapeHtml(project.review)}”
+          </blockquote>
 
-    section.innerHTML = `
-      <div class="work-trust__sticky">
-        <div class="work-trust__bg-text" aria-hidden="true">
-          GOOD WORK<br>
-          IS BUILT<br>
-          WITH TRUST.
-        </div>
+          <footer>
+            <strong>${escapeHtml(project.title)}</strong>
+            <span>${escapeHtml(project.role)}</span>
+          </footer>
+        </article>
+      `;
+    })
+    .join("");
 
-        <div class="work-trust__copy">
-          <p>
-            We build with clients who need more than a nice-looking website.
-            They need clearer systems, sharper presentation, and digital work
-            that makes the business easier to understand.
-          </p>
-        </div>
+  section.innerHTML = `
+    <div class="bim-trust__sticky">
+      <h2 class="bim-trust__headline" aria-hidden="true">
+        GOOD WORK<br>
+        IS BUILT<br>
+        WITH TRUST.
+      </h2>
 
-        <div class="work-trust__track" data-work-trust-track>
-          ${cards}
-        </div>
+      <div class="bim-trust__copy">
+        <p>
+          We build with clients who need more than a nice-looking website.
+          They need clearer systems, sharper presentation, and digital work
+          that makes the business easier to understand.
+        </p>
       </div>
-    `;
 
-    root.parentNode.insertBefore(section, root);
-  }
+      <div class="bim-trust__stage">
+        ${cards}
+      </div>
+    </div>
+  `;
 
- function setupWorkTrustScroll() {
-  const section = document.querySelector(".work-trust");
-  const sticky = document.querySelector(".work-trust__sticky");
-  const cards = Array.from(document.querySelectorAll("[data-work-trust-card]"));
-  const bgText = document.querySelector(".work-trust__bg-text");
-  const copy = document.querySelector(".work-trust__copy");
+  root.parentNode.insertBefore(section, root);
+}
 
-  if (!section || !sticky || !cards.length) return;
 
-  const isMobile = window.matchMedia("(max-width: 900px)").matches;
 
-  if (prefersReducedMotion || isMobile) {
-    cards.forEach((card, index) => {
-      card.style.removeProperty("opacity");
-      card.style.removeProperty("z-index");
-      card.style.removeProperty("transform");
-      card.style.removeProperty("visibility");
+
+function setupWorkTrustScroll() {
+  const section = document.querySelector(".bim-trust");
+  const cards = Array.from(document.querySelectorAll("[data-bim-trust-card]"));
+  const headline = document.querySelector(".bim-trust__headline");
+  const copy = document.querySelector(".bim-trust__copy");
+
+  if (!section || !cards.length) return;
+
+  const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const mobile = window.matchMedia("(max-width: 900px)").matches;
+
+  if (reduced || mobile) {
+    cards.forEach((card) => {
+      card.style.opacity = "1";
+      card.style.transform = "none";
     });
-
-    if (bgText) {
-      bgText.style.removeProperty("transform");
-      bgText.style.removeProperty("opacity");
-    }
-
-    if (copy) {
-      copy.style.removeProperty("transform");
-      copy.style.removeProperty("opacity");
-    }
 
     return;
   }
 
-  const cardSettings = [
+  const settings = [
     {
-      startX: 118,
-      endX: -42,
-      yStart: 14,
-      yEnd: 8,
-      rotateStart: -8,
-      rotateEnd: -2,
-      scaleStart: 1,
-      scaleEnd: 1.03,
+      startX: 112,
+      endX: -38,
+      startY: 14,
+      endY: 8,
+      startRotate: -8,
+      endRotate: -2,
+      startScale: 0.98,
+      endScale: 1.03,
       delay: 0
     },
     {
-      startX: 145,
-      endX: -18,
-      yStart: -5,
-      yEnd: -8,
-      rotateStart: 6,
-      rotateEnd: 1.5,
-      scaleStart: 0.98,
-      scaleEnd: 1,
+      startX: 142,
+      endX: -12,
+      startY: -6,
+      endY: -8,
+      startRotate: 6,
+      endRotate: 1.5,
+      startScale: 0.96,
+      endScale: 1,
       delay: 0.08
     },
     {
       startX: 172,
-      endX: 8,
-      yStart: 8,
-      yEnd: 5,
-      rotateStart: -5,
-      rotateEnd: -1,
-      scaleStart: 1.02,
-      scaleEnd: 1.04,
+      endX: 13,
+      startY: 8,
+      endY: 5,
+      startRotate: -5,
+      endRotate: -1,
+      startScale: 1,
+      endScale: 1.04,
       delay: 0.16
     },
     {
-      startX: 202,
-      endX: 34,
-      yStart: -2,
-      yEnd: -5,
-      rotateStart: 7,
-      rotateEnd: 2,
-      scaleStart: 0.96,
-      scaleEnd: 0.99,
+      startX: 205,
+      endX: 38,
+      startY: -2,
+      endY: -5,
+      startRotate: 7,
+      endRotate: 2,
+      startScale: 0.94,
+      endScale: 0.99,
       delay: 0.24
     }
   ];
 
-  let rafId = null;
-  let isRunning = false;
+  let raf = null;
 
   function clamp(value, min, max) {
     return Math.min(Math.max(value, min), max);
   }
 
-  function lerp(start, end, progress) {
-    return start + (end - start) * progress;
+  function lerp(start, end, amount) {
+    return start + (end - start) * amount;
   }
 
-  function easeOutCubic(value) {
-    return 1 - Math.pow(1 - value, 3);
-  }
-
-  function easeInOutCubic(value) {
+  function ease(value) {
     return value < 0.5
       ? 4 * value * value * value
       : 1 - Math.pow(-2 * value + 2, 3) / 2;
@@ -341,44 +329,30 @@
   function getProgress() {
     const rect = section.getBoundingClientRect();
     const viewport = window.innerHeight || document.documentElement.clientHeight;
-    const scrollable = Math.max(section.offsetHeight - viewport, 1);
+    const distance = Math.max(section.offsetHeight - viewport, 1);
 
-    return clamp(-rect.top / scrollable, 0, 1);
-  }
-
-  function sectionIsNearViewport() {
-    const rect = section.getBoundingClientRect();
-    const viewport = window.innerHeight || document.documentElement.clientHeight;
-
-    return rect.top < viewport * 1.35 && rect.bottom > viewport * -0.35;
+    return clamp(-rect.top / distance, 0, 1);
   }
 
   function update() {
     const progress = getProgress();
 
     cards.forEach((card, index) => {
-      const settings = cardSettings[index] || cardSettings[cardSettings.length - 1];
+      const s = settings[index] || settings[settings.length - 1];
 
-      const localProgress = clamp(
-        (progress - settings.delay) / 0.76,
-        0,
-        1
-      );
+      const local = clamp((progress - s.delay) / 0.72, 0, 1);
+      const eased = ease(local);
 
-      const eased = easeInOutCubic(localProgress);
+      const x = lerp(s.startX, s.endX, eased);
+      const y = lerp(s.startY, s.endY, eased);
+      const rotate = lerp(s.startRotate, s.endRotate, eased);
+      const scale = lerp(s.startScale, s.endScale, eased);
+      const float = Math.sin(progress * Math.PI * 2 + index * 0.85) * 0.65;
 
-      const x = lerp(settings.startX, settings.endX, eased);
-      const y = lerp(settings.yStart, settings.yEnd, eased);
-      const rotate = lerp(settings.rotateStart, settings.rotateEnd, eased);
-      const scale = lerp(settings.scaleStart, settings.scaleEnd, eased);
+      const fadeIn = clamp(local * 7, 0, 1);
+      const fadeOut = clamp((1 - local) * 7, 0, 1);
+      const opacity = clamp(Math.min(fadeIn, fadeOut), 0, 1);
 
-      const float = Math.sin(progress * Math.PI * 2 + index * 0.9) * 0.75;
-
-      const fadeIn = clamp(localProgress * 8, 0, 1);
-      const fadeOut = clamp((1 - localProgress) * 8, 0, 1);
-      const opacity = clamp(Math.min(fadeIn, fadeOut) * 0.98 + 0.02, 0, 1);
-
-      card.style.visibility = "visible";
       card.style.opacity = String(opacity);
       card.style.zIndex = String(20 + index);
 
@@ -389,65 +363,33 @@
       `;
     });
 
-    if (bgText) {
-      const bgY = lerp(0, -5.5, easeOutCubic(progress));
-      const bgOpacity = lerp(0.96, 0.42, progress);
-
-      bgText.style.transform = `translate3d(0, ${bgY}vh, 0)`;
-      bgText.style.opacity = String(bgOpacity);
+    if (headline) {
+      headline.style.opacity = String(lerp(0.95, 0.42, progress));
+      headline.style.transform = `translate3d(0, ${lerp(0, -5, progress)}vh, 0)`;
     }
 
     if (copy) {
-      const copyY = lerp(0, -3.5, easeOutCubic(progress));
-      const copyOpacity = lerp(1, 0.62, progress);
-
-      copy.style.transform = `translate3d(0, ${copyY}vh, 0)`;
-      copy.style.opacity = String(copyOpacity);
+      copy.style.opacity = String(lerp(1, 0.62, progress));
+      copy.style.transform = `translate3d(0, ${lerp(0, -3, progress)}vh, 0)`;
     }
-  }
 
-  function loop() {
-    if (!isRunning) return;
-
-    update();
-
-    if (sectionIsNearViewport()) {
-      rafId = window.requestAnimationFrame(loop);
-    } else {
-      stopLoop();
-    }
-  }
-
-  function startLoop() {
-    if (isRunning) return;
-
-    isRunning = true;
-    rafId = window.requestAnimationFrame(loop);
-  }
-
-  function stopLoop() {
-    isRunning = false;
-
-    if (rafId) {
-      window.cancelAnimationFrame(rafId);
-      rafId = null;
-    }
+    raf = null;
   }
 
   function requestUpdate() {
-    update();
-
-    if (sectionIsNearViewport()) {
-      startLoop();
-    }
+    if (raf) return;
+    raf = window.requestAnimationFrame(update);
   }
 
   window.addEventListener("scroll", requestUpdate, { passive: true });
   window.addEventListener("resize", requestUpdate);
   window.addEventListener("orientationchange", requestUpdate);
 
-  requestUpdate();
+  update();
 }
+
+   
+
 
   /* ==========================================================
      PROJECT DETAIL DRAWER
