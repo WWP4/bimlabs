@@ -715,248 +715,287 @@
 
 
 
-
 /* ==========================================================
-   WORK ARCHIVE — NOOMO-STYLE PINNED FORMATION
-   Slow. Sticky. Lines draw. Rows assemble.
+   BIM LABS — WORK ARCHIVE FINAL REVEAL
+   Paste at very bottom of sections/our-work.js
+   This overrides older archive reveal attempts.
 ========================================================== */
 
-function setupArchiveNoomoReveal() {
-  const archive = document.querySelector(".work-archive");
-  if (!archive) return;
+(() => {
+  "use strict";
 
-  const hasGsap = window.gsap && window.ScrollTrigger;
-  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  function setupFinalArchiveReveal() {
+    const archive = document.querySelector(".work-archive");
+    if (!archive) return;
 
-  const shell = archive.querySelector(".work-archive__shell");
-  const label = archive.querySelector(".work-archive__label");
-  const kicker = archive.querySelector(".work-archive__kicker");
-  const title = archive.querySelector(".work-archive__title");
-  const intro = archive.querySelector(".work-archive__intro");
-  const rows = Array.from(archive.querySelectorAll(".work-project"));
+    const hasGsap = window.gsap && window.ScrollTrigger;
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const isMobile = window.matchMedia("(max-width: 900px)").matches;
 
-  if (!hasGsap || reduceMotion || window.innerWidth < 901) {
-    archive.classList.add("is-formed");
-    archive.style.setProperty("--archive-reveal", "1");
-    archive.style.setProperty("--archive-top-line", "1");
+    const shell = archive.querySelector(".work-archive__shell");
+    const label = archive.querySelector(".work-archive__label");
+    const kicker = archive.querySelector(".work-archive__kicker");
+    const title = archive.querySelector(".work-archive__title");
+    const intro = archive.querySelector(".work-archive__intro");
+    const rows = Array.from(archive.querySelectorAll(".work-project"));
+    const summaries = Array.from(archive.querySelectorAll(".work-project__summary"));
+
+    if (!shell || !rows.length) return;
+
+    archive.classList.add("archive-final-ready");
+
+    if (!hasGsap || reduceMotion || isMobile) {
+      archive.classList.add("is-formed");
+      archive.style.setProperty("--archive-progress", "1");
+      archive.style.setProperty("--archive-top-line", "1");
+      archive.style.setProperty("--archive-scan", "0");
+
+      summaries.forEach((summary) => {
+        summary.style.setProperty("--row-line", "1");
+      });
+
+      rows.forEach((row) => {
+        const pieces = row.querySelectorAll(
+          ".work-project__index, .work-project__name, .work-project__meta, .work-project__year, .work-project__arrow"
+        );
+
+        gsap?.set?.(pieces, {
+          autoAlpha: 1,
+          y: 0,
+          filter: "blur(0px)"
+        });
+      });
+
+      return;
+    }
+
+    gsap.registerPlugin(ScrollTrigger);
+
+    /*
+      Kill older archive reveal triggers so animations do not fight.
+      This only targets triggers attached to .work-archive.
+    */
+    ScrollTrigger.getAll().forEach((trigger) => {
+      const triggerEl = trigger.trigger;
+      const isArchiveTrigger =
+        triggerEl === archive ||
+        triggerEl?.classList?.contains("work-archive");
+
+      if (isArchiveTrigger) trigger.kill();
+    });
+
+    archive.classList.remove("is-formed", "is-forming");
+
+    gsap.set(archive, {
+      "--archive-progress": 0,
+      "--archive-top-line": 0,
+      "--archive-scan": 0
+    });
+
+    gsap.set(shell, {
+      y: 34,
+      scale: 0.992,
+      transformOrigin: "50% 50%"
+    });
+
+    gsap.set([label, kicker], {
+      autoAlpha: 0,
+      y: 18,
+      filter: "blur(7px)"
+    });
+
+    gsap.set(title, {
+      autoAlpha: 0,
+      y: 58,
+      scale: 0.975,
+      filter: "blur(18px)",
+      letterSpacing: "-0.12em"
+    });
+
+    gsap.set(intro, {
+      autoAlpha: 0,
+      y: 30,
+      filter: "blur(10px)"
+    });
 
     rows.forEach((row) => {
       const summary = row.querySelector(".work-project__summary");
-      if (summary) summary.style.setProperty("--row-line", "1");
+
+      const pieces = row.querySelectorAll(
+        ".work-project__index, .work-project__name, .work-project__meta, .work-project__year, .work-project__arrow"
+      );
+
+      if (summary) {
+        gsap.set(summary, {
+          "--row-line": 0
+        });
+      }
+
+      gsap.set(row, {
+        autoAlpha: 1
+      });
+
+      gsap.set(pieces, {
+        autoAlpha: 0,
+        y: 22,
+        filter: "blur(9px)"
+      });
     });
 
-    return;
+    const tl = gsap.timeline({
+      defaults: {
+        ease: "power3.out"
+      },
+      scrollTrigger: {
+        trigger: archive,
+        start: "top top",
+        end: "+=150%",
+        scrub: 1.15,
+        pin: true,
+        anticipatePin: 1,
+        invalidateOnRefresh: true,
+        onEnter: () => archive.classList.add("is-forming"),
+        onLeave: () => archive.classList.add("is-formed"),
+        onEnterBack: () => archive.classList.add("is-forming"),
+        onLeaveBack: () => archive.classList.remove("is-formed")
+      }
+    });
+
+    /*
+      01 — section locks, black breath ends, soft scan passes
+    */
+    tl.to(archive, {
+      "--archive-progress": 0.24,
+      "--archive-scan": 0.7,
+      duration: 0.32,
+      ease: "none"
+    }, 0);
+
+    tl.to(shell, {
+      y: 0,
+      scale: 1,
+      duration: 0.58,
+      ease: "power2.out"
+    }, 0);
+
+    /*
+      02 — architectural top line grows from center
+    */
+    tl.to(archive, {
+      "--archive-top-line": 1,
+      duration: 0.5,
+      ease: "power2.inOut"
+    }, 0.06);
+
+    /*
+      03 — labels appear quietly
+    */
+    tl.to([label, kicker], {
+      autoAlpha: 1,
+      y: 0,
+      filter: "blur(0px)",
+      duration: 0.34,
+      stagger: 0.045,
+      ease: "power3.out"
+    }, 0.18);
+
+    /*
+      04 — headline resolves like a lens focusing
+    */
+    tl.to(title, {
+      autoAlpha: 1,
+      y: 0,
+      scale: 1,
+      filter: "blur(0px)",
+      letterSpacing: "-0.082em",
+      duration: 0.68,
+      ease: "power4.out"
+    }, 0.3);
+
+    /*
+      05 — intro follows after title
+    */
+    tl.to(intro, {
+      autoAlpha: 1,
+      y: 0,
+      filter: "blur(0px)",
+      duration: 0.42,
+      ease: "power3.out"
+    }, 0.56);
+
+    /*
+      06 — rows assemble one by one
+    */
+    rows.forEach((row, index) => {
+      const summary = row.querySelector(".work-project__summary");
+
+      const number = row.querySelector(".work-project__index");
+      const name = row.querySelector(".work-project__name");
+      const meta = row.querySelector(".work-project__meta");
+      const year = row.querySelector(".work-project__year");
+      const arrow = row.querySelector(".work-project__arrow");
+
+      const start = 0.78 + index * 0.12;
+
+      if (summary) {
+        tl.to(summary, {
+          "--row-line": 1,
+          duration: 0.26,
+          ease: "power2.inOut"
+        }, start);
+      }
+
+      tl.to(number, {
+        autoAlpha: 1,
+        y: 0,
+        filter: "blur(0px)",
+        duration: 0.22
+      }, start + 0.05);
+
+      tl.to(name, {
+        autoAlpha: 1,
+        y: 0,
+        filter: "blur(0px)",
+        duration: 0.32,
+        ease: "power4.out"
+      }, start + 0.075);
+
+      tl.to([meta, year, arrow], {
+        autoAlpha: 1,
+        y: 0,
+        filter: "blur(0px)",
+        duration: 0.28,
+        stagger: 0.025
+      }, start + 0.12);
+    });
+
+    /*
+      07 — final settle, section becomes interactive
+    */
+    tl.to(archive, {
+      "--archive-progress": 1,
+      "--archive-scan": 0,
+      duration: 0.44,
+      ease: "none"
+    }, 1.12);
+
+    ScrollTrigger.addEventListener("refreshInit", () => {
+      archive.classList.remove("is-formed");
+    });
+
+    window.addEventListener("load", () => {
+      ScrollTrigger.refresh();
+    });
   }
 
-  gsap.registerPlugin(ScrollTrigger);
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", setupFinalArchiveReveal);
+  } else {
+    setupFinalArchiveReveal();
+  }
+})();
 
-  ScrollTrigger.getAll().forEach((trigger) => {
-    if (
-      trigger.vars &&
-      (
-        trigger.vars.id === "workArchiveFormation" ||
-        trigger.vars.id === "workArchiveNoomo"
-      )
-    ) {
-      trigger.kill();
-    }
-  });
 
-  archive.classList.remove("is-formed", "is-forming");
-
-  gsap.set(archive, {
-    "--archive-reveal": 0,
-    "--archive-top-line": 0,
-    "--archive-glow": 0
-  });
-
-  gsap.set(shell, {
-    yPercent: 5,
-    scale: 0.985,
-    transformOrigin: "50% 50%"
-  });
-
-  gsap.set([label, kicker], {
-    autoAlpha: 0,
-    y: 28,
-    filter: "blur(8px)"
-  });
-
-  gsap.set(title, {
-    autoAlpha: 0,
-    y: 92,
-    scale: 0.965,
-    filter: "blur(22px)",
-    letterSpacing: "-0.13em"
-  });
-
-  gsap.set(intro, {
-    autoAlpha: 0,
-    y: 46,
-    filter: "blur(14px)"
-  });
-
-  rows.forEach((row) => {
-    const summary = row.querySelector(".work-project__summary");
-    const pieces = row.querySelectorAll(
-      ".work-project__index, .work-project__name, .work-project__meta, .work-project__year, .work-project__arrow"
-    );
-
-    if (summary) {
-      gsap.set(summary, {
-        "--row-line": 0
-      });
-    }
-
-    gsap.set(row, {
-      autoAlpha: 1
-    });
-
-    gsap.set(pieces, {
-      autoAlpha: 0,
-      y: 34,
-      filter: "blur(12px)"
-    });
-  });
-
-  const tl = gsap.timeline({
-    defaults: {
-      ease: "power3.out"
-    },
-    scrollTrigger: {
-      id: "workArchiveNoomo",
-      trigger: archive,
-      start: "top top",
-      end: "+=260%",
-      scrub: 1.8,
-      pin: true,
-      anticipatePin: 1,
-      invalidateOnRefresh: true,
-      onEnter: () => archive.classList.add("is-forming"),
-      onLeave: () => archive.classList.add("is-formed"),
-      onEnterBack: () => archive.classList.add("is-forming"),
-      onLeaveBack: () => archive.classList.remove("is-formed")
-    }
-  });
-
-  /* 01 — black breath / scene locks */
-  tl.to(archive, {
-    "--archive-reveal": 0.25,
-    "--archive-glow": 0.55,
-    duration: 0.8
-  }, 0);
-
-  tl.to(shell, {
-    yPercent: 0,
-    scale: 1,
-    duration: 1.4,
-    ease: "power2.out"
-  }, 0);
-
-  /* 02 — top line draws slowly */
-  tl.to(archive, {
-    "--archive-top-line": 1,
-    duration: 1.2,
-    ease: "power2.inOut"
-  }, 0.25);
-
-  /* 03 — small editorial labels arrive */
-  tl.to([label, kicker], {
-    autoAlpha: 1,
-    y: 0,
-    filter: "blur(0px)",
-    duration: 0.9,
-    stagger: 0.1,
-    ease: "power3.out"
-  }, 0.55);
-
-  /* 04 — title resolves like a hero moment */
-  tl.to(title, {
-    autoAlpha: 1,
-    y: 0,
-    scale: 1,
-    filter: "blur(0px)",
-    letterSpacing: "-0.082em",
-    duration: 1.55,
-    ease: "power4.out"
-  }, 0.85);
-
-  tl.to(archive, {
-    "--archive-reveal": 0.68,
-    duration: 1.2,
-    ease: "none"
-  }, 0.95);
-
-  /* 05 — intro enters after title, not at same time */
-  tl.to(intro, {
-    autoAlpha: 1,
-    y: 0,
-    filter: "blur(0px)",
-    duration: 1,
-    ease: "power3.out"
-  }, 1.55);
-
-  /* 06 — rows build one-by-one, slower */
-  rows.forEach((row, index) => {
-    const summary = row.querySelector(".work-project__summary");
-    const number = row.querySelector(".work-project__index");
-    const name = row.querySelector(".work-project__name");
-    const meta = row.querySelector(".work-project__meta");
-    const year = row.querySelector(".work-project__year");
-    const arrow = row.querySelector(".work-project__arrow");
-
-    const start = 2.1 + index * 0.42;
-
-    if (summary) {
-      tl.to(summary, {
-        "--row-line": 1,
-        duration: 0.95,
-        ease: "power2.inOut"
-      }, start);
-    }
-
-    tl.to(number, {
-      autoAlpha: 1,
-      y: 0,
-      filter: "blur(0px)",
-      duration: 0.62
-    }, start + 0.14);
-
-    tl.to(name, {
-      autoAlpha: 1,
-      y: 0,
-      filter: "blur(0px)",
-      duration: 0.82,
-      ease: "power4.out"
-    }, start + 0.22);
-
-    tl.to([meta, year, arrow], {
-      autoAlpha: 1,
-      y: 0,
-      filter: "blur(0px)",
-      duration: 0.72,
-      stagger: 0.08
-    }, start + 0.38);
-  });
-
-  /* 07 — final hold so it does not rush away */
-  tl.to(archive, {
-    "--archive-reveal": 1,
-    "--archive-glow": 0,
-    duration: 1.4,
-    ease: "none"
-  }, 3.85);
-
-  tl.to(shell, {
-    yPercent: -2.5,
-    duration: 1.4,
-    ease: "none"
-  }, 4.15);
-
-  ScrollTrigger.refresh();
-}
-
-setupArchiveNoomoReveal();
   
 })();
 
