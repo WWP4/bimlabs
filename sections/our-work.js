@@ -712,4 +712,140 @@
   } else {
     init();
   }
+
+
+
+
+
+
+
+
+/* ==========================================================
+   WORK ARCHIVE — CINEMATIC SCROLL REVEAL
+   Uses GSAP/ScrollTrigger already loaded in index.html
+========================================================== */
+
+function setupArchiveReveal() {
+  const archive = document.querySelector(".work-archive");
+  if (!archive) return;
+
+  const header = archive.querySelector(".work-archive__header");
+  const label = archive.querySelector(".work-archive__label");
+  const kicker = archive.querySelector(".work-archive__kicker");
+  const title = archive.querySelector(".work-archive__title");
+  const intro = archive.querySelector(".work-archive__intro");
+  const projects = Array.from(archive.querySelectorAll(".work-project"));
+  const lines = Array.from(archive.querySelectorAll(".work-project__summary"));
+
+  const hasGsap = window.gsap && window.ScrollTrigger;
+
+  if (!hasGsap || prefersReducedMotion) {
+    archive.classList.add("is-formed");
+    projects.forEach((project) => project.classList.add("is-visible"));
+    return;
+  }
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  gsap.set(archive, {
+    opacity: 1
+  });
+
+  gsap.set([label, kicker], {
+    autoAlpha: 0,
+    y: 18
+  });
+
+  gsap.set(title, {
+    autoAlpha: 0,
+    y: 54,
+    filter: "blur(14px)",
+    letterSpacing: "-0.105em"
+  });
+
+  gsap.set(intro, {
+    autoAlpha: 0,
+    y: 34,
+    filter: "blur(8px)"
+  });
+
+  gsap.set(projects, {
+    autoAlpha: 0,
+    y: 34
+  });
+
+  gsap.set(lines, {
+    "--lineScale": 0
+  });
+
+  const tl = gsap.timeline({
+    scrollTrigger: {
+      trigger: archive,
+      start: "top 72%",
+      end: "top 18%",
+      scrub: 1.1,
+      once: false
+    }
+  });
+
+  tl.to(archive, {
+    onStart: () => archive.classList.add("is-forming"),
+    duration: 0.01
+  });
+
+  tl.to([label, kicker], {
+    autoAlpha: 1,
+    y: 0,
+    duration: 0.35,
+    ease: "power3.out",
+    stagger: 0.04
+  });
+
+  tl.to(title, {
+    autoAlpha: 1,
+    y: 0,
+    filter: "blur(0px)",
+    letterSpacing: "-0.082em",
+    duration: 0.72,
+    ease: "power4.out"
+  }, "-=0.18");
+
+  tl.to(intro, {
+    autoAlpha: 1,
+    y: 0,
+    filter: "blur(0px)",
+    duration: 0.48,
+    ease: "power3.out"
+  }, "-=0.38");
+
+  tl.to(projects, {
+    autoAlpha: 1,
+    y: 0,
+    duration: 0.52,
+    ease: "power3.out",
+    stagger: 0.075
+  }, "-=0.22");
+
+  tl.to(lines, {
+    "--lineScale": 1,
+    duration: 0.64,
+    ease: "power3.out",
+    stagger: 0.06
+  }, "-=0.5");
+
+  ScrollTrigger.create({
+    trigger: archive,
+    start: "top 58%",
+    once: true,
+    onEnter: () => archive.classList.add("is-formed")
+  });
+}
+
+setupArchiveReveal();
+  
+
+  
 })();
+
+
+
