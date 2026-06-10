@@ -1,9 +1,11 @@
 /* ==========================================================
    BIM LABS STUDIO — OUR WORK
-   Fixed Noomo-style trust bridge + clean archive + scrollable drawer
+   Perfected Noomo-style trust cards + archive drawer
 ========================================================== */
 
 (() => {
+  "use strict";
+
   const projects = [
     {
       number: "01",
@@ -121,19 +123,21 @@
   const projectButtons = Array.from(root.querySelectorAll("[data-work-project]"));
   const detail = root.querySelector(".work-detail");
 
-  const numberEl = root.querySelector("[data-work-detail-number]");
-  const typeEl = root.querySelector("[data-work-detail-type]");
-  const yearEl = root.querySelector("[data-work-detail-year]");
-  const titleEl = root.querySelector("[data-work-detail-title]");
-  const descriptionEl = root.querySelector("[data-work-detail-description]");
-  const imageEl = root.querySelector("[data-work-detail-image]");
-  const constraintEl = root.querySelector("[data-work-detail-constraint]");
-  const solutionEl = root.querySelector("[data-work-detail-solution]");
-  const resultEl = root.querySelector("[data-work-detail-result]");
-  const servicesEl = root.querySelector("[data-work-detail-services]");
-  const reviewEl = root.querySelector("[data-work-detail-review]");
-  const clientEl = root.querySelector("[data-work-detail-client]");
-  const roleEl = root.querySelector("[data-work-detail-role]");
+  const els = {
+    number: root.querySelector("[data-work-detail-number]"),
+    type: root.querySelector("[data-work-detail-type]"),
+    year: root.querySelector("[data-work-detail-year]"),
+    title: root.querySelector("[data-work-detail-title]"),
+    description: root.querySelector("[data-work-detail-description]"),
+    image: root.querySelector("[data-work-detail-image]"),
+    constraint: root.querySelector("[data-work-detail-constraint]"),
+    solution: root.querySelector("[data-work-detail-solution]"),
+    result: root.querySelector("[data-work-detail-result]"),
+    services: root.querySelector("[data-work-detail-services]"),
+    review: root.querySelector("[data-work-detail-review]"),
+    client: root.querySelector("[data-work-detail-client]"),
+    role: root.querySelector("[data-work-detail-role]")
+  };
 
   const prevBtn = root.querySelector("[data-work-prev]");
   const nextBtn = root.querySelector("[data-work-next]");
@@ -143,11 +147,6 @@
   let detailIsOpen = false;
   let changeTimer = null;
   let lastFocusedElement = null;
-  let trustScrollReady = false;
-
-  function clampIndex(index) {
-    return (index + projects.length) % projects.length;
-  }
 
   function clamp(value, min, max) {
     return Math.min(Math.max(value, min), max);
@@ -161,14 +160,8 @@
     return 1 - Math.pow(1 - value, 3);
   }
 
-  function lockSiteScroll() {
-    document.documentElement.classList.add("work-drawer-lock");
-    document.body.classList.add("work-drawer-lock");
-  }
-
-  function unlockSiteScroll() {
-    document.documentElement.classList.remove("work-drawer-lock");
-    document.body.classList.remove("work-drawer-lock");
+  function clampIndex(index) {
+    return (index + projects.length) % projects.length;
   }
 
   function escapeHtml(value = "") {
@@ -179,6 +172,20 @@
       .replaceAll('"', "&quot;")
       .replaceAll("'", "&#039;");
   }
+
+  function lockSiteScroll() {
+    document.documentElement.classList.add("work-drawer-lock");
+    document.body.classList.add("work-drawer-lock");
+  }
+
+  function unlockSiteScroll() {
+    document.documentElement.classList.remove("work-drawer-lock");
+    document.body.classList.remove("work-drawer-lock");
+  }
+
+  /* ==========================================================
+     TRUST BRIDGE
+  ========================================================== */
 
   function injectTrustBridge() {
     if (document.querySelector(".work-trust")) return;
@@ -192,7 +199,11 @@
         return `
           <article class="work-trust-card" data-work-trust-card="${index}">
             <p class="work-trust-card__logo">${escapeHtml(project.client)}</p>
-            <blockquote>“${escapeHtml(project.review)}”</blockquote>
+
+            <blockquote>
+              “${escapeHtml(project.review)}”
+            </blockquote>
+
             <footer>
               <strong>${escapeHtml(project.title)}</strong>
               <span>${escapeHtml(project.role)}</span>
@@ -212,9 +223,9 @@
 
         <div class="work-trust__copy">
           <p>
-            We build with clients who need more than a nice-looking website. They need
-            clearer systems, sharper presentation, and digital work that makes the
-            business easier to understand.
+            We build with clients who need more than a nice-looking website.
+            They need clearer systems, sharper presentation, and digital work
+            that makes the business easier to understand.
           </p>
         </div>
 
@@ -229,71 +240,92 @@
 
   function setupWorkTrustScroll() {
     const section = document.querySelector(".work-trust");
+    const sticky = document.querySelector(".work-trust__sticky");
     const cards = Array.from(document.querySelectorAll("[data-work-trust-card]"));
+    const bgText = document.querySelector(".work-trust__bg-text");
+    const copy = document.querySelector(".work-trust__copy");
 
-    if (!section || !cards.length || prefersReducedMotion || trustScrollReady) return;
+    if (!section || !sticky || !cards.length) return;
 
-    trustScrollReady = true;
+    if (prefersReducedMotion) {
+      cards.forEach((card, index) => {
+        card.style.transform = "none";
+        card.style.opacity = "1";
+        card.style.zIndex = String(10 + index);
+      });
+
+      return;
+    }
 
     let ticking = false;
 
     const cardSettings = [
       {
-        startX: 78,
+        startX: 82,
         endX: -30,
-        y: 12,
+        y: 14,
         rotateStart: -7,
         rotateEnd: -2,
         scale: 1.02,
-        speed: 1.08
+        speed: 1.08,
+        delay: 0
       },
       {
-        startX: 108,
+        startX: 111,
         endX: -10,
         y: -5,
         rotateStart: 5,
-        rotateEnd: 1.5,
+        rotateEnd: 1.4,
         scale: 1,
-        speed: 1.18
+        speed: 1.18,
+        delay: 0.05
       },
       {
-        startX: 138,
+        startX: 140,
         endX: 12,
-        y: 8,
+        y: 7,
         rotateStart: -4,
         rotateEnd: -1,
         scale: 1.04,
-        speed: 1.28
+        speed: 1.28,
+        delay: 0.1
       },
       {
         startX: 170,
-        endX: 36,
+        endX: 35,
         y: -1,
         rotateStart: 6,
         rotateEnd: 2,
         scale: 0.98,
-        speed: 1.36
+        speed: 1.36,
+        delay: 0.15
       }
     ];
 
-    function update() {
+    function getProgress() {
       const rect = section.getBoundingClientRect();
-      const total = Math.max(section.offsetHeight - window.innerHeight, 1);
-      const rawProgress = clamp(-rect.top / total, 0, 1);
+      const scrollable = Math.max(section.offsetHeight - window.innerHeight, 1);
+      return clamp(-rect.top / scrollable, 0, 1);
+    }
+
+    function update() {
+      const progress = getProgress();
 
       cards.forEach((card, index) => {
         const settings = cardSettings[index] || cardSettings[cardSettings.length - 1];
 
-        const delayedProgress = clamp(
-          rawProgress * settings.speed - index * 0.055,
+        const delayed = clamp(
+          progress * settings.speed - settings.delay,
           0,
           1
         );
 
-        const eased = easeOutCubic(delayedProgress);
+        const eased = easeOutCubic(delayed);
+
         const x = lerp(settings.startX, settings.endX, eased);
         const rotate = lerp(settings.rotateStart, settings.rotateEnd, eased);
-        const float = Math.sin(rawProgress * Math.PI * 2 + index) * 0.8;
+        const float = Math.sin(progress * Math.PI * 2 + index * 0.8) * 0.85;
+        const opacity = clamp(lerp(0.92, 1, eased), 0, 1);
 
         card.style.transform = `
           translate3d(${x}vw, calc(${settings.y}vh + ${float}rem), 0)
@@ -301,16 +333,34 @@
           scale(${settings.scale})
         `;
 
+        card.style.opacity = String(opacity);
         card.style.zIndex = String(10 + index);
       });
+
+      if (bgText) {
+        const bgY = lerp(0, -4, progress);
+        const bgOpacity = lerp(0.95, 0.48, progress);
+
+        bgText.style.transform = `translate3d(0, ${bgY}vh, 0)`;
+        bgText.style.opacity = String(bgOpacity);
+      }
+
+      if (copy) {
+        const copyY = lerp(0, -2, progress);
+        const copyOpacity = lerp(1, 0.72, progress);
+
+        copy.style.transform = `translate3d(0, ${copyY}vh, 0)`;
+        copy.style.opacity = String(copyOpacity);
+      }
 
       ticking = false;
     }
 
     function requestUpdate() {
       if (ticking) return;
+
       ticking = true;
-      requestAnimationFrame(update);
+      window.requestAnimationFrame(update);
     }
 
     window.addEventListener("scroll", requestUpdate, { passive: true });
@@ -319,19 +369,9 @@
     update();
   }
 
-  function renderServices(items = []) {
-    if (!servicesEl) return;
-
-    const fragment = document.createDocumentFragment();
-
-    items.forEach((item) => {
-      const li = document.createElement("li");
-      li.textContent = item;
-      fragment.appendChild(li);
-    });
-
-    servicesEl.replaceChildren(fragment);
-  }
+  /* ==========================================================
+     PROJECT DETAIL DRAWER
+  ========================================================== */
 
   function clearPreviewStates() {
     projectButtons.forEach((button) => {
@@ -366,6 +406,18 @@
     root.dataset.workActive = String(safeIndex);
   }
 
+  function renderServices(services = []) {
+    if (!els.services) return;
+
+    els.services.innerHTML = "";
+
+    services.forEach((service) => {
+      const li = document.createElement("li");
+      li.textContent = service;
+      els.services.appendChild(li);
+    });
+  }
+
   function renderProject(index) {
     const safeIndex = clampIndex(index);
     const project = projects[safeIndex];
@@ -375,21 +427,24 @@
     activeIndex = safeIndex;
     setActiveButton(safeIndex);
 
-    if (numberEl) numberEl.textContent = project.number;
-    if (typeEl) typeEl.textContent = project.type;
-    if (yearEl) yearEl.textContent = project.year;
-    if (titleEl) titleEl.textContent = project.title;
-    if (descriptionEl) descriptionEl.textContent = project.description;
-    if (constraintEl) constraintEl.textContent = project.constraint;
-    if (solutionEl) solutionEl.textContent = project.solution;
-    if (resultEl) resultEl.textContent = project.result;
-    if (reviewEl) reviewEl.textContent = `“${project.review}”`;
-    if (clientEl) clientEl.textContent = project.client;
-    if (roleEl) roleEl.textContent = project.role;
+    if (els.number) els.number.textContent = project.number;
+    if (els.type) els.type.textContent = project.type;
+    if (els.year) els.year.textContent = project.year;
+    if (els.title) els.title.textContent = project.title;
+    if (els.description) els.description.textContent = project.description;
+    if (els.constraint) els.constraint.textContent = project.constraint;
+    if (els.solution) els.solution.textContent = project.solution;
+    if (els.result) els.result.textContent = project.result;
+    if (els.review) els.review.textContent = `“${project.review}”`;
+    if (els.client) els.client.textContent = project.client;
+    if (els.role) els.role.textContent = project.role;
 
-    if (imageEl) {
-      imageEl.src = project.image;
-      imageEl.alt = `${project.title} project preview`;
+    if (els.image) {
+      els.image.src = project.image;
+      els.image.alt = `${project.title} project preview`;
+
+      const media = els.image.closest(".work-detail__media");
+      if (media) media.classList.remove("is-missing");
     }
 
     renderServices(project.services);
@@ -400,7 +455,7 @@
 
     detail.classList.remove("is-changing");
 
-    requestAnimationFrame(() => {
+    window.requestAnimationFrame(() => {
       detail.classList.add("is-changing");
     });
 
@@ -408,7 +463,7 @@
 
     changeTimer = window.setTimeout(() => {
       detail.classList.remove("is-changing");
-    }, 260);
+    }, 280);
   }
 
   function resetDrawerScroll() {
@@ -417,6 +472,8 @@
   }
 
   function openDetail(index) {
+    if (!detail) return;
+
     const safeIndex = clampIndex(index);
 
     lastFocusedElement = document.activeElement;
@@ -425,12 +482,10 @@
     resetDrawerScroll();
 
     detailIsOpen = true;
-    root.classList.add("has-open-detail");
 
-    if (detail) {
-      detail.classList.add("is-open");
-      detail.setAttribute("aria-hidden", "false");
-    }
+    root.classList.add("has-open-detail");
+    detail.classList.add("is-open");
+    detail.setAttribute("aria-hidden", "false");
 
     lockSiteScroll();
     clearPreviewStates();
@@ -438,19 +493,17 @@
 
     window.setTimeout(() => {
       closeBtn?.focus({ preventScroll: true });
-    }, 120);
+    }, 140);
   }
 
   function closeDetail() {
-    if (!detailIsOpen) return;
+    if (!detail || !detailIsOpen) return;
 
     detailIsOpen = false;
-    root.classList.remove("has-open-detail");
 
-    if (detail) {
-      detail.classList.remove("is-open", "is-changing");
-      detail.setAttribute("aria-hidden", "true");
-    }
+    root.classList.remove("has-open-detail");
+    detail.classList.remove("is-open", "is-changing");
+    detail.setAttribute("aria-hidden", "true");
 
     clearPreviewStates();
     setActiveButton(activeIndex);
@@ -476,9 +529,18 @@
   }
 
   function setupProjectButtons() {
-    projectButtons.forEach((button) => {
-      const index = Number(button.dataset.workProject || 0);
+    if (!projectButtons.length) return;
 
+    projectButtons.forEach((button, buttonIndex) => {
+      const rawIndex = button.dataset.workProject;
+      const parsedIndex = Number(rawIndex);
+
+      const index =
+        Number.isFinite(parsedIndex) && parsedIndex >= 0
+          ? clampIndex(parsedIndex)
+          : buttonIndex;
+
+      button.dataset.workProject = String(index);
       button.setAttribute("type", "button");
       button.setAttribute("aria-pressed", index === activeIndex ? "true" : "false");
 
@@ -522,7 +584,6 @@
       prevBtn.addEventListener("click", (event) => {
         event.preventDefault();
         event.stopPropagation();
-
         moveProject(-1);
       });
     }
@@ -533,7 +594,6 @@
       nextBtn.addEventListener("click", (event) => {
         event.preventDefault();
         event.stopPropagation();
-
         moveProject(1);
       });
     }
@@ -544,7 +604,6 @@
       closeBtn.addEventListener("click", (event) => {
         event.preventDefault();
         event.stopPropagation();
-
         closeDetail();
       });
     }
@@ -623,25 +682,39 @@
     });
   }
 
-  function init() {
-    if (!projectButtons.length || !detail) return;
+  function cleanInitialState() {
+    root.classList.remove("has-open-detail");
+    unlockSiteScroll();
 
+    if (detail) {
+      detail.classList.remove("is-open", "is-changing");
+      detail.setAttribute("aria-hidden", "true");
+    }
+  }
+
+  function init() {
+    /*
+      Important:
+      Trust cards inject first so they still work even if the drawer HTML
+      is missing or broken.
+    */
     injectTrustBridge();
+    setupWorkTrustScroll();
+
+    /*
+      Archive/drawer only runs if the archive markup exists.
+      This prevents the testimonial cards from dying because of drawer issues.
+    */
+    if (!projectButtons.length || !detail) return;
 
     setupProjectButtons();
     setupDrawerControls();
     setupKeyboardControls();
     disableBrokenImages();
-    setupWorkTrustScroll();
 
     renderProject(0);
     setActiveButton(0);
-
-    detail.classList.remove("is-open", "is-changing");
-    detail.setAttribute("aria-hidden", "true");
-
-    root.classList.remove("has-open-detail");
-    unlockSiteScroll();
+    cleanInitialState();
   }
 
   if (document.readyState === "loading") {
