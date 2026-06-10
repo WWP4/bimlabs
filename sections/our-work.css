@@ -2170,3 +2170,101 @@ body.work-drawer-lock {
     text-align: left;
   }
 }
+
+
+
+/* ======================================================
+   PATCH — THINNER / LONGER / CLOSER TESTIMONIAL CARDS
+   Add at VERY BOTTOM of sections/our-work.css
+====================================================== */
+
+/* Gives the animation more room without making spacing feel huge */
+.work-trust {
+  min-height: 390vh;
+}
+
+/* The stage stays full-screen and lets cards fly independently */
+.work-trust__track {
+  position: absolute !important;
+  inset: 0 !important;
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  transform: none !important;
+  pointer-events: none !important;
+  perspective: 1200px;
+  transform-style: preserve-3d;
+}
+
+/* Thinner, taller, more editorial cards */
+.work-trust-card {
+  position: absolute !important;
+  left: 0 !important;
+  top: 34vh !important;
+
+  width: clamp(14.5rem, 17vw, 20rem) !important;
+  min-height: clamp(25rem, 52vh, 36rem) !important;
+  padding: clamp(1.2rem, 1.55vw, 1.8rem) !important;
+
+  margin-top: 0 !important;
+
+  opacity: 1 !important;
+  pointer-events: auto !important;
+
+  will-change: transform, opacity !important;
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+}
+
+/* Smaller text so the thin cards still breathe */
+.work-trust-card__logo {
+  margin-bottom: 1.7rem !important;
+
+  font-size: clamp(1.05rem, 1.25vw, 1.55rem) !important;
+  letter-spacing: -0.055em;
+}
+
+.work-trust-card blockquote {
+  font-size: clamp(0.78rem, 0.88vw, 0.98rem) !important;
+  line-height: 1.55 !important;
+}
+
+.work-trust-card footer {
+  margin-top: 1.7rem !important;
+}
+
+.work-trust-card strong {
+  font-size: 0.55rem !important;
+}
+
+.work-trust-card span {
+  font-size: 0.62rem !important;
+}
+
+/* Keep mobile normal */
+@media (max-width: 900px) {
+  .work-trust {
+    min-height: auto;
+  }
+
+  .work-trust__track {
+    position: relative !important;
+    inset: auto !important;
+    display: grid !important;
+    gap: 1rem !important;
+    width: 100% !important;
+    height: auto !important;
+    perspective: none;
+  }
+
+  .work-trust-card {
+    position: relative !important;
+    left: auto !important;
+    top: auto !important;
+
+    width: 100% !important;
+    min-height: 18rem !important;
+
+    transform: none !important;
+  }
+}
