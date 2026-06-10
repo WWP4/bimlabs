@@ -1680,3 +1680,20 @@ body.work-drawer-lock {
     transform: none !important;
   }
 }
+
+
+
+.bim-trust {
+  min-height: 380vh;
+}
+
+.bim-trust__stage {
+  perspective: 1200px;
+  transform-style: preserve-3d;
+}
+
+@media (max-width: 900px) {
+  .bim-trust {
+    min-height: auto;
+  }
+}
