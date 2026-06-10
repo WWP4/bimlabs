@@ -1908,3 +1908,88 @@ section {
   ) !important;
   z-index: 20;
 }
+
+
+
+
+/* ==========================================================
+   FIX PROCESS WORD DEPTH
+   PROCESS stays behind cards, visible, but not overpowering.
+========================================================== */
+
+.process-3d {
+  position: relative;
+  isolation: isolate;
+  background: #000 !important;
+  overflow: hidden;
+}
+
+.process-scene {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  background: #000 !important;
+  pointer-events: none;
+}
+
+.process-word {
+  position: relative;
+  z-index: 2;
+
+  margin: 0;
+
+  color: rgba(245, 245, 240, 0.18) !important;
+  font-family: "IBM Plex Mono", "Manrope", sans-serif;
+  font-size: clamp(7rem, 18vw, 22rem) !important;
+  font-weight: 500;
+  line-height: 0.8;
+  letter-spacing: -0.14em;
+
+  white-space: nowrap;
+  text-align: center;
+
+  opacity: 1 !important;
+  transform: translate3d(0, 0, 0) scale(1) !important;
+
+  pointer-events: none;
+  user-select: none;
+  will-change: transform, opacity;
+}
+
+/* cards must always sit above PROCESS */
+.process-overlay {
+  position: relative;
+  z-index: 5;
+  background: transparent !important;
+}
+
+.process-cards {
+  position: relative;
+  z-index: 6;
+}
+
+.process-card {
+  position: relative;
+  z-index: 7;
+}
+
+/* remove any black layer covering the word */
+.process-overlay::before,
+.process-overlay::after,
+.process-scene::before,
+.process-scene::after {
+  pointer-events: none;
+}
+
+/* make card background strong enough to read over PROCESS */
+.process-card {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0.012)),
+    rgba(0, 0, 0, 0.86) !important;
+
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
