@@ -1729,3 +1729,27 @@ body.work-drawer-lock {
     min-height: 18rem;
   }
 }
+
+
+
+
+/* ==========================================================
+   TRUST CARDS — REAL FLOW, NO FADE
+========================================================== */
+
+.bim-trust {
+  min-height: 390vh;
+  overflow: clip;
+}
+
+.bim-trust__stage {
+  perspective: 1200px;
+  transform-style: preserve-3d;
+  overflow: visible;
+}
+
+.bim-trust-card {
+  opacity: 1;
+  will-change: transform;
+  backface-visibility: hidden;
+}
