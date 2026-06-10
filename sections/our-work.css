@@ -1,8 +1,234 @@
+
 /* ==========================================================
-   OUR WORK / TRUST / ARCHIVE — CLEANED
-   Fake PROCESS → WORK reveal layer removed.
-   PROCESS now exits directly into trust cards, then real archive.
+   PROCESS → OUR WORK PREVIEW
 ========================================================== */
+
+.process-world-inside {
+  pointer-events: none;
+}
+
+
+
+
+/* ======================================================
+   PROCESS → WORK TRANSITION LAYER
+   This is not the real archive.
+   It is only a visual bridge from PROCESS into proof.
+====================================================== */
+
+.process-world-inside {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.work-reveal-preview {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background:
+    radial-gradient(circle at 50% 48%, rgba(255, 255, 255, 0.08), transparent 34%),
+    radial-gradient(circle at 50% 60%, rgba(255, 255, 255, 0.035), transparent 48%),
+    #000;
+  color: #fff;
+  opacity: 0;
+  transform: scale(0.96);
+  will-change: opacity, transform;
+}
+
+.work-reveal-preview__field {
+  position: absolute;
+  inset: 12vh 10vw;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 999px;
+  opacity: 0.6;
+}
+
+.work-reveal-preview__field::before,
+.work-reveal-preview__field::after {
+  content: "";
+  position: absolute;
+  inset: 14%;
+  border: 1px solid rgba(255, 255, 255, 0.055);
+  border-radius: inherit;
+}
+
+.work-reveal-preview__field::after {
+  inset: 29%;
+  opacity: 0.7;
+}
+
+.work-reveal-preview__system {
+  position: relative;
+  width: min(52vw, 760px);
+  height: min(34vw, 420px);
+}
+
+.work-node {
+  position: absolute;
+  width: clamp(58px, 6vw, 104px);
+  height: clamp(58px, 6vw, 104px);
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.22), transparent 7%),
+    radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.08), transparent 42%);
+  box-shadow:
+    0 0 42px rgba(255, 255, 255, 0.06),
+    inset 0 0 32px rgba(255, 255, 255, 0.035);
+}
+
+.work-node::after {
+  content: "";
+  position: absolute;
+  inset: 50%;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #fff;
+  transform: translate(-50%, -50%);
+  opacity: 0.9;
+}
+
+.work-node--one {
+  left: 4%;
+  top: 46%;
+}
+
+.work-node--two {
+  left: 34%;
+  top: 16%;
+}
+
+.work-node--three {
+  right: 25%;
+  bottom: 14%;
+}
+
+.work-node--four {
+  right: 2%;
+  top: 38%;
+}
+
+.work-line {
+  position: absolute;
+  height: 1px;
+  transform-origin: left center;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.5),
+    transparent
+  );
+  opacity: 0.42;
+}
+
+.work-line--one {
+  left: 13%;
+  top: 52%;
+  width: 32%;
+  transform: rotate(-24deg);
+}
+
+.work-line--two {
+  left: 42%;
+  top: 31%;
+  width: 28%;
+  transform: rotate(31deg);
+}
+
+.work-line--three {
+  right: 9%;
+  top: 53%;
+  width: 31%;
+  transform: rotate(-18deg);
+}
+
+.work-reveal-preview__copy {
+  position: absolute;
+  left: clamp(24px, 7vw, 110px);
+  bottom: clamp(34px, 8vh, 92px);
+  max-width: 460px;
+}
+
+.work-reveal-preview__kicker {
+  margin: 0 0 14px;
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.44);
+}
+
+.work-reveal-preview__statement {
+  margin: 0;
+  font-family: "Manrope", sans-serif;
+  font-size: clamp(34px, 5vw, 82px);
+  line-height: 0.94;
+  letter-spacing: -0.07em;
+  color: rgba(255, 255, 255, 0.92);
+}
+
+.work-reveal-preview__signals {
+  position: absolute;
+  right: clamp(24px, 7vw, 110px);
+  bottom: clamp(38px, 8vh, 96px);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 10px;
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.42);
+}
+
+.work-reveal-preview__signals span {
+  display: block;
+  padding-top: 10px;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  min-width: 160px;
+  text-align: right;
+}
+
+/* Optional active state if your JS adds visibility */
+.process-3d.is-work-reveal .work-reveal-preview,
+.process-world-inside.is-active .work-reveal-preview {
+  opacity: 1;
+  transform: scale(1);
+}
+
+@media (max-width: 800px) {
+  .work-reveal-preview__system {
+    width: 82vw;
+    height: 54vw;
+  }
+
+  .work-reveal-preview__copy {
+    left: 24px;
+    right: 24px;
+    bottom: 96px;
+  }
+
+  .work-reveal-preview__signals {
+    left: 24px;
+    right: 24px;
+    bottom: 28px;
+    align-items: flex-start;
+  }
+
+  .work-reveal-preview__signals span {
+    min-width: 0;
+    width: 100%;
+    text-align: left;
+  }
+}
+
+
 
 /* ==========================================================
    TRUST BRIDGE — NOOMO-INSPIRED, BIM LABS VERSION
@@ -1038,6 +1264,7 @@ body.work-drawer-lock {
 }
 
 @media (max-width: 1180px) {
+  .work-reveal-preview__shell,
   .work-archive__shell {
     width: min(60rem, calc(100% - 3rem));
   }
@@ -1140,11 +1367,13 @@ body.work-drawer-lock {
 }
 
 @media (max-width: 760px) {
+  .work-reveal-preview__shell,
   .work-archive__shell {
     width: calc(100% - 2rem);
     padding: 5rem 0 3rem;
   }
 
+  .work-reveal-preview__title,
   .work-archive__title {
     font-size: clamp(3rem, 14vw, 5rem);
   }
@@ -1706,6 +1935,242 @@ body.work-drawer-lock {
 
 
 
+/* ======================================================
+   SAFE PATCH — PROCESS → WORK TRANSITION LAYER ONLY
+   Add this at the VERY BOTTOM of sections/our-work.css
+   Do not replace the full CSS file.
+====================================================== */
+
+.process-world-inside {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+/* Keep hidden unless process JS turns it on */
+.work-reveal-preview {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+
+  background:
+    radial-gradient(circle at 50% 48%, rgba(255, 255, 255, 0.08), transparent 34%),
+    radial-gradient(circle at 50% 62%, rgba(255, 255, 255, 0.035), transparent 48%),
+    #000;
+
+  color: #fff;
+  opacity: 0;
+  transform: scale(0.96);
+  transition:
+    opacity 700ms ease,
+    transform 900ms cubic-bezier(.16, 1, .3, 1);
+}
+
+/* These are the only two reveal hooks */
+.process-3d.is-work-reveal .work-reveal-preview,
+.process-world-inside.is-active .work-reveal-preview {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.work-reveal-preview__field {
+  position: absolute;
+  inset: 12vh 10vw;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 999px;
+  opacity: 0.6;
+}
+
+.work-reveal-preview__field::before,
+.work-reveal-preview__field::after {
+  content: "";
+  position: absolute;
+  border: 1px solid rgba(255, 255, 255, 0.055);
+  border-radius: inherit;
+}
+
+.work-reveal-preview__field::before {
+  inset: 14%;
+}
+
+.work-reveal-preview__field::after {
+  inset: 29%;
+  opacity: 0.7;
+}
+
+.work-reveal-preview__system {
+  position: relative;
+  width: min(52vw, 760px);
+  height: min(34vw, 420px);
+}
+
+.work-node {
+  position: absolute;
+  width: clamp(58px, 6vw, 104px);
+  height: clamp(58px, 6vw, 104px);
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  border-radius: 999px;
+  background:
+    radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.22), transparent 7%),
+    radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.08), transparent 42%);
+  box-shadow:
+    0 0 42px rgba(255, 255, 255, 0.06),
+    inset 0 0 32px rgba(255, 255, 255, 0.035);
+}
+
+.work-node::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 4px;
+  height: 4px;
+  border-radius: 999px;
+  background: #fff;
+  opacity: 0.9;
+  transform: translate(-50%, -50%);
+}
+
+.work-node--one {
+  left: 4%;
+  top: 46%;
+}
+
+.work-node--two {
+  left: 34%;
+  top: 16%;
+}
+
+.work-node--three {
+  right: 25%;
+  bottom: 14%;
+}
+
+.work-node--four {
+  right: 2%;
+  top: 38%;
+}
+
+.work-line {
+  position: absolute;
+  height: 1px;
+  transform-origin: left center;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.5),
+    transparent
+  );
+  opacity: 0.42;
+}
+
+.work-line--one {
+  left: 13%;
+  top: 52%;
+  width: 32%;
+  transform: rotate(-24deg);
+}
+
+.work-line--two {
+  left: 42%;
+  top: 31%;
+  width: 28%;
+  transform: rotate(31deg);
+}
+
+.work-line--three {
+  right: 9%;
+  top: 53%;
+  width: 31%;
+  transform: rotate(-18deg);
+}
+
+.work-reveal-preview__copy {
+  position: absolute;
+  left: clamp(24px, 7vw, 110px);
+  bottom: clamp(34px, 8vh, 92px);
+  max-width: 460px;
+}
+
+.work-reveal-preview__kicker {
+  margin: 0 0 14px;
+  color: rgba(255, 255, 255, 0.44);
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.work-reveal-preview__statement {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.92);
+  font-family: "Manrope", system-ui, sans-serif;
+  font-size: clamp(34px, 5vw, 82px);
+  font-weight: 400;
+  letter-spacing: -0.07em;
+  line-height: 0.94;
+}
+
+.work-reveal-preview__signals {
+  position: absolute;
+  right: clamp(24px, 7vw, 110px);
+  bottom: clamp(38px, 8vh, 96px);
+
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 10px;
+
+  color: rgba(255, 255, 255, 0.42);
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.work-reveal-preview__signals span {
+  display: block;
+  min-width: 160px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  text-align: right;
+}
+
+@media (max-width: 800px) {
+  .work-reveal-preview__system {
+    width: 82vw;
+    height: 54vw;
+  }
+
+  .work-reveal-preview__copy {
+    left: 24px;
+    right: 24px;
+    bottom: 96px;
+  }
+
+  .work-reveal-preview__signals {
+    left: 24px;
+    right: 24px;
+    bottom: 28px;
+    align-items: flex-start;
+  }
+
+  .work-reveal-preview__signals span {
+    width: 100%;
+    min-width: 0;
+    text-align: left;
+  }
+}
+
+
 
 /* ======================================================
    PATCH — THINNER / LONGER / CLOSER TESTIMONIAL CARDS
@@ -1801,288 +2266,4 @@ body.work-drawer-lock {
 
     transform: none !important;
   }
-}
-
-
-
-
-
-
-/* ==========================================================
-   GLOBAL BLACK UNIFICATION
-   Keeps the whole site feeling like one continuous world.
-========================================================== */
-
-:root {
-  --site-black: #000000;
-  --site-black-soft: #000000;
-}
-
-html,
-body {
-  background: var(--site-black) !important;
-}
-
-main,
-section,
-.hero,
-.salo-showcase,
-.bim-showcase,
-.process-3d,
-.process-scene,
-.process-overlay,
-.work-trust,
-.work-trust__sticky,
-.bim-trust,
-.bim-trust__sticky,
-.work-archive,
-.work-archive__bg,
-.work-detail {
-  background-color: var(--site-black) !important;
-}
-
-/* remove obvious section seams */
-section {
-  margin-top: 0;
-  margin-bottom: 0;
-}
-
-/* make transitions blend instead of looking boxed */
-.hero,
-.salo-showcase,
-.process-3d,
-.work-trust,
-.work-archive {
-  box-shadow: none !important;
-  border-top: 0 !important;
-  border-bottom: 0 !important;
-}
-
-/* kill accidental thin separator lines between sections */
-.hero::before,
-.hero::after,
-.salo-showcase::before,
-.salo-showcase::after,
-.process-3d::before,
-.process-3d::after,
-.work-trust::before,
-.work-trust::after,
-.work-archive::before,
-.work-archive::after {
-  border: 0;
-}
-
-/* keep atmosphere, but make it subtle so it does not create section blocks */
-.work-trust__sticky,
-.bim-trust__sticky {
-  background:
-    radial-gradient(circle at 68% 55%, rgba(255, 255, 255, 0.035), transparent 28rem),
-    radial-gradient(circle at 22% 34%, rgba(255, 255, 255, 0.022), transparent 24rem),
-    #000000 !important;
-}
-
-.work-archive__bg {
-  background: #000000 !important;
-}
-
-/* soft fade between major scroll moments */
-.process-3d,
-.work-trust,
-.work-archive {
-  position: relative;
-}
-
-.process-3d::after,
-.work-trust::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: -1px;
-  height: 16vh;
-  pointer-events: none;
-  background: linear-gradient(
-    to bottom,
-    rgba(0, 0, 0, 0),
-    #000000
-  ) !important;
-  z-index: 20;
-}
-
-
-
-
-/* ==========================================================
-   FIX PROCESS WORD DEPTH
-   PROCESS stays behind cards, visible, but not overpowering.
-========================================================== */
-
-.process-3d {
-  position: relative;
-  isolation: isolate;
-  background: #000 !important;
-  overflow: hidden;
-}
-
-.process-scene {
-  position: sticky;
-  top: 0;
-  height: 100vh;
-  z-index: 1;
-  display: grid;
-  place-items: center;
-  background: #000 !important;
-  pointer-events: none;
-}
-
-.process-word {
-  position: relative;
-  z-index: 2;
-
-  margin: 0;
-
-  color: rgba(245, 245, 240, 0.18) !important;
-  font-family: "IBM Plex Mono", "Manrope", sans-serif;
-  font-size: clamp(7rem, 18vw, 22rem) !important;
-  font-weight: 500;
-  line-height: 0.8;
-  letter-spacing: -0.14em;
-
-  white-space: nowrap;
-  text-align: center;
-
-  opacity: 1 !important;
-  transform: translate3d(0, 0, 0) scale(1) !important;
-
-  pointer-events: none;
-  user-select: none;
-  will-change: transform, opacity;
-}
-
-/* cards must always sit above PROCESS */
-.process-overlay {
-  position: relative;
-  z-index: 5;
-  background: transparent !important;
-}
-
-.process-cards {
-  position: relative;
-  z-index: 6;
-}
-
-.process-card {
-  position: relative;
-  z-index: 7;
-}
-
-/* remove any black layer covering the word */
-.process-overlay::before,
-.process-overlay::after,
-.process-scene::before,
-.process-scene::after {
-  pointer-events: none;
-}
-
-/* make card background strong enough to read over PROCESS */
-.process-card {
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0.012)),
-    rgba(0, 0, 0, 0.86) !important;
-
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-}
-
-
-
-/* ==========================================================
-   HARD FIX — PROCESS WORD ABOVE BACKGROUND, BELOW CARDS
-========================================================== */
-
-.process-3d {
-  position: relative !important;
-  isolation: isolate !important;
-  background: #000 !important;
-  overflow: hidden !important;
-}
-
-/* background layer */
-.process-3d::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: 0 !important;
-  background: #000 !important;
-  pointer-events: none;
-}
-
-/* PROCESS scene layer */
-.process-scene {
-  position: sticky !important;
-  top: 0 !important;
-  height: 100vh !important;
-  z-index: 1 !important;
-
-  display: grid !important;
-  place-items: center !important;
-
-  background: transparent !important;
-  pointer-events: none !important;
-}
-
-/* remove black overlays that may be covering PROCESS */
-.process-scene::before,
-.process-scene::after,
-.process-overlay::before,
-.process-overlay::after,
-.process-void {
-  display: none !important;
-  content: none !important;
-}
-
-/* the actual PROCESS word */
-.process-word {
-  position: relative !important;
-  z-index: 2 !important;
-
-  display: block !important;
-  visibility: visible !important;
-  opacity: 1 !important;
-
-  margin: 0 !important;
-
-  color: rgba(245, 245, 240, 0.16) !important;
-  font-family: "IBM Plex Mono", "Manrope", sans-serif !important;
-  font-size: clamp(6rem, 15vw, 18rem) !important;
-  font-weight: 500 !important;
-  line-height: 0.8 !important;
-  letter-spacing: -0.12em !important;
-  white-space: nowrap !important;
-  text-align: center !important;
-
-  transform: none !important;
-  mix-blend-mode: normal !important;
-  pointer-events: none !important;
-}
-
-/* cards/content layer above PROCESS */
-.process-overlay {
-  position: relative !important;
-  z-index: 5 !important;
-  background: transparent !important;
-}
-
-.process-copy,
-.process-cards {
-  position: relative !important;
-  z-index: 6 !important;
-}
-
-.process-card {
-  position: relative !important;
-  z-index: 7 !important;
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0.012)),
-    rgba(0, 0, 0, 0.86) !important;
 }
