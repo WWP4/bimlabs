@@ -2255,3 +2255,183 @@
     animation: none !important;
   }
 }
+
+
+
+/* ==========================================================
+   WORK ARCHIVE — HIGH-END FORMING REVEAL
+   Lines draw. Text resolves. Rows build in sequence.
+========================================================== */
+
+.work-archive {
+  --archive-reveal: 0;
+  --archive-top-line: 0;
+  --archive-row-line: 0;
+  --archive-glow: 0;
+
+  position: relative;
+  opacity: 1;
+}
+
+/* Give the archive more room to arrive */
+.work-archive {
+  margin-top: clamp(7rem, 16vh, 14rem);
+  padding-top: clamp(8rem, 18vh, 15rem);
+}
+
+/* Hide old static borders so animated lines become the real reveal */
+.work-archive__list,
+.work-project,
+.work-project__summary {
+  border-color: transparent !important;
+}
+
+/* Top architectural line */
+.work-archive__shell::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: clamp(3rem, 7vh, 6rem);
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    rgba(246, 246, 240, 0),
+    rgba(246, 246, 240, 0.32),
+    rgba(246, 246, 240, 0)
+  );
+  transform: scaleX(var(--archive-top-line));
+  transform-origin: center;
+  opacity: 0.75;
+  pointer-events: none;
+}
+
+/* Each row gets its own animated rule */
+.work-project__summary {
+  position: relative;
+  isolation: isolate;
+}
+
+.work-project__summary::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -1px;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    rgba(246, 246, 240, 0.38),
+    rgba(246, 246, 240, 0.16) 54%,
+    rgba(246, 246, 240, 0.04)
+  );
+  transform: scaleX(var(--row-line, 0));
+  transform-origin: left center;
+  opacity: 0.9;
+  pointer-events: none;
+}
+
+.work-project:last-child .work-project__summary::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    rgba(246, 246, 240, 0.34),
+    rgba(246, 246, 240, 0.13) 54%,
+    rgba(246, 246, 240, 0.04)
+  );
+  transform: scaleX(var(--row-line, 0));
+  transform-origin: left center;
+  opacity: 0.75;
+  pointer-events: none;
+}
+
+/* Make each row feel like it is switching on */
+.work-project__index,
+.work-project__name,
+.work-project__meta,
+.work-project__year,
+.work-project__arrow {
+  will-change: transform, opacity, filter;
+}
+
+/* Subtle premium scanning light */
+.work-archive__shell::after {
+  content: "";
+  position: absolute;
+  left: -20%;
+  top: 0;
+  width: 34%;
+  height: 100%;
+  pointer-events: none;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.045),
+    transparent
+  );
+  opacity: var(--archive-glow);
+  transform: translate3d(calc(var(--archive-reveal) * 420%), 0, 0) skewX(-14deg);
+  filter: blur(10px);
+}
+
+/* Background should breathe, not glow like a template */
+.work-archive__bg {
+  opacity: 0.82;
+  transform: translate3d(0, calc((1 - var(--archive-reveal)) * 2.5rem), 0);
+  transition: opacity 400ms ease;
+}
+
+/* Keep hover classy after reveal */
+.work-archive.is-formed .work-project__summary:hover .work-project__name {
+  transform: translate3d(0.45rem, 0, 0);
+}
+
+.work-archive.is-formed .work-project__summary:hover::before {
+  background: linear-gradient(
+    90deg,
+    rgba(246, 246, 240, 0.62),
+    rgba(246, 246, 240, 0.2) 58%,
+    rgba(246, 246, 240, 0.05)
+  );
+}
+
+/* Mobile should still load cleanly */
+@media (max-width: 900px) {
+  .work-archive {
+    margin-top: 0;
+    padding-top: 6rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .work-archive {
+    --archive-reveal: 1 !important;
+    --archive-top-line: 1 !important;
+    --archive-glow: 0 !important;
+  }
+
+  .work-project__summary {
+    --row-line: 1 !important;
+  }
+
+  .work-archive__label,
+  .work-archive__kicker,
+  .work-archive__title,
+  .work-archive__intro,
+  .work-project,
+  .work-project__index,
+  .work-project__name,
+  .work-project__meta,
+  .work-project__year,
+  .work-project__arrow {
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: none !important;
+    filter: none !important;
+  }
+}
