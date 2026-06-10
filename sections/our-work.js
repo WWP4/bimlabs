@@ -716,134 +716,206 @@
 
 
 
-
-
-
-
 /* ==========================================================
-   WORK ARCHIVE — CINEMATIC SCROLL REVEAL
-   Uses GSAP/ScrollTrigger already loaded in index.html
+   WORK ARCHIVE — HIGH-END SCROLL FORMATION
+   No AOS. Uses GSAP + ScrollTrigger.
 ========================================================== */
 
-function setupArchiveReveal() {
+function setupArchiveFormationReveal() {
   const archive = document.querySelector(".work-archive");
   if (!archive) return;
 
-  const header = archive.querySelector(".work-archive__header");
+  const hasGsap = window.gsap && window.ScrollTrigger;
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
   const label = archive.querySelector(".work-archive__label");
   const kicker = archive.querySelector(".work-archive__kicker");
   const title = archive.querySelector(".work-archive__title");
   const intro = archive.querySelector(".work-archive__intro");
-  const projects = Array.from(archive.querySelectorAll(".work-project"));
-  const lines = Array.from(archive.querySelectorAll(".work-project__summary"));
+  const rows = Array.from(archive.querySelectorAll(".work-project"));
 
-  const hasGsap = window.gsap && window.ScrollTrigger;
-
-  if (!hasGsap || prefersReducedMotion) {
+  if (!hasGsap || reduceMotion) {
     archive.classList.add("is-formed");
-    projects.forEach((project) => project.classList.add("is-visible"));
+    archive.style.setProperty("--archive-reveal", "1");
+    archive.style.setProperty("--archive-top-line", "1");
+
+    rows.forEach((row) => {
+      const summary = row.querySelector(".work-project__summary");
+      if (summary) summary.style.setProperty("--row-line", "1");
+    });
+
     return;
   }
 
   gsap.registerPlugin(ScrollTrigger);
 
+  // Kill old archive reveal triggers if you pasted earlier versions.
+  ScrollTrigger.getAll().forEach((trigger) => {
+    if (trigger.vars && trigger.vars.id === "workArchiveFormation") {
+      trigger.kill();
+    }
+  });
+
   gsap.set(archive, {
-    opacity: 1
+    "--archive-reveal": 0,
+    "--archive-top-line": 0,
+    "--archive-glow": 0
   });
 
   gsap.set([label, kicker], {
     autoAlpha: 0,
-    y: 18
+    y: 20,
+    filter: "blur(6px)"
   });
 
   gsap.set(title, {
     autoAlpha: 0,
-    y: 54,
-    filter: "blur(14px)",
-    letterSpacing: "-0.105em"
+    y: 72,
+    scale: 0.985,
+    filter: "blur(18px)",
+    letterSpacing: "-0.12em"
   });
 
   gsap.set(intro, {
     autoAlpha: 0,
     y: 34,
-    filter: "blur(8px)"
+    filter: "blur(10px)"
   });
 
-  gsap.set(projects, {
-    autoAlpha: 0,
-    y: 34
-  });
+  rows.forEach((row) => {
+    const summary = row.querySelector(".work-project__summary");
+    const pieces = row.querySelectorAll(
+      ".work-project__index, .work-project__name, .work-project__meta, .work-project__year, .work-project__arrow"
+    );
 
-  gsap.set(lines, {
-    "--lineScale": 0
+    if (summary) {
+      gsap.set(summary, {
+        "--row-line": 0
+      });
+    }
+
+    gsap.set(row, {
+      autoAlpha: 1
+    });
+
+    gsap.set(pieces, {
+      autoAlpha: 0,
+      y: 22,
+      filter: "blur(8px)"
+    });
   });
 
   const tl = gsap.timeline({
+    defaults: {
+      ease: "power4.out"
+    },
     scrollTrigger: {
+      id: "workArchiveFormation",
       trigger: archive,
-      start: "top 72%",
-      end: "top 18%",
-      scrub: 1.1,
-      once: false
+      start: "top 68%",
+      end: "top 8%",
+      scrub: 1.25,
+      invalidateOnRefresh: true,
+      onEnter: () => archive.classList.add("is-forming"),
+      onLeave: () => archive.classList.add("is-formed"),
+      onEnterBack: () => archive.classList.add("is-forming")
     }
   });
 
   tl.to(archive, {
-    onStart: () => archive.classList.add("is-forming"),
-    duration: 0.01
-  });
+    "--archive-reveal": 1,
+    "--archive-glow": 1,
+    duration: 0.55
+  }, 0);
+
+  tl.to(archive, {
+    "--archive-top-line": 1,
+    duration: 0.75
+  }, 0.02);
 
   tl.to([label, kicker], {
     autoAlpha: 1,
     y: 0,
-    duration: 0.35,
-    ease: "power3.out",
-    stagger: 0.04
-  });
+    filter: "blur(0px)",
+    duration: 0.42,
+    stagger: 0.055
+  }, 0.12);
 
   tl.to(title, {
     autoAlpha: 1,
     y: 0,
+    scale: 1,
     filter: "blur(0px)",
     letterSpacing: "-0.082em",
-    duration: 0.72,
-    ease: "power4.out"
-  }, "-=0.18");
+    duration: 0.82
+  }, 0.18);
 
   tl.to(intro, {
     autoAlpha: 1,
     y: 0,
     filter: "blur(0px)",
-    duration: 0.48,
-    ease: "power3.out"
-  }, "-=0.38");
+    duration: 0.58
+  }, 0.36);
 
-  tl.to(projects, {
-    autoAlpha: 1,
-    y: 0,
-    duration: 0.52,
-    ease: "power3.out",
-    stagger: 0.075
-  }, "-=0.22");
+  rows.forEach((row, index) => {
+    const summary = row.querySelector(".work-project__summary");
+    const number = row.querySelector(".work-project__index");
+    const name = row.querySelector(".work-project__name");
+    const meta = row.querySelector(".work-project__meta");
+    const year = row.querySelector(".work-project__year");
+    const arrow = row.querySelector(".work-project__arrow");
 
-  tl.to(lines, {
-    "--lineScale": 1,
-    duration: 0.64,
-    ease: "power3.out",
-    stagger: 0.06
-  }, "-=0.5");
+    const rowStart = 0.58 + index * 0.115;
+
+    if (summary) {
+      tl.to(summary, {
+        "--row-line": 1,
+        duration: 0.48
+      }, rowStart);
+    }
+
+    tl.to(number, {
+      autoAlpha: 1,
+      y: 0,
+      filter: "blur(0px)",
+      duration: 0.32
+    }, rowStart + 0.06);
+
+    tl.to(name, {
+      autoAlpha: 1,
+      y: 0,
+      filter: "blur(0px)",
+      duration: 0.42
+    }, rowStart + 0.09);
+
+    tl.to([meta, year, arrow], {
+      autoAlpha: 1,
+      y: 0,
+      filter: "blur(0px)",
+      duration: 0.36,
+      stagger: 0.035
+    }, rowStart + 0.16);
+  });
+
+  tl.to(archive, {
+    "--archive-glow": 0,
+    duration: 0.4
+  }, 1.08);
 
   ScrollTrigger.create({
+    id: "workArchiveFormation",
     trigger: archive,
-    start: "top 58%",
+    start: "top 16%",
     once: true,
     onEnter: () => archive.classList.add("is-formed")
   });
+
+  window.addEventListener("load", () => {
+    ScrollTrigger.refresh();
+  });
 }
 
-setupArchiveReveal();
-  
-
+setupArchiveFormationReveal();
   
 })();
 
