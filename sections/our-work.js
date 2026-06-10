@@ -260,56 +260,76 @@ function setupWorkTrustScroll() {
       card.style.transform = "none";
     });
 
+    if (headline) {
+      headline.style.opacity = "";
+      headline.style.transform = "";
+    }
+
+    if (copy) {
+      copy.style.opacity = "";
+      copy.style.transform = "";
+    }
+
     return;
   }
 
-  const settings = [
+  const cardSettings = [
     {
       startX: 112,
-      endX: -38,
-      startY: 14,
-      endY: 8,
+      endX: -34,
+      startY: 16,
+      peakY: -1,
+      endY: 13,
       startRotate: -8,
       endRotate: -2,
-      startScale: 0.98,
-      endScale: 1.03,
-      delay: 0
+      startScale: 0.97,
+      endScale: 1.02,
+      delay: 0.00,
+      span: 0.78
     },
     {
-      startX: 142,
-      endX: -12,
-      startY: -6,
-      endY: -8,
+      startX: 140,
+      endX: -8,
+      startY: 10,
+      peakY: -13,
+      endY: 3,
       startRotate: 6,
       endRotate: 1.5,
       startScale: 0.96,
-      endScale: 1,
-      delay: 0.08
+      endScale: 1.00,
+      delay: 0.08,
+      span: 0.78
     },
     {
-      startX: 172,
-      endX: 13,
-      startY: 8,
-      endY: 5,
+      startX: 168,
+      endX: 18,
+      startY: 12,
+      peakY: -13,
+      endY: 3,
       startRotate: -5,
       endRotate: -1,
-      startScale: 1,
+      startScale: 1.00,
       endScale: 1.04,
-      delay: 0.16
+      delay: 0.16,
+      span: 0.78
     },
     {
-      startX: 205,
-      endX: 38,
-      startY: -2,
-      endY: -5,
+      startX: 198,
+      endX: 44,
+      startY: 18,
+      peakY: -1,
+      endY: 13,
       startRotate: 7,
       endRotate: 2,
-      startScale: 0.94,
+      startScale: 0.95,
       endScale: 0.99,
-      delay: 0.24
+      delay: 0.24,
+      span: 0.78
     }
   ];
 
+  let targetProgress = 0;
+  let currentProgress = 0;
   let raf = null;
 
   function clamp(value, min, max) {
@@ -320,38 +340,43 @@ function setupWorkTrustScroll() {
     return start + (end - start) * amount;
   }
 
-  function ease(value) {
+  function easeInOutCubic(value) {
     return value < 0.5
       ? 4 * value * value * value
       : 1 - Math.pow(-2 * value + 2, 3) / 2;
   }
 
-  function getProgress() {
-    const rect = section.getBoundingClientRect();
-    const viewport = window.innerHeight || document.documentElement.clientHeight;
-    const distance = Math.max(section.offsetHeight - viewport, 1);
-
-    return clamp(-rect.top / distance, 0, 1);
+  function quadBezier(p0, p1, p2, t) {
+    const a = lerp(p0, p1, t);
+    const b = lerp(p1, p2, t);
+    return lerp(a, b, t);
   }
 
-  function update() {
-    const progress = getProgress();
+  function getSectionProgress() {
+    const rect = section.getBoundingClientRect();
+    const viewport = window.innerHeight || document.documentElement.clientHeight;
+    const travel = Math.max(section.offsetHeight - viewport, 1);
 
+    return clamp(-rect.top / travel, 0, 1);
+  }
+
+  function render(progress) {
     cards.forEach((card, index) => {
-      const s = settings[index] || settings[settings.length - 1];
+      const s = cardSettings[index] || cardSettings[cardSettings.length - 1];
 
-      const local = clamp((progress - s.delay) / 0.72, 0, 1);
-      const eased = ease(local);
+      const localRaw = clamp((progress - s.delay) / s.span, 0, 1);
+      const t = easeInOutCubic(localRaw);
 
-      const x = lerp(s.startX, s.endX, eased);
-      const y = lerp(s.startY, s.endY, eased);
-      const rotate = lerp(s.startRotate, s.endRotate, eased);
-      const scale = lerp(s.startScale, s.endScale, eased);
-      const float = Math.sin(progress * Math.PI * 2 + index * 0.85) * 0.65;
+      const x = lerp(s.startX, s.endX, t);
+      const y = quadBezier(s.startY, s.peakY, s.endY, t);
+      const rotate = lerp(s.startRotate, s.endRotate, t);
+      const scale = lerp(s.startScale, s.endScale, t);
 
-      const fadeIn = clamp(local * 7, 0, 1);
-      const fadeOut = clamp((1 - local) * 7, 0, 1);
-      const opacity = clamp(Math.min(fadeIn, fadeOut), 0, 1);
+      const float = Math.sin(progress * Math.PI * 2 + index * 0.9) * 0.55;
+
+      const fadeIn = clamp(localRaw / 0.16, 0, 1);
+      const fadeOut = clamp((1 - localRaw) / 0.16, 0, 1);
+      const opacity = Math.min(fadeIn, fadeOut);
 
       card.style.opacity = String(opacity);
       card.style.zIndex = String(20 + index);
@@ -364,30 +389,45 @@ function setupWorkTrustScroll() {
     });
 
     if (headline) {
-      headline.style.opacity = String(lerp(0.95, 0.42, progress));
+      headline.style.opacity = String(lerp(0.96, 0.42, progress));
       headline.style.transform = `translate3d(0, ${lerp(0, -5, progress)}vh, 0)`;
     }
 
     if (copy) {
-      copy.style.opacity = String(lerp(1, 0.62, progress));
+      copy.style.opacity = String(lerp(1, 0.65, progress));
       copy.style.transform = `translate3d(0, ${lerp(0, -3, progress)}vh, 0)`;
     }
+  }
 
-    raf = null;
+  function animate() {
+    currentProgress = lerp(currentProgress, targetProgress, 0.075);
+    render(currentProgress);
+
+    if (Math.abs(targetProgress - currentProgress) > 0.0005) {
+      raf = window.requestAnimationFrame(animate);
+    } else {
+      currentProgress = targetProgress;
+      render(currentProgress);
+      raf = null;
+    }
   }
 
   function requestUpdate() {
-    if (raf) return;
-    raf = window.requestAnimationFrame(update);
+    targetProgress = getSectionProgress();
+
+    if (!raf) {
+      raf = window.requestAnimationFrame(animate);
+    }
   }
 
   window.addEventListener("scroll", requestUpdate, { passive: true });
   window.addEventListener("resize", requestUpdate);
   window.addEventListener("orientationchange", requestUpdate);
 
-  update();
+  targetProgress = getSectionProgress();
+  currentProgress = targetProgress;
+  render(currentProgress);
 }
-
    
 
 
