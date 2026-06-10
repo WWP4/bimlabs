@@ -1993,3 +1993,96 @@ section {
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
 }
+
+
+
+/* ==========================================================
+   HARD FIX — PROCESS WORD ABOVE BACKGROUND, BELOW CARDS
+========================================================== */
+
+.process-3d {
+  position: relative !important;
+  isolation: isolate !important;
+  background: #000 !important;
+  overflow: hidden !important;
+}
+
+/* background layer */
+.process-3d::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0 !important;
+  background: #000 !important;
+  pointer-events: none;
+}
+
+/* PROCESS scene layer */
+.process-scene {
+  position: sticky !important;
+  top: 0 !important;
+  height: 100vh !important;
+  z-index: 1 !important;
+
+  display: grid !important;
+  place-items: center !important;
+
+  background: transparent !important;
+  pointer-events: none !important;
+}
+
+/* remove black overlays that may be covering PROCESS */
+.process-scene::before,
+.process-scene::after,
+.process-overlay::before,
+.process-overlay::after,
+.process-void {
+  display: none !important;
+  content: none !important;
+}
+
+/* the actual PROCESS word */
+.process-word {
+  position: relative !important;
+  z-index: 2 !important;
+
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+
+  margin: 0 !important;
+
+  color: rgba(245, 245, 240, 0.16) !important;
+  font-family: "IBM Plex Mono", "Manrope", sans-serif !important;
+  font-size: clamp(6rem, 15vw, 18rem) !important;
+  font-weight: 500 !important;
+  line-height: 0.8 !important;
+  letter-spacing: -0.12em !important;
+  white-space: nowrap !important;
+  text-align: center !important;
+
+  transform: none !important;
+  mix-blend-mode: normal !important;
+  pointer-events: none !important;
+}
+
+/* cards/content layer above PROCESS */
+.process-overlay {
+  position: relative !important;
+  z-index: 5 !important;
+  background: transparent !important;
+}
+
+.process-copy,
+.process-cards {
+  position: relative !important;
+  z-index: 6 !important;
+}
+
+.process-card {
+  position: relative !important;
+  z-index: 7 !important;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0.012)),
+    rgba(0, 0, 0, 0.86) !important;
+}
