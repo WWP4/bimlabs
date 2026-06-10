@@ -1,8 +1,3 @@
-* ==========================================================
-   BIM LABS STUDIO — OUR WORK
-   Trust cards + inline archive expand
-   No drawer. No overlay. No scroll lock.
-========================================================== */
 
 (() => {
   "use strict";
