@@ -1605,3 +1605,52 @@
     filter: none !important;
   }
 }
+
+
+
+
+
+/* ==========================================================
+   CLEAN ARCHIVE OVERRIDE — NO BIG DROPDOWN IMAGES
+========================================================== */
+
+.work-project__panel {
+  display: block !important;
+  max-width: 100% !important;
+}
+
+.work-project__media {
+  display: none !important;
+}
+
+.work-project__content {
+  width: min(68rem, 100%) !important;
+  margin-left: auto;
+  padding-left: clamp(0rem, 18vw, 18rem);
+}
+
+.work-project__content h3 {
+  max-width: 52rem;
+  font-size: clamp(1.35rem, 2.05vw, 2.7rem);
+  line-height: 1.03;
+}
+
+.work-project__grid {
+  margin-top: clamp(1.2rem, 2vh, 1.8rem);
+}
+
+.work-project[open] .work-project__panel {
+  max-height: 30rem !important;
+  padding: 0 0 clamp(2rem, 4vh, 3rem) !important;
+}
+
+@media (max-width: 900px) {
+  .work-project__content {
+    width: 100% !important;
+    padding-left: 0;
+  }
+
+  .work-project[open] .work-project__panel {
+    max-height: 70rem !important;
+  }
+}
