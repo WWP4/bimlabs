@@ -2161,3 +2161,97 @@
     padding-top: 4rem;
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* ==========================================================
+   WORK ARCHIVE — REVEAL POLISH
+========================================================== */
+
+.work-archive {
+  opacity: 1;
+}
+
+.work-archive__header,
+.work-archive__label,
+.work-archive__kicker,
+.work-archive__title,
+.work-archive__intro,
+.work-project {
+  will-change: transform, opacity, filter;
+}
+
+.work-project__summary {
+  position: relative;
+}
+
+.work-project__summary::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 1px;
+  background: rgba(246, 246, 240, 0.22);
+  transform: scaleX(var(--lineScale, 1));
+  transform-origin: left center;
+  pointer-events: none;
+}
+
+/* Before the section forms, keep it calmer */
+.work-archive:not(.is-formed) .work-project__preview {
+  opacity: 0 !important;
+}
+
+/* Once formed, interaction feels alive again */
+.work-archive.is-formed .work-project__summary:hover .work-project__name {
+  transform: translate3d(0.35rem, 0, 0);
+}
+
+/* Small background drift so it does not feel pasted on */
+.work-archive.is-forming .work-archive__bg::before {
+  animation: workArchiveGridBreathe 8s ease-in-out infinite alternate;
+}
+
+@keyframes workArchiveGridBreathe {
+  from {
+    opacity: 0.16;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+
+  to {
+    opacity: 0.28;
+    transform: translate3d(0, -1.5rem, 0) scale(1.035);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .work-archive__header,
+  .work-archive__label,
+  .work-archive__kicker,
+  .work-archive__title,
+  .work-archive__intro,
+  .work-project,
+  .work-project__summary::after {
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: none !important;
+    filter: none !important;
+    animation: none !important;
+  }
+}
