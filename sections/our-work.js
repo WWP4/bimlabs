@@ -1,6 +1,7 @@
 /* ==========================================================
    BIM LABS STUDIO — OUR WORK
-   Perfected Noomo-style trust cards + archive drawer
+   Trust cards + inline archive expand
+   No drawer. No overlay. No scroll lock.
 ========================================================== */
 
 (() => {
@@ -120,44 +121,16 @@
     "(prefers-reduced-motion: reduce)"
   ).matches;
 
-  const projectButtons = Array.from(root.querySelectorAll("[data-work-project]"));
-  const detail = root.querySelector(".work-detail");
-
-  const els = {
-    number: root.querySelector("[data-work-detail-number]"),
-    type: root.querySelector("[data-work-detail-type]"),
-    year: root.querySelector("[data-work-detail-year]"),
-    title: root.querySelector("[data-work-detail-title]"),
-    description: root.querySelector("[data-work-detail-description]"),
-    image: root.querySelector("[data-work-detail-image]"),
-    constraint: root.querySelector("[data-work-detail-constraint]"),
-    solution: root.querySelector("[data-work-detail-solution]"),
-    result: root.querySelector("[data-work-detail-result]"),
-    services: root.querySelector("[data-work-detail-services]"),
-    review: root.querySelector("[data-work-detail-review]"),
-    client: root.querySelector("[data-work-detail-client]"),
-    role: root.querySelector("[data-work-detail-role]")
-  };
-
-  const prevBtn = root.querySelector("[data-work-prev]");
-  const nextBtn = root.querySelector("[data-work-next]");
-  const closeBtn = root.querySelector(".work-detail__close");
+  const mobileQuery = window.matchMedia("(max-width: 900px)");
 
   let activeIndex = 0;
-  let detailIsOpen = false;
-  let changeTimer = null;
-  let lastFocusedElement = null;
 
   function clamp(value, min, max) {
     return Math.min(Math.max(value, min), max);
   }
 
-  function lerp(start, end, progress) {
-    return start + (end - start) * progress;
-  }
-
-  function easeOutCubic(value) {
-    return 1 - Math.pow(1 - value, 3);
+  function lerp(start, end, amount) {
+    return start + (end - start) * amount;
   }
 
   function clampIndex(index) {
@@ -173,322 +146,367 @@
       .replaceAll("'", "&#039;");
   }
 
-  function lockSiteScroll() {
-    document.documentElement.classList.add("work-drawer-lock");
-    document.body.classList.add("work-drawer-lock");
-  }
-
-  function unlockSiteScroll() {
-    document.documentElement.classList.remove("work-drawer-lock");
-    document.body.classList.remove("work-drawer-lock");
-  }
-
   /* ==========================================================
      TRUST BRIDGE
   ========================================================== */
 
-function injectTrustBridge() {
-  document.querySelector(".work-trust")?.remove();
+  function injectTrustBridge() {
+    document.querySelector(".work-trust")?.remove();
 
-  if (document.querySelector(".bim-trust")) return;
+    if (document.querySelector(".bim-trust")) return;
 
-  const section = document.createElement("section");
-  section.className = "bim-trust";
-  section.setAttribute("aria-label", "Client trust");
+    const section = document.createElement("section");
+    section.className = "bim-trust";
+    section.setAttribute("aria-label", "Client trust");
 
-  const cards = projects
-    .map((project, index) => {
-      return `
-        <article class="bim-trust-card" data-bim-trust-card="${index}">
-          <p class="bim-trust-card__logo">${escapeHtml(project.client)}</p>
+    const cards = projects
+      .map((project, index) => {
+        return `
+          <article class="bim-trust-card" data-bim-trust-card="${index}">
+            <p class="bim-trust-card__logo">${escapeHtml(project.client)}</p>
 
-          <blockquote>
-            “${escapeHtml(project.review)}”
-          </blockquote>
+            <blockquote>
+              “${escapeHtml(project.review)}”
+            </blockquote>
 
-          <footer>
-            <strong>${escapeHtml(project.title)}</strong>
-            <span>${escapeHtml(project.role)}</span>
-          </footer>
-        </article>
-      `;
-    })
-    .join("");
+            <footer>
+              <strong>${escapeHtml(project.title)}</strong>
+              <span>${escapeHtml(project.role)}</span>
+            </footer>
+          </article>
+        `;
+      })
+      .join("");
 
-  section.innerHTML = `
-    <div class="bim-trust__sticky">
-      <h2 class="bim-trust__headline" aria-hidden="true">
-        GOOD WORK<br>
-        IS BUILT<br>
-        WITH TRUST.
-      </h2>
+    section.innerHTML = `
+      <div class="bim-trust__sticky">
+        <h2 class="bim-trust__headline" aria-hidden="true">
+          GOOD WORK<br>
+          IS BUILT<br>
+          WITH TRUST.
+        </h2>
 
-      <div class="bim-trust__copy">
-        <p>
-          We build with clients who need more than a nice-looking website.
-          They need clearer systems, sharper presentation, and digital work
-          that makes the business easier to understand.
-        </p>
+        <div class="bim-trust__copy">
+          <p>
+            We build with clients who need more than a nice-looking website.
+            They need clearer systems, sharper presentation, and digital work
+            that makes the business easier to understand.
+          </p>
+        </div>
+
+        <div class="bim-trust__stage">
+          ${cards}
+        </div>
       </div>
+    `;
 
-      <div class="bim-trust__stage">
-        ${cards}
-      </div>
-    </div>
-  `;
+    root.parentNode.insertBefore(section, root);
+  }
 
-  root.parentNode.insertBefore(section, root);
-}
+  function setupWorkTrustScroll() {
+    const section = document.querySelector(".bim-trust");
+    const cards = Array.from(document.querySelectorAll("[data-bim-trust-card]"));
+    const headline = document.querySelector(".bim-trust__headline");
+    const copy = document.querySelector(".bim-trust__copy");
 
+    if (!section || !cards.length) return;
 
+    if (prefersReducedMotion || mobileQuery.matches) {
+      cards.forEach((card) => {
+        card.style.opacity = "1";
+        card.style.visibility = "visible";
+        card.style.transform = "none";
+      });
 
+      if (headline) {
+        headline.style.opacity = "";
+        headline.style.transform = "";
+      }
 
-function setupWorkTrustScroll() {
-  const section = document.querySelector(".bim-trust");
-  const cards = Array.from(document.querySelectorAll("[data-bim-trust-card]"));
-  const headline = document.querySelector(".bim-trust__headline");
-  const copy = document.querySelector(".bim-trust__copy");
+      if (copy) {
+        copy.style.opacity = "";
+        copy.style.transform = "";
+      }
 
-  if (!section || !cards.length) return;
-
-  const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const mobile = window.matchMedia("(max-width: 900px)").matches;
-
-  if (reduced || mobile) {
-    cards.forEach((card) => {
-      card.style.opacity = "1";
-      card.style.transform = "none";
-    });
-
-    if (headline) {
-      headline.style.opacity = "";
-      headline.style.transform = "";
+      return;
     }
 
-    if (copy) {
-      copy.style.opacity = "";
-      copy.style.transform = "";
+    const cardSettings = [
+      {
+        startX: 118,
+        midX: 46,
+        endX: -58,
+        startY: 25,
+        peakY: 4,
+        endY: 18,
+        startRotate: 8,
+        midRotate: -2,
+        endRotate: -9,
+        delay: 0,
+        span: 0.92,
+        depth: 0
+      },
+      {
+        startX: 136,
+        midX: 58,
+        endX: -46,
+        startY: 17,
+        peakY: -5,
+        endY: 9,
+        startRotate: 5,
+        midRotate: 1,
+        endRotate: -6,
+        delay: 0.06,
+        span: 0.92,
+        depth: 18
+      },
+      {
+        startX: 154,
+        midX: 70,
+        endX: -34,
+        startY: 18,
+        peakY: -7,
+        endY: 8,
+        startRotate: 3,
+        midRotate: -1,
+        endRotate: -5,
+        delay: 0.12,
+        span: 0.92,
+        depth: 32
+      },
+      {
+        startX: 172,
+        midX: 82,
+        endX: -22,
+        startY: 25,
+        peakY: 3,
+        endY: 16,
+        startRotate: 7,
+        midRotate: 2,
+        endRotate: -3,
+        delay: 0.18,
+        span: 0.92,
+        depth: 10
+      }
+    ];
+
+    let targetProgress = 0;
+    let currentProgress = 0;
+    let raf = null;
+
+    function easeInOutCubic(value) {
+      return value < 0.5
+        ? 4 * value * value * value
+        : 1 - Math.pow(-2 * value + 2, 3) / 2;
     }
 
-    return;
-  }
-
-  /*
-    BIM TRUST FLOW:
-    - Bigger cards
-    - Higher in viewport
-    - Slower eased movement
-    - No zooming / pulsing
-    - Enters from bottom-right abyss
-    - Exits fully into left abyss
-  */
-
-  const cardSettings = [
-    {
-      startX: 118,
-      midX: 46,
-      endX: -58,
-
-      startY: 25,
-      peakY: 4,
-      endY: 18,
-
-      startRotate: 8,
-      midRotate: -2,
-      endRotate: -9,
-
-      scale: 1,
-
-      delay: 0.0,
-      span: 0.92,
-      depth: 0
-    },
-    {
-      startX: 136,
-      midX: 58,
-      endX: -46,
-
-      startY: 17,
-      peakY: -5,
-      endY: 9,
-
-      startRotate: 5,
-      midRotate: 1,
-      endRotate: -6,
-
-      scale: 1,
-
-      delay: 0.06,
-      span: 0.92,
-      depth: 18
-    },
-    {
-      startX: 154,
-      midX: 70,
-      endX: -34,
-
-      startY: 18,
-      peakY: -7,
-      endY: 8,
-
-      startRotate: 3,
-      midRotate: -1,
-      endRotate: -5,
-
-      scale: 1,
-
-      delay: 0.12,
-      span: 0.92,
-      depth: 32
-    },
-    {
-      startX: 172,
-      midX: 82,
-      endX: -22,
-
-      startY: 25,
-      peakY: 3,
-      endY: 16,
-
-      startRotate: 7,
-      midRotate: 2,
-      endRotate: -3,
-
-      scale: 1,
-
-      delay: 0.18,
-      span: 0.92,
-      depth: 10
-    }
-  ];
-
-  let targetProgress = 0;
-  let currentProgress = 0;
-  let raf = null;
-
-  function clamp(value, min, max) {
-    return Math.min(Math.max(value, min), max);
-  }
-
-  function lerp(start, end, amount) {
-    return start + (end - start) * amount;
-  }
-
-  function easeInOutCubic(value) {
-    return value < 0.5
-      ? 4 * value * value * value
-      : 1 - Math.pow(-2 * value + 2, 3) / 2;
-  }
-
-  function bezier3(p0, p1, p2, t) {
-    const a = lerp(p0, p1, t);
-    const b = lerp(p1, p2, t);
-    return lerp(a, b, t);
-  }
-
-  function getSectionProgress() {
-    const rect = section.getBoundingClientRect();
-    const viewport = window.innerHeight || document.documentElement.clientHeight;
-    const travel = Math.max(section.offsetHeight - viewport, 1);
-
-    return clamp(-rect.top / travel, 0, 1);
-  }
-
-  function render(progress) {
-    cards.forEach((card, index) => {
-      const s = cardSettings[index] || cardSettings[cardSettings.length - 1];
-
-      const raw = clamp((progress - s.delay) / s.span, 0, 1);
-      const t = easeInOutCubic(raw);
-
-      const x = bezier3(s.startX, s.midX, s.endX, t);
-      const y = bezier3(s.startY, s.peakY, s.endY, t);
-
-      const rotate = bezier3(
-        s.startRotate,
-        s.midRotate,
-        s.endRotate,
-        t
-      );
-
-      const float = Math.sin(progress * Math.PI * 2 + index * 0.85) * 0.22;
-
-      card.style.opacity = "1";
-      card.style.visibility = "visible";
-      card.style.zIndex = String(30 + index);
-
-      card.style.transform = `
-        translate3d(${x}vw, calc(${y}vh + ${float}rem), ${s.depth}px)
-        rotate(${rotate}deg)
-        scale(${s.scale})
-      `;
-    });
-
-    if (headline) {
-      headline.style.opacity = String(lerp(0.92, 0.5, progress));
-      headline.style.transform = `translate3d(0, ${lerp(0, -3.5, progress)}vh, 0)`;
+    function bezier3(p0, p1, p2, t) {
+      const a = lerp(p0, p1, t);
+      const b = lerp(p1, p2, t);
+      return lerp(a, b, t);
     }
 
-    if (copy) {
-      copy.style.opacity = String(lerp(1, 0.76, progress));
-      copy.style.transform = `translate3d(0, ${lerp(0, -1.8, progress)}vh, 0)`;
+    function getSectionProgress() {
+      const rect = section.getBoundingClientRect();
+      const viewport = window.innerHeight || document.documentElement.clientHeight;
+      const travel = Math.max(section.offsetHeight - viewport, 1);
+
+      return clamp(-rect.top / travel, 0, 1);
     }
-  }
 
-  function animate() {
-    /*
-      Smaller number = slower/smoother catch-up.
-      Previous was faster. This feels heavier and more premium.
-    */
-    currentProgress = lerp(currentProgress, targetProgress, 0.045);
-    render(currentProgress);
+    function render(progress) {
+      cards.forEach((card, index) => {
+        const s = cardSettings[index] || cardSettings[cardSettings.length - 1];
 
-    if (Math.abs(targetProgress - currentProgress) > 0.0004) {
-      raf = window.requestAnimationFrame(animate);
-    } else {
-      currentProgress = targetProgress;
+        const raw = clamp((progress - s.delay) / s.span, 0, 1);
+        const t = easeInOutCubic(raw);
+
+        const x = bezier3(s.startX, s.midX, s.endX, t);
+        const y = bezier3(s.startY, s.peakY, s.endY, t);
+        const rotate = bezier3(s.startRotate, s.midRotate, s.endRotate, t);
+        const float = Math.sin(progress * Math.PI * 2 + index * 0.85) * 0.22;
+
+        card.style.opacity = "1";
+        card.style.visibility = "visible";
+        card.style.zIndex = String(30 + index);
+        card.style.transform = `
+          translate3d(${x}vw, calc(${y}vh + ${float}rem), ${s.depth}px)
+          rotate(${rotate}deg)
+          scale(1)
+        `;
+      });
+
+      if (headline) {
+        headline.style.opacity = String(lerp(0.92, 0.5, progress));
+        headline.style.transform = `translate3d(0, ${lerp(0, -3.5, progress)}vh, 0)`;
+      }
+
+      if (copy) {
+        copy.style.opacity = String(lerp(1, 0.76, progress));
+        copy.style.transform = `translate3d(0, ${lerp(0, -1.8, progress)}vh, 0)`;
+      }
+    }
+
+    function animate() {
+      currentProgress = lerp(currentProgress, targetProgress, 0.045);
       render(currentProgress);
-      raf = null;
-    }
-  }
 
-  function requestUpdate() {
+      if (Math.abs(targetProgress - currentProgress) > 0.0004) {
+        raf = window.requestAnimationFrame(animate);
+      } else {
+        currentProgress = targetProgress;
+        render(currentProgress);
+        raf = null;
+      }
+    }
+
+    function requestUpdate() {
+      targetProgress = getSectionProgress();
+
+      if (!raf) {
+        raf = window.requestAnimationFrame(animate);
+      }
+    }
+
+    window.addEventListener("scroll", requestUpdate, { passive: true });
+    window.addEventListener("resize", requestUpdate);
+    window.addEventListener("orientationchange", requestUpdate);
+
     targetProgress = getSectionProgress();
-
-    if (!raf) {
-      raf = window.requestAnimationFrame(animate);
-    }
+    currentProgress = targetProgress;
+    render(currentProgress);
   }
-
-  window.addEventListener("scroll", requestUpdate, { passive: true });
-  window.addEventListener("resize", requestUpdate);
-  window.addEventListener("orientationchange", requestUpdate);
-
-  targetProgress = getSectionProgress();
-  currentProgress = targetProgress;
-  render(currentProgress);
-}
-
-
-   
-
-
 
   /* ==========================================================
-     PROJECT DETAIL DRAWER
+     INLINE ARCHIVE
   ========================================================== */
 
+  function createInlineDetail(project) {
+    return `
+      <div class="work-project__detail">
+        <figure class="work-project__media">
+          <img src="${escapeHtml(project.image)}" alt="${escapeHtml(project.title)} project preview" />
+        </figure>
+
+        <div class="work-project__case">
+          <p class="work-project__eyebrow">
+            Case ${escapeHtml(project.number)} / ${escapeHtml(project.type)} / ${escapeHtml(project.year)}
+          </p>
+
+          <p class="work-project__description">
+            ${escapeHtml(project.description)}
+          </p>
+
+          <div class="work-project__proof" aria-label="${escapeHtml(project.title)} proof points">
+            <section>
+              <p>Constraint</p>
+              <span>${escapeHtml(project.constraint)}</span>
+            </section>
+
+            <section>
+              <p>What we built</p>
+              <span>${escapeHtml(project.solution)}</span>
+            </section>
+
+            <section>
+              <p>Result</p>
+              <span>${escapeHtml(project.result)}</span>
+            </section>
+          </div>
+
+          <ul class="work-project__services" aria-label="${escapeHtml(project.title)} services">
+            ${project.services.map((service) => `<li>${escapeHtml(service)}</li>`).join("")}
+          </ul>
+
+          <blockquote class="work-project__quote">
+            “${escapeHtml(project.review)}”
+          </blockquote>
+        </div>
+      </div>
+    `;
+  }
+
+  function upgradeArchiveMarkup() {
+    const buttons = Array.from(root.querySelectorAll("[data-work-project]"));
+
+    buttons.forEach((button, buttonIndex) => {
+      const parsedIndex = Number(button.dataset.workProject);
+      const index = Number.isFinite(parsedIndex) ? clampIndex(parsedIndex) : buttonIndex;
+      const project = projects[index];
+
+      if (!project) return;
+
+      let article = button.closest(".work-project");
+
+      /*
+        Your current HTML uses button.work-project.
+        This converts each button into an article row without needing you to remake HTML.
+      */
+      if (!article || article === button) {
+        article = document.createElement("article");
+        article.className = button.className;
+        article.classList.remove("is-previewing");
+        article.dataset.workProjectItem = String(index);
+
+        button.className = "work-project__bar";
+        button.removeAttribute("role");
+
+        button.parentNode.insertBefore(article, button);
+        article.appendChild(button);
+      }
+
+      article.dataset.workProjectItem = String(index);
+
+      button.dataset.workProject = String(index);
+      button.setAttribute("type", "button");
+      button.setAttribute("aria-expanded", index === 0 ? "true" : "false");
+
+      if (!article.querySelector(".work-project__detail")) {
+        article.insertAdjacentHTML("beforeend", createInlineDetail(project));
+      }
+    });
+
+    root.querySelector(".work-detail")?.remove();
+    root.classList.remove("has-open-detail");
+    document.documentElement.classList.remove("work-drawer-lock");
+    document.body.classList.remove("work-drawer-lock");
+  }
+
+  function getProjectItems() {
+    return Array.from(root.querySelectorAll("[data-work-project-item]"));
+  }
+
+  function getProjectButtons() {
+    return Array.from(root.querySelectorAll(".work-project__bar[data-work-project]"));
+  }
+
   function clearPreviewStates() {
-    projectButtons.forEach((button) => {
+    getProjectButtons().forEach((button) => {
       button.classList.remove("is-previewing", "is-active");
     });
   }
 
-  function setActiveButton(index) {
-    projectButtons.forEach((button, buttonIndex) => {
-      const isActive = buttonIndex === index;
+  function setActiveProject(index, scrollToProject = false) {
+    const items = getProjectItems();
+    const buttons = getProjectButtons();
 
+    if (!items.length) return;
+
+    const safeIndex = clampIndex(index);
+    activeIndex = safeIndex;
+
+    items.forEach((item, itemIndex) => {
+      const isActive = itemIndex === safeIndex;
+      item.classList.toggle("is-active", isActive);
+      item.classList.toggle("is-expanded", isActive);
+      item.classList.add("is-visible");
+    });
+
+    buttons.forEach((button, buttonIndex) => {
+      const isActive = buttonIndex === safeIndex;
       button.classList.toggle("is-active", isActive);
+      button.classList.remove("is-previewing");
+      button.setAttribute("aria-expanded", isActive ? "true" : "false");
       button.setAttribute("aria-pressed", isActive ? "true" : "false");
 
       if (isActive) {
@@ -498,178 +516,42 @@ function setupWorkTrustScroll() {
       }
     });
 
-    root.dataset.workActive = String(index);
-  }
-
-  function setPreviewProject(index) {
-    const safeIndex = clampIndex(index);
-
-    projectButtons.forEach((button, buttonIndex) => {
-      button.classList.toggle("is-previewing", buttonIndex === safeIndex);
-    });
-
     root.dataset.workActive = String(safeIndex);
-  }
 
-  function renderServices(services = []) {
-    if (!els.services) return;
-
-    els.services.innerHTML = "";
-
-    services.forEach((service) => {
-      const li = document.createElement("li");
-      li.textContent = service;
-      els.services.appendChild(li);
-    });
-  }
-
-  function renderProject(index) {
-    const safeIndex = clampIndex(index);
-    const project = projects[safeIndex];
-
-    if (!project) return;
-
-    activeIndex = safeIndex;
-    setActiveButton(safeIndex);
-
-    if (els.number) els.number.textContent = project.number;
-    if (els.type) els.type.textContent = project.type;
-    if (els.year) els.year.textContent = project.year;
-    if (els.title) els.title.textContent = project.title;
-    if (els.description) els.description.textContent = project.description;
-    if (els.constraint) els.constraint.textContent = project.constraint;
-    if (els.solution) els.solution.textContent = project.solution;
-    if (els.result) els.result.textContent = project.result;
-    if (els.review) els.review.textContent = `“${project.review}”`;
-    if (els.client) els.client.textContent = project.client;
-    if (els.role) els.role.textContent = project.role;
-
-    if (els.image) {
-      els.image.src = project.image;
-      els.image.alt = `${project.title} project preview`;
-
-      const media = els.image.closest(".work-detail__media");
-      if (media) media.classList.remove("is-missing");
+    if (scrollToProject && mobileQuery.matches) {
+      items[safeIndex]?.scrollIntoView({
+        behavior: prefersReducedMotion ? "auto" : "smooth",
+        block: "start"
+      });
     }
-
-    renderServices(project.services);
-  }
-
-  function animateDetailChange() {
-    if (!detail || prefersReducedMotion) return;
-
-    detail.classList.remove("is-changing");
-
-    window.requestAnimationFrame(() => {
-      detail.classList.add("is-changing");
-    });
-
-    window.clearTimeout(changeTimer);
-
-    changeTimer = window.setTimeout(() => {
-      detail.classList.remove("is-changing");
-    }, 280);
-  }
-
-  function resetDrawerScroll() {
-    if (!detail) return;
-    detail.scrollTo({ top: 0, behavior: "auto" });
-  }
-
-  function openDetail(index) {
-    if (!detail) return;
-
-    const safeIndex = clampIndex(index);
-
-    lastFocusedElement = document.activeElement;
-
-    renderProject(safeIndex);
-    resetDrawerScroll();
-
-    detailIsOpen = true;
-
-    root.classList.add("has-open-detail");
-    detail.classList.add("is-open");
-    detail.setAttribute("aria-hidden", "false");
-
-    lockSiteScroll();
-    clearPreviewStates();
-    animateDetailChange();
-
-    window.setTimeout(() => {
-      closeBtn?.focus({ preventScroll: true });
-    }, 140);
-  }
-
-  function closeDetail() {
-    if (!detail || !detailIsOpen) return;
-
-    detailIsOpen = false;
-
-    root.classList.remove("has-open-detail");
-    detail.classList.remove("is-open", "is-changing");
-    detail.setAttribute("aria-hidden", "true");
-
-    clearPreviewStates();
-    setActiveButton(activeIndex);
-    unlockSiteScroll();
-
-    if (lastFocusedElement && typeof lastFocusedElement.focus === "function") {
-      lastFocusedElement.focus({ preventScroll: true });
-    }
-  }
-
-  function moveProject(delta) {
-    const nextIndex = clampIndex(activeIndex + delta);
-
-    if (detailIsOpen) {
-      renderProject(nextIndex);
-      resetDrawerScroll();
-      animateDetailChange();
-      return;
-    }
-
-    activeIndex = nextIndex;
-    setPreviewProject(nextIndex);
   }
 
   function setupProjectButtons() {
-    if (!projectButtons.length) return;
+    const buttons = getProjectButtons();
 
-    projectButtons.forEach((button, buttonIndex) => {
-      const rawIndex = button.dataset.workProject;
-      const parsedIndex = Number(rawIndex);
-
-      const index =
-        Number.isFinite(parsedIndex) && parsedIndex >= 0
-          ? clampIndex(parsedIndex)
-          : buttonIndex;
-
-      button.dataset.workProject = String(index);
-      button.setAttribute("type", "button");
-      button.setAttribute("aria-pressed", index === activeIndex ? "true" : "false");
+    buttons.forEach((button, buttonIndex) => {
+      const parsedIndex = Number(button.dataset.workProject);
+      const index = Number.isFinite(parsedIndex) ? clampIndex(parsedIndex) : buttonIndex;
 
       button.addEventListener("mouseenter", () => {
-        if (detailIsOpen) return;
+        if (mobileQuery.matches) return;
 
-        activeIndex = index;
-        setPreviewProject(index);
+        clearPreviewStates();
+        button.classList.add("is-previewing");
       });
 
       button.addEventListener("focus", () => {
-        if (detailIsOpen) return;
+        if (mobileQuery.matches) return;
 
-        activeIndex = index;
-        setPreviewProject(index);
+        clearPreviewStates();
+        button.classList.add("is-previewing");
       });
 
       button.addEventListener("mouseleave", () => {
-        if (detailIsOpen) return;
         button.classList.remove("is-previewing");
       });
 
       button.addEventListener("blur", () => {
-        if (detailIsOpen) return;
         button.classList.remove("is-previewing");
       });
 
@@ -677,95 +559,88 @@ function setupWorkTrustScroll() {
         event.preventDefault();
         event.stopPropagation();
 
-        openDetail(index);
+        setActiveProject(index, true);
       });
     });
   }
 
-  function setupDrawerControls() {
-    if (prevBtn) {
-      prevBtn.setAttribute("type", "button");
+  function setupArchiveScroll() {
+    const items = getProjectItems();
+    const header = root.querySelector(".work-archive__header");
 
-      prevBtn.addEventListener("click", (event) => {
-        event.preventDefault();
-        event.stopPropagation();
-        moveProject(-1);
-      });
+    if (!items.length || prefersReducedMotion) return;
+
+    let targetProgress = 0;
+    let currentProgress = 0;
+    let raf = null;
+
+    function getArchiveProgress() {
+      const rect = root.getBoundingClientRect();
+      const viewport = window.innerHeight || document.documentElement.clientHeight;
+      const travel = Math.max(root.offsetHeight - viewport, 1);
+
+      return clamp(-rect.top / travel, 0, 1);
     }
 
-    if (nextBtn) {
-      nextBtn.setAttribute("type", "button");
+    function render(progress) {
+      if (!mobileQuery.matches) {
+        const nextIndex = Math.round(progress * (items.length - 1));
+        setActiveProject(nextIndex, false);
 
-      nextBtn.addEventListener("click", (event) => {
-        event.preventDefault();
-        event.stopPropagation();
-        moveProject(1);
-      });
-    }
+        if (header) {
+          header.style.opacity = String(lerp(1, 0.68, progress));
+          header.style.transform = `translate3d(0, ${lerp(0, -18, progress)}px, 0)`;
+        }
 
-    if (closeBtn) {
-      closeBtn.setAttribute("type", "button");
+        items.forEach((item, index) => {
+          const distance = Math.abs(index - activeIndex);
 
-      closeBtn.addEventListener("click", (event) => {
-        event.preventDefault();
-        event.stopPropagation();
-        closeDetail();
-      });
-    }
+          item.style.opacity =
+            index === activeIndex ? "1" : distance === 1 ? "0.56" : "0.34";
 
-    if (detail) {
-      detail.addEventListener("click", (event) => {
-        event.stopPropagation();
-      });
+          item.style.transform = `translate3d(0, ${distance * 3}px, 0)`;
+        });
+      } else {
+        if (header) {
+          header.style.opacity = "";
+          header.style.transform = "";
+        }
 
-      detail.addEventListener(
-        "wheel",
-        (event) => {
-          event.stopPropagation();
-        },
-        { passive: true }
-      );
-
-      detail.addEventListener(
-        "touchmove",
-        (event) => {
-          event.stopPropagation();
-        },
-        { passive: true }
-      );
-    }
-  }
-
-  function setupKeyboardControls() {
-    window.addEventListener("keydown", (event) => {
-      const activeTag = document.activeElement?.tagName?.toLowerCase();
-
-      const isTyping =
-        activeTag === "input" ||
-        activeTag === "textarea" ||
-        document.activeElement?.isContentEditable;
-
-      if (isTyping) return;
-
-      if (event.key === "Escape" && detailIsOpen) {
-        event.preventDefault();
-        closeDetail();
-        return;
+        items.forEach((item) => {
+          item.style.opacity = "";
+          item.style.transform = "";
+        });
       }
+    }
 
-      if (!detailIsOpen) return;
+    function animate() {
+      currentProgress = lerp(currentProgress, targetProgress, 0.075);
+      render(currentProgress);
 
-      if (event.key === "ArrowLeft" || event.key === "ArrowUp") {
-        event.preventDefault();
-        moveProject(-1);
-        return;
+      if (Math.abs(targetProgress - currentProgress) > 0.0005) {
+        raf = window.requestAnimationFrame(animate);
+      } else {
+        currentProgress = targetProgress;
+        render(currentProgress);
+        raf = null;
       }
+    }
 
-      if (event.key === "ArrowRight" || event.key === "ArrowDown") {
-        event.preventDefault();
-        moveProject(1);
+    function requestUpdate() {
+      targetProgress = getArchiveProgress();
+
+      if (!raf) {
+        raf = window.requestAnimationFrame(animate);
       }
-    });
+    }
+
+    window.addEventListener("scroll", requestUpdate, { passive: true });
+    window.addEventListener("resize", requestUpdate);
+    window.addEventListener("orientationchange", requestUpdate);
+
+    targetProgress = getArchiveProgress();
+    currentProgress = targetProgress;
+    render(currentProgress);
   }
 
   function disableBrokenImages() {
@@ -780,46 +655,61 @@ function setupWorkTrustScroll() {
           return;
         }
 
-        if (img.matches("[data-work-detail-image]")) {
-          img.closest(".work-detail__media")?.classList.add("is-missing");
+        const media = img.closest(".work-project__media");
+
+        if (media) {
+          media.style.display = "none";
         }
       });
     });
   }
 
-  function cleanInitialState() {
-    root.classList.remove("has-open-detail");
-    unlockSiteScroll();
+  function setupKeyboardControls() {
+    window.addEventListener("keydown", (event) => {
+      const activeTag = document.activeElement?.tagName?.toLowerCase();
 
-    if (detail) {
-      detail.classList.remove("is-open", "is-changing");
-      detail.setAttribute("aria-hidden", "true");
-    }
+      const isTyping =
+        activeTag === "input" ||
+        activeTag === "textarea" ||
+        document.activeElement?.isContentEditable;
+
+      if (isTyping) return;
+
+      if (event.key === "ArrowLeft" || event.key === "ArrowUp") {
+        event.preventDefault();
+        setActiveProject(activeIndex - 1, true);
+        return;
+      }
+
+      if (event.key === "ArrowRight" || event.key === "ArrowDown") {
+        event.preventDefault();
+        setActiveProject(activeIndex + 1, true);
+      }
+    });
+  }
+
+  function revealRows() {
+    const items = getProjectItems();
+
+    items.forEach((item, index) => {
+      window.setTimeout(() => {
+        item.classList.add("is-visible");
+      }, index * 90);
+    });
   }
 
   function init() {
-    /*
-      Important:
-      Trust cards inject first so they still work even if the drawer HTML
-      is missing or broken.
-    */
     injectTrustBridge();
     setupWorkTrustScroll();
 
-    /*
-      Archive/drawer only runs if the archive markup exists.
-      This prevents the testimonial cards from dying because of drawer issues.
-    */
-    if (!projectButtons.length || !detail) return;
-
+    upgradeArchiveMarkup();
     setupProjectButtons();
-    setupDrawerControls();
+    setupArchiveScroll();
     setupKeyboardControls();
     disableBrokenImages();
+    revealRows();
 
-    renderProject(0);
-    setActiveButton(0);
-    cleanInitialState();
+    setActiveProject(0, false);
   }
 
   if (document.readyState === "loading") {
