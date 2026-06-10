@@ -1697,3 +1697,35 @@ body.work-drawer-lock {
     min-height: auto;
   }
 }
+
+
+
+
+/* ==========================================================
+   TIGHTER NOOMO-LIKE CARD PACKING
+========================================================== */
+
+.bim-trust {
+  min-height: 340vh;
+}
+
+.bim-trust-card {
+  width: clamp(16.5rem, 18.5vw, 21.5rem);
+  min-height: clamp(18rem, 38vh, 25rem);
+}
+
+.bim-trust__stage {
+  perspective: 1200px;
+  transform-style: preserve-3d;
+}
+
+@media (max-width: 900px) {
+  .bim-trust {
+    min-height: auto;
+  }
+
+  .bim-trust-card {
+    width: 100%;
+    min-height: 18rem;
+  }
+}
