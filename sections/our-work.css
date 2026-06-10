@@ -2435,3 +2435,210 @@
     filter: none !important;
   }
 }
+
+
+
+
+
+/* ==========================================================
+   WORK ARCHIVE — NOOMO-STYLE PINNED SCENE POLISH
+========================================================== */
+
+.work-archive {
+  --archive-reveal: 0;
+  --archive-top-line: 0;
+  --archive-glow: 0;
+
+  position: relative;
+  min-height: 100vh;
+  margin-top: clamp(8rem, 18vh, 16rem);
+  background: #000;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.work-archive__shell {
+  position: relative;
+  min-height: 100vh;
+  z-index: 2;
+}
+
+/* Remove static border feeling */
+.work-archive__list,
+.work-project,
+.work-project__summary {
+  border-color: transparent !important;
+}
+
+/* Long top rule — centered, slow, architectural */
+.work-archive__shell::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: clamp(1.4rem, 3.8vh, 3.2rem);
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(246, 246, 240, 0.08) 14%,
+    rgba(246, 246, 240, 0.42) 50%,
+    rgba(246, 246, 240, 0.08) 86%,
+    transparent 100%
+  );
+  transform: scaleX(var(--archive-top-line));
+  transform-origin: center;
+  opacity: 0.8;
+  pointer-events: none;
+}
+
+/* Soft moving light, not a cheap glow */
+.work-archive__shell::after {
+  content: "";
+  position: absolute;
+  top: -15%;
+  bottom: -15%;
+  left: -42%;
+  width: 34%;
+  z-index: -1;
+  pointer-events: none;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.045),
+    transparent
+  );
+  opacity: var(--archive-glow);
+  filter: blur(16px);
+  transform:
+    translate3d(calc(var(--archive-reveal) * 520%), 0, 0)
+    skewX(-16deg);
+}
+
+/* Background moves with the section so it feels alive */
+.work-archive__bg {
+  opacity: calc(0.42 + (var(--archive-reveal) * 0.42));
+  transform:
+    translate3d(0, calc((1 - var(--archive-reveal)) * 4rem), 0)
+    scale(calc(1.03 - (var(--archive-reveal) * 0.03)));
+  will-change: transform, opacity;
+}
+
+.work-archive__header {
+  will-change: transform, opacity, filter;
+}
+
+.work-archive__label,
+.work-archive__kicker,
+.work-archive__title,
+.work-archive__intro,
+.work-project__index,
+.work-project__name,
+.work-project__meta,
+.work-project__year,
+.work-project__arrow {
+  will-change: transform, opacity, filter;
+}
+
+/* Row architecture */
+.work-project__summary {
+  position: relative;
+  isolation: isolate;
+}
+
+.work-project__summary::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -1px;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    rgba(246, 246, 240, 0.42),
+    rgba(246, 246, 240, 0.18) 58%,
+    rgba(246, 246, 240, 0.035)
+  );
+  transform: scaleX(var(--row-line, 0));
+  transform-origin: left center;
+  opacity: 0.9;
+  pointer-events: none;
+}
+
+.work-project:last-child .work-project__summary::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    rgba(246, 246, 240, 0.34),
+    rgba(246, 246, 240, 0.13) 58%,
+    rgba(246, 246, 240, 0.035)
+  );
+  transform: scaleX(var(--row-line, 0));
+  transform-origin: left center;
+  opacity: 0.75;
+  pointer-events: none;
+}
+
+/* Hover after reveal */
+.work-archive.is-formed .work-project__summary:hover::before {
+  background: linear-gradient(
+    90deg,
+    rgba(246, 246, 240, 0.68),
+    rgba(246, 246, 240, 0.2) 58%,
+    rgba(246, 246, 240, 0.04)
+  );
+}
+
+.work-archive.is-formed .work-project__summary:hover .work-project__name {
+  transform: translate3d(0.45rem, 0, 0);
+}
+
+/* Keep mobile simple */
+@media (max-width: 900px) {
+  .work-archive {
+    min-height: auto;
+    margin-top: 0;
+    padding-top: 6rem;
+    overflow: visible;
+  }
+
+  .work-archive__shell {
+    min-height: auto;
+  }
+
+  .work-project__summary {
+    --row-line: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .work-archive {
+    --archive-reveal: 1 !important;
+    --archive-top-line: 1 !important;
+    --archive-glow: 0 !important;
+  }
+
+  .work-project__summary {
+    --row-line: 1 !important;
+  }
+
+  .work-archive__label,
+  .work-archive__kicker,
+  .work-archive__title,
+  .work-archive__intro,
+  .work-project__index,
+  .work-project__name,
+  .work-project__meta,
+  .work-project__year,
+  .work-project__arrow {
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: none !important;
+    filter: none !important;
+  }
+}
