@@ -14,11 +14,11 @@
     rel="stylesheet"
   />
 
-<link rel="stylesheet" href="styles.css">
-<link rel="stylesheet" href="sections/process-scene.css" />
-<link rel="stylesheet" href="sections/process-cards.css" />
-  <link rel="stylesheet" href="sections/our-work.css">
-  
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="sections/process-scene.css" />
+  <link rel="stylesheet" href="sections/process-cards.css" />
+  <link rel="stylesheet" href="sections/our-work.css" />
+
   <script
     type="module"
     src="https://unpkg.com/@splinetool/viewer@1.12.94/build/spline-viewer.js">
@@ -32,12 +32,15 @@
     <nav class="main-nav">
       <a href="#work">Our Work</a>
       <a href="#process">Process</a>
-      <a href="#systems">Systems</a>
+      <a href="#our-work">Archive</a>
       <a href="#contact">Contact</a>
     </nav>
   </header>
 
   <main id="top">
+    <!-- ======================================================
+      HERO
+    ====================================================== -->
     <section class="hero">
       <spline-viewer
         class="spline-hero"
@@ -62,566 +65,580 @@
       </div>
     </section>
 
+    <!-- ======================================================
+      HORIZONTAL SHOWCASE
+    ====================================================== -->
+    <section class="salo-showcase bim-showcase" id="work">
+      <div class="section-whisp"></div>
 
-<section class="salo-showcase bim-showcase" id="work">
-  <div class="section-whisp"></div>
-  <div class="showcase-scroll" id="showcaseScroll">
-    <section class="HomeShowcase" aria-label="BIM Lab about and selected work">
-      <div class="HomeShowcase__outerFrame">
-        <div class="HomeShowcase__inner bim-track" id="track">
+      <div class="showcase-scroll" id="showcaseScroll">
+        <section class="HomeShowcase" aria-label="BIM Labs about and selected work">
+          <div class="HomeShowcase__outerFrame">
+            <div class="HomeShowcase__inner bim-track" id="track">
+              <div class="bim-ruler top"></div>
+              <div class="bim-ruler bottom"></div>
 
-          <div class="bim-ruler top"></div>
-          <div class="bim-ruler bottom"></div>
+              <div class="bim-index bim-index--one">01</div>
+              <div class="bim-index bim-index--two">02</div>
+              <div class="bim-index bim-index--three">03</div>
 
-          <div class="bim-index bim-index--one">01</div>
-          <div class="bim-index bim-index--two">02</div>
-          <div class="bim-index bim-index--three">03</div>
+              <div class="bim-intro">
+                <p>Independent digital studio</p>
+                <h2>Systems, interfaces, and web experiences built with restraint.</h2>
+              </div>
 
-          <div class="bim-intro">
-            <p>Independent digital studio</p>
-            <h2>Systems, interfaces, and web experiences built with restraint.</h2>
+              <div class="bim-wordmark bim-wordmark--one">BIM LAB</div>
+
+              <div class="bim-editorial bim-editorial--one">
+                <span>Founder-led</span>
+                <span>Selective</span>
+                <span>Hands-on</span>
+              </div>
+
+              <article class="bim-case bim-case--wwp">
+                <span>01 / Wonder World Playsets</span>
+                <h3>Project portals, quote workflows, permit visuals, and planning systems.</h3>
+                <p>Operational tools built around complex real-world project decisions.</p>
+              </article>
+
+              <article class="bim-case bim-case--glca">
+                <span>02 / GLCA</span>
+                <h3>A cleaner digital presence focused on clarity, trust, and structure.</h3>
+                <p>Brand-facing web work designed to feel more polished and understandable.</p>
+              </article>
+
+              <div class="bim-line-art bim-line-art--one" aria-hidden="true">
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+
+              <div class="bim-statement">
+                <h3>Four real projects. No fake agency scale. No recycled template story.</h3>
+              </div>
+
+              <article class="bim-case bim-case--momentum">
+                <span>03 / Momentum Athlete</span>
+                <h3>Partner presentation systems for athletic education programs.</h3>
+                <p>A digital portal built to explain the offer and support partner conversations.</p>
+              </article>
+
+              <article class="bim-case bim-case--orynd">
+                <span>04 / Orynd AI</span>
+                <h3>AI workflows designed to guide users toward useful next steps.</h3>
+                <p>Routing, context, qualification, and interface logic for guided decisions.</p>
+              </article>
+
+              <div class="bim-editorial bim-editorial--two">
+                <span>Quiet design</span>
+                <span>Useful systems</span>
+                <span>Built directly</span>
+              </div>
+
+              <div class="bim-wordmark bim-wordmark--two">STUDIO</div>
+
+              <div class="bim-close">
+                <p>How we work</p>
+                <h2>Small by design. Serious by default.</h2>
+                <a href="#contact">Start a conversation</a>
+              </div>
+
+              <div class="stage-label stage-label--intro">About</div>
+              <div class="stage-label stage-label--middle">Work</div>
+              <div class="stage-label stage-label--end">Studio</div>
+            </div>
           </div>
+        </section>
+      </div>
+    </section>
 
-          <div class="bim-wordmark bim-wordmark--one">BIM LAB</div>
+    <!-- ======================================================
+      PROCESS
+    ====================================================== -->
+    <section id="process" class="process-3d" aria-labelledby="process-title">
+      <div class="process-scene" data-process-scene>
+        <h2 id="process-title" class="process-word">PROCESS</h2>
 
-          <div class="bim-editorial bim-editorial--one">
-            <span>Founder-led</span>
-            <span>Selective</span>
-            <span>Hands-on</span>
+        <!-- ======================================================
+          PROCESS → WORK TRANSITION LAYER
+          This is visual only.
+          It should feel like the process is becoming shipped systems.
+          It is NOT the real work archive.
+        ====================================================== -->
+        <div class="process-world-inside" data-work-world aria-hidden="true">
+          <div class="work-reveal-preview" aria-hidden="true">
+            <div class="work-reveal-preview__field"></div>
+
+            <div class="work-reveal-preview__system">
+              <span class="work-node work-node--one"></span>
+              <span class="work-node work-node--two"></span>
+              <span class="work-node work-node--three"></span>
+              <span class="work-node work-node--four"></span>
+
+              <span class="work-line work-line--one"></span>
+              <span class="work-line work-line--two"></span>
+              <span class="work-line work-line--three"></span>
+            </div>
+
+            <div class="work-reveal-preview__copy">
+              <p class="work-reveal-preview__kicker">Proof layer</p>
+
+              <p class="work-reveal-preview__statement">
+                Process becomes shipped work.
+              </p>
+            </div>
+
+            <div class="work-reveal-preview__signals">
+              <span>Portal</span>
+              <span>Interface</span>
+              <span>Automation</span>
+              <span>System</span>
+            </div>
           </div>
+        </div>
 
-          <article class="bim-case bim-case--wwp">
-            <span>01 / Wonder World Playsets</span>
-            <h3>Project portals, quote workflows, permit visuals, and planning systems.</h3>
-            <p>Operational tools built around complex real-world project decisions.</p>
+        <span class="process-void" aria-hidden="true"></span>
+      </div>
+
+      <div class="process-overlay">
+        <div class="process-copy">
+          <p class="process-kicker">How we work</p>
+          <p>
+            We keep the path simple: clarify the system, design the interface,
+            build the working layer, then refine it until it feels inevitable.
+          </p>
+        </div>
+
+        <div class="process-cards" aria-label="Process steps">
+          <article class="process-card process-card--left" data-process-card>
+            <div class="process-card__meta">
+              <span>01 / 04</span>
+              <span>Define</span>
+            </div>
+
+            <div class="process-card__main">
+              <h3>Clarify the job.</h3>
+
+              <p>
+                We map the offer, audience, decisions, and system requirements before
+                design starts, so the work has a clear purpose instead of becoming decoration.
+              </p>
+
+              <div class="process-card__note" data-spotlight="CLARITY" aria-label="Define process note">
+                <div class="process-card__note-head">
+                  <span>Process note</span>
+                  <strong>Clarity</strong>
+                </div>
+
+                <div class="process-card__note-lines">
+                  <p><span>Input</span> Goals, offer, audience, and current pain points.</p>
+                  <p><span>Focus</span> Positioning, user path, and conversion logic.</p>
+                  <p><span>Output</span> Clear direction and section architecture.</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="process-card__actions">
+              <span>Strategy</span>
+              <span class="process-card__button">Start clean</span>
+            </div>
+
+            <span class="process-card__index" aria-hidden="true">01</span>
           </article>
 
-          <article class="bim-case bim-case--glca">
-            <span>02 / GLCA</span>
-            <h3>A cleaner digital presence focused on clarity, trust, and structure.</h3>
-            <p>Brand-facing web work designed to feel more polished and understandable.</p>
+          <article class="process-card process-card--right" data-process-card>
+            <div class="process-card__meta">
+              <span>02 / 04</span>
+              <span>Design</span>
+            </div>
+
+            <div class="process-card__main">
+              <h3>Shape the experience.</h3>
+
+              <p>
+                We create the flow, interface, hierarchy, and interaction direction
+                around clarity, so the site feels intentional before it ever feels flashy.
+              </p>
+
+              <div class="process-card__note" data-spotlight="STRUCTURE" aria-label="Design process note">
+                <div class="process-card__note-head">
+                  <span>Process note</span>
+                  <strong>Structure</strong>
+                </div>
+
+                <div class="process-card__note-lines">
+                  <p><span>Input</span> Strategy, content, references, and brand direction.</p>
+                  <p><span>Focus</span> Layout, usability, narrative, and restrained motion.</p>
+                  <p><span>Output</span> A high-end interface system ready to build.</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="process-card__actions">
+              <span>Interface</span>
+              <span class="process-card__button">Make it legible</span>
+            </div>
+
+            <span class="process-card__index" aria-hidden="true">02</span>
           </article>
 
-          <div class="bim-line-art bim-line-art--one" aria-hidden="true">
-            <span></span><span></span><span></span><span></span>
-          </div>
+          <article class="process-card process-card--left" data-process-card>
+            <div class="process-card__meta">
+              <span>03 / 04</span>
+              <span>Build</span>
+            </div>
 
-          <div class="bim-statement">
-            <h3>Four real projects. No fake agency scale. No recycled template story.</h3>
-          </div>
+            <div class="process-card__main">
+              <h3>Make it real.</h3>
 
-          <article class="bim-case bim-case--momentum">
-            <span>03 / Momentum Athlete</span>
-            <h3>Partner presentation systems for athletic education programs.</h3>
-            <p>A digital portal built to explain the offer and support partner conversations.</p>
+              <p>
+                We develop the front end, workflows, portals, automations, and integrations
+                that turn the visual direction into a working digital system.
+              </p>
+
+              <div class="process-card__note" data-spotlight="BUILD" aria-label="Build process note">
+                <div class="process-card__note-head">
+                  <span>Process note</span>
+                  <strong>Build</strong>
+                </div>
+
+                <div class="process-card__note-lines">
+                  <p><span>Input</span> Approved design, content, forms, and system requirements.</p>
+                  <p><span>Focus</span> Performance, responsiveness, and clean implementation.</p>
+                  <p><span>Output</span> A usable site, portal, automation, or launch layer.</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="process-card__actions">
+              <span>Production</span>
+              <span class="process-card__button">Ship the layer</span>
+            </div>
+
+            <span class="process-card__index" aria-hidden="true">03</span>
           </article>
 
-          <article class="bim-case bim-case--orynd">
-            <span>04 / Orynd AI</span>
-            <h3>AI workflows designed to guide users toward useful next steps.</h3>
-            <p>Routing, context, qualification, and interface logic for guided decisions.</p>
+          <article class="process-card process-card--right" data-process-card>
+            <div class="process-card__meta">
+              <span>04 / 04</span>
+              <span>Refine</span>
+            </div>
+
+            <div class="process-card__main">
+              <h3>Tune the system.</h3>
+
+              <p>
+                We review the final details, tighten the copy, motion, responsiveness,
+                and handoff so the launch feels finished instead of simply completed.
+              </p>
+
+              <div class="process-card__note" data-spotlight="POLISH" aria-label="Refine process note">
+                <div class="process-card__note-head">
+                  <span>Process note</span>
+                  <strong>Polish</strong>
+                </div>
+
+                <div class="process-card__note-lines">
+                  <p><span>Input</span> Working build, feedback, final content, and launch needs.</p>
+                  <p><span>Focus</span> QA, speed, interaction, copy, and handoff clarity.</p>
+                  <p><span>Output</span> A launch-ready experience with clean delivery.</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="process-card__actions">
+              <span>Launch</span>
+              <span class="process-card__button">Finish strong</span>
+            </div>
+
+            <span class="process-card__index" aria-hidden="true">04</span>
           </article>
-
-          <div class="bim-editorial bim-editorial--two">
-            <span>Quiet design</span>
-            <span>Useful systems</span>
-            <span>Built directly</span>
-          </div>
-
-          <div class="bim-wordmark bim-wordmark--two">STUDIO</div>
-
-          <div class="bim-close">
-            <p>How we work</p>
-            <h2>Small by design. Serious by default.</h2>
-            <a href="#contact">Start a conversation</a>
-          </div>
-
-          <div class="stage-label stage-label--intro">About</div>
-          <div class="stage-label stage-label--middle">Work</div>
-          <div class="stage-label stage-label--end">Studio</div>
-
         </div>
       </div>
     </section>
-  </div>
-</section>
 
-
-
-<section id="process" class="process-3d" aria-labelledby="process-title">
-  <div class="process-scene" data-process-scene>
-    <h2 id="process-title" class="process-word">PROCESS</h2>
-
-       <!-- ======================================================
-         PROCESS → OUR WORK REVEAL LAYER
-         This stays inside the PROCESS section.
-         It is visual only. Do not put buttons/details inside here.
+    <!-- ======================================================
+      TRUST BRIDGE
     ====================================================== -->
-
-  <div class="process-world-inside" data-work-world aria-hidden="true">
-  <div class="work-reveal-preview" aria-hidden="true">
-    <div class="work-reveal-preview__field"></div>
-
-    <div class="work-reveal-preview__system">
-      <span class="work-node work-node--one"></span>
-      <span class="work-node work-node--two"></span>
-      <span class="work-node work-node--three"></span>
-      <span class="work-node work-node--four"></span>
-
-      <span class="work-line work-line--one"></span>
-      <span class="work-line work-line--two"></span>
-      <span class="work-line work-line--three"></span>
-    </div>
-
-    <div class="work-reveal-preview__copy">
-      <p class="work-reveal-preview__kicker">Proof layer</p>
-
-      <p class="work-reveal-preview__statement">
-        Process becomes shipped work.
-      </p>
-    </div>
-
-    <div class="work-reveal-preview__signals">
-      <span>Portal</span>
-      <span>Interface</span>
-      <span>Automation</span>
-      <span>System</span>
-    </div>
-  </div>
-</div>
-
-    <span class="process-void" aria-hidden="true"></span>
-  </div>
-
-  <div class="process-overlay">
-    <div class="process-copy">
-      <p class="process-kicker">How we work</p>
-      <p>
-        We keep the path simple: clarify the system, design the interface,
-        build the working layer, then refine it until it feels inevitable.
-      </p>
-    </div>
-
-    <div class="process-cards" aria-label="Process steps">
-      <article class="process-card process-card--left" data-process-card>
-        <div class="process-card__meta">
-          <span>01 / 04</span>
-          <span>Define</span>
+    <section class="work-trust" aria-label="Client trust">
+      <div class="work-trust__sticky">
+        <div class="work-trust__bg-text" aria-hidden="true">
+          GOOD WORK<br />
+          IS BUILT<br />
+          WITH TRUST.
         </div>
 
-        <div class="process-card__main">
-          <h3>Clarify the job.</h3>
-
+        <div class="work-trust__copy">
           <p>
-            We map the offer, audience, decisions, and system requirements before
-            design starts, so the work has a clear purpose instead of becoming decoration.
+            We build with clients who need more than a nice-looking website. They need
+            clearer systems, sharper presentation, and digital work that makes the
+            business easier to understand.
           </p>
+        </div>
 
-          <div class="process-card__note" data-spotlight="CLARITY" aria-label="Define process note">
-            <div class="process-card__note-head">
-              <span>Process note</span>
-              <strong>Clarity</strong>
-            </div>
+        <div class="work-trust__track" data-work-trust-track>
+          <article class="work-trust-card">
+            <p class="work-trust-card__logo">Wonder World</p>
+            <blockquote>
+              “The portal made our process feel organized, easier to manage, and easier
+              to present to customers.”
+            </blockquote>
+            <footer>
+              <strong>Wonder World Playsets</strong>
+              <span>Commercial playground distributor</span>
+            </footer>
+          </article>
 
-            <div class="process-card__note-lines">
-              <p><span>Input</span> Goals, offer, audience, and current pain points.</p>
-              <p><span>Focus</span> Positioning, user path, and conversion logic.</p>
-              <p><span>Output</span> Clear direction and section architecture.</p>
-            </div>
+          <article class="work-trust-card">
+            <p class="work-trust-card__logo">Momentum</p>
+            <blockquote>
+              “The platform finally felt clear, premium, and easier to present to
+              partners.”
+            </blockquote>
+            <footer>
+              <strong>Momentum Athlete</strong>
+              <span>Athlete performance platform</span>
+            </footer>
+          </article>
+
+          <article class="work-trust-card">
+            <p class="work-trust-card__logo">Orynd AI</p>
+            <blockquote>
+              “The site made the product easier to explain without making the idea feel
+              smaller.”
+            </blockquote>
+            <footer>
+              <strong>Orynd AI</strong>
+              <span>AI platform</span>
+            </footer>
+          </article>
+
+          <article class="work-trust-card">
+            <p class="work-trust-card__logo">BIM Labs</p>
+            <blockquote>
+              “The visual tool made the project easier to explain and easier for people
+              to understand quickly.”
+            </blockquote>
+            <footer>
+              <strong>3D Install Tool</strong>
+              <span>Interactive project system</span>
+            </footer>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================
+      REAL OUR WORK ARCHIVE
+    ====================================================== -->
+    <section class="work-archive" id="our-work" aria-labelledby="work-archive-title">
+      <div class="work-archive__bg" aria-hidden="true"></div>
+
+      <div class="work-archive__shell">
+        <header class="work-archive__header">
+          <div>
+            <p class="work-archive__kicker">/// Selected work</p>
+
+            <h2 id="work-archive-title" class="work-archive__title">
+              Selected work, built as real systems.
+            </h2>
           </div>
-        </div>
 
-        <div class="process-card__actions">
-          <span>Strategy</span>
-          <span class="process-card__button">Start clean</span>
-        </div>
-
-        <span class="process-card__index" aria-hidden="true">01</span>
-      </article>
-
-      <article class="process-card process-card--right" data-process-card>
-        <div class="process-card__meta">
-          <span>02 / 04</span>
-          <span>Design</span>
-        </div>
-
-        <div class="process-card__main">
-          <h3>Shape the experience.</h3>
-
-          <p>
-            We create the flow, interface, hierarchy, and interaction direction
-            around clarity, so the site feels intentional before it ever feels flashy.
-          </p>
-
-          <div class="process-card__note" data-spotlight="STRUCTURE" aria-label="Design process note">
-            <div class="process-card__note-head">
-              <span>Process note</span>
-              <strong>Structure</strong>
-            </div>
-
-            <div class="process-card__note-lines">
-              <p><span>Input</span> Strategy, content, references, and brand direction.</p>
-              <p><span>Focus</span> Layout, usability, narrative, and restrained motion.</p>
-              <p><span>Output</span> A high-end interface system ready to build.</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="process-card__actions">
-          <span>Interface</span>
-          <span class="process-card__button">Make it legible</span>
-        </div>
-
-        <span class="process-card__index" aria-hidden="true">02</span>
-      </article>
-
-      <article class="process-card process-card--left" data-process-card>
-        <div class="process-card__meta">
-          <span>03 / 04</span>
-          <span>Build</span>
-        </div>
-
-        <div class="process-card__main">
-          <h3>Make it real.</h3>
-
-          <p>
-            We develop the front end, workflows, portals, automations, and integrations
-            that turn the visual direction into a working digital system.
-          </p>
-
-          <div class="process-card__note" data-spotlight="BUILD" aria-label="Build process note">
-            <div class="process-card__note-head">
-              <span>Process note</span>
-              <strong>Build</strong>
-            </div>
-
-            <div class="process-card__note-lines">
-              <p><span>Input</span> Approved design, content, forms, and system requirements.</p>
-              <p><span>Focus</span> Performance, responsiveness, and clean implementation.</p>
-              <p><span>Output</span> A usable site, portal, automation, or launch layer.</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="process-card__actions">
-          <span>Production</span>
-          <span class="process-card__button">Ship the layer</span>
-        </div>
-
-        <span class="process-card__index" aria-hidden="true">03</span>
-      </article>
-
-      <article class="process-card process-card--right" data-process-card>
-        <div class="process-card__meta">
-          <span>04 / 04</span>
-          <span>Refine</span>
-        </div>
-
-        <div class="process-card__main">
-          <h3>Tune the system.</h3>
-
-          <p>
-            We review the final details, tighten the copy, motion, responsiveness,
-            and handoff so the launch feels finished instead of simply completed.
-          </p>
-
-          <div class="process-card__note" data-spotlight="POLISH" aria-label="Refine process note">
-            <div class="process-card__note-head">
-              <span>Process note</span>
-              <strong>Polish</strong>
-            </div>
-
-            <div class="process-card__note-lines">
-              <p><span>Input</span> Working build, feedback, final content, and launch needs.</p>
-              <p><span>Focus</span> QA, speed, interaction, copy, and handoff clarity.</p>
-              <p><span>Output</span> A launch-ready experience with clean delivery.</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="process-card__actions">
-          <span>Launch</span>
-          <span class="process-card__button">Finish strong</span>
-        </div>
-
-        <span class="process-card__index" aria-hidden="true">04</span>
-      </article>
-    </div>
-  </div>
-</section>
-
-
-
-
-
-<section class="work-trust" aria-label="Client trust">
-  <div class="work-trust__sticky">
-    <div class="work-trust__bg-text" aria-hidden="true">
-      GOOD WORK<br />
-      IS BUILT<br />
-      WITH TRUST.
-    </div>
-
-    <div class="work-trust__copy">
-      <p>
-        We build with clients who need more than a nice-looking website. They need
-        clearer systems, sharper presentation, and digital work that makes the
-        business easier to understand.
-      </p>
-    </div>
-
-    <div class="work-trust__track" data-work-trust-track>
-      <article class="work-trust-card">
-        <p class="work-trust-card__logo">Wonder World</p>
-        <blockquote>
-          “The portal made our process feel organized, easier to manage, and easier
-          to present to customers.”
-        </blockquote>
-        <footer>
-          <strong>Wonder World Playsets</strong>
-          <span>Commercial playground distributor</span>
-        </footer>
-      </article>
-
-      <article class="work-trust-card">
-        <p class="work-trust-card__logo">Momentum</p>
-        <blockquote>
-          “The platform finally felt clear, premium, and easier to present to
-          partners.”
-        </blockquote>
-        <footer>
-          <strong>Momentum Athlete</strong>
-          <span>Athlete performance platform</span>
-        </footer>
-      </article>
-
-      <article class="work-trust-card">
-        <p class="work-trust-card__logo">Orynd AI</p>
-        <blockquote>
-          “The site made the product easier to explain without making the idea feel
-          smaller.”
-        </blockquote>
-        <footer>
-          <strong>Orynd AI</strong>
-          <span>AI platform</span>
-        </footer>
-      </article>
-
-      <article class="work-trust-card">
-        <p class="work-trust-card__logo">BIM Labs</p>
-        <blockquote>
-          “The visual tool made the project easier to explain and easier for people
-          to understand quickly.”
-        </blockquote>
-        <footer>
-          <strong>3D Install Tool</strong>
-          <span>Interactive project system</span>
-        </footer>
-      </article>
-    </div>
-  </div>
-</section>
-
-
-    
-
-<!-- ======================================================
-     REAL OUR WORK SECTION
-     Put this AFTER the closing </section> of PROCESS.
-     This is the actual scrollable/clickable section.
-====================================================== -->
-
-<section class="work-archive" id="our-work" aria-labelledby="work-archive-title">
-  <div class="work-archive__bg" aria-hidden="true"></div>
-
-
-      <p class="work-archive__intro">
-        A curated archive of selected BIM Labs work — from client portals and quote systems
-        to brand-facing websites, AI workflows, and internal operating layers.
-      </p>
-    </header>
-
-    <div class="work-archive__list" role="list" aria-label="Selected BIM Labs Studio projects">
-      <button class="work-project is-active" type="button" data-work-project="0" role="listitem">
-        <span class="work-project__main">
-          <span class="work-project__number">01</span>
-          <span class="work-project__name">Wonder World Portal</span>
-        </span>
-
-        <span class="work-project__hover">
-          <span>Client Portal</span>
-          <span>2024</span>
-          <span>Portal / CRM / Quote Flow</span>
-        </span>
-
-        <span class="work-project__arrow">→</span>
-
-        <span class="work-project__preview" aria-hidden="true">
-          <img src="assets/showcase/project-portal.png" alt="">
-        </span>
-      </button>
-
-      <button class="work-project" type="button" data-work-project="1" role="listitem">
-        <span class="work-project__main">
-          <span class="work-project__number">02</span>
-          <span class="work-project__name">Momentum Athlete</span>
-        </span>
-
-        <span class="work-project__hover">
-          <span>Sports Platform</span>
-          <span>2024</span>
-          <span>Web / Courses / Stripe</span>
-        </span>
-
-        <span class="work-project__arrow">→</span>
-
-        <span class="work-project__preview" aria-hidden="true">
-          <img src="assets/showcase/momentum.png" alt="">
-        </span>
-      </button>
-
-      <button class="work-project" type="button" data-work-project="2" role="listitem">
-        <span class="work-project__main">
-          <span class="work-project__number">03</span>
-          <span class="work-project__name">Orynd AI</span>
-        </span>
-
-        <span class="work-project__hover">
-          <span>AI Platform</span>
-          <span>2023</span>
-          <span>Brand / Product / UX</span>
-        </span>
-
-        <span class="work-project__arrow">→</span>
-
-        <span class="work-project__preview" aria-hidden="true">
-          <img src="assets/showcase/orynd-ai.png" alt="">
-        </span>
-      </button>
-
-      <button class="work-project" type="button" data-work-project="3" role="listitem">
-        <span class="work-project__main">
-          <span class="work-project__number">04</span>
-          <span class="work-project__name">3D Install Tool</span>
-        </span>
-
-        <span class="work-project__hover">
-          <span>Interactive System</span>
-          <span>2024</span>
-          <span>3D / Visual Tool / UX</span>
-        </span>
-
-        <span class="work-project__arrow">→</span>
-
-        <span class="work-project__preview" aria-hidden="true">
-          <img src="assets/showcase/3d-install-tool.png" alt="">
-        </span>
-      </button>
-    </div>
-
-    <aside class="work-detail" aria-label="Project details" aria-hidden="true">
-      <button class="work-detail__close" type="button" aria-label="Close project details">
-        ×
-      </button>
-
-      <div class="work-detail__inner">
-        <header class="work-detail__hero">
-          <p class="work-detail__eyebrow">
-            <span data-work-detail-number>01</span>
-            <span>/</span>
-            <span data-work-detail-type>Client Portal</span>
-            <span>-/</span>
-            <span data-work-detail-year>2024</span>
-          </p>
-
-          <h3 class="work-detail__title" data-work-detail-title>
-            Wonder World Portal
-          </h3>
-
-          <p class="work-detail__description" data-work-detail-description>
-            A private operating layer built to organize quotes, products, lead flow,
-            installer coordination, and customer-facing resources.
+          <p class="work-archive__intro">
+            A curated archive of selected BIM Labs work — from client portals and quote systems
+            to brand-facing websites, AI workflows, and internal operating layers.
           </p>
         </header>
 
-        <figure class="work-detail__media">
-          <img
-            src="assets/showcase/project-portal.png"
-            alt="Wonder World Portal project preview"
-            data-work-detail-image
-          >
-        </figure>
+        <div class="work-archive__list" role="list" aria-label="Selected BIM Labs Studio projects">
+          <button class="work-project is-active" type="button" data-work-project="0" role="listitem">
+            <span class="work-project__main">
+              <span class="work-project__number">01</span>
+              <span class="work-project__name">Wonder World Portal</span>
+            </span>
 
-        <section class="work-detail__testimonial" aria-label="Client review">
-          <p class="work-detail__label">Client review</p>
+            <span class="work-project__hover">
+              <span>Client Portal</span>
+              <span>2024</span>
+              <span>Portal / CRM / Quote Flow</span>
+            </span>
 
-          <blockquote class="work-detail__quote" data-work-detail-review>
-            “The portal made our process feel organized, easier to manage, and easier to present to customers.”
-          </blockquote>
+            <span class="work-project__arrow">→</span>
 
-          <div class="work-detail__client">
-            <span data-work-detail-client>Wonder World Playsets</span>
-            <small data-work-detail-role>Commercial playground distributor</small>
+            <span class="work-project__preview" aria-hidden="true">
+              <img src="assets/showcase/project-portal.png" alt="" />
+            </span>
+          </button>
+
+          <button class="work-project" type="button" data-work-project="1" role="listitem">
+            <span class="work-project__main">
+              <span class="work-project__number">02</span>
+              <span class="work-project__name">Momentum Athlete</span>
+            </span>
+
+            <span class="work-project__hover">
+              <span>Sports Platform</span>
+              <span>2024</span>
+              <span>Web / Courses / Stripe</span>
+            </span>
+
+            <span class="work-project__arrow">→</span>
+
+            <span class="work-project__preview" aria-hidden="true">
+              <img src="assets/showcase/momentum.png" alt="" />
+            </span>
+          </button>
+
+          <button class="work-project" type="button" data-work-project="2" role="listitem">
+            <span class="work-project__main">
+              <span class="work-project__number">03</span>
+              <span class="work-project__name">Orynd AI</span>
+            </span>
+
+            <span class="work-project__hover">
+              <span>AI Platform</span>
+              <span>2023</span>
+              <span>Brand / Product / UX</span>
+            </span>
+
+            <span class="work-project__arrow">→</span>
+
+            <span class="work-project__preview" aria-hidden="true">
+              <img src="assets/showcase/orynd-ai.png" alt="" />
+            </span>
+          </button>
+
+          <button class="work-project" type="button" data-work-project="3" role="listitem">
+            <span class="work-project__main">
+              <span class="work-project__number">04</span>
+              <span class="work-project__name">3D Install Tool</span>
+            </span>
+
+            <span class="work-project__hover">
+              <span>Interactive System</span>
+              <span>2024</span>
+              <span>3D / Visual Tool / UX</span>
+            </span>
+
+            <span class="work-project__arrow">→</span>
+
+            <span class="work-project__preview" aria-hidden="true">
+              <img src="assets/showcase/3d-install-tool.png" alt="" />
+            </span>
+          </button>
+        </div>
+
+        <aside class="work-detail" aria-label="Project details" aria-hidden="true">
+          <button class="work-detail__close" type="button" aria-label="Close project details">
+            ×
+          </button>
+
+          <div class="work-detail__inner">
+            <header class="work-detail__hero">
+              <p class="work-detail__eyebrow">
+                <span data-work-detail-number>01</span>
+                <span>/</span>
+                <span data-work-detail-type>Client Portal</span>
+                <span>-/</span>
+                <span data-work-detail-year>2024</span>
+              </p>
+
+              <h3 class="work-detail__title" data-work-detail-title>
+                Wonder World Portal
+              </h3>
+
+              <p class="work-detail__description" data-work-detail-description>
+                A private operating layer built to organize quotes, products, lead flow,
+                installer coordination, and customer-facing resources.
+              </p>
+            </header>
+
+            <figure class="work-detail__media">
+              <img
+                src="assets/showcase/project-portal.png"
+                alt="Wonder World Portal project preview"
+                data-work-detail-image
+              />
+            </figure>
+
+            <section class="work-detail__testimonial" aria-label="Client review">
+              <p class="work-detail__label">Client review</p>
+
+              <blockquote class="work-detail__quote" data-work-detail-review>
+                “The portal made our process feel organized, easier to manage, and easier to present to customers.”
+              </blockquote>
+
+              <div class="work-detail__client">
+                <span data-work-detail-client>Wonder World Playsets</span>
+                <small data-work-detail-role>Commercial playground distributor</small>
+              </div>
+            </section>
+
+            <div class="work-detail__proof-grid" aria-label="Project proof points">
+              <section class="work-detail__block">
+                <p class="work-detail__label">Customer constraint</p>
+                <p data-work-detail-constraint>
+                  Wonder World needed one cleaner place to manage quote requests,
+                  product information, project details, and customer-facing resources.
+                </p>
+              </section>
+
+              <section class="work-detail__block">
+                <p class="work-detail__label">What we solved</p>
+                <p data-work-detail-solution>
+                  We brought the core sales and project workflow into a more usable
+                  digital layer with clearer structure and less friction.
+                </p>
+              </section>
+
+              <section class="work-detail__block">
+                <p class="work-detail__label">Result</p>
+                <p data-work-detail-result>
+                  The business gained a stronger operating system for managing project
+                  information and presenting the offer more professionally.
+                </p>
+              </section>
+
+              <section class="work-detail__block">
+                <p class="work-detail__label">Deliverables</p>
+
+                <ul class="work-detail__list" data-work-detail-services>
+                  <li>Client portal architecture</li>
+                  <li>Product and quote system</li>
+                  <li>Installer finder workflow</li>
+                  <li>CRM and internal dashboard</li>
+                  <li>Frontend design and development</li>
+                </ul>
+              </section>
+            </div>
+
+            <div class="work-detail__nav" aria-label="Project navigation">
+              <button type="button" data-work-prev>← Prev project</button>
+              <button type="button" data-work-next>Next project →</button>
+            </div>
           </div>
-        </section>
-
-        <div class="work-detail__proof-grid" aria-label="Project proof points">
-          <section class="work-detail__block">
-            <p class="work-detail__label">Customer constraint</p>
-            <p data-work-detail-constraint>
-              Wonder World needed one cleaner place to manage quote requests,
-              product information, project details, and customer-facing resources.
-            </p>
-          </section>
-
-          <section class="work-detail__block">
-            <p class="work-detail__label">What we solved</p>
-            <p data-work-detail-solution>
-              We brought the core sales and project workflow into a more usable
-              digital layer with clearer structure and less friction.
-            </p>
-          </section>
-
-          <section class="work-detail__block">
-            <p class="work-detail__label">Result</p>
-            <p data-work-detail-result>
-              The business gained a stronger operating system for managing project
-              information and presenting the offer more professionally.
-            </p>
-          </section>
-
-          <section class="work-detail__block">
-            <p class="work-detail__label">Deliverables</p>
-
-            <ul class="work-detail__list" data-work-detail-services>
-              <li>Client portal architecture</li>
-              <li>Product and quote system</li>
-              <li>Installer finder workflow</li>
-              <li>CRM and internal dashboard</li>
-              <li>Frontend design and development</li>
-            </ul>
-          </section>
-        </div>
-
-        <div class="work-detail__nav" aria-label="Project navigation">
-          <button type="button" data-work-prev>← Prev project</button>
-          <button type="button" data-work-next>Next project →</button>
-        </div>
+        </aside>
       </div>
-    </aside>
-  </div>
-</section>
-</main>
+    </section>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <!-- ======================================================
+      CONTACT
+    ====================================================== -->
+    <section class="site-contact" id="contact" aria-label="Start a project">
+      <div class="site-contact__inner">
+        <p class="site-contact__kicker">Start a project</p>
+        <h2>Need a cleaner website, portal, or digital system?</h2>
+        <a href="mailto:bimlabsstudio@gmail.com">bimlabsstudio@gmail.com</a>
+      </div>
+    </section>
+  </main>
 
-<script src="./js/main.js"></script>
-<script type="module" src="sections/process-main.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 
-<!-- SECTION JS -->
-<script src="sections/our-work.js"></script>
-    
-
+  <script src="./js/main.js"></script>
+  <script type="module" src="sections/process-main.js"></script>
+  <script src="sections/our-work.js"></script>
 </body>
 </html>
