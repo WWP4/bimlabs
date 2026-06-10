@@ -273,58 +273,65 @@ function setupWorkTrustScroll() {
     return;
   }
 
+  /*
+    TIGHTER, NOOMO-LIKE PACKING:
+    - smaller X spread
+    - more centered
+    - smoother arch
+    - slower progress catch-up
+  */
   const cardSettings = [
     {
-      startX: 112,
-      endX: -34,
-      startY: 16,
-      peakY: -1,
-      endY: 13,
-      startRotate: -8,
-      endRotate: -2,
-      startScale: 0.97,
-      endScale: 1.02,
-      delay: 0.00,
-      span: 0.78
-    },
-    {
-      startX: 140,
-      endX: -8,
-      startY: 10,
-      peakY: -13,
-      endY: 3,
-      startRotate: 6,
-      endRotate: 1.5,
-      startScale: 0.96,
-      endScale: 1.00,
-      delay: 0.08,
-      span: 0.78
-    },
-    {
-      startX: 168,
-      endX: 18,
-      startY: 12,
-      peakY: -13,
-      endY: 3,
-      startRotate: -5,
-      endRotate: -1,
-      startScale: 1.00,
-      endScale: 1.04,
-      delay: 0.16,
-      span: 0.78
-    },
-    {
-      startX: 198,
-      endX: 44,
+      startX: 22,
+      endX: 6,
       startY: 18,
-      peakY: -1,
-      endY: 13,
-      startRotate: 7,
-      endRotate: 2,
-      startScale: 0.95,
-      endScale: 0.99,
-      delay: 0.24,
-      span: 0.78
+      peakY: 8,
+      endY: 15,
+      startRotate: -8,
+      endRotate: -3,
+      startScale: 0.97,
+      endScale: 1.01,
+      delay: 0.00,
+      span: 0.82
+    },
+    {
+      startX: 36,
+      endX: 24,
+      startY: 12,
+      peakY: -3,
+      endY: 7,
+      startRotate: 5,
+      endRotate: 1.5,
+      startScale: 0.98,
+      endScale: 1.01,
+      delay: 0.06,
+      span: 0.82
+    },
+    {
+      startX: 50,
+      endX: 42,
+      startY: 12,
+      peakY: -3,
+      endY: 7,
+      startRotate: -4,
+      endRotate: -1.5,
+      startScale: 0.99,
+      endScale: 1.02,
+      delay: 0.12,
+      span: 0.82
+    },
+    {
+      startX: 64,
+      endX: 60,
+      startY: 18,
+      peakY: 8,
+      endY: 15,
+      startRotate: 6,
+      endRotate: 2.5,
+      startScale: 0.97,
+      endScale: 1.00,
+      delay: 0.18,
+      span: 0.82
     }
   ];
 
@@ -372,10 +379,10 @@ function setupWorkTrustScroll() {
       const rotate = lerp(s.startRotate, s.endRotate, t);
       const scale = lerp(s.startScale, s.endScale, t);
 
-      const float = Math.sin(progress * Math.PI * 2 + index * 0.9) * 0.55;
+      const float = Math.sin(progress * Math.PI * 2 + index * 0.8) * 0.38;
 
-      const fadeIn = clamp(localRaw / 0.16, 0, 1);
-      const fadeOut = clamp((1 - localRaw) / 0.16, 0, 1);
+      const fadeIn = clamp(localRaw / 0.14, 0, 1);
+      const fadeOut = clamp((1 - localRaw) / 0.18, 0, 1);
       const opacity = Math.min(fadeIn, fadeOut);
 
       card.style.opacity = String(opacity);
@@ -389,18 +396,18 @@ function setupWorkTrustScroll() {
     });
 
     if (headline) {
-      headline.style.opacity = String(lerp(0.96, 0.42, progress));
-      headline.style.transform = `translate3d(0, ${lerp(0, -5, progress)}vh, 0)`;
+      headline.style.opacity = String(lerp(0.94, 0.46, progress));
+      headline.style.transform = `translate3d(0, ${lerp(0, -4, progress)}vh, 0)`;
     }
 
     if (copy) {
-      copy.style.opacity = String(lerp(1, 0.65, progress));
-      copy.style.transform = `translate3d(0, ${lerp(0, -3, progress)}vh, 0)`;
+      copy.style.opacity = String(lerp(1, 0.68, progress));
+      copy.style.transform = `translate3d(0, ${lerp(0, -2.5, progress)}vh, 0)`;
     }
   }
 
   function animate() {
-    currentProgress = lerp(currentProgress, targetProgress, 0.075);
+    currentProgress = lerp(currentProgress, targetProgress, 0.06);
     render(currentProgress);
 
     if (Math.abs(targetProgress - currentProgress) > 0.0005) {
@@ -428,7 +435,11 @@ function setupWorkTrustScroll() {
   currentProgress = targetProgress;
   render(currentProgress);
 }
+
+
+
    
+
 
 
   /* ==========================================================
