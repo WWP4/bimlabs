@@ -1427,3 +1427,256 @@ body.work-drawer-lock {
     transition: none !important;
   }
 }
+
+
+
+
+/* ==========================================================
+   BIM TRUST BRIDGE — CLEAN REBUILD
+   No old .work-trust conflicts. No GSAP needed.
+========================================================== */
+
+.bim-trust {
+  position: relative;
+  z-index: 3;
+  min-height: 320vh;
+  overflow: clip;
+  background: #000;
+  color: #f4f1ea;
+  font-family: inherit;
+}
+
+.bim-trust__sticky {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 68% 55%, rgba(255, 255, 255, 0.055), transparent 26rem),
+    radial-gradient(circle at 22% 34%, rgba(255, 255, 255, 0.035), transparent 22rem),
+    #000;
+}
+
+.bim-trust__headline {
+  position: absolute;
+  left: clamp(1.1rem, 2.2vw, 2.6rem);
+  top: 15vh;
+  z-index: 1;
+
+  margin: 0;
+
+  color: rgba(255, 255, 255, 0.92);
+  font-size: clamp(4.4rem, 9.2vw, 12rem);
+  font-weight: 300;
+  letter-spacing: -0.085em;
+  line-height: 0.84;
+  white-space: nowrap;
+
+  pointer-events: none;
+  user-select: none;
+  will-change: transform, opacity;
+}
+
+.bim-trust__copy {
+  position: absolute;
+  right: clamp(1.2rem, 4vw, 4.4rem);
+  top: 27vh;
+  z-index: 30;
+
+  width: min(21.5rem, 32vw);
+
+  will-change: transform, opacity;
+}
+
+.bim-trust__copy p {
+  margin: 0;
+  color: rgba(245, 245, 240, 0.62);
+  font-size: clamp(0.78rem, 0.88vw, 0.98rem);
+  font-weight: 300;
+  line-height: 1.58;
+  letter-spacing: -0.018em;
+}
+
+.bim-trust__stage {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+
+  pointer-events: none;
+  perspective: 1000px;
+  transform-style: preserve-3d;
+}
+
+.bim-trust-card {
+  position: absolute;
+  left: 0;
+  top: 39vh;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  width: clamp(18rem, 22vw, 26rem);
+  min-height: clamp(19rem, 41vh, 28rem);
+  padding: clamp(1.45rem, 2vw, 2.15rem);
+
+  border: 1px solid rgba(245, 245, 240, 0.13);
+  border-radius: 0.42rem;
+
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.032)),
+    rgba(255, 255, 255, 0.055);
+
+  box-shadow:
+    0 2rem 5rem rgba(0, 0, 0, 0.55),
+    inset 0 1px 0 rgba(255, 255, 255, 0.13);
+
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+
+  opacity: 0;
+  pointer-events: auto;
+  will-change: transform, opacity;
+  transform-style: preserve-3d;
+}
+
+.bim-trust-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+
+  border-radius: inherit;
+  background: rgba(0, 0, 0, 0.18);
+  filter: blur(1rem);
+}
+
+.bim-trust-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+
+  border-radius: inherit;
+  background: rgba(255, 255, 255, 0.04);
+  transform: translate3d(0.45rem, 0.45rem, -1px);
+}
+
+.bim-trust-card__logo {
+  margin: 0 0 2rem;
+
+  color: rgba(255, 255, 255, 0.92);
+  font-size: clamp(1.2rem, 1.6vw, 2rem);
+  font-weight: 600;
+  letter-spacing: -0.055em;
+  line-height: 1;
+}
+
+.bim-trust-card blockquote {
+  margin: 0;
+
+  color: rgba(245, 245, 240, 0.74);
+  font-size: clamp(0.88rem, 1vw, 1.12rem);
+  font-weight: 300;
+  line-height: 1.5;
+  letter-spacing: -0.025em;
+}
+
+.bim-trust-card footer {
+  display: grid;
+  gap: 0.35rem;
+  margin-top: 2rem;
+}
+
+.bim-trust-card strong {
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.bim-trust-card span {
+  color: rgba(245, 245, 240, 0.39);
+  font-size: 0.68rem;
+  font-weight: 300;
+  line-height: 1.35;
+}
+
+.bim-trust::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  bottom: -1px;
+  left: 0;
+
+  height: 20rem;
+  background: linear-gradient(to bottom, transparent, #000);
+  pointer-events: none;
+}
+
+@media (max-width: 900px) {
+  .bim-trust {
+    min-height: auto;
+  }
+
+  .bim-trust__sticky {
+    position: relative;
+    height: auto;
+    min-height: 100vh;
+    padding: 6rem 1rem 5rem;
+  }
+
+  .bim-trust__headline {
+    position: relative;
+    left: auto;
+    top: auto;
+
+    margin-bottom: 2rem;
+
+    font-size: clamp(4rem, 18vw, 7rem);
+    white-space: normal;
+  }
+
+  .bim-trust__copy {
+    position: relative;
+    right: auto;
+    top: auto;
+
+    width: min(24rem, 100%);
+    margin-bottom: 2rem;
+  }
+
+  .bim-trust__stage {
+    position: relative;
+    inset: auto;
+
+    display: grid;
+    gap: 1rem;
+
+    perspective: none;
+  }
+
+  .bim-trust-card {
+    position: relative;
+    left: auto;
+    top: auto;
+
+    width: 100%;
+    min-height: 18rem;
+
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bim-trust-card,
+  .bim-trust__headline,
+  .bim-trust__copy {
+    transition: none !important;
+    animation: none !important;
+    transform: none !important;
+  }
+}
