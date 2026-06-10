@@ -1317,3 +1317,90 @@ body.work-drawer-lock {
     transform: none !important;
   }
 }
+
+
+/* ==========================================================
+   FIX — INDIVIDUAL FLYING TRUST CARDS
+   Makes cards move independently instead of one rigid track.
+========================================================== */
+
+.work-trust__track {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+
+  display: block;
+  width: 100%;
+  height: 100%;
+
+  transform: none !important;
+  pointer-events: none;
+}
+
+.work-trust-card {
+  position: absolute;
+  left: 0;
+  top: 38vh;
+
+  width: clamp(18rem, 22vw, 26rem);
+  min-height: clamp(20rem, 42vh, 29rem);
+
+  pointer-events: auto;
+  will-change: transform;
+  transform-style: preserve-3d;
+
+  transition: none;
+}
+
+.work-trust-card:nth-child(1),
+.work-trust-card:nth-child(2),
+.work-trust-card:nth-child(3),
+.work-trust-card:nth-child(4) {
+  margin-top: 0 !important;
+}
+
+/* card depth like Noomo */
+.work-trust-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+
+  border-radius: inherit;
+  background: rgba(255, 255, 255, 0.04);
+  transform: translate3d(0.45rem, 0.45rem, -1px);
+  filter: blur(0.2px);
+}
+
+/* make background headline sit behind cards */
+.work-trust__bg-text {
+  z-index: 1;
+}
+
+.work-trust__copy {
+  z-index: 20;
+}
+
+/* keep mobile simple */
+@media (max-width: 900px) {
+  .work-trust__track {
+    position: relative;
+    inset: auto;
+
+    display: grid;
+    gap: 1rem;
+
+    height: auto;
+  }
+
+  .work-trust-card {
+    position: relative;
+    top: auto;
+    left: auto;
+
+    width: 100%;
+    min-height: 18rem;
+
+    transform: none !important;
+  }
+}
