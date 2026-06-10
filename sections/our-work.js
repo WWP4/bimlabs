@@ -1,6 +1,6 @@
 /* ==========================================================
    BIM LABS STUDIO — OUR WORK
-   Noomo-style trust bridge + clean archive + scrollable drawer
+   Fixed Noomo-style trust bridge + clean archive + scrollable drawer
 ========================================================== */
 
 (() => {
@@ -143,9 +143,22 @@
   let detailIsOpen = false;
   let changeTimer = null;
   let lastFocusedElement = null;
+  let trustScrollReady = false;
 
   function clampIndex(index) {
     return (index + projects.length) % projects.length;
+  }
+
+  function clamp(value, min, max) {
+    return Math.min(Math.max(value, min), max);
+  }
+
+  function lerp(start, end, progress) {
+    return start + (end - start) * progress;
+  }
+
+  function easeOutCubic(value) {
+    return 1 - Math.pow(1 - value, 3);
   }
 
   function lockSiteScroll() {
@@ -214,109 +227,111 @@
     root.parentNode.insertBefore(section, root);
   }
 
-function setupWorkTrustScroll() {
-  const section = document.querySelector(".work-trust");
-  const cards = Array.from(document.querySelectorAll("[data-work-trust-card]"));
+  function setupWorkTrustScroll() {
+    const section = document.querySelector(".work-trust");
+    const cards = Array.from(document.querySelectorAll("[data-work-trust-card]"));
 
-  if (!section || !cards.length || prefersReducedMotion) return;
+    if (!section || !cards.length || prefersReducedMotion || trustScrollReady) return;
 
-  let ticking = false;
+    trustScrollReady = true;
 
-  const cardSettings = [
-    {
-      startX: 76,
-      endX: -28,
-      y: 12,
-      rotateStart: -7,
-      rotateEnd: -2,
-      scale: 1.02,
-      speed: 1.08
-    },
-    {
-      startX: 104,
-      endX: -12,
-      y: -6,
-      rotateStart: 5,
-      rotateEnd: 1.5,
-      scale: 1,
-      speed: 1.18
-    },
-    {
-      startX: 134,
-      endX: 10,
-      y: 7,
-      rotateStart: -4,
-      rotateEnd: -1,
-      scale: 1.04,
-      speed: 1.28
-    },
-    {
-      startX: 166,
-      endX: 34,
-      y: -2,
-      rotateStart: 6,
-      rotateEnd: 2,
-      scale: 0.98,
-      speed: 1.36
+    let ticking = false;
+
+    const cardSettings = [
+      {
+        startX: 78,
+        endX: -30,
+        y: 12,
+        rotateStart: -7,
+        rotateEnd: -2,
+        scale: 1.02,
+        speed: 1.08
+      },
+      {
+        startX: 108,
+        endX: -10,
+        y: -5,
+        rotateStart: 5,
+        rotateEnd: 1.5,
+        scale: 1,
+        speed: 1.18
+      },
+      {
+        startX: 138,
+        endX: 12,
+        y: 8,
+        rotateStart: -4,
+        rotateEnd: -1,
+        scale: 1.04,
+        speed: 1.28
+      },
+      {
+        startX: 170,
+        endX: 36,
+        y: -1,
+        rotateStart: 6,
+        rotateEnd: 2,
+        scale: 0.98,
+        speed: 1.36
+      }
+    ];
+
+    function update() {
+      const rect = section.getBoundingClientRect();
+      const total = Math.max(section.offsetHeight - window.innerHeight, 1);
+      const rawProgress = clamp(-rect.top / total, 0, 1);
+
+      cards.forEach((card, index) => {
+        const settings = cardSettings[index] || cardSettings[cardSettings.length - 1];
+
+        const delayedProgress = clamp(
+          rawProgress * settings.speed - index * 0.055,
+          0,
+          1
+        );
+
+        const eased = easeOutCubic(delayedProgress);
+        const x = lerp(settings.startX, settings.endX, eased);
+        const rotate = lerp(settings.rotateStart, settings.rotateEnd, eased);
+        const float = Math.sin(rawProgress * Math.PI * 2 + index) * 0.8;
+
+        card.style.transform = `
+          translate3d(${x}vw, calc(${settings.y}vh + ${float}rem), 0)
+          rotate(${rotate}deg)
+          scale(${settings.scale})
+        `;
+
+        card.style.zIndex = String(10 + index);
+      });
+
+      ticking = false;
     }
-  ];
 
-  function lerp(start, end, progress) {
-    return start + (end - start) * progress;
+    function requestUpdate() {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(update);
+    }
+
+    window.addEventListener("scroll", requestUpdate, { passive: true });
+    window.addEventListener("resize", requestUpdate);
+
+    update();
   }
 
-  function clamp(value, min, max) {
-    return Math.min(Math.max(value, min), max);
-  }
+  function renderServices(items = []) {
+    if (!servicesEl) return;
 
-  function easeOutCubic(value) {
-    return 1 - Math.pow(1 - value, 3);
-  }
+    const fragment = document.createDocumentFragment();
 
-  function update() {
-    const rect = section.getBoundingClientRect();
-    const total = Math.max(section.offsetHeight - window.innerHeight, 1);
-    const rawProgress = clamp(-rect.top / total, 0, 1);
-
-    cards.forEach((card, index) => {
-      const settings = cardSettings[index] || cardSettings[cardSettings.length - 1];
-
-      const delayedProgress = clamp(
-        rawProgress * settings.speed - index * 0.055,
-        0,
-        1
-      );
-
-      const eased = easeOutCubic(delayedProgress);
-
-      const x = lerp(settings.startX, settings.endX, eased);
-      const rotate = lerp(settings.rotateStart, settings.rotateEnd, eased);
-
-      const float = Math.sin((rawProgress * Math.PI * 2) + index) * 0.8;
-
-      card.style.transform = `
-        translate3d(${x}vw, calc(${settings.y}vh + ${float}rem), 0)
-        rotate(${rotate}deg)
-        scale(${settings.scale})
-      `;
-
-      card.style.zIndex = String(10 + index);
+    items.forEach((item) => {
+      const li = document.createElement("li");
+      li.textContent = item;
+      fragment.appendChild(li);
     });
 
-    ticking = false;
+    servicesEl.replaceChildren(fragment);
   }
-
-  function requestUpdate() {
-    if (ticking) return;
-    ticking = true;
-    requestAnimationFrame(update);
-  }
-
-  window.addEventListener("scroll", requestUpdate, { passive: true });
-  window.addEventListener("resize", requestUpdate);
-
-  update();
-}
 
   function clearPreviewStates() {
     projectButtons.forEach((button) => {
