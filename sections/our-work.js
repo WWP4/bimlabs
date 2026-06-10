@@ -214,53 +214,109 @@
     root.parentNode.insertBefore(section, root);
   }
 
-  function setupWorkTrustScroll() {
-    const section = document.querySelector(".work-trust");
-    const track = document.querySelector("[data-work-trust-track]");
+function setupWorkTrustScroll() {
+  const section = document.querySelector(".work-trust");
+  const cards = Array.from(document.querySelectorAll("[data-work-trust-card]"));
 
-    if (!section || !track || prefersReducedMotion) return;
+  if (!section || !cards.length || prefersReducedMotion) return;
 
-    let ticking = false;
+  let ticking = false;
 
-    function update() {
-      const rect = section.getBoundingClientRect();
-      const maxScroll = Math.max(section.offsetHeight - window.innerHeight, 1);
-      const progress = Math.min(Math.max(-rect.top / maxScroll, 0), 1);
-      const travel = Math.max(
-        track.scrollWidth - window.innerWidth + window.innerWidth * 0.3,
-        0
+  const cardSettings = [
+    {
+      startX: 76,
+      endX: -28,
+      y: 12,
+      rotateStart: -7,
+      rotateEnd: -2,
+      scale: 1.02,
+      speed: 1.08
+    },
+    {
+      startX: 104,
+      endX: -12,
+      y: -6,
+      rotateStart: 5,
+      rotateEnd: 1.5,
+      scale: 1,
+      speed: 1.18
+    },
+    {
+      startX: 134,
+      endX: 10,
+      y: 7,
+      rotateStart: -4,
+      rotateEnd: -1,
+      scale: 1.04,
+      speed: 1.28
+    },
+    {
+      startX: 166,
+      endX: 34,
+      y: -2,
+      rotateStart: 6,
+      rotateEnd: 2,
+      scale: 0.98,
+      speed: 1.36
+    }
+  ];
+
+  function lerp(start, end, progress) {
+    return start + (end - start) * progress;
+  }
+
+  function clamp(value, min, max) {
+    return Math.min(Math.max(value, min), max);
+  }
+
+  function easeOutCubic(value) {
+    return 1 - Math.pow(1 - value, 3);
+  }
+
+  function update() {
+    const rect = section.getBoundingClientRect();
+    const total = Math.max(section.offsetHeight - window.innerHeight, 1);
+    const rawProgress = clamp(-rect.top / total, 0, 1);
+
+    cards.forEach((card, index) => {
+      const settings = cardSettings[index] || cardSettings[cardSettings.length - 1];
+
+      const delayedProgress = clamp(
+        rawProgress * settings.speed - index * 0.055,
+        0,
+        1
       );
 
-      track.style.transform = `translate3d(${-progress * travel}px, 0, 0)`;
+      const eased = easeOutCubic(delayedProgress);
 
-      ticking = false;
-    }
+      const x = lerp(settings.startX, settings.endX, eased);
+      const rotate = lerp(settings.rotateStart, settings.rotateEnd, eased);
 
-    function requestUpdate() {
-      if (ticking) return;
-      ticking = true;
-      requestAnimationFrame(update);
-    }
+      const float = Math.sin((rawProgress * Math.PI * 2) + index) * 0.8;
 
-    window.addEventListener("scroll", requestUpdate, { passive: true });
-    window.addEventListener("resize", requestUpdate);
+      card.style.transform = `
+        translate3d(${x}vw, calc(${settings.y}vh + ${float}rem), 0)
+        rotate(${rotate}deg)
+        scale(${settings.scale})
+      `;
 
-    update();
-  }
-
-  function renderServices(items = []) {
-    if (!servicesEl) return;
-
-    const fragment = document.createDocumentFragment();
-
-    items.forEach((item) => {
-      const li = document.createElement("li");
-      li.textContent = item;
-      fragment.appendChild(li);
+      card.style.zIndex = String(10 + index);
     });
 
-    servicesEl.replaceChildren(fragment);
+    ticking = false;
   }
+
+  function requestUpdate() {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(update);
+  }
+
+  window.addEventListener("scroll", requestUpdate, { passive: true });
+  window.addEventListener("resize", requestUpdate);
+
+  update();
+}
 
   function clearPreviewStates() {
     projectButtons.forEach((button) => {
