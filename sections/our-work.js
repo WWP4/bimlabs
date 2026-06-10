@@ -238,136 +238,216 @@
     root.parentNode.insertBefore(section, root);
   }
 
-  function setupWorkTrustScroll() {
-    const section = document.querySelector(".work-trust");
-    const sticky = document.querySelector(".work-trust__sticky");
-    const cards = Array.from(document.querySelectorAll("[data-work-trust-card]"));
-    const bgText = document.querySelector(".work-trust__bg-text");
-    const copy = document.querySelector(".work-trust__copy");
+ function setupWorkTrustScroll() {
+  const section = document.querySelector(".work-trust");
+  const sticky = document.querySelector(".work-trust__sticky");
+  const cards = Array.from(document.querySelectorAll("[data-work-trust-card]"));
+  const bgText = document.querySelector(".work-trust__bg-text");
+  const copy = document.querySelector(".work-trust__copy");
 
-    if (!section || !sticky || !cards.length) return;
+  if (!section || !sticky || !cards.length) return;
 
-    if (prefersReducedMotion) {
-      cards.forEach((card, index) => {
-        card.style.transform = "none";
-        card.style.opacity = "1";
-        card.style.zIndex = String(10 + index);
-      });
+  const isMobile = window.matchMedia("(max-width: 900px)").matches;
 
-      return;
+  if (prefersReducedMotion || isMobile) {
+    cards.forEach((card, index) => {
+      card.style.removeProperty("opacity");
+      card.style.removeProperty("z-index");
+      card.style.removeProperty("transform");
+      card.style.removeProperty("visibility");
+    });
+
+    if (bgText) {
+      bgText.style.removeProperty("transform");
+      bgText.style.removeProperty("opacity");
     }
 
-    let ticking = false;
-
-    const cardSettings = [
-      {
-        startX: 82,
-        endX: -30,
-        y: 14,
-        rotateStart: -7,
-        rotateEnd: -2,
-        scale: 1.02,
-        speed: 1.08,
-        delay: 0
-      },
-      {
-        startX: 111,
-        endX: -10,
-        y: -5,
-        rotateStart: 5,
-        rotateEnd: 1.4,
-        scale: 1,
-        speed: 1.18,
-        delay: 0.05
-      },
-      {
-        startX: 140,
-        endX: 12,
-        y: 7,
-        rotateStart: -4,
-        rotateEnd: -1,
-        scale: 1.04,
-        speed: 1.28,
-        delay: 0.1
-      },
-      {
-        startX: 170,
-        endX: 35,
-        y: -1,
-        rotateStart: 6,
-        rotateEnd: 2,
-        scale: 0.98,
-        speed: 1.36,
-        delay: 0.15
-      }
-    ];
-
-    function getProgress() {
-      const rect = section.getBoundingClientRect();
-      const scrollable = Math.max(section.offsetHeight - window.innerHeight, 1);
-      return clamp(-rect.top / scrollable, 0, 1);
+    if (copy) {
+      copy.style.removeProperty("transform");
+      copy.style.removeProperty("opacity");
     }
 
-    function update() {
-      const progress = getProgress();
+    return;
+  }
 
-      cards.forEach((card, index) => {
-        const settings = cardSettings[index] || cardSettings[cardSettings.length - 1];
+  const cardSettings = [
+    {
+      startX: 118,
+      endX: -42,
+      yStart: 14,
+      yEnd: 8,
+      rotateStart: -8,
+      rotateEnd: -2,
+      scaleStart: 1,
+      scaleEnd: 1.03,
+      delay: 0
+    },
+    {
+      startX: 145,
+      endX: -18,
+      yStart: -5,
+      yEnd: -8,
+      rotateStart: 6,
+      rotateEnd: 1.5,
+      scaleStart: 0.98,
+      scaleEnd: 1,
+      delay: 0.08
+    },
+    {
+      startX: 172,
+      endX: 8,
+      yStart: 8,
+      yEnd: 5,
+      rotateStart: -5,
+      rotateEnd: -1,
+      scaleStart: 1.02,
+      scaleEnd: 1.04,
+      delay: 0.16
+    },
+    {
+      startX: 202,
+      endX: 34,
+      yStart: -2,
+      yEnd: -5,
+      rotateStart: 7,
+      rotateEnd: 2,
+      scaleStart: 0.96,
+      scaleEnd: 0.99,
+      delay: 0.24
+    }
+  ];
 
-        const delayed = clamp(
-          progress * settings.speed - settings.delay,
-          0,
-          1
-        );
+  let rafId = null;
+  let isRunning = false;
 
-        const eased = easeOutCubic(delayed);
+  function clamp(value, min, max) {
+    return Math.min(Math.max(value, min), max);
+  }
 
-        const x = lerp(settings.startX, settings.endX, eased);
-        const rotate = lerp(settings.rotateStart, settings.rotateEnd, eased);
-        const float = Math.sin(progress * Math.PI * 2 + index * 0.8) * 0.85;
-        const opacity = clamp(lerp(0.92, 1, eased), 0, 1);
+  function lerp(start, end, progress) {
+    return start + (end - start) * progress;
+  }
 
-        card.style.transform = `
-          translate3d(${x}vw, calc(${settings.y}vh + ${float}rem), 0)
-          rotate(${rotate}deg)
-          scale(${settings.scale})
-        `;
+  function easeOutCubic(value) {
+    return 1 - Math.pow(1 - value, 3);
+  }
 
-        card.style.opacity = String(opacity);
-        card.style.zIndex = String(10 + index);
-      });
+  function easeInOutCubic(value) {
+    return value < 0.5
+      ? 4 * value * value * value
+      : 1 - Math.pow(-2 * value + 2, 3) / 2;
+  }
 
-      if (bgText) {
-        const bgY = lerp(0, -4, progress);
-        const bgOpacity = lerp(0.95, 0.48, progress);
+  function getProgress() {
+    const rect = section.getBoundingClientRect();
+    const viewport = window.innerHeight || document.documentElement.clientHeight;
+    const scrollable = Math.max(section.offsetHeight - viewport, 1);
 
-        bgText.style.transform = `translate3d(0, ${bgY}vh, 0)`;
-        bgText.style.opacity = String(bgOpacity);
-      }
+    return clamp(-rect.top / scrollable, 0, 1);
+  }
 
-      if (copy) {
-        const copyY = lerp(0, -2, progress);
-        const copyOpacity = lerp(1, 0.72, progress);
+  function sectionIsNearViewport() {
+    const rect = section.getBoundingClientRect();
+    const viewport = window.innerHeight || document.documentElement.clientHeight;
 
-        copy.style.transform = `translate3d(0, ${copyY}vh, 0)`;
-        copy.style.opacity = String(copyOpacity);
-      }
+    return rect.top < viewport * 1.35 && rect.bottom > viewport * -0.35;
+  }
 
-      ticking = false;
+  function update() {
+    const progress = getProgress();
+
+    cards.forEach((card, index) => {
+      const settings = cardSettings[index] || cardSettings[cardSettings.length - 1];
+
+      const localProgress = clamp(
+        (progress - settings.delay) / 0.76,
+        0,
+        1
+      );
+
+      const eased = easeInOutCubic(localProgress);
+
+      const x = lerp(settings.startX, settings.endX, eased);
+      const y = lerp(settings.yStart, settings.yEnd, eased);
+      const rotate = lerp(settings.rotateStart, settings.rotateEnd, eased);
+      const scale = lerp(settings.scaleStart, settings.scaleEnd, eased);
+
+      const float = Math.sin(progress * Math.PI * 2 + index * 0.9) * 0.75;
+
+      const fadeIn = clamp(localProgress * 8, 0, 1);
+      const fadeOut = clamp((1 - localProgress) * 8, 0, 1);
+      const opacity = clamp(Math.min(fadeIn, fadeOut) * 0.98 + 0.02, 0, 1);
+
+      card.style.visibility = "visible";
+      card.style.opacity = String(opacity);
+      card.style.zIndex = String(20 + index);
+
+      card.style.transform = `
+        translate3d(${x}vw, calc(${y}vh + ${float}rem), 0)
+        rotate(${rotate}deg)
+        scale(${scale})
+      `;
+    });
+
+    if (bgText) {
+      const bgY = lerp(0, -5.5, easeOutCubic(progress));
+      const bgOpacity = lerp(0.96, 0.42, progress);
+
+      bgText.style.transform = `translate3d(0, ${bgY}vh, 0)`;
+      bgText.style.opacity = String(bgOpacity);
     }
 
-    function requestUpdate() {
-      if (ticking) return;
+    if (copy) {
+      const copyY = lerp(0, -3.5, easeOutCubic(progress));
+      const copyOpacity = lerp(1, 0.62, progress);
 
-      ticking = true;
-      window.requestAnimationFrame(update);
+      copy.style.transform = `translate3d(0, ${copyY}vh, 0)`;
+      copy.style.opacity = String(copyOpacity);
     }
+  }
 
-    window.addEventListener("scroll", requestUpdate, { passive: true });
-    window.addEventListener("resize", requestUpdate);
+  function loop() {
+    if (!isRunning) return;
 
     update();
+
+    if (sectionIsNearViewport()) {
+      rafId = window.requestAnimationFrame(loop);
+    } else {
+      stopLoop();
+    }
   }
+
+  function startLoop() {
+    if (isRunning) return;
+
+    isRunning = true;
+    rafId = window.requestAnimationFrame(loop);
+  }
+
+  function stopLoop() {
+    isRunning = false;
+
+    if (rafId) {
+      window.cancelAnimationFrame(rafId);
+      rafId = null;
+    }
+  }
+
+  function requestUpdate() {
+    update();
+
+    if (sectionIsNearViewport()) {
+      startLoop();
+    }
+  }
+
+  window.addEventListener("scroll", requestUpdate, { passive: true });
+  window.addEventListener("resize", requestUpdate);
+  window.addEventListener("orientationchange", requestUpdate);
+
+  requestUpdate();
+}
 
   /* ==========================================================
      PROJECT DETAIL DRAWER
