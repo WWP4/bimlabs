@@ -412,253 +412,297 @@
     });
   }
 
-  /* ==========================================================
-     ARCHIVE — NOOMO-STYLE PINNED FORMATION
-  ========================================================== */
 
-  function setupArchiveNoomoReveal() {
-    const hasGsap = window.gsap && window.ScrollTrigger;
-    const shell = archive.querySelector(".work-archive__shell");
-    const label = archive.querySelector(".work-archive__label");
-    const kicker = archive.querySelector(".work-archive__kicker");
-    const title = archive.querySelector(".work-archive__title");
-    const intro = archive.querySelector(".work-archive__intro");
-    const rows = Array.from(archive.querySelectorAll(".work-project"));
 
-    if (!shell || !rows.length) return;
 
-    if (!hasGsap || prefersReducedMotion || mobileQuery.matches) {
-      archive.classList.add("is-formed");
-      archive.style.setProperty("--archive-reveal", "1");
-      archive.style.setProperty("--archive-top-line", "1");
-      archive.style.setProperty("--archive-glow", "0");
 
-      rows.forEach((row) => {
-        const summary = row.querySelector(".work-project__summary");
-        if (summary) summary.style.setProperty("--row-line", "1");
-      });
 
-      return;
-    }
 
-    gsap.registerPlugin(ScrollTrigger);
+function setupArchiveNoomoReveal() {
+  const hasGsap = window.gsap && window.ScrollTrigger;
+  const shell = archive.querySelector(".work-archive__shell");
+  const header = archive.querySelector(".work-archive__header");
+  const label = archive.querySelector(".work-archive__label");
+  const kicker = archive.querySelector(".work-archive__kicker");
+  const title = archive.querySelector(".work-archive__title");
+  const intro = archive.querySelector(".work-archive__intro");
+  const rows = Array.from(archive.querySelectorAll(".work-project"));
 
-    ScrollTrigger.getAll().forEach((trigger) => {
-      const id = trigger.vars && trigger.vars.id;
+  if (!shell || !rows.length) return;
 
-      if (
-        id === "workArchiveReveal" ||
-        id === "workArchiveFormation" ||
-        id === "workArchiveNoomo"
-      ) {
-        trigger.kill();
-      }
-    });
+  rows.forEach((row) => {
+    row.style.setProperty("--row-line", "0");
+    row.style.setProperty("--row-fill", "0");
+  });
 
-    archive.classList.remove("is-forming", "is-formed");
-
-    gsap.set(archive, {
-      minHeight: "100vh",
-      "--archive-reveal": 0,
-      "--archive-top-line": 0,
-      "--archive-glow": 0
-    });
-
-    gsap.set(shell, {
-      yPercent: 5,
-      scale: 0.985,
-      transformOrigin: "50% 50%"
-    });
-
-    gsap.set([label, kicker].filter(Boolean), {
-      autoAlpha: 0,
-      y: 28,
-      filter: "blur(8px)"
-    });
-
-    if (title) {
-      gsap.set(title, {
-        autoAlpha: 0,
-        y: 92,
-        scale: 0.965,
-        filter: "blur(22px)",
-        letterSpacing: "-0.13em"
-      });
-    }
-
-    if (intro) {
-      gsap.set(intro, {
-        autoAlpha: 0,
-        y: 46,
-        filter: "blur(14px)"
-      });
-    }
+  if (!hasGsap || prefersReducedMotion || mobileQuery.matches) {
+    archive.classList.add("is-formed");
+    archive.style.setProperty("--archive-reveal", "1");
+    archive.style.setProperty("--archive-top-line", "1");
+    archive.style.setProperty("--archive-glow", "0");
 
     rows.forEach((row) => {
-      const summary = row.querySelector(".work-project__summary");
-      const pieces = row.querySelectorAll(
-        ".work-project__index, .work-project__name, .work-project__meta, .work-project__year, .work-project__arrow"
-      );
+      row.style.setProperty("--row-line", "1");
+      row.style.setProperty("--row-fill", "0");
+    });
 
-      if (summary) {
-        gsap.set(summary, {
-          "--row-line": 0
-        });
+    return;
+  }
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  ScrollTrigger.getAll().forEach((trigger) => {
+    const id = trigger.vars && trigger.vars.id;
+
+    if (
+      id === "workArchiveReveal" ||
+      id === "workArchiveFormation" ||
+      id === "workArchiveNoomo"
+    ) {
+      trigger.kill();
+    }
+  });
+
+  archive.classList.remove("is-forming", "is-formed");
+
+  gsap.set(archive, {
+    minHeight: "100vh",
+    "--archive-reveal": 0,
+    "--archive-top-line": 0,
+    "--archive-glow": 0
+  });
+
+  gsap.set(shell, {
+    yPercent: 7,
+    scale: 0.985,
+    transformOrigin: "50% 50%"
+  });
+
+  gsap.set(header, {
+    y: 70,
+    autoAlpha: 1
+  });
+
+  gsap.set([label, kicker].filter(Boolean), {
+    autoAlpha: 0,
+    y: 24,
+    filter: "blur(8px)"
+  });
+
+  if (title) {
+    gsap.set(title, {
+      autoAlpha: 0,
+      y: 80,
+      scale: 0.965,
+      filter: "blur(20px)",
+      letterSpacing: "-0.13em"
+    });
+  }
+
+  if (intro) {
+    gsap.set(intro, {
+      autoAlpha: 0,
+      y: 38,
+      filter: "blur(12px)"
+    });
+  }
+
+  rows.forEach((row) => {
+    const pieces = row.querySelectorAll(
+      ".work-project__index, .work-project__name, .work-project__meta, .work-project__year, .work-project__arrow"
+    );
+
+    gsap.set(row, {
+      "--row-line": 0,
+      "--row-fill": 0,
+      autoAlpha: 1
+    });
+
+    gsap.set(pieces, {
+      autoAlpha: 0,
+      y: 42,
+      filter: "blur(14px)"
+    });
+  });
+
+  const tl = gsap.timeline({
+    defaults: {
+      ease: "power3.out"
+    },
+    scrollTrigger: {
+      id: "workArchiveNoomo",
+      trigger: archive,
+      start: "top top",
+      end: "+=230%",
+      scrub: 1.25,
+      pin: true,
+      anticipatePin: 1,
+      invalidateOnRefresh: true,
+      onEnter: () => archive.classList.add("is-forming"),
+      onLeave: () => archive.classList.add("is-formed"),
+      onEnterBack: () => archive.classList.add("is-forming"),
+      onLeaveBack: () => {
+        archive.classList.remove("is-formed");
+        archive.classList.remove("is-forming");
       }
+    }
+  });
 
-      gsap.set(row, {
+  /* background wakes up */
+  tl.to(
+    archive,
+    {
+      "--archive-reveal": 0.42,
+      "--archive-glow": 0.35,
+      duration: 0.7,
+      ease: "none"
+    },
+    0
+  );
+
+  /* section settles into place */
+  tl.to(
+    shell,
+    {
+      yPercent: 0,
+      scale: 1,
+      duration: 1.05,
+      ease: "power2.out"
+    },
+    0
+  );
+
+  tl.to(
+    header,
+    {
+      y: 0,
+      duration: 1.1,
+      ease: "power3.out"
+    },
+    0.05
+  );
+
+  /* headline pieces reveal */
+  tl.to(
+    [label, kicker].filter(Boolean),
+    {
+      autoAlpha: 1,
+      y: 0,
+      filter: "blur(0px)",
+      duration: 0.65,
+      stagger: 0.06,
+      ease: "power3.out"
+    },
+    0.28
+  );
+
+  if (title) {
+    tl.to(
+      title,
+      {
         autoAlpha: 1,
-        clearProps: "filter,transform"
-      });
-
-      gsap.set(pieces, {
-        autoAlpha: 0,
-        y: 34,
-        filter: "blur(12px)"
-      });
-    });
-
-    const tl = gsap.timeline({
-      defaults: {
-        ease: "power3.out"
-      },
-      scrollTrigger: {
-        id: "workArchiveNoomo",
-        trigger: archive,
-        start: "top top",
-        end: "+=220%",
-        scrub: 1.35,
-        pin: true,
-        anticipatePin: 1,
-        invalidateOnRefresh: true,
-        onEnter: () => archive.classList.add("is-forming"),
-        onLeave: () => archive.classList.add("is-formed"),
-        onEnterBack: () => archive.classList.add("is-forming"),
-        onLeaveBack: () => archive.classList.remove("is-formed")
-      }
-    });
-
-    tl.to(
-      archive,
-      {
-        "--archive-reveal": 0.35,
-        "--archive-glow": 0.5,
-        duration: 0.65,
-        ease: "none"
-      },
-      0
-    );
-
-    tl.to(
-      shell,
-      {
-        yPercent: 0,
+        y: 0,
         scale: 1,
-        duration: 1,
-        ease: "power2.out"
+        filter: "blur(0px)",
+        letterSpacing: "-0.082em",
+        duration: 1.1,
+        ease: "power4.out"
       },
-      0
+      0.38
     );
+  }
 
+  if (intro) {
     tl.to(
-      archive,
-      {
-        "--archive-top-line": 1,
-        duration: 0.9,
-        ease: "power2.inOut"
-      },
-      0.18
-    );
-
-    tl.to(
-      [label, kicker].filter(Boolean),
+      intro,
       {
         autoAlpha: 1,
         y: 0,
         filter: "blur(0px)",
-        duration: 0.65,
-        stagger: 0.06,
+        duration: 0.8,
         ease: "power3.out"
       },
-      0.42
+      0.8
     );
-
-    if (title) {
-      tl.to(
-        title,
-        {
-          autoAlpha: 1,
-          y: 0,
-          scale: 1,
-          filter: "blur(0px)",
-          letterSpacing: "-0.082em",
-          duration: 1.05,
-          ease: "power4.out"
-        },
-        0.62
-      );
-    }
-
-    tl.to(
-      archive,
-      {
-        "--archive-reveal": 0.72,
-        duration: 0.9,
-        ease: "none"
-      },
-      0.72
-    );
-
-    if (intro) {
-      tl.to(
-        intro,
-        {
-          autoAlpha: 1,
-          y: 0,
-          filter: "blur(0px)",
-          duration: 0.72,
-          ease: "power3.out"
-        },
-        1.12
-      );
-    }
-
-    rows.forEach((row, index) => {
-      const summary = row.querySelector(".work-project__summary");
-
-      const pieces = row.querySelectorAll(
-        ".work-project__index, .work-project__name, .work-project__meta, .work-project__year, .work-project__arrow"
-      );
-
-      const start = 1.55 + index * 0.12;
-
-      if (summary) {
-        tl.to(
-          summary,
-          {
-            "--row-line": 1,
-            duration: 0.75,
-            ease: "power2.inOut"
-          },
-          start
-        );
-      }
-
-      tl.to(
-        pieces,
-        {
-          autoAlpha: 1,
-          y: 0,
-          filter: "blur(0px)",
-          duration: 0.72,
-          stagger: 0.035,
-          ease: "power4.out"
-        },
-        start + 0.12
-      );
-    });
   }
 
+  /* header line grows left to right */
+  tl.to(
+    archive,
+    {
+      "--archive-top-line": 1,
+      duration: 1.15,
+      ease: "power2.inOut"
+    },
+    0.95
+  );
+
+  tl.to(
+    archive,
+    {
+      "--archive-reveal": 0.82,
+      duration: 1.2,
+      ease: "none"
+    },
+    1.05
+  );
+
+  /* rows reveal like Noomo: line first, text follows */
+  rows.forEach((row, index) => {
+    const pieces = row.querySelectorAll(
+      ".work-project__index, .work-project__name, .work-project__meta, .work-project__year, .work-project__arrow"
+    );
+
+    const start = 1.32 + index * 0.18;
+
+    tl.to(
+      row,
+      {
+        "--row-line": 1,
+        duration: 0.95,
+        ease: "power2.inOut"
+      },
+      start
+    );
+
+    tl.to(
+      pieces,
+      {
+        autoAlpha: 1,
+        y: 0,
+        filter: "blur(0px)",
+        duration: 0.72,
+        stagger: 0.04,
+        ease: "power4.out"
+      },
+      start + 0.16
+    );
+  });
+
+  tl.to(
+    archive,
+    {
+      "--archive-glow": 0,
+      duration: 0.8,
+      ease: "none"
+    },
+    2.35
+  );
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+   
   /* ==========================================================
      IMAGE FALLBACKS
   ========================================================== */
