@@ -385,38 +385,155 @@
      ARCHIVE — HOVER PREVIEW POLISH
   ========================================================== */
 
-  function setupArchiveHover() {
-    const rows = Array.from(archive.querySelectorAll(".work-project"));
 
-    rows.forEach((row) => {
-      const summary = row.querySelector(".work-project__summary");
-      if (!summary) return;
 
-      summary.addEventListener("mouseenter", () => {
-        if (mobileQuery.matches) return;
-        row.classList.add("is-previewing");
-      });
+function setupArchiveHover() {
+  const rows = Array.from(archive.querySelectorAll(".work-project"));
 
-      summary.addEventListener("mouseleave", () => {
-        row.classList.remove("is-previewing");
-      });
+  if (!rows.length) return;
 
-      summary.addEventListener("focus", () => {
-        if (mobileQuery.matches) return;
-        row.classList.add("is-previewing");
-      });
+  let activePreview = null;
+  let activeRow = null;
+  let mouseX = window.innerWidth * 0.68;
+  let mouseY = window.innerHeight * 0.42;
+  let currentX = mouseX;
+  let currentY = mouseY;
+  let raf = null;
 
-      summary.addEventListener("blur", () => {
-        row.classList.remove("is-previewing");
-      });
-    });
+  function movePreview() {
+    currentX = lerp(currentX, mouseX, 0.16);
+    currentY = lerp(currentY, mouseY, 0.16);
+
+    if (activePreview) {
+      activePreview.style.transform = `
+        translate3d(${currentX}px, ${currentY}px, 0)
+        translate3d(1.2rem, -46%, 0)
+        rotate(-1.25deg)
+        scale(1)
+      `;
+    }
+
+    if (
+      activePreview &&
+      (Math.abs(currentX - mouseX) > 0.1 || Math.abs(currentY - mouseY) > 0.1)
+    ) {
+      raf = window.requestAnimationFrame(movePreview);
+    } else {
+      raf = null;
+    }
   }
 
+  function requestMove() {
+    if (!raf) {
+      raf = window.requestAnimationFrame(movePreview);
+    }
+  }
+
+  function showPreview(row, event) {
+    if (mobileQuery.matches) return;
+
+    const preview = row.querySelector(".work-project__preview");
+    if (!preview) return;
+
+    if (activeRow && activeRow !== row) {
+      activeRow.classList.remove("is-previewing");
+    }
+
+    if (activePreview && activePreview !== preview) {
+      activePreview.classList.remove("is-visible");
+      activePreview.style.opacity = "0";
+    }
+
+    activeRow = row;
+    activePreview = preview;
+
+    mouseX = event.clientX;
+    mouseY = event.clientY;
+    currentX = event.clientX;
+    currentY = event.clientY;
+
+    row.classList.add("is-previewing");
+    preview.classList.add("is-visible");
+
+    preview.style.opacity = "1";
+    preview.style.visibility = "visible";
+    preview.style.transform = `
+      translate3d(${currentX}px, ${currentY}px, 0)
+      translate3d(1.2rem, -46%, 0)
+      rotate(-1.25deg)
+      scale(1)
+    `;
+
+    requestMove();
+  }
+
+  function hidePreview(row) {
+    const preview = row.querySelector(".work-project__preview");
+
+    row.classList.remove("is-previewing");
+
+    if (preview) {
+      preview.classList.remove("is-visible");
+      preview.style.opacity = "0";
+      preview.style.visibility = "hidden";
+      preview.style.transform = `
+        translate3d(${currentX}px, ${currentY}px, 0)
+        translate3d(1.2rem, -42%, 0)
+        rotate(-2deg)
+        scale(0.94)
+      `;
+    }
+
+    if (activeRow === row) activeRow = null;
+    if (activePreview === preview) activePreview = null;
+  }
+
+  rows.forEach((row) => {
+    const summary = row.querySelector(".work-project__summary");
+    const preview = row.querySelector(".work-project__preview");
+
+    if (!summary || !preview) return;
+
+    preview.style.opacity = "0";
+    preview.style.visibility = "hidden";
+
+    summary.addEventListener("mouseenter", (event) => {
+      showPreview(row, event);
+    });
+
+    summary.addEventListener("mousemove", (event) => {
+      if (mobileQuery.matches) return;
+
+      mouseX = event.clientX;
+      mouseY = event.clientY;
+
+      requestMove();
+    });
+
+    summary.addEventListener("mouseleave", () => {
+      hidePreview(row);
+    });
+
+    summary.addEventListener("focus", (event) => {
+      const rect = summary.getBoundingClientRect();
+
+      showPreview(row, {
+        clientX: rect.right - 160,
+        clientY: rect.top + rect.height / 2
+      });
+    });
+
+    summary.addEventListener("blur", () => {
+      hidePreview(row);
+    });
+  });
+}
 
 
 
 
 
+   
 
 function setupArchiveNoomoReveal() {
   const hasGsap = window.gsap && window.ScrollTrigger;
