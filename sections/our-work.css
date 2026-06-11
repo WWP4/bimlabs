@@ -1865,3 +1865,66 @@
     display: none;
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* ==========================================================
+   SMALLER / MORE EDITORIAL ARCHIVE ROWS
+   Paste after the previous archive line CSS
+========================================================== */
+
+.work-project__summary {
+  min-height: clamp(3.9rem, 5.4vw, 5.85rem);
+  grid-template-columns:
+    minmax(2.8rem, 0.24fr)
+    minmax(0, 1.55fr)
+    minmax(7rem, 0.7fr)
+    minmax(3.5rem, 0.25fr)
+    2rem;
+  gap: clamp(0.8rem, 1.55vw, 1.55rem);
+}
+
+.work-project__name {
+  font-size: clamp(1.08rem, 1.75vw, 2.25rem);
+  line-height: 0.98;
+  letter-spacing: -0.048em;
+  font-weight: 400;
+}
+
+.work-project__index {
+  font-size: clamp(0.64rem, 0.66vw, 0.78rem);
+  opacity: 0.48;
+}
+
+.work-project__meta,
+.work-project__year {
+  font-size: clamp(0.68rem, 0.72vw, 0.82rem);
+  opacity: 0.55;
+}
+
+.work-project__arrow {
+  font-size: 0.95rem;
+  opacity: 0.58;
+}
+
+.work-project__details {
+  padding-bottom: clamp(1.5rem, 3vw, 3rem);
+}
