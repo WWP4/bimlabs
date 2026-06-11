@@ -1045,7 +1045,6 @@ function init() {
   setupTrustCards();
   setupArchiveDetails();
   setupArchiveHover();
-  setupArchiveTextGlitch();
   setupArchiveNoomoReveal();
   setupImageFallbacks();
 
