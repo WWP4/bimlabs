@@ -733,19 +733,20 @@ function setupArchiveNoomoReveal() {
      INIT
   ========================================================== */
 
-  function init() {
-    cleanOldStates();
-    injectTrustBridge();
-    setupTrustCards();
-    setupArchiveDetails();
-    setupArchiveHover();
-    setupArchiveNoomoReveal();
-    setupImageFallbacks();
+ function init() {
+  cleanOldStates();
+  injectTrustBridge();
+  closeAllArchiveProjects();
+  setupTrustCards();
+  setupArchiveDetails();
+  setupArchiveHover();
+  setupArchiveNoomoReveal();
+  setupImageFallbacks();
 
-    if (window.ScrollTrigger) {
-      window.ScrollTrigger.refresh();
-    }
+  if (window.ScrollTrigger) {
+    window.ScrollTrigger.refresh();
   }
+}
 
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", init, { once: true });
