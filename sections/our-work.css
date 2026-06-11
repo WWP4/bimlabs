@@ -1648,3 +1648,220 @@
     filter: none !important;
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* ==========================================================
+   BIM LABS — NOOMO-STYLE GROWING ARCHIVE LINES
+   Paste at bottom of your work archive CSS
+========================================================== */
+
+.work-archive {
+  --archive-line: rgba(255, 255, 255, 0.28);
+  --archive-line-strong: rgba(255, 255, 255, 0.62);
+  --archive-line-soft: rgba(255, 255, 255, 0.12);
+  --archive-reveal: 0;
+  --archive-top-line: 0;
+  --archive-glow: 0;
+  position: relative;
+  overflow: clip;
+  background: #050505;
+  color: #f4f4f4;
+}
+
+.work-archive__shell {
+  position: relative;
+  z-index: 2;
+}
+
+/* main top divider that grows */
+.work-archive__header {
+  position: relative;
+  border: 0 !important;
+}
+
+.work-archive__header::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -2.2rem;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    var(--archive-line-strong),
+    var(--archive-line),
+    var(--archive-line-soft)
+  );
+  transform: scaleX(var(--archive-top-line));
+  transform-origin: left center;
+  will-change: transform;
+}
+
+/* remove old borders that make the lines look static */
+.work-project,
+.work-project__summary,
+.work-project__details,
+.work-project__body {
+  border: 0 !important;
+}
+
+/* each archive item becomes its own drawing line */
+.work-project {
+  position: relative;
+  overflow: hidden;
+  --row-line: 0;
+  --row-fill: 0;
+}
+
+.work-project::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.78),
+    rgba(255, 255, 255, 0.32),
+    rgba(255, 255, 255, 0.12)
+  );
+  transform: scaleX(var(--row-line));
+  transform-origin: left center;
+  will-change: transform;
+  pointer-events: none;
+}
+
+.work-project:last-child::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.56),
+    rgba(255, 255, 255, 0.22),
+    rgba(255, 255, 255, 0.08)
+  );
+  transform: scaleX(var(--row-line));
+  transform-origin: left center;
+  will-change: transform;
+  pointer-events: none;
+}
+
+/* soft hover wash like premium editorial rows */
+.work-project__summary {
+  position: relative;
+  z-index: 2;
+  min-height: clamp(4.8rem, 7vw, 7.4rem);
+  display: grid;
+  grid-template-columns: minmax(3.2rem, 0.34fr) minmax(0, 1.6fr) minmax(8rem, 0.82fr) minmax(4rem, 0.34fr) 2.5rem;
+  align-items: center;
+  gap: clamp(1rem, 2vw, 2rem);
+  width: 100%;
+  cursor: pointer;
+  color: inherit;
+  background:
+    linear-gradient(
+      90deg,
+      rgba(255, 255, 255, calc(var(--row-fill) * 0.055)),
+      rgba(255, 255, 255, 0)
+    );
+  transition:
+    background 500ms ease,
+    color 500ms ease;
+}
+
+.work-project:hover {
+  --row-fill: 1;
+}
+
+.work-project__index,
+.work-project__name,
+.work-project__meta,
+.work-project__year,
+.work-project__arrow {
+  will-change: transform, opacity, filter;
+}
+
+.work-project__index {
+  opacity: 0.54;
+  font-size: clamp(0.72rem, 0.8vw, 0.9rem);
+  letter-spacing: 0.08em;
+}
+
+.work-project__name {
+  font-size: clamp(1.4rem, 2.4vw, 3.1rem);
+  line-height: 0.95;
+  letter-spacing: -0.055em;
+}
+
+.work-project__meta,
+.work-project__year {
+  opacity: 0.62;
+  font-size: clamp(0.78rem, 0.82vw, 0.92rem);
+  letter-spacing: 0.01em;
+}
+
+.work-project__arrow {
+  justify-self: end;
+  opacity: 0.66;
+  transform-origin: center;
+}
+
+/* smoother open detail */
+.work-project[open] {
+  --row-fill: 1;
+}
+
+.work-project__details {
+  position: relative;
+  z-index: 2;
+  padding: 0 0 clamp(2rem, 4vw, 4rem);
+}
+
+.work-project__details::before {
+  content: "";
+  display: block;
+  height: 1px;
+  margin-bottom: clamp(1.4rem, 2.2vw, 2.4rem);
+  background: rgba(255, 255, 255, 0.12);
+  transform: scaleX(var(--row-line));
+  transform-origin: left center;
+}
+
+/* mobile fallback */
+@media (max-width: 900px) {
+  .work-archive__header::after,
+  .work-project::before,
+  .work-project:last-child::after,
+  .work-project__details::before {
+    transform: scaleX(1);
+  }
+
+  .work-project__summary {
+    grid-template-columns: 3rem 1fr 2rem;
+    min-height: 5.25rem;
+  }
+
+  .work-project__meta,
+  .work-project__year {
+    display: none;
+  }
+}
