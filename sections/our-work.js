@@ -729,11 +729,37 @@ function setupArchiveNoomoReveal() {
     });
   }
 
+
+
+
+
+function closeAllArchiveProjects() {
+  const details = Array.from(archive.querySelectorAll(".work-project"));
+
+  details.forEach((item) => {
+    if (item.tagName.toLowerCase() !== "details") return;
+
+    item.removeAttribute("open");
+    item.open = false;
+    item.classList.remove("is-previewing");
+
+    const summary = item.querySelector(".work-project__summary");
+
+    if (summary) {
+      summary.setAttribute("aria-expanded", "false");
+      summary.blur();
+    }
+  });
+}
+
+
+   
+
   /* ==========================================================
      INIT
   ========================================================== */
 
- function init() {
+function init() {
   cleanOldStates();
   injectTrustBridge();
   closeAllArchiveProjects();
@@ -747,7 +773,6 @@ function setupArchiveNoomoReveal() {
     window.ScrollTrigger.refresh();
   }
 }
-
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", init, { once: true });
   } else {
