@@ -509,197 +509,141 @@
       defaults: {
         ease: "power3.out"
       },
-      scrollTrigger: {
-        id: "workArchiveNoomo",
-        trigger: archive,
-        start: "top top",
-        end: "+=340%",
-        scrub: 2.1,
-        pin: true,
-        anticipatePin: 1,
-        invalidateOnRefresh: true,
-        onEnter: () => archive.classList.add("is-forming"),
-        onLeave: () => archive.classList.add("is-formed"),
-        onEnterBack: () => archive.classList.add("is-forming"),
-        onLeaveBack: () => archive.classList.remove("is-formed")
-      }
+scrollTrigger: {
+  id: "workArchiveNoomo",
+  trigger: archive,
+  start: "top top",
+  end: "+=220%",
+  scrub: 1.35,
+  pin: true,
+  anticipatePin: 1,
+  invalidateOnRefresh: true,
+  onEnter: () => archive.classList.add("is-forming"),
+  onLeave: () => archive.classList.add("is-formed"),
+  onEnterBack: () => archive.classList.add("is-forming"),
+  onLeaveBack: () => archive.classList.remove("is-formed")
+}
     });
 
     tl.to(
-      archive,
-      {
-        "--archive-reveal": 0.25,
-        "--archive-glow": 0.55,
-        duration: 0.8
-      },
-      0
-    );
+  archive,
+  {
+    "--archive-reveal": 0.35,
+    "--archive-glow": 0.5,
+    duration: 0.65,
+    ease: "none"
+  },
+  0
+);
 
-    tl.to(
-      shell,
-      {
-        yPercent: 0,
-        scale: 1,
-        duration: 1.4,
-        ease: "power2.out"
-      },
-      0
-    );
+tl.to(
+  shell,
+  {
+    yPercent: 0,
+    scale: 1,
+    duration: 1,
+    ease: "power2.out"
+  },
+  0
+);
 
+tl.to(
+  archive,
+  {
+    "--archive-top-line": 1,
+    duration: 0.9,
+    ease: "power2.inOut"
+  },
+  0.18
+);
+
+tl.to(
+  [label, kicker].filter(Boolean),
+  {
+    autoAlpha: 1,
+    y: 0,
+    filter: "blur(0px)",
+    duration: 0.65,
+    stagger: 0.06,
+    ease: "power3.out"
+  },
+  0.42
+);
+
+if (title) {
+  tl.to(
+    title,
+    {
+      autoAlpha: 1,
+      y: 0,
+      scale: 1,
+      filter: "blur(0px)",
+      letterSpacing: "-0.082em",
+      duration: 1.05,
+      ease: "power4.out"
+    },
+    0.62
+  );
+}
+
+tl.to(
+  archive,
+  {
+    "--archive-reveal": 0.72,
+    duration: 0.9,
+    ease: "none"
+  },
+  0.72
+);
+
+if (intro) {
+  tl.to(
+    intro,
+    {
+      autoAlpha: 1,
+      y: 0,
+      filter: "blur(0px)",
+      duration: 0.72,
+      ease: "power3.out"
+    },
+    1.12
+  );
+}
+
+ rows.forEach((row, index) => {
+  const summary = row.querySelector(".work-project__summary");
+
+  const pieces = row.querySelectorAll(
+    ".work-project__index, .work-project__name, .work-project__meta, .work-project__year, .work-project__arrow"
+  );
+
+  const start = 1.55 + index * 0.12;
+
+  if (summary) {
     tl.to(
-      archive,
+      summary,
       {
-        "--archive-top-line": 1,
-        duration: 1.2,
+        "--row-line": 1,
+        duration: 0.75,
         ease: "power2.inOut"
       },
-      0.25
+      start
     );
-
-    tl.to(
-      [label, kicker].filter(Boolean),
-      {
-        autoAlpha: 1,
-        y: 0,
-        filter: "blur(0px)",
-        duration: 0.9,
-        stagger: 0.1,
-        ease: "power3.out"
-      },
-      0.55
-    );
-
-    if (title) {
-      tl.to(
-        title,
-        {
-          autoAlpha: 1,
-          y: 0,
-          scale: 1,
-          filter: "blur(0px)",
-          letterSpacing: "-0.082em",
-          duration: 1.55,
-          ease: "power4.out"
-        },
-        0.85
-      );
-    }
-
-    tl.to(
-      archive,
-      {
-        "--archive-reveal": 0.68,
-        duration: 1.2,
-        ease: "none"
-      },
-      0.95
-    );
-
-    if (intro) {
-      tl.to(
-        intro,
-        {
-          autoAlpha: 1,
-          y: 0,
-          filter: "blur(0px)",
-          duration: 1,
-          ease: "power3.out"
-        },
-        1.55
-      );
-    }
-
-    rows.forEach((row, index) => {
-      const summary = row.querySelector(".work-project__summary");
-      const number = row.querySelector(".work-project__index");
-      const name = row.querySelector(".work-project__name");
-      const meta = row.querySelector(".work-project__meta");
-      const year = row.querySelector(".work-project__year");
-      const arrow = row.querySelector(".work-project__arrow");
-
-      const start = 2.15 + index * 0.46;
-
-      if (summary) {
-        tl.to(
-          summary,
-          {
-            "--row-line": 1,
-            duration: 1.02,
-            ease: "power2.inOut"
-          },
-          start
-        );
-      }
-
-      if (number) {
-        tl.to(
-          number,
-          {
-            autoAlpha: 1,
-            y: 0,
-            filter: "blur(0px)",
-            duration: 0.64
-          },
-          start + 0.16
-        );
-      }
-
-      if (name) {
-        tl.to(
-          name,
-          {
-            autoAlpha: 1,
-            y: 0,
-            filter: "blur(0px)",
-            duration: 0.86,
-            ease: "power4.out"
-          },
-          start + 0.25
-        );
-      }
-
-      tl.to(
-        [meta, year, arrow].filter(Boolean),
-        {
-          autoAlpha: 1,
-          y: 0,
-          filter: "blur(0px)",
-          duration: 0.76,
-          stagger: 0.08
-        },
-        start + 0.43
-      );
-    });
-
-    tl.to(
-      archive,
-      {
-        "--archive-reveal": 1,
-        "--archive-glow": 0,
-        duration: 1.4,
-        ease: "none"
-      },
-      4.25
-    );
-
-    tl.to(
-      shell,
-      {
-        yPercent: -2.5,
-        duration: 1.4,
-        ease: "none"
-      },
-      4.55
-    );
-
-    window.addEventListener("load", () => {
-      ScrollTrigger.refresh();
-    });
-
-    requestAnimationFrame(() => {
-      ScrollTrigger.refresh();
-    });
   }
+
+  tl.to(
+    pieces,
+    {
+      autoAlpha: 1,
+      y: 0,
+      filter: "blur(0px)",
+      duration: 0.72,
+      stagger: 0.035,
+      ease: "power4.out"
+    },
+    start + 0.12
+  );
+});
 
   /* ==========================================================
      IMAGE FALLBACKS
