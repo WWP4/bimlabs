@@ -870,6 +870,142 @@ function closeAllArchiveProjects() {
 }
 
 
+
+
+
+
+
+/* ==========================================================
+   ARCHIVE — SUBTLE TEXT GLITCH / MORPH
+========================================================== */
+
+function setupArchiveTextGlitch() {
+  const rows = Array.from(archive.querySelectorAll(".work-project"));
+  const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789/.-_";
+
+  if (!rows.length || prefersReducedMotion) return;
+
+  function randomChar() {
+    return chars[Math.floor(Math.random() * chars.length)];
+  }
+
+  function resetText(element) {
+    if (!element) return;
+
+    if (element._glitchFrame) {
+      cancelAnimationFrame(element._glitchFrame);
+      element._glitchFrame = null;
+    }
+
+    const original = element.dataset.originalText || element.textContent.trim();
+
+    element.textContent = original;
+    element.dataset.glitchText = original;
+    element.classList.remove("is-glitching");
+  }
+
+  function scrambleText(element, options = {}) {
+    const original = element.dataset.originalText || element.textContent.trim();
+
+    element.dataset.originalText = original;
+    element.dataset.glitchText = original;
+    element.setAttribute("aria-label", original);
+
+    const duration = options.duration || 460;
+    const intensity = options.intensity || 0.32;
+    const start = performance.now();
+
+    if (element._glitchFrame) {
+      cancelAnimationFrame(element._glitchFrame);
+    }
+
+    element.classList.add("is-glitching");
+
+    function frame(now) {
+      const elapsed = now - start;
+      const progress = clamp(elapsed / duration, 0, 1);
+      const settle = 1 - progress;
+
+      const next = original
+        .split("")
+        .map((letter, index) => {
+          if (letter === " ") return " ";
+
+          const letterDelay = index / Math.max(original.length - 1, 1);
+          const threshold = progress - letterDelay * 0.14;
+
+          if (threshold > 0.72) return letter;
+
+          const shouldGlitch =
+            Math.random() < intensity * settle ||
+            Math.sin((progress * 18 + index) * Math.PI) > 0.84;
+
+          return shouldGlitch ? randomChar() : letter;
+        })
+        .join("");
+
+      element.textContent = next;
+      element.dataset.glitchText = next;
+
+      if (progress < 1) {
+        element._glitchFrame = requestAnimationFrame(frame);
+      } else {
+        element.textContent = original;
+        element.dataset.glitchText = original;
+        element.classList.remove("is-glitching");
+        element._glitchFrame = null;
+      }
+    }
+
+    element._glitchFrame = requestAnimationFrame(frame);
+  }
+
+  rows.forEach((row) => {
+    const summary = row.querySelector(".work-project__summary");
+    const name = row.querySelector(".work-project__name");
+
+    if (!summary || !name) return;
+
+    const original = name.textContent.trim();
+
+    name.dataset.originalText = original;
+    name.dataset.glitchText = original;
+    name.setAttribute("aria-label", original);
+
+    summary.addEventListener("mouseenter", () => {
+      if (mobileQuery.matches) return;
+
+      scrambleText(name, {
+        duration: 460,
+        intensity: 0.3
+      });
+    });
+
+    summary.addEventListener("focus", () => {
+      if (mobileQuery.matches) return;
+
+      scrambleText(name, {
+        duration: 460,
+        intensity: 0.3
+      });
+    });
+
+    summary.addEventListener("mouseleave", () => {
+      resetText(name);
+    });
+
+    summary.addEventListener("blur", () => {
+      resetText(name);
+    });
+  });
+}
+
+
+
+
+   
+
+
    
 
   /* ==========================================================
@@ -883,6 +1019,7 @@ function init() {
   setupTrustCards();
   setupArchiveDetails();
   setupArchiveHover();
+  setupArchiveTextGlitch();
   setupArchiveNoomoReveal();
   setupImageFallbacks();
 
