@@ -2642,3 +2642,263 @@
     filter: none !important;
   }
 }
+
+
+
+
+/* ==========================================================
+   BIM LABS — WORK ARCHIVE FINAL OVERRIDE
+   Paste at very bottom of sections/our-work.css
+========================================================== */
+
+.work-archive.archive-final-ready {
+  --archive-progress: 0;
+  --archive-top-line: 0;
+  --archive-scan: 0;
+
+  position: relative;
+  min-height: 100vh;
+  margin-top: clamp(7rem, 15vh, 13rem);
+  overflow: hidden;
+  background: #000;
+  isolation: isolate;
+}
+
+/* Short black breath before the archive forms */
+.work-archive.archive-final-ready::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: clamp(10rem, 28vh, 22rem);
+  z-index: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(
+      to bottom,
+      #000 0%,
+      #000 42%,
+      rgba(0, 0, 0, 0.86) 70%,
+      rgba(0, 0, 0, 0) 100%
+    );
+}
+
+.work-archive.archive-final-ready .work-archive__bg {
+  opacity: calc(0.42 + (var(--archive-progress) * 0.42));
+  transform:
+    translate3d(0, calc((1 - var(--archive-progress)) * 3.5rem), 0)
+    scale(calc(1.025 - (var(--archive-progress) * 0.025)));
+  will-change: transform, opacity;
+}
+
+.work-archive.archive-final-ready .work-archive__shell {
+  position: relative;
+  z-index: 2;
+  min-height: 100vh;
+  padding-top: clamp(5.6rem, 8.5vh, 7.8rem);
+  will-change: transform;
+}
+
+/* Remove static border feeling so animated rules become the reveal */
+.work-archive.archive-final-ready .work-archive__list,
+.work-archive.archive-final-ready .work-project,
+.work-archive.archive-final-ready .work-project__summary {
+  border-color: transparent !important;
+}
+
+/* Top architectural rule */
+.work-archive.archive-final-ready .work-archive__shell::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: clamp(2rem, 4.3vh, 3.8rem);
+  height: 1px;
+  z-index: 4;
+  pointer-events: none;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(246, 246, 240, 0.08) 14%,
+    rgba(246, 246, 240, 0.46) 50%,
+    rgba(246, 246, 240, 0.08) 86%,
+    transparent 100%
+  );
+  opacity: 0.86;
+  transform: scaleX(var(--archive-top-line));
+  transform-origin: center;
+}
+
+/* Soft scan light */
+.work-archive.archive-final-ready .work-archive__shell::after {
+  content: "";
+  position: absolute;
+  top: -14%;
+  bottom: -14%;
+  left: -42%;
+  width: 32%;
+  z-index: -1;
+  pointer-events: none;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.05),
+    transparent
+  );
+  opacity: var(--archive-scan);
+  filter: blur(18px);
+  transform:
+    translate3d(calc(var(--archive-progress) * 520%), 0, 0)
+    skewX(-16deg);
+}
+
+/* Better header spacing */
+.work-archive.archive-final-ready .work-archive__header {
+  margin-top: clamp(2.6rem, 5vh, 4.5rem);
+  margin-bottom: clamp(4.2rem, 7.8vh, 6.8rem);
+  will-change: transform, opacity, filter;
+}
+
+/* Make sure GSAP blur/transforms stay clean */
+.work-archive.archive-final-ready .work-archive__label,
+.work-archive.archive-final-ready .work-archive__kicker,
+.work-archive.archive-final-ready .work-archive__title,
+.work-archive.archive-final-ready .work-archive__intro,
+.work-archive.archive-final-ready .work-project__index,
+.work-archive.archive-final-ready .work-project__name,
+.work-archive.archive-final-ready .work-project__meta,
+.work-archive.archive-final-ready .work-project__year,
+.work-archive.archive-final-ready .work-project__arrow {
+  will-change: transform, opacity, filter;
+}
+
+/* Row line architecture */
+.work-archive.archive-final-ready .work-project__summary {
+  position: relative;
+  isolation: isolate;
+}
+
+.work-archive.archive-final-ready .work-project__summary::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -1px;
+  height: 1px;
+  z-index: 2;
+  pointer-events: none;
+  background: linear-gradient(
+    90deg,
+    rgba(246, 246, 240, 0.42),
+    rgba(246, 246, 240, 0.16) 58%,
+    rgba(246, 246, 240, 0.035)
+  );
+  opacity: 0.92;
+  transform: scaleX(var(--row-line, 0));
+  transform-origin: left center;
+}
+
+.work-archive.archive-final-ready .work-project:last-child .work-project__summary::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 1px;
+  z-index: 2;
+  pointer-events: none;
+  background: linear-gradient(
+    90deg,
+    rgba(246, 246, 240, 0.34),
+    rgba(246, 246, 240, 0.13) 58%,
+    rgba(246, 246, 240, 0.035)
+  );
+  opacity: 0.75;
+  transform: scaleX(var(--row-line, 0));
+  transform-origin: left center;
+}
+
+/* More expensive row hover */
+.work-archive.archive-final-ready.is-formed .work-project__summary:hover::before {
+  background: linear-gradient(
+    90deg,
+    rgba(246, 246, 240, 0.68),
+    rgba(246, 246, 240, 0.22) 58%,
+    rgba(246, 246, 240, 0.045)
+  );
+}
+
+.work-archive.archive-final-ready.is-formed .work-project__summary:hover .work-project__name {
+  color: rgba(246, 246, 240, 0.96);
+  transform: translate3d(0.45rem, 0, 0);
+}
+
+/* Preview image should only feel active after the section forms */
+.work-archive.archive-final-ready:not(.is-formed) .work-project__preview {
+  opacity: 0 !important;
+  visibility: hidden !important;
+}
+
+.work-archive.archive-final-ready.is-formed .work-project__preview {
+  transition:
+    opacity 360ms ease,
+    transform 620ms cubic-bezier(.19, 1, .22, 1),
+    filter 620ms ease;
+}
+
+/* Slight premium lift on active/open rows */
+.work-archive.archive-final-ready .work-project[open] .work-project__name,
+.work-archive.archive-final-ready .work-project.is-active .work-project__name {
+  color: rgba(246, 246, 240, 0.92);
+}
+
+/* Mobile: no pin, no over-animation */
+@media (max-width: 900px) {
+  .work-archive.archive-final-ready {
+    min-height: auto;
+    margin-top: 0;
+    padding-top: 5rem;
+    overflow: visible;
+  }
+
+  .work-archive.archive-final-ready .work-archive__shell {
+    min-height: auto;
+    padding-top: 4rem;
+  }
+
+  .work-archive.archive-final-ready .work-archive__summary,
+  .work-archive.archive-final-ready .work-project__summary {
+    --row-line: 1;
+  }
+
+  .work-archive.archive-final-ready .work-archive__shell::before {
+    transform: scaleX(1);
+  }
+}
+
+/* Reduced motion safety */
+@media (prefers-reduced-motion: reduce) {
+  .work-archive.archive-final-ready {
+    --archive-progress: 1 !important;
+    --archive-top-line: 1 !important;
+    --archive-scan: 0 !important;
+  }
+
+  .work-archive.archive-final-ready .work-project__summary {
+    --row-line: 1 !important;
+  }
+
+  .work-archive.archive-final-ready .work-archive__label,
+  .work-archive.archive-final-ready .work-archive__kicker,
+  .work-archive.archive-final-ready .work-archive__title,
+  .work-archive.archive-final-ready .work-archive__intro,
+  .work-archive.archive-final-ready .work-project__index,
+  .work-archive.archive-final-ready .work-project__name,
+  .work-archive.archive-final-ready .work-project__meta,
+  .work-archive.archive-final-ready .work-project__year,
+  .work-archive.archive-final-ready .work-project__arrow {
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: none !important;
+    filter: none !important;
+  }
+}
