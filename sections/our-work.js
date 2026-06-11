@@ -251,7 +251,8 @@
 
     function getProgress() {
       const rect = section.getBoundingClientRect();
-      const viewport = window.innerHeight || document.documentElement.clientHeight;
+      const viewport =
+        window.innerHeight || document.documentElement.clientHeight;
       const travel = Math.max(section.offsetHeight - viewport, 1);
 
       return clamp(-rect.top / travel, 0, 1);
@@ -259,7 +260,8 @@
 
     function render(progress) {
       cards.forEach((card, index) => {
-        const settings = cardSettings[index] || cardSettings[cardSettings.length - 1];
+        const settings =
+          cardSettings[index] || cardSettings[cardSettings.length - 1];
 
         const raw = clamp(
           (progress - settings.delay) / settings.span,
@@ -292,12 +294,20 @@
 
       if (headline) {
         headline.style.opacity = String(lerp(0.92, 0.5, progress));
-        headline.style.transform = `translate3d(0, ${lerp(0, -3.5, progress)}vh, 0)`;
+        headline.style.transform = `translate3d(0, ${lerp(
+          0,
+          -3.5,
+          progress
+        )}vh, 0)`;
       }
 
       if (copy) {
         copy.style.opacity = String(lerp(1, 0.76, progress));
-        copy.style.transform = `translate3d(0, ${lerp(0, -1.8, progress)}vh, 0)`;
+        copy.style.transform = `translate3d(0, ${lerp(
+          0,
+          -1.8,
+          progress
+        )}vh, 0)`;
       }
     }
 
@@ -357,7 +367,10 @@
             if (other !== item && other.tagName.toLowerCase() === "details") {
               other.removeAttribute("open");
 
-              const otherSummary = other.querySelector(".work-project__summary");
+              const otherSummary = other.querySelector(
+                ".work-project__summary"
+              );
+
               if (otherSummary) {
                 otherSummary.setAttribute("aria-expanded", "false");
               }
@@ -509,141 +522,142 @@
       defaults: {
         ease: "power3.out"
       },
-scrollTrigger: {
-  id: "workArchiveNoomo",
-  trigger: archive,
-  start: "top top",
-  end: "+=220%",
-  scrub: 1.35,
-  pin: true,
-  anticipatePin: 1,
-  invalidateOnRefresh: true,
-  onEnter: () => archive.classList.add("is-forming"),
-  onLeave: () => archive.classList.add("is-formed"),
-  onEnterBack: () => archive.classList.add("is-forming"),
-  onLeaveBack: () => archive.classList.remove("is-formed")
-}
+      scrollTrigger: {
+        id: "workArchiveNoomo",
+        trigger: archive,
+        start: "top top",
+        end: "+=220%",
+        scrub: 1.35,
+        pin: true,
+        anticipatePin: 1,
+        invalidateOnRefresh: true,
+        onEnter: () => archive.classList.add("is-forming"),
+        onLeave: () => archive.classList.add("is-formed"),
+        onEnterBack: () => archive.classList.add("is-forming"),
+        onLeaveBack: () => archive.classList.remove("is-formed")
+      }
     });
 
     tl.to(
-  archive,
-  {
-    "--archive-reveal": 0.35,
-    "--archive-glow": 0.5,
-    duration: 0.65,
-    ease: "none"
-  },
-  0
-);
-
-tl.to(
-  shell,
-  {
-    yPercent: 0,
-    scale: 1,
-    duration: 1,
-    ease: "power2.out"
-  },
-  0
-);
-
-tl.to(
-  archive,
-  {
-    "--archive-top-line": 1,
-    duration: 0.9,
-    ease: "power2.inOut"
-  },
-  0.18
-);
-
-tl.to(
-  [label, kicker].filter(Boolean),
-  {
-    autoAlpha: 1,
-    y: 0,
-    filter: "blur(0px)",
-    duration: 0.65,
-    stagger: 0.06,
-    ease: "power3.out"
-  },
-  0.42
-);
-
-if (title) {
-  tl.to(
-    title,
-    {
-      autoAlpha: 1,
-      y: 0,
-      scale: 1,
-      filter: "blur(0px)",
-      letterSpacing: "-0.082em",
-      duration: 1.05,
-      ease: "power4.out"
-    },
-    0.62
-  );
-}
-
-tl.to(
-  archive,
-  {
-    "--archive-reveal": 0.72,
-    duration: 0.9,
-    ease: "none"
-  },
-  0.72
-);
-
-if (intro) {
-  tl.to(
-    intro,
-    {
-      autoAlpha: 1,
-      y: 0,
-      filter: "blur(0px)",
-      duration: 0.72,
-      ease: "power3.out"
-    },
-    1.12
-  );
-}
-
- rows.forEach((row, index) => {
-  const summary = row.querySelector(".work-project__summary");
-
-  const pieces = row.querySelectorAll(
-    ".work-project__index, .work-project__name, .work-project__meta, .work-project__year, .work-project__arrow"
-  );
-
-  const start = 1.55 + index * 0.12;
-
-  if (summary) {
-    tl.to(
-      summary,
+      archive,
       {
-        "--row-line": 1,
-        duration: 0.75,
+        "--archive-reveal": 0.35,
+        "--archive-glow": 0.5,
+        duration: 0.65,
+        ease: "none"
+      },
+      0
+    );
+
+    tl.to(
+      shell,
+      {
+        yPercent: 0,
+        scale: 1,
+        duration: 1,
+        ease: "power2.out"
+      },
+      0
+    );
+
+    tl.to(
+      archive,
+      {
+        "--archive-top-line": 1,
+        duration: 0.9,
         ease: "power2.inOut"
       },
-      start
+      0.18
     );
-  }
 
-  tl.to(
-    pieces,
-    {
-      autoAlpha: 1,
-      y: 0,
-      filter: "blur(0px)",
-      duration: 0.72,
-      stagger: 0.035,
-      ease: "power4.out"
-    },
-    start + 0.12
-  );
-});
+    tl.to(
+      [label, kicker].filter(Boolean),
+      {
+        autoAlpha: 1,
+        y: 0,
+        filter: "blur(0px)",
+        duration: 0.65,
+        stagger: 0.06,
+        ease: "power3.out"
+      },
+      0.42
+    );
+
+    if (title) {
+      tl.to(
+        title,
+        {
+          autoAlpha: 1,
+          y: 0,
+          scale: 1,
+          filter: "blur(0px)",
+          letterSpacing: "-0.082em",
+          duration: 1.05,
+          ease: "power4.out"
+        },
+        0.62
+      );
+    }
+
+    tl.to(
+      archive,
+      {
+        "--archive-reveal": 0.72,
+        duration: 0.9,
+        ease: "none"
+      },
+      0.72
+    );
+
+    if (intro) {
+      tl.to(
+        intro,
+        {
+          autoAlpha: 1,
+          y: 0,
+          filter: "blur(0px)",
+          duration: 0.72,
+          ease: "power3.out"
+        },
+        1.12
+      );
+    }
+
+    rows.forEach((row, index) => {
+      const summary = row.querySelector(".work-project__summary");
+
+      const pieces = row.querySelectorAll(
+        ".work-project__index, .work-project__name, .work-project__meta, .work-project__year, .work-project__arrow"
+      );
+
+      const start = 1.55 + index * 0.12;
+
+      if (summary) {
+        tl.to(
+          summary,
+          {
+            "--row-line": 1,
+            duration: 0.75,
+            ease: "power2.inOut"
+          },
+          start
+        );
+      }
+
+      tl.to(
+        pieces,
+        {
+          autoAlpha: 1,
+          y: 0,
+          filter: "blur(0px)",
+          duration: 0.72,
+          stagger: 0.035,
+          ease: "power4.out"
+        },
+        start + 0.12
+      );
+    });
+  }
 
   /* ==========================================================
      IMAGE FALLBACKS
@@ -656,7 +670,9 @@ if (intro) {
       image.addEventListener(
         "error",
         () => {
-          const holder = image.closest(".work-project__preview, .work-project__media");
+          const holder = image.closest(
+            ".work-project__preview, .work-project__media"
+          );
 
           if (holder) {
             holder.classList.add("is-missing-image");
@@ -681,6 +697,10 @@ if (intro) {
     setupArchiveHover();
     setupArchiveNoomoReveal();
     setupImageFallbacks();
+
+    if (window.ScrollTrigger) {
+      window.ScrollTrigger.refresh();
+    }
   }
 
   if (document.readyState === "loading") {
