@@ -880,182 +880,153 @@ function closeAllArchiveProjects() {
    No scramble. The actual letters distort.
 ========================================================== */
 
-function setupArchiveTextGlitch() {
-  const rows = Array.from(archive.querySelectorAll(".work-project"));
+/* ==========================================================
+   PHYSICAL TEXT SIGNAL GLITCH
+   Same text. Real letters warp. No random symbols.
+========================================================== */
 
-  if (!rows.length || prefersReducedMotion) return;
+function escapeHTML(value) {
+  return String(value)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
 
-  function random(min, max) {
-    return min + Math.random() * (max - min);
-  }
+function buildGlitchText(el) {
+  if (!el || el.dataset.glitchBuilt === "true") return;
 
-  function makePercent(min, max) {
-    return `${random(min, max).toFixed(1)}%`;
-  }
+  const text = el.textContent.trim();
+  if (!text) return;
 
-  function buildGlyphs(name) {
-    if (!name || name.dataset.glyphReady === "true") return;
+  el.dataset.text = text;
+  el.dataset.glitchBuilt = "true";
 
-    const original = name.textContent.replace(/\s+/g, " ").trim();
-
-    name.dataset.originalText = original;
-    name.setAttribute("aria-label", original);
-    name.classList.add("glitch-word");
-
-    name.innerHTML = "";
-
-    Array.from(original).forEach((char, index) => {
-      const glyph = document.createElement("span");
-      const isSpace = char === " ";
-
-      glyph.className = isSpace
-        ? "glitch-char glitch-char--space"
-        : "glitch-char";
-
-      glyph.dataset.char = isSpace ? "\u00A0" : char;
-      glyph.style.setProperty("--i", index);
-      glyph.setAttribute("aria-hidden", "true");
-      glyph.textContent = isSpace ? "\u00A0" : char;
-
-      name.appendChild(glyph);
-    });
-
-    name.dataset.glyphReady = "true";
-  }
-
-  function resetGlyphs(name) {
-    if (!name) return;
-
-    if (name._glyphFrame) {
-      cancelAnimationFrame(name._glyphFrame);
-      name._glyphFrame = null;
-    }
-
-    name.classList.remove("is-glitching", "is-glitch-hit");
-
-    name.querySelectorAll(".glitch-char").forEach((glyph) => {
-      glyph.classList.remove("is-hot");
-
-      glyph.style.removeProperty("--gx");
-      glyph.style.removeProperty("--gy");
-      glyph.style.removeProperty("--gskew");
-      glyph.style.removeProperty("--gscale");
-      glyph.style.removeProperty("--gblur");
-      glyph.style.removeProperty("--gopacity");
-
-      glyph.style.removeProperty("--slice-a");
-      glyph.style.removeProperty("--slice-b");
-      glyph.style.removeProperty("--slice-c");
-      glyph.style.removeProperty("--slice-d");
-
-      glyph.style.removeProperty("--ghost-x-one");
-      glyph.style.removeProperty("--ghost-y-one");
-      glyph.style.removeProperty("--ghost-x-two");
-      glyph.style.removeProperty("--ghost-y-two");
-    });
-  }
-
-  function fireGlyphGlitch(name) {
-    if (!name || mobileQuery.matches) return;
-
-    buildGlyphs(name);
-    resetGlyphs(name);
-
-    const glyphs = Array.from(
-      name.querySelectorAll(".glitch-char:not(.glitch-char--space)")
-    );
-
-    if (!glyphs.length) return;
-
-    const duration = 520;
-    const start = performance.now();
-
-    name.classList.add("is-glitching", "is-glitch-hit");
-
-    function frame(now) {
-      const elapsed = now - start;
-      const progress = Math.min(elapsed / duration, 1);
-
-      const attack = Math.sin(progress * Math.PI);
-      const decay = Math.pow(1 - progress, 0.42);
-      const force = attack * decay;
-
-      glyphs.forEach((glyph, index) => {
-        const wave = Math.sin(now * 0.034 + index * 1.7);
-        const pulse = Math.random() > 0.48 ? 1 : 0.38;
-        const amount = force * pulse;
-
-        glyph.classList.toggle("is-hot", Math.random() > 0.58);
-
-        glyph.style.setProperty("--gx", `${random(-7, 7) * amount}px`);
-        glyph.style.setProperty("--gy", `${random(-3, 3) * amount}px`);
-        glyph.style.setProperty("--gskew", `${random(-14, 14) * amount}deg`);
-        glyph.style.setProperty("--gscale", `${1 + random(-0.12, 0.16) * amount}`);
-        glyph.style.setProperty("--gblur", `${random(0, 1.1) * amount}px`);
-        glyph.style.setProperty("--gopacity", `${0.28 + amount * 0.72}`);
-
-        glyph.style.setProperty("--slice-a", makePercent(0, 24));
-        glyph.style.setProperty("--slice-b", makePercent(28, 48));
-        glyph.style.setProperty("--slice-c", makePercent(50, 68));
-        glyph.style.setProperty("--slice-d", makePercent(72, 100));
-
-        glyph.style.setProperty(
-          "--ghost-x-one",
-          `${(wave > 0 ? random(2, 9) : random(-9, -2)) * amount}px`
-        );
-
-        glyph.style.setProperty(
-          "--ghost-y-one",
-          `${random(-2, 2) * amount}px`
-        );
-
-        glyph.style.setProperty(
-          "--ghost-x-two",
-          `${(wave > 0 ? random(-8, -2) : random(2, 8)) * amount}px`
-        );
-
-        glyph.style.setProperty(
-          "--ghost-y-two",
-          `${random(-2, 2) * amount}px`
-        );
-      });
-
-      if (progress < 1) {
-        name._glyphFrame = requestAnimationFrame(frame);
-      } else {
-        resetGlyphs(name);
+  const letters = Array.from(text)
+    .map((char, index) => {
+      if (char === " ") {
+        return `<span class="glitch-letter glitch-letter--space" style="--i:${index}">&nbsp;</span>`;
       }
-    }
 
-    name._glyphFrame = requestAnimationFrame(frame);
-  }
+      return `
+        <span class="glitch-letter" style="--i:${index}">
+          ${escapeHTML(char)}
+        </span>
+      `;
+    })
+    .join("");
 
-  rows.forEach((row) => {
-    const summary = row.querySelector(".work-project__summary");
-    const name = row.querySelector(".work-project__name");
+  el.innerHTML = `
+    <span class="glitch-word__base">${letters}</span>
+    <span class="glitch-word__layer glitch-word__layer--a" aria-hidden="true">${letters}</span>
+    <span class="glitch-word__layer glitch-word__layer--b" aria-hidden="true">${letters}</span>
+    <span class="glitch-word__layer glitch-word__layer--c" aria-hidden="true">${letters}</span>
+  `;
+}
 
-    if (!summary || !name) return;
+function updateGlitchText(el, text) {
+  if (!el) return;
 
-    buildGlyphs(name);
+  const cleanText = String(text || "").trim();
 
-    summary.addEventListener("mouseenter", () => {
-      fireGlyphGlitch(name);
-    });
+  el.dataset.text = cleanText;
+  el.dataset.glitchBuilt = "false";
+  el.textContent = cleanText;
 
-    summary.addEventListener("focus", () => {
-      fireGlyphGlitch(name);
-    });
+  buildGlitchText(el);
+}
 
-    summary.addEventListener("mouseleave", () => {
-      resetGlyphs(name);
-    });
+function setLetterWarpVariables(el) {
+  if (!el) return;
 
-    summary.addEventListener("blur", () => {
-      resetGlyphs(name);
-    });
+  const letters = Array.from(el.querySelectorAll(".glitch-letter:not(.glitch-letter--space)"));
+
+  letters.forEach((letter) => {
+    const force = Math.random();
+
+    const x = (Math.random() * 18 - 9).toFixed(2);
+    const y = (Math.random() * 6 - 3).toFixed(2);
+    const skew = (Math.random() * 22 - 11).toFixed(2);
+    const rotate = (Math.random() * 5 - 2.5).toFixed(2);
+    const scaleX = (0.86 + Math.random() * 0.34).toFixed(2);
+    const scaleY = (0.9 + Math.random() * 0.22).toFixed(2);
+
+    letter.style.setProperty("--warp-x", `${x}px`);
+    letter.style.setProperty("--warp-y", `${y}px`);
+    letter.style.setProperty("--warp-skew", `${skew}deg`);
+    letter.style.setProperty("--warp-rotate", `${rotate}deg`);
+    letter.style.setProperty("--warp-scale-x", scaleX);
+    letter.style.setProperty("--warp-scale-y", scaleY);
+
+    /*
+      Stronger distortion bias for round letters:
+      O, o, C, D, A, R, P, Q, 0
+      This makes letters like the O in Orynd physically warp harder.
+    */
+    const raw = letter.textContent.trim().toLowerCase();
+    const isRoundOrStructural = ["o", "c", "d", "a", "r", "p", "q", "0"].includes(raw);
+
+    letter.classList.toggle("glitch-letter--heavy", isRoundOrStructural || force > 0.68);
   });
 }
 
+function triggerSignalGlitch(el) {
+  if (!el || prefersReducedMotion) return;
+
+  buildGlitchText(el);
+  setLetterWarpVariables(el);
+
+  el.style.setProperty("--glitch-x1", `${(Math.random() * 16 - 8).toFixed(2)}px`);
+  el.style.setProperty("--glitch-x2", `${(Math.random() * 24 - 12).toFixed(2)}px`);
+  el.style.setProperty("--glitch-x3", `${(Math.random() * 10 - 5).toFixed(2)}px`);
+  el.style.setProperty("--glitch-y1", `${(Math.random() * 3 - 1.5).toFixed(2)}px`);
+  el.style.setProperty("--glitch-y2", `${(Math.random() * 5 - 2.5).toFixed(2)}px`);
+
+  el.classList.remove("is-live-glitch");
+
+  void el.offsetWidth;
+
+  el.classList.add("is-live-glitch");
+
+  window.setTimeout(() => {
+    el.classList.remove("is-live-glitch");
+  }, 520);
+}
+
+function triggerProjectGlitch(button) {
+  if (!button || prefersReducedMotion) return;
+
+  const name = button.querySelector(".work-project__name");
+  const number = button.querySelector(".work-project__number");
+
+  button.classList.remove("is-glitching");
+
+  void button.offsetWidth;
+
+  button.classList.add("is-glitching");
+
+  triggerSignalGlitch(name);
+  triggerSignalGlitch(number);
+
+  window.clearTimeout(glitchTimer);
+
+  glitchTimer = window.setTimeout(() => {
+    button.classList.remove("is-glitching");
+  }, 560);
+}
+
+function triggerDrawerGlitch() {
+  if (!detail || prefersReducedMotion) return;
+
+  const drawerTitle = detail.querySelector("[data-work-detail-title]");
+  const drawerMeta = detail.querySelector(".work-detail__eyebrow");
+  const drawerQuote = detail.querySelector("[data-work-detail-review]");
+
+  triggerSignalGlitch(drawerMeta);
+  triggerSignalGlitch(drawerTitle);
+  triggerSignalGlitch(drawerQuote);
+}
 
 
    
