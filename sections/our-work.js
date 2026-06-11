@@ -1,12 +1,12 @@
 /* ==========================================================
    BIM LABS STUDIO — OUR WORK
-   Clean rebuild for current button + drawer HTML
-   - No details/summary logic
-   - No removed drawer logic
-   - No undefined functions
+   Clean JS rebuild
+   - Flying trust-card section
+   - Archive details with <details>/<summary>
+   - Noomo-style pinned archive reveal
    - Mouse-attached preview
-   - Right project drawer
-   - Physical same-text letter glitch
+   - Working physical letter glitch on hover/focus
+   - No drawer
 ========================================================== */
 
 (() => {
@@ -15,152 +15,58 @@
   const projects = [
     {
       number: "01",
-      type: "Client Portal",
-      year: "2024",
       title: "Wonder World Portal",
-      description:
-        "A private operating layer built to organize quotes, products, lead flow, installer coordination, and customer-facing resources.",
-      constraint:
-        "Sales, quotes, product information, and project coordination were scattered across disconnected tools.",
-      solution:
-        "We created a cleaner internal system that helped the team manage quote requests, project information, products, and customer resources in one place.",
-      result:
-        "A more organized digital operating layer that made the sales and project planning process easier to understand, manage, and present.",
-      services: [
-        "Client portal architecture",
-        "Product and quote system",
-        "Installer finder workflow",
-        "CRM and internal dashboard",
-        "Frontend design and development"
-      ],
-      review:
-        "BIM Labs Studio helped us turn a scattered sales process into a cleaner system.",
       client: "Wonder World Playsets",
-      role: "Commercial playground distributor"
+      role: "Commercial playground distributor",
+      review:
+        "The portal made our process feel organized, easier to manage, and easier to present to customers."
     },
     {
       number: "02",
-      type: "Sports Platform",
-      year: "2024",
       title: "Momentum Athlete",
-      description:
-        "A sharper digital platform for athlete performance, training resources, course access, and brand presentation.",
-      constraint:
-        "Momentum Athlete needed the platform to feel more serious, structured, and easier for athletes and partners to understand.",
-      solution:
-        "We shaped a cleaner experience with stronger hierarchy, clearer presentation, and a more polished digital direction.",
-      result:
-        "The platform became easier to understand and felt more credible from the first impression.",
-      services: [
-        "Platform experience direction",
-        "Course system structure",
-        "Landing page design",
-        "Stripe payment flow",
-        "Frontend build support"
-      ],
-      review:
-        "The platform finally felt clear, premium, and easier to present to partners.",
       client: "Momentum Athlete",
-      role: "Athlete performance platform"
+      role: "Athlete performance platform",
+      review:
+        "The platform finally felt clear, premium, and easier to present to partners."
     },
     {
       number: "03",
-      type: "AI Platform",
-      year: "2023",
       title: "Orynd AI",
-      description:
-        "A focused AI product presence built around clarity, positioning, and interface structure.",
-      constraint:
-        "The product idea was complex and needed to feel credible, clear, and easier to trust without overwhelming the user.",
-      solution:
-        "We simplified the product narrative and shaped the interface around positioning, trust, and direct next steps.",
-      result:
-        "The platform became easier to explain and more ready for real users.",
-      services: [
-        "AI product positioning",
-        "Brand direction",
-        "Website interface",
-        "Product narrative",
-        "Conversion-focused layout"
-      ],
-      review:
-        "The site made the product easier to explain without making the idea feel smaller.",
       client: "Orynd AI",
-      role: "AI platform"
+      role: "AI platform",
+      review:
+        "The site made the product easier to explain without making the idea feel smaller."
     },
     {
       number: "04",
-      type: "Fintech Platform",
-      year: "2023",
-      title: "CashFlowSwami",
-      description:
-        "A focused fintech-facing web experience built around trust, simple messaging, and a cleaner path from attention to action.",
-      constraint:
-        "The offer needed stronger digital credibility and a clearer path from first impression to understanding the service.",
-      solution:
-        "We created a cleaner presentation layer with simpler messaging, stronger interface direction, and a more intentional conversion path.",
-      result:
-        "The site made the business feel more legitimate, easier to trust, and easier to present.",
-      services: [
-        "Landing page strategy",
-        "Fintech brand presentation",
-        "Interface design",
-        "Lead path structure",
-        "Frontend development"
-      ],
+      title: "3D Install Tool",
+      client: "BIM Labs Studio",
+      role: "Interactive project system",
       review:
-        "The site helped the offer feel real, polished, and ready to show people.",
-      client: "CashFlowSwami",
-      role: "Fintech platform"
+        "The visual tool made the project easier to explain and easier for people to understand quickly."
     }
   ];
 
   const archive = document.querySelector(".work-archive");
   if (!archive) return;
 
-  const rows = Array.from(archive.querySelectorAll("[data-work-project]"));
-  const drawer = archive.querySelector(".work-detail");
+  const prefersReducedMotion = window.matchMedia(
+    "(prefers-reduced-motion: reduce)"
+  ).matches;
 
-  const closeBtn = archive.querySelector(".work-detail__close");
-  const prevBtn = archive.querySelector("[data-work-prev]");
-  const nextBtn = archive.querySelector("[data-work-next]");
-
-  const numberEl = archive.querySelector("[data-work-detail-number]");
-  const typeEl = archive.querySelector("[data-work-detail-type]");
-  const yearEl = archive.querySelector("[data-work-detail-year]");
-  const titleEl = archive.querySelector("[data-work-detail-title]");
-  const descriptionEl = archive.querySelector("[data-work-detail-description]");
-  const constraintEl = archive.querySelector("[data-work-detail-constraint]");
-  const solutionEl = archive.querySelector("[data-work-detail-solution]");
-  const resultEl = archive.querySelector("[data-work-detail-result]");
-  const servicesEl = archive.querySelector("[data-work-detail-services]");
-  const reviewEl = archive.querySelector("[data-work-detail-review]");
-  const clientEl = archive.querySelector("[data-work-detail-client]");
-  const roleEl = archive.querySelector("[data-work-detail-role]");
-
-  const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const mobileQuery = window.matchMedia("(max-width: 900px)");
 
-  let activeIndex = 0;
-  let drawerOpen = false;
-  let changeTimer = null;
-  let previewRaf = null;
-  let activePreview = null;
-  let activeRow = null;
-  let mouseX = 0;
-  let mouseY = 0;
-  let currentX = 0;
-  let currentY = 0;
+  let glitchTimer = null;
 
-  function clampIndex(index) {
-    return (index + projects.length) % projects.length;
+  function clamp(value, min, max) {
+    return Math.min(Math.max(value, min), max);
   }
 
   function lerp(start, end, amount) {
     return start + (end - start) * amount;
   }
 
-  function escapeHTML(value = "") {
+  function escapeHtml(value = "") {
     return String(value)
       .replaceAll("&", "&amp;")
       .replaceAll("<", "&lt;")
@@ -169,30 +75,580 @@
       .replaceAll("'", "&#039;");
   }
 
-  function setText(el, text) {
-    if (!el) return;
-    el.textContent = text || "";
-    el.dataset.glitchBuilt = "false";
-  }
+  /* ==========================================================
+     SELF-CONTAINED GLITCH CSS
+     This makes the glitch work even if your CSS file is missing it.
+  ========================================================== */
 
-  function lockPage() {
-    document.documentElement.classList.add("work-drawer-lock");
-    document.body.classList.add("work-drawer-lock");
-  }
+  function injectGlitchStyles() {
+    if (document.getElementById("bim-work-glitch-styles")) return;
 
-  function unlockPage() {
-    document.documentElement.classList.remove("work-drawer-lock");
-    document.body.classList.remove("work-drawer-lock");
+    const style = document.createElement("style");
+    style.id = "bim-work-glitch-styles";
+
+    style.textContent = `
+      .work-project__name,
+      .work-project__index,
+      .work-project__number {
+        position: relative;
+        display: inline-block;
+      }
+
+      .glitch-word__base,
+      .glitch-word__layer {
+        display: inline-flex;
+        align-items: baseline;
+        white-space: pre;
+      }
+
+      .glitch-word__base {
+        position: relative;
+        z-index: 1;
+      }
+
+      .glitch-word__layer {
+        position: absolute;
+        left: 0;
+        top: 0;
+        z-index: 2;
+        opacity: 0;
+        pointer-events: none;
+        mix-blend-mode: screen;
+      }
+
+      .glitch-word__layer--a {
+        color: rgba(255, 255, 255, 0.96);
+        clip-path: inset(0 0 63% 0);
+      }
+
+      .glitch-word__layer--b {
+        color: rgba(180, 180, 180, 0.92);
+        clip-path: inset(34% 0 31% 0);
+      }
+
+      .glitch-word__layer--c {
+        color: rgba(255, 255, 255, 0.72);
+        clip-path: inset(66% 0 0 0);
+      }
+
+      .glitch-letter {
+        display: inline-block;
+        position: relative;
+        transform-origin: 50% 55%;
+        will-change: transform, filter, clip-path, opacity;
+      }
+
+      .glitch-letter--space {
+        min-width: 0.34em;
+      }
+
+      .is-live-glitch .glitch-word__base .glitch-letter:not(.glitch-letter--space) {
+        animation: bim-letter-warp 520ms cubic-bezier(.16, 1, .3, 1) both;
+        animation-delay: calc(var(--i, 0) * 7ms);
+      }
+
+      .is-live-glitch .glitch-word__base .glitch-letter--heavy:not(.glitch-letter--space) {
+        animation-name: bim-letter-warp-heavy;
+      }
+
+      .is-live-glitch .glitch-word__layer--a {
+        animation: bim-glitch-slice-a 520ms steps(2, end) both;
+      }
+
+      .is-live-glitch .glitch-word__layer--b {
+        animation: bim-glitch-slice-b 520ms steps(2, end) both;
+      }
+
+      .is-live-glitch .glitch-word__layer--c {
+        animation: bim-glitch-slice-c 520ms steps(2, end) both;
+      }
+
+      .work-project.is-glitching .work-project__summary {
+        filter: contrast(1.08);
+      }
+
+      @keyframes bim-letter-warp {
+        0% {
+          transform: translate3d(0, 0, 0) skew(0deg) rotate(0deg) scale(1);
+          filter: blur(0px);
+        }
+
+        18% {
+          transform:
+            translate3d(var(--warp-x, 4px), var(--warp-y, 0px), 0)
+            skew(var(--warp-skew, 7deg))
+            rotate(var(--warp-rotate, 0deg))
+            scale(var(--warp-scale-x, 1.08), var(--warp-scale-y, .96));
+          filter: blur(.35px);
+        }
+
+        34% {
+          transform:
+            translate3d(calc(var(--warp-x, 4px) * -0.62), calc(var(--warp-y, 0px) * -0.7), 0)
+            skew(calc(var(--warp-skew, 7deg) * -0.55))
+            rotate(calc(var(--warp-rotate, 0deg) * -0.35))
+            scale(.96, 1.05);
+          filter: blur(.18px);
+        }
+
+        54% {
+          transform:
+            translate3d(calc(var(--warp-x, 4px) * .22), calc(var(--warp-y, 0px) * .25), 0)
+            skew(calc(var(--warp-skew, 7deg) * .2))
+            rotate(0deg)
+            scale(1.02, .99);
+          filter: blur(0px);
+        }
+
+        100% {
+          transform: translate3d(0, 0, 0) skew(0deg) rotate(0deg) scale(1);
+          filter: blur(0px);
+        }
+      }
+
+      @keyframes bim-letter-warp-heavy {
+        0% {
+          transform: translate3d(0, 0, 0) skew(0deg) rotate(0deg) scale(1);
+          filter: blur(0px);
+        }
+
+        16% {
+          transform:
+            translate3d(calc(var(--warp-x, 6px) * 1.45), calc(var(--warp-y, 0px) * 1.15), 0)
+            skew(calc(var(--warp-skew, 8deg) * 1.25))
+            rotate(calc(var(--warp-rotate, 0deg) * 1.2))
+            scale(calc(var(--warp-scale-x, 1.08) * 1.06), calc(var(--warp-scale-y, .96) * .95));
+          filter: blur(.55px);
+        }
+
+        32% {
+          transform:
+            translate3d(calc(var(--warp-x, 6px) * -0.8), calc(var(--warp-y, 0px) * -0.85), 0)
+            skew(calc(var(--warp-skew, 8deg) * -0.72))
+            rotate(calc(var(--warp-rotate, 0deg) * -0.5))
+            scale(.92, 1.08);
+          filter: blur(.22px);
+        }
+
+        58% {
+          transform:
+            translate3d(calc(var(--warp-x, 6px) * .25), calc(var(--warp-y, 0px) * .22), 0)
+            skew(calc(var(--warp-skew, 8deg) * .16))
+            rotate(0deg)
+            scale(1.02, .99);
+          filter: blur(0px);
+        }
+
+        100% {
+          transform: translate3d(0, 0, 0) skew(0deg) rotate(0deg) scale(1);
+          filter: blur(0px);
+        }
+      }
+
+      @keyframes bim-glitch-slice-a {
+        0%, 100% {
+          opacity: 0;
+          transform: translate3d(0, 0, 0);
+        }
+
+        12% {
+          opacity: .95;
+          transform: translate3d(var(--glitch-x1, 5px), var(--glitch-y1, 0px), 0);
+        }
+
+        22% {
+          opacity: .2;
+          transform: translate3d(calc(var(--glitch-x1, 5px) * -0.55), 0, 0);
+        }
+
+        35% {
+          opacity: .75;
+          transform: translate3d(var(--glitch-x3, -3px), var(--glitch-y2, 1px), 0);
+        }
+
+        48% {
+          opacity: 0;
+          transform: translate3d(0, 0, 0);
+        }
+      }
+
+      @keyframes bim-glitch-slice-b {
+        0%, 100% {
+          opacity: 0;
+          transform: translate3d(0, 0, 0);
+        }
+
+        16% {
+          opacity: .78;
+          transform: translate3d(var(--glitch-x2, -7px), var(--glitch-y2, 1px), 0);
+        }
+
+        27% {
+          opacity: .35;
+          transform: translate3d(calc(var(--glitch-x2, -7px) * -0.35), calc(var(--glitch-y1, 0px) * -1), 0);
+        }
+
+        44% {
+          opacity: .65;
+          transform: translate3d(var(--glitch-x1, 4px), 0, 0);
+        }
+
+        58% {
+          opacity: 0;
+          transform: translate3d(0, 0, 0);
+        }
+      }
+
+      @keyframes bim-glitch-slice-c {
+        0%, 100% {
+          opacity: 0;
+          transform: translate3d(0, 0, 0);
+        }
+
+        10% {
+          opacity: .65;
+          transform: translate3d(var(--glitch-x3, 3px), var(--glitch-y1, 0px), 0);
+        }
+
+        25% {
+          opacity: .3;
+          transform: translate3d(calc(var(--glitch-x3, 3px) * -1.1), var(--glitch-y2, 1px), 0);
+        }
+
+        40% {
+          opacity: .55;
+          transform: translate3d(var(--glitch-x2, -7px), 0, 0);
+        }
+
+        52% {
+          opacity: 0;
+          transform: translate3d(0, 0, 0);
+        }
+      }
+    `;
+
+    document.head.appendChild(style);
   }
 
   /* ==========================================================
-     PHYSICAL SAME-TEXT LETTER GLITCH
+     CLEAN OLD / DUPLICATE STATES
+  ========================================================== */
+
+  function cleanOldStates() {
+    document.documentElement.classList.remove("work-drawer-lock");
+    document.body.classList.remove("work-drawer-lock");
+
+    document.querySelectorAll(".work-detail").forEach((node) => node.remove());
+    document.querySelectorAll(".work-trust").forEach((node) => node.remove());
+
+    document.querySelectorAll(".bim-trust").forEach((node, index) => {
+      if (index > 0) node.remove();
+    });
+
+    archive.classList.remove(
+      "has-open-detail",
+      "is-forming",
+      "is-formed",
+      "is-previewing"
+    );
+  }
+
+  /* ==========================================================
+     TRUST BRIDGE — INJECT ONE FLYING CARD SECTION
+  ========================================================== */
+
+  function injectTrustBridge() {
+    if (document.querySelector(".bim-trust")) return;
+
+    const section = document.createElement("section");
+    section.className = "bim-trust";
+    section.setAttribute("aria-label", "Client trust");
+
+    const cards = projects
+      .map((project, index) => {
+        return `
+          <article class="bim-trust-card" data-bim-trust-card="${index}">
+            <p class="bim-trust-card__logo">${escapeHtml(project.client)}</p>
+
+            <blockquote>
+              “${escapeHtml(project.review)}”
+            </blockquote>
+
+            <footer>
+              <strong>${escapeHtml(project.title)}</strong>
+              <span>${escapeHtml(project.role)}</span>
+            </footer>
+          </article>
+        `;
+      })
+      .join("");
+
+    section.innerHTML = `
+      <div class="bim-trust__sticky">
+        <h2 class="bim-trust__headline" aria-hidden="true">
+          GOOD WORK<br>
+          IS BUILT<br>
+          WITH TRUST.
+        </h2>
+
+        <div class="bim-trust__copy">
+          <p>
+            We build with clients who need more than a nice-looking website.
+            They need clearer systems, sharper presentation, and digital work
+            that makes the business easier to understand.
+          </p>
+        </div>
+
+        <div class="bim-trust__stage">
+          ${cards}
+        </div>
+      </div>
+    `;
+
+    archive.parentNode.insertBefore(section, archive);
+  }
+
+  /* ==========================================================
+     TRUST BRIDGE — FLYING CARD MOTION
+  ========================================================== */
+
+  function setupTrustCards() {
+    const section = document.querySelector(".bim-trust");
+    const cards = Array.from(document.querySelectorAll("[data-bim-trust-card]"));
+    const headline = document.querySelector(".bim-trust__headline");
+    const copy = document.querySelector(".bim-trust__copy");
+
+    if (!section || !cards.length) return;
+
+    if (prefersReducedMotion || mobileQuery.matches) {
+      cards.forEach((card) => {
+        card.style.opacity = "1";
+        card.style.visibility = "visible";
+        card.style.transform = "none";
+      });
+
+      return;
+    }
+
+    const cardSettings = [
+      {
+        startX: 118,
+        midX: 46,
+        endX: -58,
+        startY: 24,
+        peakY: 3,
+        endY: 18,
+        startRotate: 7,
+        midRotate: -2,
+        endRotate: -9,
+        delay: 0,
+        span: 0.94,
+        depth: 0
+      },
+      {
+        startX: 136,
+        midX: 58,
+        endX: -46,
+        startY: 17,
+        peakY: -5,
+        endY: 9,
+        startRotate: 5,
+        midRotate: 1,
+        endRotate: -6,
+        delay: 0.055,
+        span: 0.94,
+        depth: 18
+      },
+      {
+        startX: 154,
+        midX: 70,
+        endX: -34,
+        startY: 18,
+        peakY: -7,
+        endY: 8,
+        startRotate: 3,
+        midRotate: -1,
+        endRotate: -5,
+        delay: 0.11,
+        span: 0.94,
+        depth: 32
+      },
+      {
+        startX: 172,
+        midX: 82,
+        endX: -22,
+        startY: 25,
+        peakY: 3,
+        endY: 16,
+        startRotate: 7,
+        midRotate: 2,
+        endRotate: -3,
+        delay: 0.165,
+        span: 0.94,
+        depth: 10
+      }
+    ];
+
+    let targetProgress = 0;
+    let currentProgress = 0;
+    let raf = null;
+
+    function easeInOutCubic(value) {
+      return value < 0.5
+        ? 4 * value * value * value
+        : 1 - Math.pow(-2 * value + 2, 3) / 2;
+    }
+
+    function bezier3(p0, p1, p2, t) {
+      const a = lerp(p0, p1, t);
+      const b = lerp(p1, p2, t);
+      return lerp(a, b, t);
+    }
+
+    function getProgress() {
+      const rect = section.getBoundingClientRect();
+      const viewport = window.innerHeight || document.documentElement.clientHeight;
+      const travel = Math.max(section.offsetHeight - viewport, 1);
+
+      return clamp(-rect.top / travel, 0, 1);
+    }
+
+    function render(progress) {
+      cards.forEach((card, index) => {
+        const settings =
+          cardSettings[index] || cardSettings[cardSettings.length - 1];
+
+        const raw = clamp((progress - settings.delay) / settings.span, 0, 1);
+        const t = easeInOutCubic(raw);
+
+        const x = bezier3(settings.startX, settings.midX, settings.endX, t);
+        const y = bezier3(settings.startY, settings.peakY, settings.endY, t);
+        const rotate = bezier3(
+          settings.startRotate,
+          settings.midRotate,
+          settings.endRotate,
+          t
+        );
+
+        const float = Math.sin(progress * Math.PI * 2 + index * 0.85) * 0.22;
+
+        card.style.opacity = "1";
+        card.style.visibility = "visible";
+        card.style.zIndex = String(30 + index);
+        card.style.transform = `
+          translate3d(${x}vw, calc(${y}vh + ${float}rem), ${settings.depth}px)
+          rotate(${rotate}deg)
+          scale(1)
+        `;
+      });
+
+      if (headline) {
+        headline.style.opacity = String(lerp(0.92, 0.5, progress));
+        headline.style.transform = `translate3d(0, ${lerp(0, -3.5, progress)}vh, 0)`;
+      }
+
+      if (copy) {
+        copy.style.opacity = String(lerp(1, 0.76, progress));
+        copy.style.transform = `translate3d(0, ${lerp(0, -1.8, progress)}vh, 0)`;
+      }
+    }
+
+    function animate() {
+      currentProgress = lerp(currentProgress, targetProgress, 0.045);
+      render(currentProgress);
+
+      if (Math.abs(targetProgress - currentProgress) > 0.0004) {
+        raf = window.requestAnimationFrame(animate);
+      } else {
+        currentProgress = targetProgress;
+        render(currentProgress);
+        raf = null;
+      }
+    }
+
+    function requestUpdate() {
+      targetProgress = getProgress();
+
+      if (!raf) {
+        raf = window.requestAnimationFrame(animate);
+      }
+    }
+
+    window.addEventListener("scroll", requestUpdate, { passive: true });
+    window.addEventListener("resize", requestUpdate);
+    window.addEventListener("orientationchange", requestUpdate);
+
+    targetProgress = getProgress();
+    currentProgress = targetProgress;
+    render(currentProgress);
+  }
+
+  /* ==========================================================
+     ARCHIVE DETAILS — CURRENT HTML USES DETAILS/SUMMARY
+  ========================================================== */
+
+  function setupArchiveDetails() {
+    const details = Array.from(archive.querySelectorAll(".work-project"));
+
+    details.forEach((item, index) => {
+      if (item.tagName.toLowerCase() !== "details") return;
+
+      item.dataset.workProjectItem = String(index);
+
+      const summary = item.querySelector(".work-project__summary");
+      if (!summary) return;
+
+      summary.setAttribute("role", "button");
+      summary.setAttribute("aria-expanded", item.open ? "true" : "false");
+
+      item.addEventListener("toggle", () => {
+        summary.setAttribute("aria-expanded", item.open ? "true" : "false");
+
+        if (item.open) {
+          details.forEach((other) => {
+            if (other !== item && other.tagName.toLowerCase() === "details") {
+              other.removeAttribute("open");
+              other.open = false;
+
+              const otherSummary = other.querySelector(".work-project__summary");
+
+              if (otherSummary) {
+                otherSummary.setAttribute("aria-expanded", "false");
+              }
+            }
+          });
+        }
+      });
+    });
+  }
+
+  function closeAllArchiveProjects() {
+    const details = Array.from(archive.querySelectorAll(".work-project"));
+
+    details.forEach((item) => {
+      if (item.tagName.toLowerCase() !== "details") return;
+
+      item.removeAttribute("open");
+      item.open = false;
+      item.classList.remove("is-previewing", "is-glitching");
+
+      const summary = item.querySelector(".work-project__summary");
+
+      if (summary) {
+        summary.setAttribute("aria-expanded", "false");
+        summary.blur();
+      }
+    });
+  }
+
+  /* ==========================================================
+     GLITCH TEXT
   ========================================================== */
 
   function buildGlitchText(el) {
     if (!el || el.dataset.glitchBuilt === "true") return;
 
-    const text = (el.dataset.text || el.textContent || "").trim();
+    const text = el.textContent.trim();
     if (!text) return;
 
     el.dataset.text = text;
@@ -204,7 +660,11 @@
           return `<span class="glitch-letter glitch-letter--space" style="--i:${index}">&nbsp;</span>`;
         }
 
-        return `<span class="glitch-letter" style="--i:${index}">${escapeHTML(char)}</span>`;
+        return `
+          <span class="glitch-letter" style="--i:${index}">
+            ${escapeHtml(char)}
+          </span>
+        `;
       })
       .join("");
 
@@ -216,42 +676,83 @@
     `;
   }
 
-  function setWarpVariables(el) {
+  function buildAllGlitchText() {
+    const targets = archive.querySelectorAll(
+      ".work-project__name, .work-project__index, .work-project__number"
+    );
+
+    targets.forEach(buildGlitchText);
+  }
+
+  function setLetterWarpVariables(el) {
     if (!el) return;
 
     const letters = Array.from(
-      el.querySelectorAll(".glitch-letter:not(.glitch-letter--space)")
+      el.querySelectorAll(".glitch-word__base .glitch-letter:not(.glitch-letter--space)")
     );
 
     letters.forEach((letter) => {
-      const raw = letter.textContent.trim().toLowerCase();
-      const isRound = ["o", "c", "d", "a", "r", "p", "q", "0"].includes(raw);
-      const heavy = isRound || Math.random() > 0.66;
+      const force = Math.random();
 
-      letter.classList.toggle("glitch-letter--heavy", heavy);
-      letter.style.setProperty("--warp-x", `${(Math.random() * 20 - 10).toFixed(2)}px`);
-      letter.style.setProperty("--warp-y", `${(Math.random() * 7 - 3.5).toFixed(2)}px`);
-      letter.style.setProperty("--warp-skew", `${(Math.random() * 24 - 12).toFixed(2)}deg`);
-      letter.style.setProperty("--warp-rotate", `${(Math.random() * 6 - 3).toFixed(2)}deg`);
-      letter.style.setProperty("--warp-scale-x", (0.84 + Math.random() * 0.38).toFixed(2));
-      letter.style.setProperty("--warp-scale-y", (0.88 + Math.random() * 0.24).toFixed(2));
+      const x = (Math.random() * 18 - 9).toFixed(2);
+      const y = (Math.random() * 7 - 3.5).toFixed(2);
+      const skew = (Math.random() * 24 - 12).toFixed(2);
+      const rotate = (Math.random() * 6 - 3).toFixed(2);
+      const scaleX = (0.84 + Math.random() * 0.38).toFixed(2);
+      const scaleY = (0.88 + Math.random() * 0.24).toFixed(2);
+
+      letter.style.setProperty("--warp-x", `${x}px`);
+      letter.style.setProperty("--warp-y", `${y}px`);
+      letter.style.setProperty("--warp-skew", `${skew}deg`);
+      letter.style.setProperty("--warp-rotate", `${rotate}deg`);
+      letter.style.setProperty("--warp-scale-x", scaleX);
+      letter.style.setProperty("--warp-scale-y", scaleY);
+
+      const raw = letter.textContent.trim().toLowerCase();
+      const isRoundOrStructural = ["o", "c", "d", "a", "r", "p", "q", "0"].includes(raw);
+
+      letter.classList.toggle(
+        "glitch-letter--heavy",
+        isRoundOrStructural || force > 0.68
+      );
     });
   }
 
-  function triggerGlitch(el) {
+  function triggerSignalGlitch(el) {
     if (!el || prefersReducedMotion) return;
 
     buildGlitchText(el);
-    setWarpVariables(el);
+    setLetterWarpVariables(el);
 
-    el.style.setProperty("--glitch-x1", `${(Math.random() * 16 - 8).toFixed(2)}px`);
-    el.style.setProperty("--glitch-x2", `${(Math.random() * 24 - 12).toFixed(2)}px`);
-    el.style.setProperty("--glitch-x3", `${(Math.random() * 10 - 5).toFixed(2)}px`);
-    el.style.setProperty("--glitch-y1", `${(Math.random() * 3 - 1.5).toFixed(2)}px`);
-    el.style.setProperty("--glitch-y2", `${(Math.random() * 5 - 2.5).toFixed(2)}px`);
+    el.style.setProperty(
+      "--glitch-x1",
+      `${(Math.random() * 16 - 8).toFixed(2)}px`
+    );
+
+    el.style.setProperty(
+      "--glitch-x2",
+      `${(Math.random() * 24 - 12).toFixed(2)}px`
+    );
+
+    el.style.setProperty(
+      "--glitch-x3",
+      `${(Math.random() * 10 - 5).toFixed(2)}px`
+    );
+
+    el.style.setProperty(
+      "--glitch-y1",
+      `${(Math.random() * 4 - 2).toFixed(2)}px`
+    );
+
+    el.style.setProperty(
+      "--glitch-y2",
+      `${(Math.random() * 6 - 3).toFixed(2)}px`
+    );
 
     el.classList.remove("is-live-glitch");
+
     void el.offsetWidth;
+
     el.classList.add("is-live-glitch");
 
     window.setTimeout(() => {
@@ -259,352 +760,483 @@
     }, 560);
   }
 
-  function prepareGlitchTargets() {
-    rows.forEach((row) => {
-      buildGlitchText(row.querySelector(".work-project__number"));
-      buildGlitchText(row.querySelector(".work-project__name"));
-    });
+  function triggerProjectGlitch(row) {
+    if (!row || prefersReducedMotion) return;
 
-    buildGlitchText(titleEl);
-    buildGlitchText(reviewEl);
+    const name = row.querySelector(".work-project__name");
+    const number = row.querySelector(".work-project__index, .work-project__number");
+
+    row.classList.remove("is-glitching");
+
+    void row.offsetWidth;
+
+    row.classList.add("is-glitching");
+
+    triggerSignalGlitch(number);
+    triggerSignalGlitch(name);
+
+    window.clearTimeout(glitchTimer);
+
+    glitchTimer = window.setTimeout(() => {
+      row.classList.remove("is-glitching");
+    }, 620);
   }
 
   /* ==========================================================
-     PROJECT RENDERING
+     ARCHIVE — HOVER PREVIEW + GLITCH
   ========================================================== */
 
-  function renderServices(items = []) {
-    if (!servicesEl) return;
+  function setupArchiveHover() {
+    const rows = Array.from(archive.querySelectorAll(".work-project"));
+    if (!rows.length) return;
 
-    const fragment = document.createDocumentFragment();
+    let activePreview = null;
+    let activeRow = null;
+    let mouseX = window.innerWidth * 0.68;
+    let mouseY = window.innerHeight * 0.42;
+    let currentX = mouseX;
+    let currentY = mouseY;
+    let raf = null;
 
-    items.forEach((item) => {
-      const li = document.createElement("li");
-      li.textContent = item;
-      fragment.appendChild(li);
-    });
+    function movePreview() {
+      currentX = lerp(currentX, mouseX, 0.16);
+      currentY = lerp(currentY, mouseY, 0.16);
 
-    servicesEl.replaceChildren(fragment);
-  }
+      if (activePreview) {
+        activePreview.style.transform = `
+          translate3d(${currentX}px, ${currentY}px, 0)
+          translate3d(1.2rem, -46%, 0)
+          rotate(-1.25deg)
+          scale(1)
+        `;
+      }
 
-  function setActiveRow(index) {
-    activeIndex = clampIndex(index);
-    archive.dataset.workActive = String(activeIndex);
-
-    rows.forEach((row, rowIndex) => {
-      const isActive = rowIndex === activeIndex;
-      row.classList.toggle("is-active", isActive);
-      row.setAttribute("aria-pressed", isActive ? "true" : "false");
-
-      if (isActive) row.setAttribute("aria-current", "true");
-      else row.removeAttribute("aria-current");
-    });
-  }
-
-  function renderProject(index) {
-    const safeIndex = clampIndex(index);
-    const project = projects[safeIndex];
-    if (!project) return;
-
-    setActiveRow(safeIndex);
-
-    setText(numberEl, project.number);
-    setText(typeEl, project.type);
-    setText(yearEl, project.year);
-    setText(titleEl, project.title);
-    setText(descriptionEl, project.description);
-    setText(constraintEl, project.constraint);
-    setText(solutionEl, project.solution);
-    setText(resultEl, project.result);
-    setText(reviewEl, `“${project.review}”`);
-    setText(clientEl, project.client);
-    setText(roleEl, project.role);
-
-    renderServices(project.services);
-
-    buildGlitchText(titleEl);
-    buildGlitchText(reviewEl);
-  }
-
-  function animateDrawerChange() {
-    if (!drawer || prefersReducedMotion) return;
-
-    drawer.classList.remove("is-changing");
-    void drawer.offsetWidth;
-    drawer.classList.add("is-changing");
-
-    window.clearTimeout(changeTimer);
-    changeTimer = window.setTimeout(() => {
-      drawer.classList.remove("is-changing");
-    }, 340);
-  }
-
-  function openDrawer(index) {
-    if (!drawer) return;
-
-    renderProject(index);
-
-    drawerOpen = true;
-    archive.classList.add("has-open-detail");
-    drawer.classList.add("is-open");
-    drawer.setAttribute("aria-hidden", "false");
-
-    lockPage();
-    hideActivePreview();
-    animateDrawerChange();
-
-    const row = rows[activeIndex];
-    if (row) {
-      triggerGlitch(row.querySelector(".work-project__number"));
-      triggerGlitch(row.querySelector(".work-project__name"));
+      if (
+        activePreview &&
+        (Math.abs(currentX - mouseX) > 0.1 ||
+          Math.abs(currentY - mouseY) > 0.1)
+      ) {
+        raf = window.requestAnimationFrame(movePreview);
+      } else {
+        raf = null;
+      }
     }
 
-    window.requestAnimationFrame(() => {
-      triggerGlitch(titleEl);
-      triggerGlitch(reviewEl);
-    });
-  }
-
-  function closeDrawer() {
-    if (!drawer) return;
-
-    drawerOpen = false;
-    archive.classList.remove("has-open-detail");
-    drawer.classList.remove("is-open", "is-changing");
-    drawer.setAttribute("aria-hidden", "true");
-
-    unlockPage();
-    setActiveRow(activeIndex);
-  }
-
-  function moveProject(delta) {
-    const nextIndex = clampIndex(activeIndex + delta);
-
-    if (drawerOpen) {
-      openDrawer(nextIndex);
-      return;
+    function requestMove() {
+      if (!raf) {
+        raf = window.requestAnimationFrame(movePreview);
+      }
     }
 
-    setActiveRow(nextIndex);
-  }
+    function showPreview(row, event) {
+      if (mobileQuery.matches) return;
 
-  /* ==========================================================
-     MOUSE-ATTACHED PREVIEW
-  ========================================================== */
+      const preview = row.querySelector(".work-project__preview");
+      if (!preview) return;
 
-  function hideActivePreview() {
-    if (activeRow) activeRow.classList.remove("is-previewing");
+      if (activeRow && activeRow !== row) {
+        activeRow.classList.remove("is-previewing");
+      }
 
-    if (activePreview) {
-      activePreview.classList.remove("is-visible");
-      activePreview.style.opacity = "0";
-      activePreview.style.visibility = "hidden";
-    }
+      if (activePreview && activePreview !== preview) {
+        activePreview.classList.remove("is-visible");
+        activePreview.style.opacity = "0";
+        activePreview.style.visibility = "hidden";
+      }
 
-    activeRow = null;
-    activePreview = null;
-  }
+      activeRow = row;
+      activePreview = preview;
 
-  function movePreview() {
-    currentX = lerp(currentX, mouseX, 0.18);
-    currentY = lerp(currentY, mouseY, 0.18);
+      mouseX = event.clientX;
+      mouseY = event.clientY;
+      currentX = event.clientX;
+      currentY = event.clientY;
 
-    if (activePreview) {
-      activePreview.style.transform = `
+      row.classList.add("is-previewing");
+      preview.classList.add("is-visible");
+
+      preview.style.opacity = "1";
+      preview.style.visibility = "visible";
+      preview.style.pointerEvents = "none";
+      preview.style.transform = `
         translate3d(${currentX}px, ${currentY}px, 0)
-        translate3d(1.1rem, -48%, 0)
+        translate3d(1.2rem, -46%, 0)
         rotate(-1.25deg)
         scale(1)
       `;
+
+      requestMove();
     }
 
-    if (
-      activePreview &&
-      (Math.abs(currentX - mouseX) > 0.15 || Math.abs(currentY - mouseY) > 0.15)
-    ) {
-      previewRaf = window.requestAnimationFrame(movePreview);
-    } else {
-      previewRaf = null;
-    }
-  }
-
-  function requestPreviewMove() {
-    if (!previewRaf) previewRaf = window.requestAnimationFrame(movePreview);
-  }
-
-  function showPreview(row, event) {
-    if (drawerOpen || mobileQuery.matches) return;
-
-    const preview = row.querySelector(".work-project__preview");
-    if (!preview) return;
-
-    if (activeRow && activeRow !== row) {
-      activeRow.classList.remove("is-previewing");
-    }
-
-    if (activePreview && activePreview !== preview) {
-      activePreview.classList.remove("is-visible");
-      activePreview.style.opacity = "0";
-      activePreview.style.visibility = "hidden";
-    }
-
-    activeRow = row;
-    activePreview = preview;
-
-    mouseX = event.clientX;
-    mouseY = event.clientY;
-    currentX = event.clientX;
-    currentY = event.clientY;
-
-    row.classList.add("is-previewing");
-    preview.classList.add("is-visible");
-    preview.style.opacity = "1";
-    preview.style.visibility = "visible";
-    preview.style.left = "0";
-    preview.style.top = "0";
-
-    triggerGlitch(row.querySelector(".work-project__number"));
-    triggerGlitch(row.querySelector(".work-project__name"));
-
-    requestPreviewMove();
-  }
-
-  function hidePreview(row) {
-    const preview = row.querySelector(".work-project__preview");
-
-    row.classList.remove("is-previewing");
-
-    if (preview) {
-      preview.classList.remove("is-visible");
-      preview.style.opacity = "0";
-      preview.style.visibility = "hidden";
-      preview.style.transform = `
-        translate3d(${currentX}px, ${currentY}px, 0)
-        translate3d(1.1rem, -43%, 0)
-        rotate(-2deg)
-        scale(0.94)
-      `;
-    }
-
-    if (activeRow === row) activeRow = null;
-    if (activePreview === preview) activePreview = null;
-  }
-
-  function setupRows() {
-    rows.forEach((row, index) => {
-      row.setAttribute("type", "button");
-      row.setAttribute("aria-pressed", index === activeIndex ? "true" : "false");
-
+    function hidePreview(row) {
       const preview = row.querySelector(".work-project__preview");
+
+      row.classList.remove("is-previewing");
+
+      if (preview) {
+        preview.classList.remove("is-visible");
+        preview.style.opacity = "0";
+        preview.style.visibility = "hidden";
+        preview.style.transform = `
+          translate3d(${currentX}px, ${currentY}px, 0)
+          translate3d(1.2rem, -42%, 0)
+          rotate(-2deg)
+          scale(0.94)
+        `;
+      }
+
+      if (activeRow === row) activeRow = null;
+      if (activePreview === preview) activePreview = null;
+    }
+
+    rows.forEach((row) => {
+      const summary = row.querySelector(".work-project__summary");
+      const preview = row.querySelector(".work-project__preview");
+
+      if (!summary) return;
+
       if (preview) {
         preview.style.opacity = "0";
         preview.style.visibility = "hidden";
+        preview.style.pointerEvents = "none";
       }
 
-      row.addEventListener("mouseenter", (event) => {
-        setActiveRow(index);
+      summary.addEventListener("mouseenter", (event) => {
+        triggerProjectGlitch(row);
         showPreview(row, event);
       });
 
-      row.addEventListener("mousemove", (event) => {
-        if (drawerOpen || mobileQuery.matches) return;
+      summary.addEventListener("mousemove", (event) => {
+        if (mobileQuery.matches) return;
+
         mouseX = event.clientX;
         mouseY = event.clientY;
-        requestPreviewMove();
+
+        requestMove();
       });
 
-      row.addEventListener("mouseleave", () => {
+      summary.addEventListener("mouseleave", () => {
         hidePreview(row);
       });
 
-      row.addEventListener("focus", () => {
-        setActiveRow(index);
-        const rect = row.getBoundingClientRect();
+      summary.addEventListener("focus", () => {
+        const rect = summary.getBoundingClientRect();
+
+        triggerProjectGlitch(row);
+
         showPreview(row, {
-          clientX: rect.right - 180,
+          clientX: rect.right - 160,
           clientY: rect.top + rect.height / 2
         });
       });
 
-      row.addEventListener("blur", () => {
+      summary.addEventListener("blur", () => {
         hidePreview(row);
       });
 
-      row.addEventListener("click", (event) => {
-        event.preventDefault();
-        openDrawer(index);
+      summary.addEventListener("click", () => {
+        triggerProjectGlitch(row);
       });
     });
   }
 
-  function setupDrawerControls() {
-    if (closeBtn) {
-      closeBtn.addEventListener("click", (event) => {
-        event.preventDefault();
-        closeDrawer();
-      });
-    }
+  /* ==========================================================
+     ARCHIVE — NOOMO STYLE REVEAL
+  ========================================================== */
 
-    if (prevBtn) {
-      prevBtn.addEventListener("click", (event) => {
-        event.preventDefault();
-        event.stopPropagation();
-        openDrawer(activeIndex - 1);
-      });
-    }
+  function setupArchiveNoomoReveal() {
+    const gsap = window.gsap;
+    const ScrollTrigger = window.ScrollTrigger;
+    const hasGsap = gsap && ScrollTrigger;
 
-    if (nextBtn) {
-      nextBtn.addEventListener("click", (event) => {
-        event.preventDefault();
-        event.stopPropagation();
-        openDrawer(activeIndex + 1);
-      });
-    }
+    const shell = archive.querySelector(".work-archive__shell");
+    const header = archive.querySelector(".work-archive__header");
+    const label = archive.querySelector(".work-archive__label");
+    const kicker = archive.querySelector(".work-archive__kicker");
+    const title = archive.querySelector(".work-archive__title");
+    const intro = archive.querySelector(".work-archive__intro");
+    const rows = Array.from(archive.querySelectorAll(".work-project"));
 
-    document.addEventListener("click", (event) => {
-      if (!drawerOpen || !drawer) return;
+    if (!shell || !rows.length) return;
 
-      const clickedDrawer = drawer.contains(event.target);
-      const clickedRow = event.target.closest?.("[data-work-project]");
-
-      if (!clickedDrawer && !clickedRow) closeDrawer();
+    rows.forEach((row) => {
+      row.style.setProperty("--row-line", "0");
+      row.style.setProperty("--row-fill", "0");
     });
 
-    window.addEventListener("keydown", (event) => {
-      const activeTag = document.activeElement?.tagName?.toLowerCase();
-      const isTyping =
-        activeTag === "input" ||
-        activeTag === "textarea" ||
-        document.activeElement?.isContentEditable;
+    if (!hasGsap || prefersReducedMotion || mobileQuery.matches) {
+      archive.classList.add("is-formed");
+      archive.style.setProperty("--archive-reveal", "1");
+      archive.style.setProperty("--archive-top-line", "1");
+      archive.style.setProperty("--archive-glow", "0");
 
-      if (isTyping) return;
+      rows.forEach((row) => {
+        row.style.setProperty("--row-line", "1");
+        row.style.setProperty("--row-fill", "0");
+      });
 
-      if (event.key === "Escape" && drawerOpen) {
-        event.preventDefault();
-        closeDrawer();
-        return;
-      }
+      return;
+    }
 
-      if (event.key === "ArrowLeft" && drawerOpen) {
-        event.preventDefault();
-        moveProject(-1);
-        return;
-      }
+    gsap.registerPlugin(ScrollTrigger);
 
-      if (event.key === "ArrowRight" && drawerOpen) {
-        event.preventDefault();
-        moveProject(1);
+    ScrollTrigger.getAll().forEach((trigger) => {
+      const id = trigger.vars && trigger.vars.id;
+
+      if (
+        id === "workArchiveReveal" ||
+        id === "workArchiveFormation" ||
+        id === "workArchiveNoomo"
+      ) {
+        trigger.kill();
       }
     });
+
+    archive.classList.remove("is-forming", "is-formed");
+
+    gsap.set(archive, {
+      minHeight: "100vh",
+      "--archive-reveal": 0,
+      "--archive-top-line": 0,
+      "--archive-glow": 0
+    });
+
+    gsap.set(shell, {
+      yPercent: 7,
+      scale: 0.985,
+      transformOrigin: "50% 50%"
+    });
+
+    if (header) {
+      gsap.set(header, {
+        y: 70,
+        autoAlpha: 1
+      });
+    }
+
+    gsap.set([label, kicker].filter(Boolean), {
+      autoAlpha: 0,
+      y: 24,
+      filter: "blur(8px)"
+    });
+
+    if (title) {
+      gsap.set(title, {
+        autoAlpha: 0,
+        y: 80,
+        scale: 0.965,
+        filter: "blur(20px)",
+        letterSpacing: "-0.13em"
+      });
+    }
+
+    if (intro) {
+      gsap.set(intro, {
+        autoAlpha: 0,
+        y: 38,
+        filter: "blur(12px)"
+      });
+    }
+
+    rows.forEach((row) => {
+      const pieces = row.querySelectorAll(
+        ".work-project__index, .work-project__number, .work-project__name, .work-project__meta, .work-project__year, .work-project__arrow"
+      );
+
+      gsap.set(row, {
+        "--row-line": 0,
+        "--row-fill": 0,
+        autoAlpha: 1
+      });
+
+      gsap.set(pieces, {
+        autoAlpha: 0,
+        y: 42,
+        filter: "blur(14px)"
+      });
+    });
+
+    const tl = gsap.timeline({
+      defaults: {
+        ease: "power3.out"
+      },
+      scrollTrigger: {
+        id: "workArchiveNoomo",
+        trigger: archive,
+        start: "top top",
+        end: "+=230%",
+        scrub: 1.25,
+        pin: true,
+        anticipatePin: 1,
+        invalidateOnRefresh: true,
+        onEnter: () => archive.classList.add("is-forming"),
+        onLeave: () => archive.classList.add("is-formed"),
+        onEnterBack: () => archive.classList.add("is-forming"),
+        onLeaveBack: () => {
+          archive.classList.remove("is-formed");
+          archive.classList.remove("is-forming");
+        }
+      }
+    });
+
+    tl.to(
+      archive,
+      {
+        "--archive-reveal": 0.42,
+        "--archive-glow": 0.35,
+        duration: 0.7,
+        ease: "none"
+      },
+      0
+    );
+
+    tl.to(
+      shell,
+      {
+        yPercent: 0,
+        scale: 1,
+        duration: 1.05,
+        ease: "power2.out"
+      },
+      0
+    );
+
+    if (header) {
+      tl.to(
+        header,
+        {
+          y: 0,
+          duration: 1.1,
+          ease: "power3.out"
+        },
+        0.05
+      );
+    }
+
+    tl.to(
+      [label, kicker].filter(Boolean),
+      {
+        autoAlpha: 1,
+        y: 0,
+        filter: "blur(0px)",
+        duration: 0.65,
+        stagger: 0.06,
+        ease: "power3.out"
+      },
+      0.28
+    );
+
+    if (title) {
+      tl.to(
+        title,
+        {
+          autoAlpha: 1,
+          y: 0,
+          scale: 1,
+          filter: "blur(0px)",
+          letterSpacing: "-0.082em",
+          duration: 1.1,
+          ease: "power4.out"
+        },
+        0.38
+      );
+    }
+
+    if (intro) {
+      tl.to(
+        intro,
+        {
+          autoAlpha: 1,
+          y: 0,
+          filter: "blur(0px)",
+          duration: 0.8,
+          ease: "power3.out"
+        },
+        0.8
+      );
+    }
+
+    tl.to(
+      archive,
+      {
+        "--archive-top-line": 1,
+        duration: 1.15,
+        ease: "power2.inOut"
+      },
+      0.95
+    );
+
+    tl.to(
+      archive,
+      {
+        "--archive-reveal": 0.82,
+        duration: 1.2,
+        ease: "none"
+      },
+      1.05
+    );
+
+    rows.forEach((row, index) => {
+      const pieces = row.querySelectorAll(
+        ".work-project__index, .work-project__number, .work-project__name, .work-project__meta, .work-project__year, .work-project__arrow"
+      );
+
+      const start = 1.32 + index * 0.18;
+
+      tl.to(
+        row,
+        {
+          "--row-line": 1,
+          duration: 0.95,
+          ease: "power2.inOut"
+        },
+        start
+      );
+
+      tl.to(
+        pieces,
+        {
+          autoAlpha: 1,
+          y: 0,
+          filter: "blur(0px)",
+          duration: 0.72,
+          stagger: 0.04,
+          ease: "power4.out"
+        },
+        start + 0.16
+      );
+    });
+
+    tl.to(
+      archive,
+      {
+        "--archive-glow": 0,
+        duration: 0.8,
+        ease: "none"
+      },
+      2.35
+    );
   }
+
+  /* ==========================================================
+     IMAGE FALLBACKS
+  ========================================================== */
 
   function setupImageFallbacks() {
-    archive.querySelectorAll("img").forEach((image) => {
+    const images = archive.querySelectorAll("img");
+
+    images.forEach((image) => {
       image.addEventListener(
         "error",
         () => {
-          const holder = image.closest(".work-project__preview");
-          if (holder) holder.classList.add("is-missing-image");
+          const holder = image.closest(
+            ".work-project__preview, .work-project__media"
+          );
+
+          if (holder) {
+            holder.classList.add("is-missing-image");
+          }
+
           image.style.display = "none";
         },
         { once: true }
@@ -612,18 +1244,21 @@
     });
   }
 
+  /* ==========================================================
+     INIT
+  ========================================================== */
+
   function init() {
-    if (!rows.length) return;
-
-    archive.classList.remove("has-open-detail", "is-previewing");
-    unlockPage();
-
-    setupRows();
-    setupDrawerControls();
+    injectGlitchStyles();
+    cleanOldStates();
+    injectTrustBridge();
+    closeAllArchiveProjects();
+    setupTrustCards();
+    setupArchiveDetails();
+    buildAllGlitchText();
+    setupArchiveHover();
+    setupArchiveNoomoReveal();
     setupImageFallbacks();
-    renderProject(0);
-    prepareGlitchTargets();
-    closeDrawer();
 
     if (window.ScrollTrigger) {
       window.ScrollTrigger.refresh();
