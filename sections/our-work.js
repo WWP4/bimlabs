@@ -876,88 +876,158 @@ function closeAllArchiveProjects() {
 
 
 /* ==========================================================
-   ARCHIVE — SUBTLE TEXT GLITCH / MORPH
+   ARCHIVE — REAL LETTER GLITCH / MORPH
+   No scramble. The actual letters distort.
 ========================================================== */
 
 function setupArchiveTextGlitch() {
   const rows = Array.from(archive.querySelectorAll(".work-project"));
-  const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789/.-_";
 
   if (!rows.length || prefersReducedMotion) return;
 
-  function randomChar() {
-    return chars[Math.floor(Math.random() * chars.length)];
+  function random(min, max) {
+    return min + Math.random() * (max - min);
   }
 
-  function resetText(element) {
-    if (!element) return;
+  function makePercent(min, max) {
+    return `${random(min, max).toFixed(1)}%`;
+  }
 
-    if (element._glitchFrame) {
-      cancelAnimationFrame(element._glitchFrame);
-      element._glitchFrame = null;
+  function buildGlyphs(name) {
+    if (!name || name.dataset.glyphReady === "true") return;
+
+    const original = name.textContent.replace(/\s+/g, " ").trim();
+
+    name.dataset.originalText = original;
+    name.setAttribute("aria-label", original);
+    name.classList.add("glitch-word");
+
+    name.innerHTML = "";
+
+    Array.from(original).forEach((char, index) => {
+      const glyph = document.createElement("span");
+      const isSpace = char === " ";
+
+      glyph.className = isSpace
+        ? "glitch-char glitch-char--space"
+        : "glitch-char";
+
+      glyph.dataset.char = isSpace ? "\u00A0" : char;
+      glyph.style.setProperty("--i", index);
+      glyph.setAttribute("aria-hidden", "true");
+      glyph.textContent = isSpace ? "\u00A0" : char;
+
+      name.appendChild(glyph);
+    });
+
+    name.dataset.glyphReady = "true";
+  }
+
+  function resetGlyphs(name) {
+    if (!name) return;
+
+    if (name._glyphFrame) {
+      cancelAnimationFrame(name._glyphFrame);
+      name._glyphFrame = null;
     }
 
-    const original = element.dataset.originalText || element.textContent.trim();
+    name.classList.remove("is-glitching", "is-glitch-hit");
 
-    element.textContent = original;
-    element.dataset.glitchText = original;
-    element.classList.remove("is-glitching");
+    name.querySelectorAll(".glitch-char").forEach((glyph) => {
+      glyph.classList.remove("is-hot");
+
+      glyph.style.removeProperty("--gx");
+      glyph.style.removeProperty("--gy");
+      glyph.style.removeProperty("--gskew");
+      glyph.style.removeProperty("--gscale");
+      glyph.style.removeProperty("--gblur");
+      glyph.style.removeProperty("--gopacity");
+
+      glyph.style.removeProperty("--slice-a");
+      glyph.style.removeProperty("--slice-b");
+      glyph.style.removeProperty("--slice-c");
+      glyph.style.removeProperty("--slice-d");
+
+      glyph.style.removeProperty("--ghost-x-one");
+      glyph.style.removeProperty("--ghost-y-one");
+      glyph.style.removeProperty("--ghost-x-two");
+      glyph.style.removeProperty("--ghost-y-two");
+    });
   }
 
-  function scrambleText(element, options = {}) {
-    const original = element.dataset.originalText || element.textContent.trim();
+  function fireGlyphGlitch(name) {
+    if (!name || mobileQuery.matches) return;
 
-    element.dataset.originalText = original;
-    element.dataset.glitchText = original;
-    element.setAttribute("aria-label", original);
+    buildGlyphs(name);
+    resetGlyphs(name);
 
-    const duration = options.duration || 460;
-    const intensity = options.intensity || 0.32;
+    const glyphs = Array.from(
+      name.querySelectorAll(".glitch-char:not(.glitch-char--space)")
+    );
+
+    if (!glyphs.length) return;
+
+    const duration = 520;
     const start = performance.now();
 
-    if (element._glitchFrame) {
-      cancelAnimationFrame(element._glitchFrame);
-    }
-
-    element.classList.add("is-glitching");
+    name.classList.add("is-glitching", "is-glitch-hit");
 
     function frame(now) {
       const elapsed = now - start;
-      const progress = clamp(elapsed / duration, 0, 1);
-      const settle = 1 - progress;
+      const progress = Math.min(elapsed / duration, 1);
 
-      const next = original
-        .split("")
-        .map((letter, index) => {
-          if (letter === " ") return " ";
+      const attack = Math.sin(progress * Math.PI);
+      const decay = Math.pow(1 - progress, 0.42);
+      const force = attack * decay;
 
-          const letterDelay = index / Math.max(original.length - 1, 1);
-          const threshold = progress - letterDelay * 0.14;
+      glyphs.forEach((glyph, index) => {
+        const wave = Math.sin(now * 0.034 + index * 1.7);
+        const pulse = Math.random() > 0.48 ? 1 : 0.38;
+        const amount = force * pulse;
 
-          if (threshold > 0.72) return letter;
+        glyph.classList.toggle("is-hot", Math.random() > 0.58);
 
-          const shouldGlitch =
-            Math.random() < intensity * settle ||
-            Math.sin((progress * 18 + index) * Math.PI) > 0.84;
+        glyph.style.setProperty("--gx", `${random(-7, 7) * amount}px`);
+        glyph.style.setProperty("--gy", `${random(-3, 3) * amount}px`);
+        glyph.style.setProperty("--gskew", `${random(-14, 14) * amount}deg`);
+        glyph.style.setProperty("--gscale", `${1 + random(-0.12, 0.16) * amount}`);
+        glyph.style.setProperty("--gblur", `${random(0, 1.1) * amount}px`);
+        glyph.style.setProperty("--gopacity", `${0.28 + amount * 0.72}`);
 
-          return shouldGlitch ? randomChar() : letter;
-        })
-        .join("");
+        glyph.style.setProperty("--slice-a", makePercent(0, 24));
+        glyph.style.setProperty("--slice-b", makePercent(28, 48));
+        glyph.style.setProperty("--slice-c", makePercent(50, 68));
+        glyph.style.setProperty("--slice-d", makePercent(72, 100));
 
-      element.textContent = next;
-      element.dataset.glitchText = next;
+        glyph.style.setProperty(
+          "--ghost-x-one",
+          `${(wave > 0 ? random(2, 9) : random(-9, -2)) * amount}px`
+        );
+
+        glyph.style.setProperty(
+          "--ghost-y-one",
+          `${random(-2, 2) * amount}px`
+        );
+
+        glyph.style.setProperty(
+          "--ghost-x-two",
+          `${(wave > 0 ? random(-8, -2) : random(2, 8)) * amount}px`
+        );
+
+        glyph.style.setProperty(
+          "--ghost-y-two",
+          `${random(-2, 2) * amount}px`
+        );
+      });
 
       if (progress < 1) {
-        element._glitchFrame = requestAnimationFrame(frame);
+        name._glyphFrame = requestAnimationFrame(frame);
       } else {
-        element.textContent = original;
-        element.dataset.glitchText = original;
-        element.classList.remove("is-glitching");
-        element._glitchFrame = null;
+        resetGlyphs(name);
       }
     }
 
-    element._glitchFrame = requestAnimationFrame(frame);
+    name._glyphFrame = requestAnimationFrame(frame);
   }
 
   rows.forEach((row) => {
@@ -966,40 +1036,25 @@ function setupArchiveTextGlitch() {
 
     if (!summary || !name) return;
 
-    const original = name.textContent.trim();
-
-    name.dataset.originalText = original;
-    name.dataset.glitchText = original;
-    name.setAttribute("aria-label", original);
+    buildGlyphs(name);
 
     summary.addEventListener("mouseenter", () => {
-      if (mobileQuery.matches) return;
-
-      scrambleText(name, {
-        duration: 460,
-        intensity: 0.3
-      });
+      fireGlyphGlitch(name);
     });
 
     summary.addEventListener("focus", () => {
-      if (mobileQuery.matches) return;
-
-      scrambleText(name, {
-        duration: 460,
-        intensity: 0.3
-      });
+      fireGlyphGlitch(name);
     });
 
     summary.addEventListener("mouseleave", () => {
-      resetText(name);
+      resetGlyphs(name);
     });
 
     summary.addEventListener("blur", () => {
-      resetText(name);
+      resetGlyphs(name);
     });
   });
 }
-
 
 
 
