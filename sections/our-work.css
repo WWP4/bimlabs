@@ -1928,3 +1928,21 @@
 .work-project__details {
   padding-bottom: clamp(1.5rem, 3vw, 3rem);
 }
+
+
+
+
+
+
+
+
+.work-project[open] {
+  --row-fill: 1;
+}
+
+.work-project[open] .work-project__panel {
+  max-height: 32rem;
+  opacity: 1;
+  padding: 0 0 clamp(2rem, 4vh, 3rem);
+  transform: translate3d(0, 0, 0);
+}
