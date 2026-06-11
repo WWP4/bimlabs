@@ -2045,3 +2045,150 @@
     display: none !important;
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+/* ==========================================================
+   BIM LABS — REAL LETTER GLITCH / MORPH
+   Actual glyph distortion. No character scramble.
+========================================================== */
+
+.work-project__name.glitch-word {
+  position: relative;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.006em;
+  white-space: nowrap;
+  isolation: isolate;
+}
+
+.glitch-char {
+  position: relative;
+  display: inline-block;
+  transform:
+    translate3d(var(--gx, 0), var(--gy, 0), 0)
+    skewX(var(--gskew, 0deg))
+    scaleY(var(--gscale, 1));
+  transform-origin: 50% 54%;
+  filter:
+    blur(var(--gblur, 0))
+    contrast(1.08);
+  opacity: var(--gopacity, 1);
+  will-change: transform, filter, opacity;
+}
+
+.glitch-char--space {
+  width: 0.28em;
+}
+
+.glitch-char::before,
+.glitch-char::after {
+  content: attr(data-char);
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  color: rgba(255, 255, 255, 0.94);
+  opacity: 0;
+  mix-blend-mode: screen;
+  will-change: transform, opacity, clip-path;
+}
+
+.work-project__name.is-glitching .glitch-char::before {
+  opacity: 0.78;
+  transform:
+    translate3d(var(--ghost-x-one, 0), var(--ghost-y-one, 0), 0)
+    skewX(-8deg);
+  clip-path: polygon(
+    0 var(--slice-a, 0%),
+    100% var(--slice-a, 0%),
+    100% var(--slice-b, 42%),
+    0 var(--slice-b, 42%)
+  );
+  text-shadow:
+    0 0 0.25rem rgba(255, 255, 255, 0.28),
+    0.06em 0 rgba(255, 255, 255, 0.18);
+}
+
+.work-project__name.is-glitching .glitch-char::after {
+  opacity: 0.62;
+  transform:
+    translate3d(var(--ghost-x-two, 0), var(--ghost-y-two, 0), 0)
+    skewX(7deg);
+  clip-path: polygon(
+    0 var(--slice-c, 52%),
+    100% var(--slice-c, 52%),
+    100% var(--slice-d, 100%),
+    0 var(--slice-d, 100%)
+  );
+  text-shadow:
+    0 0 0.35rem rgba(255, 255, 255, 0.2),
+    -0.06em 0 rgba(255, 255, 255, 0.14);
+}
+
+.work-project__name.is-glitch-hit {
+  animation: bimGlyphWordHit 520ms steps(2, end) both;
+}
+
+.work-project__name.is-glitching .glitch-char.is-hot {
+  text-shadow:
+    0 0 0.28rem rgba(255, 255, 255, 0.42),
+    0 0 0.8rem rgba(255, 255, 255, 0.18);
+}
+
+.work-project__name.is-glitching .glitch-char.is-hot::before,
+.work-project__name.is-glitching .glitch-char.is-hot::after {
+  opacity: 0.92;
+}
+
+@keyframes bimGlyphWordHit {
+  0% {
+    filter: contrast(1) brightness(1);
+  }
+
+  12% {
+    filter: contrast(1.45) brightness(1.22);
+  }
+
+  24% {
+    filter: contrast(0.9) brightness(0.9);
+  }
+
+  38% {
+    filter: contrast(1.28) brightness(1.12);
+  }
+
+  56% {
+    filter: contrast(1.05) brightness(1);
+  }
+
+  100% {
+    filter: contrast(1) brightness(1);
+  }
+}
+
+@media (max-width: 900px), (prefers-reduced-motion: reduce) {
+  .work-project__name.glitch-word {
+    display: inline;
+  }
+
+  .glitch-char {
+    display: inline;
+    transform: none !important;
+    filter: none !important;
+    opacity: 1 !important;
+  }
+
+  .glitch-char::before,
+  .glitch-char::after {
+    display: none !important;
+  }
+}
