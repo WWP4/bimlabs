@@ -2830,3 +2830,85 @@
     opacity: 1;
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+/* ==========================================================
+   BIM LABS — SEAMLESS ARCHIVE DETAIL PANELS
+   Paste at the VERY bottom of sections/our-work.css.
+========================================================== */
+
+.work-archive,
+.work-project {
+  overflow-anchor: none;
+}
+
+.work-project__panel,
+.work-project__details,
+.work-project__detail,
+.work-project__body,
+.work-project__content {
+  box-sizing: border-box;
+}
+
+.work-project__panel {
+  display: block;
+  max-height: none !important;
+  height: 0;
+  opacity: 0;
+  overflow: hidden;
+  padding: 0 !important;
+  transform: translate3d(0, -0.45rem, 0);
+  transition:
+    height 760ms var(--work-ease),
+    opacity 340ms ease,
+    transform 760ms var(--work-ease),
+    padding-bottom 760ms var(--work-ease);
+  will-change: height, opacity, transform;
+}
+
+.work-project[open] .work-project__panel {
+  max-height: none !important;
+  opacity: 1;
+  padding: 0 0 clamp(2rem, 4vh, 3rem) !important;
+  transform: translate3d(0, 0, 0);
+}
+
+.work-project.is-closing .work-project__panel {
+  pointer-events: none;
+}
+
+.work-project.is-opening .work-project__summary,
+.work-project.is-closing .work-project__summary {
+  pointer-events: none;
+}
+
+.work-project__detail-scroll {
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(246, 246, 240, 0.28) transparent;
+}
+
+.work-project__detail-scroll::-webkit-scrollbar {
+  width: 0.35rem;
+}
+
+.work-project__detail-scroll::-webkit-scrollbar-thumb {
+  background: rgba(246, 246, 240, 0.22);
+  border-radius: 999px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .work-project__panel {
+    transition: none !important;
+  }
+}
