@@ -3,7 +3,7 @@
    Clean JS rebuild
    - Flying trust-card section
    - Archive details with <details>/<summary>
-   - Noomo-style pinned archive revealf
+   - Noomo-style pinned archive reveal
    - Mouse-attached preview
    - Working physical letter glitch on hover/focus
    - No drawer
@@ -74,7 +74,6 @@
       .replaceAll('"', "&quot;")
       .replaceAll("'", "&#039;");
   }
-
 
   /* ==========================================================
      CLEAN OLD / DUPLICATE STATES
@@ -387,161 +386,360 @@
     });
   }
 
+  /* ==========================================================
+     GLITCH STYLE INJECTION
+     Keeps the effect self-contained so the file does not crash
+     if the CSS was not pasted yet.
+  ========================================================== */
 
+  function injectGlitchStyles() {
+    if (document.getElementById("bim-work-glitch-styles")) return;
 
+    const style = document.createElement("style");
+    style.id = "bim-work-glitch-styles";
 
-/* ==========================================================
-   PHYSICAL TEXT SIGNAL GLITCH
-   Same text. Real letters warp. No random symbols.
-========================================================== */
-
-function escapeHTML(value) {
-  return String(value)
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#039;");
-}
-
-function buildGlitchText(el) {
-  if (!el || el.dataset.glitchBuilt === "true") return;
-
-  const text = el.textContent.trim();
-  if (!text) return;
-
-  el.dataset.text = text;
-  el.dataset.glitchBuilt = "true";
-
-  const letters = Array.from(text)
-    .map((char, index) => {
-      if (char === " ") {
-        return `<span class="glitch-letter glitch-letter--space" style="--i:${index}">&nbsp;</span>`;
+    style.textContent = `
+      .work-project__name,
+      .work-project__number {
+        position: relative;
       }
 
-      return `
-        <span class="glitch-letter" style="--i:${index}">
-          ${escapeHTML(char)}
-        </span>
-      `;
-    })
-    .join("");
+      .glitch-word__base,
+      .glitch-word__layer {
+        display: inline-flex;
+        align-items: baseline;
+        white-space: inherit;
+      }
 
-  el.innerHTML = `
-    <span class="glitch-word__base">${letters}</span>
-    <span class="glitch-word__layer glitch-word__layer--a" aria-hidden="true">${letters}</span>
-    <span class="glitch-word__layer glitch-word__layer--b" aria-hidden="true">${letters}</span>
-    <span class="glitch-word__layer glitch-word__layer--c" aria-hidden="true">${letters}</span>
-  `;
-}
+      .glitch-word__base {
+        position: relative;
+        z-index: 1;
+      }
 
-function updateGlitchText(el, text) {
-  if (!el) return;
+      .glitch-word__layer {
+        position: absolute;
+        inset: 0;
+        z-index: 2;
+        opacity: 0;
+        pointer-events: none;
+        mix-blend-mode: screen;
+      }
 
-  const cleanText = String(text || "").trim();
+      .glitch-word__layer--a {
+        color: rgba(255, 255, 255, 0.98);
+        clip-path: inset(0 0 62% 0);
+      }
 
-  el.dataset.text = cleanText;
-  el.dataset.glitchBuilt = "false";
-  el.textContent = cleanText;
+      .glitch-word__layer--b {
+        color: rgba(180, 190, 205, 0.7);
+        clip-path: inset(34% 0 34% 0);
+      }
 
-  buildGlitchText(el);
-}
+      .glitch-word__layer--c {
+        color: rgba(255, 255, 255, 0.55);
+        clip-path: inset(62% 0 0 0);
+      }
 
-function setLetterWarpVariables(el) {
-  if (!el) return;
+      .glitch-letter {
+        display: inline-block;
+        position: relative;
+        transform-origin: 50% 55%;
+        will-change: transform, filter, opacity;
+      }
 
-  const letters = Array.from(el.querySelectorAll(".glitch-letter:not(.glitch-letter--space)"));
+      .glitch-letter--space {
+        min-width: 0.34em;
+      }
 
-  letters.forEach((letter) => {
-    const force = Math.random();
+      .is-live-glitch .glitch-word__layer {
+        opacity: 1;
+      }
 
-    const x = (Math.random() * 18 - 9).toFixed(2);
-    const y = (Math.random() * 6 - 3).toFixed(2);
-    const skew = (Math.random() * 22 - 11).toFixed(2);
-    const rotate = (Math.random() * 5 - 2.5).toFixed(2);
-    const scaleX = (0.86 + Math.random() * 0.34).toFixed(2);
-    const scaleY = (0.9 + Math.random() * 0.22).toFixed(2);
+      .is-live-glitch .glitch-word__layer--a {
+        animation: bimGlitchLayerA 520ms steps(2, end) both;
+      }
 
-    letter.style.setProperty("--warp-x", `${x}px`);
-    letter.style.setProperty("--warp-y", `${y}px`);
-    letter.style.setProperty("--warp-skew", `${skew}deg`);
-    letter.style.setProperty("--warp-rotate", `${rotate}deg`);
-    letter.style.setProperty("--warp-scale-x", scaleX);
-    letter.style.setProperty("--warp-scale-y", scaleY);
+      .is-live-glitch .glitch-word__layer--b {
+        animation: bimGlitchLayerB 520ms steps(2, end) both;
+      }
 
-    /*
-      Stronger distortion bias for round letters:
-      O, o, C, D, A, R, P, Q, 0
-      This makes letters like the O in Orynd physically warp harder.
-    */
-    const raw = letter.textContent.trim().toLowerCase();
-    const isRoundOrStructural = ["o", "c", "d", "a", "r", "p", "q", "0"].includes(raw);
+      .is-live-glitch .glitch-word__layer--c {
+        animation: bimGlitchLayerC 520ms steps(2, end) both;
+      }
 
-    letter.classList.toggle("glitch-letter--heavy", isRoundOrStructural || force > 0.68);
-  });
-}
+      .is-live-glitch .glitch-word__base .glitch-letter {
+        animation: bimLetterWarp 520ms cubic-bezier(0.22, 1, 0.36, 1) both;
+        animation-delay: calc(var(--i, 0) * 8ms);
+      }
 
-function triggerSignalGlitch(el) {
-  if (!el || prefersReducedMotion) return;
+      .is-live-glitch .glitch-letter--heavy {
+        filter: blur(0.35px) contrast(1.18);
+      }
 
-  buildGlitchText(el);
-  setLetterWarpVariables(el);
+      .work-project.is-glitching .work-project__summary {
+        filter: contrast(1.08);
+      }
 
-  el.style.setProperty("--glitch-x1", `${(Math.random() * 16 - 8).toFixed(2)}px`);
-  el.style.setProperty("--glitch-x2", `${(Math.random() * 24 - 12).toFixed(2)}px`);
-  el.style.setProperty("--glitch-x3", `${(Math.random() * 10 - 5).toFixed(2)}px`);
-  el.style.setProperty("--glitch-y1", `${(Math.random() * 3 - 1.5).toFixed(2)}px`);
-  el.style.setProperty("--glitch-y2", `${(Math.random() * 5 - 2.5).toFixed(2)}px`);
+      @keyframes bimGlitchLayerA {
+        0% {
+          transform: translate3d(0, 0, 0);
+          opacity: 0;
+        }
+        14% {
+          transform: translate3d(var(--glitch-x1, 7px), var(--glitch-y1, -1px), 0);
+          opacity: 0.95;
+        }
+        36% {
+          transform: translate3d(calc(var(--glitch-x1, 7px) * -0.45), 0, 0);
+          opacity: 0.6;
+        }
+        58% {
+          transform: translate3d(var(--glitch-x3, 3px), var(--glitch-y2, 2px), 0);
+          opacity: 0.9;
+        }
+        100% {
+          transform: translate3d(0, 0, 0);
+          opacity: 0;
+        }
+      }
 
-  el.classList.remove("is-live-glitch");
+      @keyframes bimGlitchLayerB {
+        0% {
+          transform: translate3d(0, 0, 0);
+          opacity: 0;
+        }
+        10% {
+          transform: translate3d(var(--glitch-x2, -10px), var(--glitch-y2, 2px), 0);
+          opacity: 0.75;
+        }
+        28% {
+          transform: translate3d(calc(var(--glitch-x2, -10px) * -0.35), var(--glitch-y1, -1px), 0);
+          opacity: 0.95;
+        }
+        48% {
+          transform: translate3d(var(--glitch-x1, 7px), 0, 0);
+          opacity: 0.45;
+        }
+        100% {
+          transform: translate3d(0, 0, 0);
+          opacity: 0;
+        }
+      }
 
-  void el.offsetWidth;
+      @keyframes bimGlitchLayerC {
+        0% {
+          transform: translate3d(0, 0, 0);
+          opacity: 0;
+        }
+        18% {
+          transform: translate3d(var(--glitch-x3, 3px), 0, 0);
+          opacity: 0.58;
+        }
+        42% {
+          transform: translate3d(var(--glitch-x2, -10px), var(--glitch-y2, 2px), 0);
+          opacity: 0.82;
+        }
+        68% {
+          transform: translate3d(calc(var(--glitch-x1, 7px) * -0.5), var(--glitch-y1, -1px), 0);
+          opacity: 0.45;
+        }
+        100% {
+          transform: translate3d(0, 0, 0);
+          opacity: 0;
+        }
+      }
 
-  el.classList.add("is-live-glitch");
+      @keyframes bimLetterWarp {
+        0% {
+          transform: translate3d(0, 0, 0) skew(0deg) rotate(0deg) scale(1);
+        }
+        18% {
+          transform:
+            translate3d(calc(var(--warp-x, 0px) * 0.65), var(--warp-y, 0px), 0)
+            skew(var(--warp-skew, 0deg))
+            rotate(var(--warp-rotate, 0deg))
+            scale(var(--warp-scale-x, 1), var(--warp-scale-y, 1));
+        }
+        38% {
+          transform:
+            translate3d(calc(var(--warp-x, 0px) * -0.35), calc(var(--warp-y, 0px) * -0.6), 0)
+            skew(calc(var(--warp-skew, 0deg) * -0.55))
+            rotate(calc(var(--warp-rotate, 0deg) * -0.45))
+            scale(1.02, 0.98);
+        }
+        58% {
+          transform:
+            translate3d(calc(var(--warp-x, 0px) * 0.18), calc(var(--warp-y, 0px) * 0.35), 0)
+            skew(calc(var(--warp-skew, 0deg) * 0.25))
+            rotate(calc(var(--warp-rotate, 0deg) * 0.3))
+            scale(0.98, 1.02);
+        }
+        100% {
+          transform: translate3d(0, 0, 0) skew(0deg) rotate(0deg) scale(1);
+        }
+      }
 
-  window.setTimeout(() => {
+      @media (prefers-reduced-motion: reduce) {
+        .is-live-glitch .glitch-word__layer,
+        .is-live-glitch .glitch-letter {
+          animation: none !important;
+        }
+      }
+    `;
+
+    document.head.appendChild(style);
+  }
+
+  /* ==========================================================
+     PHYSICAL TEXT SIGNAL GLITCH
+     Same text. Real letters warp. No random symbols.
+  ========================================================== */
+
+  function escapeHTML(value) {
+    return String(value)
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+      .replaceAll('"', "&quot;")
+      .replaceAll("'", "&#039;");
+  }
+
+  function buildGlitchText(el) {
+    if (!el || el.dataset.glitchBuilt === "true") return;
+
+    const text = el.textContent.trim();
+    if (!text) return;
+
+    el.dataset.text = text;
+    el.dataset.glitchBuilt = "true";
+
+    const letters = Array.from(text)
+      .map((char, index) => {
+        if (char === " ") {
+          return `<span class="glitch-letter glitch-letter--space" style="--i:${index}">&nbsp;</span>`;
+        }
+
+        return `
+          <span class="glitch-letter" style="--i:${index}">
+            ${escapeHTML(char)}
+          </span>
+        `;
+      })
+      .join("");
+
+    el.innerHTML = `
+      <span class="glitch-word__base">${letters}</span>
+      <span class="glitch-word__layer glitch-word__layer--a" aria-hidden="true">${letters}</span>
+      <span class="glitch-word__layer glitch-word__layer--b" aria-hidden="true">${letters}</span>
+      <span class="glitch-word__layer glitch-word__layer--c" aria-hidden="true">${letters}</span>
+    `;
+  }
+
+  function updateGlitchText(el, text) {
+    if (!el) return;
+
+    const cleanText = String(text || "").trim();
+
+    el.dataset.text = cleanText;
+    el.dataset.glitchBuilt = "false";
+    el.textContent = cleanText;
+
+    buildGlitchText(el);
+  }
+
+  function setLetterWarpVariables(el) {
+    if (!el) return;
+
+    const letters = Array.from(
+      el.querySelectorAll(".glitch-letter:not(.glitch-letter--space)")
+    );
+
+    letters.forEach((letter) => {
+      const force = Math.random();
+
+      const x = (Math.random() * 18 - 9).toFixed(2);
+      const y = (Math.random() * 6 - 3).toFixed(2);
+      const skew = (Math.random() * 22 - 11).toFixed(2);
+      const rotate = (Math.random() * 5 - 2.5).toFixed(2);
+      const scaleX = (0.86 + Math.random() * 0.34).toFixed(2);
+      const scaleY = (0.9 + Math.random() * 0.22).toFixed(2);
+
+      letter.style.setProperty("--warp-x", `${x}px`);
+      letter.style.setProperty("--warp-y", `${y}px`);
+      letter.style.setProperty("--warp-skew", `${skew}deg`);
+      letter.style.setProperty("--warp-rotate", `${rotate}deg`);
+      letter.style.setProperty("--warp-scale-x", scaleX);
+      letter.style.setProperty("--warp-scale-y", scaleY);
+
+      const raw = letter.textContent.trim().toLowerCase();
+      const isRoundOrStructural = ["o", "c", "d", "a", "r", "p", "q", "0"].includes(raw);
+
+      letter.classList.toggle(
+        "glitch-letter--heavy",
+        isRoundOrStructural || force > 0.68
+      );
+    });
+  }
+
+  function triggerSignalGlitch(el) {
+    if (!el || prefersReducedMotion) return;
+
+    buildGlitchText(el);
+    setLetterWarpVariables(el);
+
+    el.style.setProperty("--glitch-x1", `${(Math.random() * 16 - 8).toFixed(2)}px`);
+    el.style.setProperty("--glitch-x2", `${(Math.random() * 24 - 12).toFixed(2)}px`);
+    el.style.setProperty("--glitch-x3", `${(Math.random() * 10 - 5).toFixed(2)}px`);
+    el.style.setProperty("--glitch-y1", `${(Math.random() * 3 - 1.5).toFixed(2)}px`);
+    el.style.setProperty("--glitch-y2", `${(Math.random() * 5 - 2.5).toFixed(2)}px`);
+
     el.classList.remove("is-live-glitch");
-  }, 520);
-}
 
-function triggerProjectGlitch(button) {
-  if (!button || prefersReducedMotion) return;
+    void el.offsetWidth;
 
-  const name = button.querySelector(".work-project__name");
-  const number = button.querySelector(".work-project__number");
+    el.classList.add("is-live-glitch");
 
-  button.classList.remove("is-glitching");
+    window.setTimeout(() => {
+      el.classList.remove("is-live-glitch");
+    }, 520);
+  }
 
-  void button.offsetWidth;
+  function triggerProjectGlitch(button) {
+    if (!button || prefersReducedMotion) return;
 
-  button.classList.add("is-glitching");
+    const name = button.querySelector(".work-project__name");
+    const number = button.querySelector(".work-project__number");
 
-  triggerSignalGlitch(name);
-  triggerSignalGlitch(number);
-
-  window.clearTimeout(glitchTimer);
-
-  glitchTimer = window.setTimeout(() => {
     button.classList.remove("is-glitching");
-  }, 560);
-}
 
-function triggerDrawerGlitch() {
-  if (!detail || prefersReducedMotion) return;
+    void button.offsetWidth;
 
-  const drawerTitle = detail.querySelector("[data-work-detail-title]");
-  const drawerMeta = detail.querySelector(".work-detail__eyebrow");
-  const drawerQuote = detail.querySelector("[data-work-detail-review]");
+    button.classList.add("is-glitching");
 
-  triggerSignalGlitch(drawerMeta);
-  triggerSignalGlitch(drawerTitle);
-  triggerSignalGlitch(drawerQuote);
-}
+    triggerSignalGlitch(name);
+    triggerSignalGlitch(number);
 
+    window.clearTimeout(glitchTimer);
 
+    glitchTimer = window.setTimeout(() => {
+      button.classList.remove("is-glitching");
+    }, 560);
+  }
 
+  function buildAllGlitchText() {
+    const targets = archive.querySelectorAll(
+      ".work-project__name, .work-project__number"
+    );
 
-   
+    targets.forEach((target) => buildGlitchText(target));
+  }
+
+  function triggerDrawerGlitch() {
+    /*
+      Drawer was removed from this file.
+      Keep this as a safe no-op so older HTML/buttons cannot crash the script.
+    */
+  }
 
   /* ==========================================================
      ARCHIVE — HOVER PREVIEW + GLITCH
@@ -1010,12 +1208,13 @@ function triggerDrawerGlitch() {
   ========================================================== */
 
   function init() {
+    injectGlitchStyles();
     cleanOldStates();
     injectTrustBridge();
     closeAllArchiveProjects();
     setupTrustCards();
     setupArchiveDetails();
-setupSignalGlitch();
+    buildAllGlitchText();
     setupArchiveHover();
     setupArchiveNoomoReveal();
     setupImageFallbacks();
