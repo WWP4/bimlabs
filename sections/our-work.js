@@ -1142,14 +1142,13 @@ function closeAllArchiveProjects() {
 
 
 /* ==========================================================
-   ARCHIVE — NATURAL SCROLL REVEAL
-   No pin. No scroll lock. Page stays freely scrollable.
+   ARCHIVE — STABLE ONE-TIME REVEAL
+   No pin. No scrub. No de-animation. No scroll lock.
 ========================================================== */
 
 function setupArchiveNoomoReveal() {
   const gsap = window.gsap;
   const ScrollTrigger = window.ScrollTrigger;
-  const hasGsap = gsap && ScrollTrigger;
 
   const shell = archive.querySelector(".work-archive__shell");
   const header = archive.querySelector(".work-archive__header");
@@ -1161,84 +1160,84 @@ function setupArchiveNoomoReveal() {
 
   if (!shell || !rows.length) return;
 
+  /* Kill old pinned/scrubbed archive triggers */
+  if (ScrollTrigger && typeof ScrollTrigger.getAll === "function") {
+    ScrollTrigger.getAll().forEach((trigger) => {
+      const id = trigger.vars && trigger.vars.id;
+      const triggerEl = trigger.vars && trigger.vars.trigger;
+
+      if (
+        id === "workArchiveReveal" ||
+        id === "workArchiveFormation" ||
+        id === "workArchiveNoomo" ||
+        triggerEl === archive
+      ) {
+        trigger.kill();
+      }
+    });
+  }
+
+  /* Never let this section start hidden by default */
+  archive.classList.remove("is-forming");
+  archive.classList.add("is-formed");
+
+  archive.style.setProperty("--archive-reveal", "1");
+  archive.style.setProperty("--archive-top-line", "1");
+  archive.style.setProperty("--archive-glow", "0");
+
   rows.forEach((row) => {
-    row.style.setProperty("--row-line", "0");
+    row.style.setProperty("--row-line", "1");
     row.style.setProperty("--row-fill", "0");
   });
 
-  if (!hasGsap || prefersReducedMotion || mobileQuery.matches) {
-    archive.classList.add("is-formed");
-    archive.style.setProperty("--archive-reveal", "1");
-    archive.style.setProperty("--archive-top-line", "1");
-    archive.style.setProperty("--archive-glow", "0");
-
-    rows.forEach((row) => {
-      row.style.setProperty("--row-line", "1");
-      row.style.setProperty("--row-fill", "0");
-    });
+  /* If no GSAP or reduced motion, stop here */
+  if (!gsap || prefersReducedMotion) {
+    [
+      shell,
+      header,
+      label,
+      kicker,
+      title,
+      intro,
+      ...rows,
+      ...rows.flatMap((row) =>
+        Array.from(
+          row.querySelectorAll(
+            ".work-project__index, .work-project__number, .work-project__name, .work-project__meta, .work-project__year, .work-project__arrow"
+          )
+        )
+      )
+    ]
+      .filter(Boolean)
+      .forEach((el) => {
+        el.style.opacity = "1";
+        el.style.visibility = "visible";
+        el.style.transform = "none";
+        el.style.filter = "none";
+      });
 
     return;
   }
 
-  gsap.registerPlugin(ScrollTrigger);
-
-  ScrollTrigger.getAll().forEach((trigger) => {
-    const id = trigger.vars && trigger.vars.id;
-
-    if (
-      id === "workArchiveReveal" ||
-      id === "workArchiveFormation" ||
-      id === "workArchiveNoomo"
-    ) {
-      trigger.kill();
-    }
-  });
-
-  archive.classList.remove("is-forming", "is-formed");
-
+  /* Set everything visible first so scroll position never feels broken */
   gsap.set(archive, {
-    minHeight: "max(175vh, 1320px)",
-    "--archive-reveal": 0,
-    "--archive-top-line": 0,
+    "--archive-reveal": 1,
+    "--archive-top-line": 1,
     "--archive-glow": 0
   });
 
   gsap.set(shell, {
-    yPercent: 5,
-    scale: 0.99,
-    transformOrigin: "50% 50%"
+    yPercent: 0,
+    scale: 1,
+    clearProps: "transform"
   });
 
-  if (header) {
-    gsap.set(header, {
-      y: 54,
-      autoAlpha: 1
-    });
-  }
-
-  gsap.set([label, kicker].filter(Boolean), {
-    autoAlpha: 0,
-    y: 22,
-    filter: "blur(8px)"
+  gsap.set([header, label, kicker, title, intro].filter(Boolean), {
+    autoAlpha: 1,
+    y: 0,
+    scale: 1,
+    filter: "blur(0px)"
   });
-
-  if (title) {
-    gsap.set(title, {
-      autoAlpha: 0,
-      y: 64,
-      scale: 0.975,
-      filter: "blur(18px)",
-      letterSpacing: "-0.12em"
-    });
-  }
-
-  if (intro) {
-    gsap.set(intro, {
-      autoAlpha: 0,
-      y: 32,
-      filter: "blur(10px)"
-    });
-  }
 
   rows.forEach((row) => {
     const pieces = row.querySelectorAll(
@@ -1246,167 +1245,54 @@ function setupArchiveNoomoReveal() {
     );
 
     gsap.set(row, {
-      "--row-line": 0,
+      "--row-line": 1,
       "--row-fill": 0,
       autoAlpha: 1
     });
 
     gsap.set(pieces, {
-      autoAlpha: 0,
-      y: 34,
-      filter: "blur(12px)"
+      autoAlpha: 1,
+      y: 0,
+      filter: "blur(0px)"
     });
   });
 
-  const tl = gsap.timeline({
-    defaults: {
-      ease: "power3.out"
-    },
-    scrollTrigger: {
-      id: "workArchiveNoomo",
-      trigger: archive,
-      start: "top 78%",
-      end: "bottom 38%",
-      scrub: 1,
-      pin: false,
-      invalidateOnRefresh: true,
-      onEnter: () => archive.classList.add("is-forming"),
-      onLeave: () => archive.classList.add("is-formed"),
-      onEnterBack: () => archive.classList.add("is-forming"),
-      onLeaveBack: () => {
-        archive.classList.remove("is-formed");
-        archive.classList.remove("is-forming");
+  /*
+    Optional one-time polish:
+    This runs only the first time the archive enters.
+    It does NOT reverse when scrolling up.
+  */
+  if ("IntersectionObserver" in window && !archive.dataset.workRevealedOnce) {
+    archive.dataset.workRevealedOnce = "waiting";
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const entry = entries[0];
+        if (!entry || !entry.isIntersecting) return;
+
+        archive.dataset.workRevealedOnce = "true";
+        observer.disconnect();
+
+        gsap.fromTo(
+          rows,
+          {
+            "--row-line": 0
+          },
+          {
+            "--row-line": 1,
+            duration: 0.9,
+            stagger: 0.08,
+            ease: "power2.out"
+          }
+        );
+      },
+      {
+        threshold: 0.16
       }
-    }
-  });
-
-  tl.to(
-    archive,
-    {
-      "--archive-reveal": 0.42,
-      "--archive-glow": 0.25,
-      duration: 0.7,
-      ease: "none"
-    },
-    0
-  );
-
-  tl.to(
-    shell,
-    {
-      yPercent: 0,
-      scale: 1,
-      duration: 1.05,
-      ease: "power2.out"
-    },
-    0
-  );
-
-  if (header) {
-    tl.to(
-      header,
-      {
-        y: 0,
-        duration: 1.1,
-        ease: "power3.out"
-      },
-      0.05
     );
+
+    observer.observe(archive);
   }
-
-  tl.to(
-    [label, kicker].filter(Boolean),
-    {
-      autoAlpha: 1,
-      y: 0,
-      filter: "blur(0px)",
-      duration: 0.65,
-      stagger: 0.06,
-      ease: "power3.out"
-    },
-    0.22
-  );
-
-  if (title) {
-    tl.to(
-      title,
-      {
-        autoAlpha: 1,
-        y: 0,
-        scale: 1,
-        filter: "blur(0px)",
-        letterSpacing: "-0.082em",
-        duration: 1.1,
-        ease: "power4.out"
-      },
-      0.32
-    );
-  }
-
-  if (intro) {
-    tl.to(
-      intro,
-      {
-        autoAlpha: 1,
-        y: 0,
-        filter: "blur(0px)",
-        duration: 0.8,
-        ease: "power3.out"
-      },
-      0.7
-    );
-  }
-
-  tl.to(
-    archive,
-    {
-      "--archive-top-line": 1,
-      duration: 1,
-      ease: "power2.inOut"
-    },
-    0.78
-  );
-
-  rows.forEach((row, index) => {
-    const pieces = row.querySelectorAll(
-      ".work-project__index, .work-project__number, .work-project__name, .work-project__meta, .work-project__year, .work-project__arrow"
-    );
-
-    const start = 0.95 + index * 0.18;
-
-    tl.to(
-      row,
-      {
-        "--row-line": 1,
-        duration: 0.85,
-        ease: "power2.inOut"
-      },
-      start
-    );
-
-    tl.to(
-      pieces,
-      {
-        autoAlpha: 1,
-        y: 0,
-        filter: "blur(0px)",
-        duration: 0.64,
-        stagger: 0.035,
-        ease: "power4.out"
-      },
-      start + 0.12
-    );
-  });
-
-  tl.to(
-    archive,
-    {
-      "--archive-glow": 0,
-      duration: 0.8,
-      ease: "none"
-    },
-    2.2
-  );
 }
 
 
