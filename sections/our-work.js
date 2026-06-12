@@ -328,6 +328,44 @@
     render(currentProgress);
   }
 
+
+
+
+function closeAllArchiveProjects() {
+  const details = Array.from(archive.querySelectorAll(".work-project"));
+
+  details.forEach((item) => {
+    if (!item || item.tagName.toLowerCase() !== "details") return;
+
+    const summary = item.querySelector(".work-project__summary");
+    const detailContent = item.querySelector(
+      ".work-project__details, .work-project__detail, .work-project__content, .work-project__body, .work-project__panel, .work-project__detail-scroll"
+    );
+
+    item.removeAttribute("open");
+    item.open = false;
+    item.classList.remove("is-open", "is-previewing", "is-glitching");
+
+    if (summary) {
+      summary.setAttribute("aria-expanded", "false");
+      summary.blur();
+    }
+
+    if (detailContent) {
+      detailContent.scrollTop = 0;
+    }
+  });
+
+  archive.classList.remove("has-open-project");
+}
+
+
+
+
+
+
+   
+
   /* ==========================================================
      ARCHIVE DETAILS — CURRENT HTML USES DETAILS/SUMMARY
   ========================================================== */
@@ -1368,7 +1406,7 @@ function setupArchiveDetailScrollGuards() {
      INIT
   ========================================================== */
 
-  function init() {
+ function init() {
   injectGlitchStyles();
   cleanOldStates();
   injectTrustBridge();
