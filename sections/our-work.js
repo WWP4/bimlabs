@@ -330,7 +330,244 @@
 
 
 
+/* ==========================================================
+   ARCHIVE DETAILS — CLEAN SEAMLESS ACCORDION
+   Replace old setupArchiveDetails + setupArchiveDetailScrollGuards
+========================================================== */
 
+function setupArchiveDetails() {
+  const items = Array.from(archive.querySelectorAll(".work-project"));
+  const DURATION = prefersReducedMotion ? 0 : 680;
+
+  if (!items.length) return;
+
+  function getDirectPanel(item) {
+    const children = Array.from(item.children);
+
+    let panel = children.find((child) =>
+      child.classList && child.classList.contains("work-project__panel")
+    );
+
+    if (panel) return panel;
+
+    const summary = item.querySelector(".work-project__summary");
+    const content = children.filter((child) => child !== summary);
+
+    if (!content.length) return null;
+
+    panel = document.createElement("div");
+    panel.className = "work-project__panel";
+
+    content.forEach((child) => panel.appendChild(child));
+    item.appendChild(panel);
+
+    return panel;
+  }
+
+  function updateArchiveState() {
+    const hasOpen = items.some(
+      (item) =>
+        item.open ||
+        item.classList.contains("is-opening") ||
+        item.classList.contains("is-open")
+    );
+
+    archive.classList.toggle("has-open-project", hasOpen);
+  }
+
+  function clearPanelTimer(panel) {
+    if (!panel) return;
+    window.clearTimeout(panel._workAccordionTimer);
+    panel._workAccordionTimer = null;
+  }
+
+  function finishOpen(item, panel) {
+    if (!item.open) return;
+
+    item.classList.remove("is-opening", "is-closing");
+    item.classList.add("is-open");
+
+    panel.style.height = "auto";
+    panel.style.opacity = "1";
+    panel.style.transform = "translate3d(0, 0, 0)";
+    panel.style.overflow = "visible";
+
+    updateArchiveState();
+
+    if (window.ScrollTrigger && typeof window.ScrollTrigger.update === "function") {
+      window.ScrollTrigger.update();
+    }
+  }
+
+  function finishClose(item, panel) {
+    item.open = false;
+    item.removeAttribute("open");
+
+    item.classList.remove("is-opening", "is-closing", "is-open");
+
+    const summary = item.querySelector(".work-project__summary");
+    if (summary) summary.setAttribute("aria-expanded", "false");
+
+    panel.style.height = "0px";
+    panel.style.opacity = "0";
+    panel.style.transform = "translate3d(0, -0.35rem, 0)";
+    panel.style.overflow = "hidden";
+
+    updateArchiveState();
+
+    if (window.ScrollTrigger && typeof window.ScrollTrigger.update === "function") {
+      window.ScrollTrigger.update();
+    }
+  }
+
+  function openProject(item) {
+    const summary = item.querySelector(".work-project__summary");
+    const panel = getDirectPanel(item);
+
+    if (!summary || !panel) return;
+
+    items.forEach((other) => {
+      if (other !== item && other.open) {
+        closeProject(other);
+      }
+    });
+
+    clearPanelTimer(panel);
+
+    item.open = true;
+    item.setAttribute("open", "");
+    item.classList.remove("is-closing", "is-open");
+    item.classList.add("is-opening");
+
+    summary.setAttribute("aria-expanded", "true");
+
+    panel.classList.add("work-project__detail-scroll");
+    panel.style.overflow = "hidden";
+    panel.style.height = "0px";
+    panel.style.opacity = "0";
+    panel.style.transform = "translate3d(0, -0.35rem, 0)";
+
+    panel.getBoundingClientRect();
+
+    const targetHeight = panel.scrollHeight;
+
+    window.requestAnimationFrame(() => {
+      panel.style.height = `${targetHeight}px`;
+      panel.style.opacity = "1";
+      panel.style.transform = "translate3d(0, 0, 0)";
+    });
+
+    panel._workAccordionTimer = window.setTimeout(() => {
+      finishOpen(item, panel);
+    }, DURATION + 80);
+
+    updateArchiveState();
+  }
+
+  function closeProject(item) {
+    const summary = item.querySelector(".work-project__summary");
+    const panel = getDirectPanel(item);
+
+    if (!summary || !panel) return;
+
+    clearPanelTimer(panel);
+
+    const startHeight = panel.getBoundingClientRect().height || panel.scrollHeight;
+
+    item.classList.remove("is-opening", "is-open");
+    item.classList.add("is-closing");
+
+    summary.setAttribute("aria-expanded", "false");
+
+    panel.style.overflow = "hidden";
+    panel.style.height = `${startHeight}px`;
+    panel.style.opacity = "1";
+    panel.style.transform = "translate3d(0, 0, 0)";
+
+    panel.getBoundingClientRect();
+
+    window.requestAnimationFrame(() => {
+      panel.style.height = "0px";
+      panel.style.opacity = "0";
+      panel.style.transform = "translate3d(0, -0.35rem, 0)";
+    });
+
+    panel._workAccordionTimer = window.setTimeout(() => {
+      finishClose(item, panel);
+    }, DURATION + 80);
+  }
+
+  items.forEach((item, index) => {
+    if (item.dataset.workAccordionReady === "true") return;
+
+    item.dataset.workAccordionReady = "true";
+    item.dataset.workProjectItem = String(index);
+
+    /* Do not let native details-name behavior fight the JS accordion */
+    item.removeAttribute("name");
+
+    const summary = item.querySelector(".work-project__summary");
+    const panel = getDirectPanel(item);
+
+    if (!summary || !panel) return;
+
+    panel.classList.add("work-project__detail-scroll");
+
+    summary.setAttribute("role", "button");
+    summary.setAttribute("aria-expanded", item.open ? "true" : "false");
+
+    if (item.open) {
+      item.classList.add("is-open");
+      panel.style.height = "auto";
+      panel.style.opacity = "1";
+      panel.style.overflow = "visible";
+      panel.style.transform = "translate3d(0, 0, 0)";
+    } else {
+      panel.style.height = "0px";
+      panel.style.opacity = "0";
+      panel.style.overflow = "hidden";
+      panel.style.transform = "translate3d(0, -0.35rem, 0)";
+    }
+
+    summary.addEventListener("click", (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+
+      if (item.open && !item.classList.contains("is-closing")) {
+        closeProject(item);
+      } else {
+        openProject(item);
+      }
+    });
+
+    summary.addEventListener("keydown", (event) => {
+      if (event.key !== "Enter" && event.key !== " ") return;
+
+      event.preventDefault();
+
+      if (item.open && !item.classList.contains("is-closing")) {
+        closeProject(item);
+      } else {
+        openProject(item);
+      }
+    });
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key !== "Escape") return;
+
+    const openItem = items.find((item) => item.open);
+    if (!openItem) return;
+
+    event.preventDefault();
+    closeProject(openItem);
+  });
+}
+
+/* Keep this function so your existing init() does not break */
+function setupArchiveDetailScrollGuards() {
+  return;
+}
 
 
 
@@ -372,374 +609,6 @@ function closeAllArchiveProjects() {
   });
 
   archive.classList.remove("has-open-project");
-}
-
-/* ==========================================================
-   ARCHIVE DETAILS — SEAMLESS MEASURED ACCORDION
-========================================================== */
-function setupArchiveDetails() {
-  const details = Array.from(archive.querySelectorAll(".work-project"));
-  const PANEL_SELECTOR =
-    ".work-project__details, .work-project__detail, .work-project__content, .work-project__body, .work-project__panel";
-  const TRANSITION_MS = prefersReducedMotion ? 0 : 760;
-
-  let refreshTimer = null;
-
-  function getScrollY() {
-    return window.scrollY || window.pageYOffset || 0;
-  }
-
-  function restoreScrollY(y) {
-    const smoother =
-      window.ScrollSmoother &&
-      typeof window.ScrollSmoother.get === "function" &&
-      window.ScrollSmoother.get();
-
-    if (smoother && typeof smoother.scrollTop === "function") {
-      smoother.scrollTop(y);
-      return;
-    }
-
-    const root = document.documentElement;
-    const previousScrollBehavior = root.style.scrollBehavior;
-
-    root.style.scrollBehavior = "auto";
-    window.scrollTo(0, y);
-    root.style.scrollBehavior = previousScrollBehavior;
-  }
-
-  function preserveScroll(callback) {
-    const y = getScrollY();
-    callback();
-    restoreScrollY(y);
-    window.requestAnimationFrame(() => restoreScrollY(y));
-    return y;
-  }
-
-  function refreshScrollTriggerWithoutJump(delay = 40) {
-    if (!window.ScrollTrigger) return;
-
-    window.clearTimeout(refreshTimer);
-
-    refreshTimer = window.setTimeout(() => {
-      const y = getScrollY();
-
-      window.ScrollTrigger.refresh();
-      restoreScrollY(y);
-      window.requestAnimationFrame(() => restoreScrollY(y));
-    }, delay);
-  }
-
-  function getPanel(item) {
-    const summary = item.querySelector(".work-project__summary");
-    const existing = item.querySelector(PANEL_SELECTOR);
-
-    if (existing) return existing;
-
-    const children = Array.from(item.children).filter((child) => child !== summary);
-    if (!children.length) return null;
-
-    const wrapper = document.createElement("div");
-    wrapper.className = "work-project__panel";
-
-    children.forEach((child) => wrapper.appendChild(child));
-    item.appendChild(wrapper);
-
-    return wrapper;
-  }
-
-  function getPanelTargetHeight(panel) {
-    if (!panel) return 0;
-
-    const contentHeight = panel.scrollHeight;
-
-    if (mobileQuery.matches) return contentHeight;
-
-    const viewportCap = Math.max(320, Math.min(window.innerHeight * 0.56, 560));
-    return Math.min(contentHeight, viewportCap);
-  }
-
-  function finishAfterHeight(panel, callback) {
-    window.clearTimeout(panel._workPanelTimer);
-
-    const finish = (event) => {
-      if (event && event.target !== panel) return;
-      if (event && event.propertyName && event.propertyName !== "height") return;
-
-      panel.removeEventListener("transitionend", finish);
-      window.clearTimeout(panel._workPanelTimer);
-      callback();
-    };
-
-    panel.addEventListener("transitionend", finish);
-    panel._workPanelTimer = window.setTimeout(finish, TRANSITION_MS + 120);
-  }
-
-  function preparePanel(panel) {
-    panel.classList.add("work-project__detail-scroll");
-    panel.removeAttribute("tabindex");
-    panel.style.overflow = "hidden";
-    panel.style.maxHeight = "none";
-    panel.style.paddingBottom = "";
-    panel.style.willChange = "height, opacity, transform";
-  }
-
-  function closeProject(item, shouldRefresh = true) {
-    if (!item || item.tagName.toLowerCase() !== "details") return;
-
-    const summary = item.querySelector(".work-project__summary");
-    const panel = getPanel(item);
-
-    if (!panel) return;
-
-    window.clearTimeout(panel._workPanelTimer);
-
-    const currentHeight = panel.getBoundingClientRect().height;
-    const startHeight = Math.max(
-      currentHeight,
-      Math.min(panel.scrollHeight, currentHeight || panel.scrollHeight)
-    );
-
-    if (!item.open && startHeight <= 0) {
-      item.classList.remove("is-open", "is-opening", "is-closing");
-      if (summary) summary.setAttribute("aria-expanded", "false");
-      return;
-    }
-
-    item.classList.remove("is-opening", "is-open");
-    item.classList.add("is-closing");
-
-    if (summary) summary.setAttribute("aria-expanded", "false");
-
-    preserveScroll(() => {
-      preparePanel(panel);
-      panel.style.height = `${startHeight}px`;
-      panel.style.opacity = "1";
-      panel.style.transform = "translate3d(0, 0, 0)";
-
-      panel.getBoundingClientRect();
-
-      panel.style.height = "0px";
-      panel.style.opacity = "0";
-      panel.style.transform = "translate3d(0, -0.45rem, 0)";
-    });
-
-    finishAfterHeight(panel, () => {
-      preserveScroll(() => {
-        item.open = false;
-        item.removeAttribute("open");
-        item.classList.remove("is-closing", "is-open", "is-opening");
-
-        panel.style.height = "0px";
-        panel.style.opacity = "0";
-        panel.style.overflow = "hidden";
-        panel.style.transform = "";
-        panel.style.maxHeight = "";
-        panel.style.willChange = "";
-      });
-
-      const anyOpen = details.some((detail) => detail.open);
-
-      if (!anyOpen) {
-        archive.classList.remove("has-open-project");
-      }
-
-      if (shouldRefresh) refreshScrollTriggerWithoutJump();
-    });
-  }
-
-  function openProject(item) {
-    if (!item || item.tagName.toLowerCase() !== "details") return;
-
-    const summary = item.querySelector(".work-project__summary");
-    const panel = getPanel(item);
-
-    if (!summary || !panel) return;
-
-    details.forEach((other) => {
-      if (other !== item) closeProject(other, false);
-    });
-
-    window.clearTimeout(panel._workPanelTimer);
-
-    archive.classList.add("has-open-project");
-    item.classList.remove("is-closing");
-    item.classList.add("is-opening");
-
-    summary.setAttribute("aria-expanded", "true");
-
-    preserveScroll(() => {
-      item.open = true;
-      item.setAttribute("open", "");
-
-      preparePanel(panel);
-      panel.scrollTop = 0;
-      panel.style.height = "0px";
-      panel.style.opacity = "0";
-      panel.style.transform = "translate3d(0, -0.45rem, 0)";
-
-      panel.getBoundingClientRect();
-
-      const targetHeight = getPanelTargetHeight(panel);
-      panel.style.height = `${targetHeight}px`;
-      panel.style.opacity = "1";
-      panel.style.transform = "translate3d(0, 0, 0)";
-    });
-
-    finishAfterHeight(panel, () => {
-      if (!item.open || item.classList.contains("is-closing")) return;
-
-      item.classList.remove("is-opening");
-      item.classList.add("is-open");
-
-      preserveScroll(() => {
-        panel.style.height = mobileQuery.matches
-          ? "auto"
-          : `${getPanelTargetHeight(panel)}px`;
-        panel.style.overflowY =
-          panel.scrollHeight > panel.clientHeight + 2 ? "auto" : "hidden";
-        panel.style.overflowX = "hidden";
-        panel.style.opacity = "";
-        panel.style.transform = "";
-        panel.style.maxHeight = "";
-        panel.style.willChange = "";
-      });
-
-      refreshScrollTriggerWithoutJump();
-    });
-  }
-
-  details.forEach((item, index) => {
-    if (item.tagName.toLowerCase() !== "details") return;
-
-    item.dataset.workProjectItem = String(index);
-    item.removeAttribute("name");
-
-    const summary = item.querySelector(".work-project__summary");
-    const panel = getPanel(item);
-
-    if (!summary || !panel) return;
-
-    panel.classList.add("work-project__detail-scroll");
-    panel.removeAttribute("tabindex");
-
-    if (!item.open) {
-      panel.style.height = "0px";
-      panel.style.opacity = "0";
-      panel.style.overflow = "hidden";
-    }
-
-    summary.setAttribute("role", "button");
-    summary.setAttribute("aria-expanded", item.open ? "true" : "false");
-
-    item.addEventListener("toggle", () => {
-      if (item.dataset.workAccordionControlled === "true") return;
-      if (!item.open) return;
-
-      preserveScroll(() => {
-        item.open = false;
-        item.removeAttribute("open");
-      });
-    });
-
-    summary.addEventListener("click", (event) => {
-      event.preventDefault();
-      event.stopPropagation();
-
-      item.dataset.workAccordionControlled = "true";
-
-      if (typeof triggerProjectGlitch === "function") {
-        triggerProjectGlitch(item);
-      }
-
-      if (item.open && !item.classList.contains("is-closing")) {
-        closeProject(item);
-      } else {
-        openProject(item);
-      }
-
-      window.requestAnimationFrame(() => {
-        delete item.dataset.workAccordionControlled;
-      });
-    });
-
-    summary.addEventListener("keydown", (event) => {
-      if (event.key !== "Enter" && event.key !== " ") return;
-
-      event.preventDefault();
-      summary.click();
-    });
-  });
-
-  document.addEventListener("keydown", (event) => {
-    if (event.key !== "Escape") return;
-
-    const openItem = details.find((item) => item.open);
-    if (!openItem) return;
-
-    event.preventDefault();
-    closeProject(openItem);
-  });
-}
-
-function setupArchiveDetailScrollGuards() {
-  const scrollAreas = Array.from(
-    archive.querySelectorAll(".work-project__detail-scroll")
-  );
-
-  function canScroll(area, deltaY) {
-    if (!area) return false;
-
-    const maxScroll = area.scrollHeight - area.clientHeight;
-    if (maxScroll <= 0) return false;
-
-    const current = area.scrollTop;
-    const goingDown = deltaY > 0;
-    const goingUp = deltaY < 0;
-
-    if (goingDown && current < maxScroll - 1) return true;
-    if (goingUp && current > 1) return true;
-
-    return false;
-  }
-
-  scrollAreas.forEach((area) => {
-    let touchStartY = 0;
-
-    area.addEventListener(
-      "wheel",
-      (event) => {
-        if (canScroll(area, event.deltaY)) {
-          event.stopPropagation();
-        }
-      },
-      { passive: true }
-    );
-
-    area.addEventListener(
-      "touchstart",
-      (event) => {
-        if (!event.touches || !event.touches.length) return;
-        touchStartY = event.touches[0].clientY;
-      },
-      { passive: true }
-    );
-
-    area.addEventListener(
-      "touchmove",
-      (event) => {
-        if (!event.touches || !event.touches.length) return;
-
-        const currentY = event.touches[0].clientY;
-        const deltaY = touchStartY - currentY;
-
-        if (canScroll(area, deltaY)) {
-          event.stopPropagation();
-        }
-      },
-      { passive: true }
-    );
-  });
 }
 
 
