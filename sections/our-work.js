@@ -1146,6 +1146,12 @@ function closeAllArchiveProjects() {
    No pin. No scrub. No de-animation. No scroll lock.
 ========================================================== */
 
+/* ==========================================================
+   ARCHIVE — NOOMO-STYLE LINE REVEAL
+   Normal scroll. No pin. No scrub trap.
+   Lines grow from center outward.
+========================================================== */
+
 function setupArchiveNoomoReveal() {
   const gsap = window.gsap;
   const ScrollTrigger = window.ScrollTrigger;
@@ -1160,7 +1166,7 @@ function setupArchiveNoomoReveal() {
 
   if (!shell || !rows.length) return;
 
-  /* Kill old pinned/scrubbed archive triggers */
+  /* kill old archive triggers only */
   if (ScrollTrigger && typeof ScrollTrigger.getAll === "function") {
     ScrollTrigger.getAll().forEach((trigger) => {
       const id = trigger.vars && trigger.vars.id;
@@ -1170,6 +1176,7 @@ function setupArchiveNoomoReveal() {
         id === "workArchiveReveal" ||
         id === "workArchiveFormation" ||
         id === "workArchiveNoomo" ||
+        id === "workArchiveCenterLines" ||
         triggerEl === archive
       ) {
         trigger.kill();
@@ -1177,125 +1184,148 @@ function setupArchiveNoomoReveal() {
     });
   }
 
-  /* Never let this section start hidden by default */
-  archive.classList.remove("is-forming");
-  archive.classList.add("is-formed");
-
-  archive.style.setProperty("--archive-reveal", "1");
-  archive.style.setProperty("--archive-top-line", "1");
-  archive.style.setProperty("--archive-glow", "0");
+  archive.classList.remove("is-forming", "is-formed");
 
   rows.forEach((row) => {
-    row.style.setProperty("--row-line", "1");
+    row.style.setProperty("--row-line", "0");
     row.style.setProperty("--row-fill", "0");
   });
 
-  /* If no GSAP or reduced motion, stop here */
-  if (!gsap || prefersReducedMotion) {
-    [
-      shell,
-      header,
-      label,
-      kicker,
-      title,
-      intro,
-      ...rows,
-      ...rows.flatMap((row) =>
-        Array.from(
-          row.querySelectorAll(
-            ".work-project__index, .work-project__number, .work-project__name, .work-project__meta, .work-project__year, .work-project__arrow"
-          )
-        )
-      )
-    ]
-      .filter(Boolean)
-      .forEach((el) => {
-        el.style.opacity = "1";
-        el.style.visibility = "visible";
-        el.style.transform = "none";
-        el.style.filter = "none";
-      });
+  if (!gsap || !ScrollTrigger || prefersReducedMotion) {
+    archive.classList.add("is-formed");
+
+    rows.forEach((row) => {
+      row.style.setProperty("--row-line", "1");
+    });
 
     return;
   }
 
-  /* Set everything visible first so scroll position never feels broken */
+  gsap.registerPlugin(ScrollTrigger);
+
+  const rowPieces = rows.map((row) =>
+    Array.from(
+      row.querySelectorAll(
+        ".work-project__index, .work-project__name, .work-project__meta, .work-project__year, .work-project__arrow"
+      )
+    )
+  );
+
   gsap.set(archive, {
     "--archive-reveal": 1,
-    "--archive-top-line": 1,
-    "--archive-glow": 0
+    "--archive-glow": 0,
+    "--archive-top-line": 1
   });
 
-  gsap.set(shell, {
-    yPercent: 0,
-    scale: 1,
-    clearProps: "transform"
+  gsap.set([label, kicker, title, intro].filter(Boolean), {
+    autoAlpha: 0,
+    y: 22,
+    filter: "blur(8px)"
   });
 
-  gsap.set([header, label, kicker, title, intro].filter(Boolean), {
-    autoAlpha: 1,
-    y: 0,
-    scale: 1,
-    filter: "blur(0px)"
+  gsap.set(title, {
+    y: 34,
+    filter: "blur(14px)"
   });
 
-  rows.forEach((row) => {
-    const pieces = row.querySelectorAll(
-      ".work-project__index, .work-project__number, .work-project__name, .work-project__meta, .work-project__year, .work-project__arrow"
-    );
-
+  rows.forEach((row, index) => {
     gsap.set(row, {
-      "--row-line": 1,
+      "--row-line": 0,
       "--row-fill": 0,
       autoAlpha: 1
     });
 
-    gsap.set(pieces, {
-      autoAlpha: 1,
-      y: 0,
-      filter: "blur(0px)"
+    gsap.set(rowPieces[index], {
+      autoAlpha: 0,
+      y: 24,
+      filter: "blur(10px)"
     });
   });
 
-  /*
-    Optional one-time polish:
-    This runs only the first time the archive enters.
-    It does NOT reverse when scrolling up.
-  */
-  if ("IntersectionObserver" in window && !archive.dataset.workRevealedOnce) {
-    archive.dataset.workRevealedOnce = "waiting";
+  const tl = gsap.timeline({
+    defaults: {
+      ease: "power3.out"
+    },
+    scrollTrigger: {
+      id: "workArchiveCenterLines",
+      trigger: archive,
+      start: "top 68%",
+      once: true,
+      toggleActions: "play none none none"
+    }
+  });
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const entry = entries[0];
-        if (!entry || !entry.isIntersecting) return;
+  tl.add(() => {
+    archive.classList.add("is-forming");
+  }, 0);
 
-        archive.dataset.workRevealedOnce = "true";
-        observer.disconnect();
+  tl.to(
+    [label, kicker].filter(Boolean),
+    {
+      autoAlpha: 1,
+      y: 0,
+      filter: "blur(0px)",
+      duration: 0.7,
+      stagger: 0.07
+    },
+    0.05
+  );
 
-        gsap.fromTo(
-          rows,
-          {
-            "--row-line": 0
-          },
-          {
-            "--row-line": 1,
-            duration: 0.9,
-            stagger: 0.08,
-            ease: "power2.out"
-          }
-        );
-      },
+  tl.to(
+    title,
+    {
+      autoAlpha: 1,
+      y: 0,
+      filter: "blur(0px)",
+      duration: 1.05,
+      ease: "power4.out"
+    },
+    0.12
+  );
+
+  tl.to(
+    intro,
+    {
+      autoAlpha: 1,
+      y: 0,
+      filter: "blur(0px)",
+      duration: 0.8
+    },
+    0.36
+  );
+
+  rows.forEach((row, index) => {
+    const start = 0.72 + index * 0.14;
+
+    tl.to(
+      row,
       {
-        threshold: 0.16
-      }
+        "--row-line": 1,
+        duration: 0.9,
+        ease: "power2.inOut"
+      },
+      start
     );
 
-    observer.observe(archive);
-  }
+    tl.to(
+      rowPieces[index],
+      {
+        autoAlpha: 1,
+        y: 0,
+        filter: "blur(0px)",
+        duration: 0.62,
+        stagger: 0.035,
+        ease: "power4.out"
+      },
+      start + 0.16
+    );
+  });
+
+  tl.add(() => {
+    archive.classList.remove("is-forming");
+    archive.classList.add("is-formed");
+  });
 }
-
-
 
 
 
