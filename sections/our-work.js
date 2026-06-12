@@ -3,7 +3,7 @@
    Clean JS rebuild
    - Flying trust-card section
    - Archive details with <details>/<summary>
-   - Noomo-style pinned archive reveal
+   - Noomo-style pinned archive revealf
    - Mouse-attached preview
    - Working physical letter glitch on hover/focus
    - No drawer
@@ -1010,13 +1010,12 @@ function triggerDrawerGlitch() {
   ========================================================== */
 
   function init() {
-    injectGlitchStyles();
     cleanOldStates();
     injectTrustBridge();
     closeAllArchiveProjects();
     setupTrustCards();
     setupArchiveDetails();
-    buildAllGlitchText();
+setupSignalGlitch();
     setupArchiveHover();
     setupArchiveNoomoReveal();
     setupImageFallbacks();
