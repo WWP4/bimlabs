@@ -381,6 +381,7 @@ function setupArchiveDetails() {
   const details = Array.from(archive.querySelectorAll(".work-project"));
   const PANEL_SELECTOR =
     ".work-project__details, .work-project__detail, .work-project__content, .work-project__body, .work-project__panel";
+  const TRANSITION_MS = prefersReducedMotion ? 0 : 760;
 
   let refreshTimer = null;
 
@@ -399,10 +400,23 @@ function setupArchiveDetails() {
       return;
     }
 
+    const root = document.documentElement;
+    const previousScrollBehavior = root.style.scrollBehavior;
+
+    root.style.scrollBehavior = "auto";
     window.scrollTo(0, y);
+    root.style.scrollBehavior = previousScrollBehavior;
   }
 
-  function refreshScrollTriggerWithoutJump(delay = 80) {
+  function preserveScroll(callback) {
+    const y = getScrollY();
+    callback();
+    restoreScrollY(y);
+    window.requestAnimationFrame(() => restoreScrollY(y));
+    return y;
+  }
+
+  function refreshScrollTriggerWithoutJump(delay = 40) {
     if (!window.ScrollTrigger) return;
 
     window.clearTimeout(refreshTimer);
@@ -411,10 +425,8 @@ function setupArchiveDetails() {
       const y = getScrollY();
 
       window.ScrollTrigger.refresh();
-
-      window.requestAnimationFrame(() => {
-        restoreScrollY(y);
-      });
+      restoreScrollY(y);
+      window.requestAnimationFrame(() => restoreScrollY(y));
     }, delay);
   }
 
@@ -436,7 +448,18 @@ function setupArchiveDetails() {
     return wrapper;
   }
 
-  function afterHeightTransition(panel, callback) {
+  function getPanelTargetHeight(panel) {
+    if (!panel) return 0;
+
+    const contentHeight = panel.scrollHeight;
+
+    if (mobileQuery.matches) return contentHeight;
+
+    const viewportCap = Math.max(320, Math.min(window.innerHeight * 0.56, 560));
+    return Math.min(contentHeight, viewportCap);
+  }
+
+  function finishAfterHeight(panel, callback) {
     window.clearTimeout(panel._workPanelTimer);
 
     const finish = (event) => {
@@ -449,10 +472,16 @@ function setupArchiveDetails() {
     };
 
     panel.addEventListener("transitionend", finish);
+    panel._workPanelTimer = window.setTimeout(finish, TRANSITION_MS + 120);
+  }
 
-    panel._workPanelTimer = window.setTimeout(() => {
-      finish();
-    }, prefersReducedMotion ? 0 : 920);
+  function preparePanel(panel) {
+    panel.classList.add("work-project__detail-scroll");
+    panel.removeAttribute("tabindex");
+    panel.style.overflow = "hidden";
+    panel.style.maxHeight = "none";
+    panel.style.paddingBottom = "";
+    panel.style.willChange = "height, opacity, transform";
   }
 
   function closeProject(item, shouldRefresh = true) {
@@ -463,15 +492,16 @@ function setupArchiveDetails() {
 
     if (!panel) return;
 
-    const y = getScrollY();
+    window.clearTimeout(panel._workPanelTimer);
+
+    const currentHeight = panel.getBoundingClientRect().height;
     const startHeight = Math.max(
-      panel.scrollHeight,
-      panel.getBoundingClientRect().height
+      currentHeight,
+      Math.min(panel.scrollHeight, currentHeight || panel.scrollHeight)
     );
 
     if (!item.open && startHeight <= 0) {
       item.classList.remove("is-open", "is-opening", "is-closing");
-
       if (summary) summary.setAttribute("aria-expanded", "false");
       return;
     }
@@ -479,33 +509,34 @@ function setupArchiveDetails() {
     item.classList.remove("is-opening", "is-open");
     item.classList.add("is-closing");
 
-    if (summary) {
-      summary.setAttribute("aria-expanded", "false");
-    }
+    if (summary) summary.setAttribute("aria-expanded", "false");
 
-    panel.style.overflow = "hidden";
-    panel.style.height = `${startHeight}px`;
-    panel.style.opacity = "1";
-    panel.style.transform = "translate3d(0, 0, 0)";
+    preserveScroll(() => {
+      preparePanel(panel);
+      panel.style.height = `${startHeight}px`;
+      panel.style.opacity = "1";
+      panel.style.transform = "translate3d(0, 0, 0)";
 
-    panel.getBoundingClientRect();
-
-    panel.style.height = "0px";
-    panel.style.opacity = "0";
-    panel.style.transform = "translate3d(0, -0.45rem, 0)";
-    panel.style.paddingBottom = "0px";
-
-    restoreScrollY(y);
-
-    afterHeightTransition(panel, () => {
-      item.open = false;
-      item.removeAttribute("open");
-      item.classList.remove("is-closing", "is-open", "is-opening");
+      panel.getBoundingClientRect();
 
       panel.style.height = "0px";
       panel.style.opacity = "0";
-      panel.style.transform = "";
-      panel.style.paddingBottom = "";
+      panel.style.transform = "translate3d(0, -0.45rem, 0)";
+    });
+
+    finishAfterHeight(panel, () => {
+      preserveScroll(() => {
+        item.open = false;
+        item.removeAttribute("open");
+        item.classList.remove("is-closing", "is-open", "is-opening");
+
+        panel.style.height = "0px";
+        panel.style.opacity = "0";
+        panel.style.overflow = "hidden";
+        panel.style.transform = "";
+        panel.style.maxHeight = "";
+        panel.style.willChange = "";
+      });
 
       const anyOpen = details.some((detail) => detail.open);
 
@@ -525,8 +556,6 @@ function setupArchiveDetails() {
 
     if (!summary || !panel) return;
 
-    const y = getScrollY();
-
     details.forEach((other) => {
       if (other !== item) closeProject(other, false);
     });
@@ -534,42 +563,47 @@ function setupArchiveDetails() {
     window.clearTimeout(panel._workPanelTimer);
 
     archive.classList.add("has-open-project");
-
-    item.open = true;
-    item.setAttribute("open", "");
     item.classList.remove("is-closing");
-    item.classList.add("is-open", "is-opening");
+    item.classList.add("is-opening");
 
     summary.setAttribute("aria-expanded", "true");
 
-    panel.classList.add("work-project__detail-scroll");
-    panel.setAttribute("tabindex", "-1");
-    panel.style.overflow = "hidden";
-    panel.style.height = "0px";
-    panel.style.opacity = "0";
-    panel.style.transform = "translate3d(0, -0.45rem, 0)";
-    panel.style.paddingBottom = "";
+    preserveScroll(() => {
+      item.open = true;
+      item.setAttribute("open", "");
 
-    panel.getBoundingClientRect();
+      preparePanel(panel);
+      panel.scrollTop = 0;
+      panel.style.height = "0px";
+      panel.style.opacity = "0";
+      panel.style.transform = "translate3d(0, -0.45rem, 0)";
 
-    const targetHeight = panel.scrollHeight;
+      panel.getBoundingClientRect();
 
-    panel.style.height = `${targetHeight}px`;
-    panel.style.opacity = "1";
-    panel.style.transform = "translate3d(0, 0, 0)";
+      const targetHeight = getPanelTargetHeight(panel);
+      panel.style.height = `${targetHeight}px`;
+      panel.style.opacity = "1";
+      panel.style.transform = "translate3d(0, 0, 0)";
+    });
 
-    restoreScrollY(y);
-
-    afterHeightTransition(panel, () => {
-      if (!item.open) return;
+    finishAfterHeight(panel, () => {
+      if (!item.open || item.classList.contains("is-closing")) return;
 
       item.classList.remove("is-opening");
       item.classList.add("is-open");
 
-      panel.style.height = "auto";
-      panel.style.overflow = "";
-      panel.style.opacity = "";
-      panel.style.transform = "";
+      preserveScroll(() => {
+        panel.style.height = mobileQuery.matches
+          ? "auto"
+          : `${getPanelTargetHeight(panel)}px`;
+        panel.style.overflowY =
+          panel.scrollHeight > panel.clientHeight + 2 ? "auto" : "hidden";
+        panel.style.overflowX = "hidden";
+        panel.style.opacity = "";
+        panel.style.transform = "";
+        panel.style.maxHeight = "";
+        panel.style.willChange = "";
+      });
 
       refreshScrollTriggerWithoutJump();
     });
@@ -579,6 +613,7 @@ function setupArchiveDetails() {
     if (item.tagName.toLowerCase() !== "details") return;
 
     item.dataset.workProjectItem = String(index);
+    item.removeAttribute("name");
 
     const summary = item.querySelector(".work-project__summary");
     const panel = getPanel(item);
@@ -586,12 +621,12 @@ function setupArchiveDetails() {
     if (!summary || !panel) return;
 
     panel.classList.add("work-project__detail-scroll");
-    panel.setAttribute("tabindex", "-1");
+    panel.removeAttribute("tabindex");
 
     if (!item.open) {
       panel.style.height = "0px";
       panel.style.opacity = "0";
-      panel.style.paddingBottom = "0px";
+      panel.style.overflow = "hidden";
     }
 
     summary.setAttribute("role", "button");
@@ -626,13 +661,8 @@ function setupArchiveDetails() {
     const openItem = details.find((item) => item.open);
     if (!openItem) return;
 
-    const summary = openItem.querySelector(".work-project__summary");
-
+    event.preventDefault();
     closeProject(openItem);
-
-    if (summary) {
-      summary.focus({ preventScroll: true });
-    }
   });
 }
 
