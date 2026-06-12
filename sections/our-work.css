@@ -1364,3 +1364,261 @@
   padding-bottom: 0;
   pointer-events: none;
 }
+
+
+
+
+
+
+
+
+
+
+
+/* ==========================================================
+   WORK ARCHIVE — SCALE DOWN / ZOOM OUT PASS
+   Makes the whole section feel smaller, wider, cleaner
+========================================================== */
+
+.work-archive {
+  min-height: auto;
+  margin-top: clamp(4rem, 8vh, 8rem);
+}
+
+.work-archive__shell {
+  width: min(106rem, calc(100% - 5rem));
+  min-height: auto;
+  padding: clamp(4.5rem, 8vh, 7rem) 0 clamp(6rem, 10vh, 9rem);
+}
+
+/* ---------- Header ---------- */
+
+.work-archive__header {
+  grid-template-columns: 8rem minmax(0, 36rem) minmax(14rem, 20rem);
+  gap: clamp(1.25rem, 2.8vw, 3rem);
+  margin: 0 0 clamp(2.5rem, 5vh, 4rem);
+}
+
+.work-archive__header::after {
+  bottom: -1.35rem;
+}
+
+.work-archive__label {
+  gap: 0.35rem;
+  font-size: 0.54rem;
+  letter-spacing: 0.14em;
+}
+
+.work-archive__kicker {
+  margin: 0 0 0.7rem;
+  font-size: 0.54rem;
+  letter-spacing: 0.16em;
+}
+
+.work-archive__title {
+  max-width: 34rem;
+  font-size: clamp(1.9rem, 3.5vw, 4.7rem);
+  font-weight: 300;
+  letter-spacing: -0.082em;
+  line-height: 0.9;
+}
+
+.work-archive__intro {
+  max-width: 18.5rem;
+  font-size: clamp(0.74rem, 0.78vw, 0.9rem);
+  line-height: 1.55;
+  color: rgba(246, 246, 240, 0.42);
+}
+
+/* ---------- List / rows ---------- */
+
+.work-archive__list {
+  margin-top: 0.35rem;
+}
+
+.work-project__summary {
+  grid-template-columns:
+    2.5rem
+    minmax(0, 1.5fr)
+    minmax(8rem, 0.82fr)
+    3.4rem
+    1.4rem;
+  gap: clamp(0.9rem, 1.6vw, 1.4rem);
+  min-height: clamp(3.9rem, 5.4vw, 4.9rem);
+}
+
+.work-project__index,
+.work-project__meta,
+.work-project__year {
+  font-size: 0.52rem;
+  letter-spacing: 0.09em;
+  color: rgba(246, 246, 240, 0.42);
+}
+
+.work-project__name {
+  font-size: clamp(1.05rem, 1.85vw, 2.15rem);
+  letter-spacing: -0.05em;
+  line-height: 0.96;
+  color: rgba(246, 246, 240, 0.74);
+}
+
+.work-project__meta {
+  font-size: 0.52rem;
+}
+
+.work-project__year {
+  font-size: 0.52rem;
+}
+
+.work-project__arrow {
+  font-size: 0.88rem;
+  opacity: 0.58;
+}
+
+.work-project__summary:hover .work-project__name,
+.work-project[open] .work-project__name,
+.work-project.is-open .work-project__name {
+  transform: translate3d(0.18rem, 0, 0);
+}
+
+/* ---------- Hover preview ---------- */
+
+.work-project__preview,
+.work-project__hover-image {
+  right: 5.5vw;
+  top: 34vh;
+  width: clamp(8.5rem, 10.5vw, 12rem);
+}
+
+/* ---------- Detail panel ---------- */
+
+.work-project[open] .work-project__panel {
+  padding: 0 0 clamp(1.5rem, 3vh, 2.2rem);
+}
+
+.work-project__case,
+.work-project__content {
+  width: min(60rem, 100%);
+  padding-left: clamp(0rem, 11vw, 11rem);
+}
+
+.work-project__eyebrow {
+  margin: 0 0 0.85rem;
+  font-size: 0.5rem;
+  letter-spacing: 0.15em;
+}
+
+.work-project__statement,
+.work-project__description,
+.work-project__content h3 {
+  max-width: 40rem;
+  margin: 0 0 1.15rem;
+  font-size: clamp(1rem, 1.35vw, 1.55rem);
+  letter-spacing: -0.045em;
+  line-height: 1.08;
+}
+
+.work-project__proof,
+.work-project__grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.work-project__proof section,
+.work-project__grid section {
+  min-height: 6.75rem;
+  padding: 0.85rem 0.9rem;
+}
+
+.work-project__proof p,
+.work-project__grid p {
+  margin: 0 0 0.55rem;
+  font-size: 0.44rem;
+  letter-spacing: 0.14em;
+}
+
+.work-project__proof span,
+.work-project__grid span {
+  font-size: 0.62rem;
+  line-height: 1.45;
+  color: rgba(246, 246, 240, 0.54);
+}
+
+/* ---------- Mobile ---------- */
+
+@media (max-width: 1180px) {
+  .work-archive__shell {
+    width: min(72rem, calc(100% - 2.5rem));
+    padding: 4.5rem 0 5.5rem;
+  }
+
+  .work-archive__header {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .work-archive__title {
+    max-width: 28rem;
+    font-size: clamp(2rem, 8vw, 3.6rem);
+  }
+
+  .work-archive__intro {
+    max-width: 30rem;
+  }
+
+  .work-project__summary {
+    grid-template-columns: 2.2rem minmax(0, 1fr) auto;
+    min-height: 4.1rem;
+  }
+
+  .work-project__meta,
+  .work-project__year,
+  .work-project__preview,
+  .work-project__hover-image {
+    display: none;
+  }
+
+  .work-project__case,
+  .work-project__content {
+    width: 100%;
+    padding-left: 2.2rem;
+  }
+}
+
+@media (max-width: 700px) {
+  .work-archive__shell {
+    width: calc(100% - 1.4rem);
+    padding: 4rem 0 5rem;
+  }
+
+  .work-archive__title {
+    font-size: clamp(2rem, 11vw, 3.15rem);
+    line-height: 0.94;
+  }
+
+  .work-project__summary {
+    grid-template-columns: 2rem minmax(0, 1fr) auto;
+    gap: 0.8rem;
+    min-height: 3.8rem;
+  }
+
+  .work-project__name {
+    font-size: clamp(1rem, 5vw, 1.35rem);
+  }
+
+  .work-project__case,
+  .work-project__content {
+    padding-left: 0;
+  }
+
+  .work-project__proof,
+  .work-project__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .work-project__proof section,
+  .work-project__grid section {
+    min-height: auto;
+    padding: 0.85rem 0;
+  }
+}
