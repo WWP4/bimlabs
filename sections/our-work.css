@@ -2934,7 +2934,6 @@
   overscroll-behavior: contain;
   overscroll-behavior-y: contain;
   touch-action: pan-y;
-  contain: layout paint;
   scrollbar-gutter: stable;
 }
 
