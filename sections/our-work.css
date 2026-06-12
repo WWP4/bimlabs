@@ -2912,3 +2912,58 @@
     transition: none !important;
   }
 }
+
+/* ==========================================================
+   BIM LABS — ARCHIVE ACCORDION STABILITY OVERRIDES
+   Keeps native <details> from snapping while JS controls height.
+========================================================== */
+
+.work-archive,
+.work-archive__list,
+.work-project,
+.work-project__summary,
+.work-project__panel,
+.work-project__detail-scroll {
+  overflow-anchor: none;
+}
+
+.work-project__panel.work-project__detail-scroll {
+  max-height: none !important;
+  min-height: 0;
+  overflow: hidden;
+  overscroll-behavior: contain;
+  overscroll-behavior-y: contain;
+  touch-action: pan-y;
+  contain: layout paint;
+  scrollbar-gutter: stable;
+}
+
+.work-project[open] .work-project__panel.work-project__detail-scroll {
+  max-height: none !important;
+  pointer-events: auto;
+  padding: 0 0 clamp(2rem, 4vh, 3rem) !important;
+}
+
+.work-project:not([open]) .work-project__panel.work-project__detail-scroll {
+  height: 0;
+  pointer-events: none;
+  padding-bottom: 0 !important;
+}
+
+.work-project.is-opening .work-project__panel.work-project__detail-scroll,
+.work-project.is-closing .work-project__panel.work-project__detail-scroll {
+  overflow: hidden !important;
+}
+
+.work-project.is-open .work-project__panel.work-project__detail-scroll {
+  overflow-x: hidden;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+}
+
+@media (max-width: 900px) {
+  .work-project.is-open .work-project__panel.work-project__detail-scroll {
+    height: auto !important;
+    overflow: visible !important;
+  }
+}
