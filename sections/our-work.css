@@ -1,16 +1,11 @@
 /* ==========================================================
    BIM LABS STUDIO — OUR WORK
-   Clean single-source CSS
-   Includes:
-   01 / Variables
-   02 / Process-to-work reveal support
-   03 / Flying trust cards
-   04 / Work archive base
-   05 / Header
-   06 / Project rows
-   07 / Detail dropdowns
-   08 / Responsive
-   09 / Reduced motion
+   Clean final CSS
+   - No stacked overrides
+   - Right-leaning archive header
+   - No boxy header frame lines
+   - Spacious gap after testimonials
+   - Stable details dropdowns
 ========================================================== */
 
 /* ==========================================================
@@ -19,16 +14,14 @@
 
 :root {
   --work-bg: #000;
-  --work-bg-soft: #050505;
   --work-fg: rgba(246, 246, 240, 0.94);
   --work-white: rgba(255, 255, 255, 0.96);
   --work-muted: rgba(246, 246, 240, 0.52);
   --work-dim: rgba(246, 246, 240, 0.34);
-  --work-line: rgba(246, 246, 240, 0.14);
-  --work-line-strong: rgba(246, 246, 240, 0.46);
-  --work-line-soft: rgba(246, 246, 240, 0.075);
-
+  --work-line: rgba(246, 246, 240, 0.12);
+  --work-line-soft: rgba(246, 246, 240, 0.055);
   --work-ease: cubic-bezier(0.19, 1, 0.22, 1);
+
   --work-sans: var(
     --font-sans,
     "Manrope",
@@ -38,6 +31,7 @@
     "Segoe UI",
     sans-serif
   );
+
   --work-mono: var(
     --mono,
     "IBM Plex Mono",
@@ -90,16 +84,16 @@
 .work-reveal-preview__field {
   position: absolute;
   inset: 12vh 10vw;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.07);
   border-radius: 999px;
-  opacity: 0.6;
+  opacity: 0.5;
 }
 
 .work-reveal-preview__field::before,
 .work-reveal-preview__field::after {
   content: "";
   position: absolute;
-  border: 1px solid rgba(255, 255, 255, 0.055);
+  border: 1px solid rgba(255, 255, 255, 0.045);
   border-radius: inherit;
 }
 
@@ -122,14 +116,14 @@
   position: absolute;
   width: clamp(58px, 6vw, 104px);
   height: clamp(58px, 6vw, 104px);
-  border: 1px solid rgba(255, 255, 255, 0.24);
+  border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 999px;
   background:
-    radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.22), transparent 7%),
-    radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.08), transparent 42%);
+    radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.2), transparent 7%),
+    radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.07), transparent 42%);
   box-shadow:
-    0 0 42px rgba(255, 255, 255, 0.06),
-    inset 0 0 32px rgba(255, 255, 255, 0.035);
+    0 0 42px rgba(255, 255, 255, 0.05),
+    inset 0 0 32px rgba(255, 255, 255, 0.03);
 }
 
 .work-node::after {
@@ -141,7 +135,7 @@
   height: 4px;
   border-radius: 999px;
   background: #fff;
-  opacity: 0.9;
+  opacity: 0.85;
   transform: translate(-50%, -50%);
 }
 
@@ -172,10 +166,10 @@
   background: linear-gradient(
     90deg,
     transparent,
-    rgba(255, 255, 255, 0.5),
+    rgba(255, 255, 255, 0.42),
     transparent
   );
-  opacity: 0.42;
+  opacity: 0.34;
 }
 
 .work-line--one {
@@ -208,7 +202,7 @@
 
 .work-reveal-preview__kicker {
   margin: 0 0 14px;
-  color: rgba(255, 255, 255, 0.44);
+  color: rgba(255, 255, 255, 0.42);
   font-family: var(--work-mono);
   font-size: 11px;
   font-weight: 700;
@@ -219,7 +213,7 @@
 
 .work-reveal-preview__statement {
   margin: 0;
-  color: rgba(255, 255, 255, 0.92);
+  color: rgba(255, 255, 255, 0.9);
   font-family: var(--work-sans);
   font-size: clamp(34px, 5vw, 82px);
   font-weight: 300;
@@ -235,7 +229,7 @@
   flex-direction: column;
   align-items: flex-end;
   gap: 10px;
-  color: rgba(255, 255, 255, 0.42);
+  color: rgba(255, 255, 255, 0.4);
   font-family: var(--work-mono);
   font-size: 11px;
   font-weight: 700;
@@ -247,7 +241,7 @@
   display: block;
   min-width: 160px;
   padding-top: 10px;
-  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
   text-align: right;
 }
 
@@ -293,7 +287,7 @@
   top: 15vh;
   z-index: 1;
   margin: 0;
-  color: rgba(255, 255, 255, 0.92);
+  color: rgba(255, 255, 255, 0.9);
   font-size: clamp(4.4rem, 9.2vw, 12rem);
   font-weight: 300;
   letter-spacing: -0.085em;
@@ -342,15 +336,15 @@
   width: clamp(20rem, 25vw, 30rem);
   min-height: clamp(22rem, 45vh, 32rem);
   padding: clamp(1.45rem, 2vw, 2.15rem);
-  border: 1px solid rgba(245, 245, 240, 0.13);
+  border: 1px solid rgba(245, 245, 240, 0.12);
   border-radius: 0.42rem;
   color: var(--work-fg);
   background:
-    linear-gradient(145deg, rgba(255, 255, 255, 0.105), rgba(255, 255, 255, 0.03)),
-    rgba(255, 255, 255, 0.05);
+    linear-gradient(145deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.028)),
+    rgba(255, 255, 255, 0.048);
   box-shadow:
     0 2rem 5rem rgba(0, 0, 0, 0.55),
-    inset 0 1px 0 rgba(255, 255, 255, 0.13);
+    inset 0 1px 0 rgba(255, 255, 255, 0.12);
   backdrop-filter: blur(18px);
   -webkit-backdrop-filter: blur(18px);
   opacity: 1;
@@ -377,13 +371,13 @@
 
 .bim-trust-card::after {
   z-index: -2;
-  background: rgba(255, 255, 255, 0.035);
+  background: rgba(255, 255, 255, 0.032);
   transform: translate3d(0.45rem, 0.45rem, -1px);
 }
 
 .bim-trust-card__logo {
   margin: 0 0 2rem;
-  color: rgba(255, 255, 255, 0.92);
+  color: rgba(255, 255, 255, 0.9);
   font-size: clamp(1.2rem, 1.6vw, 2rem);
   font-weight: 600;
   letter-spacing: -0.055em;
@@ -392,7 +386,7 @@
 
 .bim-trust-card blockquote {
   margin: 0;
-  color: rgba(245, 245, 240, 0.74);
+  color: rgba(245, 245, 240, 0.72);
   font-size: clamp(0.88rem, 1vw, 1.12rem);
   font-weight: 300;
   line-height: 1.5;
@@ -406,7 +400,7 @@
 }
 
 .bim-trust-card strong {
-  color: rgba(255, 255, 255, 0.78);
+  color: rgba(255, 255, 255, 0.76);
   font-size: 0.62rem;
   font-weight: 700;
   letter-spacing: 0.03em;
@@ -432,9 +426,9 @@
 
   position: relative;
   z-index: 4;
-  min-height: 100vh;
-  margin-top: clamp(8rem, 18vh, 16rem);
-  overflow: clip;
+  min-height: clamp(1050px, 150vh, 1500px);
+  margin-top: clamp(12rem, 28vh, 22rem);
+  overflow: visible;
   color: var(--work-fg);
   background: #000;
   font-family: var(--work-sans);
@@ -442,20 +436,11 @@
   overflow-anchor: none;
 }
 
-.work-archive::before {
-  content: "";
-  position: absolute;
-  inset: 0 0 auto;
-  z-index: 0;
-  height: clamp(16rem, 32vh, 28rem);
-  background: linear-gradient(
-    to bottom,
-    #000 0%,
-    #000 44%,
-    rgba(0, 0, 0, 0.84) 68%,
-    rgba(0, 0, 0, 0) 100%
-  );
-  pointer-events: none;
+.work-archive::before,
+.work-archive__shell::before,
+.work-archive__header::after {
+  display: none;
+  content: none;
 }
 
 .work-archive::after {
@@ -465,7 +450,7 @@
   bottom: -1px;
   left: 0;
   z-index: 1;
-  height: 20rem;
+  height: 18rem;
   background: linear-gradient(to bottom, transparent, #000);
   pointer-events: none;
 }
@@ -474,127 +459,73 @@
   position: absolute;
   inset: 0;
   z-index: 0;
-  opacity: calc(0.42 + (var(--archive-reveal) * 0.42));
+  opacity: 0.76;
   pointer-events: none;
-  transform:
-    translate3d(0, calc((1 - var(--archive-reveal)) * 4rem), 0)
-    scale(calc(1.03 - (var(--archive-reveal) * 0.03)));
   background:
-    radial-gradient(circle at 72% 18%, rgba(255, 255, 255, 0.045), transparent 24rem),
-    radial-gradient(circle at 18% 74%, rgba(255, 255, 255, 0.026), transparent 22rem),
+    radial-gradient(circle at 78% 16%, rgba(255, 255, 255, 0.04), transparent 25rem),
+    radial-gradient(circle at 22% 70%, rgba(255, 255, 255, 0.024), transparent 22rem),
     linear-gradient(180deg, #000 0%, #030303 48%, #000 100%);
-  will-change: transform, opacity;
 }
 
 .work-archive__bg::before {
   content: "";
   position: absolute;
   inset: 0;
-  opacity: 0.18;
+  opacity: 0.12;
   background-image:
-    linear-gradient(rgba(255, 255, 255, 0.032) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.024) 1px, transparent 1px);
+    linear-gradient(rgba(255, 255, 255, 0.022) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.016) 1px, transparent 1px);
   background-size: 86px 86px;
-  mask-image: radial-gradient(circle at 52% 48%, black 0%, transparent 72%);
+  mask-image: radial-gradient(circle at 58% 46%, black 0%, transparent 72%);
 }
 
 .work-archive__shell {
   position: relative;
   z-index: 2;
-  width: min(92rem, calc(100% - 4.5rem));
-  min-height: 100vh;
+  width: min(110rem, calc(100% - 6rem));
+  min-height: inherit;
   margin: 0 auto;
-  padding: clamp(7rem, 12vh, 11rem) 0 clamp(7rem, 12vh, 10rem);
-  will-change: transform;
+  padding:
+    clamp(8rem, 15vh, 12rem)
+    0
+    clamp(10rem, 18vh, 16rem);
+  overflow: visible;
   overflow-anchor: none;
 }
 
-.work-archive__shell::before {
-  content: "";
-  position: absolute;
-  top: clamp(1.4rem, 3.8vh, 3.2rem);
-  right: 0;
-  left: 0;
-  height: 1px;
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    rgba(246, 246, 240, 0.08) 14%,
-    rgba(246, 246, 240, 0.42) 50%,
-    rgba(246, 246, 240, 0.08) 86%,
-    transparent 100%
-  );
-  opacity: 0.8;
-  transform: scaleX(var(--archive-top-line));
-  transform-origin: center;
-  pointer-events: none;
-}
-
-.work-archive__shell::after {
-  content: "";
-  position: absolute;
-  top: -15%;
-  bottom: -15%;
-  left: -42%;
-  z-index: -1;
-  width: 34%;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255, 255, 255, 0.045),
-    transparent
-  );
-  opacity: var(--archive-glow);
-  filter: blur(16px);
-  transform:
-    translate3d(calc(var(--archive-reveal) * 520%), 0, 0)
-    skewX(-16deg);
-  pointer-events: none;
-}
-
 /* ==========================================================
-   05 / WORK ARCHIVE HEADER
+   05 / RIGHT-LEANING HEADER
 ========================================================== */
 
 .work-archive__header {
   position: relative;
   display: grid;
-  grid-template-columns: 10rem minmax(0, 44rem) minmax(16rem, 24rem);
+  grid-template-columns:
+    4.5rem
+    minmax(28rem, 36rem)
+    minmax(14rem, 18rem);
   align-items: start;
-  gap: clamp(2rem, 5vw, 6rem);
-  margin: 0 0 clamp(4rem, 8vh, 6rem);
-  will-change: transform, opacity, filter;
-}
+  gap: clamp(2rem, 4vw, 4.5rem);
 
-.work-archive__header::after {
-  content: "";
-  position: absolute;
-  right: 0;
-  bottom: -2.2rem;
-  left: 0;
-  height: 1px;
-  background: linear-gradient(
-    90deg,
-    rgba(255, 255, 255, 0.62),
-    rgba(255, 255, 255, 0.28),
-    rgba(255, 255, 255, 0.12)
-  );
-  transform: scaleX(var(--archive-top-line));
-  transform-origin: left center;
-  pointer-events: none;
+  width: min(72rem, 100%);
+  margin-left: auto;
+  margin-right: 0;
+  margin-bottom: clamp(8rem, 17vh, 13rem);
+
+  will-change: transform, opacity, filter;
 }
 
 .work-archive__label {
   display: flex;
   flex-direction: column;
-  gap: 0.55rem;
-  padding-top: 0.18rem;
-  color: rgba(246, 246, 240, 0.42);
+  gap: 0.35rem;
+  padding-top: 0.8rem;
+  color: rgba(246, 246, 240, 0.34);
   font-family: var(--work-mono);
-  font-size: 0.62rem;
-  font-weight: 700;
+  font-size: 0.54rem;
+  font-weight: 800;
   letter-spacing: 0.16em;
-  line-height: 1;
+  line-height: 1.35;
   text-transform: uppercase;
   will-change: transform, opacity, filter;
 }
@@ -604,37 +535,38 @@
 }
 
 .work-archive__kicker {
-  margin: 0 0 1rem;
-  color: rgba(246, 246, 240, 0.44);
+  margin: 0 0 0.9rem;
+  color: rgba(246, 246, 240, 0.42);
   font-family: var(--work-mono);
-  font-size: 0.62rem;
-  font-weight: 700;
-  letter-spacing: 0.2em;
+  font-size: 0.52rem;
+  font-weight: 800;
+  letter-spacing: 0.18em;
   line-height: 1;
   text-transform: uppercase;
   will-change: transform, opacity, filter;
 }
 
 .work-archive__title {
-  max-width: 42rem;
+  max-width: 34rem;
   margin: 0;
   color: rgba(246, 246, 240, 0.9);
-  font-size: clamp(2.2rem, 4.2vw, 5.8rem);
+  font-size: clamp(2.2rem, 3.5vw, 4.7rem);
   font-weight: 300;
-  letter-spacing: -0.075em;
-  line-height: 0.95;
+  letter-spacing: -0.09em;
+  line-height: 0.9;
   text-transform: none;
   will-change: transform, opacity, filter;
 }
 
 .work-archive__intro {
-  width: auto;
-  max-width: 23rem;
+  max-width: 16.5rem;
   margin: 0;
-  color: rgba(246, 246, 240, 0.48);
-  font-size: clamp(0.82rem, 0.88vw, 0.98rem);
+  padding-top: clamp(1.2rem, 3vh, 2.2rem);
+  justify-self: end;
+  color: rgba(246, 246, 240, 0.42);
+  font-size: clamp(0.72rem, 0.78vw, 0.88rem);
   font-weight: 300;
-  line-height: 1.65;
+  line-height: 1.62;
   letter-spacing: -0.018em;
   will-change: transform, opacity, filter;
 }
@@ -646,6 +578,8 @@
 .work-archive__list {
   position: relative;
   display: grid;
+  width: 100%;
+  margin-top: clamp(1rem, 3vh, 2rem);
   overflow-anchor: none;
 }
 
@@ -672,9 +606,9 @@
   height: 1px;
   background: linear-gradient(
     90deg,
-    rgba(255, 255, 255, 0.72),
-    rgba(255, 255, 255, 0.26),
-    rgba(255, 255, 255, 0.08)
+    rgba(255, 255, 255, 0.24),
+    rgba(255, 255, 255, 0.08),
+    rgba(255, 255, 255, 0.018)
   );
   transform: scaleX(var(--row-line));
   transform-origin: left center;
@@ -691,9 +625,9 @@
   height: 1px;
   background: linear-gradient(
     90deg,
-    rgba(255, 255, 255, 0.48),
-    rgba(255, 255, 255, 0.18),
-    rgba(255, 255, 255, 0.06)
+    rgba(255, 255, 255, 0.2),
+    rgba(255, 255, 255, 0.065),
+    rgba(255, 255, 255, 0.015)
   );
   transform: scaleX(var(--row-line));
   transform-origin: left center;
@@ -711,30 +645,30 @@
   z-index: 2;
   display: grid;
   grid-template-columns:
-    minmax(3.2rem, 0.34fr)
-    minmax(0, 1.6fr)
-    minmax(8rem, 0.82fr)
-    minmax(4rem, 0.34fr)
-    2.5rem;
+    2.7rem
+    minmax(0, 1.5fr)
+    minmax(10rem, 0.72fr)
+    3.6rem
+    1.4rem;
   align-items: center;
-  gap: clamp(1rem, 2vw, 2rem);
+  gap: clamp(1rem, 1.8vw, 1.7rem);
   width: 100%;
-  min-height: clamp(4.8rem, 7vw, 7.4rem);
+  min-height: clamp(4rem, 5.5vw, 5.15rem);
   color: inherit;
   background:
     linear-gradient(
       90deg,
-      rgba(255, 255, 255, calc(var(--row-fill) * 0.055)),
+      rgba(255, 255, 255, calc(var(--row-fill) * 0.045)),
       rgba(255, 255, 255, 0)
     );
   cursor: pointer;
   list-style: none;
   user-select: none;
   isolation: isolate;
+  overflow-anchor: none;
   transition:
     background 500ms ease,
     color 500ms ease;
-  overflow-anchor: none;
 }
 
 .work-project__summary::-webkit-details-marker {
@@ -753,10 +687,10 @@
 .work-project__index,
 .work-project__meta,
 .work-project__year {
-  color: rgba(246, 246, 240, 0.48);
+  color: rgba(246, 246, 240, 0.4);
   font-family: var(--work-mono);
-  font-size: clamp(0.62rem, 0.72vw, 0.84rem);
-  font-weight: 700;
+  font-size: 0.52rem;
+  font-weight: 800;
   letter-spacing: 0.1em;
   line-height: 1;
   text-transform: uppercase;
@@ -765,69 +699,68 @@
 
 .work-project__name {
   position: relative;
-  color: rgba(246, 246, 240, 0.76);
-  font-size: clamp(1.4rem, 2.4vw, 3.1rem);
+  color: rgba(246, 246, 240, 0.74);
+  font-size: clamp(1.15rem, 1.9vw, 2.25rem);
   font-weight: 300;
   letter-spacing: -0.055em;
-  line-height: 0.95;
+  line-height: 0.96;
   transition:
     color 420ms ease,
-    transform 720ms var(--work-ease);
+    transform 520ms var(--work-ease);
 }
 
-.work-project__meta {
-  justify-self: end;
-}
-
+.work-project__meta,
 .work-project__year {
   justify-self: end;
 }
 
 .work-project__arrow {
   justify-self: end;
-  color: rgba(246, 246, 240, 0.5);
-  font-size: 1rem;
+  color: rgba(246, 246, 240, 0.44);
+  font-size: 0.86rem;
   line-height: 1;
   transform-origin: center;
   transition:
     color 420ms ease,
-    transform 720ms var(--work-ease);
+    transform 520ms var(--work-ease);
 }
 
 .work-project__summary:hover .work-project__name,
 .work-project[open] .work-project__name,
 .work-project.is-open .work-project__name {
-  color: var(--work-white);
-  transform: translate3d(0.35rem, 0, 0);
+  color: rgba(255, 255, 255, 0.94);
+  transform: translate3d(0.2rem, 0, 0);
 }
 
 .work-project[open] .work-project__arrow,
 .work-project.is-open .work-project__arrow {
-  color: rgba(255, 255, 255, 0.9);
+  color: rgba(255, 255, 255, 0.86);
   transform: rotate(90deg);
 }
 
 .work-archive.has-open-project .work-project:not([open]) {
-  opacity: 0.42;
+  opacity: 0.48;
 }
 
 .work-archive.has-open-project .work-project[open] {
   opacity: 1;
 }
 
-/* Hover preview image */
+/* ==========================================================
+   07 / HOVER PREVIEW
+========================================================== */
 
 .work-project__preview,
 .work-project__hover-image {
   position: fixed;
-  right: 7vw;
-  top: 36vh;
+  right: 5.5vw;
+  top: 34vh;
   z-index: 50;
   display: block;
-  width: clamp(10rem, 13vw, 15.5rem);
+  width: clamp(8.5rem, 10.5vw, 12rem);
   aspect-ratio: 1.45 / 1;
   overflow: hidden;
-  border: 1px solid rgba(246, 246, 240, 0.1);
+  border: 1px solid rgba(246, 246, 240, 0.09);
   background: #050505;
   box-shadow: 0 2rem 5rem rgba(0, 0, 0, 0.68);
   opacity: 0;
@@ -857,7 +790,7 @@
 .work-project__summary:hover .work-project__hover-image,
 .work-project.is-previewing .work-project__preview,
 .work-project.is-previewing .work-project__hover-image {
-  opacity: 0.92;
+  opacity: 0.9;
   visibility: visible;
   transform: translate3d(0, 0, 0) scale(1) rotate(-1deg);
 }
@@ -879,7 +812,7 @@
 }
 
 /* ==========================================================
-   07 / DETAIL DROPDOWNS
+   08 / DETAIL DROPDOWNS
 ========================================================== */
 
 .work-project__panel,
@@ -912,7 +845,7 @@
 
 .work-project[open] .work-project__panel {
   opacity: 1;
-  padding: 0 0 clamp(2rem, 4vh, 3rem);
+  padding: 0 0 clamp(1.5rem, 3vh, 2.2rem);
   transform: translate3d(0, 0, 0);
   pointer-events: auto;
 }
@@ -940,9 +873,9 @@
 }
 
 .work-project__detail-scroll {
-  overscroll-behavior: contain;
+  overscroll-behavior: auto;
   scrollbar-width: thin;
-  scrollbar-color: rgba(246, 246, 240, 0.28) transparent;
+  scrollbar-color: rgba(246, 246, 240, 0.2) transparent;
 }
 
 .work-project__detail-scroll::-webkit-scrollbar {
@@ -955,23 +888,23 @@
 
 .work-project__detail-scroll::-webkit-scrollbar-thumb {
   border-radius: 999px;
-  background: rgba(246, 246, 240, 0.22);
+  background: rgba(246, 246, 240, 0.18);
 }
 
 .work-project__case,
 .work-project__content {
-  width: min(68rem, 100%);
+  width: min(60rem, 100%);
   margin-left: auto;
-  padding-left: clamp(0rem, 16vw, 16rem);
+  padding-left: clamp(0rem, 11vw, 11rem);
 }
 
 .work-project__eyebrow {
-  margin: 0 0 1.1rem;
+  margin: 0 0 0.85rem;
   color: rgba(246, 246, 240, 0.4);
   font-family: var(--work-mono);
-  font-size: 0.56rem;
+  font-size: 0.5rem;
   font-weight: 800;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.15em;
   line-height: 1;
   text-transform: uppercase;
 }
@@ -979,28 +912,28 @@
 .work-project__statement,
 .work-project__description,
 .work-project__content h3 {
-  max-width: 48rem;
-  margin: 0 0 clamp(1.4rem, 3vh, 2rem);
-  color: rgba(246, 246, 240, 0.78);
-  font-size: clamp(1.25rem, 1.8vw, 2.3rem);
+  max-width: 40rem;
+  margin: 0 0 1.15rem;
+  color: rgba(246, 246, 240, 0.76);
+  font-size: clamp(1rem, 1.35vw, 1.55rem);
   font-weight: 300;
-  letter-spacing: -0.055em;
-  line-height: 1.04;
+  letter-spacing: -0.045em;
+  line-height: 1.08;
 }
 
 .work-project__proof,
 .work-project__grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  border: 1px solid rgba(246, 246, 240, 0.08);
+  border: 1px solid rgba(246, 246, 240, 0.07);
   background: rgba(255, 255, 255, 0.012);
 }
 
 .work-project__proof section,
 .work-project__grid section {
-  min-height: 8.8rem;
-  padding: 1rem;
-  border-left: 1px solid rgba(246, 246, 240, 0.08);
+  min-height: 6.75rem;
+  padding: 0.85rem 0.9rem;
+  border-left: 1px solid rgba(246, 246, 240, 0.07);
 }
 
 .work-project__proof section:first-child,
@@ -1010,12 +943,12 @@
 
 .work-project__proof p,
 .work-project__grid p {
-  margin: 0 0 0.8rem;
+  margin: 0 0 0.55rem;
   color: rgba(246, 246, 240, 0.4);
   font-family: var(--work-mono);
-  font-size: 0.48rem;
+  font-size: 0.44rem;
   font-weight: 800;
-  letter-spacing: 0.17em;
+  letter-spacing: 0.14em;
   line-height: 1;
   text-transform: uppercase;
 }
@@ -1023,10 +956,10 @@
 .work-project__proof span,
 .work-project__grid span {
   display: block;
-  color: rgba(246, 246, 240, 0.56);
-  font-size: 0.68rem;
+  color: rgba(246, 246, 240, 0.54);
+  font-size: 0.62rem;
   font-weight: 300;
-  line-height: 1.55;
+  line-height: 1.45;
   letter-spacing: -0.01em;
 }
 
@@ -1039,10 +972,10 @@
   display: none;
 }
 
-/* JS reveal states */
+/* JS reveal states kept stable */
 
 .work-archive.is-forming .work-archive__bg::before {
-  opacity: 0.24;
+  opacity: 0.12;
 }
 
 .work-archive.is-formed {
@@ -1056,40 +989,52 @@
 }
 
 /* ==========================================================
-   08 / RESPONSIVE
+   09 / RESPONSIVE
 ========================================================== */
 
 @media (max-width: 1180px) {
   .work-archive {
     min-height: auto;
-    margin-top: 0;
+    margin-top: clamp(7rem, 16vh, 12rem);
     overflow: visible;
   }
 
   .work-archive__shell {
-    width: min(64rem, calc(100% - 3rem));
+    width: min(72rem, calc(100% - 2.5rem));
     min-height: auto;
-    padding: 6rem 0;
+    padding: 5.5rem 0 7rem;
   }
 
   .work-archive__header {
+    width: 100%;
     grid-template-columns: 1fr;
-    gap: 1.4rem;
+    gap: 1.25rem;
+    margin-left: 0;
+    margin-right: 0;
+    margin-bottom: clamp(4rem, 9vh, 6rem);
   }
 
   .work-archive__label {
     flex-direction: row;
     justify-content: space-between;
-    border-top: 1px solid rgba(246, 246, 240, 0.14);
+    border-top: 1px solid rgba(246, 246, 240, 0.1);
     padding-top: 1rem;
   }
 
-  .work-archive__intro {
+  .work-archive__title {
     max-width: 34rem;
+    font-size: clamp(2.15rem, 7vw, 4rem);
+  }
+
+  .work-archive__intro {
+    max-width: 32rem;
+    padding-top: 0;
+    justify-self: start;
   }
 
   .work-project__summary {
-    grid-template-columns: 3rem minmax(0, 1fr) auto;
+    grid-template-columns: 2.4rem minmax(0, 1fr) auto;
+    min-height: 4.25rem;
   }
 
   .work-project__meta,
@@ -1102,7 +1047,7 @@
   .work-project__case,
   .work-project__content {
     width: 100%;
-    padding-left: 3rem;
+    padding-left: 2.4rem;
   }
 }
 
@@ -1189,24 +1134,32 @@
 }
 
 @media (max-width: 700px) {
+  .work-archive {
+    margin-top: clamp(5rem, 12vh, 8rem);
+  }
+
   .work-archive__shell {
-    width: calc(100% - 2rem);
-    padding: 5rem 0 6rem;
+    width: calc(100% - 1.4rem);
+    padding: 4.5rem 0 6rem;
+  }
+
+  .work-archive__header {
+    margin-bottom: 3.8rem;
   }
 
   .work-archive__title {
-    font-size: clamp(2.4rem, 11vw, 4rem);
-    letter-spacing: -0.075em;
+    font-size: clamp(2rem, 10vw, 3.25rem);
+    line-height: 0.94;
   }
 
   .work-project__summary {
-    min-height: 4.8rem;
-    grid-template-columns: 2.4rem minmax(0, 1fr) auto;
-    gap: 1rem;
+    grid-template-columns: 2rem minmax(0, 1fr) auto;
+    gap: 0.8rem;
+    min-height: 3.9rem;
   }
 
   .work-project__name {
-    font-size: clamp(1.1rem, 5vw, 1.5rem);
+    font-size: clamp(1rem, 5vw, 1.35rem);
   }
 
   .work-project__case,
@@ -1222,8 +1175,9 @@
   .work-project__proof section,
   .work-project__grid section {
     min-height: auto;
+    padding: 0.85rem 0;
     border-left: 0;
-    border-top: 1px solid rgba(246, 246, 240, 0.08);
+    border-top: 1px solid rgba(246, 246, 240, 0.07);
   }
 
   .work-project__proof section:first-child,
@@ -1233,7 +1187,7 @@
 }
 
 /* ==========================================================
-   09 / REDUCED MOTION
+   10 / REDUCED MOTION
 ========================================================== */
 
 @media (prefers-reduced-motion: reduce) {
@@ -1275,748 +1229,4 @@
     transform: none;
     filter: none;
   }
-}
-
-
-
-
-
-
-
-
-/* ==========================================================
-   WORK ARCHIVE — FREE SCROLL LAYOUT
-========================================================== */
-
-.work-archive {
-  --archive-reveal: 1;
-  --archive-top-line: 1;
-  --archive-glow: 0;
-
-  position: relative;
-  z-index: 4;
-  min-height: max(175vh, 1320px);
-  margin-top: clamp(6rem, 12vh, 12rem);
-  overflow: visible;
-  color: var(--work-fg);
-  background: #000;
-  font-family: var(--work-sans);
-  isolation: isolate;
-  overflow-anchor: none;
-}
-
-.work-archive__shell {
-  position: relative;
-  z-index: 2;
-  width: min(92rem, calc(100% - 4.5rem));
-  min-height: auto;
-  margin: 0 auto;
-  padding: clamp(7rem, 12vh, 11rem) 0 clamp(12rem, 24vh, 20rem);
-  overflow: visible;
-  will-change: transform;
-  overflow-anchor: none;
-}
-
-.work-archive__list,
-.work-project,
-.work-project__summary,
-.work-project__panel {
-  overflow-anchor: none;
-}
-
-.work-project {
-  overflow: visible;
-}
-
-.work-project__panel {
-  display: block;
-  height: 0;
-  min-height: 0;
-  max-height: none !important;
-  opacity: 0;
-  overflow: hidden;
-  padding: 0;
-  transform: translate3d(0, -0.35rem, 0);
-  transition:
-    height 680ms cubic-bezier(0.19, 1, 0.22, 1),
-    opacity 280ms ease,
-    transform 680ms cubic-bezier(0.19, 1, 0.22, 1),
-    padding-bottom 680ms cubic-bezier(0.19, 1, 0.22, 1);
-  will-change: height, opacity, transform;
-}
-
-.work-project[open] .work-project__panel {
-  max-height: none !important;
-  opacity: 1;
-  padding: 0 0 clamp(2rem, 4vh, 3rem);
-  transform: translate3d(0, 0, 0);
-  pointer-events: auto;
-}
-
-.work-project.is-open .work-project__panel {
-  height: auto;
-  overflow: visible;
-}
-
-.work-project:not([open]) .work-project__panel {
-  height: 0;
-  opacity: 0;
-  padding-bottom: 0;
-  pointer-events: none;
-}
-
-
-
-
-
-
-
-
-
-
-
-/* ==========================================================
-   WORK ARCHIVE — SCALE DOWN / ZOOM OUT PASS
-   Makes the whole section feel smaller, wider, cleaner
-========================================================== */
-
-.work-archive {
-  min-height: auto;
-  margin-top: clamp(4rem, 8vh, 8rem);
-}
-
-.work-archive__shell {
-  width: min(106rem, calc(100% - 5rem));
-  min-height: auto;
-  padding: clamp(4.5rem, 8vh, 7rem) 0 clamp(6rem, 10vh, 9rem);
-}
-
-/* ---------- Header ---------- */
-
-.work-archive__header {
-  grid-template-columns: 8rem minmax(0, 36rem) minmax(14rem, 20rem);
-  gap: clamp(1.25rem, 2.8vw, 3rem);
-  margin: 0 0 clamp(2.5rem, 5vh, 4rem);
-}
-
-.work-archive__header::after {
-  bottom: -1.35rem;
-}
-
-.work-archive__label {
-  gap: 0.35rem;
-  font-size: 0.54rem;
-  letter-spacing: 0.14em;
-}
-
-.work-archive__kicker {
-  margin: 0 0 0.7rem;
-  font-size: 0.54rem;
-  letter-spacing: 0.16em;
-}
-
-.work-archive__title {
-  max-width: 34rem;
-  font-size: clamp(1.9rem, 3.5vw, 4.7rem);
-  font-weight: 300;
-  letter-spacing: -0.082em;
-  line-height: 0.9;
-}
-
-.work-archive__intro {
-  max-width: 18.5rem;
-  font-size: clamp(0.74rem, 0.78vw, 0.9rem);
-  line-height: 1.55;
-  color: rgba(246, 246, 240, 0.42);
-}
-
-/* ---------- List / rows ---------- */
-
-.work-archive__list {
-  margin-top: 0.35rem;
-}
-
-.work-project__summary {
-  grid-template-columns:
-    2.5rem
-    minmax(0, 1.5fr)
-    minmax(8rem, 0.82fr)
-    3.4rem
-    1.4rem;
-  gap: clamp(0.9rem, 1.6vw, 1.4rem);
-  min-height: clamp(3.9rem, 5.4vw, 4.9rem);
-}
-
-.work-project__index,
-.work-project__meta,
-.work-project__year {
-  font-size: 0.52rem;
-  letter-spacing: 0.09em;
-  color: rgba(246, 246, 240, 0.42);
-}
-
-.work-project__name {
-  font-size: clamp(1.05rem, 1.85vw, 2.15rem);
-  letter-spacing: -0.05em;
-  line-height: 0.96;
-  color: rgba(246, 246, 240, 0.74);
-}
-
-.work-project__meta {
-  font-size: 0.52rem;
-}
-
-.work-project__year {
-  font-size: 0.52rem;
-}
-
-.work-project__arrow {
-  font-size: 0.88rem;
-  opacity: 0.58;
-}
-
-.work-project__summary:hover .work-project__name,
-.work-project[open] .work-project__name,
-.work-project.is-open .work-project__name {
-  transform: translate3d(0.18rem, 0, 0);
-}
-
-/* ---------- Hover preview ---------- */
-
-.work-project__preview,
-.work-project__hover-image {
-  right: 5.5vw;
-  top: 34vh;
-  width: clamp(8.5rem, 10.5vw, 12rem);
-}
-
-/* ---------- Detail panel ---------- */
-
-.work-project[open] .work-project__panel {
-  padding: 0 0 clamp(1.5rem, 3vh, 2.2rem);
-}
-
-.work-project__case,
-.work-project__content {
-  width: min(60rem, 100%);
-  padding-left: clamp(0rem, 11vw, 11rem);
-}
-
-.work-project__eyebrow {
-  margin: 0 0 0.85rem;
-  font-size: 0.5rem;
-  letter-spacing: 0.15em;
-}
-
-.work-project__statement,
-.work-project__description,
-.work-project__content h3 {
-  max-width: 40rem;
-  margin: 0 0 1.15rem;
-  font-size: clamp(1rem, 1.35vw, 1.55rem);
-  letter-spacing: -0.045em;
-  line-height: 1.08;
-}
-
-.work-project__proof,
-.work-project__grid {
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-}
-
-.work-project__proof section,
-.work-project__grid section {
-  min-height: 6.75rem;
-  padding: 0.85rem 0.9rem;
-}
-
-.work-project__proof p,
-.work-project__grid p {
-  margin: 0 0 0.55rem;
-  font-size: 0.44rem;
-  letter-spacing: 0.14em;
-}
-
-.work-project__proof span,
-.work-project__grid span {
-  font-size: 0.62rem;
-  line-height: 1.45;
-  color: rgba(246, 246, 240, 0.54);
-}
-
-/* ---------- Mobile ---------- */
-
-@media (max-width: 1180px) {
-  .work-archive__shell {
-    width: min(72rem, calc(100% - 2.5rem));
-    padding: 4.5rem 0 5.5rem;
-  }
-
-  .work-archive__header {
-    grid-template-columns: 1fr;
-    gap: 1rem;
-    margin-bottom: 2.5rem;
-  }
-
-  .work-archive__title {
-    max-width: 28rem;
-    font-size: clamp(2rem, 8vw, 3.6rem);
-  }
-
-  .work-archive__intro {
-    max-width: 30rem;
-  }
-
-  .work-project__summary {
-    grid-template-columns: 2.2rem minmax(0, 1fr) auto;
-    min-height: 4.1rem;
-  }
-
-  .work-project__meta,
-  .work-project__year,
-  .work-project__preview,
-  .work-project__hover-image {
-    display: none;
-  }
-
-  .work-project__case,
-  .work-project__content {
-    width: 100%;
-    padding-left: 2.2rem;
-  }
-}
-
-@media (max-width: 700px) {
-  .work-archive__shell {
-    width: calc(100% - 1.4rem);
-    padding: 4rem 0 5rem;
-  }
-
-  .work-archive__title {
-    font-size: clamp(2rem, 11vw, 3.15rem);
-    line-height: 0.94;
-  }
-
-  .work-project__summary {
-    grid-template-columns: 2rem minmax(0, 1fr) auto;
-    gap: 0.8rem;
-    min-height: 3.8rem;
-  }
-
-  .work-project__name {
-    font-size: clamp(1rem, 5vw, 1.35rem);
-  }
-
-  .work-project__case,
-  .work-project__content {
-    padding-left: 0;
-  }
-
-  .work-project__proof,
-  .work-project__grid {
-    grid-template-columns: 1fr;
-  }
-
-  .work-project__proof section,
-  .work-project__grid section {
-    min-height: auto;
-    padding: 0.85rem 0;
-  }
-}
-
-
-
-
-
-
-
-
-
-/* ==========================================================
-   WORK ARCHIVE — SPACIOUS EDITORIAL LAYOUT
-   More breathing room after testimonials + deeper archive feel
-========================================================== */
-
-.work-archive {
-  --archive-reveal: 1;
-  --archive-top-line: 1;
-  --archive-glow: 0;
-
-  position: relative;
-  z-index: 4;
-
-  /* This creates the needed separation from the testimonial card section */
-  margin-top: clamp(12rem, 28vh, 22rem);
-
-  /* Bigger stage = more depth and less stacked feeling */
-  min-height: clamp(1050px, 150vh, 1500px);
-
-  overflow: visible;
-  color: var(--work-fg);
-  background: #000;
-  font-family: var(--work-sans);
-  isolation: isolate;
-}
-
-.work-archive__shell {
-  position: relative;
-  z-index: 2;
-
-  /* Wider makes everything feel more zoomed out */
-  width: min(108rem, calc(100% - 6rem));
-
-  min-height: inherit;
-  margin: 0 auto;
-
-  /* More vertical room inside the section */
-  padding:
-    clamp(7rem, 13vh, 11rem)
-    0
-    clamp(10rem, 18vh, 16rem);
-}
-
-/* ==========================================================
-   HEADER — RIGHT-LEANING, MORE EMPTY SPACE
-========================================================== */
-
-.work-archive__header {
-  position: relative;
-  display: grid;
-
-  /* Label left / title middle / intro right */
-  grid-template-columns: 9rem minmax(0, 38rem) minmax(18rem, 24rem);
-  align-items: start;
-  gap: clamp(3rem, 7vw, 8rem);
-
-  /* This is the key: creates space before the archive rows */
-  margin: 0 0 clamp(8rem, 18vh, 14rem);
-}
-
-.work-archive__header::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-
-  /* Push divider lower so the header breathes */
-  bottom: clamp(-4.5rem, -7vh, -3rem);
-
-  height: 1px;
-  background: linear-gradient(
-    90deg,
-    rgba(255, 255, 255, 0.46),
-    rgba(255, 255, 255, 0.18),
-    rgba(255, 255, 255, 0.04)
-  );
-  transform: scaleX(var(--archive-top-line));
-  transform-origin: left center;
-  pointer-events: none;
-}
-
-.work-archive__label {
-  padding-top: 0.3rem;
-  color: rgba(246, 246, 240, 0.38);
-  font-family: var(--work-mono);
-  font-size: 0.56rem;
-  font-weight: 800;
-  letter-spacing: 0.16em;
-  line-height: 1.35;
-  text-transform: uppercase;
-}
-
-.work-archive__heading {
-  min-width: 0;
-}
-
-/* Keep the title refined, not huge */
-.work-archive__kicker {
-  margin: 0 0 0.85rem;
-  color: rgba(246, 246, 240, 0.42);
-  font-family: var(--work-mono);
-  font-size: 0.54rem;
-  font-weight: 800;
-  letter-spacing: 0.18em;
-  line-height: 1;
-  text-transform: uppercase;
-}
-
-.work-archive__title {
-  max-width: 37rem;
-  margin: 0;
-  color: rgba(246, 246, 240, 0.88);
-  font-size: clamp(2.25rem, 3.55vw, 4.9rem);
-  font-weight: 300;
-  letter-spacing: -0.085em;
-  line-height: 0.9;
-}
-
-.work-archive__intro {
-  max-width: 21rem;
-  margin: 0;
-
-  /* Slightly lower than the title so it feels intentional */
-  padding-top: clamp(0.25rem, 1.2vh, 1rem);
-
-  color: rgba(246, 246, 240, 0.44);
-  font-size: clamp(0.74rem, 0.78vw, 0.92rem);
-  font-weight: 300;
-  line-height: 1.6;
-  letter-spacing: -0.018em;
-}
-
-/* ==========================================================
-   ARCHIVE ROWS — LOWER, COMPACT, CLEAN
-========================================================== */
-
-.work-archive__list {
-  position: relative;
-  display: grid;
-
-  /* This makes rows feel like they live at the bottom of the stage */
-  margin-top: clamp(1rem, 3vh, 2rem);
-}
-
-.work-project {
-  --row-line: 1;
-  --row-fill: 0;
-
-  position: relative;
-  color: inherit;
-  border: 0;
-  opacity: 1;
-  overflow: visible;
-}
-
-.work-project::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  height: 1px;
-  background: linear-gradient(
-    90deg,
-    rgba(255, 255, 255, 0.54),
-    rgba(255, 255, 255, 0.18),
-    rgba(255, 255, 255, 0.045)
-  );
-  transform: scaleX(var(--row-line));
-  transform-origin: left center;
-  pointer-events: none;
-}
-
-.work-project:last-child::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 1px;
-  background: linear-gradient(
-    90deg,
-    rgba(255, 255, 255, 0.42),
-    rgba(255, 255, 255, 0.14),
-    rgba(255, 255, 255, 0.04)
-  );
-  transform: scaleX(var(--row-line));
-  transform-origin: left center;
-  pointer-events: none;
-}
-
-.work-project__summary {
-  position: relative;
-  z-index: 2;
-  display: grid;
-  grid-template-columns:
-    2.7rem
-    minmax(0, 1.5fr)
-    minmax(10rem, 0.72fr)
-    3.6rem
-    1.4rem;
-  align-items: center;
-  gap: clamp(1rem, 1.8vw, 1.7rem);
-
-  /* Compact rows = premium */
-  min-height: clamp(4rem, 5.5vw, 5.15rem);
-
-  cursor: pointer;
-  list-style: none;
-  user-select: none;
-  background:
-    linear-gradient(
-      90deg,
-      rgba(255, 255, 255, calc(var(--row-fill) * 0.05)),
-      rgba(255, 255, 255, 0)
-    );
-}
-
-.work-project__summary::-webkit-details-marker {
-  display: none;
-}
-
-.work-project__index,
-.work-project__meta,
-.work-project__year {
-  color: rgba(246, 246, 240, 0.4);
-  font-family: var(--work-mono);
-  font-size: 0.52rem;
-  font-weight: 800;
-  letter-spacing: 0.1em;
-  line-height: 1;
-  text-transform: uppercase;
-  white-space: nowrap;
-}
-
-.work-project__name {
-  color: rgba(246, 246, 240, 0.74);
-  font-size: clamp(1.15rem, 1.9vw, 2.25rem);
-  font-weight: 300;
-  letter-spacing: -0.055em;
-  line-height: 0.96;
-  transition:
-    color 420ms ease,
-    transform 520ms var(--work-ease);
-}
-
-.work-project__meta,
-.work-project__year {
-  justify-self: end;
-}
-
-.work-project__arrow {
-  justify-self: end;
-  color: rgba(246, 246, 240, 0.44);
-  font-size: 0.86rem;
-  line-height: 1;
-  transition:
-    color 420ms ease,
-    transform 520ms var(--work-ease);
-}
-
-.work-project:hover,
-.work-project[open],
-.work-project.is-open {
-  --row-fill: 1;
-}
-
-.work-project__summary:hover .work-project__name,
-.work-project[open] .work-project__name,
-.work-project.is-open .work-project__name {
-  color: rgba(255, 255, 255, 0.94);
-  transform: translate3d(0.2rem, 0, 0);
-}
-
-.work-project[open] .work-project__arrow,
-.work-project.is-open .work-project__arrow {
-  color: rgba(255, 255, 255, 0.86);
-  transform: rotate(90deg);
-}
-
-
-
-
-
-/* ==========================================================
-   WORK ARCHIVE — RIGHT-LEANING HEADER LAYOUT
-========================================================== */
-
-.work-archive__shell {
-  width: min(108rem, calc(100% - 6rem));
-  margin: 0 auto;
-  padding:
-    clamp(7rem, 13vh, 11rem)
-    0
-    clamp(10rem, 18vh, 16rem);
-}
-
-/* The key:
-   make the header a narrower block and push it right */
-.work-archive__header {
-  position: relative;
-  display: grid;
-  grid-template-columns:
-    6.5rem
-    minmax(30rem, 42rem)
-    minmax(15rem, 21rem);
-  align-items: start;
-  gap: clamp(2rem, 4vw, 4.5rem);
-
-  width: min(86rem, 100%);
-  margin-left: auto;   /* pushes the whole cluster right */
-  margin-right: 0;
-  margin-bottom: clamp(8rem, 18vh, 14rem);
-}
-
-.work-archive__header::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: clamp(-4.5rem, -7vh, -3rem);
-  height: 1px;
-  background: linear-gradient(
-    90deg,
-    rgba(255, 255, 255, 0.46),
-    rgba(255, 255, 255, 0.18),
-    rgba(255, 255, 255, 0.04)
-  );
-  transform: scaleX(var(--archive-top-line));
-  transform-origin: left center;
-  pointer-events: none;
-}
-
-/* left archive label */
-.work-archive__label {
-  padding-top: 0.55rem;
-  color: rgba(246, 246, 240, 0.38);
-  font-family: var(--work-mono);
-  font-size: 0.56rem;
-  font-weight: 800;
-  letter-spacing: 0.16em;
-  line-height: 1.35;
-  text-transform: uppercase;
-}
-
-/* title column */
-.work-archive__heading {
-  min-width: 0;
-}
-
-.work-archive__kicker {
-  margin: 0 0 0.9rem;
-  color: rgba(246, 246, 240, 0.42);
-  font-family: var(--work-mono);
-  font-size: 0.54rem;
-  font-weight: 800;
-  letter-spacing: 0.18em;
-  line-height: 1;
-  text-transform: uppercase;
-}
-
-.work-archive__title {
-  max-width: 40rem;
-  margin: 0;
-  color: rgba(246, 246, 240, 0.9);
-  font-size: clamp(2.25rem, 3.55vw, 4.9rem);
-  font-weight: 300;
-  letter-spacing: -0.085em;
-  line-height: 0.9;
-}
-
-/* right text column */
-.work-archive__intro {
-  max-width: 19rem;
-  margin: 0;
-  padding-top: clamp(1rem, 3.2vh, 2.5rem); /* pushes the intro lower for balance */
-  justify-self: end;
-  color: rgba(246, 246, 240, 0.44);
-  font-size: clamp(0.74rem, 0.78vw, 0.92rem);
-  font-weight: 300;
-  line-height: 1.6;
-  letter-spacing: -0.018em;
-}
-
-/* keep the rows full width below */
-.work-archive__list {
-  width: 100%;
-  margin-top: clamp(1rem, 3vh, 2rem);
 }
