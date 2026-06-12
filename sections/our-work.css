@@ -1622,3 +1622,291 @@
     padding: 0.85rem 0;
   }
 }
+
+
+
+
+
+
+
+
+
+/* ==========================================================
+   WORK ARCHIVE — SPACIOUS EDITORIAL LAYOUT
+   More breathing room after testimonials + deeper archive feel
+========================================================== */
+
+.work-archive {
+  --archive-reveal: 1;
+  --archive-top-line: 1;
+  --archive-glow: 0;
+
+  position: relative;
+  z-index: 4;
+
+  /* This creates the needed separation from the testimonial card section */
+  margin-top: clamp(12rem, 28vh, 22rem);
+
+  /* Bigger stage = more depth and less stacked feeling */
+  min-height: clamp(1050px, 150vh, 1500px);
+
+  overflow: visible;
+  color: var(--work-fg);
+  background: #000;
+  font-family: var(--work-sans);
+  isolation: isolate;
+}
+
+.work-archive__shell {
+  position: relative;
+  z-index: 2;
+
+  /* Wider makes everything feel more zoomed out */
+  width: min(108rem, calc(100% - 6rem));
+
+  min-height: inherit;
+  margin: 0 auto;
+
+  /* More vertical room inside the section */
+  padding:
+    clamp(7rem, 13vh, 11rem)
+    0
+    clamp(10rem, 18vh, 16rem);
+}
+
+/* ==========================================================
+   HEADER — RIGHT-LEANING, MORE EMPTY SPACE
+========================================================== */
+
+.work-archive__header {
+  position: relative;
+  display: grid;
+
+  /* Label left / title middle / intro right */
+  grid-template-columns: 9rem minmax(0, 38rem) minmax(18rem, 24rem);
+  align-items: start;
+  gap: clamp(3rem, 7vw, 8rem);
+
+  /* This is the key: creates space before the archive rows */
+  margin: 0 0 clamp(8rem, 18vh, 14rem);
+}
+
+.work-archive__header::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+
+  /* Push divider lower so the header breathes */
+  bottom: clamp(-4.5rem, -7vh, -3rem);
+
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.46),
+    rgba(255, 255, 255, 0.18),
+    rgba(255, 255, 255, 0.04)
+  );
+  transform: scaleX(var(--archive-top-line));
+  transform-origin: left center;
+  pointer-events: none;
+}
+
+.work-archive__label {
+  padding-top: 0.3rem;
+  color: rgba(246, 246, 240, 0.38);
+  font-family: var(--work-mono);
+  font-size: 0.56rem;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  line-height: 1.35;
+  text-transform: uppercase;
+}
+
+.work-archive__heading {
+  min-width: 0;
+}
+
+/* Keep the title refined, not huge */
+.work-archive__kicker {
+  margin: 0 0 0.85rem;
+  color: rgba(246, 246, 240, 0.42);
+  font-family: var(--work-mono);
+  font-size: 0.54rem;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.work-archive__title {
+  max-width: 37rem;
+  margin: 0;
+  color: rgba(246, 246, 240, 0.88);
+  font-size: clamp(2.25rem, 3.55vw, 4.9rem);
+  font-weight: 300;
+  letter-spacing: -0.085em;
+  line-height: 0.9;
+}
+
+.work-archive__intro {
+  max-width: 21rem;
+  margin: 0;
+
+  /* Slightly lower than the title so it feels intentional */
+  padding-top: clamp(0.25rem, 1.2vh, 1rem);
+
+  color: rgba(246, 246, 240, 0.44);
+  font-size: clamp(0.74rem, 0.78vw, 0.92rem);
+  font-weight: 300;
+  line-height: 1.6;
+  letter-spacing: -0.018em;
+}
+
+/* ==========================================================
+   ARCHIVE ROWS — LOWER, COMPACT, CLEAN
+========================================================== */
+
+.work-archive__list {
+  position: relative;
+  display: grid;
+
+  /* This makes rows feel like they live at the bottom of the stage */
+  margin-top: clamp(1rem, 3vh, 2rem);
+}
+
+.work-project {
+  --row-line: 1;
+  --row-fill: 0;
+
+  position: relative;
+  color: inherit;
+  border: 0;
+  opacity: 1;
+  overflow: visible;
+}
+
+.work-project::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.54),
+    rgba(255, 255, 255, 0.18),
+    rgba(255, 255, 255, 0.045)
+  );
+  transform: scaleX(var(--row-line));
+  transform-origin: left center;
+  pointer-events: none;
+}
+
+.work-project:last-child::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.42),
+    rgba(255, 255, 255, 0.14),
+    rgba(255, 255, 255, 0.04)
+  );
+  transform: scaleX(var(--row-line));
+  transform-origin: left center;
+  pointer-events: none;
+}
+
+.work-project__summary {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns:
+    2.7rem
+    minmax(0, 1.5fr)
+    minmax(10rem, 0.72fr)
+    3.6rem
+    1.4rem;
+  align-items: center;
+  gap: clamp(1rem, 1.8vw, 1.7rem);
+
+  /* Compact rows = premium */
+  min-height: clamp(4rem, 5.5vw, 5.15rem);
+
+  cursor: pointer;
+  list-style: none;
+  user-select: none;
+  background:
+    linear-gradient(
+      90deg,
+      rgba(255, 255, 255, calc(var(--row-fill) * 0.05)),
+      rgba(255, 255, 255, 0)
+    );
+}
+
+.work-project__summary::-webkit-details-marker {
+  display: none;
+}
+
+.work-project__index,
+.work-project__meta,
+.work-project__year {
+  color: rgba(246, 246, 240, 0.4);
+  font-family: var(--work-mono);
+  font-size: 0.52rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  line-height: 1;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.work-project__name {
+  color: rgba(246, 246, 240, 0.74);
+  font-size: clamp(1.15rem, 1.9vw, 2.25rem);
+  font-weight: 300;
+  letter-spacing: -0.055em;
+  line-height: 0.96;
+  transition:
+    color 420ms ease,
+    transform 520ms var(--work-ease);
+}
+
+.work-project__meta,
+.work-project__year {
+  justify-self: end;
+}
+
+.work-project__arrow {
+  justify-self: end;
+  color: rgba(246, 246, 240, 0.44);
+  font-size: 0.86rem;
+  line-height: 1;
+  transition:
+    color 420ms ease,
+    transform 520ms var(--work-ease);
+}
+
+.work-project:hover,
+.work-project[open],
+.work-project.is-open {
+  --row-fill: 1;
+}
+
+.work-project__summary:hover .work-project__name,
+.work-project[open] .work-project__name,
+.work-project.is-open .work-project__name {
+  color: rgba(255, 255, 255, 0.94);
+  transform: translate3d(0.2rem, 0, 0);
+}
+
+.work-project[open] .work-project__arrow,
+.work-project.is-open .work-project__arrow {
+  color: rgba(255, 255, 255, 0.86);
+  transform: rotate(90deg);
+}
