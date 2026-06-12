@@ -331,6 +331,11 @@
 
 
 
+
+
+
+
+   
 function closeAllArchiveProjects() {
   const details = Array.from(archive.querySelectorAll(".work-project"));
 
@@ -338,46 +343,84 @@ function closeAllArchiveProjects() {
     if (!item || item.tagName.toLowerCase() !== "details") return;
 
     const summary = item.querySelector(".work-project__summary");
-    const detailContent = item.querySelector(
+    const panel = item.querySelector(
       ".work-project__details, .work-project__detail, .work-project__content, .work-project__body, .work-project__panel, .work-project__detail-scroll"
     );
 
     item.removeAttribute("open");
     item.open = false;
-    item.classList.remove("is-open", "is-previewing", "is-glitching");
+    item.classList.remove(
+      "is-open",
+      "is-opening",
+      "is-closing",
+      "is-previewing",
+      "is-glitching"
+    );
 
     if (summary) {
       summary.setAttribute("aria-expanded", "false");
-      summary.blur();
     }
 
-    if (detailContent) {
-      detailContent.scrollTop = 0;
+    if (panel) {
+      window.clearTimeout(panel._workPanelTimer);
+      panel.style.height = "0px";
+      panel.style.opacity = "0";
+      panel.style.transform = "translate3d(0, -0.45rem, 0)";
+      panel.style.paddingBottom = "0px";
+      panel.scrollTop = 0;
     }
   });
 
   archive.classList.remove("has-open-project");
 }
 
-
-
-
-
-
-   
-
-  /* ==========================================================
-     ARCHIVE DETAILS — CURRENT HTML USES DETAILS/SUMMARY
-  ========================================================== */
+/* ==========================================================
+   ARCHIVE DETAILS — SEAMLESS MEASURED ACCORDION
+========================================================== */
 function setupArchiveDetails() {
   const details = Array.from(archive.querySelectorAll(".work-project"));
+  const PANEL_SELECTOR =
+    ".work-project__details, .work-project__detail, .work-project__content, .work-project__body, .work-project__panel";
 
-  function getDetailContent(item) {
+  let refreshTimer = null;
+
+  function getScrollY() {
+    return window.scrollY || window.pageYOffset || 0;
+  }
+
+  function restoreScrollY(y) {
+    const smoother =
+      window.ScrollSmoother &&
+      typeof window.ScrollSmoother.get === "function" &&
+      window.ScrollSmoother.get();
+
+    if (smoother && typeof smoother.scrollTop === "function") {
+      smoother.scrollTop(y);
+      return;
+    }
+
+    window.scrollTo(0, y);
+  }
+
+  function refreshScrollTriggerWithoutJump(delay = 80) {
+    if (!window.ScrollTrigger) return;
+
+    window.clearTimeout(refreshTimer);
+
+    refreshTimer = window.setTimeout(() => {
+      const y = getScrollY();
+
+      window.ScrollTrigger.refresh();
+
+      window.requestAnimationFrame(() => {
+        restoreScrollY(y);
+      });
+    }, delay);
+  }
+
+  function getPanel(item) {
     const summary = item.querySelector(".work-project__summary");
-
-    const existing = item.querySelector(
-      ".work-project__details, .work-project__detail, .work-project__content, .work-project__body, .work-project__panel"
-    );
+    const existing = item.querySelector(PANEL_SELECTOR);
 
     if (existing) return existing;
 
@@ -385,7 +428,7 @@ function setupArchiveDetails() {
     if (!children.length) return null;
 
     const wrapper = document.createElement("div");
-    wrapper.className = "work-project__details";
+    wrapper.className = "work-project__panel";
 
     children.forEach((child) => wrapper.appendChild(child));
     item.appendChild(wrapper);
@@ -393,51 +436,143 @@ function setupArchiveDetails() {
     return wrapper;
   }
 
-  function closeProject(item) {
+  function afterHeightTransition(panel, callback) {
+    window.clearTimeout(panel._workPanelTimer);
+
+    const finish = (event) => {
+      if (event && event.target !== panel) return;
+      if (event && event.propertyName && event.propertyName !== "height") return;
+
+      panel.removeEventListener("transitionend", finish);
+      window.clearTimeout(panel._workPanelTimer);
+      callback();
+    };
+
+    panel.addEventListener("transitionend", finish);
+
+    panel._workPanelTimer = window.setTimeout(() => {
+      finish();
+    }, prefersReducedMotion ? 0 : 920);
+  }
+
+  function closeProject(item, shouldRefresh = true) {
     if (!item || item.tagName.toLowerCase() !== "details") return;
 
     const summary = item.querySelector(".work-project__summary");
+    const panel = getPanel(item);
 
-    item.removeAttribute("open");
-    item.open = false;
-    item.classList.remove("is-open", "is-previewing", "is-glitching");
+    if (!panel) return;
+
+    const y = getScrollY();
+    const startHeight = Math.max(
+      panel.scrollHeight,
+      panel.getBoundingClientRect().height
+    );
+
+    if (!item.open && startHeight <= 0) {
+      item.classList.remove("is-open", "is-opening", "is-closing");
+
+      if (summary) summary.setAttribute("aria-expanded", "false");
+      return;
+    }
+
+    item.classList.remove("is-opening", "is-open");
+    item.classList.add("is-closing");
 
     if (summary) {
       summary.setAttribute("aria-expanded", "false");
     }
+
+    panel.style.overflow = "hidden";
+    panel.style.height = `${startHeight}px`;
+    panel.style.opacity = "1";
+    panel.style.transform = "translate3d(0, 0, 0)";
+
+    panel.getBoundingClientRect();
+
+    panel.style.height = "0px";
+    panel.style.opacity = "0";
+    panel.style.transform = "translate3d(0, -0.45rem, 0)";
+    panel.style.paddingBottom = "0px";
+
+    restoreScrollY(y);
+
+    afterHeightTransition(panel, () => {
+      item.open = false;
+      item.removeAttribute("open");
+      item.classList.remove("is-closing", "is-open", "is-opening");
+
+      panel.style.height = "0px";
+      panel.style.opacity = "0";
+      panel.style.transform = "";
+      panel.style.paddingBottom = "";
+
+      const anyOpen = details.some((detail) => detail.open);
+
+      if (!anyOpen) {
+        archive.classList.remove("has-open-project");
+      }
+
+      if (shouldRefresh) refreshScrollTriggerWithoutJump();
+    });
   }
 
   function openProject(item) {
     if (!item || item.tagName.toLowerCase() !== "details") return;
 
     const summary = item.querySelector(".work-project__summary");
-    const detailContent = getDetailContent(item);
+    const panel = getPanel(item);
+
+    if (!summary || !panel) return;
+
+    const y = getScrollY();
 
     details.forEach((other) => {
-      if (other !== item) closeProject(other);
+      if (other !== item) closeProject(other, false);
     });
 
-    item.open = true;
-    item.setAttribute("open", "");
-    item.classList.add("is-open");
+    window.clearTimeout(panel._workPanelTimer);
 
     archive.classList.add("has-open-project");
 
-    if (summary) {
-      summary.setAttribute("aria-expanded", "true");
-    }
+    item.open = true;
+    item.setAttribute("open", "");
+    item.classList.remove("is-closing");
+    item.classList.add("is-open", "is-opening");
 
-    if (detailContent) {
-      detailContent.scrollTop = 0;
+    summary.setAttribute("aria-expanded", "true");
 
-      window.setTimeout(() => {
-        detailContent.focus({ preventScroll: true });
-      }, 80);
-    }
+    panel.classList.add("work-project__detail-scroll");
+    panel.setAttribute("tabindex", "-1");
+    panel.style.overflow = "hidden";
+    panel.style.height = "0px";
+    panel.style.opacity = "0";
+    panel.style.transform = "translate3d(0, -0.45rem, 0)";
+    panel.style.paddingBottom = "";
 
-    if (window.ScrollTrigger) {
-      window.setTimeout(() => window.ScrollTrigger.refresh(), 120);
-    }
+    panel.getBoundingClientRect();
+
+    const targetHeight = panel.scrollHeight;
+
+    panel.style.height = `${targetHeight}px`;
+    panel.style.opacity = "1";
+    panel.style.transform = "translate3d(0, 0, 0)";
+
+    restoreScrollY(y);
+
+    afterHeightTransition(panel, () => {
+      if (!item.open) return;
+
+      item.classList.remove("is-opening");
+      item.classList.add("is-open");
+
+      panel.style.height = "auto";
+      panel.style.overflow = "";
+      panel.style.opacity = "";
+      panel.style.transform = "";
+
+      refreshScrollTriggerWithoutJump();
+    });
   }
 
   details.forEach((item, index) => {
@@ -446,12 +581,18 @@ function setupArchiveDetails() {
     item.dataset.workProjectItem = String(index);
 
     const summary = item.querySelector(".work-project__summary");
-    const detailContent = getDetailContent(item);
+    const panel = getPanel(item);
 
-    if (!summary || !detailContent) return;
+    if (!summary || !panel) return;
 
-    detailContent.classList.add("work-project__detail-scroll");
-    detailContent.setAttribute("tabindex", "-1");
+    panel.classList.add("work-project__detail-scroll");
+    panel.setAttribute("tabindex", "-1");
+
+    if (!item.open) {
+      panel.style.height = "0px";
+      panel.style.opacity = "0";
+      panel.style.paddingBottom = "0px";
+    }
 
     summary.setAttribute("role", "button");
     summary.setAttribute("aria-expanded", item.open ? "true" : "false");
@@ -460,22 +601,14 @@ function setupArchiveDetails() {
       event.preventDefault();
       event.stopPropagation();
 
-      const shouldOpen = !item.open;
+      if (typeof triggerProjectGlitch === "function") {
+        triggerProjectGlitch(item);
+      }
 
-      if (shouldOpen) {
-        openProject(item);
-      } else {
+      if (item.open && !item.classList.contains("is-closing")) {
         closeProject(item);
-
-        const anyOpen = details.some((detail) => detail.open);
-
-        if (!anyOpen) {
-          archive.classList.remove("has-open-project");
-        }
-
-        if (window.ScrollTrigger) {
-          window.setTimeout(() => window.ScrollTrigger.refresh(), 120);
-        }
+      } else {
+        openProject(item);
       }
     });
 
@@ -496,21 +629,12 @@ function setupArchiveDetails() {
     const summary = openItem.querySelector(".work-project__summary");
 
     closeProject(openItem);
-    archive.classList.remove("has-open-project");
 
     if (summary) {
       summary.focus({ preventScroll: true });
     }
-
-    if (window.ScrollTrigger) {
-      window.setTimeout(() => window.ScrollTrigger.refresh(), 120);
-    }
   });
 }
-
-
-
-
 
 function setupArchiveDetailScrollGuards() {
   const scrollAreas = Array.from(
@@ -571,7 +695,6 @@ function setupArchiveDetailScrollGuards() {
     );
   });
 }
-
 
 
 
