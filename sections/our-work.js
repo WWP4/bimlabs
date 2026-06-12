@@ -331,60 +331,221 @@
   /* ==========================================================
      ARCHIVE DETAILS — CURRENT HTML USES DETAILS/SUMMARY
   ========================================================== */
+function setupArchiveDetails() {
+  const details = Array.from(archive.querySelectorAll(".work-project"));
 
-  function setupArchiveDetails() {
-    const details = Array.from(archive.querySelectorAll(".work-project"));
+  function getDetailContent(item) {
+    const summary = item.querySelector(".work-project__summary");
 
-    details.forEach((item, index) => {
-      if (item.tagName.toLowerCase() !== "details") return;
+    const existing = item.querySelector(
+      ".work-project__details, .work-project__detail, .work-project__content, .work-project__body, .work-project__panel"
+    );
 
-      item.dataset.workProjectItem = String(index);
+    if (existing) return existing;
 
-      const summary = item.querySelector(".work-project__summary");
-      if (!summary) return;
+    const children = Array.from(item.children).filter((child) => child !== summary);
+    if (!children.length) return null;
 
-      summary.setAttribute("role", "button");
-      summary.setAttribute("aria-expanded", item.open ? "true" : "false");
+    const wrapper = document.createElement("div");
+    wrapper.className = "work-project__details";
 
-      item.addEventListener("toggle", () => {
-        summary.setAttribute("aria-expanded", item.open ? "true" : "false");
+    children.forEach((child) => wrapper.appendChild(child));
+    item.appendChild(wrapper);
 
-        if (item.open) {
-          details.forEach((other) => {
-            if (other !== item && other.tagName.toLowerCase() === "details") {
-              other.removeAttribute("open");
-              other.open = false;
-
-              const otherSummary = other.querySelector(".work-project__summary");
-
-              if (otherSummary) {
-                otherSummary.setAttribute("aria-expanded", "false");
-              }
-            }
-          });
-        }
-      });
-    });
+    return wrapper;
   }
 
-  function closeAllArchiveProjects() {
-    const details = Array.from(archive.querySelectorAll(".work-project"));
+  function closeProject(item) {
+    if (!item || item.tagName.toLowerCase() !== "details") return;
 
-    details.forEach((item) => {
-      if (item.tagName.toLowerCase() !== "details") return;
+    const summary = item.querySelector(".work-project__summary");
 
-      item.removeAttribute("open");
-      item.open = false;
-      item.classList.remove("is-previewing", "is-glitching");
+    item.removeAttribute("open");
+    item.open = false;
+    item.classList.remove("is-open", "is-previewing", "is-glitching");
 
-      const summary = item.querySelector(".work-project__summary");
+    if (summary) {
+      summary.setAttribute("aria-expanded", "false");
+    }
+  }
 
-      if (summary) {
-        summary.setAttribute("aria-expanded", "false");
-        summary.blur();
+  function openProject(item) {
+    if (!item || item.tagName.toLowerCase() !== "details") return;
+
+    const summary = item.querySelector(".work-project__summary");
+    const detailContent = getDetailContent(item);
+
+    details.forEach((other) => {
+      if (other !== item) closeProject(other);
+    });
+
+    item.open = true;
+    item.setAttribute("open", "");
+    item.classList.add("is-open");
+
+    archive.classList.add("has-open-project");
+
+    if (summary) {
+      summary.setAttribute("aria-expanded", "true");
+    }
+
+    if (detailContent) {
+      detailContent.scrollTop = 0;
+
+      window.setTimeout(() => {
+        detailContent.focus({ preventScroll: true });
+      }, 80);
+    }
+
+    if (window.ScrollTrigger) {
+      window.setTimeout(() => window.ScrollTrigger.refresh(), 120);
+    }
+  }
+
+  details.forEach((item, index) => {
+    if (item.tagName.toLowerCase() !== "details") return;
+
+    item.dataset.workProjectItem = String(index);
+
+    const summary = item.querySelector(".work-project__summary");
+    const detailContent = getDetailContent(item);
+
+    if (!summary || !detailContent) return;
+
+    detailContent.classList.add("work-project__detail-scroll");
+    detailContent.setAttribute("tabindex", "-1");
+
+    summary.setAttribute("role", "button");
+    summary.setAttribute("aria-expanded", item.open ? "true" : "false");
+
+    summary.addEventListener("click", (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+
+      const shouldOpen = !item.open;
+
+      if (shouldOpen) {
+        openProject(item);
+      } else {
+        closeProject(item);
+
+        const anyOpen = details.some((detail) => detail.open);
+
+        if (!anyOpen) {
+          archive.classList.remove("has-open-project");
+        }
+
+        if (window.ScrollTrigger) {
+          window.setTimeout(() => window.ScrollTrigger.refresh(), 120);
+        }
       }
     });
+
+    summary.addEventListener("keydown", (event) => {
+      if (event.key !== "Enter" && event.key !== " ") return;
+
+      event.preventDefault();
+      summary.click();
+    });
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key !== "Escape") return;
+
+    const openItem = details.find((item) => item.open);
+    if (!openItem) return;
+
+    const summary = openItem.querySelector(".work-project__summary");
+
+    closeProject(openItem);
+    archive.classList.remove("has-open-project");
+
+    if (summary) {
+      summary.focus({ preventScroll: true });
+    }
+
+    if (window.ScrollTrigger) {
+      window.setTimeout(() => window.ScrollTrigger.refresh(), 120);
+    }
+  });
+}
+
+
+
+
+
+function setupArchiveDetailScrollGuards() {
+  const scrollAreas = Array.from(
+    archive.querySelectorAll(".work-project__detail-scroll")
+  );
+
+  function canScroll(area, deltaY) {
+    if (!area) return false;
+
+    const maxScroll = area.scrollHeight - area.clientHeight;
+    if (maxScroll <= 0) return false;
+
+    const current = area.scrollTop;
+    const goingDown = deltaY > 0;
+    const goingUp = deltaY < 0;
+
+    if (goingDown && current < maxScroll - 1) return true;
+    if (goingUp && current > 1) return true;
+
+    return false;
   }
+
+  scrollAreas.forEach((area) => {
+    let touchStartY = 0;
+
+    area.addEventListener(
+      "wheel",
+      (event) => {
+        if (canScroll(area, event.deltaY)) {
+          event.stopPropagation();
+        }
+      },
+      { passive: true }
+    );
+
+    area.addEventListener(
+      "touchstart",
+      (event) => {
+        if (!event.touches || !event.touches.length) return;
+        touchStartY = event.touches[0].clientY;
+      },
+      { passive: true }
+    );
+
+    area.addEventListener(
+      "touchmove",
+      (event) => {
+        if (!event.touches || !event.touches.length) return;
+
+        const currentY = event.touches[0].clientY;
+        const deltaY = touchStartY - currentY;
+
+        if (canScroll(area, deltaY)) {
+          event.stopPropagation();
+        }
+      },
+      { passive: true }
+    );
+  });
+}
+
+
+
+
+
+
+
+
+
+
+
+
+  
 
   /* ==========================================================
      GLITCH STYLE INJECTION
@@ -1208,21 +1369,22 @@
   ========================================================== */
 
   function init() {
-    injectGlitchStyles();
-    cleanOldStates();
-    injectTrustBridge();
-    closeAllArchiveProjects();
-    setupTrustCards();
-    setupArchiveDetails();
-    buildAllGlitchText();
-    setupArchiveHover();
-    setupArchiveNoomoReveal();
-    setupImageFallbacks();
+  injectGlitchStyles();
+  cleanOldStates();
+  injectTrustBridge();
+  closeAllArchiveProjects();
+  setupTrustCards();
+  setupArchiveDetails();
+  setupArchiveDetailScrollGuards();
+  buildAllGlitchText();
+  setupArchiveHover();
+  setupArchiveNoomoReveal();
+  setupImageFallbacks();
 
-    if (window.ScrollTrigger) {
-      window.ScrollTrigger.refresh();
-    }
+  if (window.ScrollTrigger) {
+    window.ScrollTrigger.refresh();
   }
+}
 
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", init, { once: true });
