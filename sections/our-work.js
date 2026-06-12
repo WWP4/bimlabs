@@ -75,260 +75,6 @@
       .replaceAll("'", "&#039;");
   }
 
-  /* ==========================================================
-     SELF-CONTAINED GLITCH CSS
-     This makes the glitch work even if your CSS file is missing it.
-  ========================================================== */
-
-  function injectGlitchStyles() {
-    if (document.getElementById("bim-work-glitch-styles")) return;
-
-    const style = document.createElement("style");
-    style.id = "bim-work-glitch-styles";
-
-    style.textContent = `
-      .work-project__name,
-      .work-project__index,
-      .work-project__number {
-        position: relative;
-        display: inline-block;
-      }
-
-      .glitch-word__base,
-      .glitch-word__layer {
-        display: inline-flex;
-        align-items: baseline;
-        white-space: pre;
-      }
-
-      .glitch-word__base {
-        position: relative;
-        z-index: 1;
-      }
-
-      .glitch-word__layer {
-        position: absolute;
-        left: 0;
-        top: 0;
-        z-index: 2;
-        opacity: 0;
-        pointer-events: none;
-        mix-blend-mode: screen;
-      }
-
-      .glitch-word__layer--a {
-        color: rgba(255, 255, 255, 0.96);
-        clip-path: inset(0 0 63% 0);
-      }
-
-      .glitch-word__layer--b {
-        color: rgba(180, 180, 180, 0.92);
-        clip-path: inset(34% 0 31% 0);
-      }
-
-      .glitch-word__layer--c {
-        color: rgba(255, 255, 255, 0.72);
-        clip-path: inset(66% 0 0 0);
-      }
-
-      .glitch-letter {
-        display: inline-block;
-        position: relative;
-        transform-origin: 50% 55%;
-        will-change: transform, filter, clip-path, opacity;
-      }
-
-      .glitch-letter--space {
-        min-width: 0.34em;
-      }
-
-      .is-live-glitch .glitch-word__base .glitch-letter:not(.glitch-letter--space) {
-        animation: bim-letter-warp 520ms cubic-bezier(.16, 1, .3, 1) both;
-        animation-delay: calc(var(--i, 0) * 7ms);
-      }
-
-      .is-live-glitch .glitch-word__base .glitch-letter--heavy:not(.glitch-letter--space) {
-        animation-name: bim-letter-warp-heavy;
-      }
-
-      .is-live-glitch .glitch-word__layer--a {
-        animation: bim-glitch-slice-a 520ms steps(2, end) both;
-      }
-
-      .is-live-glitch .glitch-word__layer--b {
-        animation: bim-glitch-slice-b 520ms steps(2, end) both;
-      }
-
-      .is-live-glitch .glitch-word__layer--c {
-        animation: bim-glitch-slice-c 520ms steps(2, end) both;
-      }
-
-      .work-project.is-glitching .work-project__summary {
-        filter: contrast(1.08);
-      }
-
-      @keyframes bim-letter-warp {
-        0% {
-          transform: translate3d(0, 0, 0) skew(0deg) rotate(0deg) scale(1);
-          filter: blur(0px);
-        }
-
-        18% {
-          transform:
-            translate3d(var(--warp-x, 4px), var(--warp-y, 0px), 0)
-            skew(var(--warp-skew, 7deg))
-            rotate(var(--warp-rotate, 0deg))
-            scale(var(--warp-scale-x, 1.08), var(--warp-scale-y, .96));
-          filter: blur(.35px);
-        }
-
-        34% {
-          transform:
-            translate3d(calc(var(--warp-x, 4px) * -0.62), calc(var(--warp-y, 0px) * -0.7), 0)
-            skew(calc(var(--warp-skew, 7deg) * -0.55))
-            rotate(calc(var(--warp-rotate, 0deg) * -0.35))
-            scale(.96, 1.05);
-          filter: blur(.18px);
-        }
-
-        54% {
-          transform:
-            translate3d(calc(var(--warp-x, 4px) * .22), calc(var(--warp-y, 0px) * .25), 0)
-            skew(calc(var(--warp-skew, 7deg) * .2))
-            rotate(0deg)
-            scale(1.02, .99);
-          filter: blur(0px);
-        }
-
-        100% {
-          transform: translate3d(0, 0, 0) skew(0deg) rotate(0deg) scale(1);
-          filter: blur(0px);
-        }
-      }
-
-      @keyframes bim-letter-warp-heavy {
-        0% {
-          transform: translate3d(0, 0, 0) skew(0deg) rotate(0deg) scale(1);
-          filter: blur(0px);
-        }
-
-        16% {
-          transform:
-            translate3d(calc(var(--warp-x, 6px) * 1.45), calc(var(--warp-y, 0px) * 1.15), 0)
-            skew(calc(var(--warp-skew, 8deg) * 1.25))
-            rotate(calc(var(--warp-rotate, 0deg) * 1.2))
-            scale(calc(var(--warp-scale-x, 1.08) * 1.06), calc(var(--warp-scale-y, .96) * .95));
-          filter: blur(.55px);
-        }
-
-        32% {
-          transform:
-            translate3d(calc(var(--warp-x, 6px) * -0.8), calc(var(--warp-y, 0px) * -0.85), 0)
-            skew(calc(var(--warp-skew, 8deg) * -0.72))
-            rotate(calc(var(--warp-rotate, 0deg) * -0.5))
-            scale(.92, 1.08);
-          filter: blur(.22px);
-        }
-
-        58% {
-          transform:
-            translate3d(calc(var(--warp-x, 6px) * .25), calc(var(--warp-y, 0px) * .22), 0)
-            skew(calc(var(--warp-skew, 8deg) * .16))
-            rotate(0deg)
-            scale(1.02, .99);
-          filter: blur(0px);
-        }
-
-        100% {
-          transform: translate3d(0, 0, 0) skew(0deg) rotate(0deg) scale(1);
-          filter: blur(0px);
-        }
-      }
-
-      @keyframes bim-glitch-slice-a {
-        0%, 100% {
-          opacity: 0;
-          transform: translate3d(0, 0, 0);
-        }
-
-        12% {
-          opacity: .95;
-          transform: translate3d(var(--glitch-x1, 5px), var(--glitch-y1, 0px), 0);
-        }
-
-        22% {
-          opacity: .2;
-          transform: translate3d(calc(var(--glitch-x1, 5px) * -0.55), 0, 0);
-        }
-
-        35% {
-          opacity: .75;
-          transform: translate3d(var(--glitch-x3, -3px), var(--glitch-y2, 1px), 0);
-        }
-
-        48% {
-          opacity: 0;
-          transform: translate3d(0, 0, 0);
-        }
-      }
-
-      @keyframes bim-glitch-slice-b {
-        0%, 100% {
-          opacity: 0;
-          transform: translate3d(0, 0, 0);
-        }
-
-        16% {
-          opacity: .78;
-          transform: translate3d(var(--glitch-x2, -7px), var(--glitch-y2, 1px), 0);
-        }
-
-        27% {
-          opacity: .35;
-          transform: translate3d(calc(var(--glitch-x2, -7px) * -0.35), calc(var(--glitch-y1, 0px) * -1), 0);
-        }
-
-        44% {
-          opacity: .65;
-          transform: translate3d(var(--glitch-x1, 4px), 0, 0);
-        }
-
-        58% {
-          opacity: 0;
-          transform: translate3d(0, 0, 0);
-        }
-      }
-
-      @keyframes bim-glitch-slice-c {
-        0%, 100% {
-          opacity: 0;
-          transform: translate3d(0, 0, 0);
-        }
-
-        10% {
-          opacity: .65;
-          transform: translate3d(var(--glitch-x3, 3px), var(--glitch-y1, 0px), 0);
-        }
-
-        25% {
-          opacity: .3;
-          transform: translate3d(calc(var(--glitch-x3, 3px) * -1.1), var(--glitch-y2, 1px), 0);
-        }
-
-        40% {
-          opacity: .55;
-          transform: translate3d(var(--glitch-x2, -7px), 0, 0);
-        }
-
-        52% {
-          opacity: 0;
-          transform: translate3d(0, 0, 0);
-        }
-      }
-    `;
-
-    document.head.appendChild(style);
-  }
 
   /* ==========================================================
      CLEAN OLD / DUPLICATE STATES
@@ -641,146 +387,161 @@
     });
   }
 
-  /* ==========================================================
-     GLITCH TEXT
-  ========================================================== */
 
-  function buildGlitchText(el) {
-    if (!el || el.dataset.glitchBuilt === "true") return;
 
-    const text = el.textContent.trim();
-    if (!text) return;
 
-    el.dataset.text = text;
-    el.dataset.glitchBuilt = "true";
+/* ==========================================================
+   PHYSICAL TEXT SIGNAL GLITCH
+   Same text. Real letters warp. No random symbols.
+========================================================== */
 
-    const letters = Array.from(text)
-      .map((char, index) => {
-        if (char === " ") {
-          return `<span class="glitch-letter glitch-letter--space" style="--i:${index}">&nbsp;</span>`;
-        }
+function escapeHTML(value) {
+  return String(value)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
 
-        return `
-          <span class="glitch-letter" style="--i:${index}">
-            ${escapeHtml(char)}
-          </span>
-        `;
-      })
-      .join("");
+function buildGlitchText(el) {
+  if (!el || el.dataset.glitchBuilt === "true") return;
 
-    el.innerHTML = `
-      <span class="glitch-word__base">${letters}</span>
-      <span class="glitch-word__layer glitch-word__layer--a" aria-hidden="true">${letters}</span>
-      <span class="glitch-word__layer glitch-word__layer--b" aria-hidden="true">${letters}</span>
-      <span class="glitch-word__layer glitch-word__layer--c" aria-hidden="true">${letters}</span>
-    `;
-  }
+  const text = el.textContent.trim();
+  if (!text) return;
 
-  function buildAllGlitchText() {
-    const targets = archive.querySelectorAll(
-      ".work-project__name, .work-project__index, .work-project__number"
-    );
+  el.dataset.text = text;
+  el.dataset.glitchBuilt = "true";
 
-    targets.forEach(buildGlitchText);
-  }
+  const letters = Array.from(text)
+    .map((char, index) => {
+      if (char === " ") {
+        return `<span class="glitch-letter glitch-letter--space" style="--i:${index}">&nbsp;</span>`;
+      }
 
-  function setLetterWarpVariables(el) {
-    if (!el) return;
+      return `
+        <span class="glitch-letter" style="--i:${index}">
+          ${escapeHTML(char)}
+        </span>
+      `;
+    })
+    .join("");
 
-    const letters = Array.from(
-      el.querySelectorAll(".glitch-word__base .glitch-letter:not(.glitch-letter--space)")
-    );
+  el.innerHTML = `
+    <span class="glitch-word__base">${letters}</span>
+    <span class="glitch-word__layer glitch-word__layer--a" aria-hidden="true">${letters}</span>
+    <span class="glitch-word__layer glitch-word__layer--b" aria-hidden="true">${letters}</span>
+    <span class="glitch-word__layer glitch-word__layer--c" aria-hidden="true">${letters}</span>
+  `;
+}
 
-    letters.forEach((letter) => {
-      const force = Math.random();
+function updateGlitchText(el, text) {
+  if (!el) return;
 
-      const x = (Math.random() * 18 - 9).toFixed(2);
-      const y = (Math.random() * 7 - 3.5).toFixed(2);
-      const skew = (Math.random() * 24 - 12).toFixed(2);
-      const rotate = (Math.random() * 6 - 3).toFixed(2);
-      const scaleX = (0.84 + Math.random() * 0.38).toFixed(2);
-      const scaleY = (0.88 + Math.random() * 0.24).toFixed(2);
+  const cleanText = String(text || "").trim();
 
-      letter.style.setProperty("--warp-x", `${x}px`);
-      letter.style.setProperty("--warp-y", `${y}px`);
-      letter.style.setProperty("--warp-skew", `${skew}deg`);
-      letter.style.setProperty("--warp-rotate", `${rotate}deg`);
-      letter.style.setProperty("--warp-scale-x", scaleX);
-      letter.style.setProperty("--warp-scale-y", scaleY);
+  el.dataset.text = cleanText;
+  el.dataset.glitchBuilt = "false";
+  el.textContent = cleanText;
 
-      const raw = letter.textContent.trim().toLowerCase();
-      const isRoundOrStructural = ["o", "c", "d", "a", "r", "p", "q", "0"].includes(raw);
+  buildGlitchText(el);
+}
 
-      letter.classList.toggle(
-        "glitch-letter--heavy",
-        isRoundOrStructural || force > 0.68
-      );
-    });
-  }
+function setLetterWarpVariables(el) {
+  if (!el) return;
 
-  function triggerSignalGlitch(el) {
-    if (!el || prefersReducedMotion) return;
+  const letters = Array.from(el.querySelectorAll(".glitch-letter:not(.glitch-letter--space)"));
 
-    buildGlitchText(el);
-    setLetterWarpVariables(el);
+  letters.forEach((letter) => {
+    const force = Math.random();
 
-    el.style.setProperty(
-      "--glitch-x1",
-      `${(Math.random() * 16 - 8).toFixed(2)}px`
-    );
+    const x = (Math.random() * 18 - 9).toFixed(2);
+    const y = (Math.random() * 6 - 3).toFixed(2);
+    const skew = (Math.random() * 22 - 11).toFixed(2);
+    const rotate = (Math.random() * 5 - 2.5).toFixed(2);
+    const scaleX = (0.86 + Math.random() * 0.34).toFixed(2);
+    const scaleY = (0.9 + Math.random() * 0.22).toFixed(2);
 
-    el.style.setProperty(
-      "--glitch-x2",
-      `${(Math.random() * 24 - 12).toFixed(2)}px`
-    );
+    letter.style.setProperty("--warp-x", `${x}px`);
+    letter.style.setProperty("--warp-y", `${y}px`);
+    letter.style.setProperty("--warp-skew", `${skew}deg`);
+    letter.style.setProperty("--warp-rotate", `${rotate}deg`);
+    letter.style.setProperty("--warp-scale-x", scaleX);
+    letter.style.setProperty("--warp-scale-y", scaleY);
 
-    el.style.setProperty(
-      "--glitch-x3",
-      `${(Math.random() * 10 - 5).toFixed(2)}px`
-    );
+    /*
+      Stronger distortion bias for round letters:
+      O, o, C, D, A, R, P, Q, 0
+      This makes letters like the O in Orynd physically warp harder.
+    */
+    const raw = letter.textContent.trim().toLowerCase();
+    const isRoundOrStructural = ["o", "c", "d", "a", "r", "p", "q", "0"].includes(raw);
 
-    el.style.setProperty(
-      "--glitch-y1",
-      `${(Math.random() * 4 - 2).toFixed(2)}px`
-    );
+    letter.classList.toggle("glitch-letter--heavy", isRoundOrStructural || force > 0.68);
+  });
+}
 
-    el.style.setProperty(
-      "--glitch-y2",
-      `${(Math.random() * 6 - 3).toFixed(2)}px`
-    );
+function triggerSignalGlitch(el) {
+  if (!el || prefersReducedMotion) return;
 
+  buildGlitchText(el);
+  setLetterWarpVariables(el);
+
+  el.style.setProperty("--glitch-x1", `${(Math.random() * 16 - 8).toFixed(2)}px`);
+  el.style.setProperty("--glitch-x2", `${(Math.random() * 24 - 12).toFixed(2)}px`);
+  el.style.setProperty("--glitch-x3", `${(Math.random() * 10 - 5).toFixed(2)}px`);
+  el.style.setProperty("--glitch-y1", `${(Math.random() * 3 - 1.5).toFixed(2)}px`);
+  el.style.setProperty("--glitch-y2", `${(Math.random() * 5 - 2.5).toFixed(2)}px`);
+
+  el.classList.remove("is-live-glitch");
+
+  void el.offsetWidth;
+
+  el.classList.add("is-live-glitch");
+
+  window.setTimeout(() => {
     el.classList.remove("is-live-glitch");
+  }, 520);
+}
 
-    void el.offsetWidth;
+function triggerProjectGlitch(button) {
+  if (!button || prefersReducedMotion) return;
 
-    el.classList.add("is-live-glitch");
+  const name = button.querySelector(".work-project__name");
+  const number = button.querySelector(".work-project__number");
 
-    window.setTimeout(() => {
-      el.classList.remove("is-live-glitch");
-    }, 560);
-  }
+  button.classList.remove("is-glitching");
 
-  function triggerProjectGlitch(row) {
-    if (!row || prefersReducedMotion) return;
+  void button.offsetWidth;
 
-    const name = row.querySelector(".work-project__name");
-    const number = row.querySelector(".work-project__index, .work-project__number");
+  button.classList.add("is-glitching");
 
-    row.classList.remove("is-glitching");
+  triggerSignalGlitch(name);
+  triggerSignalGlitch(number);
 
-    void row.offsetWidth;
+  window.clearTimeout(glitchTimer);
 
-    row.classList.add("is-glitching");
+  glitchTimer = window.setTimeout(() => {
+    button.classList.remove("is-glitching");
+  }, 560);
+}
 
-    triggerSignalGlitch(number);
-    triggerSignalGlitch(name);
+function triggerDrawerGlitch() {
+  if (!detail || prefersReducedMotion) return;
 
-    window.clearTimeout(glitchTimer);
+  const drawerTitle = detail.querySelector("[data-work-detail-title]");
+  const drawerMeta = detail.querySelector(".work-detail__eyebrow");
+  const drawerQuote = detail.querySelector("[data-work-detail-review]");
 
-    glitchTimer = window.setTimeout(() => {
-      row.classList.remove("is-glitching");
-    }, 620);
-  }
+  triggerSignalGlitch(drawerMeta);
+  triggerSignalGlitch(drawerTitle);
+  triggerSignalGlitch(drawerQuote);
+}
+
+
+
+
+   
 
   /* ==========================================================
      ARCHIVE — HOVER PREVIEW + GLITCH
