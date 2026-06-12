@@ -1910,3 +1910,113 @@
   color: rgba(255, 255, 255, 0.86);
   transform: rotate(90deg);
 }
+
+
+
+
+
+/* ==========================================================
+   WORK ARCHIVE — RIGHT-LEANING HEADER LAYOUT
+========================================================== */
+
+.work-archive__shell {
+  width: min(108rem, calc(100% - 6rem));
+  margin: 0 auto;
+  padding:
+    clamp(7rem, 13vh, 11rem)
+    0
+    clamp(10rem, 18vh, 16rem);
+}
+
+/* The key:
+   make the header a narrower block and push it right */
+.work-archive__header {
+  position: relative;
+  display: grid;
+  grid-template-columns:
+    6.5rem
+    minmax(30rem, 42rem)
+    minmax(15rem, 21rem);
+  align-items: start;
+  gap: clamp(2rem, 4vw, 4.5rem);
+
+  width: min(86rem, 100%);
+  margin-left: auto;   /* pushes the whole cluster right */
+  margin-right: 0;
+  margin-bottom: clamp(8rem, 18vh, 14rem);
+}
+
+.work-archive__header::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: clamp(-4.5rem, -7vh, -3rem);
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.46),
+    rgba(255, 255, 255, 0.18),
+    rgba(255, 255, 255, 0.04)
+  );
+  transform: scaleX(var(--archive-top-line));
+  transform-origin: left center;
+  pointer-events: none;
+}
+
+/* left archive label */
+.work-archive__label {
+  padding-top: 0.55rem;
+  color: rgba(246, 246, 240, 0.38);
+  font-family: var(--work-mono);
+  font-size: 0.56rem;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  line-height: 1.35;
+  text-transform: uppercase;
+}
+
+/* title column */
+.work-archive__heading {
+  min-width: 0;
+}
+
+.work-archive__kicker {
+  margin: 0 0 0.9rem;
+  color: rgba(246, 246, 240, 0.42);
+  font-family: var(--work-mono);
+  font-size: 0.54rem;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.work-archive__title {
+  max-width: 40rem;
+  margin: 0;
+  color: rgba(246, 246, 240, 0.9);
+  font-size: clamp(2.25rem, 3.55vw, 4.9rem);
+  font-weight: 300;
+  letter-spacing: -0.085em;
+  line-height: 0.9;
+}
+
+/* right text column */
+.work-archive__intro {
+  max-width: 19rem;
+  margin: 0;
+  padding-top: clamp(1rem, 3.2vh, 2.5rem); /* pushes the intro lower for balance */
+  justify-self: end;
+  color: rgba(246, 246, 240, 0.44);
+  font-size: clamp(0.74rem, 0.78vw, 0.92rem);
+  font-weight: 300;
+  line-height: 1.6;
+  letter-spacing: -0.018em;
+}
+
+/* keep the rows full width below */
+.work-archive__list {
+  width: 100%;
+  margin-top: clamp(1rem, 3vh, 2rem);
+}
