@@ -2468,3 +2468,279 @@
     transform: translate3d(0, 0, 0);
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+/* ==========================================================
+   PHYSICAL LETTER WARP GLITCH
+   Same text, but each letter distorts.
+========================================================== */
+
+.glitch-word__base,
+.glitch-word__layer {
+  display: inline-flex;
+  align-items: baseline;
+  white-space: inherit;
+}
+
+.glitch-letter {
+  display: inline-block;
+  position: relative;
+  transform-origin: 50% 55%;
+  will-change: transform, filter, clip-path, opacity;
+}
+
+.glitch-letter--space {
+  min-width: 0.34em;
+}
+
+.glitch-word__base {
+  position: relative;
+  z-index: 1;
+}
+
+.glitch-word__layer {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+
+  opacity: 0;
+  pointer-events: none;
+  mix-blend-mode: screen;
+}
+
+.glitch-word__layer--a {
+  color: rgba(255, 255, 255, 0.98);
+  clip-path: inset(0 0 62% 0);
+}
+
+.glitch-word__layer--b {
+  color: rgba(0, 0, 0, 0.98);
+  clip-path: inset(32% 0 34% 0);
+}
+
+.glitch-word__layer--c {
+  color: rgba(255, 255, 255, 0.84);
+  clip-path: inset(72% 0 5% 0);
+}
+
+/* actual letters warp */
+.is-live-glitch .glitch-word__base .glitch-letter {
+  animation: physicalLetterWarp 520ms steps(2, end) 1;
+  animation-delay: calc(var(--i) * 8ms);
+}
+
+.is-live-glitch .glitch-word__base .glitch-letter--heavy {
+  animation-name: physicalLetterWarpHeavy;
+}
+
+/* duplicated sliced layers tear sideways */
+.is-live-glitch .glitch-word__layer--a {
+  animation: signalLayerTearA 520ms steps(2, end) 1;
+}
+
+.is-live-glitch .glitch-word__layer--b {
+  animation: signalLayerTearB 520ms steps(2, end) 1;
+}
+
+.is-live-glitch .glitch-word__layer--c {
+  animation: signalLayerTearC 520ms steps(2, end) 1;
+}
+
+.is-live-glitch .glitch-word__layer .glitch-letter {
+  animation: physicalLayerLetterDrift 520ms steps(2, end) 1;
+  animation-delay: calc(var(--i) * 5ms);
+}
+
+@keyframes physicalLetterWarp {
+  0% {
+    transform: none;
+    filter: none;
+    clip-path: inset(0 0 0 0);
+  }
+
+  12% {
+    transform:
+      translate3d(var(--warp-x), var(--warp-y), 0)
+      skewX(var(--warp-skew))
+      rotate(var(--warp-rotate))
+      scale(var(--warp-scale-x), var(--warp-scale-y));
+
+    filter: contrast(1.25) brightness(1.08);
+    clip-path: inset(8% 0 4% 0);
+  }
+
+  22% {
+    transform:
+      translate3d(calc(var(--warp-x) * -0.55), calc(var(--warp-y) * 0.35), 0)
+      skewX(calc(var(--warp-skew) * -0.65))
+      rotate(calc(var(--warp-rotate) * -1))
+      scale(calc(var(--warp-scale-x) + 0.08), calc(var(--warp-scale-y) - 0.04));
+
+    filter: contrast(1.38);
+    clip-path: inset(0 0 18% 0);
+  }
+
+  38% {
+    transform:
+      translate3d(calc(var(--warp-x) * 0.22), 0, 0)
+      skewX(calc(var(--warp-skew) * 0.25))
+      scale(1.02, 0.98);
+
+    filter: contrast(1.12);
+    clip-path: inset(0 0 0 0);
+  }
+
+  58%,
+  100% {
+    transform: none;
+    filter: none;
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+@keyframes physicalLetterWarpHeavy {
+  0% {
+    transform: none;
+    filter: none;
+    clip-path: inset(0 0 0 0);
+  }
+
+  10% {
+    transform:
+      translate3d(calc(var(--warp-x) * 1.25), var(--warp-y), 0)
+      skewX(calc(var(--warp-skew) * 1.35))
+      rotate(calc(var(--warp-rotate) * 1.2))
+      scale(calc(var(--warp-scale-x) + 0.14), calc(var(--warp-scale-y) - 0.08));
+
+    filter: contrast(1.45) brightness(1.12);
+    clip-path: inset(12% 0 10% 0);
+  }
+
+  20% {
+    transform:
+      translate3d(calc(var(--warp-x) * -0.85), calc(var(--warp-y) * -0.5), 0)
+      skewX(calc(var(--warp-skew) * -1.05))
+      rotate(calc(var(--warp-rotate) * -1.4))
+      scale(calc(var(--warp-scale-x) - 0.08), calc(var(--warp-scale-y) + 0.12));
+
+    filter: contrast(1.6);
+    clip-path: inset(0 0 28% 0);
+  }
+
+  34% {
+    transform:
+      translate3d(calc(var(--warp-x) * 0.4), 0, 0)
+      skewX(calc(var(--warp-skew) * 0.45))
+      scale(1.08, 0.92);
+
+    filter: contrast(1.22);
+    clip-path: inset(4% 0 0 0);
+  }
+
+  54%,
+  100% {
+    transform: none;
+    filter: none;
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+@keyframes physicalLayerLetterDrift {
+  0% {
+    transform: none;
+  }
+
+  14% {
+    transform:
+      translate3d(calc(var(--warp-x) * 0.65), 0, 0)
+      skewX(calc(var(--warp-skew) * 0.55));
+  }
+
+  36% {
+    transform:
+      translate3d(calc(var(--warp-x) * -0.35), 0, 0)
+      skewX(calc(var(--warp-skew) * -0.3));
+  }
+
+  100% {
+    transform: none;
+  }
+}
+
+@keyframes signalLayerTearA {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 0, 0);
+  }
+
+  10% {
+    opacity: 1;
+    transform: translate3d(var(--glitch-x1), var(--glitch-y1), 0);
+  }
+
+  28% {
+    opacity: 0.85;
+    transform: translate3d(calc(var(--glitch-x1) * -0.7), 0, 0);
+  }
+
+  56%,
+  100% {
+    opacity: 0;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes signalLayerTearB {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 0, 0);
+  }
+
+  14% {
+    opacity: 0.95;
+    transform: translate3d(var(--glitch-x2), var(--glitch-y2), 0);
+  }
+
+  34% {
+    opacity: 0.72;
+    transform: translate3d(calc(var(--glitch-x2) * -0.55), 0, 0);
+  }
+
+  58%,
+  100% {
+    opacity: 0;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes signalLayerTearC {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 0, 0);
+  }
+
+  18% {
+    opacity: 1;
+    transform: translate3d(var(--glitch-x3), 0, 0);
+  }
+
+  40% {
+    opacity: 0.78;
+    transform: translate3d(calc(var(--glitch-x3) * -1.2), 0, 0);
+  }
+
+  62%,
+  100% {
+    opacity: 0;
+    transform: translate3d(0, 0, 0);
+  }
+}
