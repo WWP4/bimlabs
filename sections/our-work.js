@@ -632,9 +632,21 @@ function setupArchiveDetails() {
     summary.setAttribute("role", "button");
     summary.setAttribute("aria-expanded", item.open ? "true" : "false");
 
+    item.addEventListener("toggle", () => {
+      if (item.dataset.workAccordionControlled === "true") return;
+      if (!item.open) return;
+
+      preserveScroll(() => {
+        item.open = false;
+        item.removeAttribute("open");
+      });
+    });
+
     summary.addEventListener("click", (event) => {
       event.preventDefault();
       event.stopPropagation();
+
+      item.dataset.workAccordionControlled = "true";
 
       if (typeof triggerProjectGlitch === "function") {
         triggerProjectGlitch(item);
@@ -645,6 +657,10 @@ function setupArchiveDetails() {
       } else {
         openProject(item);
       }
+
+      window.requestAnimationFrame(() => {
+        delete item.dataset.workAccordionControlled;
+      });
     });
 
     summary.addEventListener("keydown", (event) => {
