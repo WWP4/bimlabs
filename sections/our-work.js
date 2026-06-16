@@ -1,12 +1,15 @@
 /* ==========================================================
    BIM LABS STUDIO — OUR WORK
-   Clean JS rebuild
-   - Flying trust-card section
-   - Archive details with <details>/<summary>
-   - Noomo-style pinned archive reveal
-   - Mouse-attached preview
-   - Working physical letter glitch on hover/focus
+   Clean JS
+   - Trust bridge flying cards
+   - Work archive accordion
+   - Noomo-style center-growing row lines
+   - Mouse preview
+   - Physical letter glitch
+   - Results count-up
+   - Focus-word camera blur
    - No drawer
+   - No scroll lock
 ========================================================== */
 
 (() => {
@@ -76,7 +79,7 @@
   }
 
   /* ==========================================================
-     CLEAN OLD / DUPLICATE STATES
+     CLEAN OLD STATES
   ========================================================== */
 
   function cleanOldStates() {
@@ -92,6 +95,7 @@
 
     archive.classList.remove(
       "has-open-detail",
+      "has-open-project",
       "is-forming",
       "is-formed",
       "is-previewing"
@@ -99,7 +103,7 @@
   }
 
   /* ==========================================================
-     TRUST BRIDGE — INJECT ONE FLYING CARD SECTION
+     TRUST BRIDGE
   ========================================================== */
 
   function injectTrustBridge() {
@@ -152,10 +156,6 @@
 
     archive.parentNode.insertBefore(section, archive);
   }
-
-  /* ==========================================================
-     TRUST BRIDGE — FLYING CARD MOTION
-  ========================================================== */
 
   function setupTrustCards() {
     const section = document.querySelector(".bim-trust");
@@ -328,305 +328,436 @@
     render(currentProgress);
   }
 
+  /* ==========================================================
+     RESULT COUNT-UP
+  ========================================================== */
 
+  function formatCountValue(value, decimals, suffix) {
+    const safeDecimals = Number.isFinite(decimals) ? decimals : 0;
+    const rounded = Number(value).toFixed(safeDecimals);
 
-/* ==========================================================
-   ARCHIVE DETAILS — CLEAN SEAMLESS ACCORDION
-   Replace old setupArchiveDetails + setupArchiveDetailScrollGuards
-========================================================== */
-
-function setupArchiveDetails() {
-  const items = Array.from(archive.querySelectorAll(".work-project"));
-  const DURATION = prefersReducedMotion ? 0 : 680;
-
-  if (!items.length) return;
-
-  function getDirectPanel(item) {
-    const children = Array.from(item.children);
-
-    let panel = children.find((child) =>
-      child.classList && child.classList.contains("work-project__panel")
-    );
-
-    if (panel) return panel;
-
-    const summary = item.querySelector(".work-project__summary");
-    const content = children.filter((child) => child !== summary);
-
-    if (!content.length) return null;
-
-    panel = document.createElement("div");
-    panel.className = "work-project__panel";
-
-    content.forEach((child) => panel.appendChild(child));
-    item.appendChild(panel);
-
-    return panel;
+    return `${rounded}${suffix || ""}`;
   }
 
-  function updateArchiveState() {
-    const hasOpen = items.some(
-      (item) =>
-        item.open ||
-        item.classList.contains("is-opening") ||
-        item.classList.contains("is-open")
-    );
+  function resetProjectCounts(item) {
+    const counters = Array.from(item.querySelectorAll("[data-count]"));
 
-    archive.classList.toggle("has-open-project", hasOpen);
+    counters.forEach((counter) => {
+      const suffix = counter.dataset.suffix || "";
+
+      counter.dataset.counted = "false";
+      counter.classList.remove("is-counting");
+      counter.textContent = `0${suffix}`;
+      counter.removeAttribute("data-ghost-before");
+      counter.removeAttribute("data-ghost-after");
+    });
   }
 
-  function clearPanelTimer(panel) {
-    if (!panel) return;
-    window.clearTimeout(panel._workAccordionTimer);
-    panel._workAccordionTimer = null;
-  }
+  function animateProjectCounts(item) {
+    const counters = Array.from(item.querySelectorAll("[data-count]"));
 
-  function finishOpen(item, panel) {
-    if (!item.open) return;
+    if (!counters.length) return;
 
-    item.classList.remove("is-opening", "is-closing");
-    item.classList.add("is-open");
+    if (prefersReducedMotion) {
+      counters.forEach((counter) => {
+        const target = Number(counter.dataset.count || 0);
+        const suffix = counter.dataset.suffix || "";
+        const decimals = counter.dataset.decimals
+          ? Number(counter.dataset.decimals)
+          : 0;
 
-    panel.style.height = "auto";
-    panel.style.opacity = "1";
-    panel.style.transform = "translate3d(0, 0, 0)";
-    panel.style.overflow = "visible";
+        counter.textContent = formatCountValue(target, decimals, suffix);
+      });
 
-    updateArchiveState();
-
-    if (window.ScrollTrigger && typeof window.ScrollTrigger.update === "function") {
-      window.ScrollTrigger.update();
+      return;
     }
-  }
 
-  function finishClose(item, panel) {
-    item.open = false;
-    item.removeAttribute("open");
+    counters.forEach((counter, index) => {
+      if (counter.dataset.counted === "true") return;
 
-    item.classList.remove("is-opening", "is-closing", "is-open");
+      counter.dataset.counted = "true";
 
-    const summary = item.querySelector(".work-project__summary");
-    if (summary) summary.setAttribute("aria-expanded", "false");
+      const target = Number(counter.dataset.count || 0);
+      const suffix = counter.dataset.suffix || "";
+      const decimals = counter.dataset.decimals
+        ? Number(counter.dataset.decimals)
+        : 0;
 
-    panel.style.height = "0px";
-    panel.style.opacity = "0";
-    panel.style.transform = "translate3d(0, -0.35rem, 0)";
-    panel.style.overflow = "hidden";
+      const duration = 920 + index * 90;
+      const delay = index * 90;
+      const startTime = performance.now() + delay;
 
-    updateArchiveState();
+      counter.classList.add("is-counting");
 
-    if (window.ScrollTrigger && typeof window.ScrollTrigger.update === "function") {
-      window.ScrollTrigger.update();
-    }
-  }
-
-  function openProject(item) {
-    const summary = item.querySelector(".work-project__summary");
-    const panel = getDirectPanel(item);
-
-    if (!summary || !panel) return;
-
-    items.forEach((other) => {
-      if (other !== item && other.open) {
-        closeProject(other);
+      function easeOutCubic(t) {
+        return 1 - Math.pow(1 - t, 3);
       }
+
+      function tick(now) {
+        if (now < startTime) {
+          window.requestAnimationFrame(tick);
+          return;
+        }
+
+        const progress = Math.min((now - startTime) / duration, 1);
+        const eased = easeOutCubic(progress);
+        const current = target * eased;
+
+        const before = Math.max(0, current - target * 0.08);
+        const after = Math.min(target, current + target * 0.08);
+
+        counter.textContent = formatCountValue(current, decimals, suffix);
+        counter.dataset.ghostBefore = formatCountValue(before, decimals, suffix);
+        counter.dataset.ghostAfter = formatCountValue(after, decimals, suffix);
+
+        if (progress < 1) {
+          window.requestAnimationFrame(tick);
+        } else {
+          counter.textContent = formatCountValue(target, decimals, suffix);
+          counter.dataset.ghostBefore = "";
+          counter.dataset.ghostAfter = "";
+
+          window.setTimeout(() => {
+            counter.classList.remove("is-counting");
+          }, 260);
+        }
+      }
+
+      window.requestAnimationFrame(tick);
     });
-
-    clearPanelTimer(panel);
-
-    item.open = true;
-    item.setAttribute("open", "");
-    item.classList.remove("is-closing", "is-open");
-    item.classList.add("is-opening");
-
-    summary.setAttribute("aria-expanded", "true");
-
-    panel.classList.add("work-project__detail-scroll");
-    panel.style.overflow = "hidden";
-    panel.style.height = "0px";
-    panel.style.opacity = "0";
-    panel.style.transform = "translate3d(0, -0.35rem, 0)";
-
-    panel.getBoundingClientRect();
-
-    const targetHeight = panel.scrollHeight;
-
-    window.requestAnimationFrame(() => {
-      panel.style.height = `${targetHeight}px`;
-      panel.style.opacity = "1";
-      panel.style.transform = "translate3d(0, 0, 0)";
-    });
-
-    panel._workAccordionTimer = window.setTimeout(() => {
-      finishOpen(item, panel);
-    }, DURATION + 80);
-
-    updateArchiveState();
   }
 
-  function closeProject(item) {
-    const summary = item.querySelector(".work-project__summary");
-    const panel = getDirectPanel(item);
+  /* ==========================================================
+     FOCUS WORDS
+  ========================================================== */
 
-    if (!summary || !panel) return;
+  function setupFocusWords() {
+    const words = Array.from(archive.querySelectorAll(".focus-word"));
 
-    clearPanelTimer(panel);
+    words.forEach((word) => {
+      if (word.dataset.focusReady === "true") return;
 
-    const startHeight = panel.getBoundingClientRect().height || panel.scrollHeight;
+      word.dataset.focusReady = "true";
+      word.setAttribute("tabindex", "0");
 
-    item.classList.remove("is-opening", "is-open");
-    item.classList.add("is-closing");
+      const item = word.closest(".work-project");
+      if (!item) return;
 
-    summary.setAttribute("aria-expanded", "false");
+      function activate() {
+        item.classList.add("is-word-focusing");
+        word.classList.add("is-focused");
+      }
 
-    panel.style.overflow = "hidden";
-    panel.style.height = `${startHeight}px`;
-    panel.style.opacity = "1";
-    panel.style.transform = "translate3d(0, 0, 0)";
+      function deactivate() {
+        word.classList.remove("is-focused");
 
-    panel.getBoundingClientRect();
+        if (!item.querySelector(".focus-word.is-focused")) {
+          item.classList.remove("is-word-focusing");
+        }
+      }
 
-    window.requestAnimationFrame(() => {
-      panel.style.height = "0px";
-      panel.style.opacity = "0";
-      panel.style.transform = "translate3d(0, -0.35rem, 0)";
+      word.addEventListener("mouseenter", activate);
+      word.addEventListener("mouseleave", deactivate);
+      word.addEventListener("focus", activate);
+      word.addEventListener("blur", deactivate);
     });
-
-    panel._workAccordionTimer = window.setTimeout(() => {
-      finishClose(item, panel);
-    }, DURATION + 80);
   }
 
-  items.forEach((item, index) => {
-    if (item.dataset.workAccordionReady === "true") return;
+  /* ==========================================================
+     ACCORDION DETAILS
+  ========================================================== */
 
-    item.dataset.workAccordionReady = "true";
-    item.dataset.workProjectItem = String(index);
+  function setupArchiveDetails() {
+    const items = Array.from(archive.querySelectorAll(".work-project"));
+    const DURATION = prefersReducedMotion ? 0 : 680;
 
-    /* Do not let native details-name behavior fight the JS accordion */
-    item.removeAttribute("name");
+    if (!items.length) return;
 
-    const summary = item.querySelector(".work-project__summary");
-    const panel = getDirectPanel(item);
+    function getDirectPanel(item) {
+      const children = Array.from(item.children);
 
-    if (!summary || !panel) return;
+      let panel = children.find((child) =>
+        child.classList && child.classList.contains("work-project__panel")
+      );
 
-    panel.classList.add("work-project__detail-scroll");
+      if (panel) return panel;
 
-    summary.setAttribute("role", "button");
-    summary.setAttribute("aria-expanded", item.open ? "true" : "false");
+      const summary = item.querySelector(".work-project__summary");
+      const content = children.filter((child) => child !== summary);
 
-    if (item.open) {
+      if (!content.length) return null;
+
+      panel = document.createElement("div");
+      panel.className = "work-project__panel";
+
+      content.forEach((child) => panel.appendChild(child));
+      item.appendChild(panel);
+
+      return panel;
+    }
+
+    function updateArchiveState() {
+      const hasOpen = items.some(
+        (item) =>
+          item.open ||
+          item.classList.contains("is-opening") ||
+          item.classList.contains("is-open")
+      );
+
+      archive.classList.toggle("has-open-project", hasOpen);
+    }
+
+    function clearPanelTimer(panel) {
+      if (!panel) return;
+
+      window.clearTimeout(panel._workAccordionTimer);
+      panel._workAccordionTimer = null;
+    }
+
+    function finishOpen(item, panel) {
+      if (!item.open) return;
+
+      item.classList.remove("is-opening", "is-closing");
       item.classList.add("is-open");
+
       panel.style.height = "auto";
       panel.style.opacity = "1";
-      panel.style.overflow = "visible";
       panel.style.transform = "translate3d(0, 0, 0)";
-    } else {
+      panel.style.overflow = "visible";
+
+      updateArchiveState();
+
+      if (window.ScrollTrigger && typeof window.ScrollTrigger.update === "function") {
+        window.ScrollTrigger.update();
+      }
+    }
+
+    function finishClose(item, panel) {
+      item.open = false;
+      item.removeAttribute("open");
+
+      item.classList.remove(
+        "is-opening",
+        "is-closing",
+        "is-open",
+        "is-word-focusing"
+      );
+
+      const summary = item.querySelector(".work-project__summary");
+      if (summary) summary.setAttribute("aria-expanded", "false");
+
+      resetProjectCounts(item);
+
       panel.style.height = "0px";
       panel.style.opacity = "0";
-      panel.style.overflow = "hidden";
       panel.style.transform = "translate3d(0, -0.35rem, 0)";
+      panel.style.overflow = "hidden";
+
+      updateArchiveState();
+
+      if (window.ScrollTrigger && typeof window.ScrollTrigger.update === "function") {
+        window.ScrollTrigger.update();
+      }
     }
 
-    summary.addEventListener("click", (event) => {
-      event.preventDefault();
-      event.stopPropagation();
+    function openProject(item) {
+      const summary = item.querySelector(".work-project__summary");
+      const panel = getDirectPanel(item);
 
-      if (item.open && !item.classList.contains("is-closing")) {
-        closeProject(item);
-      } else {
-        openProject(item);
-      }
-    });
+      if (!summary || !panel) return;
 
-    summary.addEventListener("keydown", (event) => {
-      if (event.key !== "Enter" && event.key !== " ") return;
+      items.forEach((other) => {
+        if (other !== item && other.open) {
+          closeProject(other);
+        }
+      });
 
-      event.preventDefault();
+      clearPanelTimer(panel);
 
-      if (item.open && !item.classList.contains("is-closing")) {
-        closeProject(item);
-      } else {
-        openProject(item);
-      }
-    });
-  });
+      item.open = true;
+      item.setAttribute("open", "");
+      item.classList.remove("is-closing", "is-open");
+      item.classList.add("is-opening");
 
-  document.addEventListener("keydown", (event) => {
-    if (event.key !== "Escape") return;
+      summary.setAttribute("aria-expanded", "true");
 
-    const openItem = items.find((item) => item.open);
-    if (!openItem) return;
-
-    event.preventDefault();
-    closeProject(openItem);
-  });
-}
-
-/* Keep this function so your existing init() does not break */
-function setupArchiveDetailScrollGuards() {
-  return;
-}
-
-
-
-
-   
-function closeAllArchiveProjects() {
-  const details = Array.from(archive.querySelectorAll(".work-project"));
-
-  details.forEach((item) => {
-    if (!item || item.tagName.toLowerCase() !== "details") return;
-
-    const summary = item.querySelector(".work-project__summary");
-    const panel = item.querySelector(
-      ".work-project__details, .work-project__detail, .work-project__content, .work-project__body, .work-project__panel, .work-project__detail-scroll"
-    );
-
-    item.removeAttribute("open");
-    item.open = false;
-    item.classList.remove(
-      "is-open",
-      "is-opening",
-      "is-closing",
-      "is-previewing",
-      "is-glitching"
-    );
-
-    if (summary) {
-      summary.setAttribute("aria-expanded", "false");
-    }
-
-    if (panel) {
-      window.clearTimeout(panel._workPanelTimer);
+      panel.classList.add("work-project__detail-scroll");
+      panel.style.overflow = "hidden";
       panel.style.height = "0px";
       panel.style.opacity = "0";
-      panel.style.transform = "translate3d(0, -0.45rem, 0)";
-      panel.style.paddingBottom = "0px";
-      panel.scrollTop = 0;
+      panel.style.transform = "translate3d(0, -0.35rem, 0)";
+
+      panel.getBoundingClientRect();
+
+      const targetHeight = panel.scrollHeight;
+
+      window.requestAnimationFrame(() => {
+        panel.style.height = `${targetHeight}px`;
+        panel.style.opacity = "1";
+        panel.style.transform = "translate3d(0, 0, 0)";
+      });
+
+      window.setTimeout(() => {
+        animateProjectCounts(item);
+      }, 180);
+
+      panel._workAccordionTimer = window.setTimeout(() => {
+        finishOpen(item, panel);
+      }, DURATION + 80);
+
+      updateArchiveState();
     }
-  });
 
-  archive.classList.remove("has-open-project");
-}
+    function closeProject(item) {
+      const summary = item.querySelector(".work-project__summary");
+      const panel = getDirectPanel(item);
 
+      if (!summary || !panel) return;
 
+      clearPanelTimer(panel);
 
+      const startHeight = panel.getBoundingClientRect().height || panel.scrollHeight;
 
+      item.classList.remove("is-opening", "is-open");
+      item.classList.add("is-closing");
 
+      summary.setAttribute("aria-expanded", "false");
 
+      panel.style.overflow = "hidden";
+      panel.style.height = `${startHeight}px`;
+      panel.style.opacity = "1";
+      panel.style.transform = "translate3d(0, 0, 0)";
 
+      panel.getBoundingClientRect();
 
+      window.requestAnimationFrame(() => {
+        panel.style.height = "0px";
+        panel.style.opacity = "0";
+        panel.style.transform = "translate3d(0, -0.35rem, 0)";
+      });
 
+      panel._workAccordionTimer = window.setTimeout(() => {
+        finishClose(item, panel);
+      }, DURATION + 80);
+    }
 
+    items.forEach((item, index) => {
+      if (item.dataset.workAccordionReady === "true") return;
 
-  
+      item.dataset.workAccordionReady = "true";
+      item.dataset.workProjectItem = String(index);
+
+      item.removeAttribute("name");
+
+      const summary = item.querySelector(".work-project__summary");
+      const panel = getDirectPanel(item);
+
+      if (!summary || !panel) return;
+
+      panel.classList.add("work-project__detail-scroll");
+
+      summary.setAttribute("role", "button");
+      summary.setAttribute("aria-expanded", item.open ? "true" : "false");
+
+      if (item.open) {
+        item.classList.add("is-open");
+        panel.style.height = "auto";
+        panel.style.opacity = "1";
+        panel.style.overflow = "visible";
+        panel.style.transform = "translate3d(0, 0, 0)";
+        animateProjectCounts(item);
+      } else {
+        panel.style.height = "0px";
+        panel.style.opacity = "0";
+        panel.style.overflow = "hidden";
+        panel.style.transform = "translate3d(0, -0.35rem, 0)";
+        resetProjectCounts(item);
+      }
+
+      summary.addEventListener("click", (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+
+        triggerProjectGlitch(item);
+
+        if (item.open && !item.classList.contains("is-closing")) {
+          closeProject(item);
+        } else {
+          openProject(item);
+        }
+      });
+
+      summary.addEventListener("keydown", (event) => {
+        if (event.key !== "Enter" && event.key !== " ") return;
+
+        event.preventDefault();
+
+        triggerProjectGlitch(item);
+
+        if (item.open && !item.classList.contains("is-closing")) {
+          closeProject(item);
+        } else {
+          openProject(item);
+        }
+      });
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key !== "Escape") return;
+
+      const openItem = items.find((item) => item.open);
+      if (!openItem) return;
+
+      event.preventDefault();
+      closeProject(openItem);
+    });
+  }
+
+  function setupArchiveDetailScrollGuards() {
+    return;
+  }
+
+  function closeAllArchiveProjects() {
+    const details = Array.from(archive.querySelectorAll(".work-project"));
+
+    details.forEach((item) => {
+      if (!item || item.tagName.toLowerCase() !== "details") return;
+
+      const summary = item.querySelector(".work-project__summary");
+      const panel = item.querySelector(".work-project__panel");
+
+      item.removeAttribute("open");
+      item.open = false;
+
+      item.classList.remove(
+        "is-open",
+        "is-opening",
+        "is-closing",
+        "is-previewing",
+        "is-glitching",
+        "is-word-focusing"
+      );
+
+      if (summary) {
+        summary.setAttribute("aria-expanded", "false");
+      }
+
+      if (panel) {
+        window.clearTimeout(panel._workAccordionTimer);
+        panel.style.height = "0px";
+        panel.style.opacity = "0";
+        panel.style.transform = "translate3d(0, -0.35rem, 0)";
+        panel.style.overflow = "hidden";
+      }
+
+      resetProjectCounts(item);
+    });
+
+    archive.classList.remove("has-open-project");
+  }
 
   /* ==========================================================
      GLITCH STYLE INJECTION
-     Keeps the effect self-contained so the file does not crash
-     if the CSS was not pasted yet.
   ========================================================== */
 
   function injectGlitchStyles() {
@@ -636,8 +767,7 @@ function closeAllArchiveProjects() {
     style.id = "bim-work-glitch-styles";
 
     style.textContent = `
-      .work-project__name,
-      .work-project__number {
+      .work-project__name {
         position: relative;
       }
 
@@ -722,18 +852,22 @@ function closeAllArchiveProjects() {
           transform: translate3d(0, 0, 0);
           opacity: 0;
         }
+
         14% {
           transform: translate3d(var(--glitch-x1, 7px), var(--glitch-y1, -1px), 0);
           opacity: 0.95;
         }
+
         36% {
           transform: translate3d(calc(var(--glitch-x1, 7px) * -0.45), 0, 0);
           opacity: 0.6;
         }
+
         58% {
           transform: translate3d(var(--glitch-x3, 3px), var(--glitch-y2, 2px), 0);
           opacity: 0.9;
         }
+
         100% {
           transform: translate3d(0, 0, 0);
           opacity: 0;
@@ -745,18 +879,22 @@ function closeAllArchiveProjects() {
           transform: translate3d(0, 0, 0);
           opacity: 0;
         }
+
         10% {
           transform: translate3d(var(--glitch-x2, -10px), var(--glitch-y2, 2px), 0);
           opacity: 0.75;
         }
+
         28% {
           transform: translate3d(calc(var(--glitch-x2, -10px) * -0.35), var(--glitch-y1, -1px), 0);
           opacity: 0.95;
         }
+
         48% {
           transform: translate3d(var(--glitch-x1, 7px), 0, 0);
           opacity: 0.45;
         }
+
         100% {
           transform: translate3d(0, 0, 0);
           opacity: 0;
@@ -768,18 +906,22 @@ function closeAllArchiveProjects() {
           transform: translate3d(0, 0, 0);
           opacity: 0;
         }
+
         18% {
           transform: translate3d(var(--glitch-x3, 3px), 0, 0);
           opacity: 0.58;
         }
+
         42% {
           transform: translate3d(var(--glitch-x2, -10px), var(--glitch-y2, 2px), 0);
           opacity: 0.82;
         }
+
         68% {
           transform: translate3d(calc(var(--glitch-x1, 7px) * -0.5), var(--glitch-y1, -1px), 0);
           opacity: 0.45;
         }
+
         100% {
           transform: translate3d(0, 0, 0);
           opacity: 0;
@@ -790,6 +932,7 @@ function closeAllArchiveProjects() {
         0% {
           transform: translate3d(0, 0, 0) skew(0deg) rotate(0deg) scale(1);
         }
+
         18% {
           transform:
             translate3d(calc(var(--warp-x, 0px) * 0.65), var(--warp-y, 0px), 0)
@@ -797,6 +940,7 @@ function closeAllArchiveProjects() {
             rotate(var(--warp-rotate, 0deg))
             scale(var(--warp-scale-x, 1), var(--warp-scale-y, 1));
         }
+
         38% {
           transform:
             translate3d(calc(var(--warp-x, 0px) * -0.35), calc(var(--warp-y, 0px) * -0.6), 0)
@@ -804,6 +948,7 @@ function closeAllArchiveProjects() {
             rotate(calc(var(--warp-rotate, 0deg) * -0.45))
             scale(1.02, 0.98);
         }
+
         58% {
           transform:
             translate3d(calc(var(--warp-x, 0px) * 0.18), calc(var(--warp-y, 0px) * 0.35), 0)
@@ -811,6 +956,7 @@ function closeAllArchiveProjects() {
             rotate(calc(var(--warp-rotate, 0deg) * 0.3))
             scale(0.98, 1.02);
         }
+
         100% {
           transform: translate3d(0, 0, 0) skew(0deg) rotate(0deg) scale(1);
         }
@@ -826,11 +972,6 @@ function closeAllArchiveProjects() {
 
     document.head.appendChild(style);
   }
-
-  /* ==========================================================
-     PHYSICAL TEXT SIGNAL GLITCH
-     Same text. Real letters warp. No random symbols.
-  ========================================================== */
 
   function escapeHTML(value) {
     return String(value)
@@ -872,230 +1013,163 @@ function closeAllArchiveProjects() {
     `;
   }
 
-  function updateGlitchText(el, text) {
-    if (!el) return;
-
-    const cleanText = String(text || "").trim();
-
-    el.dataset.text = cleanText;
-    el.dataset.glitchBuilt = "false";
-    el.textContent = cleanText;
-
-    buildGlitchText(el);
-  }
-
   function setLetterWarpVariables(el) {
     if (!el) return;
 
     const letters = Array.from(
-      el.querySelectorAll(".glitch-letter:not(.glitch-letter--space)")
+      el.querySelectorAll(".glitch-word__base .glitch-letter:not(.glitch-letter--space)")
     );
 
-    letters.forEach((letter) => {
-      const force = Math.random();
+    letters.forEach((letter, index) => {
+      const direction = index % 2 === 0 ? 1 : -1;
+      const strength = 0.7 + (index % 5) * 0.16;
 
-      const x = (Math.random() * 18 - 9).toFixed(2);
-      const y = (Math.random() * 6 - 3).toFixed(2);
-      const skew = (Math.random() * 22 - 11).toFixed(2);
-      const rotate = (Math.random() * 5 - 2.5).toFixed(2);
-      const scaleX = (0.86 + Math.random() * 0.34).toFixed(2);
-      const scaleY = (0.9 + Math.random() * 0.22).toFixed(2);
+      letter.style.setProperty("--warp-x", `${direction * strength * 1.7}px`);
+      letter.style.setProperty("--warp-y", `${direction * -0.55}px`);
+      letter.style.setProperty("--warp-skew", `${direction * (3 + index % 4)}deg`);
+      letter.style.setProperty("--warp-rotate", `${direction * 1.5}deg`);
+      letter.style.setProperty("--warp-scale-x", `${1 + strength * 0.025}`);
+      letter.style.setProperty("--warp-scale-y", `${1 - strength * 0.012}`);
 
-      letter.style.setProperty("--warp-x", `${x}px`);
-      letter.style.setProperty("--warp-y", `${y}px`);
-      letter.style.setProperty("--warp-skew", `${skew}deg`);
-      letter.style.setProperty("--warp-rotate", `${rotate}deg`);
-      letter.style.setProperty("--warp-scale-x", scaleX);
-      letter.style.setProperty("--warp-scale-y", scaleY);
-
-      const raw = letter.textContent.trim().toLowerCase();
-      const isRoundOrStructural = ["o", "c", "d", "a", "r", "p", "q", "0"].includes(raw);
-
-      letter.classList.toggle(
-        "glitch-letter--heavy",
-        isRoundOrStructural || force > 0.68
-      );
+      if (index % 4 === 0) {
+        letter.classList.add("glitch-letter--heavy");
+      } else {
+        letter.classList.remove("glitch-letter--heavy");
+      }
     });
+
+    el.style.setProperty("--glitch-x1", `${5 + Math.random() * 6}px`);
+    el.style.setProperty("--glitch-x2", `${-8 - Math.random() * 7}px`);
+    el.style.setProperty("--glitch-x3", `${2 + Math.random() * 4}px`);
+    el.style.setProperty("--glitch-y1", `${-1 - Math.random() * 2}px`);
+    el.style.setProperty("--glitch-y2", `${1 + Math.random() * 2}px`);
   }
 
-  function triggerSignalGlitch(el) {
-    if (!el || prefersReducedMotion) return;
+  function triggerProjectGlitch(row) {
+    if (prefersReducedMotion) return;
 
-    buildGlitchText(el);
-    setLetterWarpVariables(el);
+    const name = row.querySelector(".work-project__name");
+    if (!name) return;
 
-    el.style.setProperty("--glitch-x1", `${(Math.random() * 16 - 8).toFixed(2)}px`);
-    el.style.setProperty("--glitch-x2", `${(Math.random() * 24 - 12).toFixed(2)}px`);
-    el.style.setProperty("--glitch-x3", `${(Math.random() * 10 - 5).toFixed(2)}px`);
-    el.style.setProperty("--glitch-y1", `${(Math.random() * 3 - 1.5).toFixed(2)}px`);
-    el.style.setProperty("--glitch-y2", `${(Math.random() * 5 - 2.5).toFixed(2)}px`);
-
-    el.classList.remove("is-live-glitch");
-
-    void el.offsetWidth;
-
-    el.classList.add("is-live-glitch");
-
-    window.setTimeout(() => {
-      el.classList.remove("is-live-glitch");
-    }, 520);
-  }
-
-  function triggerProjectGlitch(button) {
-    if (!button || prefersReducedMotion) return;
-
-    const name = button.querySelector(".work-project__name");
-    const number = button.querySelector(".work-project__number");
-
-    button.classList.remove("is-glitching");
-
-    void button.offsetWidth;
-
-    button.classList.add("is-glitching");
-
-    triggerSignalGlitch(name);
-    triggerSignalGlitch(number);
+    buildGlitchText(name);
+    setLetterWarpVariables(name);
 
     window.clearTimeout(glitchTimer);
 
+    row.classList.add("is-glitching");
+    name.classList.remove("is-live-glitch");
+
+    name.getBoundingClientRect();
+
+    name.classList.add("is-live-glitch");
+
     glitchTimer = window.setTimeout(() => {
-      button.classList.remove("is-glitching");
+      name.classList.remove("is-live-glitch");
+      row.classList.remove("is-glitching");
     }, 560);
   }
 
   function buildAllGlitchText() {
-    const targets = archive.querySelectorAll(
-      ".work-project__name, .work-project__number"
-    );
-
-    targets.forEach((target) => buildGlitchText(target));
-  }
-
-  function triggerDrawerGlitch() {
-    /*
-      Drawer was removed from this file.
-      Keep this as a safe no-op so older HTML/buttons cannot crash the script.
-    */
+    archive.querySelectorAll(".work-project__name").forEach(buildGlitchText);
   }
 
   /* ==========================================================
-     ARCHIVE — HOVER PREVIEW + GLITCH
+     PREVIEW HOVER
   ========================================================== */
 
   function setupArchiveHover() {
     const rows = Array.from(archive.querySelectorAll(".work-project"));
-    if (!rows.length) return;
 
-    let activePreview = null;
-    let activeRow = null;
-    let mouseX = window.innerWidth * 0.68;
-    let mouseY = window.innerHeight * 0.42;
-    let currentX = mouseX;
-    let currentY = mouseY;
-    let raf = null;
+    if (!rows.length || mobileQuery.matches) return;
 
-    function movePreview() {
-      currentX = lerp(currentX, mouseX, 0.16);
-      currentY = lerp(currentY, mouseY, 0.16);
+    const previewState = new WeakMap();
 
-      if (activePreview) {
-        activePreview.style.transform = `
-          translate3d(${currentX}px, ${currentY}px, 0)
-          translate3d(1.2rem, -46%, 0)
-          rotate(-1.25deg)
-          scale(1)
-        `;
-      }
+    function getPreview(row) {
+      let state = previewState.get(row);
+      if (state) return state;
 
-      if (
-        activePreview &&
-        (Math.abs(currentX - mouseX) > 0.1 ||
-          Math.abs(currentY - mouseY) > 0.1)
-      ) {
-        raf = window.requestAnimationFrame(movePreview);
-      } else {
-        raf = null;
-      }
+      const preview = row.querySelector(".work-project__preview");
+      if (!preview) return null;
+
+      state = {
+        preview,
+        currentX: 0,
+        currentY: 0,
+        targetX: 0,
+        targetY: 0,
+        raf: null
+      };
+
+      previewState.set(row, state);
+
+      return state;
     }
 
-    function requestMove() {
-      if (!raf) {
-        raf = window.requestAnimationFrame(movePreview);
+    function renderPreview(row) {
+      const state = getPreview(row);
+      if (!state) return;
+
+      state.currentX = lerp(state.currentX, state.targetX, 0.18);
+      state.currentY = lerp(state.currentY, state.targetY, 0.18);
+
+      state.preview.style.left = `${state.currentX}px`;
+      state.preview.style.top = `${state.currentY}px`;
+      state.preview.style.right = "auto";
+
+      if (
+        Math.abs(state.currentX - state.targetX) > 0.1 ||
+        Math.abs(state.currentY - state.targetY) > 0.1
+      ) {
+        state.raf = window.requestAnimationFrame(() => renderPreview(row));
+      } else {
+        state.raf = null;
       }
     }
 
     function showPreview(row, event) {
-      if (mobileQuery.matches) return;
-
-      const preview = row.querySelector(".work-project__preview");
-      if (!preview) return;
-
-      if (activeRow && activeRow !== row) {
-        activeRow.classList.remove("is-previewing");
-      }
-
-      if (activePreview && activePreview !== preview) {
-        activePreview.classList.remove("is-visible");
-        activePreview.style.opacity = "0";
-        activePreview.style.visibility = "hidden";
-      }
-
-      activeRow = row;
-      activePreview = preview;
-
-      mouseX = event.clientX;
-      mouseY = event.clientY;
-      currentX = event.clientX;
-      currentY = event.clientY;
+      const state = getPreview(row);
+      if (!state || row.open) return;
 
       row.classList.add("is-previewing");
-      preview.classList.add("is-visible");
 
-      preview.style.opacity = "1";
-      preview.style.visibility = "visible";
-      preview.style.pointerEvents = "none";
-      preview.style.transform = `
-        translate3d(${currentX}px, ${currentY}px, 0)
-        translate3d(1.2rem, -46%, 0)
-        rotate(-1.25deg)
-        scale(1)
-      `;
+      const width = state.preview.offsetWidth || 180;
+      const height = state.preview.offsetHeight || 120;
 
-      requestMove();
+      state.targetX = clamp(
+        event.clientX + 28,
+        20,
+        window.innerWidth - width - 20
+      );
+
+      state.targetY = clamp(
+        event.clientY - height * 0.45,
+        20,
+        window.innerHeight - height - 20
+      );
+
+      if (!state.currentX) state.currentX = state.targetX;
+      if (!state.currentY) state.currentY = state.targetY;
+
+      if (!state.raf) {
+        state.raf = window.requestAnimationFrame(() => renderPreview(row));
+      }
     }
 
     function hidePreview(row) {
-      const preview = row.querySelector(".work-project__preview");
+      const state = getPreview(row);
+      if (!state) return;
 
       row.classList.remove("is-previewing");
 
-      if (preview) {
-        preview.classList.remove("is-visible");
-        preview.style.opacity = "0";
-        preview.style.visibility = "hidden";
-        preview.style.transform = `
-          translate3d(${currentX}px, ${currentY}px, 0)
-          translate3d(1.2rem, -42%, 0)
-          rotate(-2deg)
-          scale(0.94)
-        `;
+      if (state.raf) {
+        window.cancelAnimationFrame(state.raf);
+        state.raf = null;
       }
-
-      if (activeRow === row) activeRow = null;
-      if (activePreview === preview) activePreview = null;
     }
 
     rows.forEach((row) => {
       const summary = row.querySelector(".work-project__summary");
-      const preview = row.querySelector(".work-project__preview");
-
       if (!summary) return;
-
-      if (preview) {
-        preview.style.opacity = "0";
-        preview.style.visibility = "hidden";
-        preview.style.pointerEvents = "none";
-      }
 
       summary.addEventListener("mouseenter", (event) => {
         triggerProjectGlitch(row);
@@ -1103,12 +1177,7 @@ function closeAllArchiveProjects() {
       });
 
       summary.addEventListener("mousemove", (event) => {
-        if (mobileQuery.matches) return;
-
-        mouseX = event.clientX;
-        mouseY = event.clientY;
-
-        requestMove();
+        showPreview(row, event);
       });
 
       summary.addEventListener("mouseleave", () => {
@@ -1129,213 +1198,186 @@ function closeAllArchiveProjects() {
       summary.addEventListener("blur", () => {
         hidePreview(row);
       });
+    });
+  }
 
-      summary.addEventListener("click", () => {
-        triggerProjectGlitch(row);
+  /* ==========================================================
+     ARCHIVE CENTER-LINE REVEAL
+     Normal scroll. Once only. No pin. No scrub.
+  ========================================================== */
+
+  function setupArchiveNoomoReveal() {
+    const gsap = window.gsap;
+    const ScrollTrigger = window.ScrollTrigger;
+
+    const label = archive.querySelector(".work-archive__label");
+    const kicker = archive.querySelector(".work-archive__kicker");
+    const title = archive.querySelector(".work-archive__title");
+    const intro = archive.querySelector(".work-archive__intro");
+    const rows = Array.from(archive.querySelectorAll(".work-project"));
+
+    if (!rows.length) return;
+
+    if (ScrollTrigger && typeof ScrollTrigger.getAll === "function") {
+      ScrollTrigger.getAll().forEach((trigger) => {
+        const id = trigger.vars && trigger.vars.id;
+        const triggerEl = trigger.vars && trigger.vars.trigger;
+
+        if (
+          id === "workArchiveReveal" ||
+          id === "workArchiveFormation" ||
+          id === "workArchiveNoomo" ||
+          id === "workArchiveCenterLines" ||
+          triggerEl === archive
+        ) {
+          trigger.kill();
+        }
       });
-    });
-  }
+    }
 
-
-
-
-
-
-/* ==========================================================
-   ARCHIVE — STABLE ONE-TIME REVEAL
-   No pin. No scrub. No de-animation. No scroll lock.
-========================================================== */
-
-/* ==========================================================
-   ARCHIVE — NOOMO-STYLE LINE REVEAL
-   Normal scroll. No pin. No scrub trap.
-   Lines grow from center outward.
-========================================================== */
-
-function setupArchiveNoomoReveal() {
-  const gsap = window.gsap;
-  const ScrollTrigger = window.ScrollTrigger;
-
-  const shell = archive.querySelector(".work-archive__shell");
-  const header = archive.querySelector(".work-archive__header");
-  const label = archive.querySelector(".work-archive__label");
-  const kicker = archive.querySelector(".work-archive__kicker");
-  const title = archive.querySelector(".work-archive__title");
-  const intro = archive.querySelector(".work-archive__intro");
-  const rows = Array.from(archive.querySelectorAll(".work-project"));
-
-  if (!shell || !rows.length) return;
-
-  /* kill old archive triggers only */
-  if (ScrollTrigger && typeof ScrollTrigger.getAll === "function") {
-    ScrollTrigger.getAll().forEach((trigger) => {
-      const id = trigger.vars && trigger.vars.id;
-      const triggerEl = trigger.vars && trigger.vars.trigger;
-
-      if (
-        id === "workArchiveReveal" ||
-        id === "workArchiveFormation" ||
-        id === "workArchiveNoomo" ||
-        id === "workArchiveCenterLines" ||
-        triggerEl === archive
-      ) {
-        trigger.kill();
-      }
-    });
-  }
-
-  archive.classList.remove("is-forming", "is-formed");
-
-  rows.forEach((row) => {
-    row.style.setProperty("--row-line", "0");
-    row.style.setProperty("--row-fill", "0");
-  });
-
-  if (!gsap || !ScrollTrigger || prefersReducedMotion) {
-    archive.classList.add("is-formed");
+    archive.classList.remove("is-forming", "is-formed");
 
     rows.forEach((row) => {
-      row.style.setProperty("--row-line", "1");
+      row.style.setProperty("--row-line", "0");
+      row.style.setProperty("--row-fill", "0");
     });
 
-    return;
-  }
+    if (!gsap || !ScrollTrigger || prefersReducedMotion) {
+      archive.classList.add("is-formed");
 
-  gsap.registerPlugin(ScrollTrigger);
+      rows.forEach((row) => {
+        row.style.setProperty("--row-line", "1");
+      });
 
-  const rowPieces = rows.map((row) =>
-    Array.from(
-      row.querySelectorAll(
-        ".work-project__index, .work-project__name, .work-project__meta, .work-project__year, .work-project__arrow"
-      )
-    )
-  );
-
-  gsap.set(archive, {
-    "--archive-reveal": 1,
-    "--archive-glow": 0,
-    "--archive-top-line": 1
-  });
-
-  gsap.set([label, kicker, title, intro].filter(Boolean), {
-    autoAlpha: 0,
-    y: 22,
-    filter: "blur(8px)"
-  });
-
-  gsap.set(title, {
-    y: 34,
-    filter: "blur(14px)"
-  });
-
-  rows.forEach((row, index) => {
-    gsap.set(row, {
-      "--row-line": 0,
-      "--row-fill": 0,
-      autoAlpha: 1
-    });
-
-    gsap.set(rowPieces[index], {
-      autoAlpha: 0,
-      y: 24,
-      filter: "blur(10px)"
-    });
-  });
-
-  const tl = gsap.timeline({
-    defaults: {
-      ease: "power3.out"
-    },
-    scrollTrigger: {
-      id: "workArchiveCenterLines",
-      trigger: archive,
-      start: "top 68%",
-      once: true,
-      toggleActions: "play none none none"
+      return;
     }
-  });
 
-  tl.add(() => {
-    archive.classList.add("is-forming");
-  }, 0);
+    gsap.registerPlugin(ScrollTrigger);
 
-  tl.to(
-    [label, kicker].filter(Boolean),
-    {
-      autoAlpha: 1,
-      y: 0,
-      filter: "blur(0px)",
-      duration: 0.7,
-      stagger: 0.07
-    },
-    0.05
-  );
-
-  tl.to(
-    title,
-    {
-      autoAlpha: 1,
-      y: 0,
-      filter: "blur(0px)",
-      duration: 1.05,
-      ease: "power4.out"
-    },
-    0.12
-  );
-
-  tl.to(
-    intro,
-    {
-      autoAlpha: 1,
-      y: 0,
-      filter: "blur(0px)",
-      duration: 0.8
-    },
-    0.36
-  );
-
-  rows.forEach((row, index) => {
-    const start = 0.72 + index * 0.14;
-
-    tl.to(
-      row,
-      {
-        "--row-line": 1,
-        duration: 0.9,
-        ease: "power2.inOut"
-      },
-      start
+    const rowPieces = rows.map((row) =>
+      Array.from(
+        row.querySelectorAll(
+          ".work-project__index, .work-project__name, .work-project__meta, .work-project__year, .work-project__arrow"
+        )
+      )
     );
 
+    gsap.set(archive, {
+      "--archive-reveal": 1,
+      "--archive-glow": 0,
+      "--archive-top-line": 1
+    });
+
+    gsap.set([label, kicker, title, intro].filter(Boolean), {
+      autoAlpha: 0,
+      y: 22,
+      filter: "blur(8px)"
+    });
+
+    gsap.set(title, {
+      y: 34,
+      filter: "blur(14px)"
+    });
+
+    rows.forEach((row, index) => {
+      gsap.set(row, {
+        "--row-line": 0,
+        "--row-fill": 0,
+        autoAlpha: 1
+      });
+
+      gsap.set(rowPieces[index], {
+        autoAlpha: 0,
+        y: 24,
+        filter: "blur(10px)"
+      });
+    });
+
+    const tl = gsap.timeline({
+      defaults: {
+        ease: "power3.out"
+      },
+      scrollTrigger: {
+        id: "workArchiveCenterLines",
+        trigger: archive,
+        start: "top 68%",
+        once: true,
+        toggleActions: "play none none none"
+      }
+    });
+
+    tl.add(() => {
+      archive.classList.add("is-forming");
+    }, 0);
+
     tl.to(
-      rowPieces[index],
+      [label, kicker].filter(Boolean),
       {
         autoAlpha: 1,
         y: 0,
         filter: "blur(0px)",
-        duration: 0.62,
-        stagger: 0.035,
+        duration: 0.7,
+        stagger: 0.07
+      },
+      0.05
+    );
+
+    tl.to(
+      title,
+      {
+        autoAlpha: 1,
+        y: 0,
+        filter: "blur(0px)",
+        duration: 1.05,
         ease: "power4.out"
       },
-      start + 0.16
+      0.12
     );
-  });
 
-  tl.add(() => {
-    archive.classList.remove("is-forming");
-    archive.classList.add("is-formed");
-  });
-}
+    tl.to(
+      intro,
+      {
+        autoAlpha: 1,
+        y: 0,
+        filter: "blur(0px)",
+        duration: 0.8
+      },
+      0.36
+    );
 
+    rows.forEach((row, index) => {
+      const start = 0.72 + index * 0.14;
 
+      tl.to(
+        row,
+        {
+          "--row-line": 1,
+          duration: 0.9,
+          ease: "power2.inOut"
+        },
+        start
+      );
 
+      tl.to(
+        rowPieces[index],
+        {
+          autoAlpha: 1,
+          y: 0,
+          filter: "blur(0px)",
+          duration: 0.62,
+          stagger: 0.035,
+          ease: "power4.out"
+        },
+        start + 0.16
+      );
+    });
 
+    tl.add(() => {
+      archive.classList.remove("is-forming");
+      archive.classList.add("is-formed");
+    });
+  }
 
-
-
-   
-
- 
   /* ==========================================================
      IMAGE FALLBACKS
   ========================================================== */
@@ -1366,23 +1408,24 @@ function setupArchiveNoomoReveal() {
      INIT
   ========================================================== */
 
- function init() {
-  injectGlitchStyles();
-  cleanOldStates();
-  injectTrustBridge();
-  closeAllArchiveProjects();
-  setupTrustCards();
-  setupArchiveDetails();
-  setupArchiveDetailScrollGuards();
-  buildAllGlitchText();
-  setupArchiveHover();
-  setupArchiveNoomoReveal();
-  setupImageFallbacks();
+  function init() {
+    injectGlitchStyles();
+    cleanOldStates();
+    injectTrustBridge();
+    closeAllArchiveProjects();
+    setupTrustCards();
+    setupArchiveDetails();
+    setupFocusWords();
+    setupArchiveDetailScrollGuards();
+    buildAllGlitchText();
+    setupArchiveHover();
+    setupArchiveNoomoReveal();
+    setupImageFallbacks();
 
-  if (window.ScrollTrigger) {
-    window.ScrollTrigger.refresh();
+    if (window.ScrollTrigger) {
+      window.ScrollTrigger.refresh();
+    }
   }
-}
 
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", init, { once: true });
