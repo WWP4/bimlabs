@@ -1,12 +1,11 @@
 /* ==========================================================
    BIM LABS STUDIO — OUR WORK
-   Clean JS
-   - Trust bridge flying cards
-   - Work archive accordion
-   - Noomo-style center-growing row lines
-   - Mouse preview
-   - Physical letter glitch
-   - Results count-up
+   Performance Remake
+   - Lighter trust bridge
+   - Smooth accordion without height measurement
+   - Transform-only hover preview
+   - Soft click/hover signal instead of heavy glitch
+   - Count-up animation
    - Focus-word camera blur
    - No drawer
    - No scroll lock
@@ -15,9 +14,11 @@
 (() => {
   "use strict";
 
+  const archive = document.querySelector(".work-archive");
+  if (!archive) return;
+
   const projects = [
     {
-      number: "01",
       title: "Wonder World Portal",
       client: "Wonder World Playsets",
       role: "Commercial playground distributor",
@@ -25,7 +26,6 @@
         "The portal made our process feel organized, easier to manage, and easier to present to customers."
     },
     {
-      number: "02",
       title: "Momentum Athlete",
       client: "Momentum Athlete",
       role: "Athlete performance platform",
@@ -33,7 +33,6 @@
         "The platform finally felt clear, premium, and easier to present to partners."
     },
     {
-      number: "03",
       title: "Orynd AI",
       client: "Orynd AI",
       role: "AI platform",
@@ -41,7 +40,6 @@
         "The site made the product easier to explain without making the idea feel smaller."
     },
     {
-      number: "04",
       title: "3D Install Tool",
       client: "BIM Labs Studio",
       role: "Interactive project system",
@@ -50,16 +48,19 @@
     }
   ];
 
-  const archive = document.querySelector(".work-archive");
-  if (!archive) return;
-
   const prefersReducedMotion = window.matchMedia(
     "(prefers-reduced-motion: reduce)"
   ).matches;
 
   const mobileQuery = window.matchMedia("(max-width: 900px)");
 
-  let glitchTimer = null;
+  const state = {
+    activePreview: null,
+    previewRaf: null,
+    trustRaf: null,
+    trustTarget: 0,
+    trustCurrent: 0
+  };
 
   function clamp(value, min, max) {
     return Math.min(Math.max(value, min), max);
@@ -79,6 +80,114 @@
   }
 
   /* ==========================================================
+     PERFORMANCE CSS PATCH
+     This lets the JS file fix the lag without needing HTML changes.
+  ========================================================== */
+
+  function injectPerformanceStyles() {
+    if (document.getElementById("bim-work-performance-js-styles")) return;
+
+    const style = document.createElement("style");
+    style.id = "bim-work-performance-js-styles";
+
+    style.textContent = `
+      .work-project__panel {
+        display: grid !important;
+        grid-template-rows: 0fr;
+        height: auto !important;
+        min-height: 0 !important;
+        max-height: none !important;
+        opacity: 1 !important;
+        padding: 0 !important;
+        overflow: hidden !important;
+        transform: none !important;
+        transition:
+          grid-template-rows 620ms var(--work-ease, cubic-bezier(0.19, 1, 0.22, 1)),
+          padding-bottom 620ms var(--work-ease, cubic-bezier(0.19, 1, 0.22, 1));
+        will-change: grid-template-rows;
+        contain: layout;
+      }
+
+      .work-project__panel-inner {
+        min-height: 0;
+        overflow: hidden;
+        opacity: 0;
+        transform: translate3d(0, -0.45rem, 0);
+        transition:
+          opacity 260ms ease,
+          transform 620ms var(--work-ease, cubic-bezier(0.19, 1, 0.22, 1));
+      }
+
+      .work-project.is-open .work-project__panel,
+      .work-project.is-opening .work-project__panel,
+      .work-project[open].is-open .work-project__panel,
+      .work-project[open].is-opening .work-project__panel {
+        grid-template-rows: 1fr;
+        padding-bottom: clamp(1.5rem, 3vh, 2.2rem) !important;
+        overflow: hidden !important;
+      }
+
+      .work-project.is-open .work-project__panel-inner,
+      .work-project.is-opening .work-project__panel-inner {
+        opacity: 1;
+        transform: translate3d(0, 0, 0);
+      }
+
+      .work-project.is-closing .work-project__panel {
+        grid-template-rows: 0fr;
+        padding-bottom: 0 !important;
+      }
+
+      .work-project.is-closing .work-project__panel-inner {
+        opacity: 0;
+        transform: translate3d(0, -0.35rem, 0);
+      }
+
+      .work-project__preview,
+      .work-project__hover-image {
+        left: 0 !important;
+        top: 0 !important;
+        right: auto !important;
+        contain: layout paint;
+        transform:
+          translate3d(var(--preview-x, -999px), var(--preview-y, -999px), 0)
+          scale(0.96)
+          rotate(-1deg) !important;
+        will-change: transform, opacity;
+      }
+
+      .work-project.is-previewing .work-project__preview,
+      .work-project.is-previewing .work-project__hover-image {
+        transform:
+          translate3d(var(--preview-x, -999px), var(--preview-y, -999px), 0)
+          scale(1)
+          rotate(-1deg) !important;
+      }
+
+      .work-project.is-soft-signal .work-project__name {
+        color: rgba(255, 255, 255, 0.98);
+        transform: translate3d(0.22rem, 0, 0) skewX(-1.5deg);
+      }
+
+      .work-project.is-soft-signal .work-project__summary {
+        filter: contrast(1.04);
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .work-project__panel,
+        .work-project__panel-inner,
+        .work-project__preview,
+        .work-project__hover-image {
+          transition: none !important;
+          animation: none !important;
+        }
+      }
+    `;
+
+    document.head.appendChild(style);
+  }
+
+  /* ==========================================================
      CLEAN OLD STATES
   ========================================================== */
 
@@ -87,6 +196,11 @@
     document.body.classList.remove("work-drawer-lock");
 
     document.querySelectorAll(".work-detail").forEach((node) => node.remove());
+
+    /*
+      Your HTML already had a .work-trust section.
+      This removes that old/static version so we do not render two trust sections.
+    */
     document.querySelectorAll(".work-trust").forEach((node) => node.remove());
 
     document.querySelectorAll(".bim-trust").forEach((node, index) => {
@@ -175,7 +289,7 @@
       return;
     }
 
-    const cardSettings = [
+    const settings = [
       {
         startX: 118,
         midX: 46,
@@ -234,10 +348,6 @@
       }
     ];
 
-    let targetProgress = 0;
-    let currentProgress = 0;
-    let raf = null;
-
     function easeInOutCubic(value) {
       return value < 0.5
         ? 4 * value * value * value
@@ -260,170 +370,162 @@
 
     function render(progress) {
       cards.forEach((card, index) => {
-        const settings =
-          cardSettings[index] || cardSettings[cardSettings.length - 1];
-
-        const raw = clamp((progress - settings.delay) / settings.span, 0, 1);
+        const item = settings[index] || settings[settings.length - 1];
+        const raw = clamp((progress - item.delay) / item.span, 0, 1);
         const t = easeInOutCubic(raw);
 
-        const x = bezier3(settings.startX, settings.midX, settings.endX, t);
-        const y = bezier3(settings.startY, settings.peakY, settings.endY, t);
-        const rotate = bezier3(
-          settings.startRotate,
-          settings.midRotate,
-          settings.endRotate,
-          t
-        );
-
-        const float = Math.sin(progress * Math.PI * 2 + index * 0.85) * 0.22;
+        const x = bezier3(item.startX, item.midX, item.endX, t);
+        const y = bezier3(item.startY, item.peakY, item.endY, t);
+        const rotate = bezier3(item.startRotate, item.midRotate, item.endRotate, t);
 
         card.style.opacity = "1";
         card.style.visibility = "visible";
         card.style.zIndex = String(30 + index);
         card.style.transform = `
-          translate3d(${x}vw, calc(${y}vh + ${float}rem), ${settings.depth}px)
+          translate3d(${x}vw, ${y}vh, ${item.depth}px)
           rotate(${rotate}deg)
-          scale(1)
         `;
       });
 
       if (headline) {
-        headline.style.opacity = String(lerp(0.92, 0.5, progress));
-        headline.style.transform = `translate3d(0, ${lerp(0, -3.5, progress)}vh, 0)`;
+        headline.style.opacity = String(lerp(0.92, 0.55, progress));
+        headline.style.transform = `translate3d(0, ${lerp(0, -3, progress)}vh, 0)`;
       }
 
       if (copy) {
-        copy.style.opacity = String(lerp(1, 0.76, progress));
-        copy.style.transform = `translate3d(0, ${lerp(0, -1.8, progress)}vh, 0)`;
+        copy.style.opacity = String(lerp(1, 0.78, progress));
+        copy.style.transform = `translate3d(0, ${lerp(0, -1.5, progress)}vh, 0)`;
       }
     }
 
     function animate() {
-      currentProgress = lerp(currentProgress, targetProgress, 0.045);
-      render(currentProgress);
+      state.trustCurrent = lerp(state.trustCurrent, state.trustTarget, 0.075);
+      render(state.trustCurrent);
 
-      if (Math.abs(targetProgress - currentProgress) > 0.0004) {
-        raf = window.requestAnimationFrame(animate);
+      if (Math.abs(state.trustTarget - state.trustCurrent) > 0.001) {
+        state.trustRaf = window.requestAnimationFrame(animate);
       } else {
-        currentProgress = targetProgress;
-        render(currentProgress);
-        raf = null;
+        state.trustCurrent = state.trustTarget;
+        render(state.trustCurrent);
+        state.trustRaf = null;
       }
     }
 
     function requestUpdate() {
-      targetProgress = getProgress();
+      state.trustTarget = getProgress();
 
-      if (!raf) {
-        raf = window.requestAnimationFrame(animate);
+      if (!state.trustRaf) {
+        state.trustRaf = window.requestAnimationFrame(animate);
       }
     }
 
     window.addEventListener("scroll", requestUpdate, { passive: true });
-    window.addEventListener("resize", requestUpdate);
-    window.addEventListener("orientationchange", requestUpdate);
+    window.addEventListener("resize", requestUpdate, { passive: true });
+    window.addEventListener("orientationchange", requestUpdate, { passive: true });
 
-    targetProgress = getProgress();
-    currentProgress = targetProgress;
-    render(currentProgress);
+    state.trustTarget = getProgress();
+    state.trustCurrent = state.trustTarget;
+    render(state.trustCurrent);
   }
 
+  /* ==========================================================
+     RESULT COUNT-UP
+  ========================================================== */
 
+  function formatCountValue(value, decimals, suffix) {
+    const safeDecimals = Number.isFinite(decimals) ? decimals : 0;
+    const rounded = Number(value).toFixed(safeDecimals);
 
+    return `${rounded}${suffix || ""}`;
+  }
 
+  function resetProjectCounts(item) {
+    const counters = Array.from(item.querySelectorAll("[data-count]"));
 
+    counters.forEach((counter) => {
+      const suffix = counter.dataset.suffix || "";
 
-/* ==========================================================
-   RESULT COUNT-UP
-   Clean fixed-position number animation
-   - Number stays in one place
-   - Smooth easing
-   - No ghost numbers
-   - No vertical jumping
-========================================================== */
+      counter.dataset.counted = "false";
+      counter.classList.remove("is-counting", "is-counted");
+      counter.textContent = `0${suffix}`;
+    });
+  }
 
-function formatCountValue(value, decimals, suffix) {
-  const safeDecimals = Number.isFinite(decimals) ? decimals : 0;
-  const rounded = Number(value).toFixed(safeDecimals);
+  function animateProjectCounts(item) {
+    const counters = Array.from(item.querySelectorAll("[data-count]"));
+    if (!counters.length) return;
 
-  return `${rounded}${suffix || ""}`;
-}
+    counters.forEach((counter, index) => {
+      if (counter.dataset.counted === "true") return;
 
-function resetProjectCounts(item) {
-  const counters = Array.from(item.querySelectorAll("[data-count]"));
+      counter.dataset.counted = "true";
 
-  counters.forEach((counter) => {
-    const suffix = counter.dataset.suffix || "";
+      const target = Number(counter.dataset.count || 0);
+      const suffix = counter.dataset.suffix || "";
+      const decimals = counter.dataset.decimals
+        ? Number(counter.dataset.decimals)
+        : 0;
 
-    counter.dataset.counted = "false";
-    counter.classList.remove("is-counting", "is-counted");
-    counter.textContent = `0${suffix}`;
-  });
-}
-
-function animateProjectCounts(item) {
-  const counters = Array.from(item.querySelectorAll("[data-count]"));
-
-  if (!counters.length) return;
-
-  counters.forEach((counter, index) => {
-    if (counter.dataset.counted === "true") return;
-
-    counter.dataset.counted = "true";
-
-    const target = Number(counter.dataset.count || 0);
-    const suffix = counter.dataset.suffix || "";
-    const decimals = counter.dataset.decimals
-      ? Number(counter.dataset.decimals)
-      : 0;
-
-    if (prefersReducedMotion) {
-      counter.textContent = formatCountValue(target, decimals, suffix);
-      counter.classList.add("is-counted");
-      return;
-    }
-
-    const duration = 1150 + index * 90;
-    const delay = index * 70;
-    const startTime = performance.now() + delay;
-
-    counter.classList.add("is-counting");
-
-    function easeOutExpo(t) {
-      return t === 1 ? 1 : 1 - Math.pow(2, -10 * t);
-    }
-
-    function tick(now) {
-      if (now < startTime) {
-        window.requestAnimationFrame(tick);
+      if (prefersReducedMotion) {
+        counter.textContent = formatCountValue(target, decimals, suffix);
+        counter.classList.add("is-counted");
         return;
       }
 
-      const progress = Math.min((now - startTime) / duration, 1);
-      const eased = easeOutExpo(progress);
-      const current = target * eased;
+      const duration = 950 + index * 70;
+      const delay = index * 55;
+      const startTime = performance.now() + delay;
 
-      counter.textContent = formatCountValue(current, decimals, suffix);
+      counter.classList.add("is-counting");
 
-      if (progress < 1) {
-        window.requestAnimationFrame(tick);
-        return;
+      function easeOutExpo(t) {
+        return t === 1 ? 1 : 1 - Math.pow(2, -10 * t);
       }
 
-      counter.textContent = formatCountValue(target, decimals, suffix);
-      counter.classList.remove("is-counting");
-      counter.classList.add("is-counted");
-    }
+      function tick(now) {
+        if (now < startTime) {
+          window.requestAnimationFrame(tick);
+          return;
+        }
 
-    window.requestAnimationFrame(tick);
-  });
-}
+        const progress = Math.min((now - startTime) / duration, 1);
+        const current = target * easeOutExpo(progress);
 
+        counter.textContent = formatCountValue(current, decimals, suffix);
 
+        if (progress < 1) {
+          window.requestAnimationFrame(tick);
+          return;
+        }
 
-   
+        counter.textContent = formatCountValue(target, decimals, suffix);
+        counter.classList.remove("is-counting");
+        counter.classList.add("is-counted");
+      }
 
- 
+      window.requestAnimationFrame(tick);
+    });
+  }
+
+  /* ==========================================================
+     SOFT SIGNAL
+     Replaces the heavy physical-letter glitch.
+  ========================================================== */
+
+  function triggerSoftSignal(item) {
+    if (!item || prefersReducedMotion) return;
+
+    window.clearTimeout(item._softSignalTimer);
+
+    item.classList.remove("is-soft-signal");
+    item.offsetWidth;
+    item.classList.add("is-soft-signal");
+
+    item._softSignalTimer = window.setTimeout(() => {
+      item.classList.remove("is-soft-signal");
+    }, 260);
+  }
+
   /* ==========================================================
      FOCUS WORDS
   ========================================================== */
@@ -462,11 +564,13 @@ function animateProjectCounts(item) {
 
   /* ==========================================================
      ACCORDION DETAILS
+     No scrollHeight measuring.
+     No height animation.
   ========================================================== */
 
   function setupArchiveDetails() {
     const items = Array.from(archive.querySelectorAll(".work-project"));
-    const DURATION = prefersReducedMotion ? 0 : 680;
+    const DURATION = prefersReducedMotion ? 0 : 640;
 
     if (!items.length) return;
 
@@ -493,6 +597,22 @@ function animateProjectCounts(item) {
       return panel;
     }
 
+    function wrapPanelContent(panel) {
+      if (!panel || panel.querySelector(":scope > .work-project__panel-inner")) {
+        return panel ? panel.querySelector(":scope > .work-project__panel-inner") : null;
+      }
+
+      const inner = document.createElement("div");
+      inner.className = "work-project__panel-inner";
+
+      while (panel.firstChild) {
+        inner.appendChild(panel.firstChild);
+      }
+
+      panel.appendChild(inner);
+      return inner;
+    }
+
     function updateArchiveState() {
       const hasOpen = items.some(
         (item) =>
@@ -504,32 +624,20 @@ function animateProjectCounts(item) {
       archive.classList.toggle("has-open-project", hasOpen);
     }
 
-    function clearPanelTimer(panel) {
-      if (!panel) return;
-
-      window.clearTimeout(panel._workAccordionTimer);
-      panel._workAccordionTimer = null;
-    }
-
-    function finishOpen(item, panel) {
+    function finishOpen(item) {
       if (!item.open) return;
 
       item.classList.remove("is-opening", "is-closing");
       item.classList.add("is-open");
 
-      panel.style.height = "auto";
-      panel.style.opacity = "1";
-      panel.style.transform = "translate3d(0, 0, 0)";
-      panel.style.overflow = "visible";
-
       updateArchiveState();
 
-      if (window.ScrollTrigger && typeof window.ScrollTrigger.update === "function") {
-        window.ScrollTrigger.update();
+      if (window.ScrollTrigger && typeof window.ScrollTrigger.refresh === "function") {
+        window.ScrollTrigger.refresh();
       }
     }
 
-    function finishClose(item, panel) {
+    function finishClose(item) {
       item.open = false;
       item.removeAttribute("open");
 
@@ -537,24 +645,40 @@ function animateProjectCounts(item) {
         "is-opening",
         "is-closing",
         "is-open",
-        "is-word-focusing"
+        "is-word-focusing",
+        "is-soft-signal"
       );
 
       const summary = item.querySelector(".work-project__summary");
       if (summary) summary.setAttribute("aria-expanded", "false");
 
       resetProjectCounts(item);
-
-      panel.style.height = "0px";
-      panel.style.opacity = "0";
-      panel.style.transform = "translate3d(0, -0.35rem, 0)";
-      panel.style.overflow = "hidden";
-
       updateArchiveState();
 
-      if (window.ScrollTrigger && typeof window.ScrollTrigger.update === "function") {
-        window.ScrollTrigger.update();
+      if (window.ScrollTrigger && typeof window.ScrollTrigger.refresh === "function") {
+        window.ScrollTrigger.refresh();
       }
+    }
+
+    function closeProject(item) {
+      const summary = item.querySelector(".work-project__summary");
+
+      if (!summary || !item.open || item.classList.contains("is-closing")) {
+        return;
+      }
+
+      window.clearTimeout(item._accordionTimer);
+
+      item.classList.remove("is-opening", "is-open");
+      item.classList.add("is-closing");
+
+      summary.setAttribute("aria-expanded", "false");
+
+      item._accordionTimer = window.setTimeout(() => {
+        finishClose(item);
+      }, DURATION);
+
+      updateArchiveState();
     }
 
     function openProject(item) {
@@ -564,78 +688,32 @@ function animateProjectCounts(item) {
       if (!summary || !panel) return;
 
       items.forEach((other) => {
-        if (other !== item && other.open) {
-          closeProject(other);
-        }
+        if (other !== item && other.open) closeProject(other);
       });
 
-      clearPanelTimer(panel);
+      window.clearTimeout(item._accordionTimer);
 
       item.open = true;
       item.setAttribute("open", "");
-      item.classList.remove("is-closing", "is-open");
+
+      item.classList.remove("is-closing");
       item.classList.add("is-opening");
 
       summary.setAttribute("aria-expanded", "true");
 
-      panel.classList.add("work-project__detail-scroll");
-      panel.style.overflow = "hidden";
-      panel.style.height = "0px";
-      panel.style.opacity = "0";
-      panel.style.transform = "translate3d(0, -0.35rem, 0)";
-
-      panel.getBoundingClientRect();
-
-      const targetHeight = panel.scrollHeight;
-
       window.requestAnimationFrame(() => {
-        panel.style.height = `${targetHeight}px`;
-        panel.style.opacity = "1";
-        panel.style.transform = "translate3d(0, 0, 0)";
+        item.classList.add("is-open");
       });
 
       window.setTimeout(() => {
         animateProjectCounts(item);
-      }, 180);
+      }, 150);
 
-      panel._workAccordionTimer = window.setTimeout(() => {
-        finishOpen(item, panel);
-      }, DURATION + 80);
+      item._accordionTimer = window.setTimeout(() => {
+        finishOpen(item);
+      }, DURATION);
 
       updateArchiveState();
-    }
-
-    function closeProject(item) {
-      const summary = item.querySelector(".work-project__summary");
-      const panel = getDirectPanel(item);
-
-      if (!summary || !panel) return;
-
-      clearPanelTimer(panel);
-
-      const startHeight = panel.getBoundingClientRect().height || panel.scrollHeight;
-
-      item.classList.remove("is-opening", "is-open");
-      item.classList.add("is-closing");
-
-      summary.setAttribute("aria-expanded", "false");
-
-      panel.style.overflow = "hidden";
-      panel.style.height = `${startHeight}px`;
-      panel.style.opacity = "1";
-      panel.style.transform = "translate3d(0, 0, 0)";
-
-      panel.getBoundingClientRect();
-
-      window.requestAnimationFrame(() => {
-        panel.style.height = "0px";
-        panel.style.opacity = "0";
-        panel.style.transform = "translate3d(0, -0.35rem, 0)";
-      });
-
-      panel._workAccordionTimer = window.setTimeout(() => {
-        finishClose(item, panel);
-      }, DURATION + 80);
     }
 
     items.forEach((item, index) => {
@@ -651,23 +729,18 @@ function animateProjectCounts(item) {
 
       if (!summary || !panel) return;
 
-      panel.classList.add("work-project__detail-scroll");
+      wrapPanelContent(panel);
 
       summary.setAttribute("role", "button");
       summary.setAttribute("aria-expanded", item.open ? "true" : "false");
 
       if (item.open) {
         item.classList.add("is-open");
-        panel.style.height = "auto";
-        panel.style.opacity = "1";
-        panel.style.overflow = "visible";
-        panel.style.transform = "translate3d(0, 0, 0)";
         animateProjectCounts(item);
       } else {
-        panel.style.height = "0px";
-        panel.style.opacity = "0";
-        panel.style.overflow = "hidden";
-        panel.style.transform = "translate3d(0, -0.35rem, 0)";
+        item.classList.remove("is-open", "is-opening", "is-closing");
+        item.removeAttribute("open");
+        item.open = false;
         resetProjectCounts(item);
       }
 
@@ -675,7 +748,7 @@ function animateProjectCounts(item) {
         event.preventDefault();
         event.stopPropagation();
 
-        triggerProjectGlitch(item);
+        triggerSoftSignal(item);
 
         if (item.open && !item.classList.contains("is-closing")) {
           closeProject(item);
@@ -688,8 +761,7 @@ function animateProjectCounts(item) {
         if (event.key !== "Enter" && event.key !== " ") return;
 
         event.preventDefault();
-
-        triggerProjectGlitch(item);
+        triggerSoftSignal(item);
 
         if (item.open && !item.classList.contains("is-closing")) {
           closeProject(item);
@@ -708,10 +780,8 @@ function animateProjectCounts(item) {
       event.preventDefault();
       closeProject(openItem);
     });
-  }
 
-  function setupArchiveDetailScrollGuards() {
-    return;
+    updateArchiveState();
   }
 
   function closeAllArchiveProjects() {
@@ -721,7 +791,9 @@ function animateProjectCounts(item) {
       if (!item || item.tagName.toLowerCase() !== "details") return;
 
       const summary = item.querySelector(".work-project__summary");
-      const panel = item.querySelector(".work-project__panel");
+
+      window.clearTimeout(item._accordionTimer);
+      window.clearTimeout(item._softSignalTimer);
 
       item.removeAttribute("open");
       item.open = false;
@@ -732,19 +804,12 @@ function animateProjectCounts(item) {
         "is-closing",
         "is-previewing",
         "is-glitching",
+        "is-soft-signal",
         "is-word-focusing"
       );
 
       if (summary) {
         summary.setAttribute("aria-expanded", "false");
-      }
-
-      if (panel) {
-        window.clearTimeout(panel._workAccordionTimer);
-        panel.style.height = "0px";
-        panel.style.opacity = "0";
-        panel.style.transform = "translate3d(0, -0.35rem, 0)";
-        panel.style.overflow = "hidden";
       }
 
       resetProjectCounts(item);
@@ -754,324 +819,7 @@ function animateProjectCounts(item) {
   }
 
   /* ==========================================================
-     GLITCH STYLE INJECTION
-  ========================================================== */
-
-  function injectGlitchStyles() {
-    if (document.getElementById("bim-work-glitch-styles")) return;
-
-    const style = document.createElement("style");
-    style.id = "bim-work-glitch-styles";
-
-    style.textContent = `
-      .work-project__name {
-        position: relative;
-      }
-
-      .glitch-word__base,
-      .glitch-word__layer {
-        display: inline-flex;
-        align-items: baseline;
-        white-space: inherit;
-      }
-
-      .glitch-word__base {
-        position: relative;
-        z-index: 1;
-      }
-
-      .glitch-word__layer {
-        position: absolute;
-        inset: 0;
-        z-index: 2;
-        opacity: 0;
-        pointer-events: none;
-        mix-blend-mode: screen;
-      }
-
-      .glitch-word__layer--a {
-        color: rgba(255, 255, 255, 0.98);
-        clip-path: inset(0 0 62% 0);
-      }
-
-      .glitch-word__layer--b {
-        color: rgba(180, 190, 205, 0.7);
-        clip-path: inset(34% 0 34% 0);
-      }
-
-      .glitch-word__layer--c {
-        color: rgba(255, 255, 255, 0.55);
-        clip-path: inset(62% 0 0 0);
-      }
-
-      .glitch-letter {
-        display: inline-block;
-        position: relative;
-        transform-origin: 50% 55%;
-        will-change: transform, filter, opacity;
-      }
-
-      .glitch-letter--space {
-        min-width: 0.34em;
-      }
-
-      .is-live-glitch .glitch-word__layer {
-        opacity: 1;
-      }
-
-      .is-live-glitch .glitch-word__layer--a {
-        animation: bimGlitchLayerA 520ms steps(2, end) both;
-      }
-
-      .is-live-glitch .glitch-word__layer--b {
-        animation: bimGlitchLayerB 520ms steps(2, end) both;
-      }
-
-      .is-live-glitch .glitch-word__layer--c {
-        animation: bimGlitchLayerC 520ms steps(2, end) both;
-      }
-
-      .is-live-glitch .glitch-word__base .glitch-letter {
-        animation: bimLetterWarp 520ms cubic-bezier(0.22, 1, 0.36, 1) both;
-        animation-delay: calc(var(--i, 0) * 8ms);
-      }
-
-      .is-live-glitch .glitch-letter--heavy {
-        filter: blur(0.35px) contrast(1.18);
-      }
-
-      .work-project.is-glitching .work-project__summary {
-        filter: contrast(1.08);
-      }
-
-      @keyframes bimGlitchLayerA {
-        0% {
-          transform: translate3d(0, 0, 0);
-          opacity: 0;
-        }
-
-        14% {
-          transform: translate3d(var(--glitch-x1, 7px), var(--glitch-y1, -1px), 0);
-          opacity: 0.95;
-        }
-
-        36% {
-          transform: translate3d(calc(var(--glitch-x1, 7px) * -0.45), 0, 0);
-          opacity: 0.6;
-        }
-
-        58% {
-          transform: translate3d(var(--glitch-x3, 3px), var(--glitch-y2, 2px), 0);
-          opacity: 0.9;
-        }
-
-        100% {
-          transform: translate3d(0, 0, 0);
-          opacity: 0;
-        }
-      }
-
-      @keyframes bimGlitchLayerB {
-        0% {
-          transform: translate3d(0, 0, 0);
-          opacity: 0;
-        }
-
-        10% {
-          transform: translate3d(var(--glitch-x2, -10px), var(--glitch-y2, 2px), 0);
-          opacity: 0.75;
-        }
-
-        28% {
-          transform: translate3d(calc(var(--glitch-x2, -10px) * -0.35), var(--glitch-y1, -1px), 0);
-          opacity: 0.95;
-        }
-
-        48% {
-          transform: translate3d(var(--glitch-x1, 7px), 0, 0);
-          opacity: 0.45;
-        }
-
-        100% {
-          transform: translate3d(0, 0, 0);
-          opacity: 0;
-        }
-      }
-
-      @keyframes bimGlitchLayerC {
-        0% {
-          transform: translate3d(0, 0, 0);
-          opacity: 0;
-        }
-
-        18% {
-          transform: translate3d(var(--glitch-x3, 3px), 0, 0);
-          opacity: 0.58;
-        }
-
-        42% {
-          transform: translate3d(var(--glitch-x2, -10px), var(--glitch-y2, 2px), 0);
-          opacity: 0.82;
-        }
-
-        68% {
-          transform: translate3d(calc(var(--glitch-x1, 7px) * -0.5), var(--glitch-y1, -1px), 0);
-          opacity: 0.45;
-        }
-
-        100% {
-          transform: translate3d(0, 0, 0);
-          opacity: 0;
-        }
-      }
-
-      @keyframes bimLetterWarp {
-        0% {
-          transform: translate3d(0, 0, 0) skew(0deg) rotate(0deg) scale(1);
-        }
-
-        18% {
-          transform:
-            translate3d(calc(var(--warp-x, 0px) * 0.65), var(--warp-y, 0px), 0)
-            skew(var(--warp-skew, 0deg))
-            rotate(var(--warp-rotate, 0deg))
-            scale(var(--warp-scale-x, 1), var(--warp-scale-y, 1));
-        }
-
-        38% {
-          transform:
-            translate3d(calc(var(--warp-x, 0px) * -0.35), calc(var(--warp-y, 0px) * -0.6), 0)
-            skew(calc(var(--warp-skew, 0deg) * -0.55))
-            rotate(calc(var(--warp-rotate, 0deg) * -0.45))
-            scale(1.02, 0.98);
-        }
-
-        58% {
-          transform:
-            translate3d(calc(var(--warp-x, 0px) * 0.18), calc(var(--warp-y, 0px) * 0.35), 0)
-            skew(calc(var(--warp-skew, 0deg) * 0.25))
-            rotate(calc(var(--warp-rotate, 0deg) * 0.3))
-            scale(0.98, 1.02);
-        }
-
-        100% {
-          transform: translate3d(0, 0, 0) skew(0deg) rotate(0deg) scale(1);
-        }
-      }
-
-      @media (prefers-reduced-motion: reduce) {
-        .is-live-glitch .glitch-word__layer,
-        .is-live-glitch .glitch-letter {
-          animation: none !important;
-        }
-      }
-    `;
-
-    document.head.appendChild(style);
-  }
-
-  function escapeHTML(value) {
-    return String(value)
-      .replaceAll("&", "&amp;")
-      .replaceAll("<", "&lt;")
-      .replaceAll(">", "&gt;")
-      .replaceAll('"', "&quot;")
-      .replaceAll("'", "&#039;");
-  }
-
-  function buildGlitchText(el) {
-    if (!el || el.dataset.glitchBuilt === "true") return;
-
-    const text = el.textContent.trim();
-    if (!text) return;
-
-    el.dataset.text = text;
-    el.dataset.glitchBuilt = "true";
-
-    const letters = Array.from(text)
-      .map((char, index) => {
-        if (char === " ") {
-          return `<span class="glitch-letter glitch-letter--space" style="--i:${index}">&nbsp;</span>`;
-        }
-
-        return `
-          <span class="glitch-letter" style="--i:${index}">
-            ${escapeHTML(char)}
-          </span>
-        `;
-      })
-      .join("");
-
-    el.innerHTML = `
-      <span class="glitch-word__base">${letters}</span>
-      <span class="glitch-word__layer glitch-word__layer--a" aria-hidden="true">${letters}</span>
-      <span class="glitch-word__layer glitch-word__layer--b" aria-hidden="true">${letters}</span>
-      <span class="glitch-word__layer glitch-word__layer--c" aria-hidden="true">${letters}</span>
-    `;
-  }
-
-  function setLetterWarpVariables(el) {
-    if (!el) return;
-
-    const letters = Array.from(
-      el.querySelectorAll(".glitch-word__base .glitch-letter:not(.glitch-letter--space)")
-    );
-
-    letters.forEach((letter, index) => {
-      const direction = index % 2 === 0 ? 1 : -1;
-      const strength = 0.7 + (index % 5) * 0.16;
-
-      letter.style.setProperty("--warp-x", `${direction * strength * 1.7}px`);
-      letter.style.setProperty("--warp-y", `${direction * -0.55}px`);
-      letter.style.setProperty("--warp-skew", `${direction * (3 + index % 4)}deg`);
-      letter.style.setProperty("--warp-rotate", `${direction * 1.5}deg`);
-      letter.style.setProperty("--warp-scale-x", `${1 + strength * 0.025}`);
-      letter.style.setProperty("--warp-scale-y", `${1 - strength * 0.012}`);
-
-      if (index % 4 === 0) {
-        letter.classList.add("glitch-letter--heavy");
-      } else {
-        letter.classList.remove("glitch-letter--heavy");
-      }
-    });
-
-    el.style.setProperty("--glitch-x1", `${5 + Math.random() * 6}px`);
-    el.style.setProperty("--glitch-x2", `${-8 - Math.random() * 7}px`);
-    el.style.setProperty("--glitch-x3", `${2 + Math.random() * 4}px`);
-    el.style.setProperty("--glitch-y1", `${-1 - Math.random() * 2}px`);
-    el.style.setProperty("--glitch-y2", `${1 + Math.random() * 2}px`);
-  }
-
-  function triggerProjectGlitch(row) {
-    if (prefersReducedMotion) return;
-
-    const name = row.querySelector(".work-project__name");
-    if (!name) return;
-
-    buildGlitchText(name);
-    setLetterWarpVariables(name);
-
-    window.clearTimeout(glitchTimer);
-
-    row.classList.add("is-glitching");
-    name.classList.remove("is-live-glitch");
-
-    name.getBoundingClientRect();
-
-    name.classList.add("is-live-glitch");
-
-    glitchTimer = window.setTimeout(() => {
-      name.classList.remove("is-live-glitch");
-      row.classList.remove("is-glitching");
-    }, 560);
-  }
-
-  function buildAllGlitchText() {
-    archive.querySelectorAll(".work-project__name").forEach(buildGlitchText);
-  }
-
-  /* ==========================================================
-     PREVIEW HOVER
+     TRANSFORM-ONLY HOVER PREVIEW
   ========================================================== */
 
   function setupArchiveHover() {
@@ -1079,88 +827,81 @@ function animateProjectCounts(item) {
 
     if (!rows.length || mobileQuery.matches) return;
 
-    const previewState = new WeakMap();
-
     function getPreview(row) {
-      let state = previewState.get(row);
-      if (state) return state;
-
-      const preview = row.querySelector(".work-project__preview");
-      if (!preview) return null;
-
-      state = {
-        preview,
-        currentX: 0,
-        currentY: 0,
-        targetX: 0,
-        targetY: 0,
-        raf: null
-      };
-
-      previewState.set(row, state);
-
-      return state;
+      return row.querySelector(".work-project__preview, .work-project__hover-image");
     }
 
-    function renderPreview(row) {
-      const state = getPreview(row);
-      if (!state) return;
+    function movePreview(preview, event) {
+      if (!preview) return;
 
-      state.currentX = lerp(state.currentX, state.targetX, 0.18);
-      state.currentY = lerp(state.currentY, state.targetY, 0.18);
+      const estimatedWidth = 190;
+      const estimatedHeight = 130;
 
-      state.preview.style.left = `${state.currentX}px`;
-      state.preview.style.top = `${state.currentY}px`;
-      state.preview.style.right = "auto";
+      const x = clamp(
+        event.clientX + 28,
+        20,
+        window.innerWidth - estimatedWidth - 20
+      );
 
-      if (
-        Math.abs(state.currentX - state.targetX) > 0.1 ||
-        Math.abs(state.currentY - state.targetY) > 0.1
-      ) {
-        state.raf = window.requestAnimationFrame(() => renderPreview(row));
+      const y = clamp(
+        event.clientY - estimatedHeight * 0.45,
+        20,
+        window.innerHeight - estimatedHeight - 20
+      );
+
+      preview._targetX = x;
+      preview._targetY = y;
+
+      if (typeof preview._currentX !== "number") preview._currentX = x;
+      if (typeof preview._currentY !== "number") preview._currentY = y;
+
+      state.activePreview = preview;
+
+      if (!state.previewRaf) {
+        state.previewRaf = window.requestAnimationFrame(renderPreview);
+      }
+    }
+
+    function renderPreview() {
+      const preview = state.activePreview;
+
+      if (!preview) {
+        state.previewRaf = null;
+        return;
+      }
+
+      preview._currentX = lerp(preview._currentX, preview._targetX, 0.22);
+      preview._currentY = lerp(preview._currentY, preview._targetY, 0.22);
+
+      preview.style.setProperty("--preview-x", `${preview._currentX}px`);
+      preview.style.setProperty("--preview-y", `${preview._currentY}px`);
+
+      const moving =
+        Math.abs(preview._currentX - preview._targetX) > 0.2 ||
+        Math.abs(preview._currentY - preview._targetY) > 0.2;
+
+      if (moving) {
+        state.previewRaf = window.requestAnimationFrame(renderPreview);
       } else {
-        state.raf = null;
+        state.previewRaf = null;
       }
     }
 
     function showPreview(row, event) {
-      const state = getPreview(row);
-      if (!state || row.open) return;
+      const preview = getPreview(row);
+      if (!preview || row.open) return;
 
       row.classList.add("is-previewing");
-
-      const width = state.preview.offsetWidth || 180;
-      const height = state.preview.offsetHeight || 120;
-
-      state.targetX = clamp(
-        event.clientX + 28,
-        20,
-        window.innerWidth - width - 20
-      );
-
-      state.targetY = clamp(
-        event.clientY - height * 0.45,
-        20,
-        window.innerHeight - height - 20
-      );
-
-      if (!state.currentX) state.currentX = state.targetX;
-      if (!state.currentY) state.currentY = state.targetY;
-
-      if (!state.raf) {
-        state.raf = window.requestAnimationFrame(() => renderPreview(row));
-      }
+      movePreview(preview, event);
     }
 
     function hidePreview(row) {
-      const state = getPreview(row);
-      if (!state) return;
+      const preview = getPreview(row);
 
       row.classList.remove("is-previewing");
 
-      if (state.raf) {
-        window.cancelAnimationFrame(state.raf);
-        state.raf = null;
+      if (state.activePreview === preview) {
+        state.activePreview = null;
       }
     }
 
@@ -1169,7 +910,7 @@ function animateProjectCounts(item) {
       if (!summary) return;
 
       summary.addEventListener("mouseenter", (event) => {
-        triggerProjectGlitch(row);
+        triggerSoftSignal(row);
         showPreview(row, event);
       });
 
@@ -1184,10 +925,10 @@ function animateProjectCounts(item) {
       summary.addEventListener("focus", () => {
         const rect = summary.getBoundingClientRect();
 
-        triggerProjectGlitch(row);
+        triggerSoftSignal(row);
 
         showPreview(row, {
-          clientX: rect.right - 160,
+          clientX: rect.right - 170,
           clientY: rect.top + rect.height / 2
         });
       });
@@ -1199,11 +940,11 @@ function animateProjectCounts(item) {
   }
 
   /* ==========================================================
-     ARCHIVE CENTER-LINE REVEAL
-     Normal scroll. Once only. No pin. No scrub.
+     ARCHIVE REVEAL
+     Lighter than before: no blur filters.
   ========================================================== */
 
-  function setupArchiveNoomoReveal() {
+  function setupArchiveReveal() {
     const gsap = window.gsap;
     const ScrollTrigger = window.ScrollTrigger;
 
@@ -1246,6 +987,11 @@ function animateProjectCounts(item) {
         row.style.setProperty("--row-line", "1");
       });
 
+      [label, kicker, title, intro].filter(Boolean).forEach((node) => {
+        node.style.opacity = "1";
+        node.style.transform = "none";
+      });
+
       return;
     }
 
@@ -1259,21 +1005,9 @@ function animateProjectCounts(item) {
       )
     );
 
-    gsap.set(archive, {
-      "--archive-reveal": 1,
-      "--archive-glow": 0,
-      "--archive-top-line": 1
-    });
-
     gsap.set([label, kicker, title, intro].filter(Boolean), {
       autoAlpha: 0,
-      y: 22,
-      filter: "blur(8px)"
-    });
-
-    gsap.set(title, {
-      y: 34,
-      filter: "blur(14px)"
+      y: 22
     });
 
     rows.forEach((row, index) => {
@@ -1285,8 +1019,7 @@ function animateProjectCounts(item) {
 
       gsap.set(rowPieces[index], {
         autoAlpha: 0,
-        y: 24,
-        filter: "blur(10px)"
+        y: 18
       });
     });
 
@@ -1312,9 +1045,8 @@ function animateProjectCounts(item) {
       {
         autoAlpha: 1,
         y: 0,
-        filter: "blur(0px)",
-        duration: 0.7,
-        stagger: 0.07
+        duration: 0.55,
+        stagger: 0.06
       },
       0.05
     );
@@ -1324,8 +1056,7 @@ function animateProjectCounts(item) {
       {
         autoAlpha: 1,
         y: 0,
-        filter: "blur(0px)",
-        duration: 1.05,
+        duration: 0.82,
         ease: "power4.out"
       },
       0.12
@@ -1336,20 +1067,19 @@ function animateProjectCounts(item) {
       {
         autoAlpha: 1,
         y: 0,
-        filter: "blur(0px)",
-        duration: 0.8
+        duration: 0.6
       },
-      0.36
+      0.32
     );
 
     rows.forEach((row, index) => {
-      const start = 0.72 + index * 0.14;
+      const start = 0.62 + index * 0.12;
 
       tl.to(
         row,
         {
           "--row-line": 1,
-          duration: 0.9,
+          duration: 0.72,
           ease: "power2.inOut"
         },
         start
@@ -1360,12 +1090,11 @@ function animateProjectCounts(item) {
         {
           autoAlpha: 1,
           y: 0,
-          filter: "blur(0px)",
-          duration: 0.62,
-          stagger: 0.035,
+          duration: 0.5,
+          stagger: 0.025,
           ease: "power4.out"
         },
-        start + 0.16
+        start + 0.13
       );
     });
 
@@ -1406,20 +1135,18 @@ function animateProjectCounts(item) {
   ========================================================== */
 
   function init() {
-    injectGlitchStyles();
+    injectPerformanceStyles();
     cleanOldStates();
     injectTrustBridge();
     closeAllArchiveProjects();
     setupTrustCards();
     setupArchiveDetails();
     setupFocusWords();
-    setupArchiveDetailScrollGuards();
-    buildAllGlitchText();
     setupArchiveHover();
-    setupArchiveNoomoReveal();
+    setupArchiveReveal();
     setupImageFallbacks();
 
-    if (window.ScrollTrigger) {
+    if (window.ScrollTrigger && typeof window.ScrollTrigger.refresh === "function") {
       window.ScrollTrigger.refresh();
     }
   }
