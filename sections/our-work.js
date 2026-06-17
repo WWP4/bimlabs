@@ -822,122 +822,141 @@
      TRANSFORM-ONLY HOVER PREVIEW
   ========================================================== */
 
-  function setupArchiveHover() {
-    const rows = Array.from(archive.querySelectorAll(".work-project"));
+ function setupArchiveHover() {
+  const rows = Array.from(archive.querySelectorAll(".work-project"));
 
-    if (!rows.length || mobileQuery.matches) return;
+  if (!rows.length || mobileQuery.matches) return;
 
-    function getPreview(row) {
-      return row.querySelector(".work-project__preview, .work-project__hover-image");
+  let preview = document.querySelector(".work-archive-floating-preview");
+
+  if (!preview) {
+    preview = document.createElement("div");
+    preview.className = "work-archive-floating-preview";
+    preview.setAttribute("aria-hidden", "true");
+    preview.innerHTML = `<img alt="" />`;
+    document.body.appendChild(preview);
+  }
+
+  const previewImg = preview.querySelector("img");
+
+  const motion = {
+    currentX: 0,
+    currentY: 0,
+    targetX: 0,
+    targetY: 0,
+    visible: false,
+    raf: null
+  };
+
+  function getImageFromRow(row) {
+    const image = row.querySelector(".work-project__preview img");
+    return image ? image.getAttribute("src") : "";
+  }
+
+  function render() {
+    motion.currentX = lerp(motion.currentX, motion.targetX, 0.18);
+    motion.currentY = lerp(motion.currentY, motion.targetY, 0.18);
+
+    preview.style.transform = `
+      translate3d(${motion.currentX}px, ${motion.currentY}px, 0)
+      scale(${motion.visible ? 1 : 0.96})
+      rotate(-1deg)
+    `;
+
+    const stillMoving =
+      Math.abs(motion.currentX - motion.targetX) > 0.2 ||
+      Math.abs(motion.currentY - motion.targetY) > 0.2;
+
+    if (motion.visible || stillMoving) {
+      motion.raf = window.requestAnimationFrame(render);
+    } else {
+      motion.raf = null;
+    }
+  }
+
+  function move(event) {
+    const width = 190;
+    const height = 130;
+
+    motion.targetX = clamp(
+      event.clientX + 28,
+      20,
+      window.innerWidth - width - 20
+    );
+
+    motion.targetY = clamp(
+      event.clientY - height * 0.45,
+      20,
+      window.innerHeight - height - 20
+    );
+
+    if (!motion.currentX) motion.currentX = motion.targetX;
+    if (!motion.currentY) motion.currentY = motion.targetY;
+
+    if (!motion.raf) {
+      motion.raf = window.requestAnimationFrame(render);
+    }
+  }
+
+  function show(row, event) {
+    if (row.open) return;
+
+    const src = getImageFromRow(row);
+    if (!src) return;
+
+    if (previewImg.getAttribute("src") !== src) {
+      previewImg.setAttribute("src", src);
     }
 
-    function movePreview(preview, event) {
-      if (!preview) return;
+    rows.forEach((item) => item.classList.remove("is-previewing"));
+    row.classList.add("is-previewing");
 
-      const estimatedWidth = 190;
-      const estimatedHeight = 130;
+    motion.visible = true;
+    preview.classList.add("is-visible");
 
-      const x = clamp(
-        event.clientX + 28,
-        20,
-        window.innerWidth - estimatedWidth - 20
-      );
+    move(event);
+  }
 
-      const y = clamp(
-        event.clientY - estimatedHeight * 0.45,
-        20,
-        window.innerHeight - estimatedHeight - 20
-      );
+  function hide(row) {
+    row.classList.remove("is-previewing");
 
-      preview._targetX = x;
-      preview._targetY = y;
+    motion.visible = false;
+    preview.classList.remove("is-visible");
+  }
 
-      if (typeof preview._currentX !== "number") preview._currentX = x;
-      if (typeof preview._currentY !== "number") preview._currentY = y;
+  rows.forEach((row) => {
+    const summary = row.querySelector(".work-project__summary");
+    if (!summary) return;
 
-      state.activePreview = preview;
+    summary.addEventListener("mouseenter", (event) => {
+      triggerSoftSignal(row);
+      show(row, event);
+    });
 
-      if (!state.previewRaf) {
-        state.previewRaf = window.requestAnimationFrame(renderPreview);
-      }
-    }
+    summary.addEventListener("mousemove", (event) => {
+      show(row, event);
+    });
 
-    function renderPreview() {
-      const preview = state.activePreview;
+    summary.addEventListener("mouseleave", () => {
+      hide(row);
+    });
 
-      if (!preview) {
-        state.previewRaf = null;
-        return;
-      }
+    summary.addEventListener("focus", () => {
+      const rect = summary.getBoundingClientRect();
 
-      preview._currentX = lerp(preview._currentX, preview._targetX, 0.22);
-      preview._currentY = lerp(preview._currentY, preview._targetY, 0.22);
+      triggerSoftSignal(row);
 
-      preview.style.setProperty("--preview-x", `${preview._currentX}px`);
-      preview.style.setProperty("--preview-y", `${preview._currentY}px`);
-
-      const moving =
-        Math.abs(preview._currentX - preview._targetX) > 0.2 ||
-        Math.abs(preview._currentY - preview._targetY) > 0.2;
-
-      if (moving) {
-        state.previewRaf = window.requestAnimationFrame(renderPreview);
-      } else {
-        state.previewRaf = null;
-      }
-    }
-
-    function showPreview(row, event) {
-      const preview = getPreview(row);
-      if (!preview || row.open) return;
-
-      row.classList.add("is-previewing");
-      movePreview(preview, event);
-    }
-
-    function hidePreview(row) {
-      const preview = getPreview(row);
-
-      row.classList.remove("is-previewing");
-
-      if (state.activePreview === preview) {
-        state.activePreview = null;
-      }
-    }
-
-    rows.forEach((row) => {
-      const summary = row.querySelector(".work-project__summary");
-      if (!summary) return;
-
-      summary.addEventListener("mouseenter", (event) => {
-        triggerSoftSignal(row);
-        showPreview(row, event);
-      });
-
-      summary.addEventListener("mousemove", (event) => {
-        showPreview(row, event);
-      });
-
-      summary.addEventListener("mouseleave", () => {
-        hidePreview(row);
-      });
-
-      summary.addEventListener("focus", () => {
-        const rect = summary.getBoundingClientRect();
-
-        triggerSoftSignal(row);
-
-        showPreview(row, {
-          clientX: rect.right - 170,
-          clientY: rect.top + rect.height / 2
-        });
-      });
-
-      summary.addEventListener("blur", () => {
-        hidePreview(row);
+      show(row, {
+        clientX: rect.right - 170,
+        clientY: rect.top + rect.height / 2
       });
     });
-  }
+
+    summary.addEventListener("blur", () => {
+      hide(row);
+    });
+  });
+}
 
   /* ==========================================================
      ARCHIVE REVEAL
