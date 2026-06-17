@@ -1369,3 +1369,710 @@ select {
 .site-header.is-scrolled .main-nav a {
   color: rgba(244, 241, 234, 0.72);
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* ==========================================================
+   BIM LABS — GLOBAL MOBILE POLISH OVERRIDE
+   Paste at the VERY bottom of your CSS.
+   Keeps desktop untouched, fixes mobile cohesion.
+========================================================== */
+
+@media (max-width: 900px) {
+  :root {
+    --mobile-pad: clamp(1.05rem, 5vw, 1.45rem);
+    --mobile-line: rgba(246, 246, 240, 0.11);
+    --mobile-muted: rgba(246, 246, 240, 0.52);
+    --mobile-dim: rgba(246, 246, 240, 0.34);
+    --mobile-white: rgba(246, 246, 240, 0.94);
+    --mobile-bg: #000;
+  }
+
+  html,
+  body {
+    width: 100%;
+    max-width: 100%;
+    min-height: 100%;
+    overflow-x: hidden !important;
+    background: #000 !important;
+  }
+
+  body {
+    color: var(--mobile-white);
+    -webkit-text-size-adjust: 100%;
+    overscroll-behavior-x: none;
+  }
+
+  main,
+  section {
+    max-width: 100%;
+    background: #000;
+  }
+
+  img,
+  video,
+  canvas,
+  svg {
+    max-width: 100%;
+  }
+
+  button,
+  a {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* ======================================================
+     HEADER
+  ====================================================== */
+
+  .site-header {
+    top: 0;
+    left: 0;
+    width: 100%;
+    max-width: none;
+    transform: none;
+
+    padding: 1rem var(--mobile-pad) 0.85rem;
+
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    background:
+      linear-gradient(to bottom, rgba(0, 0, 0, 0.82), rgba(0, 0, 0, 0.34)),
+      rgba(0, 0, 0, 0.38);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+  }
+
+  .brand {
+    font-size: 0.62rem;
+    letter-spacing: 0.16em;
+  }
+
+  .main-nav {
+    gap: 1rem;
+  }
+
+  .main-nav a {
+    font-size: 0.58rem;
+    letter-spacing: 0.12em;
+  }
+
+  .main-nav a:nth-child(n + 3) {
+    display: none;
+  }
+
+  /* ======================================================
+     HERO
+  ====================================================== */
+
+  .hero {
+    min-height: 100svh;
+    overflow: hidden;
+    background: #000;
+  }
+
+  .spline-hero {
+    opacity: 0.68;
+    transform: scale(1.18);
+    transform-origin: center;
+    mask-image: radial-gradient(
+      circle at center,
+      #000 10%,
+      rgba(0, 0, 0, 0.9) 38%,
+      rgba(0, 0, 0, 0.46) 68%,
+      rgba(0, 0, 0, 0.05) 100%
+    );
+  }
+
+  .hero-shade {
+    background:
+      radial-gradient(circle at 50% 44%, rgba(0, 0, 0, 0.04), rgba(0, 0, 0, 0.42) 48%, #000 100%),
+      linear-gradient(to bottom, rgba(0, 0, 0, 0.24), #000 92%);
+  }
+
+  .hero-content {
+    left: var(--mobile-pad);
+    right: var(--mobile-pad);
+    bottom: 24vh;
+    width: auto;
+    transform: none;
+    text-align: left;
+  }
+
+  .hero-label {
+    margin-bottom: 0.85rem;
+    font-size: 0.66rem;
+    letter-spacing: 0.16em;
+  }
+
+  .hero-content h1 {
+    max-width: 22rem;
+    font-size: clamp(1.42rem, 8vw, 2.65rem);
+    line-height: 1.06;
+    letter-spacing: -0.055em;
+  }
+
+  .hero-sub {
+    max-width: 21rem;
+    margin: 1rem 0 0;
+    font-size: 0.74rem;
+    line-height: 1.7;
+    letter-spacing: 0.06em;
+  }
+
+  .hero-actions {
+    left: var(--mobile-pad);
+    right: var(--mobile-pad);
+    bottom: 6.5vh;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+
+  .btn {
+    width: 100%;
+    min-height: 3rem;
+    padding: 0 1.1rem;
+    font-size: 0.62rem;
+    letter-spacing: 0.13em;
+  }
+
+  .btn:hover {
+    transform: none;
+  }
+
+  /* ======================================================
+     HORIZONTAL SHOWCASE
+     Keeps it feeling intentional instead of broken.
+  ====================================================== */
+
+  .showcase-scroll {
+    height: 360vh;
+  }
+
+  .HomeShowcase {
+    height: 100svh;
+  }
+
+  .HomeShowcase__outerFrame {
+    inset: 0.9rem !important;
+    border-radius: 0.7rem;
+    background-size: 54px 54px;
+  }
+
+  .HomeShowcase__inner,
+  .bim-track {
+    height: 100%;
+    will-change: transform;
+  }
+
+  .mock {
+    padding: 0.45rem;
+    border-radius: 0.7rem;
+    box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.36);
+  }
+
+  .mobile {
+    width: 9.5rem;
+    height: 20.7rem;
+  }
+
+  .mobile.sm {
+    width: 8rem;
+    height: 17.4rem;
+  }
+
+  .desktop {
+    width: 19rem;
+    height: 14.3rem;
+  }
+
+  .desktop.large {
+    width: 23rem;
+    height: 17.4rem;
+  }
+
+  .copy-card {
+    width: min(18.5rem, calc(100vw - 2rem));
+    padding: 1.15rem;
+    border-color: rgba(255, 255, 255, 0.12);
+    background: rgba(255, 255, 255, 0.035);
+  }
+
+  .copy-card h3 {
+    font-size: 1.35rem;
+    line-height: 1.08;
+  }
+
+  .copy-card p {
+    font-size: 0.82rem;
+    line-height: 1.55;
+  }
+
+  .center-copy {
+    width: min(20rem, calc(100vw - 2rem));
+  }
+
+  .center-copy h2 {
+    font-size: clamp(2rem, 13vw, 4rem);
+    line-height: 0.92;
+  }
+
+  /* ======================================================
+     PROCESS WORD SCENE
+  ====================================================== */
+
+  .process-3d {
+    background: #020202;
+    overflow: visible;
+  }
+
+  .process-scene {
+    height: 100svh;
+    min-height: 100svh;
+    background: #020202;
+  }
+
+  .process-word {
+    font-size: clamp(4.5rem, 22vw, 7.8rem);
+    letter-spacing: -0.095em;
+    line-height: 0.78;
+    transform-origin: 52% 50%;
+  }
+
+  .process-void {
+    width: clamp(4.6rem, 23vw, 7.8rem);
+  }
+
+  .process-world-inside {
+    overflow: hidden;
+  }
+
+  /* ======================================================
+     PROCESS CARDS
+     Desktop has huge card sizing. Mobile needs clean stack.
+  ====================================================== */
+
+  .process-cards {
+    width: calc(100% - (var(--mobile-pad) * 2));
+    padding: 88svh 0 70svh;
+    gap: clamp(5rem, 17vh, 8rem);
+  }
+
+  .process-card,
+  .process-card--left,
+  .process-card--right {
+    width: 100%;
+    min-height: auto;
+    justify-self: stretch;
+    left: auto;
+    right: auto;
+    padding: clamp(1.25rem, 6vw, 1.75rem);
+    border-radius: 0.45rem;
+  }
+
+  .process-card__meta,
+  .process-card__actions {
+    gap: 1rem;
+    font-size: 0.56rem;
+    letter-spacing: 0.18em;
+    white-space: normal;
+  }
+
+  .process-card__main {
+    margin: clamp(4.4rem, 12vh, 6.4rem) 0 clamp(2.2rem, 7vh, 3.2rem);
+  }
+
+  .process-card__main h3 {
+    max-width: 100%;
+    font-size: clamp(2.75rem, 15vw, 5.2rem);
+    line-height: 0.84;
+    letter-spacing: -0.09em;
+  }
+
+  .process-card__main p {
+    max-width: 100%;
+    margin-top: 1.45rem;
+    font-size: 0.92rem;
+    line-height: 1.68;
+  }
+
+  .process-card__note {
+    margin-top: 2rem;
+    padding: 1rem;
+  }
+
+  /* ======================================================
+     FLYING TRUST CARDS
+     On mobile this becomes a premium scroll stack.
+  ====================================================== */
+
+  .bim-trust {
+    min-height: auto;
+    padding: clamp(7rem, 15vh, 9rem) var(--mobile-pad);
+    overflow: hidden;
+    background: #000;
+  }
+
+  .bim-trust__sticky {
+    position: relative;
+    top: auto;
+    height: auto;
+    overflow: visible;
+    background:
+      radial-gradient(circle at 74% 12%, rgba(255, 255, 255, 0.055), transparent 18rem),
+      #000;
+  }
+
+  .bim-trust__sticky::after {
+    display: none;
+  }
+
+  .bim-trust__headline {
+    position: relative;
+    left: auto;
+    top: auto;
+    max-width: 22rem;
+    margin: 0 0 1.35rem;
+    font-size: clamp(3.3rem, 17vw, 5.8rem);
+    line-height: 0.84;
+    letter-spacing: -0.09em;
+    white-space: normal;
+  }
+
+  .bim-trust__copy {
+    position: relative;
+    right: auto;
+    top: auto;
+    width: 100%;
+    max-width: 22rem;
+    margin-bottom: 2.2rem;
+  }
+
+  .bim-trust__copy p {
+    font-size: 0.92rem;
+    line-height: 1.65;
+  }
+
+  .bim-trust__stage {
+    position: relative;
+    inset: auto;
+    display: grid;
+    gap: 0.95rem;
+    overflow: visible;
+    perspective: none;
+  }
+
+  .bim-trust-card {
+    position: relative;
+    left: auto;
+    top: auto;
+    width: 100%;
+    min-height: 17rem;
+    padding: 1.25rem;
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: none !important;
+    border-radius: 0.45rem;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+
+  .bim-trust-card__logo {
+    margin-bottom: 1.5rem;
+    font-size: 1.35rem;
+  }
+
+  .bim-trust-card blockquote {
+    font-size: 0.95rem;
+    line-height: 1.55;
+  }
+
+  /* ======================================================
+     WORK ARCHIVE
+  ====================================================== */
+
+  .work-archive {
+    min-height: auto;
+    margin-top: 0;
+    overflow: visible;
+    background: #000;
+  }
+
+  .work-archive__shell {
+    width: calc(100% - (var(--mobile-pad) * 2));
+    min-height: auto;
+    padding: clamp(6.5rem, 14vh, 8rem) 0 clamp(7rem, 14vh, 9rem);
+  }
+
+  .work-archive__header {
+    display: grid;
+    grid-template-columns: 1fr;
+    width: 100%;
+    margin: 0 0 clamp(4rem, 10vh, 6rem);
+    gap: 1.1rem;
+  }
+
+  .work-archive__label {
+    flex-direction: row;
+    justify-content: space-between;
+    padding-top: 0;
+    font-size: 0.56rem;
+    letter-spacing: 0.15em;
+  }
+
+  .work-archive__kicker {
+    font-size: 0.56rem;
+  }
+
+  .work-archive__title {
+    max-width: 100%;
+    font-size: clamp(2.75rem, 15vw, 5.8rem);
+    line-height: 0.84;
+    letter-spacing: -0.09em;
+  }
+
+  .work-archive__intro {
+    max-width: 22rem;
+    justify-self: start;
+    padding-top: 0.35rem;
+    font-size: 0.9rem;
+    line-height: 1.65;
+  }
+
+  .work-archive__list {
+    margin-top: 0;
+  }
+
+  .work-project {
+    overflow: hidden;
+  }
+
+  .work-project__button,
+  .work-project__row,
+  .work-project__summary {
+    width: 100%;
+  }
+
+  .work-project__button {
+    min-height: auto;
+    padding: 1.35rem 0;
+  }
+
+  .work-project__row {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.85rem;
+  }
+
+  .work-project__name {
+    font-size: clamp(2rem, 11vw, 4.3rem);
+    line-height: 0.9;
+    letter-spacing: -0.08em;
+  }
+
+  .work-project__summary,
+  .work-project__meta,
+  .work-project__small,
+  .work-project__index {
+    font-size: 0.72rem;
+    line-height: 1.5;
+  }
+
+  .work-project__summary {
+    max-width: 100%;
+    color: rgba(246, 246, 240, 0.5);
+  }
+
+  .work-project__preview,
+  .work-project__hover-image {
+    display: none !important;
+  }
+
+  .work-project__panel {
+    width: 100%;
+  }
+
+  .work-project__panel-inner {
+    display: grid;
+    grid-template-columns: 1fr !important;
+    gap: 1.15rem;
+  }
+
+  .work-project__detail,
+  .work-project__details,
+  .work-project__stats,
+  .work-project__info {
+    width: 100%;
+  }
+
+  .work-project__stat,
+  .work-project__detail-card,
+  .work-project__info-card {
+    padding: 1rem;
+    border-radius: 0.35rem;
+  }
+
+  /* ======================================================
+     BOOK WITH US
+  ====================================================== */
+
+  .book-with-us {
+    min-height: auto;
+    overflow: hidden;
+    background: #000;
+  }
+
+  .book-with-us__shell {
+    width: calc(100% - (var(--mobile-pad) * 2));
+    min-height: auto;
+    padding: clamp(6.5rem, 15vh, 8.5rem) 0 clamp(3rem, 8vh, 4rem);
+  }
+
+  .book-with-us__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: clamp(2.4rem, 7vh, 3.5rem);
+  }
+
+  .book-with-us__left {
+    max-width: 100%;
+  }
+
+  .book-with-us__kicker {
+    font-size: 0.58rem;
+  }
+
+  .book-with-us__title {
+    max-width: 100%;
+    font-size: clamp(3.5rem, 18vw, 6.5rem);
+    line-height: 0.82;
+    letter-spacing: -0.095em;
+  }
+
+  .book-with-us__intro {
+    max-width: 22rem;
+    margin-top: 1.5rem;
+    font-size: 0.92rem;
+    line-height: 1.68;
+  }
+
+  .book-with-us__right {
+    justify-content: stretch;
+  }
+
+  .book-card {
+    width: 100%;
+    min-height: 27rem;
+    padding: 1.2rem;
+    border-radius: 0.45rem;
+  }
+
+  .book-card:hover {
+    transform: none;
+  }
+
+  .book-card__top {
+    font-size: 0.55rem;
+    letter-spacing: 0.13em;
+  }
+
+  .book-card__main {
+    margin-top: clamp(4rem, 10vh, 6rem);
+  }
+
+  /* ======================================================
+     TOUCH / MOBILE MOTION SAFETY
+  ====================================================== */
+
+  @media (hover: none) {
+    .btn:hover,
+    .process-card:hover,
+    .book-card:hover,
+    .work-project:hover,
+    .work-project__button:hover {
+      transform: none !important;
+    }
+
+    .work-project__preview,
+    .work-project__hover-image {
+      display: none !important;
+    }
+  }
+}
+
+/* ==========================================================
+   SMALL PHONES
+========================================================== */
+
+@media (max-width: 520px) {
+  .site-header {
+    padding-top: 0.85rem;
+  }
+
+  .main-nav {
+    gap: 0.8rem;
+  }
+
+  .main-nav a {
+    font-size: 0.54rem;
+  }
+
+  .hero-content {
+    bottom: 25vh;
+  }
+
+  .hero-actions {
+    bottom: 5.5vh;
+  }
+
+  .process-cards {
+    padding-top: 82svh;
+  }
+
+  .process-card__meta,
+  .process-card__actions {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.55rem;
+  }
+
+  .bim-trust-card {
+    min-height: 16rem;
+  }
+
+  .work-archive__shell,
+  .book-with-us__shell {
+    width: calc(100% - 2rem);
+  }
+}
+
+/* ==========================================================
+   REDUCED MOTION
+========================================================== */
+
+@media (max-width: 900px) and (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
