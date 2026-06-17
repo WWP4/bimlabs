@@ -328,105 +328,102 @@
     render(currentProgress);
   }
 
-  /* ==========================================================
-     RESULT COUNT-UP
-  ========================================================== */
 
-  function formatCountValue(value, decimals, suffix) {
-    const safeDecimals = Number.isFinite(decimals) ? decimals : 0;
-    const rounded = Number(value).toFixed(safeDecimals);
 
-    return `${rounded}${suffix || ""}`;
-  }
 
-  function resetProjectCounts(item) {
-    const counters = Array.from(item.querySelectorAll("[data-count]"));
 
-    counters.forEach((counter) => {
-      const suffix = counter.dataset.suffix || "";
 
-      counter.dataset.counted = "false";
-      counter.classList.remove("is-counting");
-      counter.textContent = `0${suffix}`;
-      counter.removeAttribute("data-ghost-before");
-      counter.removeAttribute("data-ghost-after");
-    });
-  }
+/* ==========================================================
+   RESULT COUNT-UP
+   Clean fixed-position number animation
+   - Number stays in one place
+   - Smooth easing
+   - No ghost numbers
+   - No vertical jumping
+========================================================== */
 
-  function animateProjectCounts(item) {
-    const counters = Array.from(item.querySelectorAll("[data-count]"));
+function formatCountValue(value, decimals, suffix) {
+  const safeDecimals = Number.isFinite(decimals) ? decimals : 0;
+  const rounded = Number(value).toFixed(safeDecimals);
 
-    if (!counters.length) return;
+  return `${rounded}${suffix || ""}`;
+}
+
+function resetProjectCounts(item) {
+  const counters = Array.from(item.querySelectorAll("[data-count]"));
+
+  counters.forEach((counter) => {
+    const suffix = counter.dataset.suffix || "";
+
+    counter.dataset.counted = "false";
+    counter.classList.remove("is-counting", "is-counted");
+    counter.textContent = `0${suffix}`;
+  });
+}
+
+function animateProjectCounts(item) {
+  const counters = Array.from(item.querySelectorAll("[data-count]"));
+
+  if (!counters.length) return;
+
+  counters.forEach((counter, index) => {
+    if (counter.dataset.counted === "true") return;
+
+    counter.dataset.counted = "true";
+
+    const target = Number(counter.dataset.count || 0);
+    const suffix = counter.dataset.suffix || "";
+    const decimals = counter.dataset.decimals
+      ? Number(counter.dataset.decimals)
+      : 0;
 
     if (prefersReducedMotion) {
-      counters.forEach((counter) => {
-        const target = Number(counter.dataset.count || 0);
-        const suffix = counter.dataset.suffix || "";
-        const decimals = counter.dataset.decimals
-          ? Number(counter.dataset.decimals)
-          : 0;
-
-        counter.textContent = formatCountValue(target, decimals, suffix);
-      });
-
+      counter.textContent = formatCountValue(target, decimals, suffix);
+      counter.classList.add("is-counted");
       return;
     }
 
-    counters.forEach((counter, index) => {
-      if (counter.dataset.counted === "true") return;
+    const duration = 1150 + index * 90;
+    const delay = index * 70;
+    const startTime = performance.now() + delay;
 
-      counter.dataset.counted = "true";
+    counter.classList.add("is-counting");
 
-      const target = Number(counter.dataset.count || 0);
-      const suffix = counter.dataset.suffix || "";
-      const decimals = counter.dataset.decimals
-        ? Number(counter.dataset.decimals)
-        : 0;
+    function easeOutExpo(t) {
+      return t === 1 ? 1 : 1 - Math.pow(2, -10 * t);
+    }
 
-      const duration = 920 + index * 90;
-      const delay = index * 90;
-      const startTime = performance.now() + delay;
-
-      counter.classList.add("is-counting");
-
-      function easeOutCubic(t) {
-        return 1 - Math.pow(1 - t, 3);
+    function tick(now) {
+      if (now < startTime) {
+        window.requestAnimationFrame(tick);
+        return;
       }
 
-      function tick(now) {
-        if (now < startTime) {
-          window.requestAnimationFrame(tick);
-          return;
-        }
+      const progress = Math.min((now - startTime) / duration, 1);
+      const eased = easeOutExpo(progress);
+      const current = target * eased;
 
-        const progress = Math.min((now - startTime) / duration, 1);
-        const eased = easeOutCubic(progress);
-        const current = target * eased;
+      counter.textContent = formatCountValue(current, decimals, suffix);
 
-        const before = Math.max(0, current - target * 0.08);
-        const after = Math.min(target, current + target * 0.08);
-
-        counter.textContent = formatCountValue(current, decimals, suffix);
-        counter.dataset.ghostBefore = formatCountValue(before, decimals, suffix);
-        counter.dataset.ghostAfter = formatCountValue(after, decimals, suffix);
-
-        if (progress < 1) {
-          window.requestAnimationFrame(tick);
-        } else {
-          counter.textContent = formatCountValue(target, decimals, suffix);
-          counter.dataset.ghostBefore = "";
-          counter.dataset.ghostAfter = "";
-
-          window.setTimeout(() => {
-            counter.classList.remove("is-counting");
-          }, 260);
-        }
+      if (progress < 1) {
+        window.requestAnimationFrame(tick);
+        return;
       }
 
-      window.requestAnimationFrame(tick);
-    });
-  }
+      counter.textContent = formatCountValue(target, decimals, suffix);
+      counter.classList.remove("is-counting");
+      counter.classList.add("is-counted");
+    }
 
+    window.requestAnimationFrame(tick);
+  });
+}
+
+
+
+   
+
+ 
   /* ==========================================================
      FOCUS WORDS
   ========================================================== */
