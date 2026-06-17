@@ -1370,3 +1370,379 @@ select {
   color: rgba(244, 241, 234, 0.72);
 }
 
+
+/* =========================================================
+   MOBILE / TABLET RESPONSIVE POLISH
+   Appended-only overrides. Desktop styles above remain unchanged.
+   ========================================================= */
+
+@media (max-width: 1024px) {
+  html,
+  body {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: clip;
+  }
+
+  main,
+  section {
+    max-width: 100%;
+  }
+
+  img,
+  svg,
+  iframe,
+  spline-viewer {
+    max-width: 100%;
+  }
+
+  .site-header {
+    left: 50%;
+    right: auto;
+    width: calc(100% - 32px);
+    padding: 14px 14px 12px;
+    transform: translateX(-50%);
+  }
+
+  .site-header.nav-hidden {
+    transform: translate(-50%, -110%);
+  }
+
+  .site-header.nav-visible,
+  .site-header.is-scrolled {
+    transform: translateX(-50%);
+  }
+
+  .brand {
+    font-size: 11px;
+    letter-spacing: .16em;
+  }
+
+  .main-nav {
+    gap: clamp(18px, 3vw, 34px);
+  }
+
+  .main-nav a {
+    font-size: 10px;
+  }
+
+  .hero {
+    min-height: 100svh;
+    overflow: hidden;
+  }
+
+  .spline-hero {
+    opacity: .68;
+    mask-image: radial-gradient(
+      circle at center,
+      #000 8%,
+      rgba(0,0,0,.92) 38%,
+      rgba(0,0,0,.52) 68%,
+      rgba(0,0,0,.04) 100%
+    );
+  }
+
+  .hero-content {
+    bottom: 26vh;
+    width: min(620px, calc(100vw - 36px));
+  }
+
+  .hero-content h1 {
+    font-size: clamp(18px, 4.7vw, 28px);
+    line-height: 1.42;
+  }
+
+  .hero-sub {
+    max-width: 34rem;
+    font-size: clamp(10px, 2.55vw, 13px);
+    line-height: 1.75;
+  }
+
+  .hero-actions {
+    right: 18px;
+    bottom: max(28px, env(safe-area-inset-bottom));
+  }
+
+  .btn {
+    min-height: 42px;
+    padding-inline: 18px;
+  }
+
+  .showcase-scroll,
+  .bim-showcase .showcase-scroll {
+    height: 430vh;
+    min-height: 2600px;
+  }
+
+  .HomeShowcase {
+    position: sticky;
+    top: 0;
+    height: 100svh;
+    min-height: 620px;
+    overflow: hidden;
+  }
+
+  .HomeShowcase__outerFrame {
+    position: absolute;
+    inset: 16px !important;
+    height: auto;
+    border: 1px solid var(--showcase-line);
+    border-radius: 10px;
+    overflow: hidden;
+    background:
+      linear-gradient(rgba(255,255,255,.018) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,.018) 1px, transparent 1px),
+      rgba(255,255,255,.022);
+    background-size: 72px 72px;
+  }
+
+  .HomeShowcase__inner,
+  .bim-track {
+    position: absolute;
+    inset: 0 auto auto 0;
+    width: 6600px;
+    height: 100%;
+    padding: 0;
+    display: block;
+    transform-origin: left center;
+  }
+
+  .mock,
+  .copy-card,
+  .center-copy,
+  .intro-title,
+  .path,
+  .bim-intro,
+  .bim-editorial,
+  .bim-case,
+  .bim-statement,
+  .bim-line-art,
+  .bim-close {
+    position: absolute !important;
+    transform: translateZ(0);
+  }
+
+  .copy-card,
+  .bim-case {
+    max-width: calc(100vw - 52px);
+  }
+
+  .bim-intro h2,
+  .bim-close h2,
+  .bim-editorial span,
+  .bim-statement h3 {
+    font-size: clamp(42px, 10vw, 76px);
+    letter-spacing: -.065em;
+  }
+
+  .bim-case h3 {
+    font-size: clamp(24px, 5.8vw, 30px);
+  }
+
+  .process-3d {
+    overflow: clip;
+  }
+
+  .process-scene {
+    height: 100svh;
+    min-height: 560px;
+    perspective: 850px;
+  }
+
+  .process-word {
+    font-size: clamp(68px, 19vw, 170px);
+    letter-spacing: -.09em;
+  }
+
+  .work-reveal-preview__field {
+    inset: 18vh 6vw;
+  }
+
+  .work-reveal-preview__system {
+    width: min(82vw, 620px);
+    height: min(58vw, 390px);
+  }
+
+  .work-reveal-preview__copy {
+    left: 22px;
+    right: 22px;
+    bottom: 42px;
+    max-width: none;
+  }
+
+  .work-reveal-preview__statement {
+    font-size: clamp(32px, 10vw, 64px);
+  }
+
+  .process-cards {
+    width: min(calc(100% - 32px), 720px);
+    padding: 86vh 0 72vh;
+    gap: clamp(54px, 12vh, 118px);
+  }
+
+  .process-card,
+  .process-card--left,
+  .process-card--right {
+    justify-self: stretch;
+    width: 100%;
+    min-height: auto;
+    padding: clamp(22px, 5vw, 34px);
+  }
+
+  .process-card__main {
+    margin: clamp(44px, 8vh, 78px) 0 clamp(28px, 5vh, 42px);
+  }
+
+  .process-card__main h3 {
+    max-width: 100%;
+    font-size: clamp(40px, 11vw, 72px);
+    line-height: .86;
+  }
+
+  .process-card__main p,
+  .process-card__note-lines p {
+    max-width: 100%;
+    font-size: 14px;
+    line-height: 1.62;
+  }
+
+  .process-card__meta,
+  .process-card__actions,
+  .process-card__note-head {
+    white-space: normal;
+    letter-spacing: .18em;
+  }
+
+  .work-trust,
+  .work-archive,
+  .book-with-us {
+    overflow: clip;
+  }
+
+  .work-trust__sticky {
+    position: sticky;
+    top: 0;
+    min-height: 100svh;
+  }
+
+  .work-archive__shell,
+  .book-with-us__shell {
+    width: min(calc(100% - 32px), 760px);
+    padding-top: clamp(5rem, 10vh, 8rem);
+    padding-bottom: clamp(4rem, 8vh, 6rem);
+  }
+
+  .work-archive__header,
+  .book-with-us__grid,
+  .work-project__case,
+  .work-project__proof,
+  .work-project__results {
+    grid-template-columns: 1fr;
+  }
+
+  .work-archive__title,
+  .book-with-us__title {
+    font-size: clamp(3.2rem, 15vw, 7rem);
+  }
+
+  .book-with-us__right,
+  .book-card {
+    width: 100%;
+  }
+}
+
+@media (max-width: 700px) {
+  .main-nav {
+    display: none;
+  }
+
+  .hero-content {
+    bottom: 28vh;
+  }
+
+  .hero-actions {
+    left: 50%;
+    right: auto;
+    width: calc(100vw - 32px);
+    transform: translateX(-50%);
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .hero-label {
+    margin-bottom: 12px;
+    font-size: 10px;
+  }
+
+  .btn {
+    flex: 1 1 150px;
+    max-width: 220px;
+  }
+
+  .showcase-scroll,
+  .bim-showcase .showcase-scroll {
+    height: 390vh;
+    min-height: 2300px;
+  }
+
+  .HomeShowcase {
+    min-height: 560px;
+  }
+
+  .HomeShowcase__outerFrame {
+    inset: 12px !important;
+  }
+
+  .HomeShowcase__inner,
+  .bim-track {
+    zoom: .68;
+  }
+
+  .nominee,
+  .cursor-replica,
+  .stage-label,
+  .bim-ruler,
+  .bim-wordmark,
+  .bim-index,
+  .path {
+    display: none !important;
+  }
+
+  .process-cards {
+    width: calc(100% - 28px);
+    padding-top: 78vh;
+  }
+
+  .process-card__meta,
+  .process-card__actions {
+    gap: 12px;
+    font-size: 9px;
+  }
+
+  .process-card__note {
+    padding: 16px;
+  }
+
+  .book-card {
+    min-height: auto;
+  }
+}
+
+@media (hover: none) and (pointer: coarse) {
+  .btn:hover,
+  .bim-close a:hover,
+  .process-card:hover,
+  .book-card:hover {
+    transform: none;
+  }
+
+  .main-nav:hover a:not(:hover) {
+    opacity: 1;
+  }
+
+  .process-card:hover::before,
+  .process-card:hover .process-card__note::after,
+  .book-card:hover::before {
+    opacity: 0;
+  }
+}
