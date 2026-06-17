@@ -1441,3 +1441,91 @@
     border-right: 0;
   }
 }
+
+
+
+
+
+
+
+/* ==========================================================
+   WORK ARCHIVE — STATEMENT FOCUS OVERRIDE
+   Big paragraph header gets the hover focus effect
+========================================================== */
+
+.work-project__statement {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0 0.18em;
+  max-width: 48rem;
+}
+
+.work-project__statement .focus-fragment,
+.work-project__statement .focus-word {
+  display: inline-block;
+  transition:
+    filter 320ms ease,
+    opacity 320ms ease,
+    color 260ms ease,
+    text-shadow 260ms ease,
+    transform 260ms ease;
+}
+
+.work-project__statement .focus-fragment {
+  color: rgba(246, 246, 240, 0.76);
+}
+
+.work-project__statement .focus-word {
+  color: rgba(255, 255, 255, 0.95);
+  cursor: default;
+}
+
+.work-project.is-word-focusing .work-project__statement {
+  filter: none !important;
+  opacity: 1 !important;
+}
+
+.work-project.is-word-focusing .work-project__statement .focus-fragment,
+.work-project.is-word-focusing .work-project__statement .focus-word {
+  filter: blur(4px);
+  opacity: 0.18;
+}
+
+.work-project.is-word-focusing .work-project__statement .focus-word.is-focused {
+  filter: blur(0);
+  opacity: 1;
+  color: rgba(255, 255, 255, 0.99);
+  text-shadow: 0 0 22px rgba(255, 255, 255, 0.14);
+  transform: translate3d(0, 0, 0);
+}
+
+.work-project.is-word-focusing .work-project__proof section,
+.work-project.is-word-focusing .work-project__results {
+  filter: blur(1.4px);
+  opacity: 0.38;
+}
+
+.work-project.is-word-focusing .work-project__proof section:has(.focus-word.is-focused) {
+  filter: blur(0);
+  opacity: 1;
+}
+
+.work-project.is-word-focusing .work-project__proof section:has(.focus-word.is-focused) span {
+  color: rgba(246, 246, 240, 0.35);
+}
+
+.work-project.is-word-focusing .work-project__proof section:has(.focus-word.is-focused) .focus-word.is-focused {
+  color: rgba(255, 255, 255, 0.98);
+}
+
+@media (max-width: 700px) {
+  .work-project__statement {
+    display: block;
+  }
+
+  .work-project__statement .focus-fragment,
+  .work-project__statement .focus-word {
+    display: inline;
+  }
+}
