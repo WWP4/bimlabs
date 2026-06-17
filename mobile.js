@@ -33,10 +33,11 @@
 
   function initMobileShowcase({ gsap, ScrollTrigger }) {
     const section = document.querySelector("#showcaseScroll");
+    const showcase = document.querySelector(".HomeShowcase");
     const frame = document.querySelector(".HomeShowcase__outerFrame");
     const track = document.querySelector(".HomeShowcase__inner, .bim-track");
 
-    if (!section || !frame || !track) return;
+    if (!section || !showcase || !frame || !track) return;
 
     gsap.set(track, { x: 0, force3D: true });
     gsap.set(frame, { scale: 0.94, opacity: 0.74, force3D: true });
@@ -46,8 +47,14 @@
       trigger: section,
       start: "top top",
       end: "bottom bottom",
+      pin: showcase,
+      pinSpacing: false,
       scrub: 0.85,
+      anticipatePin: 1,
       invalidateOnRefresh: true,
+      onRefreshInit() {
+        gsap.set(track, { x: 0, force3D: true });
+      },
       onUpdate(self) {
         const maxMove = Math.max(0, track.scrollWidth - window.innerWidth);
         const progress = self.progress;
@@ -226,6 +233,7 @@
 
     window.addEventListener("resize", state.resizeHandler, { passive: true });
     window.addEventListener("orientationchange", state.orientationHandler, { passive: true });
+    window.addEventListener("load", state.resizeHandler, { passive: true, once: true });
 
     window.requestAnimationFrame(() => stack.ScrollTrigger.refresh());
   }
