@@ -1,14 +1,9 @@
 /* ==========================================================
    BIM LABS — MOBILE CINEMATIC CSS
-   Load this file LAST.
+   Replacement mobile.css
 
-   Mobile direction:
-   - Keep cinematic scroll sections
-   - Keep horizontal showcase lock
-   - Keep process flow lock
-   - Keep testimonial card scroll-through
-   - Remove hover-only effects
-   - Make archive/book cohesive on mobile
+   Load this file LAST.
+   Goal: same high-end desktop feel, rebuilt for touch screens.
 ========================================================== */
 
 /* ==========================================================
@@ -38,20 +33,27 @@ spline-viewer {
 
 @media (max-width: 900px) {
   :root {
+    --mobile-vh: 1vh;
     --mobile-shell: min(100% - 1.15rem, 44rem);
     --mobile-text: rgba(246, 246, 240, 0.94);
-    --mobile-muted: rgba(246, 246, 240, 0.54);
+    --mobile-muted: rgba(246, 246, 240, 0.55);
     --mobile-dim: rgba(246, 246, 240, 0.34);
     --mobile-line: rgba(246, 246, 240, 0.12);
-    --mobile-soft-line: rgba(246, 246, 240, 0.075);
+    --mobile-soft-line: rgba(246, 246, 240, 0.07);
     --mobile-card: rgba(255, 255, 255, 0.04);
     --mobile-ease: cubic-bezier(0.19, 1, 0.22, 1);
+  }
+
+  html {
+    background: #000 !important;
+    scroll-behavior: smooth;
   }
 
   body {
     background: #000 !important;
     color: var(--mobile-text);
     overscroll-behavior-x: none;
+    -webkit-text-size-adjust: 100%;
   }
 
   body::before {
@@ -61,13 +63,14 @@ spline-viewer {
     z-index: -1;
     pointer-events: none;
     background:
-      radial-gradient(circle at 70% 12%, rgba(255, 255, 255, 0.055), transparent 18rem),
+      radial-gradient(circle at 72% 10%, rgba(255, 255, 255, 0.052), transparent 18rem),
       radial-gradient(circle at 12% 58%, rgba(255, 255, 255, 0.032), transparent 19rem),
       #000;
   }
 
+  main,
   section {
-    background-color: #000;
+    background: transparent !important;
   }
 
   a,
@@ -83,27 +86,31 @@ spline-viewer {
 
 @media (max-width: 900px) {
   .site-header {
-    position: fixed;
-    left: 0;
-    right: 0;
-    top: 0;
-    z-index: 1000;
-    width: 100%;
-    padding: 1rem 0.75rem;
-    background: linear-gradient(
-      to bottom,
-      rgba(0, 0, 0, 0.88),
-      rgba(0, 0, 0, 0.52) 48%,
-      transparent
-    );
+    position: fixed !important;
+    left: 0 !important;
+    right: 0 !important;
+    top: 0 !important;
+    z-index: 1000 !important;
+    width: 100% !important;
+    max-width: none !important;
+    transform: none !important;
+    padding: 1rem 0.75rem !important;
+    border-bottom: 1px solid rgba(246, 246, 240, 0.075) !important;
+    background:
+      linear-gradient(
+        to bottom,
+        rgba(0, 0, 0, 0.88),
+        rgba(0, 0, 0, 0.54) 52%,
+        rgba(0, 0, 0, 0)
+      ) !important;
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
   }
 
   .brand {
-    color: var(--mobile-text);
-    font-size: 0.72rem;
-    letter-spacing: 0.14em;
+    color: var(--mobile-text) !important;
+    font-size: 0.72rem !important;
+    letter-spacing: 0.14em !important;
   }
 
   .main-nav {
@@ -112,93 +119,109 @@ spline-viewer {
 }
 
 /* ==========================================================
-   03 / HERO MOBILE
+   03 / HERO
 ========================================================== */
 
 @media (max-width: 900px) {
   .hero {
-    position: relative;
-    min-height: 100svh;
-    padding: 7rem 0.75rem 2rem;
-    overflow: hidden;
+    min-height: calc(var(--mobile-vh) * 100) !important;
+    padding: 7rem 0.75rem 1rem !important;
+    overflow: hidden !important;
     background: #000 !important;
   }
 
   .spline-hero {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    opacity: 0.46;
-    transform: scale(1.08);
-    pointer-events: none;
+    position: absolute !important;
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    opacity: 0.48 !important;
+    transform: scale(1.08) !important;
+    pointer-events: none !important;
+    touch-action: none !important;
+    mask-image: radial-gradient(
+      circle at center,
+      #000 0%,
+      rgba(0, 0, 0, 0.92) 38%,
+      rgba(0, 0, 0, 0.16) 100%
+    ) !important;
   }
 
   .hero-shade {
-    position: absolute;
-    inset: 0;
+    position: absolute !important;
+    inset: 0 !important;
     background:
       linear-gradient(to bottom, rgba(0, 0, 0, 0.08), #000 88%),
-      radial-gradient(circle at 52% 44%, transparent, rgba(0, 0, 0, 0.72));
+      radial-gradient(circle at 52% 44%, transparent 0 20%, rgba(0, 0, 0, 0.76) 78%) !important;
   }
 
   .hero-content {
-    position: relative;
-    z-index: 2;
-    width: var(--mobile-shell);
-    margin: 0 auto;
-    padding: 0 0 6.5rem;
+    position: relative !important;
+    left: auto !important;
+    bottom: auto !important;
+    z-index: 2 !important;
+    width: var(--mobile-shell) !important;
+    margin: 0 auto !important;
+    padding: 0 0 6.4rem !important;
+    transform: none !important;
+    text-align: left !important;
+    pointer-events: auto !important;
   }
 
   .hero-label {
-    margin: 0 0 1rem;
-    color: var(--mobile-dim);
-    font-size: 0.56rem;
-    letter-spacing: 0.18em;
-    line-height: 1.35;
+    margin: 0 0 1rem !important;
+    color: var(--mobile-dim) !important;
+    font-size: 0.56rem !important;
+    letter-spacing: 0.18em !important;
+    line-height: 1.35 !important;
   }
 
+  .hero-content h1,
   .hero h1 {
-    max-width: 9ch;
-    margin: 0;
-    color: var(--mobile-text);
-    font-size: clamp(3.7rem, 18vw, 6.7rem);
-    font-weight: 300;
-    letter-spacing: -0.095em;
-    line-height: 0.82;
+    max-width: 9ch !important;
+    margin: 0 !important;
+    color: var(--mobile-text) !important;
+    font-size: clamp(3.45rem, 17.4vw, 6.55rem) !important;
+    font-weight: 300 !important;
+    letter-spacing: -0.095em !important;
+    line-height: 0.82 !important;
   }
 
   .hero-sub {
-    max-width: 21rem;
-    margin: 1.25rem 0 0;
-    color: var(--mobile-muted);
-    font-size: 0.9rem;
-    line-height: 1.55;
+    max-width: 22rem !important;
+    margin: 1.25rem 0 0 !important;
+    color: var(--mobile-muted) !important;
+    font-size: 0.9rem !important;
+    letter-spacing: -0.01em !important;
+    line-height: 1.58 !important;
+    text-transform: none !important;
   }
 
   .hero-actions {
-    position: absolute;
-    left: 0.75rem;
-    right: 0.75rem;
-    bottom: 1rem;
-    z-index: 3;
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 0.65rem;
+    position: absolute !important;
+    left: 0.75rem !important;
+    right: 0.75rem !important;
+    bottom: 1rem !important;
+    z-index: 3 !important;
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 0.65rem !important;
   }
 
   .btn {
-    width: 100%;
-    min-height: 3.15rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    width: 100% !important;
+    min-height: 3.15rem !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border-radius: 999px !important;
+    font-size: 0.64rem !important;
+    letter-spacing: 0.15em !important;
   }
 }
 
 /* ==========================================================
-   04 / HORIZONTAL SHOWCASE MOBILE
-   Vertical scroll locks this section and moves the track sideways.
+   04 / HORIZONTAL SHOWCASE
 ========================================================== */
 
 @media (max-width: 900px) {
@@ -209,24 +232,41 @@ spline-viewer {
     min-height: 430svh !important;
     overflow: visible !important;
     background: #000 !important;
+    isolation: isolate !important;
   }
 
   .showcase-scroll {
     position: sticky !important;
     top: 0 !important;
-    height: 100svh !important;
-    min-height: 100svh !important;
+    height: calc(var(--mobile-vh) * 100) !important;
+    min-height: calc(var(--mobile-vh) * 100) !important;
     overflow: hidden !important;
     background: #000 !important;
   }
 
-  .HomeShowcase,
-  .HomeShowcase__outerFrame {
-    position: relative !important;
-    height: 100svh !important;
-    min-height: 100svh !important;
+  .HomeShowcase {
+    position: sticky !important;
+    top: 0 !important;
+    width: 100vw !important;
+    height: calc(var(--mobile-vh) * 100) !important;
+    min-height: calc(var(--mobile-vh) * 100) !important;
     overflow: hidden !important;
     background: #000 !important;
+  }
+
+  .HomeShowcase__outerFrame {
+    position: absolute !important;
+    inset: 0.65rem !important;
+    height: auto !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+    border: 1px solid rgba(246, 246, 240, 0.09) !important;
+    border-radius: 0.55rem !important;
+    background:
+      linear-gradient(rgba(255, 255, 255, 0.018) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+      rgba(255, 255, 255, 0.018) !important;
+    background-size: 4.6rem 4.6rem !important;
   }
 
   .HomeShowcase__inner,
@@ -235,14 +275,19 @@ spline-viewer {
     left: 0 !important;
     top: 0 !important;
     width: 545vw !important;
-    height: 100svh !important;
-    min-height: 100svh !important;
+    height: calc(var(--mobile-vh) * 100) !important;
+    min-height: calc(var(--mobile-vh) * 100) !important;
     transform: translate3d(0, 0, 0);
     will-change: transform;
+    backface-visibility: hidden;
   }
 
   .section-whisp {
     display: none !important;
+  }
+
+  .bim-ruler {
+    opacity: 0.3 !important;
   }
 
   .bim-ruler.top {
@@ -253,18 +298,16 @@ spline-viewer {
     bottom: 1rem !important;
   }
 
-  .bim-ruler {
-    opacity: 0.34;
-  }
-
-  .bim-index {
+  .bim-index,
+  .stage-label,
+  .bim-intro p,
+  .bim-close p,
+  .bim-case span {
+    color: var(--mobile-dim) !important;
     font-size: 0.54rem !important;
-    color: var(--mobile-dim);
-  }
-
-  .stage-label {
-    font-size: 0.54rem !important;
-    color: var(--mobile-dim);
+    letter-spacing: 0.14em !important;
+    line-height: 1.35 !important;
+    text-transform: uppercase !important;
   }
 
   .bim-intro {
@@ -273,31 +316,21 @@ spline-viewer {
     width: 82vw !important;
   }
 
-  .bim-intro p,
-  .bim-close p,
-  .bim-case span {
-    color: var(--mobile-dim);
-    font-size: 0.56rem;
-    letter-spacing: 0.14em;
-    line-height: 1.35;
-    text-transform: uppercase;
-  }
-
   .bim-intro h2,
   .bim-close h2 {
-    margin: 0;
-    color: var(--mobile-text);
-    font-size: clamp(2.55rem, 13vw, 5rem);
-    font-weight: 300;
-    letter-spacing: -0.085em;
-    line-height: 0.86;
+    margin: 0 !important;
+    color: var(--mobile-text) !important;
+    font-size: clamp(2.55rem, 13vw, 5rem) !important;
+    font-weight: 300 !important;
+    letter-spacing: -0.085em !important;
+    line-height: 0.86 !important;
   }
 
   .bim-wordmark {
     font-size: clamp(4rem, 22vw, 9rem) !important;
-    letter-spacing: -0.12em;
+    letter-spacing: -0.12em !important;
     opacity: 0.12 !important;
-    pointer-events: none;
+    pointer-events: none !important;
   }
 
   .bim-wordmark--one {
@@ -312,18 +345,18 @@ spline-viewer {
 
   .bim-editorial {
     display: flex !important;
-    flex-wrap: wrap;
-    gap: 0.45rem;
+    flex-wrap: wrap !important;
+    gap: 0.45rem !important;
     width: 78vw !important;
   }
 
   .bim-editorial span {
-    padding: 0.5rem 0.65rem;
-    border: 1px solid var(--mobile-line);
-    border-radius: 999px;
-    color: var(--mobile-muted);
-    font-size: 0.54rem;
-    letter-spacing: 0.08em;
+    padding: 0.5rem 0.65rem !important;
+    border: 1px solid var(--mobile-line) !important;
+    border-radius: 999px !important;
+    color: var(--mobile-muted) !important;
+    font-size: 0.54rem !important;
+    letter-spacing: 0.08em !important;
   }
 
   .bim-editorial--one {
@@ -336,26 +369,35 @@ spline-viewer {
     top: 18vh !important;
   }
 
-  .bim-case {
-    width: 78vw !important;
-    max-width: 26rem;
+  .bim-case,
+  .bim-statement,
+  .bim-close {
+    width: 82vw !important;
+    max-width: 26rem !important;
   }
 
-  .bim-case h3 {
-    margin: 0.7rem 0 0;
-    color: var(--mobile-text);
-    font-size: clamp(1.55rem, 8.5vw, 3rem);
-    font-weight: 300;
-    letter-spacing: -0.07em;
-    line-height: 0.94;
+  .bim-case h3,
+  .bim-statement h3 {
+    margin: 0.7rem 0 0 !important;
+    color: var(--mobile-text) !important;
+    font-size: clamp(1.55rem, 8.5vw, 3rem) !important;
+    font-weight: 300 !important;
+    letter-spacing: -0.07em !important;
+    line-height: 0.94 !important;
+  }
+
+  .bim-statement h3 {
+    font-size: clamp(2.2rem, 12vw, 4.6rem) !important;
+    letter-spacing: -0.085em !important;
+    line-height: 0.86 !important;
   }
 
   .bim-case p {
-    max-width: 24rem;
-    margin: 0.8rem 0 0;
-    color: var(--mobile-muted);
-    font-size: 0.84rem;
-    line-height: 1.55;
+    max-width: 24rem !important;
+    margin: 0.8rem 0 0 !important;
+    color: var(--mobile-muted) !important;
+    font-size: 0.84rem !important;
+    line-height: 1.55 !important;
   }
 
   .bim-case--wwp {
@@ -371,16 +413,6 @@ spline-viewer {
   .bim-statement {
     left: 280vw !important;
     top: 22vh !important;
-    width: 82vw !important;
-  }
-
-  .bim-statement h3 {
-    margin: 0;
-    color: var(--mobile-text);
-    font-size: clamp(2.2rem, 12vw, 4.6rem);
-    font-weight: 300;
-    letter-spacing: -0.085em;
-    line-height: 0.86;
   }
 
   .bim-case--momentum {
@@ -396,49 +428,66 @@ spline-viewer {
   .bim-close {
     left: 485vw !important;
     top: 26vh !important;
-    width: 82vw !important;
   }
 
   .bim-close a {
-    display: inline-flex;
-    margin-top: 1rem;
-    color: var(--mobile-text);
+    display: inline-flex !important;
+    margin-top: 1rem !important;
+    color: var(--mobile-text) !important;
   }
 }
 
 /* ==========================================================
    05 / PROCESS MOBILE
-   Keeps process section locked while process animation runs.
 ========================================================== */
 
 @media (max-width: 900px) {
-  .process-3d {
+  .process-3d,
+  #process.process-3d {
     position: relative !important;
-    height: 440svh !important;
-    min-height: 440svh !important;
+    height: 570svh !important;
+    min-height: 570svh !important;
     overflow: visible !important;
     background: #000 !important;
+    isolation: isolate !important;
+  }
+
+  .process-3d::before {
+    background:
+      radial-gradient(circle at 50% 35%, rgba(245, 245, 240, 0.042), transparent 19rem),
+      linear-gradient(to bottom, #000, #020202 56%, #000 100%) !important;
   }
 
   .process-scene {
     position: sticky !important;
     top: 0 !important;
-    height: 100svh !important;
-    min-height: 100svh !important;
+    z-index: 2 !important;
+    height: calc(var(--mobile-vh) * 100) !important;
+    min-height: calc(var(--mobile-vh) * 100) !important;
     overflow: hidden !important;
     background: #000 !important;
+    pointer-events: none !important;
+  }
+
+  .process-scene::after {
+    opacity: calc(var(--mobile-process-handoff, 0) * 0.48) !important;
   }
 
   .process-word {
+    color: rgba(246, 246, 240, 0.92) !important;
     font-size: clamp(4rem, 19vw, 8rem) !important;
-    font-weight: 300;
+    font-weight: 300 !important;
     letter-spacing: -0.11em !important;
     line-height: 0.78 !important;
-    white-space: nowrap;
+    white-space: nowrap !important;
+    transform: translate3d(0, 0, 0) scale(0.72) !important;
+    transform-origin: 52% 50% !important;
+    will-change: transform, opacity !important;
   }
 
   .process-world-inside {
     inset: 0 !important;
+    z-index: 3 !important;
   }
 
   .work-reveal-preview__copy {
@@ -447,9 +496,17 @@ spline-viewer {
     max-width: 22rem !important;
   }
 
+  .work-reveal-preview__kicker {
+    color: var(--mobile-dim) !important;
+    font-size: 0.54rem !important;
+  }
+
   .work-reveal-preview__statement {
+    color: var(--mobile-text) !important;
     font-size: clamp(2.4rem, 12vw, 4.8rem) !important;
-    line-height: 0.9;
+    font-weight: 300 !important;
+    letter-spacing: -0.085em !important;
+    line-height: 0.9 !important;
   }
 
   .work-reveal-preview__signals {
@@ -459,16 +516,16 @@ spline-viewer {
   .work-reveal-preview__system {
     width: 92vw !important;
     height: 58vw !important;
-    transform: scale(0.88);
+    transform: scale(0.88) !important;
   }
 
   .process-overlay {
     position: sticky !important;
     top: 0 !important;
-    height: 100svh !important;
-    min-height: 100svh !important;
+    height: calc(var(--mobile-vh) * 100) !important;
+    min-height: calc(var(--mobile-vh) * 100) !important;
     overflow: hidden !important;
-    pointer-events: none;
+    pointer-events: none !important;
   }
 
   .process-copy {
@@ -476,61 +533,93 @@ spline-viewer {
     right: 0.75rem !important;
     bottom: 2rem !important;
     width: auto !important;
-    max-width: 25rem;
+    max-width: 25rem !important;
   }
 
   .process-kicker {
-    color: var(--mobile-dim);
-    font-size: 0.56rem;
-    letter-spacing: 0.16em;
+    color: var(--mobile-dim) !important;
+    font-size: 0.56rem !important;
+    letter-spacing: 0.16em !important;
   }
 
   .process-copy p {
-    color: var(--mobile-muted);
-    font-size: 0.9rem;
-    line-height: 1.58;
+    color: var(--mobile-muted) !important;
+    font-size: 0.9rem !important;
+    line-height: 1.58 !important;
   }
 
   .process-cards {
-    position: absolute !important;
-    inset: 0 !important;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 7 !important;
+    width: max-content !important;
+    height: calc(var(--mobile-vh) * 100) !important;
+    min-height: calc(var(--mobile-vh) * 100) !important;
+    margin: -100svh 0 0 !important;
+    padding: 17vh 8vw 14vh !important;
+    display: flex !important;
+    align-items: stretch !important;
+    gap: 1rem !important;
+    pointer-events: none !important;
+    transform: translate3d(0, 0, 0);
+    will-change: transform;
   }
 
   .process-card,
   .process-card--left,
   .process-card--right {
-    width: min(84vw, 24rem) !important;
-    min-height: auto !important;
+    position: relative !important;
+    left: auto !important;
+    right: auto !important;
+    top: auto !important;
+    flex: 0 0 min(82vw, 24rem) !important;
+    width: min(82vw, 24rem) !important;
+    min-height: 66vh !important;
+    height: auto !important;
     padding: 1rem !important;
-    border-radius: 0.42rem;
-    pointer-events: none;
+    border-radius: 0.42rem !important;
+    pointer-events: none !important;
+    opacity: 0.78 !important;
+    transform: translate3d(0, calc((1 - var(--mobile-process-cards, 0)) * 1.2rem), 0) !important;
+    transition:
+      opacity 420ms ease,
+      border-color 420ms ease,
+      background 420ms ease !important;
   }
 
-  .process-card--left {
-    left: 0.75rem !important;
+  .process-card.is-active {
+    opacity: 1 !important;
+    border-color: rgba(246, 246, 240, 0.2) !important;
   }
 
-  .process-card--right {
-    right: 0.75rem !important;
+  .process-card.is-past {
+    opacity: 0.58 !important;
   }
 
-  .process-card__meta {
-    font-size: 0.54rem;
+  .process-card__meta,
+  .process-card__actions {
+    color: var(--mobile-dim) !important;
+    font-size: 0.52rem !important;
+    letter-spacing: 0.18em !important;
+    gap: 0.7rem !important;
+  }
+
+  .process-card__main {
+    margin: 5.2rem 0 1.5rem !important;
   }
 
   .process-card__main h3 {
-    font-size: clamp(1.5rem, 7vw, 2.4rem) !important;
-    font-weight: 300;
-    letter-spacing: -0.07em;
-    line-height: 0.94;
+    color: var(--mobile-text) !important;
+    font-size: clamp(1.75rem, 8.2vw, 2.9rem) !important;
+    font-weight: 300 !important;
+    letter-spacing: -0.075em !important;
+    line-height: 0.94 !important;
   }
 
   .process-card__main p {
-    font-size: 0.78rem;
-    line-height: 1.5;
+    color: var(--mobile-muted) !important;
+    font-size: 0.84rem !important;
+    line-height: 1.56 !important;
   }
 
   .process-card__note {
@@ -538,18 +627,16 @@ spline-viewer {
   }
 
   .process-card__actions {
-    margin-top: 1rem;
-    font-size: 0.56rem;
+    margin-top: 1rem !important;
   }
 
   .process-card__index {
-    opacity: 0.14;
+    opacity: 0.16 !important;
   }
 }
 
 /* ==========================================================
    06 / TRUST CARDS MOBILE
-   Keeps testimonial card section sticky while user scrolls.
 ========================================================== */
 
 @media (max-width: 900px) {
@@ -559,17 +646,18 @@ spline-viewer {
 
   .bim-trust {
     position: relative !important;
-    height: 370svh !important;
-    min-height: 370svh !important;
+    height: 390svh !important;
+    min-height: 390svh !important;
     overflow: visible !important;
     background: #000 !important;
+    isolation: isolate !important;
   }
 
   .bim-trust__sticky {
     position: sticky !important;
     top: 0 !important;
-    height: 100svh !important;
-    min-height: 100svh !important;
+    height: calc(var(--mobile-vh) * 100) !important;
+    min-height: calc(var(--mobile-vh) * 100) !important;
     overflow: hidden !important;
     background:
       radial-gradient(circle at 70% 42%, rgba(255, 255, 255, 0.05), transparent 20rem),
@@ -577,19 +665,21 @@ spline-viewer {
   }
 
   .bim-trust__sticky::after {
-    height: 10rem;
+    height: 10rem !important;
   }
 
   .bim-trust__headline {
     left: 0.75rem !important;
     top: 14vh !important;
-    color: var(--mobile-text);
-    font-size: clamp(3.4rem, 16vw, 6.8rem) !important;
-    font-weight: 300;
-    letter-spacing: -0.095em;
-    line-height: 0.82;
-    white-space: normal;
-    pointer-events: none;
+    max-width: 8ch !important;
+    color: var(--mobile-text) !important;
+    font-size: clamp(3.35rem, 15.8vw, 6.7rem) !important;
+    font-weight: 300 !important;
+    letter-spacing: -0.095em !important;
+    line-height: 0.82 !important;
+    white-space: normal !important;
+    pointer-events: none !important;
+    will-change: transform, opacity !important;
   }
 
   .bim-trust__copy {
@@ -597,22 +687,24 @@ spline-viewer {
     right: 0.75rem !important;
     top: auto !important;
     bottom: 2rem !important;
+    z-index: 35 !important;
     width: auto !important;
-    max-width: 25rem;
+    max-width: 25rem !important;
+    will-change: transform, opacity !important;
   }
 
   .bim-trust__copy p {
-    color: var(--mobile-muted);
-    font-size: 0.88rem;
-    line-height: 1.56;
+    color: var(--mobile-muted) !important;
+    font-size: 0.88rem !important;
+    line-height: 1.56 !important;
   }
 
   .bim-trust__stage {
     position: absolute !important;
     inset: 0 !important;
     overflow: visible !important;
-    perspective: 900px;
-    pointer-events: none;
+    perspective: 900px !important;
+    pointer-events: none !important;
   }
 
   .bim-trust-card {
@@ -622,33 +714,37 @@ spline-viewer {
     width: min(78vw, 22rem) !important;
     min-height: 22rem !important;
     padding: 1.15rem !important;
-    border-radius: 0.42rem;
-    pointer-events: auto;
-    will-change: transform;
+    border: 1px solid rgba(246, 246, 240, 0.13) !important;
+    border-radius: 0.42rem !important;
+    pointer-events: auto !important;
+    will-change: transform !important;
+    backface-visibility: hidden !important;
   }
 
   .bim-trust-card__logo {
+    color: var(--mobile-text) !important;
     font-size: 1.35rem !important;
+    line-height: 1 !important;
   }
 
   .bim-trust-card blockquote {
-    font-size: 0.88rem;
-    line-height: 1.52;
+    color: rgba(246, 246, 240, 0.72) !important;
+    font-size: 0.88rem !important;
+    line-height: 1.52 !important;
   }
 
   .bim-trust-card footer {
-    margin-top: 1.6rem;
+    margin-top: 1.6rem !important;
   }
 }
 
 /* ==========================================================
    07 / WORK ARCHIVE MOBILE
-   Normal scroll after cinematic sections.
 ========================================================== */
 
 @media (max-width: 900px) {
   .work-archive {
-    position: relative;
+    position: relative !important;
     min-height: auto !important;
     margin-top: clamp(5rem, 14vh, 9rem) !important;
     overflow: visible !important;
@@ -656,100 +752,101 @@ spline-viewer {
   }
 
   .work-archive__bg {
-    opacity: 0.5;
+    opacity: 0.5 !important;
   }
 
   .work-archive__shell {
-    width: var(--mobile-shell);
+    width: var(--mobile-shell) !important;
     min-height: auto !important;
-    padding: 5.5rem 0 6rem;
+    padding: 5.5rem 0 6rem !important;
   }
 
   .work-archive__header {
-    display: grid;
-    grid-template-columns: 1fr;
-    width: 100%;
-    margin: 0 0 3.3rem;
-    gap: 1rem;
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    width: 100% !important;
+    margin: 0 0 3.35rem !important;
+    gap: 1rem !important;
   }
 
   .work-archive__label {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    width: 100%;
-    padding: 0;
-    color: var(--mobile-dim);
-    font-size: 0.54rem;
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: space-between !important;
+    width: 100% !important;
+    padding: 0 !important;
+    color: var(--mobile-dim) !important;
+    font-size: 0.54rem !important;
   }
 
   .work-archive__kicker {
-    color: var(--mobile-dim);
-    font-size: 0.54rem;
+    color: var(--mobile-dim) !important;
+    font-size: 0.54rem !important;
   }
 
   .work-archive__title {
-    max-width: 100%;
-    color: var(--mobile-text);
-    font-size: clamp(2.6rem, 13vw, 5.7rem);
-    font-weight: 300;
-    letter-spacing: -0.09em;
-    line-height: 0.84;
+    max-width: 100% !important;
+    color: var(--mobile-text) !important;
+    font-size: clamp(2.6rem, 13vw, 5.7rem) !important;
+    font-weight: 300 !important;
+    letter-spacing: -0.09em !important;
+    line-height: 0.84 !important;
   }
 
   .work-archive__intro {
-    max-width: 31rem;
-    justify-self: start;
-    padding: 0;
-    color: var(--mobile-muted);
-    font-size: 0.9rem;
-    line-height: 1.62;
+    max-width: 31rem !important;
+    justify-self: start !important;
+    padding: 0 !important;
+    color: var(--mobile-muted) !important;
+    font-size: 0.9rem !important;
+    line-height: 1.62 !important;
   }
 
   .work-project {
     opacity: 1 !important;
+    overflow: visible !important;
   }
 
   .work-project::before,
   .work-project:last-child::after {
-    background: var(--mobile-line);
+    background: var(--mobile-line) !important;
     transform: scaleX(1) !important;
   }
 
   .work-project__summary {
-    min-height: auto;
-    padding: 1.1rem 0;
-    display: grid;
-    grid-template-columns: 2rem minmax(0, 1fr) 1.1rem;
+    min-height: auto !important;
+    padding: 1.15rem 0 !important;
+    display: grid !important;
+    grid-template-columns: 2rem minmax(0, 1fr) 1.1rem !important;
     grid-template-areas:
       "index name arrow"
-      "index meta arrow";
-    gap: 0.42rem 0.75rem;
+      "index meta arrow" !important;
+    gap: 0.42rem 0.75rem !important;
     background: transparent !important;
   }
 
   .work-project__index {
-    grid-area: index;
-    align-self: start;
-    padding-top: 0.32rem;
-    color: var(--mobile-dim);
-    font-size: 0.54rem;
+    grid-area: index !important;
+    align-self: start !important;
+    padding-top: 0.32rem !important;
+    color: var(--mobile-dim) !important;
+    font-size: 0.54rem !important;
   }
 
   .work-project__name {
-    grid-area: name;
-    color: var(--mobile-text);
-    font-size: clamp(1.55rem, 8.4vw, 3rem);
-    font-weight: 300;
-    letter-spacing: -0.075em;
-    line-height: 0.92;
+    grid-area: name !important;
+    color: var(--mobile-text) !important;
+    font-size: clamp(1.55rem, 8.4vw, 3rem) !important;
+    font-weight: 300 !important;
+    letter-spacing: -0.075em !important;
+    line-height: 0.92 !important;
   }
 
   .work-project__meta {
-    grid-area: meta;
-    justify-self: start;
-    color: var(--mobile-dim);
-    font-size: 0.52rem;
+    grid-area: meta !important;
+    justify-self: start !important;
+    color: var(--mobile-dim) !important;
+    font-size: 0.52rem !important;
   }
 
   .work-project__year {
@@ -757,11 +854,11 @@ spline-viewer {
   }
 
   .work-project__arrow {
-    grid-area: arrow;
-    align-self: start;
-    justify-self: end;
-    padding-top: 0.25rem;
-    color: var(--mobile-muted);
+    grid-area: arrow !important;
+    align-self: start !important;
+    justify-self: end !important;
+    padding-top: 0.25rem !important;
+    color: var(--mobile-muted) !important;
   }
 
   .work-project__preview,
@@ -778,22 +875,22 @@ spline-viewer {
   .work-project__content {
     display: grid !important;
     grid-template-columns: 1fr !important;
-    gap: 1.25rem;
-    width: 100%;
-    padding: 0.8rem 0 0;
+    gap: 1.25rem !important;
+    width: 100% !important;
+    padding: 0.8rem 0 0 !important;
   }
 
   .work-project__eyebrow {
-    color: var(--mobile-dim);
-    font-size: 0.56rem;
+    color: var(--mobile-dim) !important;
+    font-size: 0.56rem !important;
   }
 
   .work-project__statement {
-    color: var(--mobile-text);
-    font-size: clamp(1.65rem, 8.4vw, 3rem);
-    font-weight: 300;
-    letter-spacing: -0.075em;
-    line-height: 0.98;
+    color: var(--mobile-text) !important;
+    font-size: clamp(1.65rem, 8.4vw, 3rem) !important;
+    font-weight: 300 !important;
+    letter-spacing: -0.075em !important;
+    line-height: 0.98 !important;
   }
 
   .work-project__proof,
@@ -801,14 +898,14 @@ spline-viewer {
   .work-project__stats {
     display: grid !important;
     grid-template-columns: 1fr !important;
-    gap: 0.9rem;
+    gap: 0.9rem !important;
   }
 
   .work-project__proof section,
   .work-project__results > *,
   .work-project__stats > * {
-    padding: 1rem 0;
-    border-top: 1px solid var(--mobile-line);
+    padding: 1rem 0 !important;
+    border-top: 1px solid var(--mobile-line) !important;
   }
 
   .work-project__proof p,
@@ -817,25 +914,25 @@ spline-viewer {
   .work-project__results span,
   .work-project__stats p,
   .work-project__stats span {
-    color: var(--mobile-muted);
-    font-size: 0.88rem;
-    line-height: 1.58;
+    color: var(--mobile-muted) !important;
+    font-size: 0.88rem !important;
+    line-height: 1.58 !important;
   }
 
   .work-project__media {
-    width: 100%;
-    max-width: 100%;
-    margin-top: 0.75rem;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-top: 0.75rem !important;
   }
 
   .work-project__media img {
-    width: 100%;
-    height: auto;
-    border-radius: 0.35rem;
+    width: 100% !important;
+    height: auto !important;
+    border-radius: 0.35rem !important;
   }
 
   .focus-word {
-    color: rgba(255, 255, 255, 0.94);
+    color: rgba(255, 255, 255, 0.94) !important;
   }
 }
 
@@ -845,69 +942,69 @@ spline-viewer {
 
 @media (max-width: 900px) {
   .book-with-us {
-    position: relative;
+    position: relative !important;
     min-height: auto !important;
-    overflow: hidden;
+    overflow: hidden !important;
     background: #000 !important;
   }
 
   .book-with-us__bg {
-    opacity: 0.45;
+    opacity: 0.45 !important;
   }
 
   .book-with-us__shell {
-    width: var(--mobile-shell);
+    width: var(--mobile-shell) !important;
     min-height: auto !important;
-    padding: 5.5rem 0 3rem;
+    padding: 5.5rem 0 3rem !important;
   }
 
   .book-with-us__grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 2.3rem;
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 2.3rem !important;
   }
 
   .book-with-us__left {
-    max-width: 100%;
+    max-width: 100% !important;
   }
 
   .book-with-us__kicker {
-    color: var(--mobile-dim);
-    font-size: 0.56rem;
+    color: var(--mobile-dim) !important;
+    font-size: 0.56rem !important;
   }
 
   .book-with-us__title {
-    max-width: 8.8ch;
-    color: var(--mobile-text);
-    font-size: clamp(3.55rem, 17vw, 7rem);
-    font-weight: 300;
-    letter-spacing: -0.095em;
-    line-height: 0.82;
+    max-width: 8.8ch !important;
+    color: var(--mobile-text) !important;
+    font-size: clamp(3.55rem, 17vw, 7rem) !important;
+    font-weight: 300 !important;
+    letter-spacing: -0.095em !important;
+    line-height: 0.82 !important;
   }
 
   .book-with-us__intro {
-    max-width: 31rem;
-    color: var(--mobile-muted);
-    font-size: 0.92rem;
-    line-height: 1.66;
+    max-width: 31rem !important;
+    color: var(--mobile-muted) !important;
+    font-size: 0.92rem !important;
+    line-height: 1.66 !important;
   }
 
   .book-with-us__right {
-    display: block;
+    display: block !important;
   }
 
   .book-card {
-    width: 100%;
-    min-height: auto;
-    padding: 1.15rem;
-    border: 1px solid var(--mobile-line);
-    border-radius: 0.42rem;
+    width: 100% !important;
+    min-height: auto !important;
+    padding: 1.15rem !important;
+    border: 1px solid var(--mobile-line) !important;
+    border-radius: 0.42rem !important;
     background:
       linear-gradient(145deg, rgba(255, 255, 255, 0.075), rgba(255, 255, 255, 0.022)),
-      rgba(255, 255, 255, 0.04);
+      rgba(255, 255, 255, 0.04) !important;
     box-shadow:
       0 2rem 5rem rgba(0, 0, 0, 0.45),
-      inset 0 1px 0 rgba(255, 255, 255, 0.08);
+      inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
     transform: none !important;
   }
 
@@ -916,50 +1013,50 @@ spline-viewer {
   }
 
   .book-card__top {
-    color: var(--mobile-dim);
-    font-size: 0.5rem;
+    color: var(--mobile-dim) !important;
+    font-size: 0.5rem !important;
   }
 
   .book-card__main {
-    margin-top: 3.7rem;
+    margin-top: 3.7rem !important;
   }
 
   .book-card__main p {
-    color: var(--mobile-text);
-    font-size: clamp(1.55rem, 7.8vw, 2.7rem);
-    font-weight: 300;
-    letter-spacing: -0.07em;
-    line-height: 1;
+    color: var(--mobile-text) !important;
+    font-size: clamp(1.55rem, 7.8vw, 2.7rem) !important;
+    font-weight: 300 !important;
+    letter-spacing: -0.07em !important;
+    line-height: 1 !important;
   }
 
   .book-card__meta {
-    margin-top: 2.6rem;
+    margin-top: 2.6rem !important;
   }
 
   .book-card__meta div {
-    border-top: 1px solid var(--mobile-line);
+    border-top: 1px solid var(--mobile-line) !important;
   }
 
   .book-card__meta span {
-    color: var(--mobile-dim);
+    color: var(--mobile-dim) !important;
   }
 
   .book-card__meta strong {
-    color: rgba(246, 246, 240, 0.76);
+    color: rgba(246, 246, 240, 0.76) !important;
   }
 
   .book-card__button {
-    min-height: 3.25rem;
-    color: #fff;
-    font-size: 0.92rem;
+    min-height: 3.25rem !important;
+    color: #fff !important;
+    font-size: 0.92rem !important;
   }
 
   .book-with-us__footer {
-    flex-direction: column;
-    gap: 0.7rem;
-    margin-top: 4rem;
-    color: var(--mobile-dim);
-    line-height: 1.45;
+    flex-direction: column !important;
+    gap: 0.7rem !important;
+    margin-top: 4rem !important;
+    color: var(--mobile-dim) !important;
+    line-height: 1.45 !important;
   }
 }
 
@@ -975,16 +1072,18 @@ spline-viewer {
   }
 
   .book-card:hover,
-  .work-project__summary:hover .work-project__name {
+  .work-project__summary:hover .work-project__name,
+  .work-project.is-soft-signal .work-project__name {
     transform: none !important;
+    filter: none !important;
   }
 
   .book-card__button:hover {
-    padding-left: 0;
+    padding-left: 0 !important;
   }
 
   .book-card__button:hover span:last-child {
-    transform: none;
+    transform: none !important;
   }
 }
 
@@ -993,56 +1092,56 @@ spline-viewer {
 ========================================================== */
 
 @media (max-width: 520px) {
-  @media (max-width: 900px) {
-    :root {
-      --mobile-shell: min(100% - 1rem, 44rem);
-    }
+  :root {
+    --mobile-shell: min(100% - 1rem, 44rem);
+  }
 
-    .site-header {
-      padding-inline: 0.5rem;
-    }
+  .site-header {
+    padding-inline: 0.5rem !important;
+  }
 
-    .hero {
-      padding-left: 0.5rem;
-      padding-right: 0.5rem;
-    }
+  .hero {
+    padding-left: 0.5rem !important;
+    padding-right: 0.5rem !important;
+  }
 
-    .hero-content {
-      padding-bottom: 6.25rem;
-    }
+  .hero-content {
+    padding-bottom: 6.25rem !important;
+  }
 
-    .hero-actions {
-      left: 0.5rem;
-      right: 0.5rem;
-    }
+  .hero-actions {
+    left: 0.5rem !important;
+    right: 0.5rem !important;
+  }
 
-    .hero h1 {
-      font-size: clamp(3.25rem, 18vw, 5.4rem);
-    }
+  .hero h1,
+  .hero-content h1 {
+    font-size: clamp(3.2rem, 17.6vw, 5.4rem) !important;
+  }
 
-    .bim-intro {
-      left: 5vw !important;
-      width: 84vw !important;
-    }
+  .bim-intro {
+    left: 5vw !important;
+    width: 84vw !important;
+  }
 
-    .bim-case {
-      width: 82vw !important;
-    }
+  .bim-case {
+    width: 82vw !important;
+  }
 
-    .process-card,
-    .process-card--left,
-    .process-card--right {
-      width: min(88vw, 23rem) !important;
-    }
+  .process-card,
+  .process-card--left,
+  .process-card--right {
+    flex-basis: min(86vw, 23rem) !important;
+    width: min(86vw, 23rem) !important;
+  }
 
-    .bim-trust-card {
-      width: min(82vw, 21rem) !important;
-    }
+  .bim-trust-card {
+    width: min(82vw, 21rem) !important;
+  }
 
-    .book-card__top {
-      flex-direction: column;
-      gap: 0.35rem;
-    }
+  .book-card__top {
+    flex-direction: column !important;
+    gap: 0.35rem !important;
   }
 }
 
@@ -1050,15 +1149,38 @@ spline-viewer {
    11 / REDUCED MOTION
 ========================================================== */
 
-@media (prefers-reduced-motion: reduce) {
-  @media (max-width: 900px) {
-    *,
-    *::before,
-    *::after {
-      scroll-behavior: auto !important;
-      animation-duration: 0.001ms !important;
-      animation-iteration-count: 1 !important;
-      transition-duration: 0.001ms !important;
-    }
+@media (prefers-reduced-motion: reduce) and (max-width: 900px) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+
+  .HomeShowcase__inner,
+  .bim-track,
+  .process-cards,
+  .bim-trust-card {
+    transform: none !important;
+  }
+
+  .salo-showcase,
+  .bim-showcase,
+  .process-3d,
+  .bim-trust {
+    height: auto !important;
+    min-height: auto !important;
+  }
+
+  .showcase-scroll,
+  .HomeShowcase,
+  .process-scene,
+  .process-cards,
+  .bim-trust__sticky {
+    position: relative !important;
+    height: auto !important;
+    min-height: auto !important;
   }
 }
