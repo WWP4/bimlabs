@@ -1,11 +1,8 @@
 /* ==========================================================
-   BIM LABS — MOBILE COHESIVE JS
+   BIM LABS — MOBILE CINEMATIC JS
    Load LAST.
-   Purpose:
-   - Kill desktop animation leftovers on mobile
-   - Remove hover previews
-   - Make project accordions tap cleanly
-   - Keep mobile simple and premium
+   Keeps scroll experiences on mobile.
+   Removes hover-only behavior.
 ========================================================== */
 
 (() => {
@@ -23,158 +20,144 @@
     document.documentElement.style.setProperty("--mobile-vh", `${vh}px`);
   }
 
-  function killScrollTriggers() {
+  function removeHoverOnlyElements() {
     if (!isMobile()) return;
 
-    const ScrollTrigger = window.ScrollTrigger;
-    if (!ScrollTrigger || typeof ScrollTrigger.getAll !== "function") return;
-
-    ScrollTrigger.getAll().forEach((trigger) => {
-      if (typeof trigger.kill === "function") {
-        trigger.kill();
-      }
-    });
-
-    if (typeof ScrollTrigger.refresh === "function") {
-      ScrollTrigger.refresh();
-    }
-  }
-
-  function removeHoverPreviews() {
     document
-      .querySelectorAll(
-        ".work-archive-floating-preview, .work-project__hover-image"
-      )
+      .querySelectorAll(".work-archive-floating-preview, .work-project__hover-image")
       .forEach((node) => node.remove());
 
     document.querySelectorAll(".work-project").forEach((row) => {
       row.classList.remove("is-previewing", "is-glitching", "is-soft-signal");
     });
+
+    const bookCard = document.querySelector("[data-book-card]");
+    if (bookCard) {
+      bookCard.style.setProperty("--book-x", "50%");
+      bookCard.style.setProperty("--book-y", "50%");
+    }
   }
 
-  function forceMobileLayoutState() {
+  function setupMobileHorizontalShowcase() {
     if (!isMobile()) return;
 
-    const resetNodes = [
-      ".HomeShowcase__inner",
-      ".bim-track",
-      ".bim-intro",
-      ".bim-case",
-      ".bim-statement",
-      ".bim-editorial",
-      ".bim-close",
-      ".process-3d",
-      ".process-scene",
-      ".process-word",
-      ".process-overlay",
-      ".process-copy",
-      ".process-cards",
-      ".process-card",
-      ".work-trust",
-      ".work-trust__sticky",
-      ".work-trust-card",
-      ".bim-trust",
-      ".bim-trust__sticky",
-      ".bim-trust-card",
-      ".bim-trust__headline",
-      ".bim-trust__copy",
-      ".work-archive",
-      ".work-archive__label",
-      ".work-archive__kicker",
-      ".work-archive__title",
-      ".work-archive__intro",
-      ".work-project",
-      ".work-project__index",
-      ".work-project__name",
-      ".work-project__meta",
-      ".work-project__year",
-      ".work-project__arrow",
-      ".book-with-us",
-      ".book-card"
-    ];
+    const section = document.querySelector(".salo-showcase, .bim-showcase");
+    const sticky = document.querySelector(".showcase-scroll");
+    const track = document.querySelector(".HomeShowcase__inner, .bim-track");
 
-    document.querySelectorAll(resetNodes.join(",")).forEach((node) => {
-      node.style.removeProperty("transform");
-      node.style.removeProperty("translate");
-      node.style.removeProperty("scale");
-      node.style.removeProperty("rotate");
-      node.style.removeProperty("filter");
-      node.style.removeProperty("opacity");
-      node.style.removeProperty("visibility");
-      node.style.removeProperty("will-change");
-    });
+    if (!section || !sticky || !track) return;
 
-    document.querySelectorAll(".work-project").forEach((row) => {
-      row.style.setProperty("--row-line", "1");
-      row.style.setProperty("--row-fill", "0");
-    });
+    let raf = null;
 
-    const archive = document.querySelector(".work-archive");
-    if (archive) {
-      archive.classList.remove("is-forming");
-      archive.classList.add("is-formed");
+    function render() {
+      const rect = section.getBoundingClientRect();
+      const viewport = window.innerHeight || document.documentElement.clientHeight;
+      const travel = Math.max(section.offsetHeight - viewport, 1);
+      const progress = Math.min(Math.max(-rect.top / travel, 0), 1);
+
+      const maxX = Math.max(track.scrollWidth - window.innerWidth, 0);
+      const x = -maxX * progress;
+
+      track.style.transform = `translate3d(${x}px, 0, 0)`;
+
+      raf = null;
     }
 
-    document.documentElement.classList.add("is-mobile-site");
+    function requestRender() {
+      if (!raf) {
+        raf = window.requestAnimationFrame(render);
+      }
+    }
+
+    window.addEventListener("scroll", requestRender, { passive: true });
+    window.addEventListener("resize", requestRender, { passive: true });
+    window.addEventListener("orientationchange", requestRender, { passive: true });
+
+    render();
   }
 
-  function setupMobileArchiveAccordion() {
+  function setupMobileTrustCards() {
     if (!isMobile()) return;
 
-    const archive = document.querySelector(".work-archive");
-    if (!archive) return;
+    const section = document.querySelector(".bim-trust");
+    const cards = Array.from(document.querySelectorAll("[data-bim-trust-card]"));
+    const headline = document.querySelector(".bim-trust__headline");
+    const copy = document.querySelector(".bim-trust__copy");
 
-    const rows = Array.from(archive.querySelectorAll(".work-project"));
-    if (!rows.length) return;
+    if (!section || !cards.length) return;
 
-    rows.forEach((row) => {
-      const summary = row.querySelector(".work-project__summary");
-      const panel = row.querySelector(".work-project__panel");
+    let raf = null;
 
-      if (!summary || !panel) return;
-      if (summary.dataset.mobileAccordionReady === "true") return;
+    const settings = [
+      { startX: 105, endX: -92, y: 42, rotate: -7 },
+      { startX: 124, endX: -73, y: 30, rotate: -4 },
+      { startX: 143, endX: -54, y: 48, rotate: -6 },
+      { startX: 162, endX: -35, y: 36, rotate: -3 }
+    ];
 
-      summary.dataset.mobileAccordionReady = "true";
+    function clamp(value, min, max) {
+      return Math.min(Math.max(value, min), max);
+    }
 
-      summary.addEventListener("click", () => {
-        window.setTimeout(() => {
-          rows.forEach((other) => {
-            if (other !== row) {
-              other.classList.remove("is-open", "is-opening", "is-closing");
-              other.removeAttribute("open");
-              other.open = false;
+    function lerp(start, end, amount) {
+      return start + (end - start) * amount;
+    }
 
-              const otherSummary = other.querySelector(".work-project__summary");
-              if (otherSummary) {
-                otherSummary.setAttribute("aria-expanded", "false");
-              }
-            }
-          });
+    function render() {
+      const rect = section.getBoundingClientRect();
+      const viewport = window.innerHeight || document.documentElement.clientHeight;
+      const travel = Math.max(section.offsetHeight - viewport, 1);
+      const progress = clamp(-rect.top / travel, 0, 1);
 
-          if (row.open) {
-            row.classList.add("is-open");
-            row.classList.remove("is-closing");
-            summary.setAttribute("aria-expanded", "true");
-          } else {
-            row.classList.remove("is-open", "is-opening", "is-closing");
-            summary.setAttribute("aria-expanded", "false");
-          }
-        }, 0);
+      cards.forEach((card, index) => {
+        const item = settings[index] || settings[settings.length - 1];
+        const stagger = index * 0.06;
+        const p = clamp((progress - stagger) / 0.9, 0, 1);
+
+        const x = lerp(item.startX, item.endX, p);
+
+        card.style.opacity = "1";
+        card.style.visibility = "visible";
+        card.style.transform = `
+          translate3d(${x}vw, ${item.y}vh, 0)
+          rotate(${item.rotate}deg)
+        `;
       });
-    });
+
+      if (headline) {
+        headline.style.transform = `translate3d(0, ${lerp(0, -3, progress)}vh, 0)`;
+        headline.style.opacity = String(lerp(0.9, 0.58, progress));
+      }
+
+      if (copy) {
+        copy.style.transform = `translate3d(0, ${lerp(0, -1.5, progress)}vh, 0)`;
+      }
+
+      raf = null;
+    }
+
+    function requestRender() {
+      if (!raf) {
+        raf = window.requestAnimationFrame(render);
+      }
+    }
+
+    window.addEventListener("scroll", requestRender, { passive: true });
+    window.addEventListener("resize", requestRender, { passive: true });
+    window.addEventListener("orientationchange", requestRender, { passive: true });
+
+    render();
   }
 
-  function disableBookMouseLight() {
+  function refreshScrollTrigger() {
     if (!isMobile()) return;
 
-    const card = document.querySelector("[data-book-card]");
-    if (!card) return;
-
-    card.style.setProperty("--book-x", "50%");
-    card.style.setProperty("--book-y", "50%");
+    if (window.ScrollTrigger && typeof window.ScrollTrigger.refresh === "function") {
+      window.ScrollTrigger.refresh();
+    }
   }
 
-  function applyMobileSite() {
+  function applyMobileCinematic() {
     setViewportUnit();
 
     if (!isMobile()) {
@@ -182,35 +165,34 @@
       return;
     }
 
-    killScrollTriggers();
-    removeHoverPreviews();
-    forceMobileLayoutState();
-    setupMobileArchiveAccordion();
-    disableBookMouseLight();
+    document.documentElement.classList.add("is-mobile-site");
+
+    removeHoverOnlyElements();
+    setupMobileHorizontalShowcase();
+    setupMobileTrustCards();
+
+    window.setTimeout(refreshScrollTrigger, 250);
   }
 
   function scheduleApply() {
     window.clearTimeout(window.__bimMobileTimer);
-
-    window.__bimMobileTimer = window.setTimeout(() => {
-      applyMobileSite();
-    }, 80);
+    window.__bimMobileTimer = window.setTimeout(applyMobileCinematic, 120);
   }
 
   if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", applyMobileSite, {
+    document.addEventListener("DOMContentLoaded", applyMobileCinematic, {
       once: true
     });
   } else {
-    applyMobileSite();
+    applyMobileCinematic();
   }
 
-  window.addEventListener("load", applyMobileSite, { once: true });
+  window.addEventListener("load", applyMobileCinematic, { once: true });
   window.addEventListener("resize", scheduleApply, { passive: true });
   window.addEventListener("orientationchange", scheduleApply, { passive: true });
 
   if (mobileQuery.addEventListener) {
-    mobileQuery.addEventListener("change", applyMobileSite);
-    touchQuery.addEventListener("change", applyMobileSite);
+    mobileQuery.addEventListener("change", applyMobileCinematic);
+    touchQuery.addEventListener("change", applyMobileCinematic);
   }
 })();
