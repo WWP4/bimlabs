@@ -1,21 +1,18 @@
 /* ==========================================================
-   BIM LABS — MOBILE OVERRIDES
-   Load this file LAST.
-   Purpose:
-   - Make the full site feel intentional on phones/tablets
-   - Disable desktop-only hover/mouse effects
-   - Prevent horizontal overflow
-   - Simplify large cinematic sections
+   BIM LABS — MOBILE COHESIVE OVERRIDE
+   Load LAST.
+   Goal: make the mobile site feel like one clean premium system.
 ========================================================== */
 
 /* ==========================================================
-   01 / GLOBAL MOBILE SAFETY
+   GLOBAL MOBILE FOUNDATION
 ========================================================== */
 
 html,
 body {
   max-width: 100%;
   overflow-x: hidden;
+  background: #000;
 }
 
 *,
@@ -33,137 +30,183 @@ spline-viewer {
 }
 
 @media (max-width: 900px) {
+  :root {
+    --mobile-shell: min(100% - 1.25rem, 42rem);
+    --mobile-line: rgba(246, 246, 240, 0.12);
+    --mobile-text: rgba(246, 246, 240, 0.92);
+    --mobile-muted: rgba(246, 246, 240, 0.52);
+    --mobile-dim: rgba(246, 246, 240, 0.34);
+  }
+
   body {
-    background: #000;
+    background: #000 !important;
+    color: var(--mobile-text);
   }
 
   section {
+    position: relative;
     max-width: 100%;
+    background: #000 !important;
   }
 
-  .site-header {
-    left: 0;
-    right: 0;
-    width: 100%;
-    padding: 1rem;
-  }
-
-  .brand {
-    font-size: 0.72rem;
-  }
-
-  .main-nav {
-    gap: 0.85rem;
-  }
-
-  .main-nav a {
-    font-size: 0.62rem;
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background:
+      radial-gradient(circle at 70% 16%, rgba(255, 255, 255, 0.055), transparent 17rem),
+      radial-gradient(circle at 16% 54%, rgba(255, 255, 255, 0.03), transparent 18rem),
+      #000;
   }
 }
 
 /* ==========================================================
-   02 / HERO MOBILE
+   HEADER
+========================================================== */
+
+@media (max-width: 900px) {
+  .site-header {
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    z-index: 1000;
+    width: 100%;
+    padding: 1rem 0.75rem;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.86), transparent);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+
+  .brand {
+    color: rgba(246, 246, 240, 0.9);
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+  }
+
+  .main-nav {
+    display: none !important;
+  }
+}
+
+/* ==========================================================
+   HERO — SIMPLE PREMIUM MOBILE
 ========================================================== */
 
 @media (max-width: 900px) {
   .hero {
     min-height: 100svh;
-    padding: 7rem 1rem 2rem;
+    padding: 7rem 0.75rem 2rem;
+    display: flex;
+    align-items: flex-end;
     overflow: hidden;
+    background: #000 !important;
   }
 
   .spline-hero {
-    opacity: 0.58;
-    transform: scale(1.04);
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0.42;
+    transform: scale(1.08);
+    pointer-events: none;
   }
 
   .hero-shade {
+    position: absolute;
+    inset: 0;
     background:
-      linear-gradient(to bottom, rgba(0, 0, 0, 0.2), #000 88%),
-      radial-gradient(circle at 50% 42%, transparent, rgba(0, 0, 0, 0.64));
+      linear-gradient(to bottom, rgba(0, 0, 0, 0.12), #000 88%),
+      radial-gradient(circle at 52% 45%, transparent, rgba(0, 0, 0, 0.72));
   }
 
   .hero-content {
-    width: min(100%, 42rem);
-    padding: 0;
+    position: relative;
+    z-index: 2;
+    width: var(--mobile-shell);
+    margin: 0 auto;
+    padding: 0 0 6.5rem;
   }
 
   .hero-label {
-    font-size: 0.58rem;
-    letter-spacing: 0.16em;
+    margin: 0 0 1rem;
+    color: var(--mobile-dim);
+    font-size: 0.56rem;
+    letter-spacing: 0.18em;
+    line-height: 1.3;
   }
 
   .hero h1 {
-    max-width: 10ch;
-    font-size: clamp(3.6rem, 17vw, 6.8rem);
-    letter-spacing: -0.09em;
+    max-width: 9ch;
+    margin: 0;
+    color: var(--mobile-text);
+    font-size: clamp(3.9rem, 18vw, 6.6rem);
+    font-weight: 300;
+    letter-spacing: -0.095em;
     line-height: 0.82;
   }
 
   .hero-sub {
     max-width: 21rem;
-    font-size: 0.82rem;
+    margin: 1.25rem 0 0;
+    color: var(--mobile-muted);
+    font-size: 0.9rem;
     line-height: 1.55;
   }
 
   .hero-actions {
-    left: 1rem;
-    right: 1rem;
-    bottom: 1.2rem;
+    position: absolute;
+    left: 0.75rem;
+    right: 0.75rem;
+    bottom: 1rem;
+    z-index: 3;
     display: grid;
     grid-template-columns: 1fr;
-    gap: 0.7rem;
+    gap: 0.65rem;
   }
 
   .btn {
     width: 100%;
-    min-height: 3rem;
+    min-height: 3.15rem;
+    display: flex;
+    align-items: center;
     justify-content: center;
   }
 }
 
 /* ==========================================================
-   03 / HORIZONTAL SHOWCASE MOBILE
-   Turns desktop wide scene into readable stacked content.
+   SHOWCASE — FLATTEN TO EDITORIAL STACK
 ========================================================== */
 
 @media (max-width: 900px) {
   .salo-showcase,
-  .bim-showcase {
-    min-height: auto !important;
-    height: auto !important;
-    overflow: visible !important;
-    background: #000;
-  }
-
-  .showcase-scroll {
-    height: auto !important;
-    min-height: auto !important;
-    overflow: visible !important;
-  }
-
-  .HomeShowcase {
-    min-height: auto !important;
-    height: auto !important;
-    padding: 5rem 1rem;
-    overflow: visible !important;
-  }
-
+  .bim-showcase,
+  .showcase-scroll,
+  .HomeShowcase,
   .HomeShowcase__outerFrame {
     height: auto !important;
     min-height: auto !important;
     overflow: visible !important;
+    background: #000 !important;
+  }
+
+  .HomeShowcase {
+    padding: 5.5rem 0.75rem;
   }
 
   .HomeShowcase__inner,
   .bim-track {
     position: relative !important;
     inset: auto !important;
-    width: 100% !important;
+    width: var(--mobile-shell) !important;
     height: auto !important;
     min-height: auto !important;
+    margin: 0 auto;
     display: grid !important;
-    gap: 1rem;
+    gap: 0;
     transform: none !important;
   }
 
@@ -188,86 +231,112 @@ spline-viewer {
     bottom: auto !important;
     width: 100% !important;
     max-width: none !important;
-    transform: none !important;
+    height: auto !important;
     opacity: 1 !important;
     visibility: visible !important;
+    transform: none !important;
+    filter: none !important;
   }
 
   .bim-intro,
   .bim-statement,
   .bim-close {
-    padding: 1.25rem 0;
+    padding: 0 0 2.5rem;
+    border-bottom: 1px solid var(--mobile-line);
+  }
+
+  .bim-intro p,
+  .bim-close p,
+  .bim-case span {
+    color: var(--mobile-dim);
+    font-size: 0.58rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
   }
 
   .bim-intro h2,
   .bim-statement h3,
   .bim-close h2 {
-    font-size: clamp(2.2rem, 12vw, 4.4rem);
-    letter-spacing: -0.075em;
-    line-height: 0.9;
+    margin: 0;
+    color: var(--mobile-text);
+    font-size: clamp(2.75rem, 13.5vw, 5.5rem);
+    font-weight: 300;
+    letter-spacing: -0.085em;
+    line-height: 0.86;
   }
 
   .bim-case {
-    padding: 1.2rem 0;
-    border-top: 1px solid rgba(246, 246, 240, 0.12);
+    padding: 1.4rem 0;
+    border-bottom: 1px solid var(--mobile-line);
   }
 
   .bim-case h3 {
-    font-size: clamp(1.35rem, 7vw, 2.45rem);
-    letter-spacing: -0.06em;
-    line-height: 1;
+    margin: 0.75rem 0 0;
+    color: var(--mobile-text);
+    font-size: clamp(1.55rem, 8vw, 2.9rem);
+    font-weight: 300;
+    letter-spacing: -0.07em;
+    line-height: 0.94;
   }
 
-  .bim-case p,
-  .bim-intro p,
-  .bim-close p {
-    font-size: 0.86rem;
-    line-height: 1.55;
+  .bim-case p {
+    max-width: 30rem;
+    margin: 0.8rem 0 0;
+    color: var(--mobile-muted);
+    font-size: 0.88rem;
+    line-height: 1.58;
   }
 
   .bim-editorial {
     display: flex !important;
     flex-wrap: wrap;
-    gap: 0.55rem;
-    padding: 1rem 0;
+    gap: 0.5rem;
+    padding: 1.4rem 0;
+    border-bottom: 1px solid var(--mobile-line);
   }
 
   .bim-editorial span {
-    padding: 0.55rem 0.7rem;
-    border: 1px solid rgba(246, 246, 240, 0.12);
+    padding: 0.52rem 0.68rem;
+    border: 1px solid var(--mobile-line);
     border-radius: 999px;
-    font-size: 0.62rem;
+    color: var(--mobile-muted);
+    font-size: 0.58rem;
+    letter-spacing: 0.08em;
   }
 }
 
 /* ==========================================================
-   04 / PROCESS MOBILE
+   PROCESS — NORMAL MOBILE SECTION
 ========================================================== */
 
 @media (max-width: 900px) {
   .process-3d {
-    min-height: auto !important;
     height: auto !important;
+    min-height: auto !important;
+    padding: 5.5rem 0.75rem;
     overflow: visible !important;
-    padding: 6rem 1rem;
-    background: #000;
+    background: #000 !important;
   }
 
   .process-scene {
     position: relative !important;
     height: auto !important;
     min-height: auto !important;
-    transform: none !important;
+    width: var(--mobile-shell);
+    margin: 0 auto;
     overflow: visible !important;
+    transform: none !important;
   }
 
   .process-word {
     position: relative !important;
     inset: auto !important;
-    margin: 0 0 2rem;
-    font-size: clamp(3.4rem, 17vw, 7rem);
-    letter-spacing: -0.1em;
-    line-height: 0.8;
+    margin: 0 0 1.8rem;
+    color: var(--mobile-text);
+    font-size: clamp(3.3rem, 17vw, 6.8rem);
+    font-weight: 300;
+    letter-spacing: -0.105em;
+    line-height: 0.82;
     transform: none !important;
   }
 
@@ -281,9 +350,11 @@ spline-viewer {
     inset: auto !important;
     height: auto !important;
     min-height: auto !important;
-    transform: none !important;
+    width: var(--mobile-shell);
+    margin: 0 auto;
     opacity: 1 !important;
     visibility: visible !important;
+    transform: none !important;
     pointer-events: auto !important;
   }
 
@@ -291,13 +362,21 @@ spline-viewer {
     position: relative !important;
     inset: auto !important;
     width: 100% !important;
-    max-width: 34rem;
+    max-width: 32rem;
     margin: 0 0 2rem;
-    transform: none !important;
     opacity: 1 !important;
+    transform: none !important;
+  }
+
+  .process-kicker {
+    color: var(--mobile-dim);
+    font-size: 0.58rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
   }
 
   .process-copy p {
+    color: var(--mobile-muted);
     font-size: 0.92rem;
     line-height: 1.65;
   }
@@ -305,9 +384,9 @@ spline-viewer {
   .process-cards {
     position: relative !important;
     inset: auto !important;
-    display: grid !important;
-    gap: 1rem;
     width: 100% !important;
+    display: grid !important;
+    gap: 0.9rem;
     transform: none !important;
   }
 
@@ -319,38 +398,49 @@ spline-viewer {
     width: 100% !important;
     max-width: none !important;
     min-height: auto !important;
-    transform: none !important;
+    padding: 1.15rem;
+    border: 1px solid var(--mobile-line);
+    border-radius: 0.42rem;
+    background: rgba(255, 255, 255, 0.035);
     opacity: 1 !important;
     visibility: visible !important;
+    transform: none !important;
   }
 
   .process-card__main h3 {
-    font-size: clamp(1.65rem, 8vw, 2.8rem);
-    line-height: 0.95;
+    color: var(--mobile-text);
+    font-size: clamp(1.65rem, 8vw, 2.7rem);
+    letter-spacing: -0.07em;
+    line-height: 0.94;
   }
 
   .process-card__main p {
+    color: var(--mobile-muted);
     font-size: 0.86rem;
     line-height: 1.58;
   }
 
   .process-card__note {
-    pointer-events: auto;
+    margin-top: 1rem;
+  }
+
+  .process-card__index {
+    opacity: 0.18;
   }
 }
 
 /* ==========================================================
-   05 / TRUST / FLYING CARDS MOBILE
+   TRUST — STACKED PROOF CARDS
 ========================================================== */
 
 @media (max-width: 900px) {
   .work-trust,
   .bim-trust {
-    min-height: auto !important;
     height: auto !important;
+    min-height: auto !important;
+    padding: 5.5rem 0.75rem;
     overflow: visible !important;
-    padding: 5rem 1rem;
-    background: #000;
+    background: #000 !important;
   }
 
   .work-trust__sticky,
@@ -359,20 +449,25 @@ spline-viewer {
     top: auto !important;
     height: auto !important;
     min-height: auto !important;
+    width: var(--mobile-shell);
+    margin: 0 auto;
     overflow: visible !important;
+    background: transparent !important;
   }
 
   .work-trust__bg-text,
   .bim-trust__headline {
     position: relative !important;
     inset: auto !important;
-    margin: 0 0 2rem;
-    font-size: clamp(3.4rem, 16vw, 6.6rem);
-    letter-spacing: -0.09em;
-    line-height: 0.82;
+    margin: 0 0 1.6rem;
+    color: var(--mobile-text);
+    font-size: clamp(3rem, 15vw, 6rem);
+    font-weight: 300;
+    letter-spacing: -0.095em;
+    line-height: 0.84;
     white-space: normal;
-    transform: none !important;
     opacity: 0.9 !important;
+    transform: none !important;
   }
 
   .work-trust__copy,
@@ -380,10 +475,17 @@ spline-viewer {
     position: relative !important;
     inset: auto !important;
     width: 100% !important;
-    max-width: 32rem;
-    margin: 0 0 2rem;
-    transform: none !important;
+    max-width: 31rem;
+    margin: 0 0 1.8rem;
     opacity: 1 !important;
+    transform: none !important;
+  }
+
+  .work-trust__copy p,
+  .bim-trust__copy p {
+    color: var(--mobile-muted);
+    font-size: 0.9rem;
+    line-height: 1.6;
   }
 
   .work-trust__track,
@@ -391,7 +493,7 @@ spline-viewer {
     position: relative !important;
     inset: auto !important;
     display: grid !important;
-    gap: 1rem;
+    gap: 0.9rem;
     perspective: none !important;
     transform-style: flat !important;
     overflow: visible !important;
@@ -405,95 +507,132 @@ spline-viewer {
     top: auto !important;
     width: 100% !important;
     min-height: auto !important;
-    transform: none !important;
+    padding: 1.15rem;
+    border: 1px solid var(--mobile-line);
+    border-radius: 0.42rem;
+    background: rgba(255, 255, 255, 0.035);
     opacity: 1 !important;
     visibility: visible !important;
+    transform: none !important;
+  }
+
+  .work-trust-card blockquote,
+  .bim-trust-card blockquote {
+    color: var(--mobile-muted);
+    font-size: 0.9rem;
+    line-height: 1.55;
   }
 }
 
 /* ==========================================================
-   06 / WORK ARCHIVE MOBILE
+   ARCHIVE — CLEAN MOBILE ACCORDION
 ========================================================== */
 
 @media (max-width: 900px) {
   .work-archive {
-    min-height: auto;
-    margin-top: 0;
-    overflow: visible;
-    background: #000;
+    min-height: auto !important;
+    margin-top: 0 !important;
+    overflow: visible !important;
+    background: #000 !important;
+  }
+
+  .work-archive__bg {
+    display: none;
   }
 
   .work-archive__shell {
-    width: min(100% - 2rem, 42rem);
-    min-height: auto;
-    padding: 6rem 0 6rem;
+    width: var(--mobile-shell);
+    min-height: auto !important;
+    padding: 5.5rem 0;
   }
 
   .work-archive__header {
     display: grid;
     grid-template-columns: 1fr;
     width: 100%;
-    margin: 0 0 4rem;
-    gap: 1.1rem;
+    margin: 0 0 3.2rem;
+    gap: 1rem;
   }
 
   .work-archive__label {
+    display: flex;
     flex-direction: row;
     justify-content: space-between;
-    padding-top: 0;
     width: 100%;
+    padding: 0;
+    color: var(--mobile-dim);
+    font-size: 0.54rem;
+  }
+
+  .work-archive__kicker {
+    color: var(--mobile-dim);
+    font-size: 0.54rem;
   }
 
   .work-archive__title {
     max-width: 100%;
-    font-size: clamp(2.6rem, 13vw, 5.6rem);
-    letter-spacing: -0.085em;
-    line-height: 0.86;
+    color: var(--mobile-text);
+    font-size: clamp(2.65rem, 13.5vw, 5.8rem);
+    font-weight: 300;
+    letter-spacing: -0.09em;
+    line-height: 0.84;
   }
 
   .work-archive__intro {
     max-width: 31rem;
     justify-self: start;
-    padding-top: 0;
-    font-size: 0.88rem;
-    line-height: 1.65;
-  }
-
-  .work-archive__list {
-    gap: 0;
+    padding: 0;
+    color: var(--mobile-muted);
+    font-size: 0.9rem;
+    line-height: 1.62;
   }
 
   .work-project {
-    overflow: visible;
+    border: 0;
+    opacity: 1 !important;
+  }
+
+  .work-project::before,
+  .work-project:last-child::after {
+    background: var(--mobile-line);
+    transform: scaleX(1) !important;
   }
 
   .work-project__summary {
-    grid-template-columns: 2.1rem minmax(0, 1fr) 1rem;
+    min-height: auto;
+    padding: 1.15rem 0;
+    display: grid;
+    grid-template-columns: 2rem minmax(0, 1fr) 1.1rem;
     grid-template-areas:
       "index name arrow"
       "index meta arrow";
-    min-height: auto;
-    padding: 1.15rem 0;
-    gap: 0.45rem 0.8rem;
+    gap: 0.42rem 0.75rem;
+    background: transparent !important;
   }
 
   .work-project__index {
     grid-area: index;
     align-self: start;
-    padding-top: 0.28rem;
+    padding-top: 0.32rem;
+    color: var(--mobile-dim);
+    font-size: 0.54rem;
   }
 
   .work-project__name {
     grid-area: name;
-    font-size: clamp(1.65rem, 9vw, 3.1rem);
-    line-height: 0.94;
-    letter-spacing: -0.07em;
+    color: var(--mobile-text);
+    font-size: clamp(1.55rem, 8.4vw, 3rem);
+    font-weight: 300;
+    letter-spacing: -0.075em;
+    line-height: 0.92;
+    transform: none !important;
   }
 
   .work-project__meta {
     grid-area: meta;
     justify-self: start;
-    font-size: 0.54rem;
+    color: var(--mobile-dim);
+    font-size: 0.52rem;
   }
 
   .work-project__year {
@@ -504,7 +643,8 @@ spline-viewer {
     grid-area: arrow;
     align-self: start;
     justify-self: end;
-    padding-top: 0.22rem;
+    padding-top: 0.25rem;
+    color: var(--mobile-muted);
   }
 
   .work-project__preview,
@@ -514,95 +654,144 @@ spline-viewer {
   }
 
   .work-project__panel {
-    contain: layout;
+    height: auto !important;
+    max-height: 0;
+    opacity: 1 !important;
+    overflow: hidden !important;
+    padding: 0 !important;
+    transform: none !important;
+    transition: max-height 520ms cubic-bezier(0.19, 1, 0.22, 1);
+  }
+
+  .work-project[open] .work-project__panel,
+  .work-project.is-open .work-project__panel,
+  .work-project.is-opening .work-project__panel {
+    max-height: 1800px;
+    padding-bottom: 1.4rem !important;
   }
 
   .work-project__case,
   .work-project__content {
-    display: grid;
+    display: grid !important;
     grid-template-columns: 1fr !important;
-    gap: 1.5rem;
+    gap: 1.25rem;
     width: 100%;
-    padding: 1rem 0 0;
+    padding: 0.8rem 0 0;
+  }
+
+  .work-project__eyebrow {
+    color: var(--mobile-dim);
+    font-size: 0.56rem;
   }
 
   .work-project__statement {
-    font-size: clamp(1.75rem, 9vw, 3.2rem);
+    color: var(--mobile-text);
+    font-size: clamp(1.65rem, 8.4vw, 3rem);
+    letter-spacing: -0.075em;
     line-height: 0.98;
-    letter-spacing: -0.07em;
   }
 
-  .work-project__proof {
-    display: grid;
-    grid-template-columns: 1fr !important;
-    gap: 1rem;
-  }
-
-  .work-project__proof section {
-    padding: 1rem 0;
-    border-top: 1px solid rgba(246, 246, 240, 0.1);
-  }
-
+  .work-project__proof,
   .work-project__results,
   .work-project__stats {
-    display: grid;
+    display: grid !important;
     grid-template-columns: 1fr !important;
-    gap: 1rem;
+    gap: 0.9rem;
+  }
+
+  .work-project__proof section,
+  .work-project__results > *,
+  .work-project__stats > * {
+    padding: 1rem 0;
+    border-top: 1px solid var(--mobile-line);
+  }
+
+  .work-project__proof span,
+  .work-project__proof p,
+  .work-project__results span,
+  .work-project__stats span {
+    color: var(--mobile-muted);
+    font-size: 0.88rem;
+    line-height: 1.58;
   }
 
   .work-project__media {
     width: 100%;
     max-width: 100%;
+    margin-top: 0.75rem;
+  }
+
+  .work-project__media img {
+    width: 100%;
+    height: auto;
+    border-radius: 0.35rem;
   }
 
   .focus-word {
-    cursor: default;
+    color: rgba(255, 255, 255, 0.94);
   }
 }
 
 /* ==========================================================
-   07 / BOOK SECTION MOBILE
+   BOOK SECTION — FINAL MOBILE CTA
 ========================================================== */
 
 @media (max-width: 900px) {
   .book-with-us {
-    min-height: auto;
+    min-height: auto !important;
     overflow: hidden;
+    background: #000 !important;
+  }
+
+  .book-with-us__bg {
+    display: none;
   }
 
   .book-with-us__shell {
-    width: min(100% - 2rem, 42rem);
-    min-height: auto;
-    padding: 6rem 0 3rem;
+    width: var(--mobile-shell);
+    min-height: auto !important;
+    padding: 5.5rem 0 3rem;
   }
 
   .book-with-us__grid {
+    display: grid;
     grid-template-columns: 1fr;
-    gap: 2.5rem;
+    gap: 2.3rem;
+  }
+
+  .book-with-us__kicker {
+    color: var(--mobile-dim);
+    font-size: 0.56rem;
   }
 
   .book-with-us__title {
-    max-width: 8.6ch;
-    font-size: clamp(3.7rem, 17vw, 7.3rem);
+    max-width: 8.8ch;
+    color: var(--mobile-text);
+    font-size: clamp(3.55rem, 17vw, 7rem);
+    font-weight: 300;
     letter-spacing: -0.095em;
     line-height: 0.82;
   }
 
   .book-with-us__intro {
     max-width: 31rem;
+    color: var(--mobile-muted);
     font-size: 0.92rem;
     line-height: 1.66;
   }
 
   .book-with-us__right {
-    justify-content: stretch;
+    display: block;
   }
 
   .book-card {
     width: 100%;
     min-height: auto;
     padding: 1.15rem;
-    border-radius: 0.38rem;
+    border: 1px solid var(--mobile-line);
+    border-radius: 0.42rem;
+    background: rgba(255, 255, 255, 0.04);
+    box-shadow: none;
     transform: none !important;
   }
 
@@ -611,24 +800,32 @@ spline-viewer {
   }
 
   .book-card__top {
+    color: var(--mobile-dim);
     font-size: 0.5rem;
   }
 
   .book-card__main {
-    margin-top: 4rem;
+    margin-top: 3.7rem;
   }
 
   .book-card__main p {
-    font-size: clamp(1.55rem, 7.8vw, 2.6rem);
+    color: var(--mobile-text);
+    font-size: clamp(1.55rem, 7.8vw, 2.7rem);
+    letter-spacing: -0.07em;
     line-height: 1;
   }
 
   .book-card__meta {
-    margin-top: 3rem;
+    margin-top: 2.6rem;
+  }
+
+  .book-card__meta div {
+    border-top: 1px solid var(--mobile-line);
   }
 
   .book-card__button {
-    min-height: 3.2rem;
+    min-height: 3.25rem;
+    color: #fff;
     font-size: 0.92rem;
   }
 
@@ -636,52 +833,44 @@ spline-viewer {
     flex-direction: column;
     gap: 0.7rem;
     margin-top: 4rem;
+    color: var(--mobile-dim);
     line-height: 1.45;
   }
 }
 
 /* ==========================================================
-   08 / SMALL PHONE TUNING
+   VERY SMALL PHONES
 ========================================================== */
 
 @media (max-width: 520px) {
-  .site-header {
-    align-items: flex-start;
-  }
+  @media (max-width: 900px) {
+    :root {
+      --mobile-shell: min(100% - 1rem, 42rem);
+    }
 
-  .main-nav {
-    display: none;
-  }
+    .hero {
+      padding-left: 0.5rem;
+      padding-right: 0.5rem;
+    }
 
-  .hero {
-    padding-top: 6.5rem;
-  }
+    .hero-actions {
+      left: 0.5rem;
+      right: 0.5rem;
+    }
 
-  .hero h1 {
-    font-size: clamp(3.25rem, 18vw, 5.4rem);
-  }
+    .hero h1 {
+      font-size: clamp(3.25rem, 18vw, 5.4rem);
+    }
 
-  .work-archive__shell,
-  .book-with-us__shell {
-    width: min(100% - 1.25rem, 42rem);
-  }
-
-  .work-project__summary {
-    grid-template-columns: 1.8rem minmax(0, 1fr) 1rem;
-  }
-
-  .work-project__name {
-    font-size: clamp(1.45rem, 9vw, 2.7rem);
-  }
-
-  .book-card__top {
-    flex-direction: column;
-    gap: 0.35rem;
+    .book-card__top {
+      flex-direction: column;
+      gap: 0.35rem;
+    }
   }
 }
 
 /* ==========================================================
-   09 / TOUCH DEVICES
+   TOUCH / REDUCED MOTION
 ========================================================== */
 
 @media (hover: none) and (pointer: coarse) {
@@ -695,19 +884,7 @@ spline-viewer {
   .work-project__summary:hover .work-project__name {
     transform: none !important;
   }
-
-  .book-card__button:hover {
-    padding-left: 0;
-  }
-
-  .book-card__button:hover span:last-child {
-    transform: none;
-  }
 }
-
-/* ==========================================================
-   10 / REDUCED MOTION
-========================================================== */
 
 @media (prefers-reduced-motion: reduce) {
   *,
