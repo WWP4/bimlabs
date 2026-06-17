@@ -1,11 +1,11 @@
 /* ==========================================================
-   BIM LABS — MOBILE JS
-   Load this file LAST.
+   BIM LABS — MOBILE COHESIVE JS
+   Load LAST.
    Purpose:
-   - Disable desktop-only interactions on mobile/touch
-   - Prevent pinned/transform leftovers from making mobile feel broken
-   - Fix mobile viewport height
-   - Make dropdown taps feel reliable
+   - Kill desktop animation leftovers on mobile
+   - Remove hover previews
+   - Make project accordions tap cleanly
+   - Keep mobile simple and premium
 ========================================================== */
 
 (() => {
@@ -13,69 +13,24 @@
 
   const mobileQuery = window.matchMedia("(max-width: 900px)");
   const touchQuery = window.matchMedia("(hover: none) and (pointer: coarse)");
-  const reduceQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
 
   function isMobile() {
     return mobileQuery.matches || touchQuery.matches;
   }
 
-  /* ==========================================================
-     VIEWPORT HEIGHT FIX
-  ========================================================== */
-
-  function setViewportHeightVar() {
+  function setViewportUnit() {
     const vh = window.innerHeight * 0.01;
     document.documentElement.style.setProperty("--mobile-vh", `${vh}px`);
   }
 
-  /* ==========================================================
-     REMOVE DESKTOP FLOATING PREVIEWS
-  ========================================================== */
-
-  function removeFloatingPreviews() {
-    document
-      .querySelectorAll(
-        ".work-archive-floating-preview, .work-project__hover-image"
-      )
-      .forEach((node) => node.remove());
-
-    document
-      .querySelectorAll(".work-project.is-previewing")
-      .forEach((row) => row.classList.remove("is-previewing"));
-  }
-
-  /* ==========================================================
-     KILL MOBILE SCROLLTRIGGERS FOR HEAVY SECTIONS
-  ========================================================== */
-
-  function killHeavyMobileScrollTriggers() {
+  function killScrollTriggers() {
     if (!isMobile()) return;
 
     const ScrollTrigger = window.ScrollTrigger;
     if (!ScrollTrigger || typeof ScrollTrigger.getAll !== "function") return;
 
     ScrollTrigger.getAll().forEach((trigger) => {
-      const vars = trigger.vars || {};
-      const id = vars.id || "";
-      const triggerEl = vars.trigger;
-
-      const shouldKill =
-        id.includes("workArchive") ||
-        id.includes("Archive") ||
-        id.includes("process") ||
-        id.includes("Process") ||
-        id.includes("showcase") ||
-        id.includes("Showcase") ||
-        id.includes("trust") ||
-        id.includes("Trust") ||
-        triggerEl?.classList?.contains("work-archive") ||
-        triggerEl?.classList?.contains("process-3d") ||
-        triggerEl?.classList?.contains("salo-showcase") ||
-        triggerEl?.classList?.contains("bim-showcase") ||
-        triggerEl?.classList?.contains("bim-trust") ||
-        triggerEl?.classList?.contains("work-trust");
-
-      if (shouldKill && typeof trigger.kill === "function") {
+      if (typeof trigger.kill === "function") {
         trigger.kill();
       }
     });
@@ -85,14 +40,22 @@
     }
   }
 
-  /* ==========================================================
-     RESET INLINE TRANSFORMS FROM DESKTOP ANIMATIONS
-  ========================================================== */
+  function removeHoverPreviews() {
+    document
+      .querySelectorAll(
+        ".work-archive-floating-preview, .work-project__hover-image"
+      )
+      .forEach((node) => node.remove());
 
-  function resetDesktopInlineStyles() {
+    document.querySelectorAll(".work-project").forEach((row) => {
+      row.classList.remove("is-previewing", "is-glitching", "is-soft-signal");
+    });
+  }
+
+  function forceMobileLayoutState() {
     if (!isMobile()) return;
 
-    const selectors = [
+    const resetNodes = [
       ".HomeShowcase__inner",
       ".bim-track",
       ".bim-intro",
@@ -125,10 +88,12 @@
       ".work-project__name",
       ".work-project__meta",
       ".work-project__year",
-      ".work-project__arrow"
+      ".work-project__arrow",
+      ".book-with-us",
+      ".book-card"
     ];
 
-    document.querySelectorAll(selectors.join(",")).forEach((node) => {
+    document.querySelectorAll(resetNodes.join(",")).forEach((node) => {
       node.style.removeProperty("transform");
       node.style.removeProperty("translate");
       node.style.removeProperty("scale");
@@ -149,13 +114,13 @@
       archive.classList.remove("is-forming");
       archive.classList.add("is-formed");
     }
+
+    document.documentElement.classList.add("is-mobile-site");
   }
 
-  /* ==========================================================
-     MOBILE ACCORDION TAP CLEANUP
-  ========================================================== */
+  function setupMobileArchiveAccordion() {
+    if (!isMobile()) return;
 
-  function setupMobileArchiveTaps() {
     const archive = document.querySelector(".work-archive");
     if (!archive) return;
 
@@ -164,25 +129,42 @@
 
     rows.forEach((row) => {
       const summary = row.querySelector(".work-project__summary");
-      if (!summary || summary.dataset.mobileTapReady === "true") return;
+      const panel = row.querySelector(".work-project__panel");
 
-      summary.dataset.mobileTapReady = "true";
+      if (!summary || !panel) return;
+      if (summary.dataset.mobileAccordionReady === "true") return;
 
-      summary.addEventListener(
-        "touchstart",
-        () => {
-          row.classList.remove("is-previewing", "is-soft-signal", "is-glitching");
-        },
-        { passive: true }
-      );
+      summary.dataset.mobileAccordionReady = "true";
+
+      summary.addEventListener("click", () => {
+        window.setTimeout(() => {
+          rows.forEach((other) => {
+            if (other !== row) {
+              other.classList.remove("is-open", "is-opening", "is-closing");
+              other.removeAttribute("open");
+              other.open = false;
+
+              const otherSummary = other.querySelector(".work-project__summary");
+              if (otherSummary) {
+                otherSummary.setAttribute("aria-expanded", "false");
+              }
+            }
+          });
+
+          if (row.open) {
+            row.classList.add("is-open");
+            row.classList.remove("is-closing");
+            summary.setAttribute("aria-expanded", "true");
+          } else {
+            row.classList.remove("is-open", "is-opening", "is-closing");
+            summary.setAttribute("aria-expanded", "false");
+          }
+        }, 0);
+      });
     });
   }
 
-  /* ==========================================================
-     BOOK CARD MOBILE CLEANUP
-  ========================================================== */
-
-  function disableBookMouseLightOnMobile() {
+  function disableBookMouseLight() {
     if (!isMobile()) return;
 
     const card = document.querySelector("[data-book-card]");
@@ -192,57 +174,43 @@
     card.style.setProperty("--book-y", "50%");
   }
 
-  /* ==========================================================
-     MOBILE CLASS
-  ========================================================== */
+  function applyMobileSite() {
+    setViewportUnit();
 
-  function updateMobileClass() {
-    document.documentElement.classList.toggle("is-mobile", isMobile());
-    document.documentElement.classList.toggle(
-      "is-reduced-motion",
-      reduceQuery.matches
-    );
+    if (!isMobile()) {
+      document.documentElement.classList.remove("is-mobile-site");
+      return;
+    }
+
+    killScrollTriggers();
+    removeHoverPreviews();
+    forceMobileLayoutState();
+    setupMobileArchiveAccordion();
+    disableBookMouseLight();
   }
 
-  /* ==========================================================
-     INIT / REFRESH
-  ========================================================== */
+  function scheduleApply() {
+    window.clearTimeout(window.__bimMobileTimer);
 
-  function applyMobileFixes() {
-    setViewportHeightVar();
-    updateMobileClass();
-
-    if (!isMobile()) return;
-
-    removeFloatingPreviews();
-    killHeavyMobileScrollTriggers();
-    resetDesktopInlineStyles();
-    setupMobileArchiveTaps();
-    disableBookMouseLightOnMobile();
-  }
-
-  function onResize() {
-    window.clearTimeout(window.__bimMobileResizeTimer);
-
-    window.__bimMobileResizeTimer = window.setTimeout(() => {
-      applyMobileFixes();
-    }, 120);
+    window.__bimMobileTimer = window.setTimeout(() => {
+      applyMobileSite();
+    }, 80);
   }
 
   if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", applyMobileFixes, {
+    document.addEventListener("DOMContentLoaded", applyMobileSite, {
       once: true
     });
   } else {
-    applyMobileFixes();
+    applyMobileSite();
   }
 
-  window.addEventListener("resize", onResize, { passive: true });
-  window.addEventListener("orientationchange", onResize, { passive: true });
+  window.addEventListener("load", applyMobileSite, { once: true });
+  window.addEventListener("resize", scheduleApply, { passive: true });
+  window.addEventListener("orientationchange", scheduleApply, { passive: true });
 
   if (mobileQuery.addEventListener) {
-    mobileQuery.addEventListener("change", applyMobileFixes);
-    touchQuery.addEventListener("change", applyMobileFixes);
-    reduceQuery.addEventListener("change", applyMobileFixes);
+    mobileQuery.addEventListener("change", applyMobileSite);
+    touchQuery.addEventListener("change", applyMobileSite);
   }
 })();
