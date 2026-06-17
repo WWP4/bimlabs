@@ -1149,84 +1149,65 @@ select {
     opacity: .72;
   }
 
-  .mock::after {
-    display: none;
+  .bim-case p {
+    font-size: 12px;
+    line-height: 1.55;
+  }
+
+  .process-scene {
+    min-height: 520px;
+  }
+
+  .process-overlay {
+    width: calc(100% - 28px);
+  }
+
+  .process-copy {
+    padding-top: 34vh;
+    margin-bottom: 42vh;
+  }
+
+  .process-cards {
+    width: calc(100% - 28px);
+    padding: 92vh 0 118vh;
+    gap: 92px;
+  }
+
+  .process-card {
+    top: 88px;
+  }
+
+  .process-card__meta,
+  .process-card__actions {
+    gap: 12px;
+    font-size: 9px;
+  }
+
+  .process-card__note {
+    padding: 16px;
+  }
+
+  .book-card {
+    min-height: auto;
   }
 }
 
-/* REDUCED MOTION */
-
-@media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
+@media (hover: none) and (pointer: coarse) {
+  .btn:hover,
+  .bim-close a:hover,
+  .process-card:hover,
+  .process-card:hover .process-card__note,
+  .book-card:hover {
+    transform: none;
   }
 
-  *,
-  *::before,
-  *::after {
-    transition-duration: .001ms !important;
-    animation-duration: .001ms !important;
-    animation-iteration-count: 1 !important;
+  .main-nav:hover a:not(:hover) {
+    opacity: 1;
   }
 
-  .spline-hero {
-    opacity: .82;
+  .process-card:hover::before,
+  .process-card:hover .process-card__note::after,
+  .book-card:hover::before {
+    opacity: 0;
   }
-}
-
-
-/* =========================================================
-   CINEMATIC NAV BEHAVIOR
-   ========================================================= */
-
-.site-header {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 1000;
-
-  transform: translateY(0);
-  opacity: 1;
-
-  transition:
-    transform 0.55s cubic-bezier(0.22, 1, 0.36, 1),
-    opacity 0.45s ease,
-    background 0.45s ease,
-    border-color 0.45s ease,
-    backdrop-filter 0.45s ease;
-
-  will-change: transform, opacity;
-}
-
-.site-header.nav-hidden {
-  transform: translateY(-110%);
-  opacity: 0;
-  pointer-events: none;
-}
-
-.site-header.nav-visible {
-  transform: translateY(0);
-  opacity: 1;
-  pointer-events: auto;
-}
-
-.site-header.is-scrolled {
-  background: rgba(3, 3, 3, 0.46);
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
-  border-bottom: 1px solid rgba(244, 241, 234, 0.08);
-}
-
-/* Optional: make nav feel lighter and less in the way */
-.site-header .brand,
-.site-header .main-nav a {
-  transition:
-    opacity 0.35s ease,
-    color 0.35s ease;
-}
-
-.site-header.is-scrolled .brand,
-.site-header.is-scrolled .main-nav a {
-  color: rgba(244, 241, 234, 0.72);
 }
