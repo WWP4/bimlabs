@@ -1373,7 +1373,7 @@ select {
 
 /* =========================================================
    MOBILE / TABLET RESPONSIVE POLISH
-   Appended-only overrides. Desktop styles above remain unchanged.
+   CSS-only overrides. Desktop styles above remain unchanged.
    ========================================================= */
 
 @media (max-width: 1024px) {
@@ -1381,14 +1381,11 @@ select {
   body {
     width: 100%;
     max-width: 100%;
-    overflow-x: clip;
+    overflow-x: hidden;
   }
 
   main,
-  section {
-    max-width: 100%;
-  }
-
+  section,
   img,
   svg,
   iframe,
@@ -1399,7 +1396,7 @@ select {
   .site-header {
     left: 50%;
     right: auto;
-    width: calc(100% - 32px);
+    width: calc(100% - 28px);
     padding: 14px 14px 12px;
     transform: translateX(-50%);
   }
@@ -1432,29 +1429,35 @@ select {
   }
 
   .spline-hero {
-    opacity: .68;
+    opacity: .64;
+    transform: scale(1.08);
     mask-image: radial-gradient(
       circle at center,
       #000 8%,
-      rgba(0,0,0,.92) 38%,
-      rgba(0,0,0,.52) 68%,
+      rgba(0,0,0,.9) 38%,
+      rgba(0,0,0,.5) 68%,
       rgba(0,0,0,.04) 100%
     );
   }
 
   .hero-content {
-    bottom: 26vh;
+    bottom: 27vh;
     width: min(620px, calc(100vw - 36px));
   }
 
+  .hero-label {
+    margin-bottom: 12px;
+    font-size: 10px;
+  }
+
   .hero-content h1 {
-    font-size: clamp(18px, 4.7vw, 28px);
+    font-size: clamp(18px, 4.8vw, 28px);
     line-height: 1.42;
   }
 
   .hero-sub {
     max-width: 34rem;
-    font-size: clamp(10px, 2.55vw, 13px);
+    font-size: clamp(10px, 2.6vw, 13px);
     line-height: 1.75;
   }
 
@@ -1468,50 +1471,86 @@ select {
     padding-inline: 18px;
   }
 
+  /* Mobile showcase: use a native horizontal canvas instead of a broken stack. */
   .showcase-scroll,
   .bim-showcase .showcase-scroll {
-    height: 430vh;
-    min-height: 2600px;
+    height: auto !important;
+    min-height: 0;
+    padding: clamp(54px, 9vh, 96px) 0;
+    overflow: hidden;
   }
 
   .HomeShowcase {
-    position: sticky;
-    top: 0;
-    height: 100svh;
-    min-height: 620px;
-    overflow: hidden;
+    position: relative !important;
+    top: auto;
+    width: 100%;
+    height: auto !important;
+    min-height: 0;
+    overflow: visible;
   }
 
   .HomeShowcase__outerFrame {
-    position: absolute;
-    inset: 16px !important;
-    height: auto;
+    position: relative !important;
+    inset: auto !important;
+    width: calc(100% - 28px);
+    height: clamp(560px, 72svh, 720px);
+    margin: 0 auto;
     border: 1px solid var(--showcase-line);
-    border-radius: 10px;
-    overflow: hidden;
+    border-radius: 12px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    overscroll-behavior-x: contain;
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x proximity;
     background:
       linear-gradient(rgba(255,255,255,.018) 1px, transparent 1px),
       linear-gradient(90deg, rgba(255,255,255,.018) 1px, transparent 1px),
       rgba(255,255,255,.022);
     background-size: 72px 72px;
+    transform: none !important;
+    opacity: 1 !important;
+  }
+
+  .HomeShowcase__outerFrame::after {
+    content: "Swipe horizontally";
+    position: sticky;
+    left: 18px;
+    bottom: 14px;
+    z-index: 80;
+    display: inline-block;
+    margin: 0 0 14px 18px;
+    padding: 8px 10px;
+    border: 1px solid rgba(255,255,255,.12);
+    border-radius: 999px;
+    background: rgba(2,2,2,.66);
+    color: rgba(255,255,255,.52);
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    pointer-events: none;
   }
 
   .HomeShowcase__inner,
   .bim-track {
-    position: absolute;
-    inset: 0 auto auto 0;
-    width: 6600px;
-    height: 100%;
-    padding: 0;
-    display: block;
-    transform-origin: left center;
+    position: relative !important;
+    left: auto !important;
+    top: auto !important;
+    width: 4488px !important;
+    height: 640px !important;
+    padding: 0 !important;
+    display: block !important;
+    transform: none !important;
+  }
+
+  .bim-track {
+    transform-origin: left top;
   }
 
   .mock,
   .copy-card,
   .center-copy,
   .intro-title,
-  .path,
   .bim-intro,
   .bim-editorial,
   .bim-case,
@@ -1519,39 +1558,74 @@ select {
   .bim-line-art,
   .bim-close {
     position: absolute !important;
-    transform: translateZ(0);
+    transform: none !important;
   }
 
-  .copy-card,
-  .bim-case {
-    max-width: calc(100vw - 52px);
-  }
+  .bim-intro { left: 48px !important; top: 170px !important; width: 560px !important; }
+  .bim-editorial--one { left: 780px !important; top: 150px !important; width: 620px !important; }
+  .bim-case--wwp { left: 1510px !important; top: 300px !important; }
+  .bim-case--glca { left: 1990px !important; top: 120px !important; }
+  .bim-statement { left: 2480px !important; top: 180px !important; width: 560px !important; }
+  .bim-line-art { left: 2480px !important; top: 420px !important; width: 520px !important; height: 150px !important; }
+  .bim-editorial--two { left: 3160px !important; top: 155px !important; width: 620px !important; }
+  .bim-case--momentum { left: 3830px !important; top: 130px !important; }
+  .bim-case--orynd { left: 3830px !important; top: 390px !important; }
+  .bim-close { left: 4210px !important; top: 185px !important; width: 520px !important; }
 
   .bim-intro h2,
   .bim-close h2,
   .bim-editorial span,
   .bim-statement h3 {
-    font-size: clamp(42px, 10vw, 76px);
+    font-size: clamp(44px, 9vw, 72px);
     letter-spacing: -.065em;
   }
 
-  .bim-case h3 {
-    font-size: clamp(24px, 5.8vw, 30px);
+  .bim-case {
+    width: 360px !important;
   }
 
+  .bim-case h3 {
+    font-size: 25px;
+  }
+
+  .bim-case p {
+    max-width: 320px;
+    font-size: 13px;
+  }
+
+  .stage-label,
+  .bim-ruler,
+  .bim-index,
+  .bim-wordmark,
+  .nominee,
+  .cursor-replica,
+  .path {
+    display: none !important;
+  }
+
+  /* Mobile process: keep the pinned cinematic word, but let cards read normally. */
   .process-3d {
-    overflow: clip;
+    overflow: hidden;
+    background: #020202;
   }
 
   .process-scene {
+    position: sticky;
+    top: 0;
     height: 100svh;
-    min-height: 560px;
-    perspective: 850px;
+    min-height: 520px;
+    perspective: 760px;
   }
 
   .process-word {
-    font-size: clamp(68px, 19vw, 170px);
-    letter-spacing: -.09em;
+    font-size: clamp(64px, 18vw, 168px);
+    line-height: .82;
+    letter-spacing: -.088em;
+    transform-origin: 52% 50%;
+  }
+
+  .process-void {
+    width: clamp(88px, 22vw, 170px);
   }
 
   .work-reveal-preview__field {
@@ -1574,29 +1648,50 @@ select {
     font-size: clamp(32px, 10vw, 64px);
   }
 
+  .process-overlay {
+    position: relative;
+    z-index: 8;
+  }
+
+  .process-copy {
+    width: min(calc(100% - 32px), 720px);
+    margin-inline: auto;
+    padding-top: 42vh;
+  }
+
+  .process-copy h2 {
+    font-size: clamp(42px, 11vw, 76px);
+    line-height: .9;
+  }
+
+  .process-copy p:not(.process-kicker) {
+    font-size: 15px;
+    line-height: 1.65;
+  }
+
   .process-cards {
     width: min(calc(100% - 32px), 720px);
-    padding: 86vh 0 72vh;
-    gap: clamp(54px, 12vh, 118px);
+    padding: clamp(44px, 8vh, 78px) 0 clamp(96px, 16vh, 150px) !important;
+    gap: 22px;
   }
 
   .process-card,
   .process-card--left,
   .process-card--right {
     justify-self: stretch;
-    width: 100%;
+    width: 100% !important;
     min-height: auto;
     padding: clamp(22px, 5vw, 34px);
   }
 
   .process-card__main {
-    margin: clamp(44px, 8vh, 78px) 0 clamp(28px, 5vh, 42px);
+    margin: clamp(38px, 7vh, 68px) 0 clamp(26px, 5vh, 38px);
   }
 
   .process-card__main h3 {
     max-width: 100%;
-    font-size: clamp(40px, 11vw, 72px);
-    line-height: .86;
+    font-size: clamp(38px, 10vw, 68px);
+    line-height: .88;
   }
 
   .process-card__main p,
@@ -1610,19 +1705,19 @@ select {
   .process-card__actions,
   .process-card__note-head {
     white-space: normal;
-    letter-spacing: .18em;
+    letter-spacing: .16em;
   }
 
   .work-trust,
   .work-archive,
   .book-with-us {
-    overflow: clip;
+    overflow: hidden;
   }
 
   .work-trust__sticky {
-    position: sticky;
-    top: 0;
-    min-height: 100svh;
+    position: relative;
+    top: auto;
+    min-height: auto;
   }
 
   .work-archive__shell,
@@ -1657,7 +1752,7 @@ select {
   }
 
   .hero-content {
-    bottom: 28vh;
+    bottom: 29vh;
   }
 
   .hero-actions {
@@ -1669,48 +1764,75 @@ select {
     flex-wrap: wrap;
   }
 
-  .hero-label {
-    margin-bottom: 12px;
-    font-size: 10px;
-  }
-
   .btn {
-    flex: 1 1 150px;
+    flex: 1 1 145px;
     max-width: 220px;
   }
 
   .showcase-scroll,
   .bim-showcase .showcase-scroll {
-    height: 390vh;
-    min-height: 2300px;
-  }
-
-  .HomeShowcase {
-    min-height: 560px;
+    padding: 42px 0 58px;
   }
 
   .HomeShowcase__outerFrame {
-    inset: 12px !important;
+    width: calc(100% - 22px);
+    height: 600px;
   }
 
   .HomeShowcase__inner,
   .bim-track {
-    zoom: .68;
+    width: 3600px !important;
+    height: 600px !important;
   }
 
-  .nominee,
-  .cursor-replica,
-  .stage-label,
-  .bim-ruler,
-  .bim-wordmark,
-  .bim-index,
-  .path {
-    display: none !important;
+  .bim-intro { left: 28px !important; top: 150px !important; width: 310px !important; }
+  .bim-editorial--one { left: 390px !important; top: 145px !important; width: 390px !important; }
+  .bim-case--wwp { left: 835px !important; top: 130px !important; }
+  .bim-case--glca { left: 835px !important; top: 360px !important; }
+  .bim-statement { left: 1215px !important; top: 160px !important; width: 380px !important; }
+  .bim-line-art { left: 1215px !important; top: 390px !important; width: 360px !important; height: 130px !important; }
+  .bim-editorial--two { left: 1650px !important; top: 145px !important; width: 390px !important; }
+  .bim-case--momentum { left: 2095px !important; top: 130px !important; }
+  .bim-case--orynd { left: 2095px !important; top: 360px !important; }
+  .bim-close { left: 2490px !important; top: 165px !important; width: 350px !important; }
+
+  .bim-intro h2,
+  .bim-close h2,
+  .bim-editorial span,
+  .bim-statement h3 {
+    font-size: 42px;
+  }
+
+  .bim-case {
+    width: 310px !important;
+  }
+
+  .bim-case span {
+    margin-bottom: 20px;
+  }
+
+  .bim-case h3 {
+    margin-bottom: 14px;
+    font-size: 22px;
+  }
+
+  .bim-case p {
+    font-size: 12px;
+    line-height: 1.55;
+  }
+
+  .process-scene {
+    min-height: 500px;
+  }
+
+  .process-copy {
+    width: calc(100% - 28px);
+    padding-top: 36vh;
   }
 
   .process-cards {
     width: calc(100% - 28px);
-    padding-top: 78vh;
+    gap: 18px;
   }
 
   .process-card__meta,
@@ -1732,6 +1854,7 @@ select {
   .btn:hover,
   .bim-close a:hover,
   .process-card:hover,
+  .process-card:hover .process-card__note,
   .book-card:hover {
     transform: none;
   }
