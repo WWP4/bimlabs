@@ -11,6 +11,7 @@
     disabledProcessTriggers: [],
     resizeHandler: null,
     orientationHandler: null,
+    showcaseScrollHandler: null,
   };
 
   const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
@@ -52,6 +53,25 @@
     gsap.set(track, { x: 0, force3D: true });
     gsap.set(frame, { scale: 0.94, opacity: 0.74, force3D: true });
 
+    const renderShowcase = (progress) => {
+      const maxMove = Math.max(0, track.scrollWidth - window.innerWidth);
+      const intro = clamp(progress / 0.1, 0, 1);
+      const travel = clamp((progress - 0.08) / 0.72, 0, 1);
+      const outro = clamp((progress - 0.82) / 0.18, 0, 1);
+      const scale = progress <= 0.1 ? 0.94 + intro * 0.06 : progress >= 0.82 ? 1 - outro * 0.06 : 1;
+      const opacity = progress <= 0.1 ? 0.74 + intro * 0.26 : progress >= 0.82 ? 1 - outro * 0.22 : 1;
+
+      gsap.set(track, { x: -maxMove * travel, force3D: true });
+      gsap.set(frame, { scale, opacity, force3D: true });
+    };
+
+    const syncShowcaseToWindowScroll = () => {
+      const pageTop = section.getBoundingClientRect().top + window.scrollY;
+      const scrollLength = Math.max(1, section.offsetHeight - window.innerHeight);
+      const progress = clamp((window.scrollY - pageTop) / scrollLength, 0, 1);
+      renderShowcase(progress);
+    };
+
     const trigger = ScrollTrigger.create({
       id: "mobile-showcase-horizontal",
       trigger: section,
@@ -63,19 +83,15 @@
         applyStickySceneSizing();
         gsap.set(track, { x: 0, force3D: true });
       },
+      onRefresh: syncShowcaseToWindowScroll,
       onUpdate(self) {
-        const maxMove = Math.max(0, track.scrollWidth - window.innerWidth);
-        const progress = self.progress;
-        const intro = clamp(progress / 0.1, 0, 1);
-        const travel = clamp((progress - 0.08) / 0.72, 0, 1);
-        const outro = clamp((progress - 0.82) / 0.18, 0, 1);
-        const scale = progress <= 0.1 ? 0.94 + intro * 0.06 : progress >= 0.82 ? 1 - outro * 0.06 : 1;
-        const opacity = progress <= 0.1 ? 0.74 + intro * 0.26 : progress >= 0.82 ? 1 - outro * 0.22 : 1;
-
-        gsap.set(track, { x: -maxMove * travel, force3D: true });
-        gsap.set(frame, { scale, opacity, force3D: true });
+        renderShowcase(self.progress);
       },
     });
+
+    state.showcaseScrollHandler = () => window.requestAnimationFrame(syncShowcaseToWindowScroll);
+    window.addEventListener("scroll", state.showcaseScrollHandler, { passive: true });
+    syncShowcaseToWindowScroll();
 
     state.triggers.push(trigger);
   }
@@ -259,9 +275,11 @@
 
     window.removeEventListener("resize", state.resizeHandler);
     window.removeEventListener("orientationchange", state.orientationHandler);
+    window.removeEventListener("scroll", state.showcaseScrollHandler);
 
     state.resizeHandler = null;
     state.orientationHandler = null;
+    state.showcaseScrollHandler = null;
     state.active = false;
     document.body.classList.remove("mobile-js-active");
 
