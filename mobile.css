@@ -287,9 +287,9 @@
   }
 
   body.mobile-js-active .process-word {
-    font-size: clamp(64px, 18vw, 168px);
-    line-height: .82;
-    letter-spacing: -.088em;
+    font-size: clamp(96px, 28vw, 260px);
+    line-height: .78;
+    letter-spacing: -.095em;
     transform-origin: 52% 50%;
   }
 
@@ -338,28 +338,33 @@
 
   body.mobile-js-active .process-cards {
     position: absolute;
-    inset: 0;
-    width: 100%;
+    left: 0;
+    top: 54%;
+    width: max-content;
     margin: 0;
-    padding: 0;
-    display: block;
+    padding: 0 14vw;
+    display: flex;
+    align-items: stretch;
+    gap: 18px;
     pointer-events: none;
+    will-change: transform;
   }
 
   body.mobile-js-active .process-card,
   body.mobile-js-active .process-card--left,
   body.mobile-js-active .process-card--right {
-    position: absolute;
-    left: 50%;
-    top: 52%;
-    width: min(calc(100% - 28px), 520px);
+    position: relative;
+    left: auto;
+    top: auto;
+    flex: 0 0 min(calc(100vw - 44px), 430px);
+    width: min(calc(100vw - 44px), 430px);
     min-height: auto;
     max-height: calc(100svh - 132px);
     overflow: auto;
     justify-self: auto;
     padding: clamp(22px, 5vw, 30px);
-    transform: translate3d(-50%, 80px, 0) scale(.96);
-    opacity: 0;
+    transform: none;
+    opacity: 1;
     pointer-events: auto;
     will-change: transform, opacity;
   }

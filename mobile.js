@@ -106,17 +106,18 @@
     const voidTarget = section?.querySelector(".process-void");
     const worldInside = section?.querySelector(".process-world-inside");
     const copy = section?.querySelector(".process-copy");
+    const cardTrack = section?.querySelector(".process-cards");
     const cards = [...(section?.querySelectorAll("[data-process-card]") || [])];
 
-    if (!section || !scene || !word || !cards.length) return;
+    if (!section || !scene || !word || !cardTrack || !cards.length) return;
 
     disableDesktopProcessTriggers(ScrollTrigger, section);
 
     gsap.set(scene, { clearProps: "all" });
     gsap.set(word, {
-      autoAlpha: 0.32,
-      scale: 0.58,
-      yPercent: 22,
+      autoAlpha: 0.36,
+      scale: 0.72,
+      yPercent: 18,
       transformOrigin: "52% 50%",
       filter: "blur(0px)",
       force3D: true,
@@ -146,10 +147,20 @@
       });
     }
 
+    const getCardTravel = () => {
+      return Math.max(cardTrack.scrollWidth + window.innerWidth * 0.2, window.innerWidth * 3.6);
+    };
+
+    gsap.set(cardTrack, {
+      x: () => window.innerWidth * 0.74,
+      yPercent: -50,
+      force3D: true,
+    });
+
     gsap.set(cards, {
-      autoAlpha: 0,
-      y: 86,
-      scale: 0.96,
+      autoAlpha: 1,
+      y: 0,
+      scale: 1,
       transformOrigin: "50% 50%",
       force3D: true,
     });
@@ -169,21 +180,15 @@
     });
 
     timeline
-      .to(word, { autoAlpha: 0.94, scale: 1, yPercent: 0, letterSpacing: "-0.085em", duration: 0.12 }, 0)
+      .to(word, { autoAlpha: 0.96, scale: 1.12, yPercent: 0, letterSpacing: "-0.095em", duration: 0.14 }, 0)
       .to(copy, { autoAlpha: 1, y: 0, duration: 0.1 }, 0.04)
       .to(copy, { autoAlpha: 0, y: -22, duration: 0.08 }, 0.16)
-      .to(word, { scale: 1.08, duration: 0.1 }, 0.18);
-
-    cards.forEach((card, index) => {
-      const start = 0.24 + index * 0.135;
-      timeline
-        .to(card, { autoAlpha: 1, y: 0, scale: 1, duration: 0.075 }, start)
-        .to(card, { autoAlpha: 1, y: 0, scale: 1, duration: 0.045 }, start + 0.075)
-        .to(card, { autoAlpha: 0, y: -72, scale: 0.985, duration: 0.075 }, start + 0.12);
-    });
+      .to(word, { scale: 1.28, autoAlpha: 0.82, duration: 0.12 }, 0.2)
+      .to(cardTrack, { x: () => -getCardTravel(), duration: 0.58 }, 0.24)
+      .to(cards, { autoAlpha: 0.18, scale: 0.985, stagger: 0.025, duration: 0.06 }, 0.78);
 
     timeline
-      .to(word, { scale: 1.34, xPercent: -0.4, autoAlpha: 0.92, duration: 0.07 }, 0.8)
+      .to(word, { scale: 1.52, xPercent: -0.4, autoAlpha: 0.92, duration: 0.07 }, 0.8)
       .to(voidTarget, { autoAlpha: 0.52, scale: 0.82, duration: 0.06 }, 0.81)
       .to(worldInside, {
         autoAlpha: 1,
@@ -284,6 +289,7 @@
         ".bim-track",
         ".process-word",
         ".process-copy",
+        ".process-cards",
         ".process-void",
         ".process-world-inside",
         ".process-card",
