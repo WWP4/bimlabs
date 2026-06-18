@@ -1669,71 +1669,46 @@
 
 
 
-/* ==========================================================
-   WORK ARCHIVE — PRESENCE BOOST
-   Makes archive feel larger + alive without scroll lock
-========================================================== */
-
 .work-archive {
-  min-height: 190vh;
-  margin-top: clamp(16rem, 34vh, 28rem);
-}
-
-.work-archive::before {
-  content: "SELECTED WORK";
-  display: block;
-  position: absolute;
-  left: 50%;
-  top: clamp(6rem, 12vh, 10rem);
-  z-index: 0;
-  color: rgba(255, 255, 255, 0.035);
-  font-size: clamp(5rem, 15vw, 18rem);
-  font-weight: 300;
-  letter-spacing: -0.12em;
-  line-height: 0.8;
-  white-space: nowrap;
-  transform: translateX(-50%) scale(var(--archive-presence-scale, 1));
-  opacity: var(--archive-presence-opacity, 0.65);
-  pointer-events: none;
+  min-height: 175vh;
+  margin-top: clamp(18rem, 32vh, 26rem);
 }
 
 .work-archive__shell {
-  padding-top: clamp(14rem, 24vh, 20rem);
+  width: min(118rem, calc(100% - 7rem));
+  padding-top: clamp(12rem, 20vh, 18rem);
+  padding-bottom: clamp(16rem, 24vh, 22rem);
 }
 
 .work-archive__header {
-  transform:
-    translate3d(0, var(--archive-header-y, 0), 0)
-    scale(var(--archive-header-scale, 1));
+  margin-bottom: clamp(10rem, 20vh, 16rem);
 }
 
-.work-archive__list {
-  transform: translate3d(0, var(--archive-list-y, 0), 0);
+.work-archive__title {
+  max-width: 42rem;
+  font-size: clamp(2.8rem, 4.6vw, 6.4rem);
+  line-height: 0.86;
 }
 
-.work-project {
-  transform: translate3d(0, var(--row-drift, 0), 0);
+.work-archive__intro {
+  max-width: 19rem;
 }
 
-.work-archive__bg {
-  transform: scale(var(--archive-bg-scale, 1));
-  opacity: var(--archive-bg-opacity, 0.76);
+.work-project__summary {
+  min-height: clamp(5.8rem, 7.2vw, 7.4rem);
 }
 
-@media (max-width: 900px) {
-  .work-archive {
-    min-height: auto;
-    margin-top: clamp(8rem, 16vh, 12rem);
-  }
+.work-project__name {
+  font-size: clamp(1.45rem, 2.45vw, 3.25rem);
+}
 
-  .work-archive::before {
-    top: 3rem;
-    font-size: clamp(4rem, 18vw, 8rem);
-    white-space: normal;
-    text-align: center;
-  }
+.work-project::before,
+.work-project:last-child::after {
+  opacity: 0.72;
+}
 
-  .work-archive__shell {
-    padding-top: 9rem;
-  }
+.work-project__preview,
+.work-project__hover-image,
+.work-archive-floating-preview {
+  width: clamp(12rem, 16vw, 20rem);
 }
