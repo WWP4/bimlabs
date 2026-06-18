@@ -1,0 +1,434 @@
+/* =========================================================
+   BIM LABS — MOBILE-ONLY EXPERIENCE OVERRIDES
+   Loaded separately from desktop CSS. These rules only affect
+   viewports up to 900px and only enable the animated scene layout
+   when mobile.js adds body.mobile-js-active.
+   ========================================================= */
+
+@media (max-width: 900px) {
+  html,
+  body {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+    background: #020202;
+  }
+
+  main,
+  section,
+  img,
+  svg,
+  iframe,
+  spline-viewer {
+    max-width: 100%;
+  }
+
+  .site-header {
+    left: 50%;
+    right: auto;
+    width: calc(100% - 28px);
+    padding: 14px 14px 12px;
+    transform: translateX(-50%);
+  }
+
+  .site-header.nav-hidden {
+    transform: translate(-50%, -110%);
+  }
+
+  .site-header.nav-visible,
+  .site-header.is-scrolled {
+    transform: translateX(-50%);
+  }
+
+  .brand {
+    font-size: 11px;
+    letter-spacing: .16em;
+  }
+
+  .main-nav {
+    display: none;
+  }
+
+  .hero {
+    min-height: 100svh;
+    overflow: hidden;
+  }
+
+  .spline-hero {
+    opacity: .66;
+    transform: scale(1.08);
+    mask-image: radial-gradient(
+      circle at center,
+      #000 8%,
+      rgba(0,0,0,.9) 38%,
+      rgba(0,0,0,.5) 68%,
+      rgba(0,0,0,.04) 100%
+    );
+  }
+
+  .hero-content {
+    bottom: 29vh;
+    width: min(620px, calc(100vw - 36px));
+  }
+
+  .hero-label {
+    margin-bottom: 12px;
+    font-size: 10px;
+  }
+
+  .hero-content h1 {
+    font-size: clamp(18px, 4.8vw, 28px);
+    line-height: 1.42;
+  }
+
+  .hero-sub {
+    max-width: 34rem;
+    font-size: clamp(10px, 2.6vw, 13px);
+    line-height: 1.75;
+  }
+
+  .hero-actions {
+    left: 50%;
+    right: auto;
+    bottom: max(28px, env(safe-area-inset-bottom));
+    width: calc(100vw - 32px);
+    transform: translateX(-50%);
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .btn {
+    min-height: 42px;
+    flex: 1 1 145px;
+    max-width: 220px;
+    padding-inline: 18px;
+  }
+
+  /* Fallback if JS/GSAP is unavailable: mobile scrolls normally. */
+  .showcase-scroll,
+  .bim-showcase .showcase-scroll,
+  .process-3d {
+    overflow-x: hidden;
+  }
+
+  .work-trust,
+  .work-archive,
+  .book-with-us {
+    overflow: hidden;
+  }
+
+  .work-archive__shell,
+  .book-with-us__shell {
+    width: min(calc(100% - 32px), 760px);
+    padding-top: clamp(5rem, 10vh, 8rem);
+    padding-bottom: clamp(4rem, 8vh, 6rem);
+  }
+
+  .work-archive__header,
+  .book-with-us__grid,
+  .work-project__case,
+  .work-project__proof,
+  .work-project__results {
+    grid-template-columns: 1fr;
+  }
+
+  .work-archive__title,
+  .book-with-us__title {
+    font-size: clamp(3.2rem, 15vw, 7rem);
+  }
+
+  .book-with-us__right,
+  .book-card {
+    width: 100%;
+  }
+
+  /* JS-enabled mobile horizontal showcase: sticky like desktop. */
+  body.mobile-js-active .showcase-scroll,
+  body.mobile-js-active .bim-showcase .showcase-scroll {
+    height: 560vh;
+    min-height: 3400px;
+    padding: 0;
+    overflow: visible;
+  }
+
+  body.mobile-js-active .HomeShowcase {
+    position: sticky;
+    top: 0;
+    width: 100vw;
+    height: 100svh;
+    min-height: 540px;
+    overflow: hidden;
+  }
+
+  body.mobile-js-active .HomeShowcase__outerFrame {
+    position: absolute;
+    inset: 10px !important;
+    overflow: hidden;
+    border: 1px solid var(--showcase-line);
+    border-radius: 12px;
+    background:
+      linear-gradient(rgba(255,255,255,.018) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,.018) 1px, transparent 1px),
+      rgba(255,255,255,.022);
+    background-size: 72px 72px;
+    will-change: transform, opacity;
+  }
+
+  body.mobile-js-active .HomeShowcase__outerFrame::after {
+    content: "Scroll to move sideways";
+    position: absolute;
+    left: 14px;
+    bottom: 14px;
+    z-index: 80;
+    padding: 8px 10px;
+    border: 1px solid rgba(255,255,255,.12);
+    border-radius: 999px;
+    background: rgba(2,2,2,.66);
+    color: rgba(255,255,255,.52);
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    pointer-events: none;
+  }
+
+  body.mobile-js-active .HomeShowcase__inner,
+  body.mobile-js-active .bim-track {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 6600px;
+    height: 100%;
+    padding: 0;
+    display: block;
+    will-change: transform;
+  }
+
+  body.mobile-js-active .mock,
+  body.mobile-js-active .copy-card,
+  body.mobile-js-active .center-copy,
+  body.mobile-js-active .intro-title,
+  body.mobile-js-active .path,
+  body.mobile-js-active .bim-intro,
+  body.mobile-js-active .bim-editorial,
+  body.mobile-js-active .bim-case,
+  body.mobile-js-active .bim-statement,
+  body.mobile-js-active .bim-line-art,
+  body.mobile-js-active .bim-close {
+    position: absolute !important;
+  }
+
+  body.mobile-js-active .bim-intro { left: 54px; top: 160px; width: 320px; }
+  body.mobile-js-active .bim-editorial--one { left: 820px; top: 150px; width: 420px; }
+  body.mobile-js-active .bim-case--wwp { left: 1510px; top: 135px; }
+  body.mobile-js-active .bim-case--glca { left: 1510px; top: 365px; }
+  body.mobile-js-active .bim-statement { left: 2100px; top: 165px; width: 380px; }
+  body.mobile-js-active .bim-line-art { left: 2100px; top: 390px; width: 360px; height: 130px; }
+  body.mobile-js-active .bim-editorial--two { left: 2850px; top: 150px; width: 420px; }
+  body.mobile-js-active .bim-case--momentum { left: 3560px; top: 135px; }
+  body.mobile-js-active .bim-case--orynd { left: 3560px; top: 365px; }
+  body.mobile-js-active .bim-close { left: 4700px; top: 170px; width: 360px; }
+
+  body.mobile-js-active .bim-intro h2,
+  body.mobile-js-active .bim-close h2,
+  body.mobile-js-active .bim-editorial span,
+  body.mobile-js-active .bim-statement h3 {
+    font-size: 42px;
+    letter-spacing: -.065em;
+  }
+
+  body.mobile-js-active .bim-case {
+    width: 310px;
+  }
+
+  body.mobile-js-active .bim-case span {
+    margin-bottom: 20px;
+  }
+
+  body.mobile-js-active .bim-case h3 {
+    margin-bottom: 14px;
+    font-size: 22px;
+  }
+
+  body.mobile-js-active .bim-case p {
+    font-size: 12px;
+    line-height: 1.55;
+  }
+
+  body.mobile-js-active .stage-label,
+  body.mobile-js-active .bim-ruler,
+  body.mobile-js-active .bim-index,
+  body.mobile-js-active .bim-wordmark,
+  body.mobile-js-active .nominee,
+  body.mobile-js-active .cursor-replica {
+    display: none !important;
+  }
+
+  /* JS-enabled mobile PROCESS scene: pinned cards, then C transition. */
+  body.mobile-js-active .process-3d {
+    min-height: 100svh;
+    overflow: hidden;
+    background: #020202;
+  }
+
+  body.mobile-js-active .process-scene {
+    position: absolute;
+    inset: 0;
+    height: 100svh;
+    min-height: 540px;
+    padding: 0;
+    overflow: hidden;
+    perspective: 760px;
+  }
+
+  body.mobile-js-active .process-scene::after,
+  body.mobile-js-active .process-void {
+    display: block;
+  }
+
+  body.mobile-js-active .process-word {
+    font-size: clamp(64px, 18vw, 168px);
+    line-height: .82;
+    letter-spacing: -.088em;
+    transform-origin: 52% 50%;
+  }
+
+  body.mobile-js-active .process-void {
+    width: clamp(88px, 22vw, 170px);
+  }
+
+  body.mobile-js-active .process-world-inside {
+    position: absolute;
+    inset: 0;
+    height: 100%;
+    min-height: 100svh;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    clip-path: circle(0% at var(--process-c-x) var(--process-c-y));
+    -webkit-clip-path: circle(0% at var(--process-c-x) var(--process-c-y));
+  }
+
+  body.mobile-js-active .process-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 8;
+    width: 100%;
+    min-height: 100svh;
+    margin: 0;
+    pointer-events: none;
+    perspective: 900px;
+  }
+
+  body.mobile-js-active .process-copy {
+    position: absolute;
+    left: 50%;
+    top: 14vh;
+    width: min(560px, calc(100% - 32px));
+    padding-top: 0;
+    margin: 0;
+    transform: translateX(-50%);
+    pointer-events: auto;
+  }
+
+  body.mobile-js-active .process-copy p:not(.process-kicker) {
+    font-size: 15px;
+    line-height: 1.65;
+  }
+
+  body.mobile-js-active .process-cards {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    display: block;
+    pointer-events: none;
+  }
+
+  body.mobile-js-active .process-card,
+  body.mobile-js-active .process-card--left,
+  body.mobile-js-active .process-card--right {
+    position: absolute;
+    left: 50%;
+    top: 52%;
+    width: min(calc(100% - 28px), 520px);
+    min-height: auto;
+    max-height: calc(100svh - 132px);
+    overflow: auto;
+    justify-self: auto;
+    padding: clamp(22px, 5vw, 30px);
+    transform: translate3d(-50%, 80px, 0) scale(.96);
+    opacity: 0;
+    pointer-events: auto;
+    will-change: transform, opacity;
+  }
+
+  body.mobile-js-active .process-card__main {
+    margin: clamp(34px, 6vh, 56px) 0 clamp(24px, 4vh, 34px);
+  }
+
+  body.mobile-js-active .process-card__main h3 {
+    max-width: 100%;
+    font-size: clamp(38px, 10vw, 64px);
+    line-height: .88;
+  }
+
+  body.mobile-js-active .process-card__main p,
+  body.mobile-js-active .process-card__note-lines p {
+    max-width: 100%;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  body.mobile-js-active .process-card__meta,
+  body.mobile-js-active .process-card__actions,
+  body.mobile-js-active .process-card__note-head {
+    white-space: normal;
+    letter-spacing: .16em;
+  }
+
+  body.mobile-js-active .process-card__note {
+    padding: 16px;
+  }
+
+  body.mobile-js-active .work-reveal-preview__field {
+    inset: 18vh 6vw;
+  }
+
+  body.mobile-js-active .work-reveal-preview__system {
+    width: min(82vw, 620px);
+    height: min(58vw, 390px);
+  }
+
+  body.mobile-js-active .work-reveal-preview__copy {
+    left: 22px;
+    right: 22px;
+    bottom: 42px;
+    max-width: none;
+  }
+
+  body.mobile-js-active .work-reveal-preview__statement {
+    font-size: clamp(32px, 10vw, 64px);
+  }
+}
+
+@media (max-width: 900px) and (hover: none) and (pointer: coarse) {
+  .btn:hover,
+  .bim-close a:hover,
+  .process-card:hover,
+  .process-card:hover .process-card__note,
+  .book-card:hover {
+    transform: none;
+  }
+
+  .main-nav:hover a:not(:hover) {
+    opacity: 1;
+  }
+
+  .process-card:hover::before,
+  .process-card:hover .process-card__note::after,
+  .book-card:hover::before {
+    opacity: 0;
+  }
+}
