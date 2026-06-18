@@ -962,166 +962,180 @@
      ARCHIVE REVEAL
      Lighter than before: no blur filters.
   ========================================================== */
+function setupArchiveReveal() {
+  const gsap = window.gsap;
+  const ScrollTrigger = window.ScrollTrigger;
 
-  function setupArchiveReveal() {
-    const gsap = window.gsap;
-    const ScrollTrigger = window.ScrollTrigger;
+  const label = archive.querySelector(".work-archive__label");
+  const kicker = archive.querySelector(".work-archive__kicker");
+  const title = archive.querySelector(".work-archive__title");
+  const intro = archive.querySelector(".work-archive__intro");
+  const rows = Array.from(archive.querySelectorAll(".work-project"));
 
-    const label = archive.querySelector(".work-archive__label");
-    const kicker = archive.querySelector(".work-archive__kicker");
-    const title = archive.querySelector(".work-archive__title");
-    const intro = archive.querySelector(".work-archive__intro");
-    const rows = Array.from(archive.querySelectorAll(".work-project"));
+  if (!rows.length) return;
 
-    if (!rows.length) return;
+  if (ScrollTrigger && typeof ScrollTrigger.getAll === "function") {
+    ScrollTrigger.getAll().forEach((trigger) => {
+      const id = trigger.vars && trigger.vars.id;
+      const triggerEl = trigger.vars && trigger.vars.trigger;
 
-    if (ScrollTrigger && typeof ScrollTrigger.getAll === "function") {
-      ScrollTrigger.getAll().forEach((trigger) => {
-        const id = trigger.vars && trigger.vars.id;
-        const triggerEl = trigger.vars && trigger.vars.trigger;
-
-        if (
-          id === "workArchiveReveal" ||
-          id === "workArchiveFormation" ||
-          id === "workArchiveNoomo" ||
-          id === "workArchiveCenterLines" ||
-          triggerEl === archive
-        ) {
-          trigger.kill();
-        }
-      });
-    }
-
-    archive.classList.remove("is-forming", "is-formed");
-
-    rows.forEach((row) => {
-      row.style.setProperty("--row-line", "0");
-      row.style.setProperty("--row-fill", "0");
-    });
-
-    if (!gsap || !ScrollTrigger || prefersReducedMotion) {
-      archive.classList.add("is-formed");
-
-      rows.forEach((row) => {
-        row.style.setProperty("--row-line", "1");
-      });
-
-      [label, kicker, title, intro].filter(Boolean).forEach((node) => {
-        node.style.opacity = "1";
-        node.style.transform = "none";
-      });
-
-      return;
-    }
-
-    gsap.registerPlugin(ScrollTrigger);
-
-    const rowPieces = rows.map((row) =>
-      Array.from(
-        row.querySelectorAll(
-          ".work-project__index, .work-project__name, .work-project__meta, .work-project__year, .work-project__arrow"
-        )
-      )
-    );
-
-    gsap.set([label, kicker, title, intro].filter(Boolean), {
-      autoAlpha: 0,
-      y: 22
-    });
-
-    rows.forEach((row, index) => {
-      gsap.set(row, {
-        "--row-line": 0,
-        "--row-fill": 0,
-        autoAlpha: 1
-      });
-
-      gsap.set(rowPieces[index], {
-        autoAlpha: 0,
-        y: 18
-      });
-    });
-
-    const tl = gsap.timeline({
-      defaults: {
-        ease: "power3.out"
-      },
-      scrollTrigger: {
-        id: "workArchiveCenterLines",
-        trigger: archive,
-        start: "top 68%",
-        once: true,
-        toggleActions: "play none none none"
+      if (
+        id === "workArchivePresence" ||
+        id === "workArchiveCenterLines" ||
+        triggerEl === archive
+      ) {
+        trigger.kill();
       }
     });
-
-    tl.add(() => {
-      archive.classList.add("is-forming");
-    }, 0);
-
-    tl.to(
-      [label, kicker].filter(Boolean),
-      {
-        autoAlpha: 1,
-        y: 0,
-        duration: 0.55,
-        stagger: 0.06
-      },
-      0.05
-    );
-
-    tl.to(
-      title,
-      {
-        autoAlpha: 1,
-        y: 0,
-        duration: 0.82,
-        ease: "power4.out"
-      },
-      0.12
-    );
-
-    tl.to(
-      intro,
-      {
-        autoAlpha: 1,
-        y: 0,
-        duration: 0.6
-      },
-      0.32
-    );
-
-    rows.forEach((row, index) => {
-      const start = 0.62 + index * 0.12;
-
-      tl.to(
-        row,
-        {
-          "--row-line": 1,
-          duration: 0.72,
-          ease: "power2.inOut"
-        },
-        start
-      );
-
-      tl.to(
-        rowPieces[index],
-        {
-          autoAlpha: 1,
-          y: 0,
-          duration: 0.5,
-          stagger: 0.025,
-          ease: "power4.out"
-        },
-        start + 0.13
-      );
-    });
-
-    tl.add(() => {
-      archive.classList.remove("is-forming");
-      archive.classList.add("is-formed");
-    });
   }
+
+  rows.forEach((row) => {
+    row.style.setProperty("--row-line", "0");
+  });
+
+  if (!gsap || !ScrollTrigger || prefersReducedMotion) {
+    archive.classList.add("is-formed");
+
+    rows.forEach((row) => {
+      row.style.setProperty("--row-line", "1");
+    });
+
+    [label, kicker, title, intro].filter(Boolean).forEach((node) => {
+      node.style.opacity = "1";
+      node.style.transform = "none";
+    });
+
+    return;
+  }
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  const rowPieces = rows.map((row) =>
+    Array.from(
+      row.querySelectorAll(
+        ".work-project__index, .work-project__name, .work-project__meta, .work-project__year, .work-project__arrow"
+      )
+    )
+  );
+
+  gsap.set([label, kicker, title, intro].filter(Boolean), {
+    autoAlpha: 0,
+    y: 34
+  });
+
+  rows.forEach((row, index) => {
+    gsap.set(row, {
+      "--row-line": 0,
+      autoAlpha: 1
+    });
+
+    gsap.set(rowPieces[index], {
+      autoAlpha: 0,
+      y: 24
+    });
+  });
+
+  const tl = gsap.timeline({
+    defaults: { ease: "none" },
+    scrollTrigger: {
+      id: "workArchivePresence",
+      trigger: archive,
+      start: "top 82%",
+      end: "bottom 38%",
+      scrub: 0.9
+    }
+  });
+
+  tl.to(
+    archive,
+    {
+      "--archive-presence-scale": 0.84,
+      "--archive-presence-opacity": 0.18,
+      "--archive-bg-scale": 1.08,
+      "--archive-bg-opacity": 1,
+      duration: 1
+    },
+    0
+  );
+
+  tl.to(
+    [label, kicker].filter(Boolean),
+    {
+      autoAlpha: 1,
+      y: 0,
+      duration: 0.18
+    },
+    0.05
+  );
+
+  tl.to(
+    title,
+    {
+      autoAlpha: 1,
+      y: 0,
+      duration: 0.28
+    },
+    0.1
+  );
+
+  tl.to(
+    intro,
+    {
+      autoAlpha: 1,
+      y: 0,
+      duration: 0.22
+    },
+    0.18
+  );
+
+  tl.to(
+    archive,
+    {
+      "--archive-header-y": "-4vh",
+      "--archive-header-scale": 0.985,
+      "--archive-list-y": "-3vh",
+      duration: 1
+    },
+    0
+  );
+
+  rows.forEach((row, index) => {
+    const start = 0.28 + index * 0.08;
+
+    tl.to(
+      row,
+      {
+        "--row-line": 1,
+        duration: 0.22
+      },
+      start
+    );
+
+    tl.to(
+      rowPieces[index],
+      {
+        autoAlpha: 1,
+        y: 0,
+        duration: 0.18,
+        stagger: 0.015
+      },
+      start + 0.04
+    );
+
+    tl.to(
+      row,
+      {
+        "--row-drift": `${-10 - index * 3}px`,
+        duration: 0.7
+      },
+      start
+    );
+  });
+
+  tl.add(() => {
+    archive.classList.add("is-formed");
+  }, 0.95);
+}
 
   /* ==========================================================
      IMAGE FALLBACKS
