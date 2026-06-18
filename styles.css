@@ -1149,28 +1149,28 @@ select {
     opacity: .72;
   }
 
-  .mock::after {
-    display: none;
+  .book-card {
+    min-height: auto;
   }
 }
 
-/* REDUCED MOTION */
-
-@media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
+@media (hover: none) and (pointer: coarse) {
+  .btn:hover,
+  .bim-close a:hover,
+  .process-card:hover,
+  .process-card:hover .process-card__note,
+  .book-card:hover {
+    transform: none;
   }
 
-  *,
-  *::before,
-  *::after {
-    transition-duration: .001ms !important;
-    animation-duration: .001ms !important;
-    animation-iteration-count: 1 !important;
+  .main-nav:hover a:not(:hover) {
+    opacity: 1;
   }
 
-  .spline-hero {
-    opacity: .82;
+  .process-card:hover::before,
+  .process-card:hover .process-card__note::after,
+  .book-card:hover::before {
+    opacity: 0;
   }
 }
 
