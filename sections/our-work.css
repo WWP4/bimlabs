@@ -1910,3 +1910,245 @@
     margin-bottom: 4.5rem !important;
   }
 }
+
+
+
+
+
+
+
+
+
+
+/* ==========================================================
+   WORK ARCHIVE — LEAN EDITORIAL REBUILD
+   Fixes bulky spacing / oversized rows / ugly heavy section feel
+========================================================== */
+
+/* keep the trust → archive seam black, but stop making it feel like a giant block */
+.bim-trust {
+  margin-bottom: 0 !important;
+  background: #000 !important;
+}
+
+.bim-trust__sticky::after {
+  height: clamp(10rem, 18vh, 16rem) !important;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0) 0%,
+    rgba(0, 0, 0, 0.62) 64%,
+    #000 100%
+  ) !important;
+}
+
+/* archive itself should be compact and intentional */
+.work-archive {
+  margin-top: 0 !important;
+  min-height: auto !important;
+  background: #000 !important;
+  overflow: hidden !important;
+}
+
+/* remove the gray/slabby atmosphere */
+.work-archive__bg {
+  opacity: 0.34 !important;
+  background:
+    radial-gradient(circle at 82% 18%, rgba(255, 255, 255, 0.022), transparent 24rem),
+    radial-gradient(circle at 18% 78%, rgba(255, 255, 255, 0.014), transparent 22rem),
+    #000 !important;
+
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    black 18%,
+    black 100%
+  ) !important;
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    black 18%,
+    black 100%
+  ) !important;
+}
+
+/* this is the real fix: less dead space, less bulk */
+.work-archive__shell {
+  width: min(104rem, calc(100% - 5rem)) !important;
+  min-height: auto !important;
+  padding-top: clamp(6.5rem, 12vh, 10rem) !important;
+  padding-bottom: clamp(8rem, 14vh, 12rem) !important;
+}
+
+/* header should feel like an intro, not a billboard */
+.work-archive__header {
+  width: min(62rem, 100%) !important;
+  grid-template-columns:
+    3.6rem
+    minmax(24rem, 31rem)
+    minmax(12rem, 15rem) !important;
+  gap: clamp(1.5rem, 3vw, 3.2rem) !important;
+  margin-bottom: clamp(4.5rem, 9vh, 7rem) !important;
+}
+
+/* smaller label */
+.work-archive__label {
+  font-size: 0.48rem !important;
+  opacity: 0.88 !important;
+}
+
+/* calmer kicker */
+.work-archive__kicker {
+  margin-bottom: 0.75rem !important;
+  font-size: 0.48rem !important;
+}
+
+/* stop the title from feeling huge and chunky */
+.work-archive__title {
+  max-width: 32rem !important;
+  font-size: clamp(2rem, 3.2vw, 4.25rem) !important;
+  line-height: 0.9 !important;
+  letter-spacing: -0.085em !important;
+}
+
+/* intro should be quiet */
+.work-archive__intro {
+  max-width: 15.5rem !important;
+  padding-top: 1.1rem !important;
+  font-size: clamp(0.68rem, 0.72vw, 0.8rem) !important;
+  line-height: 1.55 !important;
+  color: rgba(246, 246, 240, 0.38) !important;
+}
+
+/* rows should feel like a luxury index, not giant cards */
+.work-project__summary {
+  min-height: clamp(4.25rem, 5.1vw, 5.65rem) !important;
+  grid-template-columns:
+    2.5rem
+    minmax(0, 1.4fr)
+    minmax(9rem, 0.7fr)
+    3.2rem
+    1.2rem !important;
+}
+
+/* project names smaller and cleaner */
+.work-project__name {
+  font-size: clamp(1.15rem, 1.85vw, 2.35rem) !important;
+  line-height: 0.96 !important;
+  letter-spacing: -0.055em !important;
+}
+
+/* metadata should not visually compete */
+.work-project__index,
+.work-project__meta,
+.work-project__year {
+  font-size: 0.48rem !important;
+  color: rgba(246, 246, 240, 0.34) !important;
+}
+
+/* softer lines */
+.work-project::before,
+.work-project:last-child::after {
+  opacity: 0.52 !important;
+}
+
+/* reduce heavy hover fill */
+.work-project__summary {
+  background:
+    linear-gradient(
+      90deg,
+      rgba(255, 255, 255, calc(var(--row-fill) * 0.025)),
+      rgba(255, 255, 255, 0)
+    ) !important;
+}
+
+/* hover image should be tasteful, not massive */
+.work-archive-floating-preview {
+  width: clamp(9rem, 12vw, 14rem) !important;
+  box-shadow: 0 1.4rem 3.5rem rgba(0, 0, 0, 0.58) !important;
+}
+
+/* opened details should not explode the whole section */
+.work-project[open] .work-project__panel {
+  padding-bottom: clamp(1.2rem, 2.4vh, 1.8rem) !important;
+}
+
+.work-project__case,
+.work-project__content {
+  width: min(54rem, 100%) !important;
+  padding-left: clamp(0rem, 8vw, 8rem) !important;
+}
+
+.work-project__statement,
+.work-project__description,
+.work-project__content h3 {
+  max-width: 36rem !important;
+  font-size: clamp(0.95rem, 1.15vw, 1.35rem) !important;
+  line-height: 1.12 !important;
+}
+
+.work-project__proof section,
+.work-project__grid section {
+  min-height: 5.8rem !important;
+  padding: 0.75rem 0.8rem !important;
+}
+
+.work-project__results {
+  margin-top: 1.25rem !important;
+  padding-top: 1rem !important;
+}
+
+/* mobile stays compact */
+@media (max-width: 900px) {
+  .work-archive__shell {
+    width: min(72rem, calc(100% - 2rem)) !important;
+    padding-top: 5.5rem !important;
+    padding-bottom: 6.5rem !important;
+  }
+
+  .work-archive__header {
+    grid-template-columns: 1fr !important;
+    gap: 1rem !important;
+    margin-bottom: 3.5rem !important;
+  }
+
+  .work-archive__title {
+    max-width: 34rem !important;
+    font-size: clamp(2rem, 8vw, 3.65rem) !important;
+    line-height: 0.93 !important;
+  }
+
+  .work-archive__intro {
+    max-width: 30rem !important;
+    padding-top: 0 !important;
+  }
+
+  .work-project__summary {
+    grid-template-columns: 2.1rem minmax(0, 1fr) auto !important;
+    min-height: 4rem !important;
+  }
+
+  .work-project__name {
+    font-size: clamp(1rem, 4.8vw, 1.35rem) !important;
+  }
+
+  .work-project__case,
+  .work-project__content {
+    padding-left: 0 !important;
+  }
+}
+
+@media (max-width: 700px) {
+  .work-archive__shell {
+    width: calc(100% - 1.4rem) !important;
+    padding-top: 4.75rem !important;
+    padding-bottom: 5.5rem !important;
+  }
+
+  .work-archive__header {
+    margin-bottom: 3rem !important;
+  }
+
+  .work-project__summary {
+    min-height: 3.75rem !important;
+  }
+}
