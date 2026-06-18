@@ -20,7 +20,7 @@ const lerp = (a, b, t) => a + (b - a) * t;
 
 function measure() {
   enabled =
-    window.innerWidth > 820 &&
+    window.innerWidth > 900 &&
     showcaseScroll &&
     showcase &&
     outerFrame &&
