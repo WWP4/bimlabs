@@ -145,15 +145,15 @@
   /* JS-enabled mobile horizontal showcase: sticky like desktop. */
   body.mobile-js-active .showcase-scroll,
   body.mobile-js-active .bim-showcase .showcase-scroll {
-    height: 560vh;
-    min-height: 3400px;
+    height: 100svh;
+    min-height: 540px;
     padding: 0;
-    overflow: visible;
+    overflow: hidden;
   }
 
   body.mobile-js-active .HomeShowcase {
-    position: sticky !important;
-    top: 0 !important;
+    position: relative !important;
+    top: auto !important;
     width: 100vw;
     height: 100svh;
     min-height: 540px;

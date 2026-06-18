@@ -11,7 +11,6 @@
     disabledProcessTriggers: [],
     resizeHandler: null,
     orientationHandler: null,
-    showcaseScrollHandler: null,
   };
 
   const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
@@ -40,18 +39,19 @@
 
     if (!section || !showcase || !frame || !track) return;
 
-    const applyStickySceneSizing = () => {
-      section.style.height = `${Math.max(window.innerHeight * 5.6, 3400)}px`;
-      section.style.minHeight = "3400px";
-      showcase.style.position = "sticky";
-      showcase.style.top = "0";
+    const applyPinnedSceneSizing = () => {
+      section.style.height = "100svh";
+      section.style.minHeight = "540px";
+      section.style.overflow = "hidden";
+      showcase.style.position = "relative";
+      showcase.style.top = "auto";
       showcase.style.height = "100svh";
       showcase.style.overflow = "hidden";
     };
 
-    applyStickySceneSizing();
-    gsap.set(track, { x: 0, force3D: true });
-    gsap.set(frame, { scale: 0.94, opacity: 0.74, force3D: true });
+    const getHorizontalDistance = () => {
+      return Math.max(track.scrollWidth - window.innerWidth, window.innerHeight * 3.5, 2400);
+    };
 
     const renderShowcase = (progress) => {
       const maxMove = Math.max(0, track.scrollWidth - window.innerWidth);
@@ -65,33 +65,28 @@
       gsap.set(frame, { scale, opacity, force3D: true });
     };
 
-    const syncShowcaseToWindowScroll = () => {
-      const pageTop = section.getBoundingClientRect().top + window.scrollY;
-      const scrollLength = Math.max(1, section.offsetHeight - window.innerHeight);
-      const progress = clamp((window.scrollY - pageTop) / scrollLength, 0, 1);
-      renderShowcase(progress);
-    };
+    applyPinnedSceneSizing();
+    gsap.set(track, { x: 0, force3D: true });
+    gsap.set(frame, { scale: 0.94, opacity: 0.74, force3D: true });
 
     const trigger = ScrollTrigger.create({
       id: "mobile-showcase-horizontal",
       trigger: section,
       start: "top top",
-      end: "bottom bottom",
-      scrub: 0.85,
+      end: () => `+=${getHorizontalDistance()}`,
+      pin: true,
+      pinSpacing: true,
+      scrub: 0.9,
+      anticipatePin: 1,
       invalidateOnRefresh: true,
       onRefreshInit() {
-        applyStickySceneSizing();
+        applyPinnedSceneSizing();
         gsap.set(track, { x: 0, force3D: true });
       },
-      onRefresh: syncShowcaseToWindowScroll,
       onUpdate(self) {
         renderShowcase(self.progress);
       },
     });
-
-    state.showcaseScrollHandler = () => window.requestAnimationFrame(syncShowcaseToWindowScroll);
-    window.addEventListener("scroll", state.showcaseScrollHandler, { passive: true });
-    syncShowcaseToWindowScroll();
 
     state.triggers.push(trigger);
   }
@@ -275,11 +270,8 @@
 
     window.removeEventListener("resize", state.resizeHandler);
     window.removeEventListener("orientationchange", state.orientationHandler);
-    window.removeEventListener("scroll", state.showcaseScrollHandler);
-
     state.resizeHandler = null;
     state.orientationHandler = null;
-    state.showcaseScrollHandler = null;
     state.active = false;
     document.body.classList.remove("mobile-js-active");
 
