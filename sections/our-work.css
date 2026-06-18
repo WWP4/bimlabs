@@ -2260,3 +2260,73 @@
     font-size: clamp(2.15rem, 11vw, 3.6rem) !important;
   }
 }
+
+
+
+
+
+
+
+
+
+/* ==========================================================
+   WORK ARCHIVE — BREATHING ROOM WITHOUT BULK
+   Adds empty space above/below while keeping archive lean
+========================================================== */
+
+/* create clean empty space before archive */
+.work-archive {
+  margin-top: clamp(8rem, 16vh, 14rem) !important;
+  margin-bottom: clamp(9rem, 18vh, 16rem) !important;
+  min-height: auto !important;
+  background: #000 !important;
+  overflow: visible !important;
+}
+
+/* keep the archive content from becoming huge */
+.work-archive__shell {
+  padding-top: clamp(4.5rem, 8vh, 7rem) !important;
+  padding-bottom: clamp(5rem, 9vh, 8rem) !important;
+}
+
+/* soften the background so the space feels intentional, not like a gray slab */
+.work-archive__bg {
+  opacity: 0.28 !important;
+  background:
+    radial-gradient(circle at 78% 22%, rgba(255, 255, 255, 0.018), transparent 26rem),
+    radial-gradient(circle at 20% 76%, rgba(255, 255, 255, 0.012), transparent 24rem),
+    #000 !important;
+}
+
+/* the header should stay tight, not oversized */
+.work-archive__header {
+  margin-bottom: clamp(4rem, 8vh, 6rem) !important;
+}
+
+/* keep rows lean */
+.work-project__summary {
+  min-height: clamp(4.35rem, 5.4vw, 5.9rem) !important;
+}
+
+/* add a quiet fade at the bottom before booking */
+.work-archive::after {
+  height: clamp(10rem, 18vh, 16rem) !important;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0) 0%,
+    #000 100%
+  ) !important;
+}
+
+/* mobile: space, but not giant blank gaps */
+@media (max-width: 900px) {
+  .work-archive {
+    margin-top: clamp(5rem, 10vh, 8rem) !important;
+    margin-bottom: clamp(5rem, 10vh, 8rem) !important;
+  }
+
+  .work-archive__shell {
+    padding-top: 4.5rem !important;
+    padding-bottom: 5rem !important;
+  }
+}
