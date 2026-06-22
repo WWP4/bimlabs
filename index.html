@@ -779,61 +779,104 @@
 
 
 <!-- ======================================================
-  BIM LABS — BOOK WITH US
+  BIM LABS — BOOK WITH US / PROJECT INTAKE
 ====================================================== -->
 <section class="book-with-us" id="contact" aria-labelledby="book-with-us-title">
   <div class="book-with-us__bg" aria-hidden="true"></div>
 
   <div class="book-with-us__shell">
+    <div class="book-with-us__header">
+      <span>Start a project</span>
+      <span>Intake / 01</span>
+      <span>Limited build slots</span>
+    </div>
+
     <div class="book-with-us__grid">
       <div class="book-with-us__left">
-        <p class="book-with-us__kicker">Start a project</p>
+        <p class="book-with-us__kicker">Book with BIM Labs</p>
 
         <h2 id="book-with-us-title" class="book-with-us__title">
-          Have something worth building?
+          Build the thing your business keeps working around.
         </h2>
 
         <p class="book-with-us__intro">
-          We work with businesses that need more than a good-looking website.
-          If the project needs clearer presentation, better systems, or a sharper
-          customer path, that is where we fit.
+          We design websites, portals, AI assistants, and automated customer flows
+          for businesses that need their digital system to do more than sit there.
         </p>
+
+        <div class="book-with-us__signals" aria-label="Project fit signals">
+          <div>
+            <span>Best for</span>
+            <strong>Service businesses / schools / product companies</strong>
+          </div>
+
+          <div>
+            <span>Common builds</span>
+            <strong>Websites / portals / booking flows / AI systems</strong>
+          </div>
+
+          <div>
+            <span>Goal</span>
+            <strong>Clearer path, fewer manual steps, better conversion</strong>
+          </div>
+        </div>
       </div>
 
       <div class="book-with-us__right">
-        <div class="book-card" data-book-card>
-          <div class="book-card__top">
-            <span>Project inquiry</span>
-            <span>Limited availability</span>
+        <form class="book-console" data-book-card>
+          <div class="book-console__top">
+            <span>Project intake</span>
+            <span>2 min fit check</span>
           </div>
 
-          <div class="book-card__main">
-            <p>
-              Tell us what you are building, what feels unclear, and what the site
-              or system needs to help your business do better.
-            </p>
-          </div>
+          <div class="book-console__screen">
+            <p class="book-console__label">Project type</p>
 
-          <div class="book-card__meta">
-            <div>
-              <span>Typical build</span>
-              <strong>Website / portal / automation</strong>
+            <div class="book-console__chips" data-book-group="type">
+              <button type="button" class="is-active" data-value="Website">Website</button>
+              <button type="button" data-value="Portal">Portal</button>
+              <button type="button" data-value="AI System">AI System</button>
+              <button type="button" data-value="Automation">Automation</button>
             </div>
 
-            <div>
-              <span>Best fit</span>
-              <strong>Serious businesses with a real offer</strong>
+            <p class="book-console__label">Estimated budget</p>
+
+            <div class="book-console__chips" data-book-group="budget">
+              <button type="button" data-value="$1k-$3k">$1k–$3k</button>
+              <button type="button" class="is-active" data-value="$3k-$7k">$3k–$7k</button>
+              <button type="button" data-value="$7k-$15k">$7k–$15k</button>
+              <button type="button" data-value="$15k+">$15k+</button>
+            </div>
+
+            <p class="book-console__label">Timeline</p>
+
+            <div class="book-console__chips" data-book-group="timeline">
+              <button type="button" data-value="ASAP">ASAP</button>
+              <button type="button" class="is-active" data-value="This month">This month</button>
+              <button type="button" data-value="1-3 months">1–3 months</button>
+              <button type="button" data-value="Planning ahead">Planning ahead</button>
+            </div>
+
+            <div class="book-console__summary">
+              <span>Selected inquiry</span>
+              <strong data-book-summary>Website / $3k-$7k / This month</strong>
             </div>
           </div>
 
           <a
-            class="book-card__button"
+            class="book-console__button"
+            data-book-link
             href="mailto:bimlabsstudio@gmail.com?subject=Project%20Inquiry%20-%20BIM%20Labs"
           >
-            <span>Book a conversation</span>
+            <span>Book intro call</span>
             <span aria-hidden="true">→</span>
           </a>
-        </div>
+
+          <p class="book-console__note">
+            No hard pitch. We look at the business, the current friction, and whether
+            the build actually makes sense.
+          </p>
+        </form>
       </div>
     </div>
 
