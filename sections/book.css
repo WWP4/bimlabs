@@ -1,6 +1,6 @@
 /* ==========================================================
    BIM LABS — BOOK WITH US
-   Clean centered intake
+   Homepage launch section
 ========================================================== */
 
 .book-with-us {
@@ -21,19 +21,19 @@
   z-index: 0;
   pointer-events: none;
   background:
-    radial-gradient(circle at 50% 38%, rgba(255, 255, 255, 0.045), transparent 34rem),
+    radial-gradient(circle at 50% 42%, rgba(255, 255, 255, 0.035), transparent 34rem),
     linear-gradient(180deg, #000 0%, #020202 48%, #000 100%);
 }
 
 .book-with-us__shell {
   position: relative;
   z-index: 2;
-  width: min(100% - 3rem, 78rem);
+  width: min(100% - 3rem, 82rem);
   min-height: 100svh;
   margin: 0 auto;
   display: grid;
   place-items: center;
-  padding: clamp(6rem, 10vh, 8rem) 0 clamp(4rem, 7vh, 6rem);
+  padding: clamp(6rem, 11vh, 9rem) 0 clamp(4rem, 8vh, 6rem);
 }
 
 .book-with-us__center {
@@ -56,137 +56,23 @@
 }
 
 .book-with-us__title {
-  max-width: 68rem;
+  max-width: 74rem;
   margin: 0;
   color: rgba(246, 246, 240, 0.96);
-  font-size: clamp(3.5rem, 6.6vw, 8.7rem);
+  font-size: clamp(4rem, 7.3vw, 9.6rem);
   font-weight: 300;
-  letter-spacing: -0.085em;
-  line-height: 0.9;
+  letter-spacing: -0.09em;
+  line-height: 0.88;
 }
 
 .book-with-us__intro {
-  max-width: 34rem;
-  margin: clamp(1.6rem, 3vh, 2.25rem) auto 0;
-  color: rgba(246, 246, 240, 0.55);
-  font-size: clamp(0.95rem, 1vw, 1.08rem);
+  max-width: 43rem;
+  margin: clamp(1.7rem, 3.5vh, 2.6rem) auto 0;
+  color: rgba(246, 246, 240, 0.56);
+  font-size: clamp(0.98rem, 1vw, 1.12rem);
   font-weight: 300;
-  line-height: 1.65;
+  line-height: 1.7;
   letter-spacing: -0.02em;
-}
-
-.book-panel {
-  width: min(100%, 56rem);
-  margin-top: clamp(2.5rem, 5vh, 3.5rem);
-  display: grid;
-  gap: 1rem;
-}
-
-.book-choice {
-  padding: clamp(1rem, 1.7vw, 1.35rem);
-  border: 1px solid rgba(246, 246, 240, 0.1);
-  background: rgba(255, 255, 255, 0.018);
-}
-
-.book-choice__question {
-  margin: 0 0 1rem;
-  color: rgba(246, 246, 240, 0.78);
-  font-size: 0.95rem;
-  font-weight: 400;
-  letter-spacing: -0.02em;
-}
-
-.book-choice__options {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 0.6rem;
-}
-
-.book-choice__options button,
-.book-choice__budgets button {
-  appearance: none;
-  border: 1px solid rgba(246, 246, 240, 0.11);
-  color: rgba(246, 246, 240, 0.55);
-  background: rgba(255, 255, 255, 0.02);
-  font: inherit;
-  cursor: pointer;
-  transition:
-    color 240ms ease,
-    background 240ms ease,
-    border-color 240ms ease,
-    transform 360ms cubic-bezier(0.19, 1, 0.22, 1);
-}
-
-.book-choice__options button {
-  min-height: 3rem;
-  padding: 0 1rem;
-  border-radius: 999rem;
-  font-size: 0.86rem;
-  font-weight: 500;
-}
-
-.book-choice__budgets {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 0.6rem;
-}
-
-.book-choice__budgets button {
-  min-height: 7rem;
-  padding: 1rem;
-  border-radius: 0.5rem;
-  text-align: left;
-}
-
-.book-choice__budgets strong {
-  display: block;
-  color: rgba(246, 246, 240, 0.86);
-  font-size: clamp(1.45rem, 2vw, 2rem);
-  font-weight: 300;
-  letter-spacing: -0.06em;
-  line-height: 1;
-}
-
-.book-choice__budgets span {
-  display: block;
-  max-width: 12rem;
-  margin-top: 0.7rem;
-  color: rgba(246, 246, 240, 0.42);
-  font-size: 0.78rem;
-  font-weight: 300;
-  line-height: 1.35;
-  letter-spacing: -0.02em;
-}
-
-.book-choice__options button:hover,
-.book-choice__budgets button:hover {
-  color: rgba(246, 246, 240, 0.9);
-  border-color: rgba(246, 246, 240, 0.24);
-  background: rgba(255, 255, 255, 0.04);
-  transform: translateY(-1px);
-}
-
-.book-choice__options button.is-active,
-.book-choice__budgets button.is-active {
-  color: #050505;
-  border-color: rgba(246, 246, 240, 0.9);
-  background: rgba(246, 246, 240, 0.92);
-}
-
-.book-choice__budgets button.is-active strong,
-.book-choice__budgets button.is-active span {
-  color: #050505;
-}
-
-.book-with-us__summary {
-  margin: clamp(1.25rem, 3vh, 1.75rem) 0 0;
-  color: rgba(246, 246, 240, 0.38);
-  font-family: var(--work-mono, "IBM Plex Mono", monospace);
-  font-size: 0.56rem;
-  font-weight: 800;
-  letter-spacing: 0.14em;
-  line-height: 1.4;
-  text-transform: uppercase;
 }
 
 .book-with-us__button {
@@ -194,10 +80,10 @@
   align-items: center;
   justify-content: center;
   gap: 1.1rem;
-  margin-top: 1.2rem;
-  min-width: 16rem;
-  min-height: 3.55rem;
-  padding: 0 1.5rem;
+  margin-top: clamp(2rem, 4vh, 3rem);
+  min-width: 16.5rem;
+  min-height: 3.65rem;
+  padding: 0 1.55rem;
   border: 1px solid rgba(246, 246, 240, 0.22);
   border-radius: 999rem;
   color: rgba(246, 246, 240, 0.94);
@@ -228,12 +114,61 @@
   transform: translateX(0.35rem);
 }
 
+.book-with-us__expectations {
+  width: min(100%, 62rem);
+  margin-top: clamp(3rem, 6vh, 4.5rem);
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  border-top: 1px solid rgba(246, 246, 240, 0.1);
+  border-bottom: 1px solid rgba(246, 246, 240, 0.1);
+}
+
+.book-with-us__expectations div {
+  min-height: 9.25rem;
+  padding: 1.15rem;
+  text-align: left;
+  border-left: 1px solid rgba(246, 246, 240, 0.08);
+}
+
+.book-with-us__expectations div:first-child {
+  border-left: 0;
+}
+
+.book-with-us__expectations span {
+  display: block;
+  margin-bottom: 1.5rem;
+  color: rgba(246, 246, 240, 0.28);
+  font-family: var(--work-mono, "IBM Plex Mono", monospace);
+  font-size: 0.52rem;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+}
+
+.book-with-us__expectations strong {
+  display: block;
+  color: rgba(246, 246, 240, 0.82);
+  font-size: 0.95rem;
+  font-weight: 500;
+  letter-spacing: -0.025em;
+}
+
+.book-with-us__expectations p {
+  max-width: 14rem;
+  margin: 0.65rem 0 0;
+  color: rgba(246, 246, 240, 0.42);
+  font-size: 0.8rem;
+  font-weight: 300;
+  line-height: 1.45;
+  letter-spacing: -0.02em;
+}
+
 /* ==========================================================
    MOBILE
 ========================================================== */
 
 @media (max-width: 900px) {
   .book-with-us {
+    min-height: auto;
     overflow: visible;
   }
 
@@ -244,21 +179,30 @@
   }
 
   .book-with-us__title {
-    font-size: clamp(3.4rem, 14vw, 6.5rem);
-    letter-spacing: -0.075em;
+    font-size: clamp(3.5rem, 14vw, 6.8rem);
+    letter-spacing: -0.078em;
     line-height: 0.92;
   }
 
-  .book-choice__options,
-  .book-choice__budgets {
+  .book-with-us__intro {
+    max-width: 34rem;
+  }
+
+  .book-with-us__expectations {
     grid-template-columns: 1fr;
   }
 
-  .book-choice__budgets button {
+  .book-with-us__expectations div {
     min-height: auto;
+    border-left: 0;
+    border-top: 1px solid rgba(246, 246, 240, 0.08);
   }
 
-  .book-choice__budgets span {
+  .book-with-us__expectations div:first-child {
+    border-top: 0;
+  }
+
+  .book-with-us__expectations p {
     max-width: 100%;
   }
 }
@@ -274,8 +218,6 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .book-choice__options button,
-  .book-choice__budgets button,
   .book-with-us__button,
   .book-with-us__button span:last-child {
     transition: none !important;

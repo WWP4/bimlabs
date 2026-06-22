@@ -1,6 +1,6 @@
 /* ==========================================================
    BIM LABS — BOOK WITH US
-   Minimal project/budget selection.
+   Homepage booking gateway.
 ========================================================== */
 
 (() => {
@@ -9,8 +9,8 @@
   const section = document.querySelector(".book-with-us");
   if (!section) return;
 
-  const summary = section.querySelector("[data-book-summary]");
-  const link = section.querySelector("[data-book-link]");
+  const link = section.querySelector(".book-with-us__button");
+  if (!link) return;
 
   if (!summary || !link) return;
 
