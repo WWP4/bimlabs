@@ -33,14 +33,16 @@
           <p><span data-progress-current>1</span> / 5</p>
         </div>
 
-        <form name="bim-labs-booking" method="POST" data-netlify="true" netlify-honeypot="bot-field" class="booking-form" data-booking-form>
-          <input type="hidden" name="form-name" value="bim-labs-booking" />
-          <p class="booking-hidden"><label>Don’t fill this out: <input name="bot-field" /></label></p>
+        <form name="bim-labs-booking" method="POST" class="booking-form" data-booking-form>
           <input type="hidden" name="projectType" data-field="type" />
           <input type="hidden" name="budgetRange" data-field="budget" />
-          <input type="hidden" name="selectedDate" data-field="date" />
-          <input type="hidden" name="selectedTime" data-field="time" />
-          <input type="hidden" name="pageSource" value="BIM Labs booking page" />
+          <input type="hidden" name="startAtUtc" data-field="start" />
+          <input type="hidden" name="endAtUtc" data-field="end" />
+          <input type="hidden" name="clientTimezone" data-field="client-timezone" />
+          <input type="hidden" name="studioTimezone" data-field="studio-timezone" />
+          <input type="hidden" name="clientDisplayTime" data-field="client-display-time" />
+          <input type="hidden" name="studioDisplayTime" data-field="studio-display-time" />
+          <input type="hidden" name="pageSource" value="bim-labs-booking-page" />
 
           <section class="booking-step is-active" data-step="0" aria-labelledby="step-type">
             <p class="step-eyebrow">Step 1</p>
@@ -57,6 +59,7 @@
           <section class="booking-step" data-step="2" aria-labelledby="step-time" hidden>
             <p class="step-eyebrow">Step 3</p>
             <h2 id="step-time">Choose a call time</h2>
+            <p class="timezone-note">Times shown in your timezone: <strong data-client-timezone></strong></p>
             <div class="date-time-picker">
               <div class="date-list" data-date-list aria-label="Available business days"></div>
               <div class="time-list" data-time-list aria-label="Available times"></div>
@@ -77,7 +80,7 @@
 
           <section class="booking-step" data-step="4" aria-labelledby="step-review" hidden>
             <p class="step-eyebrow">Step 5</p>
-            <h2 id="step-review">Review and submit</h2>
+            <h2 id="step-review">Review request</h2>
             <dl class="review-list" data-review-list></dl>
             <p class="booking-note">This sends a request to BIM Labs. We’ll confirm the call by email.</p>
           </section>
@@ -95,6 +98,10 @@
           <p class="step-eyebrow">Request received.</p>
           <h2>We’ll confirm the call by email.</h2>
           <p>Thanks for reaching out. BIM Labs will review the details and follow up with the confirmed time or the closest available option.</p>
+          <dl class="success-times">
+            <div><dt>Your selected time</dt><dd data-success-client-time></dd></div>
+            <div><dt>BIM Labs studio time</dt><dd data-success-studio-time></dd></div>
+          </dl>
           <a href="/index.html#top">Return to BIM Labs</a>
         </div>
       </div>
