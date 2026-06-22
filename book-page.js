@@ -1,0 +1,345 @@
+(() => {
+  "use strict";
+
+  const flow = document.querySelector("[data-booking-flow]");
+  if (!flow) return;
+
+  const STUDIO_TIME_ZONE = "America/Chicago";
+  const SLOT_MINUTES = 15;
+  const studioSlots = [
+    { label: "9:00 AM", hour: 9, minute: 0 },
+    { label: "10:30 AM", hour: 10, minute: 30 },
+    { label: "12:00 PM", hour: 12, minute: 0 },
+    { label: "1:30 PM", hour: 13, minute: 30 },
+    { label: "3:00 PM", hour: 15, minute: 0 },
+    { label: "4:30 PM", hour: 16, minute: 30 },
+  ];
+
+  const form = flow.querySelector("[data-booking-form]");
+  const steps = Array.from(flow.querySelectorAll("[data-step]"));
+  const progressBar = flow.querySelector("[data-progress-bar]");
+  const progressCurrent = flow.querySelector("[data-progress-current]");
+  const backButton = flow.querySelector("[data-back]");
+  const nextButton = flow.querySelector("[data-next]");
+  const submitButton = flow.querySelector("[data-submit]");
+  const error = flow.querySelector("[data-booking-error]");
+  const success = flow.querySelector("[data-booking-success]");
+  const successClientTime = flow.querySelector("[data-success-client-time]");
+  const successStudioTime = flow.querySelector("[data-success-studio-time]");
+  const reviewList = flow.querySelector("[data-review-list]");
+  const timezoneLabel = flow.querySelector("[data-client-timezone]");
+
+  const projectTypes = ["Website", "Portal", "AI System", "Automation"];
+  const budgets = ["$1k-$3k", "$3k-$7k", "$7k-$15k"];
+  const params = new URLSearchParams(window.location.search);
+  const clientTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC";
+  const functionUrl = window.BIM_LABS_BOOKING_FUNCTION_URL || "/functions/v1/create-booking-request";
+
+  const state = {
+    step: 0,
+    type: projectTypes.includes(params.get("type")) ? params.get("type") : "Website",
+    budget: budgets.includes(params.get("budget")) ? params.get("budget") : "$3k-$7k",
+    slot: null,
+  };
+
+  function zonedParts(date, timeZone) {
+    const parts = new Intl.DateTimeFormat("en-US", {
+      timeZone,
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+      hour12: false,
+    }).formatToParts(date).reduce((acc, part) => {
+      if (part.type !== "literal") acc[part.type] = Number(part.value);
+      return acc;
+    }, {});
+    if (parts.hour === 24) parts.hour = 0;
+    return parts;
+  }
+
+  function zonedTimeToUtc({ year, month, day, hour, minute }, timeZone) {
+    let utc = Date.UTC(year, month - 1, day, hour, minute, 0);
+    for (let index = 0; index < 3; index += 1) {
+      const parts = zonedParts(new Date(utc), timeZone);
+      const asUtc = Date.UTC(parts.year, parts.month - 1, parts.day, parts.hour, parts.minute, parts.second || 0);
+      utc += Date.UTC(year, month - 1, day, hour, minute, 0) - asUtc;
+    }
+    return new Date(utc);
+  }
+
+  function addMinutes(date, minutes) {
+    return new Date(date.getTime() + minutes * 60 * 1000);
+  }
+
+  function displayDate(date, timeZone) {
+    return new Intl.DateTimeFormat(undefined, {
+      timeZone,
+      weekday: "short",
+      month: "short",
+      day: "numeric",
+    }).format(date);
+  }
+
+  function displayTime(date, timeZone) {
+    return new Intl.DateTimeFormat(undefined, {
+      timeZone,
+      hour: "numeric",
+      minute: "2-digit",
+      timeZoneName: "short",
+    }).format(date);
+  }
+
+  function displayFull(date, timeZone) {
+    return new Intl.DateTimeFormat(undefined, {
+      timeZone,
+      weekday: "long",
+      month: "long",
+      day: "numeric",
+      year: "numeric",
+      hour: "numeric",
+      minute: "2-digit",
+      timeZoneName: "short",
+    }).format(date);
+  }
+
+  function nextStudioBusinessDays(count) {
+    const days = [];
+    const nowParts = zonedParts(new Date(), STUDIO_TIME_ZONE);
+    const cursor = { year: nowParts.year, month: nowParts.month, day: nowParts.day };
+
+    while (days.length < count) {
+      const noonUtc = zonedTimeToUtc({ ...cursor, hour: 12, minute: 0 }, STUDIO_TIME_ZONE);
+      noonUtc.setUTCDate(noonUtc.getUTCDate() + 1);
+      const next = zonedParts(noonUtc, STUDIO_TIME_ZONE);
+      cursor.year = next.year;
+      cursor.month = next.month;
+      cursor.day = next.day;
+
+      const studioNoon = zonedTimeToUtc({ ...cursor, hour: 12, minute: 0 }, STUDIO_TIME_ZONE);
+      const weekday = new Intl.DateTimeFormat("en-US", { timeZone: STUDIO_TIME_ZONE, weekday: "short" }).format(studioNoon);
+      if (weekday !== "Sat" && weekday !== "Sun") days.push({ ...cursor });
+    }
+
+    return days;
+  }
+
+  function buildSlots() {
+    return nextStudioBusinessDays(10).map((day, dayIndex) => ({
+      key: `${day.year}-${String(day.month).padStart(2, "0")}-${String(day.day).padStart(2, "0")}`,
+      dateLabel: displayDate(zonedTimeToUtc({ ...day, hour: 12, minute: 0 }, STUDIO_TIME_ZONE), clientTimeZone),
+      studioDateLabel: displayDate(zonedTimeToUtc({ ...day, hour: 12, minute: 0 }, STUDIO_TIME_ZONE), STUDIO_TIME_ZONE),
+      times: studioSlots.map((slot) => {
+        const start = zonedTimeToUtc({ ...day, hour: slot.hour, minute: slot.minute }, STUDIO_TIME_ZONE);
+        const end = addMinutes(start, SLOT_MINUTES);
+        return {
+          id: `${dayIndex}-${slot.hour}-${slot.minute}`,
+          startAtUtc: start.toISOString(),
+          endAtUtc: end.toISOString(),
+          clientDisplayTime: displayFull(start, clientTimeZone),
+          studioDisplayTime: displayFull(start, STUDIO_TIME_ZONE),
+          clientTimeLabel: displayTime(start, clientTimeZone),
+          studioSlotLabel: slot.label,
+        };
+      }),
+    }));
+  }
+
+  const availability = buildSlots();
+  state.slot = availability[0]?.times[0] || null;
+
+  function renderChoices(group, values) {
+    const node = flow.querySelector(`[data-choice-group="${group}"]`);
+    node.innerHTML = values.map((value) => `
+      <button type="button" class="choice-button" data-choice="${group}" data-value="${value}" aria-pressed="false">
+        <span>${value}</span>
+      </button>
+    `).join("");
+  }
+
+  function renderDates() {
+    const dateList = flow.querySelector("[data-date-list]");
+    dateList.innerHTML = availability.map((day) => `
+      <button type="button" class="date-button" data-date-key="${day.key}" aria-selected="false">
+        <span>${day.dateLabel}</span>
+        <small>BIM Labs: ${day.studioDateLabel}</small>
+      </button>
+    `).join("");
+  }
+
+  function renderTimes() {
+    const timeList = flow.querySelector("[data-time-list]");
+    const selectedDay = availability.find((day) => day.times.some((slot) => slot.id === state.slot?.id)) || availability[0];
+    timeList.innerHTML = selectedDay.times.map((slot) => `
+      <button type="button" class="time-button" data-slot-id="${slot.id}" aria-selected="false">
+        <span>${slot.clientTimeLabel}</span>
+        <small>BIM Labs ${slot.studioSlotLabel}</small>
+      </button>
+    `).join("");
+  }
+
+  function selectedDayKey() {
+    return availability.find((day) => day.times.some((slot) => slot.id === state.slot?.id))?.key;
+  }
+
+  function syncHiddenFields() {
+    form.querySelector('[data-field="type"]').value = state.type;
+    form.querySelector('[data-field="budget"]').value = state.budget;
+    form.querySelector('[data-field="start"]').value = state.slot?.startAtUtc || "";
+    form.querySelector('[data-field="end"]').value = state.slot?.endAtUtc || "";
+    form.querySelector('[data-field="client-timezone"]').value = clientTimeZone;
+    form.querySelector('[data-field="studio-timezone"]').value = STUDIO_TIME_ZONE;
+    form.querySelector('[data-field="client-display-time"]').value = state.slot?.clientDisplayTime || "";
+    form.querySelector('[data-field="studio-display-time"]').value = state.slot?.studioDisplayTime || "";
+  }
+
+  function updateReview() {
+    const data = new FormData(form);
+    const rows = [
+      ["Project type", state.type],
+      ["Budget range", state.budget],
+      ["Your time", state.slot?.clientDisplayTime || "—"],
+      ["BIM Labs time", state.slot?.studioDisplayTime || "—"],
+      ["Name", data.get("name") || "—"],
+      ["Email", data.get("email") || "—"],
+      ["Phone", data.get("phone") || "—"],
+      ["Business", data.get("businessName") || "—"],
+      ["Context", data.get("projectContext") || "—"],
+    ];
+    reviewList.innerHTML = rows.map(([term, desc]) => `<div><dt>${term}</dt><dd>${desc}</dd></div>`).join("");
+  }
+
+  function updateUI() {
+    steps.forEach((step, index) => {
+      const active = index === state.step;
+      step.hidden = !active;
+      step.classList.toggle("is-active", active);
+      if (active) step.setAttribute("aria-current", "step"); else step.removeAttribute("aria-current");
+    });
+    flow.querySelectorAll("[data-choice]").forEach((button) => {
+      const active = state[button.dataset.choice] === button.dataset.value;
+      button.classList.toggle("is-selected", active);
+      button.setAttribute("aria-pressed", String(active));
+    });
+    flow.querySelectorAll("[data-date-key]").forEach((button) => {
+      const active = selectedDayKey() === button.dataset.dateKey;
+      button.classList.toggle("is-selected", active);
+      button.setAttribute("aria-selected", String(active));
+    });
+    flow.querySelectorAll("[data-slot-id]").forEach((button) => {
+      const active = state.slot?.id === button.dataset.slotId;
+      button.classList.toggle("is-selected", active);
+      button.setAttribute("aria-selected", String(active));
+    });
+    backButton.disabled = state.step === 0;
+    nextButton.hidden = state.step === steps.length - 1;
+    submitButton.hidden = state.step !== steps.length - 1;
+    progressCurrent.textContent = String(state.step + 1);
+    progressBar.style.width = `${((state.step + 1) / steps.length) * 100}%`;
+    error.textContent = "";
+    syncHiddenFields();
+    if (state.step === steps.length - 1) updateReview();
+  }
+
+  function validContact() {
+    const name = form.elements.name.value.trim();
+    const email = form.elements.email.value.trim();
+    const context = form.elements.projectContext.value.trim();
+    if (!name) return "Please enter your name.";
+    if (!/^\S+@\S+\.\S+$/.test(email)) return "Please enter a valid email.";
+    if (!context) return "Please add a short project context.";
+    return "";
+  }
+
+  function canAdvance() {
+    if (state.step === 0 && !state.type) return "Please choose a project type.";
+    if (state.step === 1 && !state.budget) return "Please choose a budget range.";
+    if (state.step === 2 && !state.slot) return "Please choose a date and time.";
+    if (state.step === 3) return validContact();
+    return "";
+  }
+
+  flow.addEventListener("click", (event) => {
+    const choice = event.target.closest("[data-choice]");
+    const date = event.target.closest("[data-date-key]");
+    const time = event.target.closest("[data-slot-id]");
+    if (choice) state[choice.dataset.choice] = choice.dataset.value;
+    if (date) {
+      const day = availability.find((item) => item.key === date.dataset.dateKey);
+      state.slot = day?.times[0] || state.slot;
+      renderTimes();
+    }
+    if (time) {
+      const slots = availability.flatMap((day) => day.times);
+      state.slot = slots.find((slot) => slot.id === time.dataset.slotId) || state.slot;
+    }
+    updateUI();
+  });
+
+  nextButton.addEventListener("click", () => {
+    const message = canAdvance();
+    if (message) { error.textContent = message; return; }
+    state.step = Math.min(state.step + 1, steps.length - 1);
+    updateUI();
+  });
+
+  backButton.addEventListener("click", () => {
+    state.step = Math.max(state.step - 1, 0);
+    updateUI();
+  });
+
+  form.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    const message = validContact() || canAdvance();
+    if (message) { error.textContent = message; return; }
+    syncHiddenFields();
+    submitButton.disabled = true;
+    submitButton.textContent = "Sending request…";
+
+    const data = new FormData(form);
+    const payload = {
+      project_type: state.type,
+      budget_range: state.budget,
+      start_at_utc: state.slot.startAtUtc,
+      end_at_utc: state.slot.endAtUtc,
+      client_timezone: clientTimeZone,
+      studio_timezone: STUDIO_TIME_ZONE,
+      client_display_time: state.slot.clientDisplayTime,
+      studio_display_time: state.slot.studioDisplayTime,
+      name: String(data.get("name") || "").trim(),
+      email: String(data.get("email") || "").trim(),
+      phone: String(data.get("phone") || "").trim(),
+      business_name: String(data.get("businessName") || "").trim(),
+      project_context: String(data.get("projectContext") || "").trim(),
+      source: "bim-labs-booking-page",
+    };
+
+    try {
+      const response = await fetch(functionUrl, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      const result = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(result.error || "Unable to submit this booking request.");
+      successClientTime.textContent = payload.client_display_time;
+      successStudioTime.textContent = payload.studio_display_time;
+      form.hidden = true;
+      success.hidden = false;
+      success.focus();
+    } catch (requestError) {
+      error.textContent = requestError.message || "Unable to submit this booking request. Please try again.";
+      submitButton.disabled = false;
+      submitButton.textContent = "Confirm intro call.";
+    }
+  });
+
+  timezoneLabel.textContent = clientTimeZone;
+  renderChoices("type", projectTypes);
+  renderChoices("budget", budgets);
+  renderDates();
+  renderTimes();
+  updateUI();
+})();

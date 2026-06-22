@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Book a BIM Labs intro call</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Manrope:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="book-page.css" />
+</head>
+<body class="book-page-body">
+  <header class="site-header book-site-header">
+    <a href="/index.html#top" class="brand">BIM LABS</a>
+    <nav class="main-nav" aria-label="Primary navigation">
+      <a href="/index.html#work">Our Work</a>
+      <a href="/index.html#process">Process</a>
+      <a href="/index.html#our-work">Archive</a>
+      <a href="/index.html#contact">Contact</a>
+    </nav>
+  </header>
+
+  <main class="book-page" id="top">
+    <section class="book-hero" aria-labelledby="book-title">
+      <p class="book-kicker">BIM Labs / Intro call</p>
+      <h1 id="book-title">Book a BIM Labs intro call.</h1>
+      <p class="book-subtext">A quick call to understand what you’re building, where the friction is, and whether BIM Labs is the right fit.</p>
+
+      <div class="booking-flow" data-booking-flow>
+        <div class="booking-progress" aria-label="Booking progress">
+          <div class="booking-progress__bar"><span data-progress-bar></span></div>
+          <p><span data-progress-current>1</span> / 5</p>
+        </div>
+
+        <form name="bim-labs-booking" method="POST" class="booking-form" data-booking-form>
+          <input type="hidden" name="projectType" data-field="type" />
+          <input type="hidden" name="budgetRange" data-field="budget" />
+          <input type="hidden" name="startAtUtc" data-field="start" />
+          <input type="hidden" name="endAtUtc" data-field="end" />
+          <input type="hidden" name="clientTimezone" data-field="client-timezone" />
+          <input type="hidden" name="studioTimezone" data-field="studio-timezone" />
+          <input type="hidden" name="clientDisplayTime" data-field="client-display-time" />
+          <input type="hidden" name="studioDisplayTime" data-field="studio-display-time" />
+          <input type="hidden" name="pageSource" value="bim-labs-booking-page" />
+
+          <section class="booking-step is-active" data-step="0" aria-labelledby="step-type">
+            <p class="step-eyebrow">Step 1</p>
+            <h2 id="step-type">Confirm project type</h2>
+            <div class="choice-grid" data-choice-group="type"></div>
+          </section>
+
+          <section class="booking-step" data-step="1" aria-labelledby="step-budget" hidden>
+            <p class="step-eyebrow">Step 2</p>
+            <h2 id="step-budget">Confirm budget range</h2>
+            <div class="choice-grid choice-grid--budget" data-choice-group="budget"></div>
+          </section>
+
+          <section class="booking-step" data-step="2" aria-labelledby="step-time" hidden>
+            <p class="step-eyebrow">Step 3</p>
+            <h2 id="step-time">Choose a call time</h2>
+            <p class="timezone-note">Times shown in your timezone: <strong data-client-timezone></strong></p>
+            <div class="date-time-picker">
+              <div class="date-list" data-date-list aria-label="Available business days"></div>
+              <div class="time-list" data-time-list aria-label="Available times"></div>
+            </div>
+          </section>
+
+          <section class="booking-step" data-step="3" aria-labelledby="step-contact" hidden>
+            <p class="step-eyebrow">Step 4</p>
+            <h2 id="step-contact">Enter contact details</h2>
+            <div class="field-grid">
+              <label>Name <input name="name" autocomplete="name" required /></label>
+              <label>Email <input name="email" type="email" autocomplete="email" required /></label>
+              <label>Phone <input name="phone" type="tel" autocomplete="tel" /></label>
+              <label>Business name <input name="businessName" autocomplete="organization" /></label>
+              <label class="field-grid__wide">Short project context <textarea name="projectContext" rows="5" required></textarea></label>
+            </div>
+          </section>
+
+          <section class="booking-step" data-step="4" aria-labelledby="step-review" hidden>
+            <p class="step-eyebrow">Step 5</p>
+            <h2 id="step-review">Review request</h2>
+            <dl class="review-list" data-review-list></dl>
+            <p class="booking-note">This sends a request to BIM Labs. We’ll confirm the call by email.</p>
+          </section>
+
+          <p class="booking-error" data-booking-error role="alert" aria-live="polite"></p>
+
+          <div class="booking-controls">
+            <button class="booking-control booking-control--back" type="button" data-back>Back</button>
+            <button class="booking-control booking-control--next" type="button" data-next>Next</button>
+            <button class="booking-control booking-control--confirm" type="submit" data-submit hidden>Confirm intro call.</button>
+          </div>
+        </form>
+
+        <div class="booking-success" data-booking-success hidden tabindex="-1">
+          <p class="step-eyebrow">Request received.</p>
+          <h2>We’ll confirm the call by email.</h2>
+          <p>Thanks for reaching out. BIM Labs will review the details and follow up with the confirmed time or the closest available option.</p>
+          <dl class="success-times">
+            <div><dt>Your selected time</dt><dd data-success-client-time></dd></div>
+            <div><dt>BIM Labs studio time</dt><dd data-success-studio-time></dd></div>
+          </dl>
+          <a href="/index.html#top">Return to BIM Labs</a>
+        </div>
+      </div>
+    </section>
+  </main>
+  <script src="book-page.js"></script>
+</body>
+</html>
