@@ -23,12 +23,12 @@
     const text = `${state.type} / ${state.budget}`;
     summary.textContent = text;
 
-    const subject = encodeURIComponent("Project Inquiry - BIM Labs");
-    const body = encodeURIComponent(
-      `Hey BIM Labs,\n\nI want to book an intro call.\n\nProject type: ${state.type}\nEstimated budget: ${state.budget}\n\nA little context:\n`
-    );
+    const params = new URLSearchParams({
+      type: state.type,
+      budget: state.budget,
+    });
 
-    link.href = `mailto:bimlabsstudio@gmail.com?subject=${subject}&body=${body}`;
+    link.href = `/book.html?${params.toString()}`;
   }
 
   function handleClick(event) {
