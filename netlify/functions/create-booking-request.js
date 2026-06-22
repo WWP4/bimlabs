@@ -55,6 +55,11 @@ function escapeHtml(value = "") {
     .replaceAll("'", "&#039;");
 }
 
+function toFirstName(name) {
+  const cleanName = clean(name);
+  return cleanName.split(" ")[0] || cleanName || "there";
+}
+
 function zonedParts(date, timeZone) {
   const parts = new Intl.DateTimeFormat("en-US", {
     timeZone,
@@ -97,9 +102,9 @@ function isAllowedStudioSlot(start) {
   return weekday !== "Sat" && weekday !== "Sun" && allowedTime;
 }
 
-function brandedDetailBlock({ label, value, subvalue }) {
+function emailDetailBlock({ label, value, subvalue }) {
   return `
-    <td class="detail-column" valign="top" width="50%" style="width:50%; padding:0 12px 26px 12px;">
+    <td class="detail-column" valign="top" width="50%" style="width:50%; padding:0 12px 24px 12px;">
       <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;">
         <tr>
           <td style="padding:0 0 14px 0; border-bottom:1px solid #deded8;">
@@ -127,14 +132,34 @@ function brandedDetailBlock({ label, value, subvalue }) {
   `;
 }
 
+function timelineStep({ number, title, text }) {
+  return `
+    <tr>
+      <td valign="top" style="width:54px; padding:0 16px 22px 0;">
+        <div style="width:38px; height:38px; border-radius:999px; background:#050505; color:#f5f5ef; font-size:12px; line-height:38px; text-align:center; font-weight:700; letter-spacing:0.08em;">
+          ${escapeHtml(number)}
+        </div>
+      </td>
+
+      <td valign="top" style="padding:0 0 22px 0; border-bottom:1px solid #e4e4de;">
+        <div style="font-size:17px; line-height:1.25; color:#101010; font-weight:700; letter-spacing:-0.025em;">
+          ${escapeHtml(title)}
+        </div>
+
+        <div style="padding-top:6px; font-size:14px; line-height:1.65; color:#4d4d48;">
+          ${escapeHtml(text)}
+        </div>
+      </td>
+    </tr>
+  `;
+}
+
 function brandedEmailShell({
   pretitle,
   title,
   intro,
-  topLeft,
-  topRight,
-  bottomLeft,
-  bottomRight,
+  detailsHtml = "",
+  timelineHtml = "",
   noticeTitle,
   noticeText,
 }) {
@@ -227,39 +252,53 @@ function brandedEmailShell({
               </td>
             </tr>
 
+            ${detailsHtml}
+
+            ${
+              timelineHtml
+                ? `
             <tr>
-              <td style="padding:0 26px 6px 26px;">
+              <td class="email-padding" style="padding:4px 38px 34px 38px;">
                 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;">
                   <tr>
-                    ${brandedDetailBlock(topLeft)}
-                    ${brandedDetailBlock(topRight)}
+                    <td style="padding:0 0 18px 0;">
+                      <div style="font-size:12px; line-height:1.2; letter-spacing:0.14em; text-transform:uppercase; color:#555550; font-weight:700;">
+                        What happens next
+                      </div>
+                    </td>
                   </tr>
 
-                  <tr>
-                    ${brandedDetailBlock(bottomLeft)}
-                    ${brandedDetailBlock(bottomRight)}
-                  </tr>
+                  ${timelineHtml}
                 </table>
               </td>
             </tr>
+            `
+                : ""
+            }
 
+            ${
+              noticeTitle || noticeText
+                ? `
             <tr>
               <td class="email-padding" style="padding:4px 38px 34px 38px;">
                 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse; background:#f5f5f2; border:1px solid #e4e4de;">
                   <tr>
                     <td style="padding:22px 24px;">
                       <div style="font-size:18px; line-height:1.25; color:#101010; font-weight:700; letter-spacing:-0.025em; margin-bottom:8px;">
-                        ${escapeHtml(noticeTitle)}
+                        ${escapeHtml(noticeTitle || "")}
                       </div>
 
                       <div style="font-size:15px; line-height:1.7; color:#444440;">
-                        ${noticeText}
+                        ${noticeText || ""}
                       </div>
                     </td>
                   </tr>
                 </table>
               </td>
             </tr>
+            `
+                : ""
+            }
 
             <tr>
               <td class="email-padding" style="padding:0 38px 22px 38px;">
@@ -296,6 +335,42 @@ function brandedEmailShell({
   </body>
 </html>
 `;
+}
+
+function bookingDetailsGrid(booking) {
+  return `
+    <tr>
+      <td style="padding:0 26px 10px 26px;">
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;">
+          <tr>
+            ${emailDetailBlock({
+              label: "Your scheduled time",
+              value: booking.client_display_time,
+              subvalue: "Shown in your local timezone",
+            })}
+            ${emailDetailBlock({
+              label: "BIM Labs studio time",
+              value: booking.studio_display_time,
+              subvalue: "America/Chicago",
+            })}
+          </tr>
+
+          <tr>
+            ${emailDetailBlock({
+              label: "Project direction",
+              value: booking.project_type,
+              subvalue: booking.business_name || "BIM Labs intro call",
+            })}
+            ${emailDetailBlock({
+              label: "Budget range",
+              value: booking.budget_range,
+              subvalue: "Used to understand scope and fit",
+            })}
+          </tr>
+        </table>
+      </td>
+    </tr>
+  `;
 }
 
 async function sendEmail({ to, subject, text, html }) {
@@ -490,6 +565,7 @@ exports.handler = async function handler(event) {
     const createdRows = await insertResponse.json();
     const created = createdRows && createdRows[0];
     const requestId = created?.id || "Unavailable";
+    const firstName = toFirstName(booking.name);
 
     const adminText = [
       "New BIM Labs booking request",
@@ -512,75 +588,128 @@ exports.handler = async function handler(event) {
     ].join("\n");
 
     const clientText = [
-      `Hey ${booking.name},`,
+      `Hi ${firstName},`,
       "",
-      "We received your intro call request.",
+      "Thank you for booking with BIM Labs.",
       "",
-      "Your selected time:",
+      "We look forward to meeting with you and learning more about what you're building.",
+      "",
+      "This is your scheduled call time:",
       booking.client_display_time,
       "",
       "BIM Labs studio time:",
       booking.studio_display_time,
       "",
-      "We’ll review the request and confirm by email.",
+      "We’ll be in touch shortly by email with anything else you need before the call.",
+      "",
+      "What happens next:",
+      "1. Your meeting is scheduled.",
+      "2. We meet, plan, and identify your needs.",
+      "3. We build the right digital system.",
+      "4. You enjoy a cleaner, easier business workflow.",
       "",
       "— BIM Labs Studio",
     ].join("\n");
 
+    const clientTimelineHtml = [
+      timelineStep({
+        number: "01",
+        title: "Your meeting is scheduled.",
+        text: "We received your selected time and will be in touch shortly if anything else is needed before the call.",
+      }),
+      timelineStep({
+        number: "02",
+        title: "We meet, plan, and identify your needs.",
+        text: "On the call, we’ll talk through what you’re building, what feels unclear, and what the digital system needs to solve.",
+      }),
+      timelineStep({
+        number: "03",
+        title: "We build the right system.",
+        text: "If the project is a fit, BIM Labs will shape the website, portal, AI system, or automation around the real business need.",
+      }),
+      timelineStep({
+        number: "04",
+        title: "You enjoy a cleaner workflow.",
+        text: "The goal is simple: a sharper digital experience that helps your business present, sell, book, or operate with less friction.",
+      }),
+    ].join("");
+
     const clientHtml = brandedEmailShell({
-      pretitle: `THANK YOU, ${booking.name.toUpperCase()}`,
-      title: "Booking request received.",
+      pretitle: `THANK YOU, ${firstName.toUpperCase()}`,
+      title: "We look forward to meeting with you.",
       intro:
-        "We’ve received your intro call request and appreciate you considering BIM Labs.<br /><br />Here are the details you selected:",
-      topLeft: {
-        label: "Your selected time",
-        value: booking.client_display_time,
-        subvalue: "",
-      },
-      topRight: {
-        label: "BIM Labs studio time",
-        value: booking.studio_display_time,
-        subvalue: "",
-      },
-      bottomLeft: {
-        label: "Project type",
-        value: booking.project_type,
-        subvalue: booking.business_name || "BIM Labs intro call",
-      },
-      bottomRight: {
-        label: "Budget range",
-        value: booking.budget_range,
-        subvalue: "USD",
-      },
-      noticeTitle: "What’s next?",
+        "Thank you for booking with BIM Labs.<br /><br />We’re looking forward to learning more about what you’re building and how we can help make the digital side of your business clearer, sharper, and easier to use.",
+      detailsHtml: bookingDetailsGrid(booking),
+      timelineHtml: clientTimelineHtml,
+      noticeTitle: "We’ll be in touch shortly.",
       noticeText:
-        "Our team will review your request and confirm your intro call by email.<br />We look forward to connecting.",
+        "We’ll review your request and follow up by email with anything else you need before the call. We appreciate you reaching out and look forward to speaking with you soon.",
     });
+
+    const adminTimelineHtml = [
+      timelineStep({
+        number: "01",
+        title: "Review request.",
+        text: `Review ${booking.name}'s project context and selected time.`,
+      }),
+      timelineStep({
+        number: "02",
+        title: "Confirm by email.",
+        text: "Reply with confirmation, prep questions, or the closest available option if the selected time needs to shift.",
+      }),
+      timelineStep({
+        number: "03",
+        title: "Prepare call direction.",
+        text: "Use the project type, budget range, and context to identify the likely scope before the meeting.",
+      }),
+      timelineStep({
+        number: "04",
+        title: "Move to next step.",
+        text: "If the call is a fit, define scope, timing, and the first project action.",
+      }),
+    ].join("");
+
+    const adminDetailsHtml = `
+      <tr>
+        <td style="padding:0 26px 10px 26px;">
+          <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;">
+            <tr>
+              ${emailDetailBlock({
+                label: "Client",
+                value: booking.name,
+                subvalue: booking.email,
+              })}
+              ${emailDetailBlock({
+                label: "Selected time",
+                value: booking.studio_display_time,
+                subvalue: start.toISOString(),
+              })}
+            </tr>
+
+            <tr>
+              ${emailDetailBlock({
+                label: "Project type",
+                value: booking.project_type,
+                subvalue: booking.business_name || "No business name provided",
+              })}
+              ${emailDetailBlock({
+                label: "Budget range",
+                value: booking.budget_range,
+                subvalue: booking.phone || "No phone provided",
+              })}
+            </tr>
+          </table>
+        </td>
+      </tr>
+    `;
 
     const adminHtml = brandedEmailShell({
       pretitle: "NEW BOOKING REQUEST",
       title: "New booking request.",
-      intro: "A new BIM Labs intro call request was submitted. Review the details below and confirm the time by email.",
-      topLeft: {
-        label: "Client",
-        value: booking.name,
-        subvalue: booking.email,
-      },
-      topRight: {
-        label: "BIM Labs studio time",
-        value: booking.studio_display_time,
-        subvalue: start.toISOString(),
-      },
-      bottomLeft: {
-        label: "Project type",
-        value: booking.project_type,
-        subvalue: booking.business_name || "No business name provided",
-      },
-      bottomRight: {
-        label: "Budget range",
-        value: booking.budget_range,
-        subvalue: booking.phone || "No phone provided",
-      },
+      intro:
+        "A new BIM Labs intro call request was submitted. Review the details below and confirm the time by email.",
+      detailsHtml: adminDetailsHtml,
+      timelineHtml: adminTimelineHtml,
       noticeTitle: "Project context",
       noticeText: escapeHtml(booking.project_context).replace(/\n/g, "<br />"),
     });
@@ -599,7 +728,7 @@ exports.handler = async function handler(event) {
 
       await sendEmail({
         to: booking.email,
-        subject: "BIM Labs received your booking request",
+        subject: "Thank you for booking with BIM Labs",
         text: clientText,
         html: clientHtml,
       });
