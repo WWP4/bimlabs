@@ -1,6 +1,6 @@
 /* ==========================================================
    BIM LABS — NETLIFY BOOKING FUNCTION
-   Saves booking request to Supabase + sends emails with Resend.
+   Saves booking request to Supabase + sends branded emails with Resend.
 ========================================================== */
 
 const STUDIO_TIME_ZONE = "America/Chicago";
@@ -46,6 +46,15 @@ function clean(value) {
   return typeof value === "string" ? value.trim() : "";
 }
 
+function escapeHtml(value = "") {
+  return String(value)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
+
 function zonedParts(date, timeZone) {
   const parts = new Intl.DateTimeFormat("en-US", {
     timeZone,
@@ -88,10 +97,214 @@ function isAllowedStudioSlot(start) {
   return weekday !== "Sat" && weekday !== "Sun" && allowedTime;
 }
 
-async function sendEmail({ to, subject, text }) {
+function brandedDetailBlock({ label, value, subvalue }) {
+  return `
+    <td class="detail-column" valign="top" width="50%" style="width:50%; padding:0 12px 26px 12px;">
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;">
+        <tr>
+          <td style="padding:0 0 14px 0; border-bottom:1px solid #deded8;">
+            <div style="font-size:11px; line-height:1.2; letter-spacing:0.14em; text-transform:uppercase; color:#696965; font-weight:700;">
+              ${escapeHtml(label)}
+            </div>
+
+            <div style="padding-top:10px; font-size:18px; line-height:1.35; color:#101010; font-weight:700; letter-spacing:-0.03em;">
+              ${escapeHtml(value || "—")}
+            </div>
+
+            ${
+              subvalue
+                ? `
+            <div style="padding-top:4px; font-size:14px; line-height:1.45; color:#555550;">
+              ${escapeHtml(subvalue)}
+            </div>
+            `
+                : ""
+            }
+          </td>
+        </tr>
+      </table>
+    </td>
+  `;
+}
+
+function brandedEmailShell({
+  pretitle,
+  title,
+  intro,
+  topLeft,
+  topRight,
+  bottomLeft,
+  bottomRight,
+  noticeTitle,
+  noticeText,
+}) {
+  return `
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>${escapeHtml(title)}</title>
+
+    <style>
+      @media only screen and (max-width: 620px) {
+        .email-shell {
+          width: 100% !important;
+        }
+
+        .email-padding {
+          padding-left: 22px !important;
+          padding-right: 22px !important;
+        }
+
+        .email-title {
+          font-size: 38px !important;
+          line-height: 1.02 !important;
+        }
+
+        .detail-column {
+          display: block !important;
+          width: 100% !important;
+          padding-left: 0 !important;
+          padding-right: 0 !important;
+        }
+
+        .footer-left,
+        .footer-right {
+          display: block !important;
+          width: 100% !important;
+          text-align: left !important;
+        }
+
+        .footer-right {
+          padding-top: 12px !important;
+        }
+      }
+    </style>
+  </head>
+
+  <body style="margin:0; padding:0; background:#f2f2ef; font-family:Arial, Helvetica, sans-serif; color:#101010;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f2f2ef; padding:30px 12px;">
+      <tr>
+        <td align="center">
+          <table class="email-shell" role="presentation" width="860" cellpadding="0" cellspacing="0" style="width:860px; max-width:100%; border-collapse:collapse; background:#ffffff; border:1px solid #deded8;">
+
+            <tr>
+              <td style="background:#050505; padding:30px 38px;">
+                <div style="font-size:22px; line-height:1; letter-spacing:0.34em; text-transform:uppercase; color:#f5f5ef; font-weight:700;">
+                  BIM LABS
+                </div>
+              </td>
+            </tr>
+
+            <tr>
+              <td class="email-padding" style="padding:38px 38px 12px 38px;">
+                <div style="font-size:12px; line-height:1.2; letter-spacing:0.14em; text-transform:uppercase; color:#555550; font-weight:700;">
+                  ${escapeHtml(pretitle)}
+                </div>
+              </td>
+            </tr>
+
+            <tr>
+              <td class="email-padding" style="padding:0 38px 22px 38px;">
+                <h1 class="email-title" style="margin:0; font-size:54px; line-height:0.98; letter-spacing:-0.06em; color:#101010; font-weight:700;">
+                  ${escapeHtml(title)}
+                </h1>
+              </td>
+            </tr>
+
+            <tr>
+              <td class="email-padding" style="padding:0 38px 26px 38px;">
+                <div style="height:1px; line-height:1px; background:#deded8;">&nbsp;</div>
+              </td>
+            </tr>
+
+            <tr>
+              <td class="email-padding" style="padding:0 38px 34px 38px;">
+                <div style="font-size:16px; line-height:1.75; color:#444440;">
+                  ${intro}
+                </div>
+              </td>
+            </tr>
+
+            <tr>
+              <td style="padding:0 26px 6px 26px;">
+                <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;">
+                  <tr>
+                    ${brandedDetailBlock(topLeft)}
+                    ${brandedDetailBlock(topRight)}
+                  </tr>
+
+                  <tr>
+                    ${brandedDetailBlock(bottomLeft)}
+                    ${brandedDetailBlock(bottomRight)}
+                  </tr>
+                </table>
+              </td>
+            </tr>
+
+            <tr>
+              <td class="email-padding" style="padding:4px 38px 34px 38px;">
+                <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse; background:#f5f5f2; border:1px solid #e4e4de;">
+                  <tr>
+                    <td style="padding:22px 24px;">
+                      <div style="font-size:18px; line-height:1.25; color:#101010; font-weight:700; letter-spacing:-0.025em; margin-bottom:8px;">
+                        ${escapeHtml(noticeTitle)}
+                      </div>
+
+                      <div style="font-size:15px; line-height:1.7; color:#444440;">
+                        ${noticeText}
+                      </div>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+
+            <tr>
+              <td class="email-padding" style="padding:0 38px 22px 38px;">
+                <div style="height:1px; line-height:1px; background:#deded8;">&nbsp;</div>
+              </td>
+            </tr>
+
+            <tr>
+              <td class="email-padding" style="padding:0 38px 36px 38px;">
+                <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;">
+                  <tr>
+                    <td class="footer-left" valign="top" style="width:50%; font-size:18px; line-height:1; letter-spacing:0.32em; text-transform:uppercase; color:#101010; font-weight:700;">
+                      BIM LABS
+                    </td>
+
+                    <td class="footer-right" align="right" valign="top" style="width:50%; font-size:13px; line-height:1.5; color:#6b6b65; font-style:italic;">
+                      Design. Precision. Built to last.
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td colspan="2" style="padding-top:16px; font-size:13px; line-height:1.7; color:#6b6b65;">
+                      bimlabsstudio.com &nbsp;&nbsp;•&nbsp;&nbsp; bimlabsstudio@gmail.com &nbsp;&nbsp;•&nbsp;&nbsp; @bimlabsstudio
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+
+          </table>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>
+`;
+}
+
+async function sendEmail({ to, subject, text, html }) {
   const resendApiKey = requiredEnv("RESEND_API_KEY");
   const from = requiredEnv("BOOKING_FROM_EMAIL");
-  const replyTo = process.env.BOOKING_REPLY_TO_EMAIL || process.env.BOOKING_ADMIN_EMAIL || "bimlabsstudio@gmail.com";
+  const replyTo =
+    process.env.BOOKING_REPLY_TO_EMAIL ||
+    process.env.BOOKING_ADMIN_EMAIL ||
+    "bimlabsstudio@gmail.com";
 
   const response = await fetch("https://api.resend.com/emails", {
     method: "POST",
@@ -104,6 +317,7 @@ async function sendEmail({ to, subject, text }) {
       to,
       subject,
       text,
+      html,
       reply_to: replyTo,
     }),
   });
@@ -277,7 +491,7 @@ exports.handler = async function handler(event) {
     const created = createdRows && createdRows[0];
     const requestId = created?.id || "Unavailable";
 
-    const adminBody = [
+    const adminText = [
       "New BIM Labs booking request",
       "",
       `Name: ${booking.name}`,
@@ -297,7 +511,7 @@ exports.handler = async function handler(event) {
       `Booking request ID: ${requestId}`,
     ].join("\n");
 
-    const clientBody = [
+    const clientText = [
       `Hey ${booking.name},`,
       "",
       "We received your intro call request.",
@@ -313,17 +527,85 @@ exports.handler = async function handler(event) {
       "— BIM Labs Studio",
     ].join("\n");
 
-    await sendEmail({
-      to: adminEmail,
-      subject: "New BIM Labs booking request",
-      text: adminBody,
+    const clientHtml = brandedEmailShell({
+      pretitle: `THANK YOU, ${booking.name.toUpperCase()}`,
+      title: "Booking request received.",
+      intro:
+        "We’ve received your intro call request and appreciate you considering BIM Labs.<br /><br />Here are the details you selected:",
+      topLeft: {
+        label: "Your selected time",
+        value: booking.client_display_time,
+        subvalue: "",
+      },
+      topRight: {
+        label: "BIM Labs studio time",
+        value: booking.studio_display_time,
+        subvalue: "",
+      },
+      bottomLeft: {
+        label: "Project type",
+        value: booking.project_type,
+        subvalue: booking.business_name || "BIM Labs intro call",
+      },
+      bottomRight: {
+        label: "Budget range",
+        value: booking.budget_range,
+        subvalue: "USD",
+      },
+      noticeTitle: "What’s next?",
+      noticeText:
+        "Our team will review your request and confirm your intro call by email.<br />We look forward to connecting.",
     });
 
-    await sendEmail({
-      to: booking.email,
-      subject: "BIM Labs received your booking request",
-      text: clientBody,
+    const adminHtml = brandedEmailShell({
+      pretitle: "NEW BOOKING REQUEST",
+      title: "New booking request.",
+      intro: "A new BIM Labs intro call request was submitted. Review the details below and confirm the time by email.",
+      topLeft: {
+        label: "Client",
+        value: booking.name,
+        subvalue: booking.email,
+      },
+      topRight: {
+        label: "BIM Labs studio time",
+        value: booking.studio_display_time,
+        subvalue: start.toISOString(),
+      },
+      bottomLeft: {
+        label: "Project type",
+        value: booking.project_type,
+        subvalue: booking.business_name || "No business name provided",
+      },
+      bottomRight: {
+        label: "Budget range",
+        value: booking.budget_range,
+        subvalue: booking.phone || "No phone provided",
+      },
+      noticeTitle: "Project context",
+      noticeText: escapeHtml(booking.project_context).replace(/\n/g, "<br />"),
     });
+
+    /*
+      Email should not make the booking fail after the Supabase row is created.
+      If Resend has an issue, the lead is still saved and the site still shows success.
+    */
+    try {
+      await sendEmail({
+        to: adminEmail,
+        subject: "New BIM Labs booking request",
+        text: adminText,
+        html: adminHtml,
+      });
+
+      await sendEmail({
+        to: booking.email,
+        subject: "BIM Labs received your booking request",
+        text: clientText,
+        html: clientHtml,
+      });
+    } catch (emailError) {
+      console.error("Booking saved, but email failed:", emailError);
+    }
 
     return json(200, {
       ok: true,
