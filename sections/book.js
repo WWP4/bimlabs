@@ -1,6 +1,6 @@
 /* ==========================================================
    BIM LABS — BOOK WITH US
-   Minimal intake selection.
+   Minimal project/budget selection.
 ========================================================== */
 
 (() => {
@@ -17,22 +17,21 @@
   const state = {
     type: "Website",
     budget: "$3k-$7k",
-    timeline: "This month",
   };
 
   function updateSummary() {
-    const text = `${state.type} / ${state.budget} / ${state.timeline}`;
+    const text = `${state.type} / ${state.budget}`;
     summary.textContent = text;
 
     const subject = encodeURIComponent("Project Inquiry - BIM Labs");
     const body = encodeURIComponent(
-      `Hey BIM Labs,\n\nI want to book an intro call.\n\nProject type: ${state.type}\nEstimated budget: ${state.budget}\nTimeline: ${state.timeline}\n\nA little context:\n`
+      `Hey BIM Labs,\n\nI want to book an intro call.\n\nProject type: ${state.type}\nEstimated budget: ${state.budget}\n\nA little context:\n`
     );
 
     link.href = `mailto:bimlabsstudio@gmail.com?subject=${subject}&body=${body}`;
   }
 
-  function handleChipClick(event) {
+  function handleClick(event) {
     const button = event.target.closest("button[data-value]");
     if (!button) return;
 
@@ -52,6 +51,6 @@
     updateSummary();
   }
 
-  section.addEventListener("click", handleChipClick);
+  section.addEventListener("click", handleClick);
   updateSummary();
 })();
