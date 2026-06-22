@@ -1,6 +1,6 @@
 /* ==========================================================
    BIM LABS — BOOK WITH US
-   Minimal full-page booking section
+   Clean centered intake
 ========================================================== */
 
 .book-with-us {
@@ -21,226 +21,166 @@
   z-index: 0;
   pointer-events: none;
   background:
-    linear-gradient(180deg, #000 0%, #020202 44%, #000 100%);
-}
-
-.book-with-us::after {
-  content: "";
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  z-index: 0;
-  width: 1px;
-  height: 72vh;
-  transform: translate(-50%, -50%);
-  background: linear-gradient(
-    180deg,
-    transparent,
-    rgba(246, 246, 240, 0.08),
-    transparent
-  );
-  opacity: 0.75;
-  pointer-events: none;
+    radial-gradient(circle at 50% 38%, rgba(255, 255, 255, 0.045), transparent 34rem),
+    linear-gradient(180deg, #000 0%, #020202 48%, #000 100%);
 }
 
 .book-with-us__shell {
   position: relative;
   z-index: 2;
-  width: min(112rem, calc(100% - 6rem));
+  width: min(100% - 3rem, 78rem);
   min-height: 100svh;
   margin: 0 auto;
-  padding: clamp(2rem, 4vh, 3.5rem) 0;
   display: grid;
-  grid-template-rows: auto 1fr auto;
-}
-
-.book-with-us__top,
-.book-with-us__bottom {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 2rem;
-  color: rgba(246, 246, 240, 0.26);
-  font-family: var(--work-mono, "IBM Plex Mono", monospace);
-  font-size: 0.54rem;
-  font-weight: 800;
-  letter-spacing: 0.16em;
-  line-height: 1;
-  text-transform: uppercase;
+  place-items: center;
+  padding: clamp(6rem, 10vh, 8rem) 0 clamp(4rem, 7vh, 6rem);
 }
 
 .book-with-us__center {
-  width: min(100%, 82rem);
-  margin: 0 auto;
-  padding: clamp(5rem, 10vh, 8rem) 0;
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
   text-align: center;
 }
 
 .book-with-us__kicker {
   margin: 0 0 1.25rem;
-  color: rgba(246, 246, 240, 0.4);
+  color: rgba(246, 246, 240, 0.42);
   font-family: var(--work-mono, "IBM Plex Mono", monospace);
   font-size: 0.58rem;
   font-weight: 800;
   letter-spacing: 0.18em;
+  line-height: 1;
   text-transform: uppercase;
 }
 
 .book-with-us__title {
-  max-width: 82rem;
+  max-width: 68rem;
   margin: 0;
   color: rgba(246, 246, 240, 0.96);
-  font-size: clamp(4.5rem, 8.5vw, 11.25rem);
+  font-size: clamp(3.5rem, 6.6vw, 8.7rem);
   font-weight: 300;
-  letter-spacing: -0.105em;
-  line-height: 0.82;
+  letter-spacing: -0.085em;
+  line-height: 0.9;
 }
 
 .book-with-us__intro {
-  max-width: 42rem;
-  margin: clamp(2rem, 4vh, 3rem) auto 0;
-  color: rgba(246, 246, 240, 0.52);
+  max-width: 34rem;
+  margin: clamp(1.6rem, 3vh, 2.25rem) auto 0;
+  color: rgba(246, 246, 240, 0.55);
   font-size: clamp(0.95rem, 1vw, 1.08rem);
   font-weight: 300;
-  line-height: 1.72;
-  letter-spacing: -0.025em;
+  line-height: 1.65;
+  letter-spacing: -0.02em;
 }
 
-.book-fit {
-  width: min(100%, 64rem);
-  margin: clamp(3rem, 6vh, 4.5rem) auto 0;
-  border-top: 1px solid rgba(246, 246, 240, 0.1);
-  border-bottom: 1px solid rgba(246, 246, 240, 0.1);
-}
-
-.book-fit__group {
+.book-panel {
+  width: min(100%, 56rem);
+  margin-top: clamp(2.5rem, 5vh, 3.5rem);
   display: grid;
-  grid-template-columns: 9rem 1fr;
-  align-items: center;
-  gap: 1.5rem;
-  padding: 1rem 0;
+  gap: 1rem;
 }
 
-.book-fit__group + .book-fit__group {
-  border-top: 1px solid rgba(246, 246, 240, 0.08);
+.book-choice {
+  padding: clamp(1rem, 1.7vw, 1.35rem);
+  border: 1px solid rgba(246, 246, 240, 0.1);
+  background: rgba(255, 255, 255, 0.018);
 }
 
-.book-fit__label {
-  color: rgba(246, 246, 240, 0.32);
-  font-family: var(--work-mono, "IBM Plex Mono", monospace);
-  font-size: 0.52rem;
-  font-weight: 800;
-  letter-spacing: 0.15em;
-  line-height: 1;
-  text-align: left;
-  text-transform: uppercase;
+.book-choice__question {
+  margin: 0 0 1rem;
+  color: rgba(246, 246, 240, 0.78);
+  font-size: 0.95rem;
+  font-weight: 400;
+  letter-spacing: -0.02em;
 }
 
-.book-fit__options {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 0.35rem;
+.book-choice__options {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.6rem;
 }
 
-.book-fit__options button {
+.book-choice__options button,
+.book-choice__budgets button {
   appearance: none;
-  border: 0;
-  padding: 0.75rem 1rem;
-  color: rgba(246, 246, 240, 0.38);
-  background: transparent;
+  border: 1px solid rgba(246, 246, 240, 0.11);
+  color: rgba(246, 246, 240, 0.55);
+  background: rgba(255, 255, 255, 0.02);
   font: inherit;
+  cursor: pointer;
+  transition:
+    color 240ms ease,
+    background 240ms ease,
+    border-color 240ms ease,
+    transform 360ms cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.book-choice__options button {
+  min-height: 3rem;
+  padding: 0 1rem;
+  border-radius: 999rem;
   font-size: 0.86rem;
   font-weight: 500;
-  letter-spacing: -0.02em;
-  cursor: pointer;
-  transition:
-    color 250ms ease,
-    opacity 250ms ease;
 }
 
-.book-fit__options button:hover,
-.book-fit__options button.is-active {
-  color: rgba(246, 246, 240, 0.94);
-}
-
-.book-fit__budgets {
+.book-choice__budgets {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 0;
+  gap: 0.6rem;
 }
 
-.book-fit__budgets button {
-  appearance: none;
-  min-height: 8.5rem;
-  padding: 1.1rem;
-  border: 0;
-  border-left: 1px solid rgba(246, 246, 240, 0.08);
-  color: rgba(246, 246, 240, 0.5);
-  background: transparent;
-  font: inherit;
+.book-choice__budgets button {
+  min-height: 7rem;
+  padding: 1rem;
+  border-radius: 0.5rem;
   text-align: left;
-  cursor: pointer;
-  transition:
-    color 250ms ease,
-    background 250ms ease;
 }
 
-.book-fit__budgets button:first-child {
-  border-left: 0;
-}
-
-.book-fit__budgets button span {
+.book-choice__budgets strong {
   display: block;
-  margin-bottom: 1.2rem;
-  color: rgba(246, 246, 240, 0.28);
-  font-family: var(--work-mono, "IBM Plex Mono", monospace);
-  font-size: 0.5rem;
-  font-weight: 800;
-  letter-spacing: 0.16em;
-}
-
-.book-fit__budgets button strong {
-  display: block;
-  color: rgba(246, 246, 240, 0.72);
-  font-size: clamp(1.35rem, 1.9vw, 1.9rem);
+  color: rgba(246, 246, 240, 0.86);
+  font-size: clamp(1.45rem, 2vw, 2rem);
   font-weight: 300;
-  letter-spacing: -0.065em;
+  letter-spacing: -0.06em;
   line-height: 1;
 }
 
-.book-fit__budgets button em {
+.book-choice__budgets span {
   display: block;
-  max-width: 11rem;
+  max-width: 12rem;
   margin-top: 0.7rem;
-  color: rgba(246, 246, 240, 0.34);
+  color: rgba(246, 246, 240, 0.42);
   font-size: 0.78rem;
-  font-style: normal;
   font-weight: 300;
   line-height: 1.35;
   letter-spacing: -0.02em;
 }
 
-.book-fit__budgets button:hover,
-.book-fit__budgets button.is-active {
-  background: rgba(255, 255, 255, 0.035);
+.book-choice__options button:hover,
+.book-choice__budgets button:hover {
+  color: rgba(246, 246, 240, 0.9);
+  border-color: rgba(246, 246, 240, 0.24);
+  background: rgba(255, 255, 255, 0.04);
+  transform: translateY(-1px);
 }
 
-.book-fit__budgets button.is-active strong {
-  color: rgba(246, 246, 240, 0.96);
+.book-choice__options button.is-active,
+.book-choice__budgets button.is-active {
+  color: #050505;
+  border-color: rgba(246, 246, 240, 0.9);
+  background: rgba(246, 246, 240, 0.92);
 }
 
-.book-fit__budgets button.is-active em {
-  color: rgba(246, 246, 240, 0.58);
+.book-choice__budgets button.is-active strong,
+.book-choice__budgets button.is-active span {
+  color: #050505;
 }
 
 .book-with-us__summary {
-  margin: clamp(1.5rem, 3vh, 2rem) 0 0;
-  color: rgba(246, 246, 240, 0.34);
+  margin: clamp(1.25rem, 3vh, 1.75rem) 0 0;
+  color: rgba(246, 246, 240, 0.38);
   font-family: var(--work-mono, "IBM Plex Mono", monospace);
   font-size: 0.56rem;
   font-weight: 800;
@@ -254,11 +194,11 @@
   align-items: center;
   justify-content: center;
   gap: 1.1rem;
-  margin-top: clamp(1.25rem, 3vh, 1.9rem);
+  margin-top: 1.2rem;
   min-width: 16rem;
-  min-height: 3.6rem;
-  padding: 0 1.55rem;
-  border: 1px solid rgba(246, 246, 240, 0.2);
+  min-height: 3.55rem;
+  padding: 0 1.5rem;
+  border: 1px solid rgba(246, 246, 240, 0.22);
   border-radius: 999rem;
   color: rgba(246, 246, 240, 0.94);
   background: transparent;
@@ -267,10 +207,10 @@
   font-weight: 650;
   letter-spacing: -0.015em;
   transition:
-    color 300ms ease,
-    background 300ms ease,
-    border-color 300ms ease,
-    transform 500ms cubic-bezier(0.19, 1, 0.22, 1);
+    color 280ms ease,
+    background 280ms ease,
+    border-color 280ms ease,
+    transform 420ms cubic-bezier(0.19, 1, 0.22, 1);
 }
 
 .book-with-us__button:hover {
@@ -281,7 +221,7 @@
 }
 
 .book-with-us__button span:last-child {
-  transition: transform 500ms cubic-bezier(0.19, 1, 0.22, 1);
+  transition: transform 420ms cubic-bezier(0.19, 1, 0.22, 1);
 }
 
 .book-with-us__button:hover span:last-child {
@@ -293,77 +233,49 @@
 ========================================================== */
 
 @media (max-width: 900px) {
+  .book-with-us {
+    overflow: visible;
+  }
+
   .book-with-us__shell {
-    width: min(100% - 2rem, 44rem);
-    padding: 1.5rem 0 2rem;
-  }
-
-  .book-with-us__top,
-  .book-with-us__bottom {
-    flex-direction: column;
-    justify-content: center;
-    gap: 0.65rem;
-    text-align: center;
-  }
-
-  .book-with-us__center {
-    padding: 5rem 0;
+    width: min(100% - 2rem, 42rem);
+    min-height: auto;
+    padding: 6rem 0 4rem;
   }
 
   .book-with-us__title {
-    font-size: clamp(4rem, 15.5vw, 7rem);
-    letter-spacing: -0.09em;
+    font-size: clamp(3.4rem, 14vw, 6.5rem);
+    letter-spacing: -0.075em;
+    line-height: 0.92;
   }
 
-  .book-with-us__intro {
-    max-width: 32rem;
-  }
-
-  .book-fit__group {
-    grid-template-columns: 1fr;
-    gap: 0.75rem;
-  }
-
-  .book-fit__label {
-    text-align: center;
-  }
-
-  .book-fit__budgets {
+  .book-choice__options,
+  .book-choice__budgets {
     grid-template-columns: 1fr;
   }
 
-  .book-fit__budgets button {
+  .book-choice__budgets button {
     min-height: auto;
-    border-left: 0;
-    border-top: 1px solid rgba(246, 246, 240, 0.08);
   }
 
-  .book-fit__budgets button:first-child {
-    border-top: 0;
-  }
-
-  .book-fit__budgets button em {
+  .book-choice__budgets span {
     max-width: 100%;
   }
 }
 
 @media (max-width: 520px) {
   .book-with-us__shell {
-    width: min(100% - 1.25rem, 44rem);
+    width: min(100% - 1.25rem, 42rem);
   }
 
   .book-with-us__button {
     width: 100%;
   }
-
-  .book-fit__options button {
-    padding-inline: 0.7rem;
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .book-fit__options button,
-  .book-fit__budgets button,
+  .book-choice__options button,
+  .book-choice__budgets button,
   .book-with-us__button,
   .book-with-us__button span:last-child {
     transition: none !important;
