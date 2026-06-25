@@ -188,7 +188,6 @@
 
   function nextStudioBusinessDays(count) {
     const days = [];
-
     const nowParts = zonedParts(new Date(), STUDIO_TIME_ZONE);
 
     const cursor = {
@@ -380,6 +379,7 @@
   function getProjectContextValue() {
     const data = new FormData(form);
     const rawContext = String(data.get("projectContext") || "").trim();
+    const customNote = String(data.get("customPackageNote") || "").trim();
 
     if (state.type !== "Custom Package") {
       return rawContext;
@@ -389,19 +389,35 @@
       ? `Custom package selections: ${state.customServices.join(", ")}`
       : "Custom package selections: Needs discussion";
 
-    return [servicesLine, "", `Project context: ${rawContext}`].join("\n");
+    const customNoteLine = customNote
+      ? `Custom package details: ${customNote}`
+      : "Custom package details: Not provided";
+
+    return [
+      servicesLine,
+      customNoteLine,
+      "",
+      `Project context: ${rawContext}`,
+    ].join("\n");
   }
 
   function updateReview() {
     const data = new FormData(form);
+    const customNote = String(data.get("customPackageNote") || "").trim();
 
     const rows = [["Project direction", state.type]];
 
     if (state.type === "Custom Package") {
-      rows.push([
-        "Custom services",
-        state.customServices.length ? state.customServices.join(", ") : "Needs discussion",
-      ]);
+      rows.push(
+        [
+          "Custom services",
+          state.customServices.length ? state.customServices.join(", ") : "Needs discussion",
+        ],
+        [
+          "Custom details",
+          customNote || "—",
+        ]
+      );
     }
 
     rows.push(
@@ -494,10 +510,21 @@
     const name = form.elements.name.value.trim();
     const email = form.elements.email.value.trim();
     const context = form.elements.projectContext.value.trim();
+    const customNote = form.elements.customPackageNote
+      ? form.elements.customPackageNote.value.trim()
+      : "";
 
     if (!name) return "Please enter your name.";
     if (!/^\S+@\S+\.\S+$/.test(email)) return "Please enter a valid email.";
     if (!context) return "Please add a short project context.";
+
+    if (
+      state.type === "Custom Package" &&
+      !state.customServices.length &&
+      !customNote
+    ) {
+      return "Please select at least one custom service or describe the custom package.";
+    }
 
     return "";
   }
