@@ -2130,50 +2130,60 @@ select {
 
 
 /* ======================================================
-   BIM SHOWCASE — BLACK PAGE + GRID WINDOW FIX
+   BIM SHOWCASE — FULLSCREEN GRID THEN WINDOW OUT
 ====================================================== */
 
-/* Solid black section behind everything */
-.salo-showcase.bim-showcase,
-.salo-showcase.bim-showcase .showcase-scroll,
-.salo-showcase.bim-showcase .HomeShowcase {
+.salo-showcase.bim-showcase {
+  position: relative !important;
   background: #020202 !important;
-}
-
-/* The sticky area is just the black stage */
-.salo-showcase.bim-showcase .HomeShowcase {
-  position: sticky !important;
-  top: 0 !important;
-  width: 100vw !important;
-  height: 100svh !important;
-  overflow: hidden !important;
+  overflow: clip !important;
   isolation: isolate !important;
 }
 
-/* Kill the full-screen grid on the parent */
+/* Give the track more scroll time */
+.salo-showcase.bim-showcase .showcase-scroll {
+  height: 620vh !important;
+  background: #020202 !important;
+}
+
+/* Sticky full-screen stage */
+.salo-showcase.bim-showcase .HomeShowcase {
+  position: sticky !important;
+  top: 0 !important;
+
+  width: 100vw !important;
+  height: 100svh !important;
+
+  overflow: hidden !important;
+  background: #020202 !important;
+  isolation: isolate !important;
+}
+
+/* Remove parent grid so only the window owns the grid */
 .salo-showcase.bim-showcase .HomeShowcase::before,
 .salo-showcase.bim-showcase .HomeShowcase::after {
   display: none !important;
 }
 
-/* This is now the actual window */
+/* This becomes full screen while scrolling */
 .salo-showcase.bim-showcase .HomeShowcase__outerFrame {
   position: absolute !important;
-  inset: clamp(18px, 3vw, 42px) !important;
+  inset: 0 !important;
 
-  width: auto !important;
-  height: auto !important;
+  width: 100% !important;
+  height: 100% !important;
 
   overflow: hidden !important;
-  border: 1px solid rgba(255,255,255,0.1) !important;
-  border-radius: 14px !important;
+
+  border: 0 !important;
+  border-radius: 0 !important;
 
   background:
     radial-gradient(circle at 18% 30%, rgba(255,255,255,0.06), transparent 30%),
     radial-gradient(circle at 82% 70%, rgba(255,255,255,0.035), transparent 34%),
-    linear-gradient(rgba(255,255,255,0.032) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,0.032) 1px, transparent 1px),
-    #070707 !important;
+    linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px),
+    #050505 !important;
 
   background-size:
     100% 100%,
@@ -2183,10 +2193,20 @@ select {
     100% 100% !important;
 
   transform-origin: center center !important;
-  will-change: transform, opacity !important;
+  will-change: transform, opacity, border-radius !important;
+
+  transition:
+    border-radius 700ms cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 700ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-/* Track sits inside the window */
+/* Only at the exit does it feel like a window */
+.salo-showcase.bim-showcase .HomeShowcase.is-windowing-out .HomeShowcase__outerFrame {
+  border-radius: 18px !important;
+  border: 1px solid rgba(255,255,255,0.12) !important;
+}
+
+/* Track inside the full-screen grid */
 .salo-showcase.bim-showcase .HomeShowcase__inner.bim-track {
   position: relative !important;
   z-index: 2 !important;
@@ -2198,15 +2218,16 @@ select {
   background: transparent !important;
 }
 
-/* Panels stay transparent */
+/* Panels are transparent so the same grid stays consistent */
 .salo-showcase.bim-showcase .bim-panel {
   width: 100vw !important;
   height: 100% !important;
   flex: 0 0 100vw !important;
+
   background: transparent !important;
 }
 
-/* Rulers/content above the window background */
+/* Content above background */
 .salo-showcase.bim-showcase .bim-ruler,
 .salo-showcase.bim-showcase .bim-panel__meta,
 .salo-showcase.bim-showcase .bim-panel__content,
