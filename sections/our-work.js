@@ -79,12 +79,7 @@
       .replaceAll("'", "&#039;");
   }
 
-  /*
-    KEEP THE REST OF YOUR ORIGINAL JS BELOW THIS POINT.
-    Do not replace the animation logic.
-    Only the project text above changed.
-  */
-})();
+
   /* ==========================================================
      PERFORMANCE CSS PATCH
      This lets the JS file fix the lag without needing HTML changes.
