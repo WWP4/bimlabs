@@ -2129,133 +2129,85 @@ select {
 
 
 
-
 /* ======================================================
-   BIM SHOWCASE — FULL SCREEN WINDOW FIX
-   Keeps grid full-screen, removes double background/card edges
+   BIM SHOWCASE — BLACK PAGE + GRID WINDOW FIX
 ====================================================== */
 
-.salo-showcase.bim-showcase {
-  position: relative !important;
-  width: 100% !important;
-  background: #050505 !important;
-  color: #f4f4f0 !important;
-  overflow: clip !important;
-  isolation: isolate !important;
+/* Solid black section behind everything */
+.salo-showcase.bim-showcase,
+.salo-showcase.bim-showcase .showcase-scroll,
+.salo-showcase.bim-showcase .HomeShowcase {
+  background: #020202 !important;
 }
 
-/* This is the scroll distance only */
-.salo-showcase.bim-showcase .showcase-scroll {
-  position: relative !important;
-  height: 460vh !important;
-  background: #050505 !important;
-}
-
-/* This is the actual full-screen window */
+/* The sticky area is just the black stage */
 .salo-showcase.bim-showcase .HomeShowcase {
   position: sticky !important;
   top: 0 !important;
-
   width: 100vw !important;
   height: 100svh !important;
-
   overflow: hidden !important;
-  background: #050505 !important;
   isolation: isolate !important;
 }
 
-/* Full-screen grid background — stays locked to the window */
-.salo-showcase.bim-showcase .HomeShowcase::before {
-  content: "" !important;
-  position: absolute !important;
-  inset: 0 !important;
-  z-index: 0 !important;
-  pointer-events: none !important;
-
-  background:
-    linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px) !important;
-
-  background-size: clamp(78px, 9vw, 150px) clamp(78px, 9vw, 150px) !important;
-  opacity: 0.46 !important;
+/* Kill the full-screen grid on the parent */
+.salo-showcase.bim-showcase .HomeShowcase::before,
+.salo-showcase.bim-showcase .HomeShowcase::after {
+  display: none !important;
 }
 
-/* Soft atmosphere over the grid */
-.salo-showcase.bim-showcase .HomeShowcase::after {
-  content: "" !important;
+/* This is now the actual window */
+.salo-showcase.bim-showcase .HomeShowcase__outerFrame {
   position: absolute !important;
-  inset: 0 !important;
-  z-index: 1 !important;
-  pointer-events: none !important;
+  inset: clamp(18px, 3vw, 42px) !important;
+
+  width: auto !important;
+  height: auto !important;
+
+  overflow: hidden !important;
+  border: 1px solid rgba(255,255,255,0.1) !important;
+  border-radius: 14px !important;
 
   background:
     radial-gradient(circle at 18% 30%, rgba(255,255,255,0.06), transparent 30%),
     radial-gradient(circle at 82% 70%, rgba(255,255,255,0.035), transparent 34%),
-    linear-gradient(
-      to bottom,
-      rgba(5,5,5,0.05),
-      rgba(5,5,5,0.12)
-    ) !important;
+    linear-gradient(rgba(255,255,255,0.032) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.032) 1px, transparent 1px),
+    #070707 !important;
 
-  opacity: 1 !important;
-}
-
-/* Kill the old card/frame background */
-.salo-showcase.bim-showcase .HomeShowcase__outerFrame {
-  position: absolute !important;
-  inset: 0 !important;
-
-  width: 100% !important;
-  height: 100% !important;
-
-  overflow: hidden !important;
-
-  border: 0 !important;
-  border-radius: 0 !important;
-
-  background: transparent !important;
-  background-image: none !important;
-  background-size: auto !important;
-
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
+  background-size:
+    100% 100%,
+    100% 100%,
+    clamp(78px, 9vw, 150px) clamp(78px, 9vw, 150px),
+    clamp(78px, 9vw, 150px) clamp(78px, 9vw, 150px),
+    100% 100% !important;
 
   transform-origin: center center !important;
-  z-index: 2 !important;
+  will-change: transform, opacity !important;
 }
 
-/* Horizontal track sits above the fixed window background */
+/* Track sits inside the window */
 .salo-showcase.bim-showcase .HomeShowcase__inner.bim-track {
   position: relative !important;
-  z-index: 3 !important;
+  z-index: 2 !important;
 
   width: 400vw !important;
   height: 100% !important;
 
   display: flex !important;
-
   background: transparent !important;
-  will-change: transform !important;
 }
 
-/* Each panel is transparent so the one window background shows through */
+/* Panels stay transparent */
 .salo-showcase.bim-showcase .bim-panel {
-  position: relative !important;
-  z-index: 3 !important;
-
   width: 100vw !important;
   height: 100% !important;
   flex: 0 0 100vw !important;
-
   background: transparent !important;
 }
 
-/* Rulers above background, below main copy */
-.salo-showcase.bim-showcase .bim-ruler {
-  z-index: 4 !important;
-}
-
-/* Main content above everything */
+/* Rulers/content above the window background */
+.salo-showcase.bim-showcase .bim-ruler,
 .salo-showcase.bim-showcase .bim-panel__meta,
 .salo-showcase.bim-showcase .bim-panel__content,
 .salo-showcase.bim-showcase .bim-build-list,
