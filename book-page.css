@@ -104,7 +104,7 @@
 }
 
 .step-help {
-  max-width: 36rem;
+  max-width: 37rem;
   margin: -0.85rem 0 1.35rem;
   color: var(--book-muted);
   font-size: 0.94rem;
@@ -126,7 +126,7 @@
 }
 
 .choice-grid--budget {
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(5, minmax(0, 1fr));
 }
 
 .choice-button,
@@ -154,6 +154,10 @@
   letter-spacing: -0.04em;
 }
 
+.choice-button span {
+  display: block;
+}
+
 .choice-button small {
   display: block;
   max-width: 24rem;
@@ -162,10 +166,6 @@
   font-size: 0.78rem;
   line-height: 1.45;
   letter-spacing: -0.015em;
-}
-
-.choice-button.is-selected small {
-  color: rgba(5, 5, 5, 0.64);
 }
 
 .choice-button:hover,
@@ -182,6 +182,83 @@
 .choice-button.is-selected,
 .date-button.is-selected,
 .time-button.is-selected {
+  color: #050505;
+  border-color: rgba(246, 246, 240, 0.94);
+  background: rgba(246, 246, 240, 0.92);
+}
+
+.choice-button.is-selected small {
+  color: rgba(5, 5, 5, 0.64);
+}
+
+.custom-builder {
+  margin-top: 0.85rem;
+  padding: 1.15rem;
+  border: 1px solid var(--book-soft);
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.045),
+      rgba(255, 255, 255, 0.012)
+    );
+}
+
+.custom-builder[hidden] {
+  display: none;
+}
+
+.custom-builder__head {
+  margin-bottom: 1rem;
+}
+
+.custom-builder__head h3 {
+  margin: 0.55rem 0 0.45rem;
+  color: var(--book-text);
+  font-size: clamp(1.25rem, 2vw, 1.75rem);
+  font-weight: 300;
+  line-height: 1.05;
+  letter-spacing: -0.045em;
+}
+
+.custom-builder__head p:not(.step-eyebrow) {
+  max-width: 35rem;
+  margin: 0;
+  color: var(--book-muted);
+  font-size: 0.88rem;
+  line-height: 1.55;
+}
+
+.custom-service-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.55rem;
+}
+
+.custom-service-button {
+  min-height: 3rem;
+  padding: 0.85rem 0.95rem;
+  border: 1px solid var(--book-faint);
+  background: rgba(255, 255, 255, 0.018);
+  color: var(--book-muted);
+  text-align: left;
+  cursor: pointer;
+  font-size: 0.86rem;
+  letter-spacing: -0.02em;
+  transition:
+    color 220ms ease,
+    background 220ms ease,
+    border-color 220ms ease,
+    transform 220ms ease;
+}
+
+.custom-service-button:hover {
+  color: var(--book-text);
+  border-color: rgba(246, 246, 240, 0.34);
+  background: rgba(255, 255, 255, 0.04);
+  transform: translateY(-1px);
+}
+
+.custom-service-button.is-selected {
   color: #050505;
   border-color: rgba(246, 246, 240, 0.94);
   background: rgba(246, 246, 240, 0.92);
@@ -270,6 +347,7 @@
 .review-list dd {
   margin: 0;
   color: rgba(246, 246, 240, 0.86);
+  white-space: pre-wrap;
 }
 
 .booking-note {
@@ -389,6 +467,16 @@
   color: rgba(246, 246, 240, 0.9);
 }
 
+@media (max-width: 980px) {
+  .choice-grid--budget {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .choice-grid--budget .choice-button:last-child {
+    grid-column: 1 / -1;
+  }
+}
+
 @media (max-width: 760px) {
   .book-hero {
     width: min(100% - 1.25rem, 44rem);
@@ -410,7 +498,8 @@
   .choice-grid--budget,
   .date-time-picker,
   .field-grid,
-  .review-list div {
+  .review-list div,
+  .custom-service-grid {
     grid-template-columns: 1fr;
   }
 
@@ -422,8 +511,13 @@
     min-height: 4.8rem;
   }
 
-  .choice-grid--type .choice-button:last-child {
+  .choice-grid--type .choice-button:last-child,
+  .choice-grid--budget .choice-button:last-child {
     grid-column: auto;
+  }
+
+  .custom-builder {
+    padding: 1rem;
   }
 
   .booking-controls {
