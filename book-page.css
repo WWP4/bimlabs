@@ -535,3 +535,43 @@
     display: none;
   }
 }
+
+
+
+
+
+
+.custom-note {
+  display: grid;
+  gap: 0.55rem;
+  margin-top: 0.9rem;
+  color: rgba(246, 246, 240, 0.68);
+  font-size: 0.82rem;
+}
+
+.custom-note span {
+  color: rgba(246, 246, 240, 0.68);
+}
+
+.custom-note textarea {
+  width: 100%;
+  min-height: 8rem;
+  resize: vertical;
+  border: 1px solid var(--book-faint);
+  background: rgba(255, 255, 255, 0.025);
+  color: var(--book-text);
+  padding: 1rem;
+  border-radius: 0;
+  outline: none;
+  font: inherit;
+  line-height: 1.5;
+}
+
+.custom-note textarea::placeholder {
+  color: rgba(246, 246, 240, 0.32);
+}
+
+.custom-note textarea:focus {
+  border-color: rgba(246, 246, 240, 0.42);
+  background: rgba(255, 255, 255, 0.04);
+}
