@@ -15,36 +15,51 @@
   "use strict";
 
   const archive = document.querySelector(".work-archive");
-  if (!archive) return;
+  const trust = document.querySelector(".work-trust");
+  const trustTrack = document.querySelector("[data-work-trust-track]");
+
+  if (!archive && !trustTrack) return;
 
   const projects = [
     {
       title: "Wonder World Portal",
       client: "Wonder World Playsets",
+      type: "CRM / Portal System",
       role: "Commercial playground distributor",
-      review:
-        "The portal made our process feel organized, easier to manage, and easier to present to customers."
-    },
-    {
-      title: "Momentum Athlete",
-      client: "Momentum Athlete",
-      role: "Athlete performance platform",
-      review:
-        "The platform finally felt clear, premium, and easier to present to partners."
+      summary:
+        "A CRM-style portal built to organize customer records, quote requests, project notes, follow-up, and internal project movement inside one cleaner operating system.",
+      proof: "Customer records, quote flow, admin dashboard, and sales follow-up structure.",
+      tags: ["CRM", "Quote Flow", "Admin Portal"]
     },
     {
       title: "Orynd AI",
       client: "Orynd AI",
-      role: "AI platform",
-      review:
-        "The site made the product easier to explain without making the idea feel smaller."
+      type: "AI Software System",
+      role: "AI product and customer portal",
+      summary:
+        "An AI software experience shaped into a clearer product flow, making the offer easier to understand, present, and use without overcomplicating the customer experience.",
+      proof: "AI interface direction, portal flow, product positioning, and customer-facing structure.",
+      tags: ["AI Interface", "Portal Flow", "Offer Clarity"]
     },
     {
-      title: "3D Install Tool",
-      client: "BIM Labs Studio",
-      role: "Interactive project system",
-      review:
-        "The visual tool made the project easier to explain and easier for people to understand quickly."
+      title: "Momentum Athlete",
+      client: "Momentum Athlete",
+      type: "Course Credit Platform",
+      role: "Athlete education and performance system",
+      summary:
+        "A 21-course credit system designed to make the program feel more structured, easier to move through, and easier to present as a complete digital product.",
+      proof: "Course structure, user flow, progress clarity, and platform presentation.",
+      tags: ["21 Courses", "User Flow", "Course Platform"]
+    },
+    {
+      title: "3D Installation Manual",
+      client: "Wonder World Playsets",
+      type: "Interactive Install Guide",
+      role: "3D installation support system",
+      summary:
+        "A 3D installation manual created to help customers, installers, and internal teams visualize how a playset comes together before and during the build.",
+      proof: "3D visual guidance, installation support, customer clarity, and project explanation.",
+      tags: ["3D Guide", "Install Support", "Visual Manual"]
     }
   ];
 
@@ -55,11 +70,18 @@
   const mobileQuery = window.matchMedia("(max-width: 900px)");
 
   const state = {
-    activePreview: null,
+    preview: null,
+    activeProject: null,
+    previewX: 0,
+    previewY: 0,
+    previewTargetX: 0,
+    previewTargetY: 0,
     previewRaf: null,
-    trustRaf: null,
+
+    trustCurrent: 0,
     trustTarget: 0,
-    trustCurrent: 0
+    trustRaf: null,
+    trustMaxMove: 0
   };
 
   function clamp(value, min, max) {
@@ -78,6 +100,293 @@
       .replaceAll('"', "&quot;")
       .replaceAll("'", "&#039;");
   }
+
+  function getProject(index) {
+    return projects[index] || projects[0];
+  }
+
+  function createPreview() {
+    if (state.preview || !archive) return;
+
+    const preview = document.createElement("div");
+    preview.className = "work-archive-preview";
+    preview.setAttribute("aria-hidden", "true");
+
+    preview.innerHTML = `
+      <div class="work-archive-preview__inner">
+        <p class="work-archive-preview__client"></p>
+        <h3 class="work-archive-preview__title"></h3>
+        <p class="work-archive-preview__type"></p>
+        <p class="work-archive-preview__summary"></p>
+        <div class="work-archive-preview__tags"></div>
+      </div>
+    `;
+
+    document.body.appendChild(preview);
+    state.preview = preview;
+  }
+
+  function updatePreviewContent(project) {
+    if (!state.preview || !project) return;
+
+    const client = state.preview.querySelector(".work-archive-preview__client");
+    const title = state.preview.querySelector(".work-archive-preview__title");
+    const type = state.preview.querySelector(".work-archive-preview__type");
+    const summary = state.preview.querySelector(".work-archive-preview__summary");
+    const tags = state.preview.querySelector(".work-archive-preview__tags");
+
+    client.textContent = project.client;
+    title.textContent = project.title;
+    type.textContent = project.type;
+    summary.textContent = project.summary;
+
+    tags.innerHTML = project.tags
+      .map((tag) => `<span>${escapeHtml(tag)}</span>`)
+      .join("");
+  }
+
+  function showPreview(event, project) {
+    if (!state.preview || mobileQuery.matches || prefersReducedMotion) return;
+
+    state.activeProject = project;
+    updatePreviewContent(project);
+
+    state.previewTargetX = event.clientX + 26;
+    state.previewTargetY = event.clientY + 26;
+    state.previewX = state.previewTargetX;
+    state.previewY = state.previewTargetY;
+
+    state.preview.classList.add("is-visible");
+    movePreview();
+  }
+
+  function hidePreview() {
+    state.activeProject = null;
+
+    if (state.preview) {
+      state.preview.classList.remove("is-visible");
+    }
+
+    if (state.previewRaf) {
+      cancelAnimationFrame(state.previewRaf);
+      state.previewRaf = null;
+    }
+  }
+
+  function handlePreviewMove(event) {
+    if (!state.preview || !state.activeProject || mobileQuery.matches) return;
+
+    state.previewTargetX = event.clientX + 26;
+    state.previewTargetY = event.clientY + 26;
+
+    if (!state.previewRaf) {
+      movePreview();
+    }
+  }
+
+  function movePreview() {
+    if (!state.preview || !state.activeProject) {
+      state.previewRaf = null;
+      return;
+    }
+
+    state.previewX = lerp(state.previewX, state.previewTargetX, 0.18);
+    state.previewY = lerp(state.previewY, state.previewTargetY, 0.18);
+
+    const previewRect = state.preview.getBoundingClientRect();
+    const safeX = clamp(state.previewX, 16, window.innerWidth - previewRect.width - 16);
+    const safeY = clamp(state.previewY, 16, window.innerHeight - previewRect.height - 16);
+
+    state.preview.style.transform = `translate3d(${safeX}px, ${safeY}px, 0)`;
+
+    state.previewRaf = requestAnimationFrame(movePreview);
+  }
+
+  function hydrateArchiveItems() {
+    if (!archive) return;
+
+    const items = archive.querySelectorAll(
+      "[data-project-index], [data-work-project], .work-archive__item"
+    );
+
+    items.forEach((item, index) => {
+      const projectIndex = Number(item.dataset.projectIndex ?? index);
+      const project = getProject(projectIndex);
+
+      item.dataset.projectIndex = String(projectIndex);
+
+      const title = item.querySelector("[data-project-title]");
+      const client = item.querySelector("[data-project-client]");
+      const type = item.querySelector("[data-project-type]");
+      const summary = item.querySelector("[data-project-summary]");
+      const proof = item.querySelector("[data-project-proof]");
+
+      if (title) title.textContent = project.title;
+      if (client) client.textContent = project.client;
+      if (type) type.textContent = project.type;
+      if (summary) summary.textContent = project.summary;
+      if (proof) proof.textContent = project.proof;
+
+      item.addEventListener("mouseenter", (event) => {
+        showPreview(event, project);
+      });
+
+      item.addEventListener("mousemove", handlePreviewMove);
+      item.addEventListener("mouseleave", hidePreview);
+
+      item.addEventListener("focusin", () => {
+        item.classList.add("is-focused");
+      });
+
+      item.addEventListener("focusout", () => {
+        item.classList.remove("is-focused");
+      });
+    });
+  }
+
+  function hydrateTrustCards() {
+    if (!trustTrack) return;
+
+    const cards = trustTrack.querySelectorAll(".work-trust-card");
+
+    cards.forEach((card, index) => {
+      const project = getProject(index);
+
+      const logo = card.querySelector(".work-trust-card__logo");
+      const label = card.querySelector(".work-trust-card__top span");
+      const heading = card.querySelector("h3");
+      const body = card.querySelector(".work-trust-card__body");
+      const meta = card.querySelector(".work-trust-card__meta");
+
+      if (logo) logo.textContent = project.client;
+      if (label) label.textContent = project.type;
+      if (heading) heading.textContent = project.title;
+      if (body) body.textContent = project.summary;
+
+      if (meta) {
+        meta.innerHTML = project.tags
+          .map((tag) => `<span>${escapeHtml(tag)}</span>`)
+          .join("");
+      }
+    });
+  }
+
+  function measureTrustTrack() {
+    if (!trust || !trustTrack || mobileQuery.matches) {
+      state.trustMaxMove = 0;
+
+      if (trustTrack) {
+        trustTrack.style.transform = "";
+      }
+
+      return;
+    }
+
+    const sticky = trust.querySelector(".work-trust__sticky");
+    if (!sticky) return;
+
+    const trackWidth = trustTrack.scrollWidth;
+    const viewportWidth = window.innerWidth;
+    const padding = Math.max(24, viewportWidth * 0.06);
+
+    state.trustMaxMove = Math.max(0, trackWidth - viewportWidth + padding);
+
+    if (state.trustMaxMove > 0) {
+      trust.style.minHeight = `${window.innerHeight + state.trustMaxMove * 1.15}px`;
+    }
+  }
+
+  function updateTrustTarget() {
+    if (!trust || !trustTrack || mobileQuery.matches || prefersReducedMotion) return;
+
+    const rect = trust.getBoundingClientRect();
+    const scrollable = trust.offsetHeight - window.innerHeight;
+
+    if (scrollable <= 0) return;
+
+    const progress = clamp(Math.abs(rect.top) / scrollable, 0, 1);
+    state.trustTarget = -state.trustMaxMove * progress;
+
+    if (!state.trustRaf) {
+      animateTrustTrack();
+    }
+  }
+
+  function animateTrustTrack() {
+    state.trustCurrent = lerp(state.trustCurrent, state.trustTarget, 0.12);
+
+    if (trustTrack) {
+      trustTrack.style.transform = `translate3d(${state.trustCurrent}px, 0, 0)`;
+    }
+
+    if (Math.abs(state.trustCurrent - state.trustTarget) > 0.35) {
+      state.trustRaf = requestAnimationFrame(animateTrustTrack);
+    } else {
+      state.trustCurrent = state.trustTarget;
+
+      if (trustTrack) {
+        trustTrack.style.transform = `translate3d(${state.trustCurrent}px, 0, 0)`;
+      }
+
+      state.trustRaf = null;
+    }
+  }
+
+  function resetMotionForMobile() {
+    if (!mobileQuery.matches) return;
+
+    hidePreview();
+
+    if (trustTrack) {
+      trustTrack.style.transform = "";
+    }
+
+    if (trust) {
+      trust.style.minHeight = "";
+    }
+
+    state.trustCurrent = 0;
+    state.trustTarget = 0;
+    state.trustMaxMove = 0;
+  }
+
+  function init() {
+    createPreview();
+    hydrateArchiveItems();
+    hydrateTrustCards();
+    measureTrustTrack();
+    updateTrustTarget();
+    resetMotionForMobile();
+  }
+
+  window.addEventListener("scroll", updateTrustTarget, { passive: true });
+
+  window.addEventListener("resize", () => {
+    measureTrustTrack();
+    updateTrustTarget();
+    resetMotionForMobile();
+  });
+
+  if (mobileQuery.addEventListener) {
+    mobileQuery.addEventListener("change", () => {
+      measureTrustTrack();
+      updateTrustTarget();
+      resetMotionForMobile();
+    });
+  }
+
+  if ("ResizeObserver" in window) {
+    const observer = new ResizeObserver(() => {
+      measureTrustTrack();
+      updateTrustTarget();
+    });
+
+    if (trustTrack) observer.observe(trustTrack);
+    if (trust) observer.observe(trust);
+  }
+
+  init();
+})();
 
   /* ==========================================================
      PERFORMANCE CSS PATCH
