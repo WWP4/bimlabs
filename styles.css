@@ -2107,3 +2107,21 @@ select {
   transform-origin: center center;
   pointer-events: none;
 }
+
+
+
+
+
+
+
+/* Spline zoom + interaction override */
+.hero {
+  overflow: hidden;
+}
+
+.spline-hero {
+  transform: scale(1.45) !important;
+  transform-origin: center center !important;
+  pointer-events: auto !important;
+  touch-action: pan-y !important;
+}
