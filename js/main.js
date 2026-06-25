@@ -1,28 +1,36 @@
 const header = document.querySelector(".site-header");
+
 const showcaseScroll = document.querySelector("#showcaseScroll");
 const showcase = document.querySelector(".HomeShowcase");
 const outerFrame = document.querySelector(".HomeShowcase__outerFrame");
 const track = document.querySelector("#track");
 
+const heroSection = document.querySelector(".hero");
+const splineHero = document.querySelector(".spline-hero");
+
 let enabled = false;
 let maxMove = 0;
 let scrollLength = 1;
+
 let currentX = 0;
 let targetX = 0;
+
 let currentScale = 1;
 let targetScale = 1;
+
 let currentOpacity = 1;
 let targetOpacity = 1;
+
 let rafRunning = false;
 
-const clamp = (v, min, max) => Math.min(Math.max(v, min), max);
-const lerp = (a, b, t) => a + (b - a) * t;
+const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
+const lerp = (start, end, amount) => start + (end - start) * amount;
 
 /* ======================================================
    HORIZONTAL SHOWCASE
 ====================================================== */
 
-function measure() {
+function measureShowcase() {
   enabled =
     window.innerWidth > 900 &&
     showcaseScroll &&
@@ -31,7 +39,9 @@ function measure() {
     track;
 
   if (!enabled) {
-    if (track) track.style.transform = "none";
+    if (track) {
+      track.style.transform = "none";
+    }
 
     if (outerFrame) {
       outerFrame.style.transform = "none";
@@ -44,25 +54,19 @@ function measure() {
   maxMove = Math.max(0, track.scrollWidth - window.innerWidth);
   scrollLength = Math.max(1, showcaseScroll.offsetHeight - window.innerHeight);
 
-  updateTargets();
-  startLoop();
+  updateShowcaseTargets();
+  startShowcaseLoop();
 }
 
-function updateTargets() {
+function updateShowcaseTargets() {
   if (header) {
     header.classList.toggle("is-scrolled", window.scrollY > 40);
   }
 
-  if (!enabled) return;
+  if (!enabled || !showcaseScroll) return;
 
   const rect = showcaseScroll.getBoundingClientRect();
   const progress = clamp(-rect.top / scrollLength, 0, 1);
-
-  /*
-    0.00 → 0.10 = scale into fullscreen
-    0.10 → 0.82 = full horizontal section
-    0.82 → 1.00 = scale back out
-  */
 
   const introProgress = clamp(progress / 0.1, 0, 1);
   const horizontalProgress = clamp((progress - 0.08) / 0.72, 0, 1);
@@ -81,17 +85,17 @@ function updateTargets() {
     targetOpacity = lerp(1, 0.72, exitProgress);
   }
 
-  startLoop();
+  startShowcaseLoop();
 }
 
-function startLoop() {
+function startShowcaseLoop() {
   if (rafRunning) return;
 
   rafRunning = true;
-  requestAnimationFrame(animate);
+  requestAnimationFrame(animateShowcase);
 }
 
-function animate() {
+function animateShowcase() {
   currentX = lerp(currentX, targetX, 0.12);
   currentScale = lerp(currentScale, targetScale, 0.08);
   currentOpacity = lerp(currentOpacity, targetOpacity, 0.08);
@@ -111,34 +115,24 @@ function animate() {
     Math.abs(currentOpacity - targetOpacity) > 0.002;
 
   if (stillMoving) {
-    requestAnimationFrame(animate);
+    requestAnimationFrame(animateShowcase);
   } else {
     rafRunning = false;
   }
-}
-
-function debounce(fn, delay = 150) {
-  let timer;
-
-  return () => {
-    clearTimeout(timer);
-    timer = setTimeout(fn, delay);
-  };
 }
 
 /* ======================================================
    SPLINE HERO
 ====================================================== */
 
-const heroSection = document.querySelector(".hero");
-const splineHero = document.querySelector(".spline-hero");
-
 function setupHeroVisibility() {
   if (!heroSection || !splineHero) return;
 
   const observer = new IntersectionObserver(
     ([entry]) => {
-      if (entry.isIntersecting) {
+      const isVisible = entry.isIntersecting;
+
+      if (isVisible) {
         splineHero.style.display = "block";
         splineHero.style.opacity = "1";
         splineHero.style.visibility = "visible";
@@ -158,28 +152,40 @@ function setupHeroVisibility() {
   observer.observe(heroSection);
 }
 
-function setupSplineScrollPassThrough() {
+function setupSplineWheelPassThrough() {
   if (!heroSection) return;
 
   window.addEventListener(
     "wheel",
-    (e) => {
-      if (!heroSection.contains(e.target)) return;
-      if (e.ctrlKey) return;
+    (event) => {
+      if (!heroSection.contains(event.target)) return;
 
-      window.scrollBy({
-        top: e.deltaY,
-        left: 0,
-        behavior: "auto",
-      });
-
-      e.preventDefault();
+      /*
+        Do not prevent default.
+        Do not manually scroll.
+        This keeps browser scrolling smooth while stopping
+        the Spline canvas from swallowing the wheel event.
+      */
+      event.stopImmediatePropagation();
     },
     {
-      passive: false,
+      passive: true,
       capture: true,
     }
   );
+}
+
+/* ======================================================
+   UTILITIES
+====================================================== */
+
+function debounce(fn, delay = 150) {
+  let timer;
+
+  return () => {
+    clearTimeout(timer);
+    timer = setTimeout(fn, delay);
+  };
 }
 
 /* ======================================================
@@ -187,13 +193,13 @@ function setupSplineScrollPassThrough() {
 ====================================================== */
 
 function init() {
-  measure();
+  measureShowcase();
   setupHeroVisibility();
-  setupSplineScrollPassThrough();
+  setupSplineWheelPassThrough();
 
-  window.addEventListener("scroll", updateTargets, { passive: true });
-  window.addEventListener("resize", debounce(measure, 150));
-  window.addEventListener("load", measure);
+  window.addEventListener("scroll", updateShowcaseTargets, { passive: true });
+  window.addEventListener("resize", debounce(measureShowcase, 150));
+  window.addEventListener("load", measureShowcase);
 }
 
 init();
