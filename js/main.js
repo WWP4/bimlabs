@@ -63,26 +63,37 @@ function updateShowcaseTargets() {
     header.classList.toggle("is-scrolled", window.scrollY > 40);
   }
 
-  if (!enabled || !showcaseScroll) return;
+  if (!enabled) return;
 
   const rect = showcaseScroll.getBoundingClientRect();
   const progress = clamp(-rect.top / scrollLength, 0, 1);
 
-  const introProgress = clamp(progress / 0.1, 0, 1);
-  const horizontalProgress = clamp((progress - 0.08) / 0.72, 0, 1);
-  const exitProgress = clamp((progress - 0.82) / 0.18, 0, 1);
+  /*
+    NEW TIMING
+
+    0.00 → 0.06 = lock into full-screen grid
+    0.06 → 0.91 = full horizontal track
+    0.91 → 1.00 = window out / exit
+
+    This gives the user way more time inside the track.
+  */
+
+  const horizontalProgress = clamp((progress - 0.06) / 0.85, 0, 1);
+  const exitProgress = clamp((progress - 0.91) / 0.09, 0, 1);
 
   targetX = -maxMove * horizontalProgress;
 
-  if (progress <= 0.1) {
-    targetScale = lerp(0.92, 1, introProgress);
-    targetOpacity = lerp(0.72, 1, introProgress);
-  } else if (progress > 0.1 && progress < 0.82) {
+  /* Stay full-screen the entire time until the very end */
+  if (progress < 0.91) {
     targetScale = 1;
     targetOpacity = 1;
   } else {
-    targetScale = lerp(1, 0.92, exitProgress);
+    targetScale = lerp(1, 0.88, exitProgress);
     targetOpacity = lerp(1, 0.72, exitProgress);
+  }
+
+  if (showcase) {
+    showcase.classList.toggle("is-windowing-out", exitProgress > 0.01);
   }
 
   startShowcaseLoop();
