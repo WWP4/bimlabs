@@ -2090,3 +2090,20 @@ select {
   }
 }
 
+
+
+
+.hero {
+  position: relative;
+  overflow: hidden;
+}
+
+.spline-hero {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  transform: scale(1.25);
+  transform-origin: center center;
+  pointer-events: none;
+}
