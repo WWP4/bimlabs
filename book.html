@@ -46,8 +46,9 @@
 
           <section class="booking-step is-active" data-step="0" aria-labelledby="step-type">
             <p class="step-eyebrow">Step 1</p>
-            <h2 id="step-type">Confirm project type</h2>
-            <div class="choice-grid" data-choice-group="type"></div>
+            <h2 id="step-type">Choose what you need built.</h2>
+            <p class="step-help">Choose a clear package, or select Custom if the work does not fit into one box yet.</p>
+            <div class="choice-grid choice-grid--type" data-choice-group="type"></div>
           </section>
 
           <section class="booking-step" data-step="1" aria-labelledby="step-budget" hidden>
@@ -74,7 +75,10 @@
               <label>Email <input name="email" type="email" autocomplete="email" required /></label>
               <label>Phone <input name="phone" type="tel" autocomplete="tel" /></label>
               <label>Business name <input name="businessName" autocomplete="organization" /></label>
-              <label class="field-grid__wide">Short project context <textarea name="projectContext" rows="5" required></textarea></label>
+              <label class="field-grid__wide">
+                Project context / custom needs
+                <textarea name="projectContext" rows="5" required placeholder="Tell us what you need, what is broken, what you want improved, or what a custom package should include."></textarea>
+              </label>
             </div>
           </section>
 
@@ -109,10 +113,9 @@
   </main>
 
   <script>
-  window.BIM_LABS_BOOKING_FUNCTION_URL =
-    "/.netlify/functions/create-booking-request";
-</script>
-<script src="book-page.js"></script>
-  
+    window.BIM_LABS_BOOKING_FUNCTION_URL =
+      "/.netlify/functions/create-booking-request";
+  </script>
+  <script src="book-page.js"></script>
 </body>
 </html>
