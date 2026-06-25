@@ -173,3 +173,28 @@ function setupHeroVisibility() {
 }
 
 setupHeroVisibility();
+
+
+
+
+
+
+const hero = document.querySelector(".hero");
+
+if (hero) {
+  window.addEventListener(
+    "wheel",
+    (e) => {
+      if (!hero.contains(e.target)) return;
+
+      window.scrollBy({
+        top: e.deltaY,
+        left: 0,
+        behavior: "auto"
+      });
+
+      e.preventDefault();
+    },
+    { passive: false, capture: true }
+  );
+}
