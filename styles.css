@@ -2125,3 +2125,76 @@ select {
   pointer-events: auto !important;
   touch-action: pan-y !important;
 }
+
+
+
+
+
+/* ======================================================
+   FIX — REMOVE DOUBLE BACKGROUND ON BIM SHOWCASE
+====================================================== */
+
+.salo-showcase.bim-showcase {
+  background: #050505 !important;
+}
+
+.salo-showcase.bim-showcase .showcase-scroll,
+.salo-showcase.bim-showcase .HomeShowcase,
+.salo-showcase.bim-showcase .HomeShowcase__outerFrame,
+.salo-showcase.bim-showcase .HomeShowcase__inner {
+  background: transparent !important;
+}
+
+/* Kill the old framed/grid background that is doubling up */
+.salo-showcase.bim-showcase .HomeShowcase__outerFrame {
+  position: relative !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+
+  border: none !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  background-image: none !important;
+  background-size: auto !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+/* Keep only ONE background system */
+.salo-showcase.bim-showcase .HomeShowcase::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+
+  background:
+    linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px);
+
+  background-size: clamp(78px, 9vw, 150px) clamp(78px, 9vw, 150px);
+  opacity: 0.42;
+}
+
+.salo-showcase.bim-showcase .HomeShowcase::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+
+  background:
+    radial-gradient(circle at 18% 30%, rgba(255,255,255,0.055), transparent 30%),
+    radial-gradient(circle at 82% 70%, rgba(255,255,255,0.028), transparent 34%);
+
+  opacity: 1;
+}
+
+/* Make sure content stays above background */
+.salo-showcase.bim-showcase .HomeShowcase__inner,
+.salo-showcase.bim-showcase .bim-panel,
+.salo-showcase.bim-showcase .bim-ruler {
+  position: relative;
+  z-index: 2;
+}
