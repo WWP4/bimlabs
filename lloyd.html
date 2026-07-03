@@ -7,30 +7,27 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,500&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,500&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
   <style>
     :root {
-      --cream: #f3ede3;
-      --cream2: #fbf7ee;
-      --sand: #d9c7a9;
-      --taupe: #a58b68;
+      --cream: #f1e8d8;
+      --cream-2: #fbf6ec;
+      --sand: #d9c5a5;
+      --taupe: #9d815f;
       --ink: #17130f;
-      --muted: rgba(23,19,15,.66);
-      --line: rgba(23,19,15,.14);
-      --dark: #0d0d0c;
-      --white: #fffaf2;
+      --muted: rgba(23,19,15,.64);
+      --line: rgba(23,19,15,.13);
+      --dark: #080807;
+      --dark-2: #12100e;
+      --white: #fffaf0;
       --ease: cubic-bezier(.19, 1, .22, 1);
       --max: 1500px;
     }
 
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
-    html {
-      scroll-behavior: smooth;
-    }
+    html { scroll-behavior: smooth; }
 
     body {
       margin: 0;
@@ -38,66 +35,75 @@
       color: var(--ink);
       font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       overflow-x: hidden;
+      text-rendering: geometricPrecision;
     }
 
     body::before {
       content: "";
       position: fixed;
       inset: 0;
-      z-index: 90;
+      z-index: 100;
       pointer-events: none;
-      opacity: .06;
+      opacity: .055;
       mix-blend-mode: multiply;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 220 220' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.78' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.38'/%3E%3C/svg%3E");
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 220 220' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.72' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.45'/%3E%3C/svg%3E");
     }
 
     img {
-      max-width: 100%;
       display: block;
+      max-width: 100%;
       image-rendering: auto;
       backface-visibility: hidden;
     }
 
-    a {
-      color: inherit;
-      text-decoration: none;
-    }
+    a { color: inherit; text-decoration: none; }
 
     p {
       margin: 0;
       color: var(--muted);
-      line-height: 1.65;
+      line-height: 1.7;
       font-size: 15px;
     }
 
-    h1,
-    h2,
-    h3 {
+    h1, h2, h3 {
       margin: 0;
       font-family: "Cormorant Garamond", Georgia, serif;
       font-weight: 500;
-      letter-spacing: -.045em;
+      letter-spacing: -.05em;
     }
 
+    button, input { font: inherit; }
+
     .wrap {
-      width: min(var(--max), calc(100% - clamp(34px, 7vw, 130px)));
+      width: min(var(--max), calc(100% - clamp(34px, 7vw, 126px)));
       margin-inline: auto;
     }
 
     .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
       text-transform: uppercase;
       letter-spacing: .24em;
       font-size: 11px;
-      font-weight: 800;
-      color: rgba(23,19,15,.56);
+      font-weight: 900;
+      color: rgba(23,19,15,.58);
+    }
+
+    .eyebrow::before {
+      content: "";
+      width: 34px;
+      height: 1px;
+      background: currentColor;
+      opacity: .58;
     }
 
     .btn {
-      border: 1px solid var(--ink);
+      border: 1px solid currentColor;
       background: var(--ink);
       color: var(--white);
-      min-height: 48px;
-      padding: 14px 22px;
+      min-height: 50px;
+      padding: 15px 23px;
       display: inline-flex;
       align-items: center;
       justify-content: center;
@@ -105,8 +111,8 @@
       text-transform: uppercase;
       letter-spacing: .16em;
       font-size: 11px;
-      font-weight: 800;
-      transition: transform .35s var(--ease), background .35s var(--ease), color .35s var(--ease);
+      font-weight: 900;
+      transition: transform .35s var(--ease), background .35s var(--ease), color .35s var(--ease), border-color .35s var(--ease);
     }
 
     .btn:hover {
@@ -131,28 +137,39 @@
       top: 0;
       left: 0;
       right: 0;
-      height: 84px;
-      z-index: 50;
+      height: 82px;
+      z-index: 80;
       display: flex;
       align-items: center;
       justify-content: space-between;
       padding: 0 clamp(22px, 4vw, 72px);
-      background: linear-gradient(to bottom, rgba(243,237,227,.92), rgba(243,237,227,.58), transparent);
-      backdrop-filter: blur(12px);
-      transition: height .35s var(--ease), border-color .35s var(--ease), background .35s var(--ease);
+      color: var(--ink);
+      background: linear-gradient(to bottom, rgba(251,246,236,.84), rgba(251,246,236,.42), transparent);
+      backdrop-filter: blur(14px);
+      transition: height .35s var(--ease), background .35s var(--ease), border-color .35s var(--ease), color .35s var(--ease);
     }
 
     .nav.is-scrolled {
       height: 66px;
-      background: rgba(243,237,227,.84);
+      background: rgba(251,246,236,.86);
       border-bottom: 1px solid var(--line);
+    }
+
+    .nav.on-dark {
+      color: var(--white);
+      background: linear-gradient(to bottom, rgba(8,8,7,.72), rgba(8,8,7,.18), transparent);
+    }
+
+    .nav.on-dark.is-scrolled {
+      background: rgba(8,8,7,.72);
+      border-bottom-color: rgba(255,250,240,.12);
     }
 
     .brand {
       font-family: "Cormorant Garamond", Georgia, serif;
       font-weight: 600;
       font-size: 28px;
-      letter-spacing: .28em;
+      letter-spacing: .29em;
       line-height: 1;
     }
 
@@ -163,17 +180,15 @@
       text-transform: uppercase;
       font-size: 11px;
       letter-spacing: .18em;
-      font-weight: 800;
+      font-weight: 900;
     }
 
     .nav-links a {
-      opacity: .75;
+      opacity: .72;
       transition: opacity .25s ease;
     }
 
-    .nav-links a:hover {
-      opacity: 1;
-    }
+    .nav-links a:hover { opacity: 1; }
 
     .loader {
       position: fixed;
@@ -182,33 +197,30 @@
       display: grid;
       place-items: center;
       background: var(--dark);
-      color: var(--cream2);
-    }
-
-    .loader-text {
-      text-align: center;
+      color: var(--cream-2);
     }
 
     .loader-title {
-      font-family: "Cormorant Garamond", serif;
-      font-size: clamp(62px, 10vw, 150px);
-      letter-spacing: .18em;
-      margin-left: .18em;
-      line-height: .85;
+      font-family: "Cormorant Garamond", Georgia, serif;
+      font-size: clamp(64px, 11vw, 160px);
+      letter-spacing: .2em;
+      margin-left: .2em;
+      line-height: .82;
     }
 
     .loader-caption {
       margin-top: 22px;
+      text-align: center;
       text-transform: uppercase;
       font-size: 11px;
       letter-spacing: .28em;
-      color: rgba(255,250,242,.62);
+      color: rgba(255,250,240,.62);
     }
 
     .scroll-track {
       position: fixed;
-      z-index: 40;
-      left: clamp(18px, 3vw, 42px);
+      z-index: 65;
+      left: clamp(18px, 3vw, 44px);
       top: 50%;
       transform: translateY(-50%);
       display: grid;
@@ -216,14 +228,19 @@
       gap: 14px;
       align-items: center;
       pointer-events: none;
+      color: var(--ink);
+      transition: color .35s var(--ease);
     }
+
+    .scroll-track.on-dark { color: var(--white); }
 
     .rail {
       position: relative;
       width: 1px;
       height: 320px;
       margin-left: 9px;
-      background: rgba(23,19,15,.13);
+      background: currentColor;
+      opacity: .17;
       overflow: hidden;
     }
 
@@ -232,7 +249,8 @@
       inset: 0 auto auto 0;
       width: 1px;
       height: 0;
-      background: var(--ink);
+      background: currentColor;
+      opacity: 1;
     }
 
     .track-items {
@@ -246,13 +264,14 @@
       grid-template-columns: 18px auto;
       gap: 10px;
       align-items: center;
-      color: rgba(23,19,15,.38);
+      color: currentColor;
+      opacity: .38;
       text-transform: uppercase;
       font-size: 9px;
       letter-spacing: .17em;
-      font-weight: 800;
+      font-weight: 900;
       cursor: pointer;
-      transition: color .35s var(--ease), transform .35s var(--ease);
+      transition: opacity .35s var(--ease), transform .35s var(--ease);
     }
 
     .track-dot {
@@ -260,6 +279,7 @@
       height: 8px;
       border: 1px solid currentColor;
       border-radius: 50%;
+      transition: background .35s var(--ease), transform .35s var(--ease);
     }
 
     .track-label {
@@ -276,7 +296,7 @@
     }
 
     .track-item.active {
-      color: var(--ink);
+      opacity: 1;
       transform: translateX(3px);
     }
 
@@ -286,64 +306,67 @@
     }
 
     .hero {
+      position: relative;
       min-height: 100svh;
-      padding-top: 84px;
-      background:
-        radial-gradient(circle at 76% 27%, rgba(255,255,255,.9), transparent 24%),
-        linear-gradient(100deg, var(--cream2), var(--cream) 55%, #e4d6c2);
-      border-bottom: 1px solid var(--line);
+      padding-top: 82px;
       overflow: hidden;
+      background:
+        radial-gradient(circle at 78% 14%, rgba(255,255,255,.9), transparent 22%),
+        linear-gradient(104deg, var(--cream-2), var(--cream) 58%, #ded0bc);
+      border-bottom: 1px solid var(--line);
     }
 
     .hero-shell {
       position: relative;
-      min-height: calc(100svh - 84px);
+      min-height: calc(100svh - 82px);
       display: grid;
       align-items: center;
       isolation: isolate;
     }
 
     .hero-content {
-      width: min(690px, 52vw);
-      margin-left: clamp(64px, 9.3vw, 160px);
+      width: min(720px, 54vw);
+      margin-left: clamp(60px, 9.2vw, 160px);
       position: relative;
-      z-index: 4;
+      z-index: 5;
+      padding-block: 88px;
+    }
+
+    .hero-kicker {
+      margin-bottom: 24px;
     }
 
     .hero-title {
-      font-size: clamp(58px, 7.1vw, 118px);
-      line-height: .9;
-      max-width: 780px;
+      font-size: clamp(58px, 7vw, 120px);
+      line-height: .88;
+      max-width: 790px;
     }
 
     .hero-title em {
       font-style: italic;
-      letter-spacing: -.06em;
-    }
-
-    .hero-line {
-      width: 38px;
-      height: 1px;
-      background: var(--taupe);
-      margin: 24px 0 22px;
+      letter-spacing: -.065em;
     }
 
     .hero-sub {
+      max-width: 430px;
+      margin-top: 28px;
+      color: var(--ink);
       font-family: "Cormorant Garamond", Georgia, serif;
       font-size: clamp(24px, 2vw, 34px);
-      color: var(--ink);
+      line-height: 1.13;
+      letter-spacing: -.035em;
     }
 
     .hero-text {
-      max-width: 390px;
-      margin-top: 22px;
+      max-width: 420px;
+      margin-top: 18px;
     }
 
     .hero-actions {
       display: flex;
       align-items: center;
       flex-wrap: wrap;
-      gap: 24px;
+      gap: 18px;
       margin-top: 34px;
     }
 
@@ -352,9 +375,10 @@
       right: 0;
       bottom: 0;
       top: 0;
-      width: min(62vw, 920px);
+      width: min(58vw, 900px);
       z-index: -1;
       overflow: hidden;
+      clip-path: inset(0 0 0 0 round 0 0 0 42px);
     }
 
     .hero-photo::before {
@@ -364,392 +388,451 @@
       z-index: 2;
       pointer-events: none;
       background:
-        linear-gradient(90deg, var(--cream) 0%, rgba(243,237,227,.82) 4%, rgba(243,237,227,.18) 18%, transparent 38%),
-        linear-gradient(0deg, rgba(23,19,15,.08), transparent 26%);
+        linear-gradient(90deg, var(--cream) 0%, rgba(241,232,216,.86) 4%, rgba(241,232,216,.22) 22%, transparent 42%),
+        linear-gradient(0deg, rgba(23,19,15,.1), transparent 34%);
     }
 
     .hero-photo img {
       width: 100%;
       height: 100%;
       object-fit: cover;
-      object-position: 52% 44%;
-      filter: saturate(1.04) contrast(1.1) brightness(1.015);
-      transform: scale(1.025);
+      object-position: 52% 42%;
+      filter: saturate(1.02) contrast(1.08) brightness(1.02);
+      transform: scale(1.03);
     }
 
     .hero-orbit {
       position: absolute;
-      right: -5vw;
+      right: -6vw;
       top: 8%;
-      width: min(64vw, 940px);
+      width: min(61vw, 900px);
       aspect-ratio: 1;
-      border: 1px solid rgba(255,250,242,.72);
+      border: 1px solid rgba(255,250,240,.72);
       border-radius: 50%;
       z-index: 1;
       pointer-events: none;
-      opacity: .82;
+      opacity: .7;
     }
 
-    .mission {
-      padding: clamp(70px, 9vw, 130px) 0 clamp(64px, 8vw, 110px);
-      background: var(--cream2);
-      border-bottom: 1px solid var(--line);
-    }
-
-    .mission-grid {
+    .section-count {
+      position: absolute;
+      right: clamp(24px, 4.2vw, 72px);
+      top: clamp(92px, 12vw, 160px);
+      z-index: 6;
       display: grid;
-      grid-template-columns: .9fr 1.1fr;
-      gap: clamp(36px, 8vw, 118px);
-      align-items: start;
-    }
-
-    .mission h2 {
-      margin-top: 20px;
-      font-size: clamp(44px, 5.1vw, 86px);
-      line-height: .94;
-    }
-
-    .pillars {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 24px;
-      padding-top: 26px;
-    }
-
-    .pillar {
-      min-height: 230px;
-      padding: 28px;
-      border: 1px solid var(--line);
-      background: rgba(243,237,227,.66);
-      transition: transform .45s var(--ease), background .45s var(--ease), border-color .45s var(--ease);
-    }
-
-    .pillar:hover {
-      transform: translateY(-8px);
-      border-color: rgba(23,19,15,.24);
-      background: rgba(255,250,240,.72);
-    }
-
-    .pillar-number {
-      font-family: "Cormorant Garamond", Georgia, serif;
-      font-size: 56px;
-      color: rgba(165,139,104,.5);
-      margin-bottom: 34px;
-    }
-
-    .pillar h3 {
-      margin: 0 0 14px;
-      font-family: Inter, sans-serif;
+      gap: 6px;
+      text-align: right;
       text-transform: uppercase;
-      letter-spacing: .16em;
-      font-size: 12px;
-      font-weight: 800;
+      letter-spacing: .18em;
+      font-size: 10px;
+      font-weight: 900;
+      color: rgba(23,19,15,.48);
     }
 
-    .podcast {
+    .section-count strong {
+      color: var(--ink);
+      font-size: 13px;
+    }
+
+    .conversation {
       position: relative;
-      min-height: 110vh;
-      padding: clamp(86px, 11vw, 160px) 0;
-      background: linear-gradient(155deg, #f7f1e7 0%, #efe5d5 60%, #e8dbc9 100%);
-      overflow: hidden;
-      border-bottom: 1px solid var(--line);
-    }
-
-    .podcast-grid {
-      display: grid;
-      grid-template-columns: .72fr 1.28fr;
-      gap: clamp(36px, 7.5vw, 116px);
-      align-items: center;
-    }
-
-    .podcast h2 {
-      margin-top: 18px;
-      font-size: clamp(54px, 7vw, 112px);
-      line-height: .88;
-    }
-
-    .audio-card {
-      display: grid;
-      grid-template-columns: minmax(170px, 250px) 1fr;
-      gap: clamp(22px, 3vw, 44px);
-      padding: clamp(22px, 3.2vw, 42px);
-      border: 1px solid rgba(23,19,15,.11);
-      background: rgba(255,250,242,.58);
-      backdrop-filter: blur(18px);
-      border-radius: 18px;
-      box-shadow: 0 34px 110px rgba(58,42,24,.11);
-    }
-
-    .album {
-      aspect-ratio: 1;
-      border-radius: 11px;
-      overflow: hidden;
-      display: grid;
-      place-items: center;
-      background:
-        radial-gradient(circle at 30% 20%, rgba(255,255,255,.55), transparent 36%),
-        linear-gradient(150deg, #cdbb9d, #e4d7c2 55%, #9b8769);
-      box-shadow: inset 0 0 0 1px rgba(255,255,255,.35), 0 20px 54px rgba(63,49,30,.14);
-    }
-
-    .album span {
-      text-align: center;
-      font-family: "Cormorant Garamond", Georgia, serif;
-      letter-spacing: .16em;
-      color: rgba(255,250,242,.92);
-      font-size: 30px;
-      line-height: 1;
-      text-transform: uppercase;
-    }
-
-    .album small {
-      display: block;
-      margin-top: 10px;
-      font-family: Inter, sans-serif;
-      font-size: 9px;
-      font-weight: 800;
-      letter-spacing: .22em;
-    }
-
-    .audio-card h3 {
-      font-size: clamp(32px, 3.4vw, 56px);
-      line-height: .95;
-      margin: 9px 0 10px;
-    }
-
-    .meta {
-      text-transform: uppercase;
-      letter-spacing: .16em;
-      font-size: 11px;
-      font-weight: 800;
-      color: rgba(23,19,15,.55);
-    }
-
-    .player {
-      margin-top: 24px;
-      display: grid;
-      grid-template-columns: 48px 1fr auto;
-      gap: 18px;
-      align-items: center;
-    }
-
-    .play {
-      border: 0;
-      border-radius: 50%;
+      min-height: 112vh;
+      padding: clamp(88px, 11vw, 160px) 0;
+      background: var(--dark);
       color: var(--white);
-      background: var(--ink);
-      width: 48px;
-      height: 48px;
-      display: grid;
-      place-items: center;
-      cursor: pointer;
-    }
-
-    .bars {
-      height: 34px;
-      display: flex;
-      align-items: center;
-      gap: 4px;
       overflow: hidden;
+      border-bottom: 1px solid rgba(255,250,240,.12);
     }
 
-    .bars i {
-      width: 3px;
-      height: 13px;
-      border-radius: 20px;
-      background: rgba(165,139,104,.62);
-      transform-origin: bottom;
-      animation: pulse 1.8s ease-in-out infinite;
-      animation-delay: calc(var(--n) * -.08s);
-    }
-
-    @keyframes pulse {
-      0%, 100% {
-        transform: scaleY(.55);
-        opacity: .45;
-      }
-
-      50% {
-        transform: scaleY(1.65);
-        opacity: 1;
-      }
-    }
-
-    .split {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      min-height: 760px;
-      background: var(--cream2);
-      border-bottom: 1px solid var(--line);
-    }
-
-    .split-media {
-      position: relative;
-      overflow: hidden;
-      min-height: 560px;
-    }
-
-    .split-media::after {
+    .conversation::before {
       content: "";
       position: absolute;
       inset: 0;
-      background: linear-gradient(to top, rgba(23,19,15,.14), transparent 42%);
+      background:
+        radial-gradient(circle at 18% 26%, rgba(217,197,165,.18), transparent 28%),
+        radial-gradient(circle at 80% 76%, rgba(255,250,240,.08), transparent 32%);
       pointer-events: none;
     }
 
-    .split-media img {
+    .conversation-grid {
+      position: relative;
+      display: grid;
+      grid-template-columns: minmax(360px, .9fr) minmax(360px, 1.1fr);
+      gap: clamp(40px, 7vw, 110px);
+      align-items: center;
+      min-height: 780px;
+    }
+
+    .conversation .eyebrow,
+    .conversation p { color: rgba(255,250,240,.68); }
+
+    .conversation h2,
+    .messages h2,
+    .final h2 {
+      font-size: clamp(52px, 6.4vw, 112px);
+      line-height: .88;
+      margin-top: 20px;
+    }
+
+    .conversation-copy {
+      max-width: 650px;
+      padding-right: clamp(0px, 4vw, 60px);
+    }
+
+    .conversation-copy p { margin-top: 26px; max-width: 500px; }
+
+    .conversation-card {
+      position: relative;
+      height: min(76vh, 860px);
+      min-height: 650px;
+      overflow: hidden;
+      border: 1px solid rgba(255,250,240,.16);
+      border-radius: 24px;
+      background: #14110f;
+      box-shadow: 0 40px 120px rgba(0,0,0,.36);
+    }
+
+    .conversation-card::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(0deg, rgba(8,8,7,.42), transparent 44%),
+        linear-gradient(90deg, rgba(8,8,7,.18), transparent 52%);
+      pointer-events: none;
+    }
+
+    .conversation-card img {
       width: 100%;
       height: 100%;
       object-fit: cover;
-      object-position: 51% 50%;
-      filter: saturate(1.04) contrast(1.09) brightness(1.015);
+      object-position: 50% 42%;
+      filter: saturate(.98) contrast(1.08) brightness(.96);
+      transform: scale(1.015);
     }
 
-    .split-content {
-      position: relative;
+    .quote-block {
+      margin-top: 42px;
+      border-left: 1px solid rgba(255,250,240,.28);
+      padding-left: 22px;
+      max-width: 470px;
+    }
+
+    .quote-block strong {
+      display: block;
+      font-family: "Cormorant Garamond", Georgia, serif;
+      font-size: clamp(30px, 2.7vw, 48px);
+      line-height: 1.02;
+      letter-spacing: -.045em;
+      color: var(--white);
+      font-weight: 500;
+    }
+
+    .quote-block span {
+      display: block;
+      margin-top: 15px;
+      color: rgba(255,250,240,.55);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: .2em;
+      font-weight: 900;
+    }
+
+    .stat-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      margin-top: 44px;
+      max-width: 620px;
+      background: rgba(255,250,240,.14);
+      border: 1px solid rgba(255,250,240,.12);
+    }
+
+    .stat {
+      min-height: 132px;
       display: grid;
       align-content: center;
-      padding: clamp(54px, 9vw, 140px);
-      overflow: hidden;
+      padding: 22px;
+      background: rgba(255,250,240,.045);
     }
 
-    .split-content h2 {
-      font-size: clamp(44px, 5vw, 82px);
-      line-height: .92;
-      margin: 18px 0 24px;
+    .stat b {
+      font-family: "Cormorant Garamond", Georgia, serif;
+      font-size: 42px;
+      letter-spacing: -.04em;
+      font-weight: 500;
+      color: var(--white);
     }
 
-    .speaking {
+    .stat span {
+      margin-top: 6px;
+      color: rgba(255,250,240,.58);
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: .18em;
+      font-weight: 900;
+    }
+
+    .messages {
       position: relative;
       min-height: 110vh;
-      padding: clamp(90px, 12vw, 180px) 0 clamp(76px, 10vw, 140px);
-      background:
-        radial-gradient(circle at 70% 24%, rgba(255,250,242,.1), transparent 24%),
-        linear-gradient(115deg, var(--dark), #0d0d0c 68%, #1f1b16);
-      color: var(--white);
+      padding: clamp(84px, 10.5vw, 156px) 0;
       overflow: hidden;
-    }
-
-    .speaking-grid {
-      display: grid;
-      grid-template-columns: .82fr 1.18fr;
-      align-items: center;
-      gap: clamp(34px, 7vw, 118px);
-      min-height: 690px;
-    }
-
-    .speaking p,
-    .speaking .eyebrow {
-      color: rgba(255,250,242,.68);
-    }
-
-    .speaking h2 {
-      font-size: clamp(52px, 6vw, 104px);
-      line-height: .9;
-      margin: 18px 0 24px;
-    }
-
-    .stage {
-      position: relative;
-      min-height: 540px;
-      isolation: isolate;
-    }
-
-    .stage::before {
-      content: "";
-      position: absolute;
-      inset: 8% 0 0 auto;
-      width: 76%;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(255,250,242,.18), transparent 58%);
-      filter: blur(26px);
-      z-index: -1;
-    }
-
-    .stage .ghost {
-      position: absolute;
-      inset: 0;
-      width: 78%;
-      height: 100%;
-      object-fit: cover;
-      object-position: 48% 50%;
-      opacity: .32;
-      filter: grayscale(.05) contrast(1.05) brightness(1.02);
-      mask-image: linear-gradient(90deg, #000 30%, transparent 100%);
-      -webkit-mask-image: linear-gradient(90deg, #000 30%, transparent 100%);
-    }
-
-    .stage .main-stage {
-      position: absolute;
-      bottom: 0;
-      right: 0;
-      width: min(76%, 650px);
-      max-height: 105%;
-      object-fit: contain;
-      object-position: bottom right;
-      filter: saturate(1.02) contrast(1.1) brightness(1.02) drop-shadow(0 24px 46px rgba(0,0,0,.38));
-    }
-
-    .resources {
-      background: linear-gradient(90deg, var(--cream2), #efe3d0);
+      background:
+        radial-gradient(circle at 16% 18%, rgba(255,255,255,.75), transparent 25%),
+        linear-gradient(140deg, var(--cream-2), #ede1cf 62%, #dbc8aa);
       border-bottom: 1px solid var(--line);
     }
 
-    .resources-grid {
+    .messages-grid {
       display: grid;
-      grid-template-columns: .92fr .9fr .68fr;
-      min-height: 430px;
-      align-items: stretch;
+      grid-template-columns: minmax(340px, .86fr) minmax(400px, 1.14fr);
+      gap: clamp(42px, 8vw, 126px);
+      align-items: center;
+      min-height: 760px;
     }
 
-    .resources-copy,
-    .subscribe {
-      padding: clamp(42px, 5.8vw, 92px);
+    .messages-copy p {
+      max-width: 500px;
+      margin-top: 26px;
+    }
+
+    .message-list {
+      margin-top: 42px;
+      display: grid;
+      gap: 12px;
+      max-width: 560px;
+    }
+
+    .message-item {
+      display: grid;
+      grid-template-columns: 62px 1fr auto;
+      gap: 18px;
+      align-items: center;
+      padding: 18px;
+      border: 1px solid rgba(23,19,15,.11);
+      background: rgba(255,250,240,.54);
+      backdrop-filter: blur(14px);
+    }
+
+    .message-item b {
+      font-size: 12px;
+      letter-spacing: .17em;
+      text-transform: uppercase;
+    }
+
+    .message-item span {
+      display: block;
+      margin-top: 5px;
+      color: rgba(23,19,15,.56);
+      font-size: 12px;
+    }
+
+    .play-dot {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: var(--ink);
+      color: var(--white);
+      display: grid;
+      place-items: center;
+      font-size: 14px;
+    }
+
+    .message-time {
+      color: rgba(23,19,15,.48);
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+    }
+
+    .message-photo-wrap {
+      position: relative;
+      min-height: 760px;
+    }
+
+    .message-photo {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      border-radius: 28px;
+      border: 1px solid rgba(23,19,15,.12);
+      box-shadow: 0 38px 110px rgba(78,56,30,.18);
+      background: #090909;
+    }
+
+    .message-photo::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      pointer-events: none;
+      background:
+        linear-gradient(90deg, rgba(8,8,7,.16), transparent 35%),
+        linear-gradient(0deg, rgba(8,8,7,.3), transparent 48%);
+    }
+
+    .message-photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: 54% 38%;
+      filter: saturate(1.02) contrast(1.1) brightness(1.02);
+    }
+
+    .floating-card {
+      position: absolute;
+      z-index: 5;
+      left: -36px;
+      bottom: 54px;
+      width: min(390px, 72%);
+      padding: 24px;
+      border: 1px solid rgba(255,250,240,.34);
+      background: rgba(255,250,240,.76);
+      backdrop-filter: blur(18px);
+      box-shadow: 0 24px 80px rgba(39,28,16,.22);
+    }
+
+    .floating-card b {
+      display: block;
+      font-family: "Cormorant Garamond", Georgia, serif;
+      color: var(--ink);
+      font-size: 36px;
+      line-height: .96;
+      font-weight: 500;
+      letter-spacing: -.045em;
+    }
+
+    .floating-card span {
+      display: block;
+      margin-top: 12px;
+      color: rgba(23,19,15,.58);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: .19em;
+      font-weight: 900;
+    }
+
+    .final {
+      position: relative;
+      min-height: 116vh;
+      overflow: hidden;
+      background: var(--dark);
+      color: var(--white);
+      isolation: isolate;
+      display: grid;
+      align-items: center;
+    }
+
+    .final-image {
+      position: absolute;
+      inset: 0;
+      z-index: -2;
+      overflow: hidden;
+    }
+
+    .final-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: 38% 50%;
+      filter: saturate(.96) contrast(1.08) brightness(.8);
+      transform: scale(1.03);
+    }
+
+    .final::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      background:
+        linear-gradient(90deg, rgba(8,8,7,.1), rgba(8,8,7,.62) 46%, rgba(8,8,7,.94) 74%),
+        linear-gradient(0deg, rgba(8,8,7,.38), transparent 42%);
+      pointer-events: none;
+    }
+
+    .final-content {
+      width: min(640px, 44vw);
+      margin-left: auto;
+      margin-right: clamp(34px, 8vw, 150px);
+      padding-block: 130px;
+    }
+
+    .final .eyebrow,
+    .final p { color: rgba(255,250,240,.68); }
+
+    .final p {
+      max-width: 480px;
+      margin-top: 26px;
+    }
+
+    .final-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-top: 36px;
+    }
+
+    .contact-strip {
+      position: relative;
+      background: var(--cream-2);
+      border-top: 1px solid rgba(255,250,240,.1);
+      color: var(--ink);
+    }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1.05fr .95fr;
+      gap: 1px;
+      background: var(--line);
+    }
+
+    .contact-copy,
+    .contact-form {
+      background: var(--cream-2);
+      padding: clamp(46px, 6vw, 96px);
+      min-height: 420px;
       display: grid;
       align-content: center;
     }
 
-    .resources h2 {
-      font-size: clamp(42px, 4.6vw, 78px);
+    .contact-copy h2 {
+      font-size: clamp(42px, 5vw, 82px);
       line-height: .9;
-      margin-bottom: 22px;
+      margin-top: 18px;
     }
 
-    .still {
-      position: relative;
-      overflow: hidden;
-      border-inline: 1px solid var(--line);
+    .contact-copy p { margin-top: 20px; max-width: 520px; }
+
+    .contact-form form {
       display: grid;
-      place-items: center;
-      background: rgba(255,250,242,.38);
+      gap: 12px;
     }
 
-    .still img {
+    .contact-form input,
+    .contact-form textarea {
       width: 100%;
-      height: 100%;
-      object-fit: cover;
-      object-position: 50% 45%;
-      opacity: .95;
-      filter: saturate(.95) contrast(1.04) brightness(1.04);
-    }
-
-    .subscribe input {
-      border: 1px solid rgba(23,19,15,.22);
-      background: rgba(255,250,242,.7);
-      padding: 16px 14px;
+      border: 1px solid rgba(23,19,15,.18);
+      background: rgba(241,232,216,.55);
+      padding: 16px 15px;
       outline: none;
-      width: 100%;
-      margin-top: 22px;
-      margin-bottom: 12px;
+      color: var(--ink);
+    }
+
+    .contact-form textarea {
+      min-height: 120px;
+      resize: vertical;
     }
 
     footer {
+      background: var(--cream-2);
+      color: rgba(23,19,15,.54);
       padding: 34px clamp(22px, 4.2vw, 72px);
       display: flex;
       align-items: center;
       justify-content: space-between;
-      background: var(--cream2);
-      color: rgba(23,19,15,.56);
+      gap: 20px;
       font-size: 12px;
       letter-spacing: .08em;
       text-transform: uppercase;
@@ -762,54 +845,39 @@
 
     @media (max-width: 1180px) {
       .nav-links,
-      .scroll-track {
-        display: none;
-      }
+      .scroll-track { display: none; }
 
       .hero-content {
-        width: min(620px, 60vw);
-        margin-left: clamp(34px, 7vw, 90px);
+        width: min(650px, 62vw);
+        margin-left: clamp(30px, 6vw, 80px);
       }
 
-      .mission-grid,
-      .podcast-grid,
-      .speaking-grid,
-      .resources-grid {
+      .conversation-grid,
+      .messages-grid,
+      .contact-grid {
         grid-template-columns: 1fr;
       }
 
-      .pillars {
-        grid-template-columns: 1fr;
+      .conversation-card,
+      .message-photo-wrap {
+        min-height: 680px;
       }
 
-      .split {
-        grid-template-columns: 1fr;
-      }
+      .message-photo-wrap { min-height: 760px; }
 
-      .stage {
-        min-height: 450px;
-      }
-
-      .still {
-        min-height: 520px;
-        border-inline: 0;
-        border-block: 1px solid var(--line);
+      .final-content {
+        width: min(650px, 54vw);
+        margin-right: clamp(30px, 6vw, 90px);
       }
     }
 
     @media (max-width: 760px) {
-      .nav {
-        height: 72px;
-      }
+      .nav { height: 72px; }
+      .nav.is-scrolled { height: 62px; }
+      .brand { font-size: 23px; }
+      .nav .btn { padding-inline: 14px; min-height: 42px; }
 
-      .brand {
-        font-size: 23px;
-      }
-
-      .nav .btn {
-        padding-inline: 14px;
-        min-height: 42px;
-      }
+      .wrap { width: min(100% - 44px, var(--max)); }
 
       .hero {
         min-height: auto;
@@ -817,224 +885,255 @@
       }
 
       .hero-shell {
+        display: flex;
+        flex-direction: column;
         min-height: auto;
-        display: block;
-        padding-top: 52px;
       }
 
       .hero-content {
         width: auto;
         margin: 0;
-        padding: 0 22px 42px;
+        padding: 52px 22px 36px;
       }
 
-      .hero-title {
-        font-size: clamp(50px, 15vw, 72px);
-      }
+      .hero-title { font-size: clamp(51px, 15vw, 76px); }
 
       .hero-photo {
         position: relative;
         width: 100%;
-        height: 66vh;
+        height: 64vh;
         min-height: 520px;
+        clip-path: none;
       }
 
       .hero-photo::before {
-        background: linear-gradient(0deg, var(--cream) 0%, rgba(243,237,227,.18) 24%, transparent 52%);
+        background: linear-gradient(0deg, var(--cream) 0%, rgba(241,232,216,.2) 28%, transparent 58%);
       }
 
-      .audio-card,
-      .player {
-        grid-template-columns: 1fr;
+      .hero-orbit,
+      .section-count { display: none; }
+
+      .conversation,
+      .messages { padding: 70px 0; }
+
+      .conversation-grid,
+      .messages-grid { min-height: auto; }
+
+      .conversation h2,
+      .messages h2,
+      .final h2 { font-size: clamp(50px, 14vw, 74px); }
+
+      .conversation-card {
+        height: 72vh;
+        min-height: 580px;
+        border-radius: 18px;
       }
 
-      .split-content,
-      .resources-copy,
-      .subscribe {
-        padding: 48px 24px;
+      .stat-row { grid-template-columns: 1fr; }
+
+      .message-item {
+        grid-template-columns: 46px 1fr;
       }
 
-      .speaking-grid {
+      .message-time { grid-column: 2; }
+      .play-dot { width: 42px; height: 42px; }
+
+      .message-photo-wrap {
+        min-height: 680px;
+      }
+
+      .message-photo { border-radius: 18px; }
+
+      .floating-card {
+        left: 16px;
+        right: 16px;
+        width: auto;
+        bottom: 24px;
+      }
+
+      .final {
         min-height: auto;
+        align-items: end;
       }
 
-      .stage .main-stage {
-        width: 92%;
+      .final-image {
+        position: relative;
+        height: 72vh;
+        min-height: 580px;
+        order: 1;
       }
+
+      .final {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .final::before {
+        background: linear-gradient(0deg, var(--dark) 0%, rgba(8,8,7,.18) 35%, transparent 62%);
+      }
+
+      .final-content {
+        width: auto;
+        margin: 0;
+        padding: 54px 22px 68px;
+      }
+
+      .contact-copy,
+      .contact-form { padding: 48px 24px; min-height: auto; }
 
       footer {
         flex-direction: column;
         align-items: flex-start;
-        gap: 14px;
       }
     }
   </style>
 </head>
-
 <body>
   <div class="loader" id="loader">
-    <div class="loader-text">
+    <div>
       <div class="loader-title">LLOYD</div>
-      <div class="loader-caption">Rooted in faith · Driven by purpose</div>
+      <div class="loader-caption">Faith · Leadership · Legacy</div>
     </div>
   </div>
 
-  <aside class="scroll-track">
+  <aside class="scroll-track" id="scrollTrack">
     <div class="rail"><span class="rail-fill" id="railFill"></span></div>
     <div class="track-items">
       <a class="track-item active" href="#top" data-section-link="top"><span class="track-dot"></span><span class="track-label">01 Hero</span></a>
-      <a class="track-item" href="#about" data-section-link="about"><span class="track-dot"></span><span class="track-label">02 Heart</span></a>
+      <a class="track-item" href="#conversation" data-section-link="conversation"><span class="track-dot"></span><span class="track-label">02 Conversation</span></a>
       <a class="track-item" href="#messages" data-section-link="messages"><span class="track-dot"></span><span class="track-label">03 Messages</span></a>
-      <a class="track-item" href="#mentorship" data-section-link="mentorship"><span class="track-dot"></span><span class="track-label">04 Mentorship</span></a>
-      <a class="track-item" href="#speaking" data-section-link="speaking"><span class="track-dot"></span><span class="track-label">05 Speaking</span></a>
-      <a class="track-item" href="#resources" data-section-link="resources"><span class="track-dot"></span><span class="track-label">06 Resources</span></a>
+      <a class="track-item" href="#speaking" data-section-link="speaking"><span class="track-dot"></span><span class="track-label">04 Speaking</span></a>
+      <a class="track-item" href="#contact" data-section-link="contact"><span class="track-dot"></span><span class="track-label">05 Contact</span></a>
     </div>
   </aside>
 
   <nav class="nav" id="nav">
     <a class="brand" href="#top">LLOYD</a>
     <div class="nav-links">
-      <a href="#about">About</a>
-      <a href="#speaking">Speaking</a>
-      <a href="#mentorship">Mentorship</a>
+      <a href="#conversation">Mentorship</a>
       <a href="#messages">Messages</a>
-      <a href="#resources">Resources</a>
+      <a href="#speaking">Speaking</a>
       <a href="#contact">Contact</a>
     </div>
     <a class="btn" href="#contact">Book Lloyd</a>
   </nav>
 
   <main id="top">
-    <section class="hero" data-section="top">
+    <section class="hero" data-section="top" data-theme="light">
+      <div class="section-count"><strong>01</strong><span>Lloyd.1</span></div>
       <div class="hero-shell">
         <div class="hero-orbit"></div>
 
         <div class="hero-content">
+          <div class="eyebrow hero-kicker reveal">Speaker · Mentor · Author</div>
           <h1 class="hero-title">Helping leaders<br>remember what<br><em>Heaven</em> already<br>placed in them.</h1>
-          <div class="hero-line"></div>
-          <div class="hero-sub reveal">Speaker. Mentor. Author.</div>
-          <p class="hero-text reveal">I walk with leaders and teams to bring clarity, courage, and lasting impact to the places that need it most.</p>
+          <p class="hero-sub reveal">A grounded voice for faith, leadership, courage, and legacy.</p>
+          <p class="hero-text reveal">Lloyd walks with leaders, teams, and families to bring clarity, presence, and lasting impact to the places that need it most.</p>
           <div class="hero-actions reveal">
-            <a class="btn" href="#mentorship">Work with Lloyd</a>
-            <a class="btn" href="#speaking">Watch Lloyd speak</a>
+            <a class="btn" href="#conversation">Work with Lloyd</a>
+            <a class="btn" href="#speaking">Invite Lloyd</a>
           </div>
         </div>
 
         <div class="hero-photo">
-          <img src="assets/lloyd-stage-hero.png" alt="Lloyd speaking on stage">
+          <img src="lloyd.1.png" alt="Lloyd portrait">
         </div>
       </div>
     </section>
 
-    <section class="mission" id="about" data-section="about">
-      <div class="wrap mission-grid">
-        <div>
-          <div class="eyebrow reveal">The heart of the work</div>
-          <h2 class="reveal">Wisdom that does not perform. Presence that helps people become whole.</h2>
+    <section class="conversation" id="conversation" data-section="conversation" data-theme="dark">
+      <div class="wrap conversation-grid">
+        <div class="conversation-card reveal">
+          <img src="lloyd.2.png" alt="Lloyd in conversation">
         </div>
 
-        <div>
-          <p class="reveal">Lloyd's work sits at the intersection of faith, leadership, and legacy. His message is built for people who carry responsibility and need language for what God is forming inside them.</p>
+        <div class="conversation-copy">
+          <div class="eyebrow reveal">Mentorship & conversation</div>
+          <h2 class="reveal">Not just information. Formation.</h2>
+          <p class="reveal">The work is simple: slow down, tell the truth, and let God build something deeper than image. Lloyd helps leaders carry responsibility without losing their soul in the process.</p>
 
-          <div class="pillars">
-            <article class="pillar reveal">
-              <div class="pillar-number">01</div>
-              <h3>Clarity</h3>
-              <p>Helping leaders name what matters, cut through noise, and move with confidence.</p>
-            </article>
+          <div class="quote-block reveal">
+            <strong>Presence first. Strategy second. Legacy always.</strong>
+            <span>Lloyd.2</span>
+          </div>
 
-            <article class="pillar reveal">
-              <div class="pillar-number">02</div>
-              <h3>Courage</h3>
-              <p>Calling people higher without pressure, hype, or performance-driven leadership.</p>
-            </article>
-
-            <article class="pillar reveal">
-              <div class="pillar-number">03</div>
-              <h3>Legacy</h3>
-              <p>Building what lasts through faithfulness, obedience, and generational wisdom.</p>
-            </article>
+          <div class="stat-row reveal">
+            <div class="stat"><b>01</b><span>Clarity</span></div>
+            <div class="stat"><b>02</b><span>Courage</span></div>
+            <div class="stat"><b>03</b><span>Legacy</span></div>
           </div>
         </div>
       </div>
     </section>
 
-    <section class="podcast" id="messages" data-section="messages">
-      <div class="wrap podcast-grid">
-        <div>
-          <div class="eyebrow reveal">Messages & conversations</div>
+    <section class="messages" id="messages" data-section="messages" data-theme="light">
+      <div class="wrap messages-grid">
+        <div class="messages-copy">
+          <div class="eyebrow reveal">Messages & teachings</div>
           <h2 class="reveal">Words for the road ahead.</h2>
-          <p class="reveal" style="margin-top: 26px;">A curated home for teachings, interviews, podcasts, and leadership conversations.</p>
-        </div>
+          <p class="reveal">A curated home for teachings, interviews, podcasts, and leadership conversations. Built to feel calm, premium, and human instead of loud or overproduced.</p>
 
-        <div class="audio-card reveal">
-          <div class="album">
-            <span>Remember<br>Your<br>Future<small>Featured message</small></span>
+          <div class="message-list reveal">
+            <article class="message-item">
+              <span class="play-dot">▶</span>
+              <div><b>Remember your future</b><span>Featured message for leaders carrying pressure.</span></div>
+              <span class="message-time">38:24</span>
+            </article>
+            <article class="message-item">
+              <span class="play-dot">▶</span>
+              <div><b>Leading without performance</b><span>Faith, responsibility, and becoming whole.</span></div>
+              <span class="message-time">24:18</span>
+            </article>
+            <article class="message-item">
+              <span class="play-dot">▶</span>
+              <div><b>Legacy in the hidden years</b><span>Wisdom for the work nobody sees.</span></div>
+              <span class="message-time">31:09</span>
+            </article>
           </div>
+        </div>
 
-          <div>
-            <div class="meta">Latest message</div>
-            <h3>Remember what God already placed in you.</h3>
-            <p>For the leader who feels the weight of calling, pressure, and becoming.</p>
-
-            <div class="player">
-              <button class="play" type="button">▶</button>
-              <div class="bars" id="bars"></div>
-              <div class="meta">38:24</div>
-            </div>
+        <div class="message-photo-wrap reveal">
+          <div class="message-photo">
+            <img src="lloyd.3.png" alt="Lloyd speaking with microphone">
+          </div>
+          <div class="floating-card">
+            <b>Truth spoken with weight.</b>
+            <span>Lloyd.3</span>
           </div>
         </div>
       </div>
     </section>
 
-    <section class="split" id="mentorship" data-section="mentorship">
-      <div class="split-media">
-        <img src="assets/lloyd-portrait-hat.png" alt="Portrait of Lloyd">
+    <section class="final" id="speaking" data-section="speaking" data-theme="dark">
+      <div class="final-image">
+        <img src="lloyd.4.png" alt="Lloyd speaking on stage">
       </div>
 
-      <div class="split-content">
-        <div class="eyebrow reveal">Mentorship</div>
-        <h2 class="reveal">Not just information. Formation.</h2>
-        <p class="reveal">Mentorship with Lloyd is built for people who are ready to slow down, tell the truth, and let God build something deeper than image. This is for leaders, founders, pastors, creatives, and families who need grounded wisdom for the season in front of them.</p>
-        <a class="btn reveal" href="#contact" style="width: fit-content; margin-top: 32px;">Request Mentorship</a>
-      </div>
-    </section>
-
-    <section class="speaking" id="speaking" data-section="speaking">
-      <div class="wrap speaking-grid">
-        <div>
-          <div class="eyebrow reveal">Speaking</div>
-          <h2 class="reveal">A room changes when truth is spoken with weight.</h2>
-          <p class="reveal">Invite Lloyd for conferences, churches, leadership gatherings, retreats, podcasts, and private events.</p>
-          <a class="btn light reveal" href="#contact" style="width: fit-content; margin-top: 34px;">Invite Lloyd</a>
-        </div>
-
-        <div class="stage">
-          <img class="ghost" src="assets/lloyd-interview.png" alt="Lloyd in conversation">
-          <img class="main-stage" src="assets/lloyd-speaking-lectern.png" alt="Lloyd speaking at a lectern">
+      <div class="final-content">
+        <div class="eyebrow reveal">Speaking</div>
+        <h2 class="reveal">A room changes when truth is spoken with weight.</h2>
+        <p class="reveal">Invite Lloyd for conferences, churches, leadership gatherings, retreats, podcasts, and private events that need more than motivation. They need language, conviction, and presence.</p>
+        <div class="final-actions reveal">
+          <a class="btn light" href="#contact">Invite Lloyd</a>
+          <a class="btn light" href="#messages">View messages</a>
         </div>
       </div>
     </section>
 
-    <section class="resources" id="resources" data-section="resources">
-      <div class="resources-grid">
-        <div class="resources-copy">
-          <div class="eyebrow reveal">Resources</div>
-          <h2 class="reveal">Books, notes, and tools for the journey.</h2>
-          <p class="reveal">Create a simple home for Lloyd's book, message notes, leadership resources, and next-step downloads.</p>
-        </div>
-
-        <div class="still">
-          <img src="assets/lloyd-interview.png" alt="Lloyd sitting in conversation">
-        </div>
-
-        <div class="subscribe" id="contact">
+    <section class="contact-strip" id="contact" data-section="contact" data-theme="light">
+      <div class="contact-grid">
+        <div class="contact-copy">
           <div class="eyebrow reveal">Stay connected</div>
-          <p class="reveal" style="margin-top: 16px;">Encouragement, updates, and new messages straight to your inbox.</p>
+          <h2 class="reveal">Bring Lloyd into the next room.</h2>
+          <p class="reveal">Use this section for booking inquiries, mentorship requests, new message updates, or a simple contact form connected to your backend later.</p>
+        </div>
 
+        <div class="contact-form">
           <form class="reveal" onsubmit="event.preventDefault(); this.querySelector('button').textContent='Saved';">
-            <input type="email" placeholder="Your email address" aria-label="Your email address">
-            <button class="btn" type="submit">Subscribe</button>
+            <input type="text" placeholder="Name" aria-label="Name">
+            <input type="email" placeholder="Email" aria-label="Email">
+            <textarea placeholder="Tell us about the event or request" aria-label="Message"></textarea>
+            <button class="btn" type="submit">Send request</button>
           </form>
         </div>
       </div>
@@ -1050,137 +1149,157 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 
   <script>
-    const qs = (s, p = document) => p.querySelector(s);
-    const qsa = (s, p = document) => [...p.querySelectorAll(s)];
+    const qs = (selector, parent = document) => parent.querySelector(selector);
+    const qsa = (selector, parent = document) => [...parent.querySelectorAll(selector)];
 
     qs("#year").textContent = new Date().getFullYear();
 
-    function buildBars() {
-      const bars = qs("#bars");
-      if (!bars) return;
-
-      for (let i = 0; i < 42; i++) {
-        const bar = document.createElement("i");
-        bar.style.setProperty("--n", i);
-        bar.style.height = `${8 + Math.round(Math.abs(Math.sin(i * .71)) * 24)}px`;
-        bars.appendChild(bar);
-      }
-    }
-
-    buildBars();
-
-    window.addEventListener("load", () => {
-      const loader = qs("#loader");
-
-      if (window.gsap) {
-        gsap.registerPlugin(ScrollTrigger);
-
-        gsap.timeline({ defaults: { ease: "power4.out" } })
-          .to(".loader-title", { y: -18, opacity: 0, duration: .8, delay: .25 })
-          .to(".loader-caption", { y: 18, opacity: 0, duration: .55 }, "<")
-          .to(loader, { yPercent: -100, duration: 1.05 }, "-=.12")
-          .from(".nav", { y: -40, opacity: 0, duration: .8 }, "-=.55")
-          .from(".hero-title", { y: 78, opacity: 0, duration: 1.12 }, "-=.45")
-          .from(".hero-line", { scaleX: 0, transformOrigin: "left", duration: .85 }, "-=.65")
-          .to(".hero .reveal", { opacity: 1, y: 0, stagger: .11, duration: .88 }, "-=.45");
-
-        qsa(".reveal").forEach(el => {
-          if (el.closest(".hero")) return;
-
-          gsap.to(el, {
-            opacity: 1,
-            y: 0,
-            duration: .95,
-            ease: "power3.out",
-            scrollTrigger: {
-              trigger: el,
-              start: "top 86%"
-            }
-          });
-        });
-
-        gsap.to(".hero-photo img", {
-          yPercent: 8,
-          scale: 1.12,
-          ease: "none",
-          scrollTrigger: {
-            trigger: ".hero",
-            start: "top top",
-            end: "bottom top",
-            scrub: true
-          }
-        });
-
-        gsap.to(".hero-orbit", {
-          rotate: 24,
-          xPercent: 4,
-          ease: "none",
-          scrollTrigger: {
-            trigger: ".hero",
-            start: "top top",
-            end: "bottom top",
-            scrub: true
-          }
-        });
-
-        gsap.to(".audio-card", {
-          y: -24,
-          rotateY: -4,
-          transformPerspective: 900,
-          ease: "none",
-          scrollTrigger: {
-            trigger: ".podcast",
-            start: "top bottom",
-            end: "bottom top",
-            scrub: true
-          }
-        });
-      } else {
-        loader.style.display = "none";
-        qsa(".reveal").forEach(el => {
-          el.style.opacity = 1;
-          el.style.transform = "none";
-        });
-      }
-    });
-
     const nav = qs("#nav");
     const railFill = qs("#railFill");
-    const trackItems = qsa(".track-item");
+    const scrollTrack = qs("#scrollTrack");
     const sections = qsa("[data-section]");
+    const trackItems = qsa(".track-item");
 
-    function updateScroll() {
+    function updateUI() {
       const max = document.documentElement.scrollHeight - window.innerHeight;
       const progress = max > 0 ? window.scrollY / max : 0;
-
-      if (railFill) {
-        railFill.style.height = `${Math.max(2, progress * 100)}%`;
-      }
-
-      if (nav) {
-        nav.classList.toggle("is-scrolled", window.scrollY > 24);
-      }
-
-      let current = "top";
       const center = window.scrollY + window.innerHeight * .42;
+      let current = "top";
+      let theme = "light";
+
+      if (railFill) railFill.style.height = `${Math.max(2, progress * 100)}%`;
+      if (nav) nav.classList.toggle("is-scrolled", window.scrollY > 24);
 
       sections.forEach(section => {
         const top = section.offsetTop;
         const bottom = top + section.offsetHeight;
-
         if (center >= top && center < bottom) {
           current = section.dataset.section;
+          theme = section.dataset.theme || "light";
         }
       });
 
       trackItems.forEach(item => {
         item.classList.toggle("active", item.dataset.sectionLink === current);
       });
+
+      nav?.classList.toggle("on-dark", theme === "dark");
+      scrollTrack?.classList.toggle("on-dark", theme === "dark");
     }
 
-    window.addEventListener("scroll", updateScroll, { passive: true });
-    window.addEventListener("resize", updateScroll);
-    updateScroll();
+    window.addEventListener("scroll", updateUI, { passive: true });
+    window.addEventListener("resize", updateUI);
+    updateUI();
+
+    window.addEventListener("load", () => {
+      const loader = qs("#loader");
+
+      if (!window.gsap) {
+        if (loader) loader.style.display = "none";
+        qsa(".reveal").forEach(el => {
+          el.style.opacity = 1;
+          el.style.transform = "none";
+        });
+        return;
+      }
+
+      gsap.registerPlugin(ScrollTrigger);
+
+      const intro = gsap.timeline({ defaults: { ease: "power4.out" } });
+      intro
+        .to(".loader-title", { y: -18, opacity: 0, duration: .82, delay: .18 })
+        .to(".loader-caption", { y: 18, opacity: 0, duration: .55 }, "<")
+        .to(loader, { yPercent: -100, duration: 1.05 }, "-=.08")
+        .from(".nav", { y: -42, opacity: 0, duration: .85 }, "-=.56")
+        .from(".hero-title", { y: 80, opacity: 0, duration: 1.1 }, "-=.5")
+        .to(".hero .reveal", { opacity: 1, y: 0, stagger: .12, duration: .9 }, "-=.46");
+
+      qsa(".reveal").forEach(el => {
+        if (el.closest(".hero")) return;
+
+        gsap.to(el, {
+          opacity: 1,
+          y: 0,
+          duration: .95,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: el,
+            start: "top 86%"
+          }
+        });
+      });
+
+      gsap.to(".hero-photo img", {
+        yPercent: 8,
+        scale: 1.12,
+        ease: "none",
+        scrollTrigger: {
+          trigger: ".hero",
+          start: "top top",
+          end: "bottom top",
+          scrub: true
+        }
+      });
+
+      gsap.to(".hero-orbit", {
+        rotate: 26,
+        xPercent: 5,
+        ease: "none",
+        scrollTrigger: {
+          trigger: ".hero",
+          start: "top top",
+          end: "bottom top",
+          scrub: true
+        }
+      });
+
+      gsap.to(".conversation-card img", {
+        yPercent: 9,
+        scale: 1.08,
+        ease: "none",
+        scrollTrigger: {
+          trigger: ".conversation",
+          start: "top bottom",
+          end: "bottom top",
+          scrub: true
+        }
+      });
+
+      gsap.to(".message-photo img", {
+        yPercent: -7,
+        scale: 1.1,
+        ease: "none",
+        scrollTrigger: {
+          trigger: ".messages",
+          start: "top bottom",
+          end: "bottom top",
+          scrub: true
+        }
+      });
+
+      gsap.to(".floating-card", {
+        y: -42,
+        ease: "none",
+        scrollTrigger: {
+          trigger: ".messages",
+          start: "top bottom",
+          end: "bottom top",
+          scrub: true
+        }
+      });
+
+      gsap.to(".final-image img", {
+        yPercent: 7,
+        scale: 1.13,
+        ease: "none",
+        scrollTrigger: {
+          trigger: ".final",
+          start: "top bottom",
+          end: "bottom top",
+          scrub: true
+        }
+      });
+    });
   </script>
 </body>
 </html>
