@@ -3,8 +3,11 @@
   display: grid;
   align-items: center;
   isolation: isolate;
+  background: var(--black);
+  overflow: hidden;
 }
 
+/* IMAGE LAYER */
 .hero__bg {
   position: absolute;
   inset: 0;
@@ -13,15 +16,24 @@
   background: var(--black);
 }
 
+/*
+  Key fix:
+  - image is not shoved off-screen anymore
+  - Lloyd is bigger
+  - Lloyd moves slightly left toward center-right
+  - still keeps black negative space for text
+*/
 .hero__bg img {
   width: 100%;
   height: 100%;
   object-fit: contain;
-  object-position: right center;
-  filter: saturate(.98) contrast(1.08) brightness(.88);
-  transform: none;
+  object-position: 88% center;
+  filter: saturate(.98) contrast(1.08) brightness(.82);
+  transform: scale(1.14) translateX(-5.5%);
+  transform-origin: right center;
 }
 
+/* DARK READABILITY OVERLAY */
 .hero__shade {
   position: absolute;
   inset: 0;
@@ -29,14 +41,20 @@
   background:
     linear-gradient(
       90deg,
-      rgba(0,0,0,.98) 0%,
-      rgba(0,0,0,.94) 34%,
-      rgba(0,0,0,.62) 56%,
-      rgba(0,0,0,.12) 100%
+      rgba(0,0,0,.99) 0%,
+      rgba(0,0,0,.96) 31%,
+      rgba(0,0,0,.76) 49%,
+      rgba(0,0,0,.38) 67%,
+      rgba(0,0,0,.18) 100%
     ),
-    linear-gradient(180deg, rgba(0,0,0,.16), rgba(0,0,0,.58));
+    linear-gradient(
+      180deg,
+      rgba(0,0,0,.18) 0%,
+      rgba(0,0,0,.42) 100%
+    );
 }
 
+/* CONTENT */
 .hero__content {
   position: relative;
   z-index: 2;
@@ -45,6 +63,7 @@
 
 .hero__copy {
   max-width: 740px;
+  margin-left: clamp(0px, 3vw, 34px);
 }
 
 .hero h1 {
@@ -74,6 +93,7 @@
   margin-top: 34px;
 }
 
+/* SCROLL CUE */
 .scroll-cue {
   position: absolute;
   left: 50%;
@@ -94,4 +114,124 @@
   width: 1px;
   height: 48px;
   background: linear-gradient(var(--yellow), transparent);
+}
+
+/* LARGE DESKTOPS */
+@media (min-width: 1500px) {
+  .hero__bg img {
+    object-position: 86% center;
+    transform: scale(1.16) translateX(-7%);
+  }
+}
+
+/* LAPTOPS */
+@media (max-width: 1200px) {
+  .hero__bg img {
+    object-position: 92% center;
+    transform: scale(1.1) translateX(-3%);
+  }
+
+  .hero__shade {
+    background:
+      linear-gradient(
+        90deg,
+        rgba(0,0,0,.99) 0%,
+        rgba(0,0,0,.95) 36%,
+        rgba(0,0,0,.72) 56%,
+        rgba(0,0,0,.28) 100%
+      ),
+      linear-gradient(180deg, rgba(0,0,0,.2), rgba(0,0,0,.5));
+  }
+}
+
+/* TABLET */
+@media (max-width: 900px) {
+  .hero {
+    align-items: end;
+    padding-bottom: 80px;
+  }
+
+  .hero__bg img {
+    object-fit: cover;
+    object-position: 67% center;
+    transform: scale(1);
+    filter: saturate(.98) contrast(1.08) brightness(.62);
+  }
+
+  .hero__shade {
+    background:
+      linear-gradient(
+        90deg,
+        rgba(0,0,0,.98) 0%,
+        rgba(0,0,0,.83) 58%,
+        rgba(0,0,0,.48) 100%
+      ),
+      linear-gradient(
+        180deg,
+        rgba(0,0,0,.28) 0%,
+        rgba(0,0,0,.86) 100%
+      );
+  }
+
+  .hero__copy {
+    max-width: 680px;
+    margin-left: 0;
+  }
+}
+
+/* MOBILE */
+@media (max-width: 620px) {
+  .hero {
+    min-height: 100svh;
+    align-items: end;
+    padding-bottom: 74px;
+  }
+
+  .hero__content {
+    padding-top: 110px;
+  }
+
+  .hero__bg img {
+    object-fit: cover;
+    object-position: 68% center;
+    transform: scale(1);
+    filter: saturate(.98) contrast(1.05) brightness(.52);
+  }
+
+  .hero__shade {
+    background:
+      linear-gradient(
+        90deg,
+        rgba(0,0,0,.98) 0%,
+        rgba(0,0,0,.84) 62%,
+        rgba(0,0,0,.58) 100%
+      ),
+      linear-gradient(
+        180deg,
+        rgba(0,0,0,.35) 0%,
+        rgba(0,0,0,.9) 100%
+      );
+  }
+
+  .hero h1 {
+    font-size: clamp(48px, 15vw, 78px);
+    line-height: .88;
+  }
+
+  .hero__text {
+    font-size: 17px;
+    line-height: 1.45;
+  }
+
+  .hero__actions {
+    display: grid;
+  }
+
+  .hero__actions .btn {
+    width: 100%;
+  }
+
+  .scroll-cue {
+    display: none;
+  }
 }
