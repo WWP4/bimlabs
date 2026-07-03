@@ -1,0 +1,159 @@
+@media (max-width: 1000px) {
+  .site-header {
+    grid-template-columns: 1fr auto;
+  }
+
+  .nav,
+  .header-btn {
+    display: none;
+  }
+
+  .menu-toggle {
+    display: block;
+  }
+
+  .mobile-menu {
+    display: grid;
+  }
+
+  .hero__shade {
+    background:
+      linear-gradient(90deg, rgba(0,0,0,.96), rgba(0,0,0,.58)),
+      linear-gradient(180deg, rgba(0,0,0,.32), rgba(0,0,0,.84));
+  }
+
+  .message-brand {
+    position: relative;
+    right: auto;
+    top: auto;
+    transform: none;
+    margin-top: 46px;
+  }
+
+  .pillar-grid {
+    grid-template-columns: 1fr;
+    margin-top: 58px;
+  }
+
+  .pillar {
+    border-right: 0;
+    border-bottom: 1px solid var(--line-dark);
+    padding: 30px 0;
+  }
+
+  .speaking-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .speaking-quote {
+    justify-self: start;
+  }
+
+  .room-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .room-grid article {
+    border-right: 0;
+    border-bottom: 1px solid rgba(255,255,255,.14);
+  }
+
+  .book-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .book-left h2 {
+    margin-top: 40px;
+  }
+
+  .book-object {
+    width: min(330px, 78vw);
+  }
+
+  .book-themes {
+    grid-template-columns: 1fr;
+  }
+
+  .book-themes article {
+    border-right: 0;
+    border-bottom: 1px solid var(--line-dark);
+    padding: 28px 0;
+  }
+
+  .connect-cards,
+  .booking-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 620px) {
+  .container {
+    width: calc(100% - 28px);
+  }
+
+  .site-header {
+    height: 72px;
+    padding-inline: 14px;
+  }
+
+  .brand {
+    font-size: 16px;
+  }
+
+  .hero {
+    min-height: 100svh;
+  }
+
+  .hero__bg img {
+    object-fit: cover;
+    object-position: 64% center;
+  }
+
+  .hero__shade {
+    background:
+      linear-gradient(90deg, rgba(0,0,0,.98), rgba(0,0,0,.74)),
+      linear-gradient(180deg, rgba(0,0,0,.42), rgba(0,0,0,.9));
+  }
+
+  .hero h1,
+  .message-top h2,
+  .speaking-copy h2,
+  .booking-copy h2 {
+    font-size: clamp(48px, 15vw, 80px);
+  }
+
+  .hero__actions,
+  .newsletter-form {
+    display: grid;
+  }
+
+  .btn,
+  .newsletter-form button {
+    width: 100%;
+  }
+
+  .ghost-words {
+    display: none;
+  }
+
+  .room-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .book-right,
+  .book-left {
+    max-width: 100%;
+  }
+
+  .book-note {
+    font-size: 26px;
+  }
+
+  .connect-card {
+    min-height: 380px;
+  }
+
+  .footer-inner {
+    display: grid;
+  }
+}
