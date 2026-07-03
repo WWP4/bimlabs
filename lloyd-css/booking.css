@@ -1,0 +1,90 @@
+.booking-section {
+  min-height: 100svh;
+  display: grid;
+  align-items: center;
+  padding: 100px 0;
+}
+
+.booking-layout {
+  display: grid;
+  grid-template-columns: 1fr .82fr;
+  gap: 76px;
+  align-items: center;
+}
+
+.booking-copy h2 {
+  margin-top: 18px;
+  font-family: var(--serif);
+  font-size: clamp(58px, 8vw, 126px);
+  line-height: .84;
+  letter-spacing: -.08em;
+}
+
+.booking-copy p {
+  margin: 28px 0 34px;
+  max-width: 650px;
+  color: rgba(255,255,255,.76);
+  font-size: 22px;
+  line-height: 1.42;
+}
+
+.booking-list {
+  border: 1px solid rgba(255,255,255,.16);
+  border-radius: 18px;
+  overflow: hidden;
+}
+
+.booking-list article {
+  padding: 28px;
+  border-bottom: 1px solid rgba(255,255,255,.12);
+}
+
+.booking-list article:last-child {
+  border-bottom: 0;
+}
+
+.booking-list span {
+  color: var(--yellow);
+  font-size: 13px;
+  font-weight: 950;
+}
+
+.booking-list strong {
+  display: block;
+  margin-top: 10px;
+  font-family: var(--serif);
+  font-size: 30px;
+  line-height: 1;
+}
+
+.booking-list p {
+  margin-top: 10px;
+  color: rgba(255,255,255,.64);
+  line-height: 1.5;
+}
+
+.footer {
+  background: var(--black);
+  color: var(--white);
+  border-top: 1px solid rgba(255,255,255,.1);
+  padding: 32px 0;
+}
+
+.footer-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 22px;
+}
+
+.footer strong {
+  font-size: 17px;
+  letter-spacing: .2em;
+}
+
+.footer p,
+.footer a {
+  color: rgba(255,255,255,.58);
+  font-size: 13px;
+  font-weight: 700;
+}
