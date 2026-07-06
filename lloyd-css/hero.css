@@ -11,7 +11,7 @@
   isolation: isolate;
 }
 
-/* Background image */
+/* Background photo */
 
 .hero__bg {
   position: absolute;
@@ -54,7 +54,8 @@
     linear-gradient(
       180deg,
       rgba(0,0,0,.04) 0%,
-      rgba(0,0,0,.45) 100%
+      rgba(0,0,0,.36) 58%,
+      rgba(0,0,0,.86) 100%
     );
 }
 
@@ -83,11 +84,11 @@
   align-items: center;
   gap: 16px;
   margin: 0 0 28px;
+  color: #fff;
   font-size: 13px;
   font-weight: 950;
   letter-spacing: .16em;
   text-transform: uppercase;
-  color: #fff;
   text-shadow: 0 2px 14px rgba(0,0,0,.55);
 }
 
@@ -95,22 +96,22 @@
   content: "";
   width: 32px;
   height: 3px;
-  background: #ffd400;
   flex: 0 0 auto;
+  background: #ffd400;
 }
 
-/* Title */
+/* Headline */
 
 .hero__title {
   max-width: 790px;
   margin: 0;
+  color: #fff;
   font-family: Impact, "Arial Black", Haettenschweiler, sans-serif;
   font-size: clamp(62px, 6.2vw, 122px);
   line-height: .86;
   letter-spacing: -.035em;
   font-weight: 900;
   text-transform: uppercase;
-  color: #fff;
   text-shadow:
     0 3px 18px rgba(0,0,0,.5),
     0 14px 38px rgba(0,0,0,.25);
@@ -127,15 +128,15 @@
     0 6px 24px rgba(255,212,0,.16);
 }
 
-/* Text */
+/* Body text */
 
 .hero__text {
   max-width: 590px;
   margin: 34px 0 0;
+  color: rgba(255,255,255,.96);
   font-size: clamp(19px, 1.2vw, 23px);
   line-height: 1.5;
   font-weight: 650;
-  color: rgba(255,255,255,.96);
   text-shadow: 0 2px 14px rgba(0,0,0,.5);
 }
 
@@ -188,42 +189,39 @@
   background: rgba(255,212,0,.1);
 }
 
-
-
+/* Church logo band */
 
 .church-band {
   width: 100%;
-  margin-top: 70px;
-  padding: 22px 24px 24px;
-  border: 1px solid rgba(255,255,255,.1);
-  background: rgba(0,0,0,.62);
-  backdrop-filter: blur(14px);
-  box-shadow: 0 24px 80px rgba(0,0,0,.35);
+  margin-top: 78px;
+  padding-top: 28px;
+  border-top: 1px solid rgba(255,255,255,.18);
 }
 
 .church-band__label {
-  margin: 0 0 18px;
-  color: rgba(255,255,255,.6);
+  margin: 0 0 28px;
+  color: rgba(255,255,255,.64);
   font-size: 11px;
   font-weight: 900;
   letter-spacing: .18em;
   text-transform: uppercase;
+  text-shadow: 0 2px 12px rgba(0,0,0,.55);
 }
 
 .church-band__grid {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 34px;
+  gap: 32px;
 }
 
 .church-band__grid img {
   width: auto;
-  height: 54px;
-  max-width: 130px;
+  height: 88px;
+  max-width: 190px;
   object-fit: contain;
-  opacity: .78;
-  filter: grayscale(1) brightness(1.35) contrast(1.05);
+  opacity: .88;
+  filter: brightness(1.95) contrast(1.2);
   transition: opacity .25s ease, transform .25s ease;
 }
 
@@ -231,10 +229,6 @@
   opacity: 1;
   transform: translateY(-2px);
 }
-
-
-
-
 
 /* ==============================
    TABLET
@@ -248,6 +242,7 @@
 
   .hero__inner {
     width: min(100% - 44px, 1680px);
+    padding-top: 132px;
   }
 
   .hero__bg img {
@@ -267,7 +262,8 @@
       linear-gradient(
         180deg,
         rgba(0,0,0,.08) 0%,
-        rgba(0,0,0,.68) 100%
+        rgba(0,0,0,.5) 58%,
+        rgba(0,0,0,.88) 100%
       );
   }
 
@@ -276,14 +272,26 @@
     font-size: clamp(56px, 10vw, 104px);
   }
 
-  .hero__logos {
-    overflow-x: auto;
+  .church-band {
+    margin-top: 58px;
+    overflow: hidden;
+  }
+
+  .church-band__grid {
     justify-content: flex-start;
+    gap: 42px;
+    overflow-x: auto;
     scrollbar-width: none;
   }
 
-  .hero__logos::-webkit-scrollbar {
+  .church-band__grid::-webkit-scrollbar {
     display: none;
+  }
+
+  .church-band__grid img {
+    flex: 0 0 auto;
+    height: 78px;
+    max-width: 175px;
   }
 }
 
@@ -320,7 +328,8 @@
       linear-gradient(
         180deg,
         rgba(0,0,0,.12) 0%,
-        rgba(0,0,0,.88) 100%
+        rgba(0,0,0,.55) 56%,
+        rgba(0,0,0,.92) 100%
       );
   }
 
@@ -354,8 +363,23 @@
     width: 100%;
   }
 
-  .hero__logos {
-    margin-top: 48px;
-    font-size: 19px;
+  .church-band {
+    margin-top: 46px;
+    padding-top: 22px;
+  }
+
+  .church-band__label {
+    margin-bottom: 22px;
+    font-size: 10px;
+    line-height: 1.4;
+  }
+
+  .church-band__grid {
+    gap: 34px;
+  }
+
+  .church-band__grid img {
+    height: 64px;
+    max-width: 150px;
   }
 }
