@@ -17,14 +17,15 @@
 
 /* yellow scroll wipe */
 .message-wipe {
-  position: absolute;
+  position: fixed;
   inset: 0;
-  z-index: 50;
+  z-index: 999;
   display: grid;
   place-items: center;
   background: #f5c400;
   pointer-events: none;
-  transform: translateY(-101%);
+  transform: translateY(100%);
+  will-change: transform, clip-path;
 }
 
 .message-wipe__inner {
