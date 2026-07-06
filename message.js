@@ -1,194 +1,120 @@
 /* =========================================================
-   MESSAGE SECTION — YELLOW CURTAIN REVEAL
-   File: message.js
+   MESSAGE JS — THE MESSAGE REVEAL
+   Yellow flood → text mark → diagonal wipe → content reveal
    ========================================================= */
 
 (() => {
   const section = document.querySelector(".message-section");
   const wipe = document.querySelector(".message-wipe");
   const wipeText = document.querySelector(".message-wipe span");
-  const sun = document.querySelector(".message-sun");
-  const rings = document.querySelector(".message-rings");
-  const kicker = document.querySelector(".message-kicker");
-  const brand = document.querySelector(".message-brand");
-  const headline = document.querySelector(".message-right h2");
-  const pillars = gsap.utils.toArray(".message-pillar");
-  const actions = document.querySelector(".message-actions");
-  const dots = document.querySelector(".dot-grid");
+
+  const revealItems = [
+    ".message-kicker",
+    ".message-brand",
+    ".message-right h2",
+    ".message-pillar",
+    ".dot-grid",
+    ".message-actions"
+  ];
 
   if (!section) return;
 
-  /*
-    Safety:
-    This makes sure your text does not stay hidden
-    if GSAP fails or loads late.
-  */
   section.classList.add("is-visible");
 
-  if (!window.gsap || !window.ScrollTrigger) {
-    console.warn("GSAP or ScrollTrigger is missing. Message animation disabled.");
+  if (!window.gsap || !window.ScrollTrigger || !wipe) {
     return;
   }
 
   gsap.registerPlugin(ScrollTrigger);
 
-  /* Reset visible class so GSAP can control the entrance */
+  const items = gsap.utils.toArray(revealItems.join(","));
+
   section.classList.remove("is-visible");
 
-  gsap.set([kicker, brand, headline, actions, dots], {
+  gsap.set(items, {
     autoAlpha: 0,
     y: 34
   });
 
-  gsap.set(pillars, {
-    autoAlpha: 0,
-    y: 44
-  });
-
   gsap.set(wipe, {
-    yPercent: -101,
+    yPercent: 100,
     clipPath: "polygon(0 0, 100% 0, 100% 100%, 0 100%)"
   });
 
   gsap.set(wipeText, {
     autoAlpha: 0,
     y: 18,
-    letterSpacing: "0.5em"
+    letterSpacing: "0.48em"
   });
 
-  /* Main yellow curtain transition */
-  const revealTL = gsap.timeline({
+  const tl = gsap.timeline({
     scrollTrigger: {
       trigger: section,
-      start: "top 84%",
-      end: "top 12%",
-      scrub: 1.05,
-      onEnter: revealContent,
-      onEnterBack: revealContent
+      start: "top bottom",
+      end: "top top",
+      scrub: 1.1
     }
   });
 
-  revealTL
+  tl
+    /* yellow floods upward from bottom */
     .to(wipe, {
       yPercent: 0,
       duration: 0.42,
       ease: "power3.out"
     })
-    .to(
-      wipeText,
-      {
-        autoAlpha: 1,
-        y: 0,
-        letterSpacing: "0.32em",
-        duration: 0.18,
-        ease: "power2.out"
-      },
-      "-=0.16"
-    )
-    .to(wipe, {
-      clipPath: "polygon(0 0, 100% 0, 100% 0, 0 0)",
-      duration: 0.48,
-      ease: "power4.inOut"
+
+    /* small black title appears */
+    .to(wipeText, {
+      autoAlpha: 1,
+      y: 0,
+      letterSpacing: "0.32em",
+      duration: 0.16,
+      ease: "power2.out"
+    }, "-=0.08")
+
+    /* section begins to exist behind it */
+    .add(() => {
+      section.classList.add("is-visible");
     })
-    .to(
-      wipeText,
-      {
-        autoAlpha: 0,
-        y: -14,
-        duration: 0.16,
-        ease: "power2.out"
-      },
-      "<"
-    );
 
-  /* Content reveal */
-  let contentPlayed = false;
+    /* yellow diagonally sweeps down into the section */
+    .to(wipe, {
+      clipPath: "polygon(0 100%, 100% 72%, 100% 100%, 0 100%)",
+      duration: 0.44,
+      ease: "power4.inOut"
+    }, "+=0.08")
 
-  function revealContent() {
-    if (contentPlayed) return;
-    contentPlayed = true;
+    /* title fades away */
+    .to(wipeText, {
+      autoAlpha: 0,
+      y: -16,
+      duration: 0.12,
+      ease: "power2.out"
+    }, "<")
 
-    section.classList.add("is-visible");
+    /* final yellow panel leaves, bottom CSS wave remains */
+    .to(wipe, {
+      yPercent: 101,
+      duration: 0.26,
+      ease: "power2.inOut"
+    }, "-=0.08");
 
-    const contentTL = gsap.timeline({
-      defaults: {
-        duration: 0.9,
-        ease: "power3.out"
-      }
-    });
-
-    contentTL
-      .to(kicker, {
+  ScrollTrigger.create({
+    trigger: section,
+    start: "top 58%",
+    once: true,
+    onEnter: () => {
+      gsap.to(items, {
         autoAlpha: 1,
-        y: 0
-      })
-      .to(
-        brand,
-        {
-          autoAlpha: 1,
-          y: 0
-        },
-        "-=0.68"
-      )
-      .to(
-        headline,
-        {
-          autoAlpha: 1,
-          y: 0
-        },
-        "-=0.72"
-      )
-      .to(
-        pillars,
-        {
-          autoAlpha: 1,
-          y: 0,
-          stagger: 0.08
-        },
-        "-=0.44"
-      )
-      .to(
-        [actions, dots],
-        {
-          autoAlpha: 1,
-          y: 0,
-          stagger: 0.08
-        },
-        "-=0.48"
-      );
-  }
-
-  /* Ring movement */
-  if (rings) {
-    gsap.to(rings, {
-      rotate: 18,
-      scale: 1.08,
-      ease: "none",
-      scrollTrigger: {
-        trigger: section,
-        start: "top bottom",
-        end: "bottom top",
-        scrub: true
-      }
-    });
-  }
-
-  /* Pillar hover polish */
-  pillars.forEach((pillar) => {
-    pillar.addEventListener("mouseenter", () => {
-      gsap.to(pillar, {
-        y: -8,
-        duration: 0.35,
-        ease: "power2.out"
-      });
-    });
-
-    pillar.addEventListener("mouseleave", () => {
-      gsap.to(pillar, {
         y: 0,
-        duration: 0.35,
-        ease: "power2.out"
+        duration: 0.9,
+        stagger: {
+          each: 0.07,
+          from: "start"
+        },
+        ease: "power3.out"
       });
-    });
+    }
   });
 })();
