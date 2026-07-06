@@ -1,69 +1,68 @@
-/* SECTION 02 — MESSAGE / MANIFESTO */
+/* SECTION 02 — MESSAGE */
 
 .message-section {
+  --bg: #f6f1e8;
+  --black: #050505;
+  --yellow: #f4c400;
+  --line: rgba(0, 0, 0, .26);
+
   position: relative;
   min-height: 100vh;
-  background: #f6f1e8;
-  color: #050505;
+  padding: 36px 0;
   overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 28px 0;
+  background: var(--bg);
+  color: var(--black);
+  display: grid;
+  place-items: center;
 }
 
 .message-shell {
   position: relative;
-  width: min(1760px, 94vw);
-  height: min(980px, 92vh);
-  min-height: 860px;
+  width: min(1740px, 94vw);
+  height: min(960px, 90vh);
+  min-height: 870px;
 }
 
 /* TOP */
 
 .message-top {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
+  inset: 0 0 auto;
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
   z-index: 5;
 }
 
 .message-label {
   display: flex;
   align-items: center;
-  gap: 28px;
+  gap: 26px;
 }
 
 .message-label span {
-  width: 64px;
-  height: 64px;
-  border: 1.5px solid #050505;
+  width: 62px;
+  height: 62px;
+  border: 1.5px solid var(--black);
   border-radius: 50%;
   display: grid;
   place-items: center;
   font-size: 16px;
   font-weight: 900;
-  letter-spacing: .04em;
 }
 
 .message-label i {
-  display: block;
-  width: 46px;
+  width: 44px;
   height: 3px;
-  background: #050505;
+  background: var(--black);
 }
 
 .message-label p,
 .message-note p {
   margin: 0;
   font-size: 13px;
-  line-height: 1.65;
-  font-weight: 950;
-  letter-spacing: .38em;
+  line-height: 1.6;
+  font-weight: 900;
+  letter-spacing: .36em;
   text-transform: uppercase;
 }
 
@@ -76,72 +75,61 @@
   display: block;
   width: 58px;
   height: 3px;
-  margin-top: 24px;
-  background: #f3c400;
+  margin-top: 22px;
+  background: var(--yellow);
 }
 
-/* MAIN CANVAS */
+/* MAIN */
 
 .message-main {
   position: absolute;
   inset: 0;
 }
 
-/* BIG TITLE */
-
 .message-title {
   position: absolute;
-  left: 18px;
-  top: 145px;
-  width: 790px;
-  z-index: 4;
+  left: 20px;
+  top: 140px;
+  width: 760px;
+  z-index: 3;
 }
 
 .message-title h2 {
   margin: 0;
   font-family: Impact, Haettenschweiler, "Arial Narrow", sans-serif;
-  font-size: clamp(138px, 9.8vw, 198px);
-  line-height: .78;
+  font-size: clamp(132px, 9.2vw, 185px);
+  line-height: .84;
   letter-spacing: -.045em;
   font-weight: 900;
   text-transform: uppercase;
 }
 
-.message-title em {
-  display: block;
-  color: #f3c400;
+.message-title em,
+.message-title span {
+  color: var(--yellow);
   font-style: normal;
 }
 
-.message-title span {
-  color: #f3c400;
-}
-
-/* CENTER DIVIDER */
-
 .message-divider {
   position: absolute;
-  left: 52.2%;
+  left: 52%;
   top: 145px;
   width: 1px;
-  height: 565px;
+  height: 540px;
   background: rgba(0, 0, 0, .34);
-  z-index: 2;
 }
-
-/* RIGHT COPY */
 
 .message-copy {
   position: absolute;
-  left: 56.8%;
+  left: 57%;
   top: 360px;
   width: 590px;
-  z-index: 4;
+  z-index: 3;
 }
 
 .message-copy > p {
   margin: 0;
-  font-size: clamp(19px, 1.28vw, 25px);
+  font-size: clamp(18px, 1.25vw, 24px);
   line-height: 1.58;
   font-weight: 500;
   letter-spacing: .25em;
@@ -153,7 +141,7 @@
 }
 
 .message-subline {
-  margin-top: 108px;
+  margin-top: 104px;
   display: flex;
   align-items: center;
   gap: 28px;
@@ -161,96 +149,97 @@
 
 .message-subline i {
   width: 3px;
-  height: 54px;
-  background: #f3c400;
+  height: 52px;
+  background: var(--yellow);
   flex: 0 0 auto;
 }
 
 .message-subline p {
   margin: 0;
   font-size: 15px;
-  line-height: 1.75;
-  font-weight: 650;
-  letter-spacing: .24em;
+  line-height: 1.7;
+  font-weight: 700;
+  letter-spacing: .22em;
   text-transform: uppercase;
   white-space: nowrap;
 }
 
 .message-subline span {
-  width: 168px;
+  width: 165px;
   height: 1px;
-  background: rgba(0, 0, 0, .28);
+  background: var(--line);
 }
 
 .message-subline b {
+  color: rgba(0, 0, 0, .48);
   font-size: 20px;
   font-weight: 400;
-  color: rgba(0, 0, 0, .45);
 }
 
 /* ORBITS */
 
-.orb {
+.orb,
+.orb-dot {
   position: absolute;
-  border-radius: 50%;
-  border: 1px solid rgba(243, 196, 0, .9);
   pointer-events: none;
 }
 
+.orb {
+  border: 1px solid rgba(244, 196, 0, .85);
+  border-radius: 50%;
+}
+
 .orb--top {
-  width: 835px;
-  height: 835px;
-  right: -235px;
-  top: -595px;
+  width: 820px;
+  height: 820px;
+  top: -590px;
+  right: -230px;
 }
 
 .orb-dot {
-  position: absolute;
   width: 12px;
   height: 12px;
-  background: #050505;
   border-radius: 50%;
-  z-index: 3;
+  background: var(--black);
+  z-index: 2;
 }
 
 .orb-dot--top {
-  right: 382px;
-  top: 257px;
+  top: 260px;
+  right: 385px;
 }
 
 .orb--bottom {
-  width: 625px;
-  height: 625px;
+  width: 620px;
+  height: 620px;
   right: -400px;
-  bottom: -242px;
+  bottom: -250px;
   box-shadow:
     0 0 0 34px transparent,
-    0 0 0 35px rgba(243, 196, 0, .46),
+    0 0 0 35px rgba(244, 196, 0, .45),
     0 0 0 68px transparent,
-    0 0 0 69px rgba(243, 196, 0, .28);
+    0 0 0 69px rgba(244, 196, 0, .28);
 }
 
-/* BOTTOM ROW */
+/* BOTTOM */
 
 .message-bottom {
   position: absolute;
   left: 0;
+  right: 0;
   bottom: 0;
-  width: 100%;
   display: grid;
-  grid-template-columns: 105px repeat(4, 1fr);
-  border-top: 1px solid rgba(0, 0, 0, .28);
-  padding-top: 36px;
-  z-index: 5;
+  grid-template-columns: 100px repeat(4, 1fr);
+  border-top: 1px solid var(--line);
+  padding-top: 34px;
+  z-index: 4;
 }
 
 .bottom-side {
   writing-mode: vertical-rl;
   transform: rotate(180deg);
-  align-self: start;
   font-size: 11px;
-  line-height: 1;
-  font-weight: 950;
+  font-weight: 900;
   letter-spacing: .32em;
   text-transform: uppercase;
 }
@@ -260,21 +249,21 @@
   display: block;
   width: 2px;
   height: 28px;
-  background: #f3c400;
   margin: 26px auto 0;
+  background: var(--yellow);
 }
 
 .message-bottom article {
-  min-height: 158px;
-  padding: 0 54px;
+  min-height: 155px;
+  padding: 0 48px;
   border-left: 1px solid rgba(0, 0, 0, .22);
 }
 
 .message-bottom h3 {
   margin: 0;
   font-family: Impact, Haettenschweiler, "Arial Narrow", sans-serif;
-  font-size: 56px;
-  line-height: .82;
+  font-size: 54px;
+  line-height: .85;
   font-weight: 900;
   letter-spacing: -.04em;
 }
@@ -283,28 +272,27 @@
   display: block;
   width: 24px;
   height: 2px;
-  background: #f3c400;
-  margin: 18px 0 15px;
+  margin: 17px 0 14px;
+  background: var(--yellow);
 }
 
 .message-bottom h4 {
-  margin: 0 0 11px;
-  max-width: 250px;
+  margin: 0 0 10px;
   font-size: 12px;
   line-height: 1.35;
-  font-weight: 950;
-  letter-spacing: .25em;
+  font-weight: 900;
+  letter-spacing: .24em;
   text-transform: uppercase;
 }
 
 .message-bottom p {
+  max-width: 250px;
   margin: 0;
-  max-width: 255px;
   font-size: 14px;
   line-height: 1.55;
 }
 
-/* CLEAN OLD CLASSES */
+/* OLD CLASS CLEANUP */
 
 .message-wipe,
 .message-split,
@@ -322,7 +310,7 @@
   display: none !important;
 }
 
-/* TABLET */
+/* TABLET / MOBILE */
 
 @media (max-width: 1200px) {
   .message-section {
@@ -347,40 +335,33 @@
     position: relative;
     inset: auto;
     left: auto;
+    right: auto;
     top: auto;
     bottom: auto;
-    right: auto;
     width: auto;
   }
 
-  .message-note {
-    display: none;
-  }
-
-  .message-main {
-    padding-top: 92px;
-  }
-
-  .message-title {
-    max-width: 850px;
-  }
-
-  .message-title h2 {
-    font-size: clamp(82px, 16vw, 145px);
-    line-height: .8;
-  }
-
+  .message-note,
   .message-divider {
     display: none;
   }
 
+  .message-main {
+    padding-top: 88px;
+  }
+
+  .message-title h2 {
+    font-size: clamp(76px, 16vw, 140px);
+    line-height: .82;
+  }
+
   .message-copy {
     max-width: 760px;
-    margin-top: 72px;
+    margin-top: 64px;
   }
 
   .message-bottom {
-    margin-top: 110px;
+    margin-top: 100px;
     grid-template-columns: 1fr 1fr;
   }
 
@@ -388,7 +369,7 @@
     grid-column: 1 / -1;
     writing-mode: initial;
     transform: none;
-    margin-bottom: 28px;
+    margin-bottom: 26px;
   }
 
   .bottom-side::after {
@@ -400,8 +381,6 @@
     border-top: 1px solid rgba(0, 0, 0, .18);
   }
 }
-
-/* MOBILE */
 
 @media (max-width: 650px) {
   .message-section {
@@ -417,8 +396,8 @@
   }
 
   .message-label span {
-    width: 54px;
-    height: 54px;
+    width: 52px;
+    height: 52px;
     font-size: 14px;
   }
 
@@ -432,16 +411,11 @@
   }
 
   .message-main {
-    padding-top: 72px;
+    padding-top: 70px;
   }
 
   .message-title h2 {
-    font-size: clamp(64px, 19vw, 96px);
-    line-height: .78;
-  }
-
-  .message-copy {
-    margin-top: 56px;
+    font-size: clamp(60px, 18vw, 94px);
   }
 
   .message-copy > p {
@@ -451,7 +425,7 @@
   }
 
   .message-subline {
-    margin-top: 54px;
+    margin-top: 52px;
     gap: 18px;
   }
 
@@ -467,7 +441,7 @@
 
   .message-bottom {
     grid-template-columns: 1fr;
-    margin-top: 86px;
+    margin-top: 82px;
   }
 
   .message-bottom article {
@@ -478,8 +452,8 @@
   .orb--top {
     width: 480px;
     height: 480px;
-    right: -360px;
     top: -280px;
+    right: -360px;
   }
 
   .orb-dot--top {
