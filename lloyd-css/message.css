@@ -109,6 +109,18 @@
   letter-spacing: .035em;
   font-weight: 400;
   text-transform: uppercase;
+  max-width: 720px;
+}
+
+.calling-main h2 .line {
+  display: block;
+}
+
+.calling-main h2 .final-line {
+  display: flex;
+  align-items: baseline;
+  gap: .16em;
+  white-space: nowrap;
 }
 
 .calling-main h2 em {
