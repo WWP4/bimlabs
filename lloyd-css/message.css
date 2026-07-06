@@ -7,21 +7,10 @@
   isolation: isolate;
 }
 
-.message-section::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background:
-    radial-gradient(circle at 40% 28%, rgba(255,255,255,.9), transparent 34%),
-    radial-gradient(circle at 70% 70%, rgba(255,255,255,.72), transparent 42%);
-  pointer-events: none;
-  z-index: -2;
-}
-
 .message-shell {
   position: relative;
   min-height: 100vh;
-  padding: 86px 68px 0;
+  padding: 5.2vw 5.2vw 0;
 }
 
 .message-top {
@@ -33,23 +22,25 @@
 .message-label {
   display: flex;
   align-items: center;
-  gap: 28px;
+  gap: 1.5vw;
 }
 
 .message-label span {
-  width: 70px;
-  height: 70px;
+  width: 3.7vw;
+  height: 3.7vw;
+  min-width: 56px;
+  min-height: 56px;
   display: grid;
   place-items: center;
   border: 1.5px solid #050505;
   border-radius: 50%;
-  font-size: 18px;
+  font-size: clamp(14px, 1vw, 18px);
   font-weight: 950;
   letter-spacing: .08em;
 }
 
 .message-label i {
-  width: 40px;
+  width: 2.4vw;
   height: 3px;
   background: #050505;
 }
@@ -57,43 +48,42 @@
 .message-label p,
 .message-note p {
   margin: 0;
-  font-size: 17px;
+  font-size: clamp(12px, .95vw, 17px);
   font-weight: 950;
   letter-spacing: .38em;
   line-height: 1.65;
 }
 
 .message-note {
-  padding-right: 40px;
+  padding-right: 4.5vw;
 }
 
 .message-note i {
   display: block;
-  width: 56px;
-  height: 4px;
+  width: 3.2vw;
+  height: 3px;
   background: #f4c400;
-  margin-top: 24px;
+  margin-top: 1.4vw;
 }
 
 .message-main {
   position: relative;
   display: grid;
-  grid-template-columns: 54% 1px 46%;
-  min-height: 720px;
+  grid-template-columns: 52% 1px 48%;
+  min-height: 61vh;
   align-items: center;
 }
 
 .message-title h2 {
   margin: 0;
-  font-size: clamp(110px, 10.4vw, 190px);
-  line-height: .86;
+  font-size: clamp(86px, 8.5vw, 158px);
+  line-height: .88;
   font-weight: 1000;
   letter-spacing: -.075em;
   text-transform: uppercase;
 }
 
 .message-title em {
-  display: inline-block;
   color: #f4c400;
   font-style: normal;
 }
@@ -104,19 +94,18 @@
 
 .message-divider {
   width: 1px;
-  height: 68%;
-  background: rgba(0,0,0,.35);
+  height: 56%;
+  background: rgba(0,0,0,.32);
 }
 
 .message-copy {
-  position: relative;
-  padding-left: 82px;
-  padding-top: 140px;
+  padding-left: 4.4vw;
+  padding-top: 7vw;
 }
 
 .message-copy > p {
   margin: 0;
-  font-size: clamp(22px, 1.8vw, 31px);
+  font-size: clamp(16px, 1.45vw, 27px);
   line-height: 1.58;
   letter-spacing: .24em;
   font-weight: 500;
@@ -129,32 +118,32 @@
 .message-subline {
   display: flex;
   align-items: center;
-  gap: 26px;
-  margin-top: 150px;
+  gap: 1.4vw;
+  margin-top: 7.5vw;
 }
 
 .message-subline i {
   width: 3px;
-  height: 54px;
+  height: 46px;
   background: #f4c400;
 }
 
 .message-subline p {
   margin: 0;
-  font-size: 18px;
+  font-size: clamp(13px, 1vw, 18px);
   line-height: 1.65;
   letter-spacing: .22em;
   font-weight: 650;
 }
 
 .message-subline span {
-  width: 170px;
+  width: 11vw;
   height: 1px;
   background: rgba(0,0,0,.3);
 }
 
 .message-subline b {
-  font-size: 22px;
+  font-size: 20px;
   color: rgba(0,0,0,.45);
 }
 
@@ -166,47 +155,47 @@
 }
 
 .orb--top {
-  width: 720px;
-  height: 720px;
-  right: -300px;
-  top: -460px;
+  width: 46vw;
+  height: 46vw;
+  right: -18vw;
+  top: -30vw;
 }
 
 .orb-dot--top {
   position: absolute;
-  right: 357px;
-  top: 260px;
-  width: 13px;
-  height: 13px;
+  right: 21.9vw;
+  top: 15.2vw;
+  width: 11px;
+  height: 11px;
   background: #050505;
   border-radius: 50%;
 }
 
 .orb--bottom {
-  width: 620px;
-  height: 620px;
-  right: -430px;
-  bottom: -360px;
+  width: 38vw;
+  height: 38vw;
+  right: -25vw;
+  bottom: -21vw;
   box-shadow:
-    0 0 0 32px transparent,
-    0 0 0 33px rgba(244,196,0,.55),
-    0 0 0 67px transparent,
-    0 0 0 68px rgba(244,196,0,.38);
+    0 0 0 2vw transparent,
+    0 0 0 calc(2vw + 1px) rgba(244,196,0,.55),
+    0 0 0 4vw transparent,
+    0 0 0 calc(4vw + 1px) rgba(244,196,0,.38);
 }
 
 .message-bottom {
   position: relative;
   display: grid;
-  grid-template-columns: 90px repeat(4, 1fr);
+  grid-template-columns: 7vw repeat(4, 1fr);
   border-top: 1px solid rgba(0,0,0,.28);
-  padding-top: 38px;
-  padding-bottom: 42px;
+  padding-top: 2.7vw;
+  padding-bottom: 2.6vw;
 }
 
 .bottom-side {
   writing-mode: vertical-rl;
   transform: rotate(180deg);
-  font-size: 13px;
+  font-size: clamp(10px, .75vw, 13px);
   font-weight: 950;
   letter-spacing: .28em;
   text-transform: uppercase;
@@ -222,14 +211,14 @@
 }
 
 .message-bottom article {
-  min-height: 160px;
-  padding: 0 52px;
+  min-height: 130px;
+  padding: 0 3.3vw;
   border-left: 1px solid rgba(0,0,0,.22);
 }
 
 .message-bottom h3 {
   margin: 0;
-  font-size: 56px;
+  font-size: clamp(38px, 3.4vw, 58px);
   line-height: .9;
   font-weight: 1000;
   letter-spacing: -.08em;
@@ -237,33 +226,29 @@
 
 .message-bottom article i {
   display: block;
-  width: 27px;
-  height: 3px;
+  width: 24px;
+  height: 2px;
   background: #f4c400;
-  margin: 18px 0 18px;
+  margin: 16px 0 16px;
 }
 
 .message-bottom h4 {
-  margin: 0 0 12px;
-  font-size: 14px;
+  margin: 0 0 10px;
+  font-size: clamp(10px, .8vw, 14px);
   font-weight: 950;
   letter-spacing: .24em;
 }
 
 .message-bottom p {
-  max-width: 250px;
+  max-width: 230px;
   margin: 0;
-  font-size: 16px;
+  font-size: clamp(12px, .9vw, 16px);
   line-height: 1.55;
 }
 
 @media (max-width: 900px) {
   .message-shell {
     padding: 48px 22px 0;
-  }
-
-  .message-top {
-    gap: 42px;
   }
 
   .message-note {
@@ -273,11 +258,11 @@
   .message-main {
     display: block;
     min-height: auto;
-    padding: 90px 0;
+    padding: 76px 0;
   }
 
   .message-title h2 {
-    font-size: clamp(72px, 21vw, 110px);
+    font-size: clamp(70px, 20vw, 108px);
   }
 
   .message-divider {
@@ -285,21 +270,11 @@
   }
 
   .message-copy {
-    padding: 56px 0 0;
+    padding: 48px 0 0;
   }
 
   .message-copy > p {
-    font-size: 19px;
-  }
-
-  .message-subline {
-    margin-top: 70px;
-    gap: 18px;
-  }
-
-  .message-subline span,
-  .message-subline b {
-    display: none;
+    font-size: 18px;
   }
 
   .message-bottom {
@@ -309,11 +284,11 @@
   .bottom-side {
     writing-mode: initial;
     transform: none;
-    margin-bottom: 30px;
+    margin-bottom: 26px;
   }
 
   .message-bottom article {
-    padding: 34px 0;
+    padding: 30px 0;
     border-left: 0;
     border-top: 1px solid rgba(0,0,0,.2);
   }
