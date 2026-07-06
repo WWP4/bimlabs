@@ -1,57 +1,57 @@
-/* =========================================================
-   SECTION 02 — FIXED EDITORIAL CANVAS
-   Replace the entire message.css with this.
-   ========================================================= */
-
 .message-section {
   position: relative;
   min-height: 100vh;
-  overflow: hidden;
   background: #f6f1e8;
   color: #050505;
-  display: grid;
-  place-items: center;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4vh 0;
 }
 
 .message-shell {
   position: relative;
-  width: min(1680px, 92vw);
-  height: min(920px, 88vh);
-  margin: 0 auto;
+  width: min(1760px, 94vw);
+  height: min(980px, 92vh);
 }
 
-/* TOP LABELS */
+/* TOP */
 
 .message-top {
   position: absolute;
-  inset: 0 auto auto 0;
+  top: 0;
+  left: 0;
   width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
+  z-index: 4;
 }
 
 .message-label {
   display: flex;
   align-items: center;
-  gap: 24px;
+  gap: 28px;
 }
 
 .message-label span {
-  width: 58px;
-  height: 58px;
+  width: 64px;
+  height: 64px;
+  border: 1.5px solid #050505;
+  border-radius: 999px;
   display: grid;
   place-items: center;
-  border: 1.5px solid #050505;
-  border-radius: 50%;
-  font-size: 15px;
-  font-weight: 950;
+  font-size: 16px;
+  font-weight: 900;
+  letter-spacing: .05em;
 }
 
 .message-label i {
   width: 42px;
   height: 3px;
   background: #050505;
+  display: block;
 }
 
 .message-label p,
@@ -59,24 +59,25 @@
   margin: 0;
   font-size: 13px;
   line-height: 1.65;
-  font-weight: 950;
-  letter-spacing: .36em;
+  font-weight: 900;
+  letter-spacing: .38em;
   text-transform: uppercase;
 }
 
 .message-note {
-  margin-right: 70px;
+  margin-right: 58px;
+  padding-top: 10px;
 }
 
 .message-note i {
   display: block;
-  width: 52px;
+  width: 58px;
   height: 3px;
-  margin-top: 22px;
-  background: #f4c400;
+  margin-top: 24px;
+  background: #f3c400;
 }
 
-/* MAIN FIXED CANVAS */
+/* MAIN */
 
 .message-main {
   position: absolute;
@@ -86,48 +87,49 @@
 .message-title {
   position: absolute;
   left: 0;
-  top: 160px;
-  width: 680px;
+  top: 165px;
+  width: 760px;
+  z-index: 3;
 }
 
 .message-title h2 {
   margin: 0;
-  font-size: clamp(82px, 6.5vw, 122px);
-  line-height: .89;
+  font-size: clamp(110px, 8.2vw, 178px);
+  line-height: .84;
+  letter-spacing: -.085em;
   font-weight: 1000;
-  letter-spacing: -.075em;
   text-transform: uppercase;
 }
 
 .message-title em,
 .message-title span {
-  color: #f4c400;
   font-style: normal;
+  color: #f3c400;
 }
 
 .message-divider {
   position: absolute;
-  left: 47%;
-  top: 165px;
+  left: 52.5%;
+  top: 155px;
   width: 1px;
-  height: 430px;
-  background: rgba(0,0,0,.32);
+  height: 560px;
+  background: rgba(0, 0, 0, .34);
 }
 
 .message-copy {
   position: absolute;
-  left: 56%;
-  top: 330px;
-  width: 570px;
-  padding: 0;
+  left: 57%;
+  top: 355px;
+  width: 580px;
+  z-index: 3;
 }
 
 .message-copy > p {
   margin: 0;
-  font-size: clamp(16px, 1.25vw, 23px);
-  line-height: 1.6;
+  font-size: clamp(19px, 1.35vw, 26px);
+  line-height: 1.58;
   font-weight: 500;
-  letter-spacing: .23em;
+  letter-spacing: .25em;
   text-transform: uppercase;
 }
 
@@ -136,79 +138,84 @@
 }
 
 .message-subline {
+  margin-top: 112px;
   display: flex;
   align-items: center;
-  gap: 24px;
-  margin-top: 92px;
+  gap: 28px;
 }
 
 .message-subline i {
   width: 3px;
-  height: 50px;
-  background: #f4c400;
+  height: 54px;
+  background: #f3c400;
   flex: 0 0 auto;
 }
 
 .message-subline p {
   margin: 0;
   font-size: 15px;
-  line-height: 1.65;
+  line-height: 1.75;
   font-weight: 650;
-  letter-spacing: .21em;
+  letter-spacing: .24em;
   text-transform: uppercase;
+  white-space: nowrap;
 }
 
 .message-subline span {
-  width: 150px;
+  width: 165px;
   height: 1px;
-  background: rgba(0,0,0,.3);
+  background: rgba(0, 0, 0, .28);
 }
 
 .message-subline b {
-  font-size: 19px;
+  font-size: 20px;
   font-weight: 400;
-  color: rgba(0,0,0,.45);
+  color: rgba(0, 0, 0, .45);
 }
 
 /* ORBITS */
 
 .orb {
   position: absolute;
-  border: 1px solid rgba(244,196,0,.85);
   border-radius: 50%;
+  border: 1px solid rgba(243, 196, 0, .9);
   pointer-events: none;
 }
 
 .orb--top {
-  width: 680px;
-  height: 680px;
-  right: -210px;
-  top: -455px;
+  width: 820px;
+  height: 820px;
+  right: -220px;
+  top: -590px;
+}
+
+.orb-dot {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  background: #050505;
+  border-radius: 50%;
+  z-index: 2;
 }
 
 .orb-dot--top {
-  position: absolute;
-  width: 11px;
-  height: 11px;
-  right: 360px;
-  top: 255px;
-  background: #050505;
-  border-radius: 50%;
+  right: 380px;
+  top: 258px;
 }
 
 .orb--bottom {
-  width: 560px;
-  height: 560px;
-  right: -365px;
-  bottom: -205px;
+  width: 620px;
+  height: 620px;
+  right: -395px;
+  bottom: -245px;
   box-shadow:
-    0 0 0 30px transparent,
-    0 0 0 31px rgba(244,196,0,.48),
-    0 0 0 62px transparent,
-    0 0 0 63px rgba(244,196,0,.3);
+    0 0 0 34px transparent,
+    0 0 0 35px rgba(243, 196, 0, .45),
+    0 0 0 68px transparent,
+    0 0 0 69px rgba(243, 196, 0, .28);
 }
 
-/* BOTTOM ROW */
+/* BOTTOM */
 
 .message-bottom {
   position: absolute;
@@ -216,20 +223,20 @@
   bottom: 0;
   width: 100%;
   display: grid;
-  grid-template-columns: 90px repeat(4, 1fr);
-  border-top: 1px solid rgba(0,0,0,.28);
-  padding-top: 42px;
+  grid-template-columns: 105px repeat(4, 1fr);
+  border-top: 1px solid rgba(0, 0, 0, .28);
+  padding-top: 34px;
+  z-index: 4;
 }
 
 .bottom-side {
   writing-mode: vertical-rl;
   transform: rotate(180deg);
-  align-self: start;
   font-size: 11px;
-  line-height: 1;
   font-weight: 950;
-  letter-spacing: .28em;
+  letter-spacing: .32em;
   text-transform: uppercase;
+  line-height: 1;
 }
 
 .bottom-side::after {
@@ -237,20 +244,20 @@
   display: block;
   width: 2px;
   height: 28px;
+  background: #f3c400;
   margin: 26px auto 0;
-  background: #f4c400;
 }
 
 .message-bottom article {
-  min-height: 150px;
-  padding: 0 42px;
-  border-left: 1px solid rgba(0,0,0,.22);
+  min-height: 160px;
+  padding: 0 56px;
+  border-left: 1px solid rgba(0, 0, 0, .22);
 }
 
 .message-bottom h3 {
   margin: 0;
-  font-size: 46px;
-  line-height: .9;
+  font-size: 54px;
+  line-height: .82;
   font-weight: 1000;
   letter-spacing: -.08em;
 }
@@ -259,57 +266,37 @@
   display: block;
   width: 24px;
   height: 2px;
-  margin: 16px 0;
-  background: #f4c400;
+  background: #f3c400;
+  margin: 18px 0 15px;
 }
 
 .message-bottom h4 {
-  margin: 0 0 10px;
-  max-width: 245px;
-  font-size: 11px;
+  margin: 0 0 11px;
+  font-size: 12px;
   line-height: 1.35;
   font-weight: 950;
-  letter-spacing: .22em;
+  letter-spacing: .25em;
   text-transform: uppercase;
 }
 
 .message-bottom p {
-  max-width: 225px;
   margin: 0;
-  font-size: 13px;
+  max-width: 250px;
+  font-size: 14px;
   line-height: 1.55;
 }
 
-/* HIDE OLD LEFTOVER CLASSES */
+/* RESPONSIVE */
 
-.message-wipe,
-.message-split,
-.message-left,
-.message-right,
-.message-kicker,
-.message-brand,
-.message-rings,
-.message-sun,
-.message-crosshair,
-.message-pillars,
-.message-pillar,
-.message-actions,
-.dot-grid {
-  display: none !important;
-}
-
-/* TABLET */
-
-@media (max-width: 1100px) {
+@media (max-width: 1200px) {
   .message-section {
-    display: block;
     min-height: auto;
+    padding: 70px 0;
   }
 
   .message-shell {
     width: calc(100% - 44px);
     height: auto;
-    padding: 52px 0 76px;
   }
 
   .message-top,
@@ -331,11 +318,15 @@
   }
 
   .message-main {
-    padding-top: 84px;
+    padding-top: 90px;
   }
 
   .message-title {
-    max-width: 720px;
+    max-width: 820px;
+  }
+
+  .message-title h2 {
+    font-size: clamp(70px, 15vw, 140px);
   }
 
   .message-divider {
@@ -343,8 +334,8 @@
   }
 
   .message-copy {
-    max-width: 720px;
-    margin-top: 62px;
+    max-width: 760px;
+    margin-top: 70px;
   }
 
   .message-bottom {
@@ -356,25 +347,26 @@
     grid-column: 1 / -1;
     writing-mode: initial;
     transform: none;
-    margin-bottom: 30px;
+    margin-bottom: 28px;
   }
 
   .message-bottom article {
-    padding: 32px 26px;
-    border-top: 1px solid rgba(0,0,0,.18);
+    padding: 32px 28px;
+    border-top: 1px solid rgba(0, 0, 0, .18);
   }
 }
 
-/* MOBILE */
-
 @media (max-width: 650px) {
+  .message-section {
+    padding: 48px 0 70px;
+  }
+
   .message-shell {
-    width: calc(100% - 40px);
-    padding: 46px 0 70px;
+    width: calc(100% - 36px);
   }
 
   .message-label {
-    gap: 18px;
+    gap: 16px;
   }
 
   .message-label span {
@@ -384,12 +376,12 @@
   }
 
   .message-label i {
-    width: 32px;
+    width: 30px;
   }
 
   .message-label p {
-    font-size: 12px;
-    letter-spacing: .26em;
+    font-size: 11px;
+    letter-spacing: .24em;
   }
 
   .message-main {
@@ -400,14 +392,24 @@
     font-size: clamp(58px, 17vw, 88px);
   }
 
+  .message-copy {
+    margin-top: 54px;
+  }
+
   .message-copy > p {
     font-size: 15px;
+    line-height: 1.65;
     letter-spacing: .16em;
   }
 
   .message-subline {
     margin-top: 54px;
     gap: 18px;
+  }
+
+  .message-subline p {
+    font-size: 12px;
+    white-space: normal;
   }
 
   .message-subline span,
@@ -426,10 +428,10 @@
   }
 
   .orb--top {
-    width: 500px;
-    height: 500px;
+    width: 480px;
+    height: 480px;
     right: -360px;
-    top: -325px;
+    top: -280px;
   }
 
   .orb-dot--top {
@@ -440,6 +442,6 @@
     width: 460px;
     height: 460px;
     right: -370px;
-    bottom: -180px;
+    bottom: -190px;
   }
 }
