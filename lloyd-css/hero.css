@@ -34,21 +34,15 @@
   z-index: 1;
   pointer-events: none;
   background:
-    radial-gradient(
-      circle at 76% 40%,
-      rgba(255, 212, 0, .07),
-      transparent 28%
-    ),
-    linear-gradient(
-      90deg,
+    radial-gradient(circle at 76% 40%, rgba(255, 212, 0, .07), transparent 28%),
+    linear-gradient(90deg,
       rgba(0,0,0,.98) 0%,
       rgba(0,0,0,.88) 24%,
       rgba(0,0,0,.48) 48%,
       rgba(0,0,0,.08) 72%,
       rgba(0,0,0,.22) 100%
     ),
-    linear-gradient(
-      180deg,
+    linear-gradient(180deg,
       rgba(0,0,0,.04) 0%,
       rgba(0,0,0,.32) 56%,
       rgba(0,0,0,.88) 100%
@@ -176,18 +170,18 @@
 }
 
 /* ==============================
-   CHURCH BAND
+   MOVING CHURCH LOGO TRACK
 ============================== */
 
 .church-band {
   width: 100%;
-  margin-top: 64px;
-  padding-top: 24px;
+  margin-top: 62px;
+  padding-top: 22px;
   border-top: 1px solid rgba(255,255,255,.18);
 }
 
 .church-band__label {
-  margin: 0 0 18px;
+  margin: 0 0 12px;
   color: rgba(255,255,255,.72);
   font-size: 11px;
   font-weight: 900;
@@ -199,8 +193,8 @@
 .church-band__viewport {
   width: 100%;
   overflow: hidden;
-  mask-image: linear-gradient(to right, transparent 0%, black 7%, black 93%, transparent 100%);
-  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 7%, black 93%, transparent 100%);
+  mask-image: linear-gradient(to right, transparent 0%, black 6%, black 94%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 6%, black 94%, transparent 100%);
 }
 
 .church-band__track {
@@ -212,18 +206,18 @@
 .church-band__group {
   display: flex;
   align-items: center;
-  gap: 20px;
-  padding-right: 20px;
+  gap: 8px;
+  padding-right: 8px;
   flex: 0 0 auto;
 }
 
 .church-band__group img {
   width: auto;
-  height: 146px;
-  max-width: 220px;
+  height: 168px;
+  max-width: 245px;
   object-fit: contain;
-  opacity: .95;
-  filter: brightness(2.15) contrast(1.28);
+  opacity: .96;
+  filter: brightness(2.2) contrast(1.28);
   flex: 0 0 auto;
   transition: transform .25s ease, opacity .25s ease;
 }
@@ -233,12 +227,23 @@
   transform: translateY(-2px);
 }
 
+.church-band:hover .church-band__track {
+  animation-play-state: paused;
+}
+
 @keyframes church-marquee {
   from {
     transform: translateX(0);
   }
+
   to {
     transform: translateX(-50%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .church-band__track {
+    animation: none;
   }
 }
 
@@ -265,14 +270,12 @@
 
   .hero__shade {
     background:
-      linear-gradient(
-        90deg,
+      linear-gradient(90deg,
         rgba(0,0,0,.98) 0%,
         rgba(0,0,0,.84) 52%,
         rgba(0,0,0,.32) 100%
       ),
-      linear-gradient(
-        180deg,
+      linear-gradient(180deg,
         rgba(0,0,0,.08) 0%,
         rgba(0,0,0,.48) 56%,
         rgba(0,0,0,.90) 100%
@@ -289,13 +292,13 @@
   }
 
   .church-band__group {
-    gap: 16px;
-    padding-right: 16px;
+    gap: 8px;
+    padding-right: 8px;
   }
 
   .church-band__group img {
-    height: 122px;
-    max-width: 190px;
+    height: 138px;
+    max-width: 205px;
   }
 
   .church-band__track {
@@ -327,14 +330,12 @@
 
   .hero__shade {
     background:
-      linear-gradient(
-        90deg,
+      linear-gradient(90deg,
         rgba(0,0,0,.98) 0%,
         rgba(0,0,0,.82) 58%,
         rgba(0,0,0,.42) 100%
       ),
-      linear-gradient(
-        180deg,
+      linear-gradient(180deg,
         rgba(0,0,0,.12) 0%,
         rgba(0,0,0,.55) 56%,
         rgba(0,0,0,.92) 100%
@@ -372,27 +373,27 @@
   }
 
   .church-band {
-    margin-top: 42px;
+    margin-top: 40px;
     padding-top: 20px;
   }
 
   .church-band__label {
-    margin-bottom: 16px;
+    margin-bottom: 10px;
     font-size: 10px;
     line-height: 1.4;
   }
 
   .church-band__group {
-    gap: 14px;
-    padding-right: 14px;
+    gap: 6px;
+    padding-right: 6px;
   }
 
   .church-band__group img {
-    height: 94px;
-    max-width: 150px;
+    height: 106px;
+    max-width: 165px;
   }
 
   .church-band__track {
-    animation-duration: 24s;
+    animation-duration: 22s;
   }
 }
