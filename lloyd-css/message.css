@@ -1,43 +1,31 @@
 /* =========================================================
-   SECTION 02 — MESSAGE / LARGE EDITORIAL CANVAS
-   Replace your entire message.css with this.
+   SECTION 02 — FIXED EDITORIAL CANVAS
+   Replace the entire message.css with this.
    ========================================================= */
 
 .message-section {
   position: relative;
-  min-height: 1680px;
+  min-height: 100vh;
   overflow: hidden;
   background: #f6f1e8;
   color: #050505;
-  isolation: isolate;
+  display: grid;
+  place-items: center;
 }
 
 .message-shell {
   position: relative;
-  width: min(1780px, 92vw);
-  min-height: 1680px;
+  width: min(1680px, 92vw);
+  height: min(920px, 88vh);
   margin: 0 auto;
-  padding: 92px 0 130px;
 }
 
-/* subtle paper glow */
-
-.message-section::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background:
-    radial-gradient(circle at 34% 20%, rgba(255,255,255,.9), transparent 34%),
-    radial-gradient(circle at 76% 62%, rgba(255,255,255,.55), transparent 44%);
-  pointer-events: none;
-  z-index: -3;
-}
-
-/* top */
+/* TOP LABELS */
 
 .message-top {
-  position: relative;
-  z-index: 5;
+  position: absolute;
+  inset: 0 auto auto 0;
+  width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
@@ -46,23 +34,22 @@
 .message-label {
   display: flex;
   align-items: center;
-  gap: 28px;
+  gap: 24px;
 }
 
 .message-label span {
-  width: 68px;
-  height: 68px;
+  width: 58px;
+  height: 58px;
   display: grid;
   place-items: center;
-  border: 1.4px solid #050505;
+  border: 1.5px solid #050505;
   border-radius: 50%;
-  font-size: 17px;
+  font-size: 15px;
   font-weight: 950;
-  letter-spacing: .08em;
 }
 
 .message-label i {
-  width: 48px;
+  width: 42px;
   height: 3px;
   background: #050505;
 }
@@ -70,77 +57,77 @@
 .message-label p,
 .message-note p {
   margin: 0;
-  font-size: 15px;
-  line-height: 1.7;
+  font-size: 13px;
+  line-height: 1.65;
   font-weight: 950;
-  letter-spacing: .38em;
+  letter-spacing: .36em;
   text-transform: uppercase;
 }
 
 .message-note {
-  margin-right: 72px;
+  margin-right: 70px;
 }
 
 .message-note i {
   display: block;
-  width: 58px;
+  width: 52px;
   height: 3px;
-  margin-top: 24px;
+  margin-top: 22px;
   background: #f4c400;
 }
 
-/* main spread */
+/* MAIN FIXED CANVAS */
 
 .message-main {
-  position: relative;
-  z-index: 2;
-  display: grid;
-  grid-template-columns: 47% 1px 53%;
-  min-height: 880px;
-  padding-top: 180px;
-  align-items: start;
+  position: absolute;
+  inset: 0;
 }
 
 .message-title {
-  max-width: 760px;
+  position: absolute;
+  left: 0;
+  top: 160px;
+  width: 680px;
 }
 
 .message-title h2 {
   margin: 0;
-  font-size: clamp(92px, 7.1vw, 138px);
+  font-size: clamp(82px, 6.5vw, 122px);
   line-height: .89;
   font-weight: 1000;
   letter-spacing: -.075em;
   text-transform: uppercase;
 }
 
-.message-title em {
+.message-title em,
+.message-title span {
   color: #f4c400;
   font-style: normal;
 }
 
-.message-title span {
-  color: #f4c400;
-}
-
 .message-divider {
+  position: absolute;
+  left: 47%;
+  top: 165px;
   width: 1px;
-  height: 620px;
+  height: 430px;
   background: rgba(0,0,0,.32);
 }
 
 .message-copy {
-  padding-left: 110px;
-  padding-top: 230px;
+  position: absolute;
+  left: 56%;
+  top: 330px;
+  width: 570px;
+  padding: 0;
 }
 
 .message-copy > p {
   margin: 0;
-  max-width: 640px;
-  font-size: 25px;
-  line-height: 1.62;
+  font-size: clamp(16px, 1.25vw, 23px);
+  line-height: 1.6;
   font-weight: 500;
-  letter-spacing: .245em;
+  letter-spacing: .23em;
   text-transform: uppercase;
 }
 
@@ -151,97 +138,97 @@
 .message-subline {
   display: flex;
   align-items: center;
-  gap: 28px;
-  margin-top: 190px;
+  gap: 24px;
+  margin-top: 92px;
 }
 
 .message-subline i {
   width: 3px;
-  height: 54px;
+  height: 50px;
   background: #f4c400;
   flex: 0 0 auto;
 }
 
 .message-subline p {
   margin: 0;
-  font-size: 17px;
+  font-size: 15px;
   line-height: 1.65;
   font-weight: 650;
-  letter-spacing: .23em;
+  letter-spacing: .21em;
   text-transform: uppercase;
 }
 
 .message-subline span {
-  width: 185px;
+  width: 150px;
   height: 1px;
   background: rgba(0,0,0,.3);
 }
 
 .message-subline b {
-  font-size: 20px;
+  font-size: 19px;
   font-weight: 400;
   color: rgba(0,0,0,.45);
 }
 
-/* orbit graphics */
+/* ORBITS */
 
 .orb {
   position: absolute;
-  border: 1px solid rgba(244,196,0,.9);
+  border: 1px solid rgba(244,196,0,.85);
   border-radius: 50%;
   pointer-events: none;
 }
 
 .orb--top {
-  width: 860px;
-  height: 860px;
-  right: -330px;
-  top: -575px;
+  width: 680px;
+  height: 680px;
+  right: -210px;
+  top: -455px;
 }
 
 .orb-dot--top {
   position: absolute;
-  width: 12px;
-  height: 12px;
-  right: 410px;
-  top: 320px;
+  width: 11px;
+  height: 11px;
+  right: 360px;
+  top: 255px;
   background: #050505;
   border-radius: 50%;
-  pointer-events: none;
 }
 
 .orb--bottom {
-  width: 720px;
-  height: 720px;
-  right: -500px;
-  bottom: 30px;
+  width: 560px;
+  height: 560px;
+  right: -365px;
+  bottom: -205px;
   box-shadow:
-    0 0 0 36px transparent,
-    0 0 0 37px rgba(244,196,0,.5),
-    0 0 0 76px transparent,
-    0 0 0 77px rgba(244,196,0,.3);
+    0 0 0 30px transparent,
+    0 0 0 31px rgba(244,196,0,.48),
+    0 0 0 62px transparent,
+    0 0 0 63px rgba(244,196,0,.3);
 }
 
-/* bottom row */
+/* BOTTOM ROW */
 
 .message-bottom {
-  position: relative;
-  z-index: 4;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
   display: grid;
-  grid-template-columns: 112px repeat(4, 1fr);
-  margin-top: 225px;
+  grid-template-columns: 90px repeat(4, 1fr);
   border-top: 1px solid rgba(0,0,0,.28);
-  padding-top: 58px;
+  padding-top: 42px;
 }
 
 .bottom-side {
   writing-mode: vertical-rl;
   transform: rotate(180deg);
   align-self: start;
-  font-size: 12px;
+  font-size: 11px;
   line-height: 1;
   font-weight: 950;
-  letter-spacing: .3em;
+  letter-spacing: .28em;
   text-transform: uppercase;
 }
 
@@ -249,20 +236,20 @@
   content: "";
   display: block;
   width: 2px;
-  height: 30px;
-  margin: 30px auto 0;
+  height: 28px;
+  margin: 26px auto 0;
   background: #f4c400;
 }
 
 .message-bottom article {
-  min-height: 190px;
-  padding: 0 58px;
+  min-height: 150px;
+  padding: 0 42px;
   border-left: 1px solid rgba(0,0,0,.22);
 }
 
 .message-bottom h3 {
   margin: 0;
-  font-size: 58px;
+  font-size: 46px;
   line-height: .9;
   font-weight: 1000;
   letter-spacing: -.08em;
@@ -270,30 +257,30 @@
 
 .message-bottom article i {
   display: block;
-  width: 26px;
+  width: 24px;
   height: 2px;
-  margin: 18px 0;
+  margin: 16px 0;
   background: #f4c400;
 }
 
 .message-bottom h4 {
-  margin: 0 0 12px;
-  max-width: 280px;
-  font-size: 13px;
+  margin: 0 0 10px;
+  max-width: 245px;
+  font-size: 11px;
   line-height: 1.35;
   font-weight: 950;
-  letter-spacing: .24em;
+  letter-spacing: .22em;
   text-transform: uppercase;
 }
 
 .message-bottom p {
-  max-width: 245px;
+  max-width: 225px;
   margin: 0;
-  font-size: 15px;
+  font-size: 13px;
   line-height: 1.55;
 }
 
-/* kill old section leftovers */
+/* HIDE OLD LEFTOVER CLASSES */
 
 .message-wipe,
 .message-split,
@@ -311,46 +298,32 @@
   display: none !important;
 }
 
-/* laptop */
+/* TABLET */
 
-@media (max-width: 1300px) {
+@media (max-width: 1100px) {
   .message-section {
-    min-height: 1500px;
-  }
-
-  .message-shell {
-    min-height: 1500px;
-    width: min(1500px, 90vw);
-  }
-
-  .message-title h2 {
-    font-size: clamp(84px, 7vw, 118px);
-  }
-
-  .message-copy {
-    padding-left: 80px;
-  }
-
-  .message-copy > p {
-    font-size: 20px;
-  }
-
-  .message-bottom article {
-    padding: 0 38px;
-  }
-}
-
-/* tablet */
-
-@media (max-width: 1000px) {
-  .message-section,
-  .message-shell {
+    display: block;
     min-height: auto;
   }
 
   .message-shell {
-    width: min(100%, 90vw);
-    padding: 64px 0 90px;
+    width: calc(100% - 44px);
+    height: auto;
+    padding: 52px 0 76px;
+  }
+
+  .message-top,
+  .message-main,
+  .message-title,
+  .message-divider,
+  .message-copy,
+  .message-bottom {
+    position: relative;
+    inset: auto;
+    left: auto;
+    top: auto;
+    bottom: auto;
+    width: auto;
   }
 
   .message-note {
@@ -358,9 +331,11 @@
   }
 
   .message-main {
-    display: block;
-    min-height: auto;
-    padding-top: 110px;
+    padding-top: 84px;
+  }
+
+  .message-title {
+    max-width: 720px;
   }
 
   .message-divider {
@@ -368,41 +343,34 @@
   }
 
   .message-copy {
-    padding: 80px 0 0;
-  }
-
-  .message-copy > p {
     max-width: 720px;
-  }
-
-  .message-subline {
-    margin-top: 90px;
+    margin-top: 62px;
   }
 
   .message-bottom {
+    margin-top: 110px;
     grid-template-columns: 1fr 1fr;
-    margin-top: 140px;
   }
 
   .bottom-side {
     grid-column: 1 / -1;
     writing-mode: initial;
     transform: none;
-    margin-bottom: 36px;
+    margin-bottom: 30px;
   }
 
   .message-bottom article {
-    padding: 36px 34px;
-    border-top: 1px solid rgba(0,0,0,.2);
+    padding: 32px 26px;
+    border-top: 1px solid rgba(0,0,0,.18);
   }
 }
 
-/* mobile */
+/* MOBILE */
 
 @media (max-width: 650px) {
   .message-shell {
     width: calc(100% - 40px);
-    padding: 46px 0 74px;
+    padding: 46px 0 70px;
   }
 
   .message-label {
@@ -410,13 +378,13 @@
   }
 
   .message-label span {
-    width: 56px;
-    height: 56px;
+    width: 54px;
+    height: 54px;
     font-size: 14px;
   }
 
   .message-label i {
-    width: 34px;
+    width: 32px;
   }
 
   .message-label p {
@@ -425,24 +393,20 @@
   }
 
   .message-main {
-    padding-top: 76px;
+    padding-top: 72px;
   }
 
   .message-title h2 {
-    font-size: clamp(62px, 18vw, 94px);
-  }
-
-  .message-copy {
-    padding-top: 62px;
+    font-size: clamp(58px, 17vw, 88px);
   }
 
   .message-copy > p {
-    font-size: 16px;
-    letter-spacing: .17em;
+    font-size: 15px;
+    letter-spacing: .16em;
   }
 
   .message-subline {
-    margin-top: 64px;
+    margin-top: 54px;
     gap: 18px;
   }
 
@@ -451,26 +415,21 @@
     display: none;
   }
 
-  .message-subline p {
-    font-size: 13px;
-    letter-spacing: .17em;
-  }
-
   .message-bottom {
     grid-template-columns: 1fr;
-    margin-top: 95px;
+    margin-top: 86px;
   }
 
   .message-bottom article {
-    padding: 34px 0;
+    padding: 32px 0;
     border-left: 0;
   }
 
   .orb--top {
-    width: 520px;
-    height: 520px;
-    right: -350px;
-    top: -330px;
+    width: 500px;
+    height: 500px;
+    right: -360px;
+    top: -325px;
   }
 
   .orb-dot--top {
@@ -478,9 +437,9 @@
   }
 
   .orb--bottom {
-    width: 500px;
-    height: 500px;
-    right: -390px;
-    bottom: -150px;
+    width: 460px;
+    height: 460px;
+    right: -370px;
+    bottom: -180px;
   }
 }
