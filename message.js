@@ -158,21 +158,6 @@
       );
   }
 
-  /* Sun movement */
-  if (sun) {
-    gsap.to(sun, {
-      xPercent: -18,
-      rotate: 8,
-      ease: "none",
-      scrollTrigger: {
-        trigger: section,
-        start: "top bottom",
-        end: "bottom top",
-        scrub: true
-      }
-    });
-  }
-
   /* Ring movement */
   if (rings) {
     gsap.to(rings, {
