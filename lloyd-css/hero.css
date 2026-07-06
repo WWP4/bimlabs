@@ -11,12 +11,14 @@
   isolation: isolate;
 }
 
+/* Background */
+
 .hero__bg {
   position: absolute;
   inset: 0;
   z-index: 0;
-  overflow: hidden;
   background: #020202;
+  overflow: hidden;
 }
 
 .hero__bg img {
@@ -25,8 +27,10 @@
   object-fit: cover;
   object-position: 88% center;
   transform: scale(1.04);
-  filter: brightness(.98) contrast(1.07) saturate(.96);
+  filter: brightness(.94) contrast(1.08) saturate(.94);
 }
+
+/* Overlay */
 
 .hero__shade {
   position: absolute;
@@ -34,20 +38,28 @@
   z-index: 1;
   pointer-events: none;
   background:
-    radial-gradient(circle at 76% 40%, rgba(255, 212, 0, .07), transparent 28%),
-    linear-gradient(90deg,
-      rgba(0,0,0,.98) 0%,
-      rgba(0,0,0,.88) 24%,
-      rgba(0,0,0,.48) 48%,
-      rgba(0,0,0,.08) 72%,
-      rgba(0,0,0,.22) 100%
+    radial-gradient(
+      circle at 76% 38%,
+      rgba(255, 212, 0, .065),
+      transparent 30%
     ),
-    linear-gradient(180deg,
+    linear-gradient(
+      90deg,
+      rgba(0,0,0,.99) 0%,
+      rgba(0,0,0,.92) 24%,
+      rgba(0,0,0,.55) 48%,
+      rgba(0,0,0,.12) 72%,
+      rgba(0,0,0,.28) 100%
+    ),
+    linear-gradient(
+      180deg,
       rgba(0,0,0,.04) 0%,
-      rgba(0,0,0,.32) 56%,
-      rgba(0,0,0,.88) 100%
+      rgba(0,0,0,.28) 55%,
+      rgba(0,0,0,.9) 100%
     );
 }
+
+/* Layout */
 
 .hero__inner {
   position: relative;
@@ -55,27 +67,29 @@
   width: min(100% - 88px, 1680px);
   min-height: 108svh;
   margin-inline: auto;
-  padding: 150px 0 54px;
+  padding: 145px 0 54px;
   display: flex;
   flex-direction: column;
   justify-content: center;
 }
 
 .hero__copy {
-  max-width: 810px;
+  max-width: 900px;
 }
+
+/* Eyebrow */
 
 .hero__eyebrow {
   display: flex;
   align-items: center;
   gap: 16px;
-  margin: 0 0 28px;
+  margin: 0 0 26px;
   color: #fff;
   font-size: 13px;
   font-weight: 950;
-  letter-spacing: .16em;
+  letter-spacing: .17em;
   text-transform: uppercase;
-  text-shadow: 0 2px 14px rgba(0,0,0,.55);
+  text-shadow: 0 2px 14px rgba(0,0,0,.6);
 }
 
 .hero__eyebrow::before {
@@ -86,19 +100,23 @@
   background: #ffd400;
 }
 
+/* Headline */
+
 .hero__title {
-  max-width: 810px;
+  max-width: 920px;
   margin: 0;
   color: #fff;
   font-family: Impact, "Arial Black", Haettenschweiler, sans-serif;
-  font-size: clamp(62px, 6.2vw, 122px);
-  line-height: .86;
-  letter-spacing: -.035em;
-  font-weight: 900;
+  font-size: clamp(58px, 5.85vw, 112px);
+  line-height: .88;
+  letter-spacing: -.045em;
+  font-weight: 800;
   text-transform: uppercase;
+  transform: scaleX(.88);
+  transform-origin: left center;
   text-shadow:
     0 3px 18px rgba(0,0,0,.5),
-    0 14px 38px rgba(0,0,0,.25);
+    0 14px 38px rgba(0,0,0,.24);
 }
 
 .hero__title span {
@@ -108,19 +126,23 @@
 .hero__title .yellow {
   color: #ffd400;
   text-shadow:
-    0 3px 18px rgba(0,0,0,.45),
-    0 6px 24px rgba(255,212,0,.16);
+    0 3px 18px rgba(0,0,0,.46),
+    0 6px 24px rgba(255,212,0,.14);
 }
+
+/* Body text */
 
 .hero__text {
   max-width: 590px;
   margin: 34px 0 0;
   color: rgba(255,255,255,.96);
-  font-size: clamp(19px, 1.2vw, 23px);
+  font-size: clamp(19px, 1.15vw, 23px);
   line-height: 1.5;
   font-weight: 650;
-  text-shadow: 0 2px 14px rgba(0,0,0,.5);
+  text-shadow: 0 2px 14px rgba(0,0,0,.55);
 }
+
+/* Buttons */
 
 .hero__actions {
   display: flex;
@@ -170,18 +192,18 @@
 }
 
 /* ==============================
-   MOVING CHURCH LOGO TRACK
+   CHURCH LOGO MARQUEE
 ============================== */
 
 .church-band {
   width: 100%;
-  margin-top: 62px;
-  padding-top: 22px;
+  margin-top: 66px;
+  padding-top: 24px;
   border-top: 1px solid rgba(255,255,255,.18);
 }
 
 .church-band__label {
-  margin: 0 0 12px;
+  margin: 0 0 16px;
   color: rgba(255,255,255,.72);
   font-size: 11px;
   font-weight: 900;
@@ -193,14 +215,26 @@
 .church-band__viewport {
   width: 100%;
   overflow: hidden;
-  mask-image: linear-gradient(to right, transparent 0%, black 6%, black 94%, transparent 100%);
-  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 6%, black 94%, transparent 100%);
+  mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 6%,
+    black 94%,
+    transparent 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 6%,
+    black 94%,
+    transparent 100%
+  );
 }
 
 .church-band__track {
   display: flex;
   width: max-content;
-  animation: church-marquee 34s linear infinite;
+  animation: church-marquee 36s linear infinite;
 }
 
 .church-band__group {
@@ -213,13 +247,13 @@
 
 .church-band__group img {
   width: auto;
-  height: 168px;
-  max-width: 245px;
+  height: 162px;
+  max-width: 235px;
   object-fit: contain;
-  opacity: .96;
-  filter: brightness(2.2) contrast(1.28);
   flex: 0 0 auto;
-  transition: transform .25s ease, opacity .25s ease;
+  opacity: .96;
+  filter: brightness(2.22) contrast(1.32);
+  transition: opacity .25s ease, transform .25s ease;
 }
 
 .church-band__group img:hover {
@@ -238,12 +272,6 @@
 
   to {
     transform: translateX(-50%);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .church-band__track {
-    animation: none;
   }
 }
 
@@ -270,21 +298,29 @@
 
   .hero__shade {
     background:
-      linear-gradient(90deg,
+      linear-gradient(
+        90deg,
         rgba(0,0,0,.98) 0%,
         rgba(0,0,0,.84) 52%,
         rgba(0,0,0,.32) 100%
       ),
-      linear-gradient(180deg,
+      linear-gradient(
+        180deg,
         rgba(0,0,0,.08) 0%,
-        rgba(0,0,0,.48) 56%,
-        rgba(0,0,0,.90) 100%
+        rgba(0,0,0,.5) 56%,
+        rgba(0,0,0,.92) 100%
       );
   }
 
+  .hero__copy {
+    max-width: 760px;
+  }
+
   .hero__title {
-    max-width: 730px;
-    font-size: clamp(56px, 10vw, 104px);
+    max-width: 780px;
+    font-size: clamp(54px, 9.4vw, 98px);
+    line-height: .9;
+    transform: scaleX(.9);
   }
 
   .church-band {
@@ -292,17 +328,17 @@
   }
 
   .church-band__group {
-    gap: 8px;
-    padding-right: 8px;
+    gap: 6px;
+    padding-right: 6px;
   }
 
   .church-band__group img {
-    height: 138px;
-    max-width: 205px;
+    height: 130px;
+    max-width: 200px;
   }
 
   .church-band__track {
-    animation-duration: 28s;
+    animation-duration: 30s;
   }
 }
 
@@ -330,15 +366,17 @@
 
   .hero__shade {
     background:
-      linear-gradient(90deg,
+      linear-gradient(
+        90deg,
         rgba(0,0,0,.98) 0%,
         rgba(0,0,0,.82) 58%,
         rgba(0,0,0,.42) 100%
       ),
-      linear-gradient(180deg,
+      linear-gradient(
+        180deg,
         rgba(0,0,0,.12) 0%,
         rgba(0,0,0,.55) 56%,
-        rgba(0,0,0,.92) 100%
+        rgba(0,0,0,.94) 100%
       );
   }
 
@@ -354,8 +392,10 @@
 
   .hero__title {
     max-width: 100%;
-    font-size: clamp(46px, 13.5vw, 70px);
-    line-height: .9;
+    font-size: clamp(44px, 12.8vw, 66px);
+    line-height: .92;
+    letter-spacing: -.04em;
+    transform: scaleX(.92);
   }
 
   .hero__text {
@@ -373,27 +413,27 @@
   }
 
   .church-band {
-    margin-top: 40px;
+    margin-top: 42px;
     padding-top: 20px;
   }
 
   .church-band__label {
-    margin-bottom: 10px;
+    margin-bottom: 14px;
     font-size: 10px;
     line-height: 1.4;
   }
 
   .church-band__group {
-    gap: 6px;
-    padding-right: 6px;
+    gap: 4px;
+    padding-right: 4px;
   }
 
   .church-band__group img {
-    height: 106px;
+    height: 104px;
     max-width: 165px;
   }
 
   .church-band__track {
-    animation-duration: 22s;
+    animation-duration: 24s;
   }
 }
