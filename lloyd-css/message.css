@@ -1,18 +1,21 @@
 /* =========================================================
-   MESSAGE SECTION
-   Clean split-grid manifesto section
+   MESSAGE SECTION — CLEAN REBUILD
    ========================================================= */
 
 .message-section {
   position: relative;
-  min-height: 118svh;
   overflow: hidden;
   background: #f7f3ea;
   color: #050505;
   isolation: isolate;
 }
 
-/* Yellow scroll wipe */
+.message-shell {
+  position: relative;
+  padding: 86px 64px 0;
+}
+
+/* yellow scroll wipe */
 .message-wipe {
   position: absolute;
   inset: 0;
@@ -25,66 +28,118 @@
 }
 
 .message-wipe__inner {
-  height: 100svh;
   width: 100%;
+  height: 100svh;
   display: grid;
   place-items: center;
 }
 
 .message-wipe span {
-  font-family: var(--sans, Inter, Arial, sans-serif);
   font-size: clamp(20px, 3vw, 44px);
   font-weight: 950;
   letter-spacing: .32em;
   text-transform: uppercase;
-  color: #050505;
 }
 
-/* Main wrapper */
-.message-shell {
-  position: relative;
-  z-index: 2;
-  padding: clamp(70px, 7vw, 110px) clamp(24px, 4vw, 64px) 0;
-}
-
-/* Top split area */
+/* top grid */
 .message-split {
   position: relative;
-  min-height: 590px;
+  min-height: 620px;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  border-top: 1px solid rgba(0, 0, 0, .18);
-  border-bottom: 1px solid rgba(0, 0, 0, .18);
+  border-top: 1px solid rgba(0, 0, 0, .2);
+  border-bottom: 1px solid rgba(0, 0, 0, .2);
   overflow: hidden;
+}
+
+.message-split::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 1px;
+  background: rgba(0, 0, 0, .2);
+  z-index: 8;
 }
 
 .message-left,
 .message-right {
   position: relative;
-  min-height: 590px;
+  min-height: 620px;
 }
 
 .message-left {
-  z-index: 4;
+  z-index: 6;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 0 clamp(40px, 6vw, 105px);
-  border-right: 1px solid rgba(0, 0, 0, .18);
+  padding: 0 90px;
+  overflow: hidden;
 }
 
 .message-right {
-  z-index: 5;
+  z-index: 10;
   display: flex;
   align-items: center;
-  padding-left: clamp(50px, 6vw, 100px);
+  padding-left: 92px;
+  overflow: hidden;
 }
 
-/* Left text */
+/* locked half sun */
+.message-sun {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: min(34vw, 520px);
+  height: min(34vw, 520px);
+  min-width: 430px;
+  min-height: 430px;
+  border-radius: 50%;
+  background: #f5c400;
+  transform: translate(-100%, -50%);
+  z-index: 3;
+  pointer-events: none;
+}
+
+/* locked rings */
+.message-rings {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: min(44vw, 700px);
+  height: min(44vw, 700px);
+  min-width: 560px;
+  min-height: 560px;
+  border-radius: 50%;
+  transform: translate(-100%, -50%);
+  background:
+    repeating-radial-gradient(
+      circle,
+      transparent 0 25px,
+      rgba(245, 196, 0, .35) 26px 27px
+    );
+  z-index: 1;
+  pointer-events: none;
+}
+
+.message-crosshair {
+  position: absolute;
+  left: 50%;
+  bottom: -7px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #050505;
+  transform: translateX(-50%);
+  z-index: 12;
+}
+
+/* left copy */
 .message-kicker {
   position: relative;
-  z-index: 6;
-  max-width: 380px;
+  z-index: 9;
+  max-width: 390px;
 }
 
 .message-kicker span {
@@ -97,34 +152,32 @@
 
 .message-kicker p {
   margin: 0;
-  max-width: 340px;
-  font-family: var(--sans, Inter, Arial, sans-serif);
-  font-size: clamp(15px, 1.35vw, 21px);
+  font-size: clamp(16px, 1.2vw, 22px);
   line-height: 1.45;
   font-weight: 950;
   letter-spacing: .28em;
   text-transform: uppercase;
 }
 
-/* Lloyd brand mark */
+/* brand */
 .message-brand {
   position: relative;
-  z-index: 6;
+  z-index: 9;
   display: flex;
   align-items: center;
   gap: 26px;
-  margin-top: clamp(74px, 8vw, 110px);
+  margin-top: 100px;
 }
 
 .monogram {
-  width: clamp(66px, 5.4vw, 82px);
-  height: clamp(66px, 5.4vw, 82px);
+  width: 78px;
+  height: 78px;
   display: grid;
   place-items: center;
   border: 2px solid #050505;
   border-radius: 50%;
   font-family: Georgia, serif;
-  font-size: clamp(28px, 2.4vw, 36px);
+  font-size: 34px;
   font-weight: 900;
   letter-spacing: -.08em;
   flex: 0 0 auto;
@@ -144,8 +197,7 @@
 
 .message-brand strong {
   display: block;
-  font-family: var(--sans, Inter, Arial, sans-serif);
-  font-size: clamp(13px, 1.05vw, 17px);
+  font-size: 16px;
   font-weight: 950;
   letter-spacing: .38em;
   text-transform: uppercase;
@@ -154,68 +206,20 @@
 .message-brand span {
   display: block;
   margin-top: 11px;
-  font-family: var(--sans, Inter, Arial, sans-serif);
-  font-size: clamp(10px, .8vw, 13px);
-  line-height: 1.6;
+  font-size: 12px;
+  line-height: 1.55;
   font-weight: 900;
-  letter-spacing: .26em;
+  letter-spacing: .25em;
   text-transform: uppercase;
 }
 
-/* Half sun */
-.message-sun {
-  position: absolute;
-  z-index: 2;
-  top: 50%;
-  left: 50%;
-  width: clamp(390px, 39vw, 620px);
-  aspect-ratio: 1;
-  border-radius: 50%;
-  background: radial-gradient(circle at 28% 26%, #ffd21a 0%, #f5c400 54%, #eeb800 100%);
-  transform: translate(-50%, -50%);
-  clip-path: inset(0 50% 0 0);
-}
-
-/* Rings behind half sun */
-.message-rings {
-  position: absolute;
-  z-index: 1;
-  top: 50%;
-  left: 50%;
-  width: clamp(500px, 51vw, 800px);
-  aspect-ratio: 1;
-  border-radius: 50%;
-  transform: translate(-58%, -50%);
-  background:
-    repeating-radial-gradient(
-      circle,
-      transparent 0 25px,
-      rgba(245, 196, 0, .44) 26px 27px
-    );
-  clip-path: inset(0 50% 0 0);
-  opacity: .85;
-}
-
-.message-crosshair {
-  position: absolute;
-  z-index: 10;
-  left: 50%;
-  bottom: -7px;
-  width: 14px;
-  height: 14px;
-  border-radius: 50%;
-  background: #050505;
-  transform: translateX(-50%);
-}
-
-/* Big headline */
+/* headline */
 .message-right h2 {
   position: relative;
-  z-index: 8;
+  z-index: 11;
   margin: 0;
   max-width: 650px;
-  font-family: var(--sans, Inter, Arial Black, sans-serif);
-  font-size: clamp(64px, 6.8vw, 126px);
+  font-size: clamp(64px, 6.7vw, 126px);
   line-height: .9;
   font-weight: 950;
   letter-spacing: -.075em;
@@ -227,35 +231,34 @@
   font-style: normal;
 }
 
-/* Pillar row */
+/* pillars */
 .message-pillars {
   position: relative;
   z-index: 6;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  padding: clamp(48px, 5vw, 76px) clamp(40px, 9vw, 155px) 38px;
+  padding: 62px 120px 42px;
 }
 
 .message-pillar {
   position: relative;
   text-align: center;
-  padding: 0 clamp(22px, 3vw, 52px);
+  padding: 0 42px;
 }
 
 .message-pillar:not(:last-child)::after {
   content: "";
   position: absolute;
+  top: 12px;
   right: 0;
-  top: 16px;
   width: 1px;
-  height: 74%;
+  height: 76%;
   background: rgba(0, 0, 0, .16);
 }
 
 .message-pillar h3 {
   margin: 22px 0 0;
-  font-family: var(--sans, Inter, Arial, sans-serif);
-  font-size: clamp(15px, 1.15vw, 21px);
+  font-size: 18px;
   font-weight: 950;
   letter-spacing: .36em;
   text-transform: uppercase;
@@ -272,11 +275,11 @@
 .message-pillar p {
   max-width: 215px;
   margin: 0 auto;
-  font-size: clamp(14px, 1vw, 17px);
+  font-size: 16px;
   line-height: 1.55;
 }
 
-/* Icons */
+/* icons */
 .pillar-icon {
   position: relative;
   width: 72px;
@@ -284,7 +287,6 @@
   margin: 0 auto;
 }
 
-/* Target */
 .target-icon {
   border: 3px solid #050505;
   border-radius: 50%;
@@ -310,7 +312,6 @@
   transform: translate(-50%, -50%);
 }
 
-/* Mountain */
 .mountain-icon::before {
   content: "";
   position: absolute;
@@ -344,7 +345,6 @@
   border-bottom: 3px solid #f5c400;
 }
 
-/* People */
 .people-icon::before {
   content: "";
   position: absolute;
@@ -371,7 +371,6 @@
     radial-gradient(ellipse at 85% 100%, transparent 0 16px, #050505 17px 19px, transparent 20px);
 }
 
-/* Impact */
 .impact-icon::before {
   content: "";
   position: absolute;
@@ -395,7 +394,7 @@
   border-right: 3px solid #f5c400;
 }
 
-/* Bottom yellow sweep */
+/* bottom */
 .message-bottom {
   position: relative;
   z-index: 5;
@@ -403,15 +402,15 @@
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
-  padding: 0 clamp(24px, 4vw, 64px) 46px;
+  padding: 0 64px 46px;
 }
 
 .message-bottom::before {
   content: "";
   position: absolute;
   z-index: -1;
-  left: -6vw;
-  right: -6vw;
+  left: -8vw;
+  right: -8vw;
   bottom: -88px;
   height: 260px;
   background: linear-gradient(135deg, #ffd21a 0%, #f5c400 62%, #eeb800 100%);
@@ -432,7 +431,6 @@
   background: #050505;
 }
 
-/* Buttons */
 .message-actions {
   display: flex;
   align-items: center;
@@ -448,7 +446,6 @@
   gap: 34px;
   border: 1px solid #050505;
   border-radius: 3px;
-  font-family: var(--sans, Inter, Arial, sans-serif);
   font-size: 13px;
   font-weight: 950;
   letter-spacing: .14em;
@@ -476,7 +473,7 @@
   color: #f5c400;
 }
 
-/* JS reveal starting state */
+/* reveal state */
 .message-section:not(.is-visible) .message-kicker,
 .message-section:not(.is-visible) .message-brand,
 .message-section:not(.is-visible) .message-right h2,
@@ -487,19 +484,19 @@
   transform: translateY(34px);
 }
 
-/* Mobile */
+/* mobile */
 @media (max-width: 900px) {
-  .message-section {
-    min-height: auto;
-  }
-
   .message-shell {
     padding: 72px 18px 0;
   }
 
   .message-split {
-    min-height: auto;
     display: block;
+    min-height: auto;
+  }
+
+  .message-split::after {
+    display: none;
   }
 
   .message-left,
@@ -509,7 +506,6 @@
 
   .message-left {
     padding: 70px 22px 54px;
-    border-right: 0;
     border-bottom: 1px solid rgba(0, 0, 0, .18);
   }
 
@@ -523,19 +519,24 @@
 
   .message-sun {
     left: auto;
-    right: -145px;
-    top: 44%;
-    width: 310px;
-    clip-path: none;
-    opacity: .9;
+    right: -155px;
+    top: 42%;
+    width: 330px;
+    height: 330px;
+    min-width: 0;
+    min-height: 0;
+    transform: translateY(-50%);
   }
 
   .message-rings {
     left: auto;
-    right: -190px;
+    right: -220px;
     top: 42%;
-    width: 460px;
-    clip-path: none;
+    width: 480px;
+    height: 480px;
+    min-width: 0;
+    min-height: 0;
+    transform: translateY(-50%);
     opacity: .55;
   }
 
@@ -574,8 +575,8 @@
   }
 
   .message-bottom {
-    min-height: 360px;
     display: block;
+    min-height: 360px;
     padding: 54px 22px 44px;
   }
 
