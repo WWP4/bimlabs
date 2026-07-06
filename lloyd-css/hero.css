@@ -11,8 +11,6 @@
   isolation: isolate;
 }
 
-/* Background photo */
-
 .hero__bg {
   position: absolute;
   inset: 0;
@@ -29,8 +27,6 @@
   transform: scale(1.04);
   filter: brightness(.98) contrast(1.07) saturate(.96);
 }
-
-/* Overlay */
 
 .hero__shade {
   position: absolute;
@@ -59,8 +55,6 @@
     );
 }
 
-/* Layout */
-
 .hero__inner {
   position: relative;
   z-index: 2;
@@ -74,10 +68,8 @@
 }
 
 .hero__copy {
-  max-width: 790px;
+  max-width: 810px;
 }
-
-/* Eyebrow */
 
 .hero__eyebrow {
   display: flex;
@@ -99,8 +91,6 @@
   flex: 0 0 auto;
   background: #ffd400;
 }
-
-/* Headline */
 
 .hero__title {
   max-width: 810px;
@@ -128,8 +118,6 @@
     0 6px 24px rgba(255,212,0,.16);
 }
 
-/* Body text */
-
 .hero__text {
   max-width: 590px;
   margin: 34px 0 0;
@@ -139,8 +127,6 @@
   font-weight: 650;
   text-shadow: 0 2px 14px rgba(0,0,0,.5);
 }
-
-/* Buttons */
 
 .hero__actions {
   display: flex;
@@ -189,18 +175,20 @@
   background: rgba(255,212,0,.1);
 }
 
-/* Church logo band */
+/* ==============================
+   CHURCH BAND
+============================== */
 
 .church-band {
   width: 100%;
-  margin-top: 66px;
+  margin-top: 64px;
   padding-top: 24px;
   border-top: 1px solid rgba(255,255,255,.18);
 }
 
 .church-band__label {
-  margin: 0 0 20px;
-  color: rgba(255,255,255,.7);
+  margin: 0 0 18px;
+  color: rgba(255,255,255,.72);
   font-size: 11px;
   font-weight: 900;
   letter-spacing: .18em;
@@ -208,26 +196,50 @@
   text-shadow: 0 2px 12px rgba(0,0,0,.65);
 }
 
-.church-band__grid {
+.church-band__viewport {
+  width: 100%;
+  overflow: hidden;
+  mask-image: linear-gradient(to right, transparent 0%, black 7%, black 93%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 7%, black 93%, transparent 100%);
+}
+
+.church-band__track {
+  display: flex;
+  width: max-content;
+  animation: church-marquee 34s linear infinite;
+}
+
+.church-band__group {
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 18px;
+  gap: 20px;
+  padding-right: 20px;
+  flex: 0 0 auto;
 }
 
-.church-band__grid img {
+.church-band__group img {
   width: auto;
-  height: 132px;
-  max-width: 210px;
+  height: 146px;
+  max-width: 220px;
   object-fit: contain;
-  opacity: .94;
+  opacity: .95;
   filter: brightness(2.15) contrast(1.28);
-  transition: opacity .25s ease, transform .25s ease;
+  flex: 0 0 auto;
+  transition: transform .25s ease, opacity .25s ease;
 }
 
-.church-band__grid img:hover {
+.church-band__group img:hover {
   opacity: 1;
   transform: translateY(-2px);
+}
+
+@keyframes church-marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
 }
 
 /* ==============================
@@ -263,7 +275,7 @@
         180deg,
         rgba(0,0,0,.08) 0%,
         rgba(0,0,0,.48) 56%,
-        rgba(0,0,0,.9) 100%
+        rgba(0,0,0,.90) 100%
       );
   }
 
@@ -273,25 +285,21 @@
   }
 
   .church-band {
-    margin-top: 56px;
-    overflow: hidden;
+    margin-top: 54px;
   }
 
-  .church-band__grid {
-    justify-content: flex-start;
-    gap: 18px;
-    overflow-x: auto;
-    scrollbar-width: none;
+  .church-band__group {
+    gap: 16px;
+    padding-right: 16px;
   }
 
-  .church-band__grid::-webkit-scrollbar {
-    display: none;
+  .church-band__group img {
+    height: 122px;
+    max-width: 190px;
   }
 
-  .church-band__grid img {
-    flex: 0 0 auto;
-    height: 118px;
-    max-width: 195px;
+  .church-band__track {
+    animation-duration: 28s;
   }
 }
 
@@ -364,22 +372,27 @@
   }
 
   .church-band {
-    margin-top: 44px;
-    padding-top: 22px;
+    margin-top: 42px;
+    padding-top: 20px;
   }
 
   .church-band__label {
-    margin-bottom: 18px;
+    margin-bottom: 16px;
     font-size: 10px;
     line-height: 1.4;
   }
 
-  .church-band__grid {
+  .church-band__group {
     gap: 14px;
+    padding-right: 14px;
   }
 
-  .church-band__grid img {
+  .church-band__group img {
     height: 94px;
-    max-width: 155px;
+    max-width: 150px;
+  }
+
+  .church-band__track {
+    animation-duration: 24s;
   }
 }
