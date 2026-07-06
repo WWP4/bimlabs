@@ -1,46 +1,63 @@
+/* =========================================================
+   SECTION 02 — MESSAGE / EDITORIAL MANIFESTO
+   ========================================================= */
+
 .message-section {
   position: relative;
+  min-height: 150svh;
   overflow: hidden;
-  min-height: 100vh;
   background: #f6f1e8;
   color: #050505;
   isolation: isolate;
 }
 
-.message-shell {
-  position: relative;
-  min-height: 100vh;
-  padding: 5.2vw 5.2vw 0;
+.message-section::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 34% 18%, rgba(255,255,255,.86), transparent 32%),
+    radial-gradient(circle at 74% 58%, rgba(255,255,255,.55), transparent 38%);
+  z-index: -3;
+  pointer-events: none;
 }
 
+.message-shell {
+  position: relative;
+  min-height: 150svh;
+  padding: clamp(56px, 5.2vw, 92px) clamp(34px, 5.2vw, 84px) clamp(70px, 7vw, 130px);
+}
+
+/* top labels */
+
 .message-top {
+  position: relative;
+  z-index: 5;
   display: flex;
-  justify-content: space-between;
   align-items: flex-start;
+  justify-content: space-between;
 }
 
 .message-label {
   display: flex;
   align-items: center;
-  gap: 1.5vw;
+  gap: clamp(22px, 1.8vw, 34px);
 }
 
 .message-label span {
-  width: 3.7vw;
-  height: 3.7vw;
-  min-width: 56px;
-  min-height: 56px;
+  width: clamp(58px, 3.8vw, 74px);
+  height: clamp(58px, 3.8vw, 74px);
   display: grid;
   place-items: center;
   border: 1.5px solid #050505;
   border-radius: 50%;
-  font-size: clamp(14px, 1vw, 18px);
+  font-size: clamp(14px, .92vw, 18px);
   font-weight: 950;
   letter-spacing: .08em;
 }
 
 .message-label i {
-  width: 2.4vw;
+  width: clamp(38px, 2.6vw, 54px);
   height: 3px;
   background: #050505;
 }
@@ -48,35 +65,44 @@
 .message-label p,
 .message-note p {
   margin: 0;
-  font-size: clamp(12px, .95vw, 17px);
+  font-size: clamp(12px, .9vw, 17px);
+  line-height: 1.65;
   font-weight: 950;
   letter-spacing: .38em;
-  line-height: 1.65;
+  text-transform: uppercase;
 }
 
 .message-note {
-  padding-right: 4.5vw;
+  margin-right: clamp(28px, 4.5vw, 82px);
 }
 
 .message-note i {
   display: block;
-  width: 3.2vw;
+  width: clamp(42px, 3.2vw, 62px);
   height: 3px;
+  margin-top: 24px;
   background: #f4c400;
-  margin-top: 1.4vw;
 }
+
+/* main editorial spread */
 
 .message-main {
   position: relative;
+  z-index: 2;
   display: grid;
-  grid-template-columns: 52% 1px 48%;
-  min-height: 61vh;
-  align-items: center;
+  grid-template-columns: minmax(0, 46%) 1px minmax(0, 54%);
+  min-height: 820px;
+  padding-top: clamp(90px, 8vw, 150px);
+  align-items: start;
+}
+
+.message-title {
+  max-width: 720px;
 }
 
 .message-title h2 {
   margin: 0;
-  font-size: clamp(86px, 8.5vw, 158px);
+  font-size: clamp(82px, 7.7vw, 146px);
   line-height: .88;
   font-weight: 1000;
   letter-spacing: -.075em;
@@ -94,21 +120,25 @@
 
 .message-divider {
   width: 1px;
-  height: 56%;
+  height: 560px;
+  margin-top: 8px;
   background: rgba(0,0,0,.32);
 }
 
 .message-copy {
-  padding-left: 4.4vw;
-  padding-top: 7vw;
+  max-width: 760px;
+  padding-left: clamp(64px, 6vw, 112px);
+  padding-top: clamp(150px, 12vw, 230px);
 }
 
 .message-copy > p {
   margin: 0;
-  font-size: clamp(16px, 1.45vw, 27px);
-  line-height: 1.58;
-  letter-spacing: .24em;
+  max-width: 620px;
+  font-size: clamp(17px, 1.35vw, 27px);
+  line-height: 1.62;
   font-weight: 500;
+  letter-spacing: .24em;
+  text-transform: uppercase;
 }
 
 .message-copy strong {
@@ -118,34 +148,40 @@
 .message-subline {
   display: flex;
   align-items: center;
-  gap: 1.4vw;
-  margin-top: 7.5vw;
+  gap: clamp(18px, 1.5vw, 30px);
+  margin-top: clamp(120px, 10vw, 190px);
 }
 
 .message-subline i {
   width: 3px;
-  height: 46px;
+  height: 52px;
   background: #f4c400;
+  flex: 0 0 auto;
 }
 
 .message-subline p {
   margin: 0;
-  font-size: clamp(13px, 1vw, 18px);
+  font-size: clamp(13px, .95vw, 18px);
   line-height: 1.65;
-  letter-spacing: .22em;
   font-weight: 650;
+  letter-spacing: .22em;
+  text-transform: uppercase;
 }
 
 .message-subline span {
-  width: 11vw;
+  width: clamp(100px, 11vw, 190px);
   height: 1px;
   background: rgba(0,0,0,.3);
 }
 
 .message-subline b {
   font-size: 20px;
+  line-height: 1;
+  font-weight: 400;
   color: rgba(0,0,0,.45);
 }
+
+/* orbit graphics */
 
 .orb {
   position: absolute;
@@ -155,47 +191,52 @@
 }
 
 .orb--top {
-  width: 46vw;
-  height: 46vw;
-  right: -18vw;
-  top: -30vw;
+  width: clamp(520px, 48vw, 860px);
+  height: clamp(520px, 48vw, 860px);
+  right: clamp(-360px, -18vw, -240px);
+  top: clamp(-560px, -31vw, -360px);
 }
 
 .orb-dot--top {
   position: absolute;
-  right: 21.9vw;
-  top: 15.2vw;
-  width: 11px;
-  height: 11px;
+  width: 12px;
+  height: 12px;
+  right: clamp(270px, 22vw, 415px);
+  top: clamp(240px, 16vw, 315px);
   background: #050505;
   border-radius: 50%;
+  pointer-events: none;
 }
 
 .orb--bottom {
-  width: 38vw;
-  height: 38vw;
-  right: -25vw;
-  bottom: -21vw;
+  width: clamp(430px, 38vw, 720px);
+  height: clamp(430px, 38vw, 720px);
+  right: clamp(-500px, -25vw, -310px);
+  bottom: clamp(-420px, -20vw, -250px);
   box-shadow:
-    0 0 0 2vw transparent,
-    0 0 0 calc(2vw + 1px) rgba(244,196,0,.55),
-    0 0 0 4vw transparent,
-    0 0 0 calc(4vw + 1px) rgba(244,196,0,.38);
+    0 0 0 34px transparent,
+    0 0 0 35px rgba(244,196,0,.55),
+    0 0 0 72px transparent,
+    0 0 0 73px rgba(244,196,0,.35);
 }
+
+/* bottom pillars */
 
 .message-bottom {
   position: relative;
+  z-index: 4;
   display: grid;
-  grid-template-columns: 7vw repeat(4, 1fr);
+  grid-template-columns: clamp(70px, 7vw, 112px) repeat(4, minmax(0, 1fr));
+  margin-top: clamp(90px, 9vw, 170px);
   border-top: 1px solid rgba(0,0,0,.28);
-  padding-top: 2.7vw;
-  padding-bottom: 2.6vw;
+  padding-top: clamp(42px, 3.6vw, 68px);
 }
 
 .bottom-side {
   writing-mode: vertical-rl;
   transform: rotate(180deg);
-  font-size: clamp(10px, .75vw, 13px);
+  align-self: start;
+  font-size: clamp(10px, .72vw, 13px);
   font-weight: 950;
   letter-spacing: .28em;
   text-transform: uppercase;
@@ -206,19 +247,19 @@
   display: block;
   width: 2px;
   height: 30px;
-  background: #f4c400;
   margin: 28px auto 0;
+  background: #f4c400;
 }
 
 .message-bottom article {
-  min-height: 130px;
-  padding: 0 3.3vw;
+  min-height: 180px;
+  padding: 0 clamp(32px, 3.4vw, 62px);
   border-left: 1px solid rgba(0,0,0,.22);
 }
 
 .message-bottom h3 {
   margin: 0;
-  font-size: clamp(38px, 3.4vw, 58px);
+  font-size: clamp(40px, 3.4vw, 62px);
   line-height: .9;
   font-weight: 1000;
   letter-spacing: -.08em;
@@ -226,43 +267,58 @@
 
 .message-bottom article i {
   display: block;
-  width: 24px;
+  width: 26px;
   height: 2px;
+  margin: 18px 0;
   background: #f4c400;
-  margin: 16px 0 16px;
 }
 
 .message-bottom h4 {
-  margin: 0 0 10px;
-  font-size: clamp(10px, .8vw, 14px);
+  margin: 0 0 12px;
+  max-width: 280px;
+  font-size: clamp(10px, .78vw, 14px);
+  line-height: 1.35;
   font-weight: 950;
   letter-spacing: .24em;
+  text-transform: uppercase;
 }
 
 .message-bottom p {
-  max-width: 230px;
+  max-width: 250px;
   margin: 0;
   font-size: clamp(12px, .9vw, 16px);
   line-height: 1.55;
 }
 
-@media (max-width: 900px) {
-  .message-shell {
-    padding: 48px 22px 0;
-  }
+/* old elements hidden if still in HTML */
 
-  .message-note {
-    display: none;
+.message-wipe,
+.message-left,
+.message-right,
+.message-split,
+.message-brand,
+.message-kicker,
+.message-pillars,
+.message-pillar,
+.message-sun,
+.message-crosshair,
+.dot-grid,
+.message-actions {
+  display: none;
+}
+
+/* responsive */
+
+@media (max-width: 1100px) {
+  .message-section,
+  .message-shell {
+    min-height: auto;
   }
 
   .message-main {
-    display: block;
+    grid-template-columns: 1fr;
     min-height: auto;
-    padding: 76px 0;
-  }
-
-  .message-title h2 {
-    font-size: clamp(70px, 20vw, 108px);
+    padding-top: 90px;
   }
 
   .message-divider {
@@ -270,26 +326,97 @@
   }
 
   .message-copy {
-    padding: 48px 0 0;
+    padding-left: 0;
+    padding-top: 70px;
+  }
+
+  .message-subline {
+    margin-top: 80px;
+  }
+
+  .message-bottom {
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+  }
+
+  .bottom-side {
+    grid-column: 1 / -1;
+    writing-mode: initial;
+    transform: none;
+    margin-bottom: 34px;
+  }
+
+  .message-bottom article {
+    padding: 34px 30px;
+    border-top: 1px solid rgba(0,0,0,.18);
+  }
+}
+
+@media (max-width: 700px) {
+  .message-shell {
+    padding: 44px 20px 70px;
+  }
+
+  .message-note {
+    display: none;
+  }
+
+  .message-label {
+    gap: 18px;
+  }
+
+  .message-label i {
+    width: 34px;
+  }
+
+  .message-label p {
+    font-size: 12px;
+    letter-spacing: .28em;
+  }
+
+  .message-main {
+    padding-top: 74px;
+  }
+
+  .message-title h2 {
+    font-size: clamp(64px, 19vw, 96px);
   }
 
   .message-copy > p {
-    font-size: 18px;
+    font-size: 17px;
+    letter-spacing: .17em;
+  }
+
+  .message-subline {
+    margin-top: 64px;
+  }
+
+  .message-subline span,
+  .message-subline b {
+    display: none;
   }
 
   .message-bottom {
     grid-template-columns: 1fr;
-  }
-
-  .bottom-side {
-    writing-mode: initial;
-    transform: none;
-    margin-bottom: 26px;
+    margin-top: 86px;
   }
 
   .message-bottom article {
-    padding: 30px 0;
+    padding: 34px 0;
     border-left: 0;
-    border-top: 1px solid rgba(0,0,0,.2);
+  }
+
+  .orb--top {
+    right: -380px;
+    top: -420px;
+  }
+
+  .orb-dot--top {
+    display: none;
+  }
+
+  .orb--bottom {
+    right: -420px;
+    bottom: -260px;
   }
 }
