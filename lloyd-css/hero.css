@@ -54,8 +54,8 @@
     linear-gradient(
       180deg,
       rgba(0,0,0,.04) 0%,
-      rgba(0,0,0,.36) 58%,
-      rgba(0,0,0,.86) 100%
+      rgba(0,0,0,.32) 56%,
+      rgba(0,0,0,.88) 100%
     );
 }
 
@@ -67,14 +67,14 @@
   width: min(100% - 88px, 1680px);
   min-height: 108svh;
   margin-inline: auto;
-  padding: 150px 0 58px;
+  padding: 150px 0 54px;
   display: flex;
   flex-direction: column;
   justify-content: center;
 }
 
 .hero__copy {
-  max-width: 780px;
+  max-width: 790px;
 }
 
 /* Eyebrow */
@@ -103,7 +103,7 @@
 /* Headline */
 
 .hero__title {
-  max-width: 790px;
+  max-width: 810px;
   margin: 0;
   color: #fff;
   font-family: Impact, "Arial Black", Haettenschweiler, sans-serif;
@@ -189,37 +189,39 @@
   background: rgba(255,212,0,.1);
 }
 
+/* Church logo band */
+
 .church-band {
   width: 100%;
-  margin-top: 64px;
-  padding-top: 26px;
-  border-top: 1px solid rgba(255,255,255,.2);
+  margin-top: 66px;
+  padding-top: 24px;
+  border-top: 1px solid rgba(255,255,255,.18);
 }
 
 .church-band__label {
-  margin: 0 0 22px;
-  color: rgba(255,255,255,.68);
+  margin: 0 0 20px;
+  color: rgba(255,255,255,.7);
   font-size: 11px;
   font-weight: 900;
   letter-spacing: .18em;
   text-transform: uppercase;
-  text-shadow: 0 2px 12px rgba(0,0,0,.6);
+  text-shadow: 0 2px 12px rgba(0,0,0,.65);
 }
 
 .church-band__grid {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 54px;
+  gap: 18px;
 }
 
 .church-band__grid img {
   width: auto;
-  height: 104px;
+  height: 132px;
   max-width: 210px;
   object-fit: contain;
-  opacity: .9;
-  filter: brightness(2.05) contrast(1.24);
+  opacity: .94;
+  filter: brightness(2.15) contrast(1.28);
   transition: opacity .25s ease, transform .25s ease;
 }
 
@@ -227,6 +229,7 @@
   opacity: 1;
   transform: translateY(-2px);
 }
+
 /* ==============================
    TABLET
 ============================== */
@@ -259,8 +262,8 @@
       linear-gradient(
         180deg,
         rgba(0,0,0,.08) 0%,
-        rgba(0,0,0,.5) 58%,
-        rgba(0,0,0,.88) 100%
+        rgba(0,0,0,.48) 56%,
+        rgba(0,0,0,.9) 100%
       );
   }
 
@@ -269,7 +272,6 @@
     font-size: clamp(56px, 10vw, 104px);
   }
 
-@media (max-width: 1100px) {
   .church-band {
     margin-top: 56px;
     overflow: hidden;
@@ -277,7 +279,7 @@
 
   .church-band__grid {
     justify-content: flex-start;
-    gap: 44px;
+    gap: 18px;
     overflow-x: auto;
     scrollbar-width: none;
   }
@@ -288,30 +290,8 @@
 
   .church-band__grid img {
     flex: 0 0 auto;
-    height: 92px;
-    max-width: 190px;
-  }
-}
-
-@media (max-width: 640px) {
-  .church-band {
-    margin-top: 44px;
-    padding-top: 22px;
-  }
-
-  .church-band__label {
-    margin-bottom: 20px;
-    font-size: 10px;
-    line-height: 1.4;
-  }
-
-  .church-band__grid {
-    gap: 34px;
-  }
-
-  .church-band__grid img {
-    height: 76px;
-    max-width: 165px;
+    height: 118px;
+    max-width: 195px;
   }
 }
 
@@ -384,22 +364,22 @@
   }
 
   .church-band {
-    margin-top: 46px;
+    margin-top: 44px;
     padding-top: 22px;
   }
 
   .church-band__label {
-    margin-bottom: 22px;
+    margin-bottom: 18px;
     font-size: 10px;
     line-height: 1.4;
   }
 
   .church-band__grid {
-    gap: 34px;
+    gap: 14px;
   }
 
   .church-band__grid img {
-    height: 64px;
-    max-width: 150px;
+    height: 94px;
+    max-width: 155px;
   }
 }
