@@ -100,20 +100,18 @@
   background: #ffd400;
 }
 
-/* Headline */
-
 .hero__title {
-  max-width: 920px;
+  max-width: 960px;
   margin: 0;
   color: #fff;
-  font-family: Impact, "Arial Black", Haettenschweiler, sans-serif;
-  font-size: clamp(58px, 5.85vw, 112px);
-  line-height: .88;
-  letter-spacing: -.045em;
-  font-weight: 800;
+
+  font-family: "Bebas Neue", Impact, sans-serif;
+  font-size: clamp(78px, 7.6vw, 150px);
+  line-height: .82;
+  letter-spacing: -.015em;
+  font-weight: 400;
   text-transform: uppercase;
-  transform: scaleX(.88);
-  transform-origin: left center;
+
   text-shadow:
     0 3px 18px rgba(0,0,0,.5),
     0 14px 38px rgba(0,0,0,.24);
@@ -125,9 +123,6 @@
 
 .hero__title .yellow {
   color: #ffd400;
-  text-shadow:
-    0 3px 18px rgba(0,0,0,.46),
-    0 6px 24px rgba(255,212,0,.14);
 }
 
 /* Body text */
