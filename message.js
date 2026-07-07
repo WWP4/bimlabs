@@ -702,3 +702,66 @@ openDates.forEach((date) => {
     date.classList.add("is-selected");
   });
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* =========================================================
+   LLOYD DEVOTIONAL POPUP
+   Shows once per browser session.
+========================================================= */
+
+document.addEventListener("DOMContentLoaded", () => {
+  const popup = document.getElementById("lloydPopup");
+  const closeBtn = document.getElementById("lloydPopupClose");
+
+  if (!popup || !closeBtn) return;
+
+  const sessionKey = "lloydDevotionalPopupClosed";
+
+  const showPopup = () => {
+    const wasClosed = sessionStorage.getItem(sessionKey);
+
+    if (!wasClosed) {
+      popup.classList.add("is-visible");
+      popup.setAttribute("aria-hidden", "false");
+      document.body.style.overflow = "hidden";
+    }
+  };
+
+  const closePopup = () => {
+    popup.classList.remove("is-visible");
+    popup.setAttribute("aria-hidden", "true");
+    document.body.style.overflow = "";
+    sessionStorage.setItem(sessionKey, "true");
+  };
+
+  setTimeout(showPopup, 1200);
+
+  closeBtn.addEventListener("click", closePopup);
+
+  popup.addEventListener("click", (event) => {
+    if (event.target.classList.contains("lloyd-popup__backdrop")) {
+      closePopup();
+    }
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && popup.classList.contains("is-visible")) {
+      closePopup();
+    }
+  });
+});
