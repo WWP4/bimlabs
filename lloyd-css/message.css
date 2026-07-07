@@ -1,5 +1,6 @@
-/* SECTION 3: JOURNEY / CALLING */
-.calling-section {
+/* SHARED CREAM BACKGROUND */
+.calling-section,
+.calling-bridge-section {
   position: relative;
   min-height: 100vh;
   overflow: hidden;
@@ -7,7 +8,8 @@
   color: #050505;
 }
 
-.calling-section::before {
+.calling-section::before,
+.calling-bridge-section::before {
   content: "";
   position: absolute;
   inset: 0;
@@ -17,7 +19,8 @@
   z-index: 0;
 }
 
-.calling-section::after {
+.calling-section::after,
+.calling-bridge-section::after {
   content: "";
   position: absolute;
   inset: 0;
@@ -28,7 +31,8 @@
   z-index: 1;
 }
 
-.calling-inner {
+.calling-inner,
+.calling-bridge-inner {
   position: relative;
   z-index: 2;
   min-height: 100vh;
@@ -37,19 +41,16 @@
   padding: 72px 64px 48px;
 }
 
+/* TOP LABELS */
 .calling-top {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
 }
 
-.calling-label,
-.calling-note {
+.calling-label {
   display: flex;
   align-items: center;
-}
-
-.calling-label {
   gap: 24px;
 }
 
@@ -79,6 +80,7 @@
 }
 
 .calling-note {
+  display: flex;
   flex-direction: column;
   align-items: flex-start;
   gap: 26px;
@@ -92,6 +94,7 @@
   display: block;
 }
 
+/* SECTION 2 MAIN */
 .calling-main {
   position: relative;
   min-height: 620px;
@@ -103,13 +106,13 @@
 
 .calling-main h2 {
   margin: 0 0 0 150px;
+  max-width: 720px;
   font-family: "Bebas Neue", Impact, sans-serif;
   font-size: clamp(92px, 10vw, 178px);
   line-height: .92;
   letter-spacing: .035em;
   font-weight: 400;
   text-transform: uppercase;
-  max-width: 720px;
 }
 
 .calling-main h2 .line {
@@ -123,7 +126,8 @@
   white-space: nowrap;
 }
 
-.calling-main h2 em {
+.calling-main h2 em,
+.calling-center em {
   color: #f5bf00;
   font-style: normal;
 }
@@ -250,8 +254,70 @@
   background-size: 16px 16px;
 }
 
+/* SECTION 3 BRIDGE */
+.bridge-label {
+  position: relative;
+  z-index: 4;
+}
+
+.calling-center {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  text-align: center;
+}
+
+.calling-center h2 {
+  margin: 0;
+  font-family: "Bebas Neue", Impact, sans-serif;
+  font-size: clamp(64px, 8vw, 126px);
+  line-height: .92;
+  letter-spacing: .05em;
+  font-weight: 400;
+  text-transform: uppercase;
+}
+
+.calling-line {
+  position: absolute;
+  top: 64%;
+  width: 2px;
+  height: 160px;
+  background: #f5bf00;
+  transform-origin: top;
+}
+
+.calling-marker {
+  position: absolute;
+  right: 72px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: grid;
+  justify-items: center;
+  gap: 16px;
+  font: 800 12px/1 Inter, sans-serif;
+  letter-spacing: .08em;
+}
+
+.calling-marker i {
+  width: 1px;
+  height: 72px;
+  background: rgba(0,0,0,.22);
+  display: block;
+}
+
+.calling-marker span {
+  color: rgba(0,0,0,.35);
+}
+
+.calling-marker .active {
+  color: #050505;
+}
+
+/* RESPONSIVE */
 @media (max-width: 1100px) {
-  .calling-inner {
+  .calling-inner,
+  .calling-bridge-inner {
     padding: 46px 28px 60px;
   }
 
@@ -293,6 +359,10 @@
     right: -420px;
     opacity: .55;
   }
+
+  .calling-marker {
+    display: none;
+  }
 }
 
 @media (max-width: 680px) {
@@ -307,6 +377,11 @@
 
   .calling-main {
     padding-top: 90px;
+  }
+
+  .calling-main h2 .final-line {
+    white-space: normal;
+    gap: .12em;
   }
 
   .calling-copy {
@@ -326,57 +401,8 @@
   .calling-dots {
     display: none;
   }
+
+  .calling-center h2 {
+    font-size: clamp(54px, 16vw, 92px);
+  }
 }
-
-
-
-
-
-/* HERO → MESSAGE YELLOW CURTAIN */
-.yellow-curtain {
-  position: fixed;
-  inset: 0;
-  z-index: 9998;
-  background: #f5bf00;
-  pointer-events: none;
-  display: grid;
-  place-items: center;
-  will-change: transform;
-}
-
-.yellow-curtain__text {
-  font-family: Inter, sans-serif;
-  font-size: clamp(13px, 1vw, 18px);
-  font-weight: 900;
-  letter-spacing: .46em;
-  color: #050505;
-  text-transform: uppercase;
-}
-
-.yellow-curtain::before,
-.yellow-curtain::after {
-  content: "";
-  position: absolute;
-  left: 50%;
-  width: 1px;
-  height: 110px;
-  background: rgba(0,0,0,.42);
-  transform: translateX(-50%);
-}
-
-.yellow-curtain::before {
-  top: 25%;
-}
-
-.yellow-curtain::after {
-  bottom: 25%;
-}
-
-.message-section {
-  will-change: transform, opacity;
-}
-
-.message-bg {
-  will-change: transform, filter;
-}
-
