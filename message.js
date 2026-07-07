@@ -252,115 +252,154 @@
 
 gsap.registerPlugin(ScrollTrigger);
 
-/* MESSAGE HANDOFF */
-gsap.set(".message-handoff__rule", {
-  scaleX: 0,
-  transformOrigin: "left center"
+/* =========================================================
+   MESSAGE HANDOFF ANIMATION
+========================================================= */
+
+const handoff = document.querySelector(".message-handoff");
+
+if (handoff) {
+  gsap.set(".message-handoff__rule", {
+    scaleX: 0,
+    transformOrigin: "center center"
+  });
+
+  gsap.set(".message-handoff__content", {
+    y: 42,
+    opacity: 0
+  });
+
+  gsap.set(".message-handoff__mini-line", {
+    scaleX: 0,
+    opacity: 0,
+    transformOrigin: "center center"
+  });
+
+  const handoffTl = gsap.timeline({
+    scrollTrigger: {
+      trigger: ".message-handoff",
+      start: "top 72%",
+      once: true
+    }
+  });
+
+  handoffTl
+    .to(".message-handoff__rule", {
+      scaleX: 1,
+      duration: 0.9,
+      ease: "power3.out"
+    })
+    .to(".message-handoff__content", {
+      y: 0,
+      opacity: 1,
+      duration: 0.95,
+      ease: "power3.out"
+    }, "-=0.45")
+    .to(".message-handoff__mini-line", {
+      scaleX: 1,
+      opacity: 1,
+      duration: 0.65,
+      ease: "power3.out"
+    }, "-=0.35");
+}
+
+
+/* =========================================================
+   BOOK SECTION ENTRANCE
+========================================================= */
+
+const bookSection = document.querySelector(".book-section");
+
+if (bookSection) {
+  gsap.set(".book-top", {
+    y: 34,
+    opacity: 0
+  });
+
+  gsap.set(".book-left", {
+    y: 48,
+    opacity: 0
+  });
+
+  gsap.set(".book-bg", {
+    y: 58,
+    opacity: 0,
+    scale: 0.965
+  });
+
+  gsap.set(".book-right", {
+    y: 48,
+    opacity: 0
+  });
+
+  gsap.set([
+    ".book-actions",
+    ".book-footnote",
+    ".book-bottom"
+  ], {
+    y: 30,
+    opacity: 0
+  });
+
+  const bookTl = gsap.timeline({
+    scrollTrigger: {
+      trigger: ".book-section",
+      start: "top 70%",
+      once: true
+    }
+  });
+
+  bookTl
+    .to(".book-top", {
+      y: 0,
+      opacity: 1,
+      duration: 0.75,
+      ease: "power3.out"
+    })
+    .to(".book-left", {
+      y: 0,
+      opacity: 1,
+      duration: 0.9,
+      ease: "power3.out"
+    }, "-=0.3")
+    .to(".book-bg", {
+      y: 0,
+      opacity: 1,
+      scale: 1,
+      duration: 1.05,
+      ease: "power3.out"
+    }, "-=0.68")
+    .to(".book-right", {
+      y: 0,
+      opacity: 1,
+      duration: 0.85,
+      ease: "power3.out"
+    }, "-=0.58")
+    .to(".book-actions", {
+      y: 0,
+      opacity: 1,
+      duration: 0.7,
+      ease: "power3.out"
+    }, "-=0.28")
+    .to(".book-footnote", {
+      y: 0,
+      opacity: 1,
+      duration: 0.58,
+      ease: "power3.out"
+    }, "-=0.22")
+    .to(".book-bottom", {
+      y: 0,
+      opacity: 1,
+      duration: 0.58,
+      ease: "power3.out"
+    }, "-=0.2");
+}
+
+
+/* =========================================================
+   REFRESH SCROLLTRIGGER AFTER IMAGES LOAD
+========================================================= */
+
+window.addEventListener("load", () => {
+  ScrollTrigger.refresh();
 });
-
-gsap.set([
-  ".message-handoff__content",
-  ".message-handoff__dots"
-], {
-  y: 34,
-  opacity: 0
-});
-
-gsap.timeline({
-  scrollTrigger: {
-    trigger: ".message-handoff",
-    start: "top 78%",
-    once: true
-  }
-})
-.to(".message-handoff__rule", {
-  scaleX: 1,
-  duration: 0.85,
-  ease: "power3.out"
-})
-.to(".message-handoff__content", {
-  y: 0,
-  opacity: 1,
-  duration: 0.8,
-  ease: "power3.out"
-}, "-=0.42")
-.to(".message-handoff__dots", {
-  y: 0,
-  opacity: 0.7,
-  duration: 0.7,
-  ease: "power3.out"
-}, "-=0.5");
-
-
-/* BOOK SECTION ENTRANCE */
-gsap.set([
-  ".book-top",
-  ".book-left",
-  ".book-bg",
-  ".book-right",
-  ".book-actions",
-  ".book-footnote",
-  ".book-bottom"
-], {
-  y: 42,
-  opacity: 0
-});
-
-gsap.set(".book-bg", {
-  y: 56,
-  opacity: 0,
-  scale: 0.97
-});
-
-const bookTl = gsap.timeline({
-  scrollTrigger: {
-    trigger: ".book-section",
-    start: "top 72%",
-    once: true
-  }
-});
-
-bookTl
-.to(".book-top", {
-  y: 0,
-  opacity: 1,
-  duration: 0.75,
-  ease: "power3.out"
-})
-.to(".book-left", {
-  y: 0,
-  opacity: 1,
-  duration: 0.85,
-  ease: "power3.out"
-}, "-=0.35")
-.to(".book-bg", {
-  y: 0,
-  opacity: 1,
-  scale: 1,
-  duration: 1,
-  ease: "power3.out"
-}, "-=0.62")
-.to(".book-right", {
-  y: 0,
-  opacity: 1,
-  duration: 0.85,
-  ease: "power3.out"
-}, "-=0.55")
-.to(".book-actions", {
-  y: 0,
-  opacity: 1,
-  duration: 0.7,
-  ease: "power3.out"
-}, "-=0.32")
-.to(".book-footnote", {
-  y: 0,
-  opacity: 1,
-  duration: 0.55,
-  ease: "power3.out"
-}, "-=0.28")
-.to(".book-bottom", {
-  y: 0,
-  opacity: 1,
-  duration: 0.55,
-  ease: "power3.out"
-}, "-=0.24");
