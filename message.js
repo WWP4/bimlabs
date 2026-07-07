@@ -1,6 +1,7 @@
 // message.js
-// Safe Section 2 reveal.
-// Yellow is underneath. Cream/content reveals downward on top.
+// Yellow reveal layer on top.
+// Cream section is underneath.
+// Yellow wipes downward to reveal the cream Section 2.
 
 (() => {
   const ready = (fn) => {
@@ -23,13 +24,13 @@
 
     if (!window.gsap || !window.ScrollTrigger) {
       console.warn("GSAP or ScrollTrigger is missing");
-      message.style.setProperty("--creamReveal", "100%");
+      message.style.setProperty("--yellowReveal", "100%");
       return;
     }
 
     gsap.registerPlugin(ScrollTrigger);
 
-    // Prevent duplicate triggers if this file gets loaded twice.
+    // Kill only this section's old triggers if the file reloads.
     ScrollTrigger.getAll().forEach((trigger) => {
       if (
         trigger.vars &&
@@ -40,7 +41,7 @@
       }
     });
 
-    // Remove older transition leftovers.
+    // Remove old transition leftovers.
     document
       .querySelectorAll(
         ".hero-message-transition, .hero-garage-transition, .calling-yellow-wash"
@@ -51,15 +52,22 @@
       "(prefers-reduced-motion: reduce)"
     ).matches;
 
-    // 0% = cream closed / yellow showing.
-    // 100% = cream fully revealed.
-    gsap.set(message, { "--creamReveal": "0%" });
+    /*
+      0% = yellow fully covering Section 2.
+      100% = yellow fully wiped away.
+    */
+    gsap.set(message, {
+      "--yellowReveal": "0%"
+    });
 
     if (reducedMotion) {
-      gsap.set(message, { "--creamReveal": "100%" });
+      gsap.set(message, {
+        "--yellowReveal": "100%"
+      });
       return;
     }
 
+    // Hero exits softly as the yellow reveal begins.
     const heroExitTargets = [
       document.querySelector(".hero__copy"),
       document.querySelector(".church-band")
@@ -99,16 +107,20 @@
       });
     }
 
-    // Main reverse-garage reveal:
-    // Section pins, yellow sits behind, cream/content opens downward on top.
+    /*
+      Main reveal:
+      Yellow is the reveal layer.
+      It starts covering Section 2.
+      Then it wipes downward, revealing the cream content underneath.
+    */
     gsap
       .timeline({
         scrollTrigger: {
-          id: "message-cream-reveal",
+          id: "message-yellow-reveal",
           trigger: message,
           start: "top top",
-          end: () => (window.innerWidth <= 768 ? "+=90%" : "+=115%"),
-          scrub: 1,
+          end: () => (window.innerWidth <= 768 ? "+=95%" : "+=125%"),
+          scrub: 1.05,
           pin: true,
           pinSpacing: true,
           anticipatePin: 1,
@@ -116,13 +128,13 @@
         }
       })
       .to(message, {
-        "--creamReveal": "100%",
+        "--yellowReveal": "100%",
         duration: 1,
         ease: "none"
       })
-      .to({}, { duration: 0.08 });
+      .to({}, { duration: 0.1 });
 
-    // Section 3 soft entrance.
+    // Section 3 entrance.
     if (bridge) {
       gsap.from("#calling-bridge .bridge-label", {
         autoAlpha: 0,
