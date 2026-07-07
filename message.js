@@ -1,7 +1,8 @@
 // message.js
-// Yellow reveal layer on top.
-// Cream section is underneath.
-// Yellow wipes downward to reveal the cream Section 2.
+// Section 2 yellow reveal.
+// Yellow is the reveal layer ON TOP.
+// Cream/content is underneath.
+// Reveal starts early as Section 2 enters the screen — no pin.
 
 (() => {
   const ready = (fn) => {
@@ -30,7 +31,7 @@
 
     gsap.registerPlugin(ScrollTrigger);
 
-    // Kill only this section's old triggers if the file reloads.
+    // Clean old message triggers if this file reloads.
     ScrollTrigger.getAll().forEach((trigger) => {
       if (
         trigger.vars &&
@@ -41,7 +42,7 @@
       }
     });
 
-    // Remove old transition leftovers.
+    // Remove old transition elements from earlier versions.
     document
       .querySelectorAll(
         ".hero-message-transition, .hero-garage-transition, .calling-yellow-wash"
@@ -53,8 +54,9 @@
     ).matches;
 
     /*
+      IMPORTANT:
       0% = yellow fully covering Section 2.
-      100% = yellow fully wiped away.
+      100% = yellow wiped away, cream section visible.
     */
     gsap.set(message, {
       "--yellowReveal": "0%"
@@ -67,7 +69,7 @@
       return;
     }
 
-    // Hero exits softly as the yellow reveal begins.
+    // Hero fades/moves out slightly while Section 2 comes in.
     const heroExitTargets = [
       document.querySelector(".hero__copy"),
       document.querySelector(".church-band")
@@ -76,12 +78,12 @@
     if (heroExitTargets.length) {
       gsap.to(heroExitTargets, {
         autoAlpha: 0,
-        y: -34,
+        y: -28,
         ease: "none",
         scrollTrigger: {
           id: "message-hero-exit",
           trigger: hero,
-          start: "55% top",
+          start: "58% top",
           end: "bottom top",
           scrub: true,
           invalidateOnRefresh: true
@@ -89,12 +91,13 @@
       });
     }
 
+    // Small cinematic movement on hero image.
     const heroImage = document.querySelector(".hero__bg img");
 
     if (heroImage) {
       gsap.to(heroImage, {
-        scale: 1.045,
-        y: -30,
+        scale: 1.035,
+        y: -24,
         ease: "none",
         scrollTrigger: {
           id: "message-hero-image",
@@ -108,40 +111,71 @@
     }
 
     /*
-      Main reveal:
-      Yellow is the reveal layer.
-      It starts covering Section 2.
-      Then it wipes downward, revealing the cream content underneath.
+      MAIN FIX:
+      Reveal starts when Section 2 enters the viewport.
+      It does NOT wait until Section 2 hits the top.
+      It does NOT pin.
     */
-  gsap
-  .timeline({
-    scrollTrigger: {
-      id: "message-yellow-reveal",
-      trigger: message,
-      start: "top top",
-      end: () => (window.innerWidth <= 768 ? "+=55%" : "+=70%"),
-      scrub: 0.65,
-      pin: true,
-      pinSpacing: true,
-      anticipatePin: 1,
-      invalidateOnRefresh: true
-    }
-  })
+    gsap
+      .timeline({
+        scrollTrigger: {
+          id: "message-yellow-reveal",
+          trigger: message,
+          start: "top 92%",
+          end: "top 18%",
+          scrub: 0.75,
+          invalidateOnRefresh: true
+        }
+      })
 
-  // tiny pause so the user actually sees the yellow
-  .to({}, { duration: 0.08 })
+      // Let the user see yellow for a small moment.
+      .to({}, { duration: 0.12 })
 
-  // yellow wipes away sooner
-  .to(message, {
-    "--yellowReveal": "100%",
-    duration: 0.82,
-    ease: "none"
-  })
+      // Yellow reveal layer wipes away.
+      .to(message, {
+        "--yellowReveal": "100%",
+        duration: 0.88,
+        ease: "none"
+      });
 
-  // small settle
-  .to({}, { duration: 0.1 });
+    // Section 2 content comes in after yellow starts revealing.
+    const messageContent = [
+      ".calling-top",
+      ".calling-main h2",
+      ".calling-copy",
+      ".calling-divider",
+      ".calling-bottom"
+    ];
 
-    // Section 3 entrance.
+    gsap.from(messageContent, {
+      autoAlpha: 0,
+      y: 34,
+      duration: 0.8,
+      stagger: 0.06,
+      ease: "power3.out",
+      scrollTrigger: {
+        id: "message-content-enter",
+        trigger: message,
+        start: "top 58%",
+        once: true
+      }
+    });
+
+    // Section 2 orbit soft entrance.
+    gsap.from(".calling-orbit", {
+      autoAlpha: 0,
+      scale: 0.94,
+      duration: 1,
+      ease: "power3.out",
+      scrollTrigger: {
+        id: "message-orbit-enter",
+        trigger: message,
+        start: "top 48%",
+        once: true
+      }
+    });
+
+    // Section 3 reveal animation.
     if (bridge) {
       gsap.from("#calling-bridge .bridge-label", {
         autoAlpha: 0,
@@ -196,11 +230,13 @@
       });
     }
 
-    const refresh = () => ScrollTrigger.refresh();
+    const refreshScroll = () => {
+      ScrollTrigger.refresh();
+    };
 
-    window.addEventListener("load", refresh, { once: true });
-    window.addEventListener("resize", refresh);
+    window.addEventListener("load", refreshScroll, { once: true });
+    window.addEventListener("resize", refreshScroll);
 
-    requestAnimationFrame(refresh);
+    requestAnimationFrame(refreshScroll);
   });
 })();
