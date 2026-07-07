@@ -625,7 +625,7 @@
   transform: scale(1.01);
 }
 
-/* light protection only, not black fog */
+
 .podcast-hero__bg::before {
   content: "";
   position: absolute;
@@ -635,18 +635,19 @@
   background:
     linear-gradient(
       90deg,
-      rgba(5, 5, 5, 0.42) 0%,
-      rgba(5, 5, 5, 0.08) 30%,
-      rgba(5, 5, 5, 0.08) 70%,
-      rgba(5, 5, 5, 0.36) 100%
+      rgba(5, 5, 5, 0.26) 0%,
+      rgba(5, 5, 5, 0.08) 28%,
+      rgba(5, 5, 5, 0.08) 72%,
+      rgba(5, 5, 5, 0.24) 100%
     ),
     linear-gradient(
       180deg,
-      rgba(5, 5, 5, 0.02) 0%,
-      rgba(5, 5, 5, 0.06) 62%,
-      rgba(5, 5, 5, 0.86) 100%
+      rgba(5, 5, 5, 0.04) 0%,
+      rgba(5, 5, 5, 0.08) 58%,
+      rgba(5, 5, 5, 0.42) 100%
     );
 }
+
 
 .podcast-hero__content {
   position: relative;
