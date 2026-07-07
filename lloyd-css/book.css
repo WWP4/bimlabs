@@ -1,5 +1,6 @@
 /* ================================
    SECTION 3: BOOK
+   Uses image as the center scene.
 ================================ */
 
 .book-section {
@@ -7,12 +8,12 @@
   min-height: 132vh;
   overflow: hidden;
   isolation: isolate;
+  margin: 0;
   color: var(--lloyd-black, #050505);
-  background: var(--lloyd-cream, #f5f1e8);
+  background: var(--lloyd-cream, #f4ead9);
   padding: clamp(46px, 5vw, 76px) clamp(28px, 4.8vw, 76px) clamp(48px, 4vw, 66px);
 }
 
-/* exact same cream world as section 2 */
 .book-section::before {
   content: "";
   position: absolute;
@@ -20,8 +21,8 @@
   z-index: 0;
   pointer-events: none;
   background:
-    radial-gradient(circle at 50% 42%, rgba(255, 255, 255, 0.82), transparent 40%),
-    linear-gradient(115deg, #fbf7ee 0%, #f3eee3 48%, #f8f1e4 100%);
+    radial-gradient(circle at 50% 42%, rgba(255, 255, 255, 0.68), transparent 42%),
+    linear-gradient(115deg, #fbf3e6 0%, #f4ead9 48%, #f8efdf 100%);
 }
 
 .book-section::after {
@@ -29,7 +30,7 @@
   position: absolute;
   inset: 0;
   z-index: 1;
-  opacity: 0.052;
+  opacity: 0.04;
   pointer-events: none;
   mix-blend-mode: multiply;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.72' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23noise)' opacity='.62'/%3E%3C/svg%3E");
@@ -50,10 +51,10 @@
 }
 
 .book-bg img {
-  width: min(860px, 58vw);
+  width: min(900px, 60vw);
   height: auto;
   object-fit: contain;
-  transform: translate(3vw, -1vh);
+  transform: translate(3.5vw, -1vh);
   filter: drop-shadow(0 24px 34px rgba(0, 0, 0, 0.08));
 }
 
