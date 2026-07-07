@@ -1,6 +1,6 @@
 // message.js
-// Real Section 2 reverse-garage reveal:
-// yellow underneath, cream/content reveal downward over it.
+// Real Section 2 reveal:
+// cream is final section, branded yellow is the reveal layer on top.
 
 (() => {
   const ready = (fn) => {
@@ -28,32 +28,26 @@
 
     gsap.registerPlugin(ScrollTrigger);
 
-    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-    // Remove old transition systems from previous attempts
+    // Remove old transition systems
     document.querySelectorAll(".hero-message-transition").forEach((el) => el.remove());
     document.querySelectorAll(".hero-garage-transition").forEach((el) => el.remove());
     document.querySelectorAll(".calling-yellow-wash").forEach((el) => el.remove());
 
-    // Kill only these message-section triggers if script reloads during dev
-    ["messageHeroSoftExit", "messageCallingReveal", "messageBridgeLabel", "messageBridgeTitle", "messageBridgeLine", "messageBridgeMarker"].forEach((id) => {
-      const trigger = ScrollTrigger.getById(id);
-      if (trigger) trigger.kill();
-    });
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-    // Start Section 2 hidden, with yellow visible underneath
+    // Yellow starts fully covering Section 2
     gsap.set(calling, {
-      "--creamReveal": "100%"
+      "--yellowCover": "0%"
     });
 
     if (reducedMotion) {
       gsap.set(calling, {
-        "--creamReveal": "0%"
+        "--yellowCover": "100%"
       });
       return;
     }
 
-    // Hero softly leaves before the reveal
+    // Hero softly exits as Section 2 approaches
     const heroExitTargets = [
       document.querySelector(".hero__copy"),
       document.querySelector(".church-band")
@@ -65,7 +59,6 @@
         y: -36,
         ease: "none",
         scrollTrigger: {
-          id: "messageHeroSoftExit",
           trigger: hero,
           start: "58% top",
           end: "bottom top",
@@ -93,14 +86,13 @@
     }
 
     /*
-      THE REAL REVEAL:
-      #calling itself is yellow.
-      Its cream background + real .calling-inner content are clipped.
-      On scroll, the cream/content reveal downward over the yellow.
+      Main reveal:
+      Yellow layer starts covering the cream section.
+      As the user scrolls, yellow clips downward and disappears.
+      Cream Section 2 is revealed underneath.
     */
-    const revealTl = gsap.timeline({
+    gsap.timeline({
       scrollTrigger: {
-        id: "messageCallingReveal",
         trigger: calling,
         start: "top top",
         end: () => window.innerWidth <= 768 ? "+=95%" : "+=125%",
@@ -109,15 +101,13 @@
         anticipatePin: 1,
         invalidateOnRefresh: true
       }
-    });
-
-    revealTl
-      .to(calling, {
-        "--creamReveal": "0%",
-        duration: 1,
-        ease: "none"
-      })
-      .to({}, { duration: 0.14 });
+    })
+    .to(calling, {
+      "--yellowCover": "100%",
+      duration: 1,
+      ease: "none"
+    })
+    .to({}, { duration: 0.12 });
 
     // Section 3 reveal
     if (bridge) {
@@ -127,7 +117,6 @@
         duration: 0.85,
         ease: "power3.out",
         scrollTrigger: {
-          id: "messageBridgeLabel",
           trigger: bridge,
           start: "top 72%",
           once: true
@@ -140,7 +129,6 @@
         duration: 1,
         ease: "power3.out",
         scrollTrigger: {
-          id: "messageBridgeTitle",
           trigger: bridge,
           start: "top 56%",
           once: true
@@ -153,7 +141,6 @@
         duration: 1,
         ease: "power3.out",
         scrollTrigger: {
-          id: "messageBridgeLine",
           trigger: bridge,
           start: "top 48%",
           once: true
@@ -166,7 +153,6 @@
         duration: 0.85,
         ease: "power3.out",
         scrollTrigger: {
-          id: "messageBridgeMarker",
           trigger: bridge,
           start: "top 50%",
           once: true
