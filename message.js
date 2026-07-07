@@ -684,3 +684,21 @@ if (typeof gsap !== "undefined" && typeof ScrollTrigger !== "undefined") {
     ease: "power3.out"
   });
 }
+
+
+
+
+
+
+
+
+
+
+const openDates = document.querySelectorAll(".calendar-grid button.is-open");
+
+openDates.forEach((date) => {
+  date.addEventListener("click", () => {
+    openDates.forEach((item) => item.classList.remove("is-selected"));
+    date.classList.add("is-selected");
+  });
+});
