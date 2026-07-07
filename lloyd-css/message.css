@@ -17,50 +17,67 @@
   overflow: hidden;
 }
 
-/* SECTION 2 */
+
+
+
+
 .calling-section {
-  --creamReveal: 100%;
+  --yellowReveal: 0%;
 
   position: relative;
   min-height: 100vh;
-  min-height: 100svh;
   overflow: hidden;
   isolation: isolate;
   color: var(--lloyd-black);
-  background:
-    radial-gradient(circle at 50% 44%, rgba(255, 255, 255, 0.22), transparent 42%),
-    linear-gradient(115deg, var(--lloyd-yellow-bright) 0%, var(--lloyd-yellow) 48%, var(--lloyd-yellow-deep) 100%);
+  background: var(--lloyd-cream);
 }
 
-/* Cream sheet that reveals downward over yellow */
+/* Final cream section underneath */
 .calling-section::before {
   content: "";
   position: absolute;
   inset: 0;
-  z-index: 2;
+  z-index: 0;
   pointer-events: none;
   background:
     radial-gradient(circle at 50% 42%, rgba(255, 255, 255, 0.82), transparent 40%),
     linear-gradient(115deg, #fbf7ee 0%, #f3eee3 48%, #f8f1e4 100%);
-  clip-path: inset(0 0 calc(100% - var(--creamReveal)) 0);
+}
+
+/* Yellow reveal layer ON TOP */
+.calling-section::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 50% 42%, rgba(255, 255, 255, 0.18), transparent 44%),
+    linear-gradient(
+      115deg,
+      var(--lloyd-yellow-bright) 0%,
+      var(--lloyd-yellow) 48%,
+      var(--lloyd-yellow-deep) 100%
+    );
+
+  /*
+    0% = yellow fully covering section.
+    100% = yellow wiped downward and gone.
+  */
+  clip-path: inset(var(--yellowReveal) 0 0 0);
   will-change: clip-path;
 }
 
-/* Small text visible only during yellow moment */
-.calling-section::after {
-  content: "THE MESSAGE";
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  display: grid;
-  place-items: center;
-  pointer-events: none;
-  font-family: Inter, Arial, sans-serif;
-  font-size: clamp(12px, 1.1vw, 16px);
-  font-weight: 900;
-  letter-spacing: 0.42em;
-  color: var(--lloyd-black);
+.calling-inner {
+  position: relative;
+  z-index: 5;
+  width: min(100%, 1540px);
+  min-height: 100vh;
+  margin: 0 auto;
+  padding: clamp(44px, 5vw, 76px) clamp(26px, 5vw, 72px) clamp(42px, 4vw, 58px);
 }
+
+
 
 .calling-inner {
   position: relative;
