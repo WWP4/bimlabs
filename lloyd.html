@@ -198,7 +198,7 @@
 
     <div class="book-main">
       <div class="book-left">
-        <div class="book-line-art">
+        <div class="book-line-art" aria-hidden="true">
           <span></span>
           <i></i>
         </div>
@@ -216,8 +216,14 @@
         </p>
 
         <div class="book-actions">
-          <a href="#" class="book-btn">GET THE BOOK <span>→</span></a>
-          <a href="#" class="book-link">READ AN EXCERPT</a>
+          <a href="#" class="book-btn">
+            GET THE BOOK
+            <span>→</span>
+          </a>
+
+          <a href="#" class="book-link">
+            READ AN EXCERPT
+          </a>
         </div>
       </div>
 
@@ -229,14 +235,20 @@
           <i></i>
         </div>
 
-        <img src="assets/book.png" alt="Remember Your Future book" class="book-img" />
+        <div class="book-img-wrap">
+          <img
+            src="assets/book.png"
+            alt="Remember Your Future book by Lloyd Bustard"
+            class="book-img"
+          />
+        </div>
 
         <div class="book-yellow-slab">
           <blockquote>
             <span>“</span>
             <p>
-              THE FUTURE DOESN’T<br>
-              BELONG TO THE TALENTED.<br>
+              THE FUTURE DOESN’T<br />
+              BELONG TO THE TALENTED.<br />
               IT BELONGS TO THE <b>PREPARED.</b>
             </p>
           </blockquote>
