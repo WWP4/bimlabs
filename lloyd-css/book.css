@@ -1058,17 +1058,16 @@
 
 .speaking-figure {
   position: absolute;
-  right: 1.5%;
+  right: -2%;
   bottom: 0;
   z-index: 2;
   width: auto;
-  height: min(94vh, 910px);
-  max-width: 52vw;
+  height: min(112vh, 1080px);
+  max-width: none;
   object-fit: contain;
   object-position: bottom right;
   pointer-events: none;
 }
-
 /* DECOR */
 
 .speaking-dots {
@@ -1134,18 +1133,23 @@
   transform: translateY(-50%);
 }
 
-/* RESPONSIVE */
-
 @media (max-width: 1280px) {
-  .speaking-copy-wrap {
-    width: min(760px, 56vw);
-  }
-
   .speaking-figure {
-    right: -1%;
-    height: min(88vh, 820px);
-    max-width: 50vw;
+    right: -4%;
+    height: min(104vh, 980px);
+    max-width: none;
   }
+}
+
+@media (max-width: 1060px) {
+  .speaking-figure {
+    opacity: 0.18;
+    right: -10%;
+    bottom: 0;
+    height: 82vh;
+    max-width: none;
+  }
+}
 
   .speaking-title {
     font-size: clamp(76px, 8.8vw, 148px);
