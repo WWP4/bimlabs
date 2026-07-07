@@ -1,14 +1,11 @@
 /* =========================================================
-   SECTION 2 / MESSAGE REVEAL
-   Cream section matches the book image cream.
-   Yellow reveal stays simple and only reveals this section.
+   SECTION 2 / MESSAGE
+   Flat cream canvas to match book section + image.
 ========================================================= */
 
 :root {
   --lloyd-black: #050505;
-  --lloyd-cream: #f4ead9;
-  --lloyd-cream-soft: #fbf3e6;
-  --lloyd-cream-warm: #f8efdf;
+  --lloyd-cream: #f7efe4;
   --lloyd-yellow: #f5bf00;
   --lloyd-yellow-bright: #f9cf13;
   --lloyd-yellow-deep: #e4a900;
@@ -37,16 +34,13 @@
   background: var(--lloyd-cream);
 }
 
-/* final cream canvas */
 .calling-section::before {
   content: "";
   position: absolute;
   inset: 0;
   z-index: 0;
   pointer-events: none;
-  background:
-    radial-gradient(circle at 50% 42%, rgba(255, 255, 255, 0.68), transparent 42%),
-    linear-gradient(115deg, #fbf3e6 0%, #f4ead9 48%, #f8efdf 100%);
+  background: var(--lloyd-cream);
 }
 
 /* yellow reveal layer */
@@ -311,112 +305,6 @@
   background-size: 16px 16px;
 }
 
-/* optional bridge styles if the HTML ever uses them */
-.calling-bridge-section {
-  position: relative;
-  min-height: 100vh;
-  min-height: 100svh;
-  overflow: hidden;
-  isolation: isolate;
-  color: var(--lloyd-black);
-  background:
-    radial-gradient(circle at 50% 42%, rgba(255, 255, 255, 0.68), transparent 42%),
-    linear-gradient(115deg, #fbf3e6 0%, #f4ead9 48%, #f8efdf 100%);
-}
-
-.calling-bridge-section::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  opacity: 0.04;
-  pointer-events: none;
-  mix-blend-mode: multiply;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.72' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23noise)' opacity='.62'/%3E%3C/svg%3E");
-}
-
-.calling-bridge-inner {
-  position: relative;
-  z-index: 5;
-  width: min(100%, 1540px);
-  min-height: 100vh;
-  min-height: 100svh;
-  margin: 0 auto;
-  padding: clamp(44px, 5vw, 76px) clamp(26px, 5vw, 72px) clamp(42px, 4vw, 58px);
-}
-
-.bridge-label {
-  position: relative;
-  z-index: 6;
-}
-
-.calling-center {
-  position: absolute;
-  inset: 0;
-  z-index: 5;
-  display: grid;
-  place-items: center;
-  text-align: center;
-  pointer-events: none;
-}
-
-.calling-center h2 {
-  margin: 0;
-  font-family: "Bebas Neue", Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
-  font-size: clamp(62px, 8vw, 128px);
-  font-weight: 400;
-  line-height: 0.9;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-}
-
-.calling-center em {
-  color: var(--lloyd-yellow);
-  font-style: normal;
-}
-
-.calling-line {
-  position: absolute;
-  top: 65%;
-  left: 50%;
-  width: 2px;
-  height: clamp(110px, 12vw, 170px);
-  background: var(--lloyd-yellow);
-  transform: translateX(-50%);
-  transform-origin: top;
-}
-
-.calling-marker {
-  position: absolute;
-  top: 50%;
-  right: clamp(34px, 5vw, 76px);
-  z-index: 6;
-  display: grid;
-  justify-items: center;
-  gap: 16px;
-  transform: translateY(-50%);
-  font-family: Inter, Arial, sans-serif;
-  font-size: 12px;
-  font-weight: 800;
-  line-height: 1;
-  letter-spacing: 0.08em;
-}
-
-.calling-marker i {
-  display: block;
-  width: 1px;
-  height: 72px;
-  background: rgba(0, 0, 0, 0.22);
-}
-
-.calling-marker span {
-  color: rgba(0, 0, 0, 0.34);
-}
-
-.calling-marker .active {
-  color: var(--lloyd-black);
-}
-
 /* ================================
    TABLET
 ================================ */
@@ -475,8 +363,7 @@
 ================================ */
 
 @media (max-width: 768px) {
-  .calling-inner,
-  .calling-bridge-inner {
+  .calling-inner {
     padding: 36px 22px 42px;
   }
 
@@ -548,19 +435,6 @@
   }
 
   .calling-dots {
-    display: none;
-  }
-
-  .calling-center h2 {
-    font-size: clamp(54px, 16vw, 92px);
-  }
-
-  .calling-line {
-    top: 68%;
-    height: 110px;
-  }
-
-  .calling-marker {
     display: none;
   }
 }
