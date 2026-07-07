@@ -635,7 +635,6 @@
 
 
 
-
 /* =========================================================
    LLOYD WEEKLY DEVOTIONAL POPUP
 ========================================================= */
@@ -646,7 +645,7 @@
   z-index: 9999;
   display: none;
   place-items: center;
-  padding: 24px;
+  padding: 18px;
 }
 
 .lloyd-popup.is-visible {
@@ -656,24 +655,26 @@
 .lloyd-popup__backdrop {
   position: absolute;
   inset: 0;
-  background: rgba(0, 0, 0, 0.72);
-  backdrop-filter: blur(7px);
+  background: rgba(0, 0, 0, 0.74);
+  backdrop-filter: blur(8px);
 }
+
+/* CARD */
 
 .lloyd-popup__card {
   position: relative;
   z-index: 2;
-  width: min(100%, 1040px);
+  width: min(95vw, 1220px);
   aspect-ratio: 4 / 3;
   overflow: hidden;
   border-radius: 18px;
   background-image: url("../assets/lloyd-popup.png");
   background-size: cover;
-  background-position: center;
+  background-position: center center;
   background-repeat: no-repeat;
   box-shadow:
-    0 42px 120px rgba(0, 0, 0, 0.55),
-    0 0 0 1px rgba(255, 255, 255, 0.12);
+    0 42px 120px rgba(0, 0, 0, 0.58),
+    0 0 0 1px rgba(255, 255, 255, 0.14);
   transform: scale(0.94);
   opacity: 0;
   animation: lloydPopupIn 0.55s cubic-bezier(.2,.8,.2,1) forwards;
@@ -686,15 +687,18 @@
   }
 }
 
-/* CLOSE */
+/* CLOSE
+   The PNG already has an X baked in.
+   This invisible button sits over that X so only one X visually appears.
+*/
 
 .lloyd-popup__close {
   position: absolute;
-  top: 34px;
-  right: 34px;
-  z-index: 8;
-  width: 44px;
-  height: 44px;
+  top: 4.1%;
+  right: 4.1%;
+  z-index: 9;
+  width: 46px;
+  height: 46px;
   padding: 0;
   border: 0;
   background: transparent;
@@ -702,26 +706,7 @@
 }
 
 .lloyd-popup__close span {
-  position: absolute;
-  left: 8px;
-  top: 21px;
-  width: 30px;
-  height: 3px;
-  background: #050505;
-  transform-origin: center;
-  transition: transform 0.22s ease, opacity 0.22s ease;
-}
-
-.lloyd-popup__close span:first-child {
-  transform: rotate(45deg);
-}
-
-.lloyd-popup__close span:last-child {
-  transform: rotate(-45deg);
-}
-
-.lloyd-popup__close:hover span {
-  transform: rotate(0deg);
+  display: none;
 }
 
 /* FORM PLACEMENT */
@@ -729,15 +714,17 @@
 .lloyd-popup__form {
   position: absolute;
   z-index: 7;
-  left: 5.1%;
-  bottom: 5.4%;
-  width: min(410px, 38%);
+  left: 4.2%;
+  bottom: 2.2%;
+  width: min(470px, 40%);
 }
 
 .devotional-form {
   display: grid;
-  gap: 11px;
+  gap: 9px;
 }
+
+/* INPUT */
 
 .devotional-input-wrap {
   height: 58px;
@@ -747,8 +734,8 @@
   padding: 0 18px;
   border-radius: 8px;
   background: #fff;
-  border: 1px solid rgba(0, 0, 0, 0.16);
-  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.12);
+  border: 1px solid rgba(0, 0, 0, 0.14);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.13);
 }
 
 .devotional-input-wrap svg {
@@ -771,16 +758,18 @@
   color: #050505;
   font-family: Inter, Arial, sans-serif;
   font-size: 15px;
-  font-weight: 600;
+  font-weight: 650;
 }
 
 .devotional-input-wrap input::placeholder {
-  color: rgba(0, 0, 0, 0.48);
+  color: rgba(0, 0, 0, 0.46);
 }
+
+/* BUTTON */
 
 .devotional-submit {
   height: 64px;
-  padding: 0 24px;
+  padding: 0 25px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -804,7 +793,7 @@
   font-size: 18px;
   font-weight: 950;
   line-height: 1;
-  letter-spacing: -0.03em;
+  letter-spacing: -0.04em;
   text-transform: uppercase;
 }
 
@@ -814,22 +803,25 @@
   line-height: 1;
 }
 
+/* SAFE TEXT */
+
 .devotional-safe {
   margin: 0;
+  min-height: 18px;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 7px;
   color: rgba(0, 0, 0, 0.72);
   font-family: Inter, Arial, sans-serif;
-  font-size: 12px;
-  font-weight: 700;
-  line-height: 1.25;
+  font-size: 11px;
+  font-weight: 750;
+  line-height: 1.2;
 }
 
 .devotional-safe svg {
-  width: 14px;
-  height: 14px;
+  width: 13px;
+  height: 13px;
   fill: none;
   stroke: currentColor;
   stroke-width: 1.9;
@@ -839,57 +831,15 @@
 
 /* RESPONSIVE */
 
-@media (max-width: 980px) {
+@media (max-width: 1180px) {
   .lloyd-popup__card {
-    width: min(100%, 760px);
+    width: min(96vw, 1060px);
   }
 
   .lloyd-popup__form {
-    left: 5%;
-    bottom: 5%;
-    width: 41%;
-  }
-
-  .devotional-input-wrap {
-    height: 50px;
-  }
-
-  .devotional-submit {
-    height: 56px;
-  }
-
-  .devotional-submit span {
-    font-size: 14px;
-  }
-
-  .devotional-safe {
-    font-size: 10px;
-  }
-}
-
-@media (max-width: 720px) {
-  .lloyd-popup {
-    padding: 16px;
-  }
-
-  .lloyd-popup__card {
-    width: min(100%, 430px);
-    aspect-ratio: auto;
-    min-height: 720px;
-    background-position: center top;
-    background-size: cover;
-  }
-
-  .lloyd-popup__close {
-    top: 18px;
-    right: 18px;
-  }
-
-  .lloyd-popup__form {
-    left: 22px;
-    right: 22px;
-    bottom: 24px;
-    width: auto;
+    left: 4.1%;
+    bottom: 2.1%;
+    width: min(430px, 41%);
   }
 
   .devotional-input-wrap {
@@ -897,34 +847,187 @@
   }
 
   .devotional-submit {
-    height: 58px;
+    height: 60px;
   }
 
   .devotional-submit span {
-    font-size: 15px;
-  }
-
-  .devotional-safe {
-    color: rgba(0, 0, 0, 0.78);
-    font-size: 11px;
+    font-size: 16px;
   }
 }
 
-@media (max-width: 420px) {
+@media (max-width: 920px) {
+  .lloyd-popup {
+    padding: 14px;
+  }
+
   .lloyd-popup__card {
-    min-height: 650px;
-    border-radius: 14px;
+    width: min(96vw, 820px);
+  }
+
+  .lloyd-popup__form {
+    left: 4%;
+    bottom: 2%;
+    width: 41.5%;
+  }
+
+  .devotional-form {
+    gap: 7px;
   }
 
   .devotional-input-wrap {
+    height: 48px;
     padding: 0 14px;
   }
 
+  .devotional-input-wrap svg {
+    width: 19px;
+    height: 19px;
+  }
+
+  .devotional-input-wrap input {
+    font-size: 13px;
+  }
+
   .devotional-submit {
+    height: 52px;
     padding: 0 18px;
   }
 
   .devotional-submit span {
     font-size: 13px;
+  }
+
+  .devotional-submit i {
+    font-size: 22px;
+  }
+
+  .devotional-safe {
+    font-size: 9px;
+  }
+}
+
+/* MOBILE:
+   Since your PNG is a desktop-designed 4:3 popup, mobile needs to stay
+   readable by using the same image ratio and letting the modal scroll if needed.
+*/
+
+@media (max-width: 720px) {
+  .lloyd-popup {
+    padding: 10px;
+    align-items: center;
+  }
+
+  .lloyd-popup__card {
+    width: min(100%, 560px);
+    aspect-ratio: 4 / 3;
+    border-radius: 14px;
+    background-size: cover;
+    background-position: center center;
+  }
+
+  .lloyd-popup__close {
+    top: 3.5%;
+    right: 3.6%;
+    width: 38px;
+    height: 38px;
+  }
+
+  .lloyd-popup__form {
+    left: 4%;
+    bottom: 1.8%;
+    width: 42%;
+  }
+
+  .devotional-input-wrap {
+    height: 39px;
+    gap: 8px;
+    padding: 0 10px;
+    border-radius: 6px;
+  }
+
+  .devotional-input-wrap svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .devotional-input-wrap input {
+    font-size: 11px;
+  }
+
+  .devotional-submit {
+    height: 43px;
+    padding: 0 13px;
+    border-radius: 6px;
+  }
+
+  .devotional-submit span {
+    font-size: 10px;
+    letter-spacing: -0.03em;
+  }
+
+  .devotional-submit i {
+    font-size: 18px;
+  }
+
+  .devotional-safe {
+    gap: 4px;
+    font-size: 7.5px;
+  }
+
+  .devotional-safe svg {
+    width: 10px;
+    height: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .lloyd-popup {
+    padding: 8px;
+  }
+
+  .lloyd-popup__card {
+    width: 100%;
+    border-radius: 12px;
+  }
+
+  .lloyd-popup__form {
+    left: 4%;
+    bottom: 1.6%;
+    width: 42%;
+  }
+
+  .devotional-form {
+    gap: 5px;
+  }
+
+  .devotional-input-wrap {
+    height: 34px;
+    padding: 0 8px;
+  }
+
+  .devotional-input-wrap svg {
+    width: 14px;
+    height: 14px;
+  }
+
+  .devotional-input-wrap input {
+    font-size: 10px;
+  }
+
+  .devotional-submit {
+    height: 37px;
+    padding: 0 10px;
+  }
+
+  .devotional-submit span {
+    font-size: 8.5px;
+  }
+
+  .devotional-submit i {
+    font-size: 15px;
+  }
+
+  .devotional-safe {
+    font-size: 6.5px;
   }
 }
