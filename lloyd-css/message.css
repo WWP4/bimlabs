@@ -1,12 +1,14 @@
 /* =========================================================
    SECTION 2 / MESSAGE REVEAL
-   Yellow is the background layer.
-   Cream/content reveals DOWN over the yellow like a reverse garage door.
+   Cream section matches the book image cream.
+   Yellow reveal stays simple and only reveals this section.
 ========================================================= */
 
 :root {
   --lloyd-black: #050505;
-  --lloyd-cream: #f5f1e8;
+  --lloyd-cream: #f4ead9;
+  --lloyd-cream-soft: #fbf3e6;
+  --lloyd-cream-warm: #f8efdf;
   --lloyd-yellow: #f5bf00;
   --lloyd-yellow-bright: #f9cf13;
   --lloyd-yellow-deep: #e4a900;
@@ -17,22 +19,25 @@
   overflow: hidden;
 }
 
-
-
-
+/* ================================
+   SECTION 2
+================================ */
 
 .calling-section {
   --yellowReveal: 0%;
+  --creamReveal: 100%;
 
   position: relative;
   min-height: 100vh;
+  min-height: 100svh;
   overflow: hidden;
   isolation: isolate;
+  margin: 0;
   color: var(--lloyd-black);
   background: var(--lloyd-cream);
 }
 
-/* Final cream section underneath */
+/* final cream canvas */
 .calling-section::before {
   content: "";
   position: absolute;
@@ -40,11 +45,11 @@
   z-index: 0;
   pointer-events: none;
   background:
-    radial-gradient(circle at 50% 42%, rgba(255, 255, 255, 0.82), transparent 40%),
-    linear-gradient(115deg, #fbf7ee 0%, #f3eee3 48%, #f8f1e4 100%);
+    radial-gradient(circle at 50% 42%, rgba(255, 255, 255, 0.68), transparent 42%),
+    linear-gradient(115deg, #fbf3e6 0%, #f4ead9 48%, #f8efdf 100%);
 }
 
-/* Yellow reveal layer ON TOP */
+/* yellow reveal layer */
 .calling-section::after {
   content: "";
   position: absolute;
@@ -59,25 +64,9 @@
       var(--lloyd-yellow) 48%,
       var(--lloyd-yellow-deep) 100%
     );
-
-  /*
-    0% = yellow fully covering section.
-    100% = yellow wiped downward and gone.
-  */
   clip-path: inset(var(--yellowReveal) 0 0 0);
   will-change: clip-path;
 }
-
-.calling-inner {
-  position: relative;
-  z-index: 5;
-  width: min(100%, 1540px);
-  min-height: 100vh;
-  margin: 0 auto;
-  padding: clamp(44px, 5vw, 76px) clamp(26px, 5vw, 72px) clamp(42px, 4vw, 58px);
-}
-
-
 
 .calling-inner {
   position: relative;
@@ -322,7 +311,7 @@
   background-size: 16px 16px;
 }
 
-/* SECTION 3 BRIDGE */
+/* optional bridge styles if the HTML ever uses them */
 .calling-bridge-section {
   position: relative;
   min-height: 100vh;
@@ -331,8 +320,8 @@
   isolation: isolate;
   color: var(--lloyd-black);
   background:
-    radial-gradient(circle at 50% 42%, rgba(255, 255, 255, 0.82), transparent 40%),
-    linear-gradient(115deg, #fbf7ee 0%, #f3eee3 48%, #f8f1e4 100%);
+    radial-gradient(circle at 50% 42%, rgba(255, 255, 255, 0.68), transparent 42%),
+    linear-gradient(115deg, #fbf3e6 0%, #f4ead9 48%, #f8efdf 100%);
 }
 
 .calling-bridge-section::after {
@@ -340,7 +329,7 @@
   position: absolute;
   inset: 0;
   z-index: 1;
-  opacity: 0.075;
+  opacity: 0.04;
   pointer-events: none;
   mix-blend-mode: multiply;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.72' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23noise)' opacity='.62'/%3E%3C/svg%3E");
@@ -428,6 +417,10 @@
   color: var(--lloyd-black);
 }
 
+/* ================================
+   TABLET
+================================ */
+
 @media (max-width: 1180px) {
   .calling-main {
     grid-template-columns: 1fr;
@@ -476,6 +469,10 @@
     opacity: 0.55;
   }
 }
+
+/* ================================
+   MOBILE
+================================ */
 
 @media (max-width: 768px) {
   .calling-inner,
