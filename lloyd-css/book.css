@@ -770,7 +770,7 @@
   z-index: 1;
 
   background-image: url("../assets/lloyd-yellowBG.png");
-  background-size: cover;
+  background-size: 82% auto;
   background-position: center center;
   background-repeat: no-repeat;
 
@@ -793,6 +793,7 @@
   }
 
   .speaking-bg {
+    background-size: 105% auto;
     background-position: 55% center;
   }
 }
@@ -804,6 +805,7 @@
   }
 
   .speaking-bg {
+    background-size: 142% auto;
     background-position: 62% center;
   }
 }
@@ -815,6 +817,7 @@
   }
 
   .speaking-bg {
+    background-size: 165% auto;
     background-position: 66% center;
   }
 }
