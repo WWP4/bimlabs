@@ -1,5 +1,5 @@
 // message.js
-// Hero → Calling transition + Section 2 / Section 3 reveals
+// Hero scrolls away → Section 2 enters yellow → yellow fades into cream
 
 (() => {
   const ready = (fn) => {
@@ -27,205 +27,81 @@
 
     gsap.registerPlugin(ScrollTrigger);
 
-    const prefersReducedMotion = window.matchMedia(
-      "(prefers-reduced-motion: reduce)"
-    ).matches;
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-    // Prevent duplicated transition layer on refresh/hot reload
-    document
-      .querySelectorAll(".hero-message-transition")
-      .forEach((el) => el.remove());
+    /*
+      Remove the old curtain system completely.
+      This new transition belongs to section 2 itself.
+    */
+    document.querySelectorAll(".hero-message-transition").forEach((el) => el.remove());
+    document.querySelectorAll(".calling-yellow-wash").forEach((el) => el.remove());
 
-    // Build yellow transition panel
-    const transition = document.createElement("div");
-    transition.className = "hero-message-transition";
-    transition.setAttribute("aria-hidden", "true");
+    const yellowWash = document.createElement("div");
+    yellowWash.className = "calling-yellow-wash";
+    yellowWash.setAttribute("aria-hidden", "true");
 
-    transition.innerHTML = `
-      <div class="hero-message-transition__panel"></div>
-      <div class="hero-message-transition__text">THE JOURNEY</div>
-    `;
+    calling.prepend(yellowWash);
 
-    hero.appendChild(transition);
-
-    const panel = transition.querySelector(".hero-message-transition__panel");
-    const text = transition.querySelector(".hero-message-transition__text");
-
-    const heroFadeTargets = [
-      document.querySelector(".hero__copy"),
-      document.querySelector(".church-band"),
-      document.querySelector(".site-header")
-    ].filter(Boolean);
-
-    if (prefersReducedMotion) {
-      gsap.set([panel, text], { clearProps: "all" });
-      transition.style.display = "none";
+    if (reducedMotion) {
+      yellowWash.style.opacity = "0";
       return;
     }
 
-    gsap.set(transition, {
-      pointerEvents: "none"
-    });
-
-    gsap.set(panel, {
-      yPercent: 100
-    });
-
-    gsap.set(text, {
+    /*
+      HERO LEAVES SOFTLY
+      No fake curtain. No hard cover.
+    */
+    gsap.to(".hero__copy, .church-band", {
       autoAlpha: 0,
-      y: 18
-    });
-
-    gsap.set(calling, {
-      y: 90,
-      scale: 0.985
-    });
-
-    const mm = gsap.matchMedia();
-
-    mm.add("(min-width: 769px)", () => {
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: hero,
-          start: "top top",
-          end: "+=240%",
-          scrub: 1.15,
-          pin: true,
-          anticipatePin: 1,
-          invalidateOnRefresh: true
-        }
-      });
-
-      tl.to(panel, {
-        yPercent: 0,
-        duration: 1.1,
-        ease: "none"
-      });
-
-      if (heroFadeTargets.length) {
-        tl.to(
-          heroFadeTargets,
-          {
-            autoAlpha: 0,
-            y: -28,
-            duration: 0.55,
-            ease: "power2.out"
-          },
-          "<+=0.22"
-        );
+      y: -42,
+      ease: "none",
+      scrollTrigger: {
+        trigger: hero,
+        start: "65% top",
+        end: "bottom top",
+        scrub: true
       }
-
-      tl.to(
-        text,
-        {
-          autoAlpha: 1,
-          y: 0,
-          duration: 0.38,
-          ease: "power2.out"
-        },
-        "-=0.15"
-      )
-        .to({}, { duration: 0.42 })
-        .to(text, {
-          autoAlpha: 0,
-          y: -18,
-          duration: 0.35,
-          ease: "power2.inOut"
-        })
-        .to(
-          panel,
-          {
-            yPercent: -100,
-            duration: 1.1,
-            ease: "none"
-          },
-          "-=0.08"
-        )
-        .to(
-          calling,
-          {
-            y: 0,
-            scale: 1,
-            duration: 1,
-            ease: "power2.out"
-          },
-          "<"
-        );
-
-      return () => tl.kill();
     });
 
-    mm.add("(max-width: 768px)", () => {
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: hero,
-          start: "top top",
-          end: "+=175%",
-          scrub: 1,
-          pin: true,
-          anticipatePin: 1,
-          invalidateOnRefresh: true
-        }
-      });
-
-      tl.to(panel, {
-        yPercent: 0,
-        duration: 1,
-        ease: "none"
-      });
-
-      if (heroFadeTargets.length) {
-        tl.to(
-          heroFadeTargets,
-          {
-            autoAlpha: 0,
-            y: -20,
-            duration: 0.5,
-            ease: "power2.out"
-          },
-          "<+=0.2"
-        );
+    gsap.to(".hero__bg img", {
+      scale: 1.08,
+      y: -60,
+      ease: "none",
+      scrollTrigger: {
+        trigger: hero,
+        start: "top top",
+        end: "bottom top",
+        scrub: true
       }
-
-      tl.to(
-        text,
-        {
-          autoAlpha: 1,
-          y: 0,
-          duration: 0.35,
-          ease: "power2.out"
-        },
-        "-=0.1"
-      )
-        .to({}, { duration: 0.25 })
-        .to(text, {
-          autoAlpha: 0,
-          y: -14,
-          duration: 0.3,
-          ease: "power2.inOut"
-        })
-        .to(panel, {
-          yPercent: -100,
-          duration: 0.95,
-          ease: "none"
-        })
-        .to(
-          calling,
-          {
-            y: 0,
-            scale: 1,
-            duration: 0.85,
-            ease: "power2.out"
-          },
-          "<"
-        );
-
-      return () => tl.kill();
     });
 
-    // Section 2 reveal
-    const callingLines = gsap.utils.toArray("#calling .calling-main h2 .line");
+    /*
+      SECTION 2 ENTERS AS YELLOW
+      When the user first sees section 2, it is yellow.
+    */
+    gsap.set(yellowWash, {
+      opacity: 1
+    });
 
+    /*
+      YELLOW FADES TO CREAM/WHITE
+      Once section 2 reaches the viewport, the yellow slowly washes out.
+    */
+    gsap.to(yellowWash, {
+      opacity: 0,
+      ease: "none",
+      scrollTrigger: {
+        trigger: calling,
+        start: "top 72%",
+        end: "top 8%",
+        scrub: 1.15,
+        invalidateOnRefresh: true
+      }
+    });
+
+    /*
+      SECTION 2 CONTENT REVEAL
+    */
     gsap.from("#calling .calling-label", {
       autoAlpha: 0,
       y: 24,
@@ -240,39 +116,25 @@
 
     gsap.from("#calling .calling-note", {
       autoAlpha: 0,
-      y: 18,
+      y: 20,
       duration: 0.9,
       ease: "power3.out",
       scrollTrigger: {
         trigger: calling,
-        start: "top 70%",
+        start: "top 68%",
         once: true
       }
     });
 
-    if (callingLines.length) {
-      gsap.from(callingLines, {
-        autoAlpha: 0,
-        y: 54,
-        stagger: 0.09,
-        duration: 1,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: calling,
-          start: "top 58%",
-          once: true
-        }
-      });
-    }
-
-    gsap.from("#calling .calling-copy", {
+    gsap.from("#calling .calling-main h2 .line", {
       autoAlpha: 0,
-      y: 28,
-      duration: 0.9,
+      y: 58,
+      stagger: 0.1,
+      duration: 1,
       ease: "power3.out",
       scrollTrigger: {
         trigger: calling,
-        start: "top 50%",
+        start: "top 56%",
         once: true
       }
     });
@@ -284,19 +146,31 @@
       ease: "power3.out",
       scrollTrigger: {
         trigger: calling,
-        start: "top 54%",
+        start: "top 52%",
+        once: true
+      }
+    });
+
+    gsap.from("#calling .calling-copy", {
+      autoAlpha: 0,
+      y: 34,
+      duration: 0.95,
+      ease: "power3.out",
+      scrollTrigger: {
+        trigger: calling,
+        start: "top 48%",
         once: true
       }
     });
 
     gsap.from("#calling .calling-bottom", {
       autoAlpha: 0,
-      y: 34,
-      duration: 0.9,
+      y: 36,
+      duration: 0.95,
       ease: "power3.out",
       scrollTrigger: {
         trigger: calling,
-        start: "top 36%",
+        start: "top 34%",
         once: true
       }
     });
@@ -304,17 +178,19 @@
     gsap.from("#calling .calling-orbit", {
       autoAlpha: 0,
       scale: 0.9,
-      rotate: -12,
+      rotate: -10,
       duration: 1.2,
       ease: "power3.out",
       scrollTrigger: {
         trigger: calling,
-        start: "top 55%",
+        start: "top 52%",
         once: true
       }
     });
 
-    // Section 3 reveal
+    /*
+      SECTION 3 REVEAL
+    */
     if (bridge) {
       gsap.from("#calling-bridge .bridge-label", {
         autoAlpha: 0,
@@ -365,7 +241,9 @@
       });
     }
 
-    // Mobile menu safety, in case lloyd.js is not handling it
+    /*
+      MOBILE MENU BACKUP
+    */
     const menuToggle = document.querySelector("#menuToggle");
     const mobileMenu = document.querySelector("#mobileMenu");
 
