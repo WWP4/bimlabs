@@ -113,26 +113,33 @@
       It starts covering Section 2.
       Then it wipes downward, revealing the cream content underneath.
     */
-    gsap
-      .timeline({
-        scrollTrigger: {
-          id: "message-yellow-reveal",
-          trigger: message,
-          start: "top top",
-          end: () => (window.innerWidth <= 768 ? "+=95%" : "+=125%"),
-          scrub: 1.05,
-          pin: true,
-          pinSpacing: true,
-          anticipatePin: 1,
-          invalidateOnRefresh: true
-        }
-      })
-      .to(message, {
-        "--yellowReveal": "100%",
-        duration: 1,
-        ease: "none"
-      })
-      .to({}, { duration: 0.1 });
+  gsap
+  .timeline({
+    scrollTrigger: {
+      id: "message-yellow-reveal",
+      trigger: message,
+      start: "top top",
+      end: () => (window.innerWidth <= 768 ? "+=55%" : "+=70%"),
+      scrub: 0.65,
+      pin: true,
+      pinSpacing: true,
+      anticipatePin: 1,
+      invalidateOnRefresh: true
+    }
+  })
+
+  // tiny pause so the user actually sees the yellow
+  .to({}, { duration: 0.08 })
+
+  // yellow wipes away sooner
+  .to(message, {
+    "--yellowReveal": "100%",
+    duration: 0.82,
+    ease: "none"
+  })
+
+  // small settle
+  .to({}, { duration: 0.1 });
 
     // Section 3 entrance.
     if (bridge) {
