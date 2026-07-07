@@ -403,3 +403,47 @@ if (bookSection) {
 window.addEventListener("load", () => {
   ScrollTrigger.refresh();
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+const podcastTrack = document.querySelector("#episodesTrack");
+const podcastPrev = document.querySelector(".episodes-prev");
+const podcastNext = document.querySelector(".episodes-next");
+
+if (podcastTrack && podcastPrev && podcastNext) {
+  const getEpisodeScrollAmount = () => {
+    const card = podcastTrack.querySelector(".episode-card");
+    if (!card) return 340;
+
+    const styles = window.getComputedStyle(podcastTrack);
+    const gap = parseFloat(styles.gap || styles.columnGap || 22);
+
+    return card.offsetWidth + gap;
+  };
+
+  podcastNext.addEventListener("click", () => {
+    podcastTrack.scrollBy({
+      left: getEpisodeScrollAmount(),
+      behavior: "smooth"
+    });
+  });
+
+  podcastPrev.addEventListener("click", () => {
+    podcastTrack.scrollBy({
+      left: -getEpisodeScrollAmount(),
+      behavior: "smooth"
+    });
+  });
+}
