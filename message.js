@@ -240,3 +240,127 @@
     requestAnimationFrame(refreshScroll);
   });
 })();
+
+
+
+
+
+
+
+
+
+
+gsap.registerPlugin(ScrollTrigger);
+
+/* MESSAGE HANDOFF */
+gsap.set(".message-handoff__rule", {
+  scaleX: 0,
+  transformOrigin: "left center"
+});
+
+gsap.set([
+  ".message-handoff__content",
+  ".message-handoff__dots"
+], {
+  y: 34,
+  opacity: 0
+});
+
+gsap.timeline({
+  scrollTrigger: {
+    trigger: ".message-handoff",
+    start: "top 78%",
+    once: true
+  }
+})
+.to(".message-handoff__rule", {
+  scaleX: 1,
+  duration: 0.85,
+  ease: "power3.out"
+})
+.to(".message-handoff__content", {
+  y: 0,
+  opacity: 1,
+  duration: 0.8,
+  ease: "power3.out"
+}, "-=0.42")
+.to(".message-handoff__dots", {
+  y: 0,
+  opacity: 0.7,
+  duration: 0.7,
+  ease: "power3.out"
+}, "-=0.5");
+
+
+/* BOOK SECTION ENTRANCE */
+gsap.set([
+  ".book-top",
+  ".book-left",
+  ".book-bg",
+  ".book-right",
+  ".book-actions",
+  ".book-footnote",
+  ".book-bottom"
+], {
+  y: 42,
+  opacity: 0
+});
+
+gsap.set(".book-bg", {
+  y: 56,
+  opacity: 0,
+  scale: 0.97
+});
+
+const bookTl = gsap.timeline({
+  scrollTrigger: {
+    trigger: ".book-section",
+    start: "top 72%",
+    once: true
+  }
+});
+
+bookTl
+.to(".book-top", {
+  y: 0,
+  opacity: 1,
+  duration: 0.75,
+  ease: "power3.out"
+})
+.to(".book-left", {
+  y: 0,
+  opacity: 1,
+  duration: 0.85,
+  ease: "power3.out"
+}, "-=0.35")
+.to(".book-bg", {
+  y: 0,
+  opacity: 1,
+  scale: 1,
+  duration: 1,
+  ease: "power3.out"
+}, "-=0.62")
+.to(".book-right", {
+  y: 0,
+  opacity: 1,
+  duration: 0.85,
+  ease: "power3.out"
+}, "-=0.55")
+.to(".book-actions", {
+  y: 0,
+  opacity: 1,
+  duration: 0.7,
+  ease: "power3.out"
+}, "-=0.32")
+.to(".book-footnote", {
+  y: 0,
+  opacity: 1,
+  duration: 0.55,
+  ease: "power3.out"
+}, "-=0.28")
+.to(".book-bottom", {
+  y: 0,
+  opacity: 1,
+  duration: 0.55,
+  ease: "power3.out"
+}, "-=0.24");
