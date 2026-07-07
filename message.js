@@ -588,3 +588,99 @@ if (typeof gsap !== "undefined" && typeof ScrollTrigger !== "undefined") {
     ease: "power3.out"
   });
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* =========================================================
+   SPEAKING SECTION ENTRANCE
+========================================================= */
+
+if (typeof gsap !== "undefined" && typeof ScrollTrigger !== "undefined") {
+  gsap.from(".speaking-top", {
+    scrollTrigger: {
+      trigger: ".speaking-section",
+      start: "top 80%",
+      once: true
+    },
+    y: 24,
+    opacity: 0,
+    duration: 0.7,
+    ease: "power3.out"
+  });
+
+  gsap.from(".speaking-copy h2 span", {
+    scrollTrigger: {
+      trigger: ".speaking-section",
+      start: "top 72%",
+      once: true
+    },
+    y: 50,
+    opacity: 0,
+    duration: 0.9,
+    stagger: 0.08,
+    ease: "power3.out"
+  });
+
+  gsap.from(".speaking-lead, .speaking-btn", {
+    scrollTrigger: {
+      trigger: ".speaking-section",
+      start: "top 68%",
+      once: true
+    },
+    y: 28,
+    opacity: 0,
+    duration: 0.75,
+    stagger: 0.1,
+    ease: "power3.out"
+  });
+
+  gsap.from(".speaking-availability", {
+    scrollTrigger: {
+      trigger: ".speaking-availability",
+      start: "top 86%",
+      once: true
+    },
+    y: 34,
+    opacity: 0,
+    duration: 0.8,
+    ease: "power3.out"
+  });
+
+  gsap.from(".speaking-visual img", {
+    scrollTrigger: {
+      trigger: ".speaking-section",
+      start: "top 70%",
+      once: true
+    },
+    y: 56,
+    opacity: 0,
+    scale: 0.97,
+    duration: 1,
+    ease: "power3.out"
+  });
+
+  gsap.from(".speaking-decor--dots, .speaking-decor--lines", {
+    scrollTrigger: {
+      trigger: ".speaking-section",
+      start: "top 72%",
+      once: true
+    },
+    opacity: 0,
+    duration: 0.8,
+    stagger: 0.08,
+    ease: "power3.out"
+  });
+}
