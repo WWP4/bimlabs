@@ -1058,11 +1058,11 @@
 
 .speaking-figure {
   position: absolute;
-  right: -2%;
+  right: 0%;
   bottom: 0;
   z-index: 2;
   width: auto;
-  height: min(112vh, 1080px);
+  height: min(101vh, 960px);
   max-width: none;
   object-fit: contain;
   object-position: bottom right;
@@ -1135,8 +1135,8 @@
 
 @media (max-width: 1280px) {
   .speaking-figure {
-    right: -4%;
-    height: min(104vh, 980px);
+    right: -2%;
+    height: min(96vh, 900px);
     max-width: none;
   }
 }
@@ -1144,13 +1144,12 @@
 @media (max-width: 1060px) {
   .speaking-figure {
     opacity: 0.18;
-    right: -10%;
+    right: -8%;
     bottom: 0;
-    height: 82vh;
+    height: 78vh;
     max-width: none;
   }
 }
-
   .speaking-title {
     font-size: clamp(76px, 8.8vw, 148px);
   }
