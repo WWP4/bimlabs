@@ -732,14 +732,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const sessionKey = "lloydDevotionalPopupClosed";
 
-  const showPopup = () => {
-    const wasClosed = sessionStorage.getItem(sessionKey);
+  const openPopup = () => {
+    if (sessionStorage.getItem(sessionKey)) return;
 
-    if (!wasClosed) {
-      popup.classList.add("is-visible");
-      popup.setAttribute("aria-hidden", "false");
-      document.body.style.overflow = "hidden";
-    }
+    popup.classList.add("is-visible");
+    popup.setAttribute("aria-hidden", "false");
+    document.body.style.overflow = "hidden";
   };
 
   const closePopup = () => {
@@ -749,7 +747,7 @@ document.addEventListener("DOMContentLoaded", () => {
     sessionStorage.setItem(sessionKey, "true");
   };
 
-  setTimeout(showPopup, 1200);
+  setTimeout(openPopup, 1200);
 
   closeBtn.addEventListener("click", closePopup);
 
