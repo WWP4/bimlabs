@@ -456,3 +456,126 @@
     margin-top: 56px;
   }
 }
+
+
+
+
+
+
+
+/* ================================
+   MESSAGE HANDOFF
+================================ */
+
+.message-handoff {
+  position: relative;
+  z-index: 2;
+  overflow: hidden;
+  isolation: isolate;
+  margin: 0;
+  padding: clamp(44px, 5vw, 76px) clamp(26px, 5vw, 72px) clamp(70px, 7vw, 120px);
+  color: var(--lloyd-black);
+  background: var(--lloyd-cream);
+}
+
+.message-handoff::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: var(--lloyd-cream);
+}
+
+.message-handoff__inner {
+  position: relative;
+  z-index: 2;
+  width: min(100%, 1240px);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: clamp(34px, 7vw, 120px);
+}
+
+.message-handoff__rule {
+  position: absolute;
+  top: -18px;
+  left: 0;
+  right: 86px;
+  height: 1px;
+  background: rgba(0, 0, 0, 0.18);
+}
+
+.message-handoff__content {
+  display: flex;
+  align-items: center;
+  gap: clamp(22px, 3vw, 38px);
+}
+
+.message-handoff__content i {
+  display: block;
+  flex: 0 0 auto;
+  width: 3px;
+  height: 72px;
+  background: var(--lloyd-black);
+}
+
+.message-handoff__content p {
+  margin: 0;
+  font-family: Inter, Arial, sans-serif;
+  font-size: clamp(15px, 1.35vw, 22px);
+  font-weight: 500;
+  line-height: 1.72;
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+}
+
+.message-handoff__content strong {
+  font-weight: 950;
+}
+
+.message-handoff__dots {
+  width: 86px;
+  height: 86px;
+  opacity: 0.7;
+  background-image: radial-gradient(var(--lloyd-black) 1.2px, transparent 1.2px);
+  background-size: 16px 16px;
+}
+
+@media (max-width: 900px) {
+  .message-handoff {
+    padding: 42px 22px 70px;
+  }
+
+  .message-handoff__inner {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+
+  .message-handoff__rule {
+    right: 0;
+  }
+
+  .message-handoff__content {
+    gap: 18px;
+  }
+
+  .message-handoff__content i {
+    width: 2px;
+    height: 58px;
+  }
+
+  .message-handoff__content p {
+    font-size: 12px;
+    line-height: 1.8;
+    letter-spacing: 0.15em;
+  }
+
+  .message-handoff__dots {
+    width: 72px;
+    height: 72px;
+    margin-left: auto;
+    opacity: 0.45;
+  }
+}
