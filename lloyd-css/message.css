@@ -24,19 +24,55 @@
 
 
 /* =========================================================
-   SECTION 2 — REAL REVEAL SETUP
+   SECTION 2 REVEAL
+   Cream section is real.
+   Branded yellow is the animated reveal layer on top.
 ========================================================= */
 
+:root {
+  --lloyd-black: #050505;
+  --lloyd-cream: #f5f1e8;
+  --lloyd-yellow: #f5bf00;
+  --lloyd-yellow-bright: #f9cf13;
+  --lloyd-yellow-deep: #e8aa00;
+}
+
+.hero {
+  position: relative;
+  overflow: hidden;
+}
+
+/* Real Section 2 */
 .calling-section {
-  --creamReveal: 100%;
+  --yellowCover: 0%;
 
   position: relative;
   min-height: 100vh;
   overflow: hidden;
   isolation: isolate;
   color: var(--lloyd-black);
+  background: var(--lloyd-cream);
+}
 
-  /* Yellow stays underneath the cream reveal */
+/* Cream final background */
+.calling-section::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 50% 42%, rgba(255, 255, 255, 0.82), transparent 40%),
+    linear-gradient(115deg, #fbf7ee 0%, #f3eee3 48%, #f8f1e4 100%);
+}
+
+/* Yellow reveal layer ON TOP */
+.calling-section::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  pointer-events: none;
   background:
     radial-gradient(circle at 50% 42%, rgba(255, 255, 255, 0.2), transparent 44%),
     linear-gradient(
@@ -45,40 +81,16 @@
       var(--lloyd-yellow) 48%,
       var(--lloyd-yellow-deep) 100%
     );
-}
 
-/* Cream layer on top of yellow */
-.calling-section::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  pointer-events: none;
-  background:
-    radial-gradient(circle at 50% 42%, rgba(255, 255, 255, 0.82), transparent 40%),
-    linear-gradient(115deg, #fbf7ee 0%, #f3eee3 48%, #f8f1e4 100%);
-
-  /* Downward reveal: starts closed, opens down */
-  clip-path: inset(0 0 var(--creamReveal) 0);
+  /*
+    0% = yellow fully covering section.
+    100% = yellow gone, cream fully revealed.
+  */
+  clip-path: inset(var(--yellowCover) 0 0 0);
   will-change: clip-path;
 }
 
-/* Grain clipped with the cream */
-.calling-section::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: 2;
-  opacity: 0.075;
-  pointer-events: none;
-  mix-blend-mode: multiply;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.72' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23noise)' opacity='.62'/%3E%3C/svg%3E");
-
-  clip-path: inset(0 0 var(--creamReveal) 0);
-  will-change: clip-path;
-}
-
-/* Real Section 2 HTML content reveals with cream */
+/* Real HTML content stays real, underneath the yellow overlay */
 .calling-inner {
   position: relative;
   z-index: 5;
@@ -86,11 +98,7 @@
   min-height: 100vh;
   margin: 0 auto;
   padding: clamp(44px, 5vw, 76px) clamp(26px, 5vw, 72px) clamp(42px, 4vw, 58px);
-
-  clip-path: inset(0 0 var(--creamReveal) 0);
-  will-change: clip-path;
 }
-
 
 /* =========================================================
    SECTION 3 BACKGROUND
