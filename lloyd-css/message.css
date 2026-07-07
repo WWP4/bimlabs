@@ -1,7 +1,7 @@
 /* =========================================================
-   SECTION 2 + SECTION 3
-   Real Section 2 reverse-garage reveal
-   Yellow behind. Cream/content reveal downward on top.
+   MESSAGE / CALLING SECTION
+   Real HTML reveal:
+   yellow underneath, cream + content reveal downward on top.
 ========================================================= */
 
 :root {
@@ -24,7 +24,7 @@
 
 
 /* =========================================================
-   SECTION 2 REAL REVEAL
+   SECTION 2 — REAL REVEAL SETUP
 ========================================================= */
 
 .calling-section {
@@ -36,7 +36,7 @@
   isolation: isolate;
   color: var(--lloyd-black);
 
-  /* Yellow reveal layer lives behind the cream */
+  /* Yellow stays underneath the cream reveal */
   background:
     radial-gradient(circle at 50% 42%, rgba(255, 255, 255, 0.2), transparent 44%),
     linear-gradient(
@@ -47,7 +47,7 @@
     );
 }
 
-/* Cream/white layer on top of yellow */
+/* Cream layer on top of yellow */
 .calling-section::before {
   content: "";
   position: absolute;
@@ -58,12 +58,12 @@
     radial-gradient(circle at 50% 42%, rgba(255, 255, 255, 0.82), transparent 40%),
     linear-gradient(115deg, #fbf7ee 0%, #f3eee3 48%, #f8f1e4 100%);
 
-  /* This creates the downward garage reveal */
+  /* Downward reveal: starts closed, opens down */
   clip-path: inset(0 0 var(--creamReveal) 0);
   will-change: clip-path;
 }
 
-/* Grain only appears with the cream layer */
+/* Grain clipped with the cream */
 .calling-section::after {
   content: "";
   position: absolute;
@@ -78,7 +78,7 @@
   will-change: clip-path;
 }
 
-/* Real HTML content reveals with the cream */
+/* Real Section 2 HTML content reveals with cream */
 .calling-inner {
   position: relative;
   z-index: 5;
@@ -93,7 +93,7 @@
 
 
 /* =========================================================
-   SECTION 3 NORMAL CREAM BACKGROUND
+   SECTION 3 BACKGROUND
 ========================================================= */
 
 .calling-bridge-section {
@@ -166,6 +166,7 @@
   font-weight: 900;
   line-height: 1;
   letter-spacing: 0.08em;
+  color: var(--lloyd-black);
 }
 
 .calling-label i {
@@ -184,6 +185,7 @@
   line-height: 1;
   letter-spacing: 0.32em;
   text-transform: uppercase;
+  color: var(--lloyd-black);
 }
 
 .calling-note {
@@ -203,7 +205,7 @@
 
 
 /* =========================================================
-   SECTION 2 MAIN
+   SECTION 2 MAIN DESIGN
 ========================================================= */
 
 .calling-main {
@@ -228,6 +230,7 @@
   line-height: 0.89;
   letter-spacing: 0.035em;
   text-transform: uppercase;
+  color: var(--lloyd-black);
 }
 
 .calling-main h2 .line {
@@ -275,6 +278,7 @@
   line-height: 1.75;
   letter-spacing: 0.34em;
   text-transform: uppercase;
+  color: var(--lloyd-black);
 }
 
 .calling-copy strong {
@@ -365,6 +369,7 @@
   line-height: 1.72;
   letter-spacing: 0.34em;
   text-transform: uppercase;
+  color: var(--lloyd-black);
 }
 
 .calling-bottom strong {
@@ -409,6 +414,7 @@
   line-height: 0.9;
   letter-spacing: 0.05em;
   text-transform: uppercase;
+  color: var(--lloyd-black);
 }
 
 .calling-center em {
