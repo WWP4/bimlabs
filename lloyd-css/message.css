@@ -1,13 +1,12 @@
 /* =========================================================
    SECTION 2 + SECTION 3
-   Reverse garage reveal:
-   yellow behind, cream/white section reveals downward
+   Real Section 2 reverse-garage reveal
+   Yellow behind. Cream/content reveal downward on top.
 ========================================================= */
 
 :root {
   --lloyd-black: #050505;
   --lloyd-cream: #f5f1e8;
-  --lloyd-cream-soft: #fbf7ee;
   --lloyd-yellow: #f5bf00;
   --lloyd-yellow-bright: #f9cf13;
   --lloyd-yellow-deep: #e8aa00;
@@ -15,7 +14,7 @@
 
 
 /* =========================================================
-   HERO TRANSITION LAYER
+   HERO SAFETY
 ========================================================= */
 
 .hero {
@@ -23,48 +22,49 @@
   overflow: hidden;
 }
 
-.hero-garage-transition {
-  position: absolute;
-  inset: 0;
-  z-index: 90;
+
+/* =========================================================
+   SECTION 2 REAL REVEAL
+========================================================= */
+
+.calling-section {
+  --creamReveal: 100%;
+
+  position: relative;
+  min-height: 100vh;
   overflow: hidden;
-  pointer-events: none;
-  opacity: 0;
-  visibility: hidden;
+  isolation: isolate;
+  color: var(--lloyd-black);
+
+  /* Yellow reveal layer lives behind the cream */
+  background:
+    radial-gradient(circle at 50% 42%, rgba(255, 255, 255, 0.2), transparent 44%),
+    linear-gradient(
+      115deg,
+      var(--lloyd-yellow-bright) 0%,
+      var(--lloyd-yellow) 48%,
+      var(--lloyd-yellow-deep) 100%
+    );
 }
 
-/* Yellow background behind the garage reveal */
-.hero-garage-transition__yellow {
+/* Cream/white layer on top of yellow */
+.calling-section::before {
+  content: "";
   position: absolute;
   inset: 0;
   z-index: 1;
-  background:
-    radial-gradient(circle at 50% 42%, rgba(255, 255, 255, 0.18), transparent 44%),
-    linear-gradient(115deg, var(--lloyd-yellow-bright) 0%, var(--lloyd-yellow) 48%, var(--lloyd-yellow-deep) 100%);
-}
-
-/* White/cream panel that reveals downward */
-.hero-garage-transition__white {
-  position: absolute;
-  inset: 0;
-  z-index: 2;
-  overflow: hidden;
-  background: var(--lloyd-cream);
-  clip-path: inset(0% 0% 100% 0%);
-  will-change: clip-path;
-}
-
-/* Final cream section background inside the reveal */
-.hero-garage-transition__white-bg {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
+  pointer-events: none;
   background:
     radial-gradient(circle at 50% 42%, rgba(255, 255, 255, 0.82), transparent 40%),
     linear-gradient(115deg, #fbf7ee 0%, #f3eee3 48%, #f8f1e4 100%);
+
+  /* This creates the downward garage reveal */
+  clip-path: inset(0 0 var(--creamReveal) 0);
+  will-change: clip-path;
 }
 
-.hero-garage-transition__white::after {
+/* Grain only appears with the cream layer */
+.calling-section::after {
   content: "";
   position: absolute;
   inset: 0;
@@ -73,20 +73,29 @@
   pointer-events: none;
   mix-blend-mode: multiply;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.72' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23noise)' opacity='.62'/%3E%3C/svg%3E");
+
+  clip-path: inset(0 0 var(--creamReveal) 0);
+  will-change: clip-path;
 }
 
-/* Cloned Section 2 content during the transition */
-.calling-inner--garage-clone {
+/* Real HTML content reveals with the cream */
+.calling-inner {
   position: relative;
-  z-index: 4;
+  z-index: 5;
+  width: min(100%, 1540px);
+  min-height: 100vh;
+  margin: 0 auto;
+  padding: clamp(44px, 5vw, 76px) clamp(26px, 5vw, 72px) clamp(42px, 4vw, 58px);
+
+  clip-path: inset(0 0 var(--creamReveal) 0);
+  will-change: clip-path;
 }
 
 
 /* =========================================================
-   REAL SECTION BACKGROUNDS
+   SECTION 3 NORMAL CREAM BACKGROUND
 ========================================================= */
 
-.calling-section,
 .calling-bridge-section {
   position: relative;
   min-height: 100vh;
@@ -96,7 +105,6 @@
   background: var(--lloyd-cream);
 }
 
-.calling-section::before,
 .calling-bridge-section::before {
   content: "";
   position: absolute;
@@ -108,7 +116,6 @@
     linear-gradient(115deg, #fbf7ee 0%, #f3eee3 48%, #f8f1e4 100%);
 }
 
-.calling-section::after,
 .calling-bridge-section::after {
   content: "";
   position: absolute;
@@ -120,12 +127,6 @@
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.72' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23noise)' opacity='.62'/%3E%3C/svg%3E");
 }
 
-
-/* =========================================================
-   INNER WRAPPERS
-========================================================= */
-
-.calling-inner,
 .calling-bridge-inner {
   position: relative;
   z-index: 5;
@@ -384,10 +385,6 @@
 /* =========================================================
    SECTION 3 BRIDGE
 ========================================================= */
-
-.calling-bridge-section {
-  min-height: 100vh;
-}
 
 .bridge-label {
   position: relative;
