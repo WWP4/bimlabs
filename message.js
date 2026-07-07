@@ -555,3 +555,36 @@ if (typeof gsap !== "undefined" && typeof ScrollTrigger !== "undefined") {
     ease: "power3.out"
   });
 }
+
+
+
+
+
+
+
+
+if (typeof gsap !== "undefined" && typeof ScrollTrigger !== "undefined") {
+  gsap.from(".book-to-podcast__inner p", {
+    scrollTrigger: {
+      trigger: ".book-to-podcast",
+      start: "top 82%",
+      once: true
+    },
+    y: 24,
+    opacity: 0,
+    duration: 0.75,
+    ease: "power3.out"
+  });
+
+  gsap.from(".book-to-podcast__inner span", {
+    scrollTrigger: {
+      trigger: ".book-to-podcast",
+      start: "top 82%",
+      once: true
+    },
+    scaleX: 0,
+    transformOrigin: "left center",
+    duration: 0.85,
+    ease: "power3.out"
+  });
+}
