@@ -418,32 +418,140 @@ window.addEventListener("load", () => {
 
 
 
-const podcastTrack = document.querySelector("#episodesTrack");
-const podcastPrev = document.querySelector(".episodes-prev");
-const podcastNext = document.querySelector(".episodes-next");
+/* =========================================================
+   PODCAST EPISODE TRACK
+========================================================= */
 
-if (podcastTrack && podcastPrev && podcastNext) {
+const episodesTrack = document.querySelector("#episodesTrack");
+const episodesPrev = document.querySelector(".episodes-prev");
+const episodesNext = document.querySelector(".episodes-next");
+const episodesProgress = document.querySelector(".episodes-progress span");
+
+if (episodesTrack && episodesPrev && episodesNext) {
   const getEpisodeScrollAmount = () => {
-    const card = podcastTrack.querySelector(".episode-card");
-    if (!card) return 340;
+    const card = episodesTrack.querySelector(".episode-card");
+    if (!card) return 400;
 
-    const styles = window.getComputedStyle(podcastTrack);
+    const styles = window.getComputedStyle(episodesTrack);
     const gap = parseFloat(styles.gap || styles.columnGap || 22);
 
     return card.offsetWidth + gap;
   };
 
-  podcastNext.addEventListener("click", () => {
-    podcastTrack.scrollBy({
+  const updateEpisodesProgress = () => {
+    if (!episodesProgress) return;
+
+    const maxScroll = episodesTrack.scrollWidth - episodesTrack.clientWidth;
+
+    if (maxScroll <= 0) {
+      episodesProgress.style.width = "100%";
+      return;
+    }
+
+    const progress = (episodesTrack.scrollLeft / maxScroll) * 100;
+    const width = Math.max(28, progress + 28);
+
+    episodesProgress.style.width = `${Math.min(width, 100)}%`;
+  };
+
+  episodesNext.addEventListener("click", () => {
+    episodesTrack.scrollBy({
       left: getEpisodeScrollAmount(),
       behavior: "smooth"
     });
   });
 
-  podcastPrev.addEventListener("click", () => {
-    podcastTrack.scrollBy({
+  episodesPrev.addEventListener("click", () => {
+    episodesTrack.scrollBy({
       left: -getEpisodeScrollAmount(),
       behavior: "smooth"
     });
+  });
+
+  episodesTrack.addEventListener("scroll", updateEpisodesProgress);
+  window.addEventListener("resize", updateEpisodesProgress);
+
+  updateEpisodesProgress();
+}
+
+
+/* =========================================================
+   PODCAST ENTRANCE ANIMATIONS
+========================================================= */
+
+if (typeof gsap !== "undefined" && typeof ScrollTrigger !== "undefined") {
+  gsap.from(".podcast-eyebrow", {
+    scrollTrigger: {
+      trigger: ".podcast-section",
+      start: "top 72%",
+      once: true
+    },
+    y: 24,
+    opacity: 0,
+    duration: 0.75,
+    ease: "power3.out"
+  });
+
+  gsap.from(".podcast-hero h2 span", {
+    scrollTrigger: {
+      trigger: ".podcast-section",
+      start: "top 68%",
+      once: true
+    },
+    y: 44,
+    opacity: 0,
+    duration: 0.9,
+    stagger: 0.08,
+    ease: "power3.out"
+  });
+
+  gsap.from(".podcast-copy, .podcast-actions", {
+    scrollTrigger: {
+      trigger: ".podcast-section",
+      start: "top 62%",
+      once: true
+    },
+    y: 30,
+    opacity: 0,
+    duration: 0.75,
+    stagger: 0.1,
+    ease: "power3.out"
+  });
+
+  gsap.from(".episodes-head", {
+    scrollTrigger: {
+      trigger: ".podcast-episodes",
+      start: "top 80%",
+      once: true
+    },
+    y: 28,
+    opacity: 0,
+    duration: 0.75,
+    ease: "power3.out"
+  });
+
+  gsap.from(".episode-card", {
+    scrollTrigger: {
+      trigger: ".episodes-track",
+      start: "top 84%",
+      once: true
+    },
+    y: 42,
+    opacity: 0,
+    duration: 0.75,
+    stagger: 0.08,
+    ease: "power3.out"
+  });
+
+  gsap.from(".episodes-bottom", {
+    scrollTrigger: {
+      trigger: ".episodes-bottom",
+      start: "top 90%",
+      once: true
+    },
+    y: 22,
+    opacity: 0,
+    duration: 0.6,
+    ease: "power3.out"
   });
 }
