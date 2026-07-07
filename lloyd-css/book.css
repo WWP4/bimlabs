@@ -740,10 +740,6 @@
 
 
 
-
-
-
-
 /* =========================================================
    SECTION 5: SPEAKING CTA — IMAGE BACKGROUND
    CSS file is inside /lloyd-css/
@@ -755,7 +751,7 @@
   width: 100%;
   min-height: 100vh;
   overflow: hidden;
-  background: #f5bf00;
+  background: #fdca02;
   isolation: isolate;
 }
 
@@ -770,7 +766,7 @@
   z-index: 1;
 
   background-image: url("../assets/lloyd-yellowBG.png");
-  background-size: 82% auto;
+  background-size: 80% auto;
   background-position: center center;
   background-repeat: no-repeat;
 
@@ -793,7 +789,7 @@
   }
 
   .speaking-bg {
-    background-size: 125% auto;
+    background-size: 102% auto;
     background-position: 55% center;
   }
 }
@@ -805,7 +801,7 @@
   }
 
   .speaking-bg {
-    background-size: 142% auto;
+    background-size: 138% auto;
     background-position: 62% center;
   }
 }
@@ -817,7 +813,7 @@
   }
 
   .speaking-bg {
-    background-size: 165% auto;
+    background-size: 160% auto;
     background-position: 66% center;
   }
 }
