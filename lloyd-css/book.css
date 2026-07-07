@@ -1,6 +1,5 @@
 /* ================================
    SECTION 3: BOOK
-   Full editorial book section
 ================================ */
 
 .book-section {
@@ -10,10 +9,10 @@
   isolation: isolate;
   color: var(--lloyd-black, #050505);
   background: var(--lloyd-cream, #f5f1e8);
-  padding: clamp(46px, 5vw, 78px) clamp(28px, 4.6vw, 76px) clamp(42px, 4vw, 62px);
+  padding: clamp(46px, 5vw, 76px) clamp(28px, 4.8vw, 76px) clamp(48px, 4vw, 66px);
 }
 
-/* SAME BACKGROUND AS MESSAGE SECTION */
+/* exact same cream world as section 2 */
 .book-section::before {
   content: "";
   position: absolute;
@@ -25,7 +24,6 @@
     linear-gradient(115deg, #fbf7ee 0%, #f3eee3 48%, #f8f1e4 100%);
 }
 
-/* subtle shared texture */
 .book-section::after {
   content: "";
   position: absolute;
@@ -42,26 +40,40 @@
   box-sizing: border-box;
 }
 
+.book-bg {
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+}
+
+.book-bg img {
+  width: min(860px, 58vw);
+  height: auto;
+  object-fit: contain;
+  transform: translate(3vw, -1vh);
+  filter: drop-shadow(0 24px 34px rgba(0, 0, 0, 0.08));
+}
+
 .book-shell {
   position: relative;
-  z-index: 3;
+  z-index: 5;
   width: min(100%, 1580px);
-  min-height: calc(132vh - 120px);
+  min-height: calc(132vh - 124px);
   margin: 0 auto;
   display: flex;
   flex-direction: column;
 }
 
-/* ================================
-   TOP LABELS
-================================ */
+/* TOP */
 
 .book-top {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
   gap: 30px;
-  flex: 0 0 auto;
 }
 
 .book-label {
@@ -104,73 +116,64 @@
   background: var(--lloyd-yellow, #f5bf00);
 }
 
-/* ================================
-   MAIN GRID
-================================ */
+/* CONTENT */
 
-.book-main {
+.book-content {
   position: relative;
   flex: 1;
   display: grid;
-  grid-template-columns: minmax(360px, 0.9fr) minmax(420px, 0.95fr) minmax(290px, 0.62fr);
+  grid-template-columns: minmax(360px, 0.9fr) minmax(300px, 0.62fr);
   align-items: center;
-  gap: clamp(28px, 3.6vw, 70px);
-  padding: clamp(84px, 8vw, 150px) 0 clamp(54px, 5vw, 86px);
+  justify-content: space-between;
+  gap: clamp(420px, 37vw, 640px);
+  padding: clamp(86px, 8vw, 148px) 0 clamp(70px, 6vw, 96px);
 }
-
-/* ================================
-   LEFT COPY
-================================ */
 
 .book-left {
   position: relative;
-  z-index: 6;
-  align-self: center;
+  max-width: 530px;
   padding-left: clamp(34px, 4vw, 58px);
 }
 
-.book-line-art {
+.book-line {
   position: absolute;
   left: 0;
   top: 7%;
-  bottom: 4%;
+  bottom: 3%;
   width: 1px;
   background: rgba(0, 0, 0, 0.28);
 }
 
-.book-title {
+.book-left h2 {
   margin: 0;
-  color: var(--lloyd-black, #050505);
 }
 
-.book-title span {
+.book-left h2 span {
   display: block;
   font-family: Inter, Arial, sans-serif;
-  font-size: clamp(66px, 6.3vw, 116px);
+  font-size: clamp(68px, 6.5vw, 116px);
   font-weight: 950;
   line-height: 0.86;
   letter-spacing: -0.055em;
   text-transform: uppercase;
 }
 
-.book-title em {
+.book-left h2 em {
   display: block;
   margin-top: -0.04em;
   margin-left: -0.02em;
   color: var(--lloyd-yellow, #f5bf00);
   font-family: "Brush Script MT", "Segoe Script", cursive;
-  font-size: clamp(72px, 7.2vw, 132px);
+  font-size: clamp(76px, 7.4vw, 134px);
   font-weight: 400;
   line-height: 0.78;
   letter-spacing: -0.055em;
   font-style: normal;
   transform: rotate(-1.2deg);
-  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.04);
 }
 
 .book-lead {
   margin: clamp(38px, 3vw, 58px) 0 0;
-  max-width: 430px;
   color: rgba(0, 0, 0, 0.88);
   font-family: Georgia, "Times New Roman", serif;
   font-size: clamp(24px, 1.8vw, 34px);
@@ -179,7 +182,7 @@
   letter-spacing: -0.035em;
 }
 
-.book-small-line {
+.book-mark {
   display: block;
   width: 32px;
   height: 3px;
@@ -202,139 +205,16 @@
   font-weight: 600;
 }
 
-/* ================================
-   CENTER BOOK ART
-================================ */
+/* REVIEWS */
 
-.book-center {
-  position: relative;
-  z-index: 5;
-  display: grid;
-  place-items: center;
-  min-height: 680px;
-}
-
-.book-img-wrap {
-  position: relative;
-  z-index: 10;
-  width: min(460px, 31vw);
-  transform: translateY(-8px);
-}
-
-.book-img {
-  display: block;
-  width: 100%;
-  height: auto;
-  filter:
-    drop-shadow(0 32px 32px rgba(0, 0, 0, 0.24))
-    drop-shadow(0 5px 10px rgba(0, 0, 0, 0.16));
-}
-
-.book-art {
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  pointer-events: none;
-}
-
-.paint {
-  position: absolute;
-  display: block;
-  left: 50%;
-  top: 50%;
-  filter: saturate(1.02);
-}
-
-.paint-yellow {
-  width: clamp(360px, 35vw, 620px);
-  height: clamp(122px, 10vw, 176px);
-  z-index: 2;
-  background:
-    radial-gradient(circle at 8% 55%, transparent 0 12px, rgba(245, 191, 0, 0.95) 13px 100%),
-    linear-gradient(90deg, rgba(245, 191, 0, 0.96), rgba(255, 211, 31, 0.86));
-  clip-path: polygon(
-    2% 38%, 16% 18%, 35% 10%, 58% 18%, 78% 9%, 98% 26%,
-    93% 55%, 100% 76%, 74% 86%, 51% 77%, 31% 93%, 7% 72%
-  );
-  transform: translate(-58%, -45%) rotate(-15deg);
-  opacity: 0.92;
-}
-
-.paint-black {
-  width: clamp(340px, 32vw, 580px);
-  height: clamp(112px, 9.2vw, 164px);
-  z-index: 3;
-  background:
-    linear-gradient(90deg, rgba(3, 3, 3, 0.96), rgba(3, 3, 3, 0.88));
-  clip-path: polygon(
-    0% 42%, 12% 24%, 31% 16%, 58% 21%, 74% 9%, 100% 28%,
-    92% 55%, 98% 76%, 78% 91%, 55% 74%, 30% 94%, 8% 70%
-  );
-  transform: translate(-36%, -8%) rotate(-14deg);
-  opacity: 0.96;
-}
-
-.paint-yellow-small {
-  width: clamp(220px, 18vw, 360px);
-  height: clamp(52px, 5vw, 90px);
-  z-index: 4;
-  background: rgba(245, 191, 0, 0.62);
-  clip-path: polygon(0 36%, 24% 8%, 62% 14%, 100% 34%, 88% 74%, 48% 92%, 10% 72%);
-  transform: translate(-4%, 42%) rotate(-12deg);
-  opacity: 0.82;
-}
-
-.book-orbit {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  z-index: 5;
-  width: clamp(430px, 34vw, 620px);
-  height: clamp(300px, 24vw, 430px);
-  border: 1.4px solid rgba(0, 0, 0, 0.46);
-  border-radius: 50%;
-  transform: translate(-44%, -44%) rotate(-28deg);
-}
-
-.book-orbit-dot {
-  position: absolute;
-  left: 82%;
-  top: 39%;
-  z-index: 6;
-  width: 14px;
-  height: 14px;
-  border-radius: 999px;
-  background: var(--lloyd-yellow, #f5bf00);
-  box-shadow: 0 0 0 5px rgba(245, 191, 0, 0.1);
-}
-
-.book-dots {
-  position: absolute;
-  right: 4%;
-  bottom: 15%;
-  z-index: 1;
-  width: 142px;
-  height: 142px;
-  opacity: 0.42;
-  background-image: radial-gradient(rgba(0, 0, 0, 0.72) 1.25px, transparent 1.25px);
-  background-size: 16px 16px;
-}
-
-/* ================================
-   REVIEWS
-================================ */
-
-.book-reviews {
-  position: relative;
-  z-index: 8;
+.book-right {
   display: grid;
   gap: 20px;
   justify-self: end;
   width: min(310px, 100%);
 }
 
-.review-card {
-  position: relative;
+.book-review {
   min-height: 240px;
   padding: 28px 28px 24px;
   border: 1px solid rgba(0, 0, 0, 0.18);
@@ -344,7 +224,7 @@
   backdrop-filter: blur(3px);
 }
 
-.review-card__top {
+.book-review-top {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
@@ -352,24 +232,25 @@
   margin-bottom: 14px;
 }
 
-.review-quote {
+.book-review-top span {
   color: var(--lloyd-yellow, #f5bf00);
   font-family: Georgia, "Times New Roman", serif;
   font-size: 62px;
   line-height: 0.82;
 }
 
-.review-stars {
+.book-review-top p {
+  margin: 0;
+  padding-top: 8px;
   color: var(--lloyd-yellow, #f5bf00);
   font-family: Inter, Arial, sans-serif;
   font-size: 15px;
   font-weight: 900;
   letter-spacing: 0.04em;
   line-height: 1;
-  padding-top: 8px;
 }
 
-.review-card p {
+.book-review blockquote {
   margin: 0;
   color: rgba(0, 0, 0, 0.88);
   font-family: Georgia, "Times New Roman", serif;
@@ -378,7 +259,7 @@
   letter-spacing: -0.025em;
 }
 
-.review-card i {
+.book-review i {
   display: block;
   width: 22px;
   height: 2px;
@@ -386,7 +267,7 @@
   background: var(--lloyd-yellow, #f5bf00);
 }
 
-.review-card h3 {
+.book-review h3 {
   margin: 0;
   color: var(--lloyd-black, #050505);
   font-family: Inter, Arial, sans-serif;
@@ -397,7 +278,7 @@
   text-transform: uppercase;
 }
 
-.review-card small {
+.book-review small {
   display: block;
   margin-top: 10px;
   color: rgba(0, 0, 0, 0.64);
@@ -409,9 +290,7 @@
   text-transform: uppercase;
 }
 
-/* ================================
-   BUTTONS / FOOTNOTE
-================================ */
+/* BUTTONS */
 
 .book-actions {
   position: relative;
@@ -420,7 +299,7 @@
   align-items: center;
   justify-content: center;
   gap: 30px;
-  margin-top: -20px;
+  margin-top: -34px;
 }
 
 .book-btn {
@@ -438,10 +317,7 @@
   letter-spacing: 0.28em;
   text-transform: uppercase;
   text-decoration: none;
-  transition:
-    transform 0.28s ease,
-    background 0.28s ease,
-    border-color 0.28s ease;
+  transition: transform 0.28s ease, background 0.28s ease, border-color 0.28s ease;
 }
 
 .book-btn:hover {
@@ -498,11 +374,9 @@
   letter-spacing: 0;
 }
 
-/* ================================
-   FOOTER LINE
-================================ */
+/* BOTTOM */
 
-.book-footer-line {
+.book-bottom {
   position: relative;
   z-index: 8;
   display: grid;
@@ -513,15 +387,15 @@
   padding-top: clamp(48px, 5vw, 72px);
 }
 
-.book-footer-line::before,
-.book-footer-line::after {
+.book-bottom::before,
+.book-bottom::after {
   content: "";
   display: block;
   height: 1px;
   background: rgba(0, 0, 0, 0.28);
 }
 
-.book-footer-line p {
+.book-bottom p {
   position: absolute;
   bottom: -30px;
   margin: 0;
@@ -533,11 +407,11 @@
   text-transform: uppercase;
 }
 
-.book-footer-line p:first-child {
+.book-bottom p:first-child {
   left: 0;
 }
 
-.book-footer-line p:last-child {
+.book-bottom p:last-child {
   right: 0;
 }
 
@@ -574,9 +448,7 @@
   transform: rotate(-48deg);
 }
 
-/* ================================
-   RESPONSIVE
-================================ */
+/* RESPONSIVE */
 
 @media (max-width: 1260px) {
   .book-section {
@@ -587,39 +459,47 @@
     min-height: auto;
   }
 
-  .book-main {
-    grid-template-columns: minmax(330px, 0.95fr) minmax(360px, 0.95fr);
-    gap: 44px;
+  .book-bg {
+    position: relative;
+    inset: auto;
+    order: 2;
+    margin: 30px 0 10px;
   }
 
-  .book-reviews {
-    grid-column: 1 / -1;
+  .book-bg img {
+    width: min(620px, 82vw);
+    transform: none;
+  }
+
+  .book-content {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 38px;
+    padding: 76px 0 32px;
+  }
+
+  .book-left {
+    max-width: 720px;
+  }
+
+  .book-right {
     width: 100%;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     justify-self: stretch;
-    margin-top: 16px;
   }
 
-  .review-card {
+  .book-actions {
+    margin-top: 20px;
+  }
+
+  .book-review {
     min-height: auto;
-  }
-
-  .book-img-wrap {
-    width: min(420px, 38vw);
-  }
-
-  .book-center {
-    min-height: 620px;
   }
 }
 
 @media (max-width: 900px) {
   .book-section {
     padding: 36px 22px 60px;
-  }
-
-  .book-top {
-    gap: 20px;
   }
 
   .book-note {
@@ -636,28 +516,19 @@
     letter-spacing: 0.24em;
   }
 
-  .book-main {
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-    gap: 36px;
-    padding: 70px 0 38px;
+  .book-content {
+    padding-top: 64px;
   }
 
   .book-left {
     padding-left: 26px;
   }
 
-  .book-line-art {
-    top: 0;
-    bottom: 0;
-  }
-
-  .book-title span {
+  .book-left h2 span {
     font-size: clamp(58px, 15vw, 104px);
   }
 
-  .book-title em {
+  .book-left h2 em {
     font-size: clamp(70px, 18vw, 118px);
   }
 
@@ -665,42 +536,17 @@
     font-size: 25px;
   }
 
-  .book-center {
-    min-height: 560px;
+  .book-bg img {
+    width: min(520px, 94vw);
   }
 
-  .book-img-wrap {
-    width: min(355px, 76vw);
-  }
-
-  .paint-yellow {
-    width: 510px;
-    height: 134px;
-  }
-
-  .paint-black {
-    width: 500px;
-    height: 126px;
-  }
-
-  .book-orbit {
-    width: 470px;
-    height: 330px;
-  }
-
-  .book-dots {
-    right: 2%;
-    bottom: 12%;
-  }
-
-  .book-reviews {
+  .book-right {
     grid-template-columns: 1fr;
   }
 
   .book-actions {
     flex-direction: column;
     gap: 16px;
-    margin-top: 0;
   }
 
   .book-btn {
@@ -715,12 +561,12 @@
     letter-spacing: 0.2em;
   }
 
-  .book-footer-line {
+  .book-bottom {
     margin-top: 54px;
     padding-top: 34px;
   }
 
-  .book-footer-line p {
+  .book-bottom p {
     position: static;
     font-size: 10px;
     letter-spacing: 0.24em;
@@ -728,15 +574,15 @@
 }
 
 @media (max-width: 520px) {
-  .book-main {
-    padding-top: 56px;
+  .book-content {
+    padding-top: 54px;
   }
 
-  .book-title span {
+  .book-left h2 span {
     font-size: clamp(49px, 15vw, 72px);
   }
 
-  .book-title em {
+  .book-left h2 em {
     font-size: clamp(62px, 18vw, 92px);
   }
 
@@ -750,60 +596,23 @@
     font-size: 14px;
   }
 
-  .book-center {
-    min-height: 470px;
+  .book-bg img {
+    width: min(430px, 108vw);
   }
 
-  .book-img-wrap {
-    width: min(292px, 78vw);
-  }
-
-  .paint-yellow {
-    width: 390px;
-    height: 102px;
-  }
-
-  .paint-black {
-    width: 380px;
-    height: 96px;
-  }
-
-  .paint-yellow-small {
-    width: 250px;
-    height: 62px;
-  }
-
-  .book-orbit {
-    width: 360px;
-    height: 250px;
-  }
-
-  .book-orbit-dot {
-    left: 82%;
-    top: 37%;
-    width: 11px;
-    height: 11px;
-  }
-
-  .book-dots {
-    width: 106px;
-    height: 106px;
-    background-size: 13px 13px;
-  }
-
-  .review-card {
+  .book-review {
     padding: 24px 22px 22px;
   }
 
-  .review-card p {
+  .book-review blockquote {
     font-size: 17px;
   }
 
-  .review-quote {
+  .book-review-top span {
     font-size: 54px;
   }
 
-  .review-stars {
+  .book-review-top p {
     font-size: 13px;
   }
 
@@ -814,18 +623,18 @@
     letter-spacing: 0.22em;
   }
 
-  .book-footer-line {
+  .book-bottom {
     grid-template-columns: 1fr;
     justify-items: center;
     gap: 18px;
   }
 
-  .book-footer-line::before,
-  .book-footer-line::after {
+  .book-bottom::before,
+  .book-bottom::after {
     width: 100%;
   }
 
-  .book-footer-line p {
+  .book-bottom p {
     text-align: center;
   }
 }
