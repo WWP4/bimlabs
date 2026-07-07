@@ -1,120 +1,156 @@
-/* =========================================================
-   MESSAGE JS — THE MESSAGE REVEAL
-   Yellow flood → text mark → diagonal wipe → content reveal
-   ========================================================= */
+// message.js
+gsap.registerPlugin(ScrollTrigger);
 
-(() => {
-  const section = document.querySelector(".message-section");
-  const wipe = document.querySelector(".message-wipe");
-  const wipeText = document.querySelector(".message-wipe span");
+window.addEventListener("load", () => {
+  const hero = document.querySelector("#hero");
+  const message = document.querySelector("#message");
+  const calling = document.querySelector("#calling");
 
-  const revealItems = [
-    ".message-kicker",
-    ".message-brand",
-    ".message-right h2",
-    ".message-pillar",
-    ".dot-grid",
-    ".message-actions"
-  ];
+  if (!hero || !message) return;
 
-  if (!section) return;
+  // Create yellow curtain
+  const curtain = document.createElement("div");
+  curtain.className = "yellow-curtain";
+  curtain.innerHTML = `
+    <div class="yellow-curtain__text">
+      <span>THE MESSAGE</span>
+    </div>
+  `;
+  document.body.appendChild(curtain);
 
-  section.classList.add("is-visible");
-
-  if (!window.gsap || !window.ScrollTrigger || !wipe) {
-    return;
-  }
-
-  gsap.registerPlugin(ScrollTrigger);
-
-  const items = gsap.utils.toArray(revealItems.join(","));
-
-  section.classList.remove("is-visible");
-
-  gsap.set(items, {
-    autoAlpha: 0,
-    y: 34
-  });
-
-  gsap.set(wipe, {
+  gsap.set(curtain, {
     yPercent: 100,
-    clipPath: "polygon(0 0, 100% 0, 100% 100%, 0 100%)"
+    autoAlpha: 1
   });
 
-  gsap.set(wipeText, {
+  gsap.set(".yellow-curtain__text", {
     autoAlpha: 0,
-    y: 18,
-    letterSpacing: "0.48em"
+    y: 18
+  });
+
+  gsap.set(message, {
+    y: 80,
+    autoAlpha: 0
   });
 
   const tl = gsap.timeline({
     scrollTrigger: {
-      trigger: section,
-      start: "top bottom",
-      end: "top top",
-      scrub: 1.1
+      trigger: hero,
+      start: "bottom bottom",
+      end: "+=170%",
+      scrub: 1.25,
+      pin: true,
+      anticipatePin: 1
     }
   });
 
   tl
-    /* yellow floods upward from bottom */
-    .to(wipe, {
+    // Yellow rises slowly over hero
+    .to(curtain, {
       yPercent: 0,
-      duration: 0.42,
-      ease: "power3.out"
+      ease: "power2.inOut",
+      duration: 1.25
     })
 
-    /* small black title appears */
-    .to(wipeText, {
+    // Small message appears while yellow owns screen
+    .to(".yellow-curtain__text", {
       autoAlpha: 1,
       y: 0,
-      letterSpacing: "0.32em",
-      duration: 0.16,
-      ease: "power2.out"
-    }, "-=0.08")
+      ease: "power2.out",
+      duration: .45
+    }, "-=.35")
 
-    /* section begins to exist behind it */
-    .add(() => {
-      section.classList.add("is-visible");
+    // Hold the yellow moment
+    .to({}, { duration: .35 })
+
+    // Message section starts coming in underneath
+    .to(message, {
+      autoAlpha: 1,
+      y: 0,
+      ease: "power2.out",
+      duration: .85
     })
 
-    /* yellow diagonally sweeps down into the section */
-    .to(wipe, {
-      clipPath: "polygon(0 100%, 100% 72%, 100% 100%, 0 100%)",
-      duration: 0.44,
-      ease: "power4.inOut"
-    }, "+=0.08")
+    // Curtain slides away upward
+    .to(curtain, {
+      yPercent: -100,
+      ease: "power2.inOut",
+      duration: 1.15
+    }, "-=.55")
 
-    /* title fades away */
-    .to(wipeText, {
+    // Text disappears with curtain
+    .to(".yellow-curtain__text", {
       autoAlpha: 0,
-      y: -16,
-      duration: 0.12,
-      ease: "power2.out"
-    }, "<")
+      y: -18,
+      ease: "power2.inOut",
+      duration: .5
+    }, "<");
 
-    /* final yellow panel leaves, bottom CSS wave remains */
-    .to(wipe, {
-      yPercent: 101,
-      duration: 0.26,
-      ease: "power2.inOut"
-    }, "-=0.08");
-
-  ScrollTrigger.create({
-    trigger: section,
-    start: "top 58%",
-    once: true,
-    onEnter: () => {
-      gsap.to(items, {
-        autoAlpha: 1,
-        y: 0,
-        duration: 0.9,
-        stagger: {
-          each: 0.07,
-          from: "start"
-        },
-        ease: "power3.out"
-      });
+  // Section 2 image settles softly
+  gsap.fromTo(
+    ".message-bg",
+    {
+      scale: 1.035,
+      filter: "blur(3px)"
+    },
+    {
+      scale: 1,
+      filter: "blur(0px)",
+      ease: "power2.out",
+      scrollTrigger: {
+        trigger: message,
+        start: "top 80%",
+        end: "top 20%",
+        scrub: 1.1
+      }
     }
-  });
-})();
+  );
+
+  // Section 3 / calling reveal
+  if (calling) {
+    gsap.from(".calling-label", {
+      autoAlpha: 0,
+      y: 24,
+      duration: 1,
+      ease: "power3.out",
+      scrollTrigger: {
+        trigger: calling,
+        start: "top 72%"
+      }
+    });
+
+    gsap.from(".calling-main h2 .line", {
+      autoAlpha: 0,
+      y: 48,
+      stagger: .12,
+      duration: 1.1,
+      ease: "power3.out",
+      scrollTrigger: {
+        trigger: calling,
+        start: "top 58%"
+      }
+    });
+
+    gsap.from(".calling-copy", {
+      autoAlpha: 0,
+      y: 26,
+      duration: 1,
+      ease: "power3.out",
+      scrollTrigger: {
+        trigger: calling,
+        start: "top 46%"
+      }
+    });
+
+    gsap.from(".calling-bottom", {
+      autoAlpha: 0,
+      y: 34,
+      duration: 1,
+      ease: "power3.out",
+      scrollTrigger: {
+        trigger: calling,
+        start: "top 36%"
+      }
+    });
+  }
+});
