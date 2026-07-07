@@ -327,3 +327,56 @@
     display: none;
   }
 }
+
+
+
+
+
+/* HERO → MESSAGE YELLOW CURTAIN */
+.yellow-curtain {
+  position: fixed;
+  inset: 0;
+  z-index: 9998;
+  background: #f5bf00;
+  pointer-events: none;
+  display: grid;
+  place-items: center;
+  will-change: transform;
+}
+
+.yellow-curtain__text {
+  font-family: Inter, sans-serif;
+  font-size: clamp(13px, 1vw, 18px);
+  font-weight: 900;
+  letter-spacing: .46em;
+  color: #050505;
+  text-transform: uppercase;
+}
+
+.yellow-curtain::before,
+.yellow-curtain::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  width: 1px;
+  height: 110px;
+  background: rgba(0,0,0,.42);
+  transform: translateX(-50%);
+}
+
+.yellow-curtain::before {
+  top: 25%;
+}
+
+.yellow-curtain::after {
+  bottom: 25%;
+}
+
+.message-section {
+  will-change: transform, opacity;
+}
+
+.message-bg {
+  will-change: transform, filter;
+}
+
