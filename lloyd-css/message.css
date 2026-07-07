@@ -1,7 +1,7 @@
 /* =========================================================
-   MESSAGE / CALLING SECTION
-   Real HTML reveal:
-   yellow underneath, cream + content reveal downward on top.
+   SECTION 2 / MESSAGE REVEAL
+   Yellow is the background layer.
+   Cream/content reveals DOWN over the yellow like a reverse garage door.
 ========================================================= */
 
 :root {
@@ -9,32 +9,7 @@
   --lloyd-cream: #f5f1e8;
   --lloyd-yellow: #f5bf00;
   --lloyd-yellow-bright: #f9cf13;
-  --lloyd-yellow-deep: #e8aa00;
-}
-
-
-/* =========================================================
-   HERO SAFETY
-========================================================= */
-
-.hero {
-  position: relative;
-  overflow: hidden;
-}
-
-
-/* =========================================================
-   SECTION 2 REVEAL
-   Cream section is real.
-   Branded yellow is the animated reveal layer on top.
-========================================================= */
-
-:root {
-  --lloyd-black: #050505;
-  --lloyd-cream: #f5f1e8;
-  --lloyd-yellow: #f5bf00;
-  --lloyd-yellow-bright: #f9cf13;
-  --lloyd-yellow-deep: #e8aa00;
+  --lloyd-yellow-deep: #e4a900;
 }
 
 .hero {
@@ -42,112 +17,62 @@
   overflow: hidden;
 }
 
-/* Real Section 2 */
+/* SECTION 2 */
 .calling-section {
-  --yellowCover: 0%;
+  --creamReveal: 100%;
 
   position: relative;
   min-height: 100vh;
+  min-height: 100svh;
   overflow: hidden;
   isolation: isolate;
   color: var(--lloyd-black);
-  background: var(--lloyd-cream);
+  background:
+    radial-gradient(circle at 50% 44%, rgba(255, 255, 255, 0.22), transparent 42%),
+    linear-gradient(115deg, var(--lloyd-yellow-bright) 0%, var(--lloyd-yellow) 48%, var(--lloyd-yellow-deep) 100%);
 }
 
-/* Cream final background */
+/* Cream sheet that reveals downward over yellow */
 .calling-section::before {
   content: "";
   position: absolute;
   inset: 0;
-  z-index: 0;
+  z-index: 2;
   pointer-events: none;
   background:
     radial-gradient(circle at 50% 42%, rgba(255, 255, 255, 0.82), transparent 40%),
     linear-gradient(115deg, #fbf7ee 0%, #f3eee3 48%, #f8f1e4 100%);
-}
-
-/* Yellow reveal layer ON TOP */
-.calling-section::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: 20;
-  pointer-events: none;
-  background:
-    radial-gradient(circle at 50% 42%, rgba(255, 255, 255, 0.2), transparent 44%),
-    linear-gradient(
-      115deg,
-      var(--lloyd-yellow-bright) 0%,
-      var(--lloyd-yellow) 48%,
-      var(--lloyd-yellow-deep) 100%
-    );
-
-  /*
-    0% = yellow fully covering section.
-    100% = yellow gone, cream fully revealed.
-  */
-  clip-path: inset(var(--yellowCover) 0 0 0);
+  clip-path: inset(0 0 calc(100% - var(--creamReveal)) 0);
   will-change: clip-path;
 }
 
-/* Real HTML content stays real, underneath the yellow overlay */
-.calling-inner {
-  position: relative;
-  z-index: 5;
-  width: min(100%, 1540px);
-  min-height: 100vh;
-  margin: 0 auto;
-  padding: clamp(44px, 5vw, 76px) clamp(26px, 5vw, 72px) clamp(42px, 4vw, 58px);
-}
-
-/* =========================================================
-   SECTION 3 BACKGROUND
-========================================================= */
-
-.calling-bridge-section {
-  position: relative;
-  min-height: 100vh;
-  overflow: hidden;
-  isolation: isolate;
-  color: var(--lloyd-black);
-  background: var(--lloyd-cream);
-}
-
-.calling-bridge-section::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  background:
-    radial-gradient(circle at 50% 42%, rgba(255, 255, 255, 0.82), transparent 40%),
-    linear-gradient(115deg, #fbf7ee 0%, #f3eee3 48%, #f8f1e4 100%);
-}
-
-.calling-bridge-section::after {
-  content: "";
+/* Small text visible only during yellow moment */
+.calling-section::after {
+  content: "THE MESSAGE";
   position: absolute;
   inset: 0;
   z-index: 1;
-  opacity: 0.075;
+  display: grid;
+  place-items: center;
   pointer-events: none;
-  mix-blend-mode: multiply;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.72' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23noise)' opacity='.62'/%3E%3C/svg%3E");
+  font-family: Inter, Arial, sans-serif;
+  font-size: clamp(12px, 1.1vw, 16px);
+  font-weight: 900;
+  letter-spacing: 0.42em;
+  color: var(--lloyd-black);
 }
 
-.calling-bridge-inner {
+.calling-inner {
   position: relative;
-  z-index: 5;
+  z-index: 4;
   width: min(100%, 1540px);
   min-height: 100vh;
+  min-height: 100svh;
   margin: 0 auto;
   padding: clamp(44px, 5vw, 76px) clamp(26px, 5vw, 72px) clamp(42px, 4vw, 58px);
+  clip-path: inset(0 0 calc(100% - var(--creamReveal)) 0);
+  will-change: clip-path;
 }
-
-
-/* =========================================================
-   TOP LABELS
-========================================================= */
 
 .calling-top {
   display: flex;
@@ -174,7 +99,6 @@
   font-weight: 900;
   line-height: 1;
   letter-spacing: 0.08em;
-  color: var(--lloyd-black);
 }
 
 .calling-label i {
@@ -193,7 +117,6 @@
   line-height: 1;
   letter-spacing: 0.32em;
   text-transform: uppercase;
-  color: var(--lloyd-black);
 }
 
 .calling-note {
@@ -210,11 +133,6 @@
   height: 3px;
   background: var(--lloyd-black);
 }
-
-
-/* =========================================================
-   SECTION 2 MAIN DESIGN
-========================================================= */
 
 .calling-main {
   position: relative;
@@ -238,7 +156,6 @@
   line-height: 0.89;
   letter-spacing: 0.035em;
   text-transform: uppercase;
-  color: var(--lloyd-black);
 }
 
 .calling-main h2 .line {
@@ -253,7 +170,6 @@
 }
 
 .calling-main h2 em {
-  color: var(--lloyd-black);
   font-style: normal;
 }
 
@@ -286,10 +202,10 @@
   line-height: 1.75;
   letter-spacing: 0.34em;
   text-transform: uppercase;
-  color: var(--lloyd-black);
 }
 
-.calling-copy strong {
+.calling-copy strong,
+.calling-bottom strong {
   font-weight: 900;
 }
 
@@ -377,11 +293,6 @@
   line-height: 1.72;
   letter-spacing: 0.34em;
   text-transform: uppercase;
-  color: var(--lloyd-black);
-}
-
-.calling-bottom strong {
-  font-weight: 900;
 }
 
 .calling-dots {
@@ -394,10 +305,39 @@
   background-size: 16px 16px;
 }
 
+/* SECTION 3 BRIDGE */
+.calling-bridge-section {
+  position: relative;
+  min-height: 100vh;
+  min-height: 100svh;
+  overflow: hidden;
+  isolation: isolate;
+  color: var(--lloyd-black);
+  background:
+    radial-gradient(circle at 50% 42%, rgba(255, 255, 255, 0.82), transparent 40%),
+    linear-gradient(115deg, #fbf7ee 0%, #f3eee3 48%, #f8f1e4 100%);
+}
 
-/* =========================================================
-   SECTION 3 BRIDGE
-========================================================= */
+.calling-bridge-section::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  opacity: 0.075;
+  pointer-events: none;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.72' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23noise)' opacity='.62'/%3E%3C/svg%3E");
+}
+
+.calling-bridge-inner {
+  position: relative;
+  z-index: 5;
+  width: min(100%, 1540px);
+  min-height: 100vh;
+  min-height: 100svh;
+  margin: 0 auto;
+  padding: clamp(44px, 5vw, 76px) clamp(26px, 5vw, 72px) clamp(42px, 4vw, 58px);
+}
 
 .bridge-label {
   position: relative;
@@ -422,7 +362,6 @@
   line-height: 0.9;
   letter-spacing: 0.05em;
   text-transform: uppercase;
-  color: var(--lloyd-black);
 }
 
 .calling-center em {
@@ -471,11 +410,6 @@
 .calling-marker .active {
   color: var(--lloyd-black);
 }
-
-
-/* =========================================================
-   RESPONSIVE
-========================================================= */
 
 @media (max-width: 1180px) {
   .calling-main {
@@ -527,14 +461,8 @@
 }
 
 @media (max-width: 768px) {
-  .calling-section,
-  .calling-bridge-section {
-    min-height: 100svh;
-  }
-
   .calling-inner,
   .calling-bridge-inner {
-    min-height: 100svh;
     padding: 36px 22px 42px;
   }
 
