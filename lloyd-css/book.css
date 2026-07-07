@@ -744,9 +744,10 @@
 
 
 
-
 /* =========================================================
-   SECTION 5: SPEAKING CTA — BACKGROUND IMAGE BASE
+   SECTION 5: SPEAKING CTA — IMAGE BACKGROUND
+   CSS file is inside /lloyd-css/
+   Image is inside /assets/
 ========================================================= */
 
 .speaking-section {
@@ -755,7 +756,6 @@
   min-height: 100vh;
   overflow: hidden;
   background: #f5bf00;
-  color: #050505;
   isolation: isolate;
 }
 
@@ -764,52 +764,19 @@
   box-sizing: border-box;
 }
 
-/* The actual poster/image background */
 .speaking-bg {
   position: absolute;
   inset: 0;
   z-index: 1;
 
-  background-image: url("assets/lloyd-yellowBG.png");
+  background-image: url("../assets/lloyd-yellowBG.png");
   background-size: cover;
   background-position: center center;
   background-repeat: no-repeat;
 
-  transform: scale(1.001);
   pointer-events: none;
 }
 
-/* Optional subtle entrance */
-.speaking-section.is-visible .speaking-bg,
-.speaking-section .speaking-bg {
-  animation: speakingBgIn 900ms cubic-bezier(0.16, 1, 0.3, 1) both;
-}
-
-@keyframes speakingBgIn {
-  from {
-    opacity: 0;
-    transform: scale(1.025);
-  }
-
-  to {
-    opacity: 1;
-    transform: scale(1.001);
-  }
-}
-
-/* Hide old coded content if any of it is still inside the section */
-.speaking-shell,
-.speaking-top,
-.speaking-grid,
-.speaking-copy,
-.speaking-btn,
-.speaking-availability,
-.speaking-visual,
-.speaking-decor {
-  display: none !important;
-}
-
-/* Optional hidden SEO/accessibility copy */
 .speaking-hidden-copy {
   position: absolute;
   width: 1px;
@@ -819,74 +786,35 @@
   pointer-events: none;
 }
 
-/* =========================================================
-   RESPONSIVE
-========================================================= */
-
-@media (max-width: 1300px) {
-  .speaking-section {
-    min-height: 920px;
-  }
-
-  .speaking-bg {
-    background-size: cover;
-    background-position: center center;
-  }
-}
-
+/* Tablet */
 @media (max-width: 1100px) {
   .speaking-section {
-    min-height: 860px;
+    min-height: 850px;
   }
 
   .speaking-bg {
-    background-position: 54% center;
+    background-position: 55% center;
   }
 }
 
-@media (max-width: 900px) {
-  .speaking-section {
-    min-height: 780px;
-  }
-
-  .speaking-bg {
-    background-size: cover;
-    background-position: 58% center;
-  }
-}
-
+/* Mobile */
 @media (max-width: 760px) {
   .speaking-section {
     min-height: 720px;
   }
 
   .speaking-bg {
-    background-size: cover;
     background-position: 62% center;
   }
 }
 
-@media (max-width: 560px) {
+/* Small phones */
+@media (max-width: 480px) {
   .speaking-section {
-    min-height: 650px;
+    min-height: 620px;
   }
 
   .speaking-bg {
-    background-size: cover;
-    background-position: 65% center;
+    background-position: 66% center;
   }
 }
-
-@media (max-width: 420px) {
-  .speaking-section {
-    min-height: 590px;
-  }
-
-  .speaking-bg {
-    background-position: 68% center;
-  }
-}
-
-/* If your CSS file is inside a /css folder, replace the background line with:
-   background-image: url("../assets/lloyd-yellowBG.png");
-*/
