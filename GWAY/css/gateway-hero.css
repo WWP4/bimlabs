@@ -1,17 +1,17 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Bebas+Neue&display=swap");
+
 /* =========================================================
-   GLCA / GSA HERO
-   HTML is outside /GWAY
-   CSS file is inside /GWAY/css
-   Assets are inside /GWAY/assets
+   GLCA / GSA HERO — CLEAN 4CANTERA-INSPIRED VERSION
+   CSS file: /GWAY/css/gateway-hero.css
+   Image path: /GWAY/assets/hero-team.png
 ========================================================= */
 
 :root {
-  --gway-red: #d90d18;
-  --gway-red-hot: #f01826;
+  --gway-red: #ed111f;
   --gway-black: #030303;
   --gway-white: #ffffff;
   --gway-muted: rgba(255, 255, 255, 0.78);
-  --gway-pad: clamp(28px, 4.8vw, 92px);
+  --gway-pad: clamp(24px, 4.4vw, 76px);
 }
 
 * {
@@ -21,10 +21,11 @@
 body {
   margin: 0;
   background: #030303;
+  font-family: "Inter", sans-serif;
 }
 
 /* =========================================================
-   HEADER
+   HEADER — SMALLER / CLEANER
 ========================================================= */
 
 .gway-header {
@@ -32,113 +33,97 @@ body {
   inset: 0 0 auto 0;
   z-index: 50;
 
-  height: clamp(92px, 8.5vw, 132px);
-  padding: clamp(22px, 2.5vw, 42px) var(--gway-pad) 0;
+  height: 96px;
+  padding: 28px var(--gway-pad) 0;
 
   display: grid;
   grid-template-columns: auto 1fr auto;
   align-items: start;
-  gap: clamp(24px, 3vw, 56px);
+  gap: clamp(26px, 4vw, 70px);
 
   background: linear-gradient(
     180deg,
-    rgba(0, 0, 0, 0.82) 0%,
-    rgba(0, 0, 0, 0.46) 56%,
+    rgba(0, 0, 0, 0.74) 0%,
+    rgba(0, 0, 0, 0.38) 62%,
     rgba(0, 0, 0, 0) 100%
   );
 }
 
 .gway-brand {
-  display: flex;
-  align-items: center;
-  gap: clamp(13px, 1.3vw, 22px);
   color: #fff;
   text-decoration: none;
 }
 
-.gway-brand img {
-  width: clamp(54px, 4.6vw, 78px);
-  height: auto;
-  display: block;
-  filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.65));
-}
-
-.gway-brand-text {
+.gway-wordmark {
   display: flex;
   flex-direction: column;
-  justify-content: center;
 }
 
-.gway-brand-text strong {
-  display: block;
-  font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
-  font-size: clamp(30px, 3vw, 52px);
-  line-height: 0.86;
-  letter-spacing: -0.03em;
-  text-transform: uppercase;
+.gway-wordmark strong {
+  font-family: "Bebas Neue", sans-serif;
+  font-size: clamp(38px, 3vw, 56px);
+  font-weight: 400;
+  line-height: 0.82;
+  letter-spacing: 0.015em;
   color: #fff;
 }
 
-.gway-brand-text strong em {
-  color: var(--gway-red-hot);
-  font-style: normal;
+.gway-wordmark strong span {
+  color: var(--gway-red);
 }
 
-.gway-brand-text small {
-  margin-top: 9px;
-  max-width: 360px;
+.gway-wordmark small {
+  margin-top: 10px;
 
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: clamp(9px, 0.68vw, 12px);
+  font-size: clamp(9px, 0.65vw, 12px);
   font-weight: 900;
+  letter-spacing: 0.32em;
   line-height: 1;
-  letter-spacing: 0.28em;
   text-transform: uppercase;
   color: rgba(255, 255, 255, 0.82);
 }
 
 /* =========================================================
-   NAVIGATION
+   SHORT NAV
 ========================================================= */
 
 .gway-nav {
   justify-self: end;
-  margin-top: clamp(11px, 1.2vw, 20px);
+  margin-top: 18px;
 
   display: flex;
   align-items: center;
-  justify-content: flex-end;
-  gap: clamp(20px, 2.1vw, 42px);
+  gap: clamp(26px, 3vw, 52px);
 }
 
 .gway-nav a {
   position: relative;
 
-  color: rgba(255, 255, 255, 0.86);
+  color: rgba(255, 255, 255, 0.78);
   text-decoration: none;
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: clamp(12px, 0.86vw, 16px);
+
+  font-size: clamp(12px, 0.82vw, 15px);
   font-weight: 900;
-  letter-spacing: 0.055em;
+  letter-spacing: 0.065em;
   text-transform: uppercase;
   line-height: 1;
 
-  transition: color 0.25s ease, transform 0.25s ease;
+  transition: color 0.22s ease;
 }
 
 .gway-nav a::after {
   content: "";
   position: absolute;
   left: 0;
-  bottom: -22px;
+  bottom: -17px;
 
   width: 100%;
-  height: 3px;
-  background: var(--gway-red-hot);
+  height: 2px;
+  background: var(--gway-red);
 
   transform: scaleX(0);
   transform-origin: left;
-  transition: transform 0.25s ease;
+  transition: transform 0.22s ease;
 }
 
 .gway-nav a:hover,
@@ -152,38 +137,36 @@ body {
 }
 
 /* =========================================================
-   MENU BUTTON
+   MENU
 ========================================================= */
 
 .gway-menu {
-  justify-self: end;
-  margin-top: clamp(8px, 0.8vw, 15px);
+  margin-top: 11px;
+  padding: 0;
 
   display: inline-flex;
   align-items: center;
-  gap: 18px;
+  gap: 15px;
 
   border: 0;
   background: transparent;
   color: #fff;
   cursor: pointer;
-  padding: 0;
 }
 
 .gway-menu::before {
   content: "";
-  display: block;
   width: 1px;
-  height: 33px;
-  background: rgba(255, 18, 35, 0.8);
-  margin-right: 12px;
+  height: 26px;
+  margin-right: 10px;
+  background: var(--gway-red);
 }
 
 .gway-menu span {
-  font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
-  font-size: clamp(18px, 1.45vw, 27px);
+  font-family: "Bebas Neue", sans-serif;
+  font-size: clamp(24px, 1.8vw, 34px);
   line-height: 1;
-  letter-spacing: 0.03em;
+  letter-spacing: 0.035em;
   text-transform: uppercase;
 }
 
@@ -191,8 +174,8 @@ body {
 .gway-menu i::before,
 .gway-menu i::after {
   display: block;
-  width: 38px;
-  height: 3px;
+  width: 34px;
+  height: 2px;
   background: #fff;
 }
 
@@ -208,15 +191,15 @@ body {
 }
 
 .gway-menu i::before {
-  top: -10px;
+  top: -9px;
 }
 
 .gway-menu i::after {
-  top: 10px;
+  top: 9px;
 }
 
 /* =========================================================
-   HERO SHELL
+   HERO
 ========================================================= */
 
 .gway-hero {
@@ -231,44 +214,17 @@ body {
   background: #030303;
 }
 
-/* =========================================================
-   IMAGE BACKGROUND
-========================================================= */
-
 .gway-hero-bg {
   position: absolute;
   inset: 0;
   z-index: -10;
 
-  background-image: url("../assets/7_orig.png");
+  background-image: url("../assets/hero-team.png");
   background-size: cover;
   background-position: center center;
   background-repeat: no-repeat;
 
   transform: scale(1.01);
-  transform-origin: center;
-}
-
-.gway-hero-bg::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-
-  background:
-    linear-gradient(
-      90deg,
-      rgba(0, 0, 0, 0.97) 0%,
-      rgba(0, 0, 0, 0.91) 20%,
-      rgba(0, 0, 0, 0.68) 39%,
-      rgba(0, 0, 0, 0.22) 62%,
-      rgba(0, 0, 0, 0.5) 100%
-    ),
-    linear-gradient(
-      180deg,
-      rgba(0, 0, 0, 0.7) 0%,
-      rgba(0, 0, 0, 0.2) 42%,
-      rgba(0, 0, 0, 0.78) 100%
-    );
 }
 
 .gway-hero-bg::after {
@@ -277,70 +233,72 @@ body {
   inset: 0;
 
   background:
-    radial-gradient(circle at 82% 28%, rgba(255, 255, 255, 0.12), transparent 20%),
-    radial-gradient(circle at 20% 72%, rgba(220, 0, 18, 0.22), transparent 32%);
-  mix-blend-mode: screen;
-  opacity: 0.7;
+    linear-gradient(
+      90deg,
+      rgba(0, 0, 0, 0.94) 0%,
+      rgba(0, 0, 0, 0.82) 25%,
+      rgba(0, 0, 0, 0.42) 52%,
+      rgba(0, 0, 0, 0.22) 78%,
+      rgba(0, 0, 0, 0.48) 100%
+    ),
+    linear-gradient(
+      180deg,
+      rgba(0, 0, 0, 0.62) 0%,
+      rgba(0, 0, 0, 0.12) 38%,
+      rgba(0, 0, 0, 0.82) 100%
+    );
 }
 
-.gway-hero-vignette {
+.gway-hero-shade {
   position: absolute;
   inset: 0;
   z-index: -5;
   pointer-events: none;
 
   background:
+    radial-gradient(circle at 18% 76%, rgba(237, 17, 31, 0.18), transparent 28%),
     linear-gradient(
       90deg,
-      rgba(0, 0, 0, 0.88) 0%,
-      rgba(0, 0, 0, 0.56) 31%,
-      rgba(0, 0, 0, 0.04) 57%
-    ),
-    linear-gradient(
-      0deg,
-      rgba(0, 0, 0, 0.62) 0%,
-      transparent 43%
+      rgba(0, 0, 0, 0.82) 0%,
+      rgba(0, 0, 0, 0.46) 35%,
+      transparent 64%
     );
 }
 
 /* =========================================================
-   HERO CONTENT
+   CONTENT — LESS BULKY
 ========================================================= */
 
 .gway-hero-content {
   position: relative;
   z-index: 5;
 
-  width: min(100%, 900px);
-  padding-top: clamp(190px, 23.5vh, 280px);
-  padding-bottom: 80px;
-}
-
-.gway-eyebrow {
-  display: none;
+  width: min(100%, 760px);
+  padding-top: clamp(170px, 21vh, 230px);
+  padding-bottom: 70px;
 }
 
 .gway-hero h1 {
   margin: 0;
-  max-width: 900px;
+  max-width: 760px;
 
-  font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
-  font-size: clamp(76px, 8.25vw, 150px);
-  font-weight: 900;
+  font-family: "Bebas Neue", sans-serif;
+  font-size: clamp(78px, 7.2vw, 124px);
+  font-weight: 400;
   line-height: 0.84;
-  letter-spacing: -0.055em;
+  letter-spacing: -0.012em;
   text-transform: uppercase;
 }
 
 .gway-hero h1 span {
   display: block;
   color: #fff;
-  text-shadow: 0 24px 56px rgba(0, 0, 0, 0.74);
+  text-shadow: 0 20px 44px rgba(0, 0, 0, 0.68);
 }
 
 .gway-hero h1 .red-word,
 .gway-hero h1 em {
-  color: var(--gway-red-hot);
+  color: var(--gway-red);
   font-style: normal;
 }
 
@@ -349,73 +307,68 @@ body {
 
   display: flex;
   align-items: center;
-  gap: 24px;
+  gap: 22px;
 
-  margin: clamp(24px, 2.2vw, 36px) 0 0;
-  max-width: 780px;
+  max-width: 640px;
+  margin: 28px 0 0;
 
   color: rgba(255, 255, 255, 0.9);
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: clamp(16px, 1.08vw, 21px);
+  font-size: clamp(15px, 1vw, 18px);
   font-weight: 800;
-  line-height: 1.35;
+  line-height: 1.4;
 }
 
 .gway-hero-copy::before {
   content: "";
-  flex: 0 0 clamp(58px, 4.5vw, 92px);
+  flex: 0 0 70px;
   height: 3px;
-  background: var(--gway-red-hot);
+  background: var(--gway-red);
 }
 
 /* =========================================================
-   BUTTONS
+   BUTTONS — SMALLER
 ========================================================= */
 
 .gway-hero-actions {
   display: flex;
   align-items: center;
-  flex-wrap: wrap;
-  gap: clamp(14px, 1.3vw, 22px);
+  gap: 16px;
 
-  margin-top: clamp(32px, 3vw, 48px);
+  margin-top: 36px;
 }
 
 .gway-btn {
-  min-width: clamp(230px, 17vw, 360px);
-  height: clamp(58px, 4.3vw, 78px);
-  padding: 0 clamp(24px, 2.4vw, 42px);
+  min-width: 220px;
+  height: 58px;
+  padding: 0 28px;
 
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: clamp(20px, 2vw, 34px);
+  gap: 24px;
 
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: clamp(13px, 0.95vw, 18px);
-  font-weight: 1000;
+  font-size: 13px;
+  font-weight: 900;
   letter-spacing: 0.055em;
-  line-height: 1;
   text-transform: uppercase;
   text-decoration: none;
+  line-height: 1;
 
-  transition: transform 0.25s ease, filter 0.25s ease, background 0.25s ease;
-}
-
-.gway-btn span {
-  font-size: clamp(28px, 2vw, 40px);
-  line-height: 0;
-  transform: translateY(-1px);
+  transition: transform 0.22s ease, filter 0.22s ease, background 0.22s ease;
 }
 
 .gway-btn:hover {
-  transform: translateY(-3px);
+  transform: translateY(-2px);
+}
+
+.gway-btn span {
+  font-size: 28px;
+  line-height: 0;
 }
 
 .gway-btn-red {
   color: #fff;
-  background: linear-gradient(135deg, #f01928 0%, #bd0712 100%);
-  box-shadow: 0 24px 48px rgba(213, 0, 20, 0.28);
+  background: var(--gway-red);
 }
 
 .gway-btn-red:hover {
@@ -424,24 +377,24 @@ body {
 
 .gway-btn-outline {
   color: #fff;
-  border: 2px solid rgba(255, 255, 255, 0.76);
-  background: rgba(0, 0, 0, 0.14);
+  border: 1.5px solid rgba(255, 255, 255, 0.82);
+  background: rgba(0, 0, 0, 0.1);
   backdrop-filter: blur(8px);
 }
 
 .gway-btn-outline:hover {
-  background: rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.075);
 }
 
 /* =========================================================
-   ANIMATION-FRIENDLY TARGETS
+   ANIMATION TARGETS
 ========================================================= */
 
 .gway-brand,
 .gway-nav a,
 .gway-menu,
 .gway-hero-bg,
-.gway-hero-vignette,
+.gway-hero-shade,
 .gway-hero h1 span,
 .gway-hero-copy,
 .gway-hero-actions .gway-btn {
@@ -452,35 +405,21 @@ body {
    RESPONSIVE
 ========================================================= */
 
-@media (max-width: 1280px) {
-  .gway-nav {
-    gap: 24px;
-  }
-
-  .gway-nav a {
-    font-size: 12px;
-  }
-
-  .gway-brand-text small {
-    letter-spacing: 0.2em;
-  }
-}
-
-@media (max-width: 1080px) {
-  .gway-header {
-    grid-template-columns: auto 1fr auto;
-  }
-
+@media (max-width: 1100px) {
   .gway-nav {
     display: none;
   }
 
+  .gway-header {
+    grid-template-columns: 1fr auto;
+  }
+
   .gway-hero-content {
-    width: min(100%, 780px);
+    width: min(100%, 680px);
   }
 
   .gway-hero h1 {
-    font-size: clamp(70px, 10vw, 120px);
+    font-size: clamp(72px, 11vw, 112px);
   }
 }
 
@@ -490,19 +429,14 @@ body {
     padding: 24px 22px 0;
   }
 
-  .gway-brand img {
-    width: 54px;
+  .gway-wordmark strong {
+    font-size: 36px;
   }
 
-  .gway-brand-text strong {
-    font-size: 30px;
-  }
-
-  .gway-brand-text small {
-    max-width: 210px;
+  .gway-wordmark small {
+    max-width: 250px;
     font-size: 8px;
-    line-height: 1.15;
-    letter-spacing: 0.16em;
+    letter-spacing: 0.2em;
   }
 
   .gway-menu::before,
@@ -513,8 +447,7 @@ body {
   .gway-menu i,
   .gway-menu i::before,
   .gway-menu i::after {
-    width: 32px;
-    height: 2px;
+    width: 31px;
   }
 
   .gway-hero {
@@ -522,87 +455,80 @@ body {
   }
 
   .gway-hero-bg {
-    background-position: 62% center;
+    background-position: 58% center;
   }
 
-  .gway-hero-bg::before {
+  .gway-hero-bg::after {
     background:
       linear-gradient(
         0deg,
         rgba(0, 0, 0, 0.96) 0%,
-        rgba(0, 0, 0, 0.86) 42%,
-        rgba(0, 0, 0, 0.22) 76%,
-        rgba(0, 0, 0, 0.68) 100%
+        rgba(0, 0, 0, 0.82) 43%,
+        rgba(0, 0, 0, 0.2) 75%,
+        rgba(0, 0, 0, 0.64) 100%
       );
   }
 
-  .gway-hero-vignette {
+  .gway-hero-shade {
     background:
       linear-gradient(
         0deg,
-        rgba(0, 0, 0, 0.88) 0%,
-        rgba(0, 0, 0, 0.64) 45%,
+        rgba(0, 0, 0, 0.9) 0%,
+        rgba(0, 0, 0, 0.62) 48%,
         transparent 78%
       );
   }
 
   .gway-hero-content {
     width: 100%;
-    padding-top: clamp(360px, 52vh, 520px);
-    padding-bottom: 40px;
+    padding-top: clamp(370px, 54vh, 520px);
+    padding-bottom: 38px;
   }
 
   .gway-hero h1 {
-    font-size: clamp(54px, 16vw, 86px);
+    font-size: clamp(58px, 17vw, 88px);
     line-height: 0.86;
   }
 
   .gway-hero-copy {
     display: block;
     margin-top: 22px;
-    font-size: 15px;
+    font-size: 14px;
   }
 
   .gway-hero-copy::before {
     display: block;
-    width: 66px;
+    width: 58px;
     height: 3px;
-    margin-bottom: 16px;
+    margin-bottom: 15px;
   }
 
   .gway-hero-actions {
+    flex-direction: column;
+    align-items: stretch;
     margin-top: 28px;
-    gap: 12px;
   }
 
   .gway-btn {
     width: 100%;
     min-width: 0;
-    height: 58px;
+    height: 56px;
   }
 }
 
-@media (max-width: 460px) {
+@media (max-width: 440px) {
   .gway-header {
     padding-left: 18px;
     padding-right: 18px;
   }
 
-  .gway-brand {
-    gap: 10px;
+  .gway-wordmark strong {
+    font-size: 32px;
   }
 
-  .gway-brand img {
-    width: 48px;
-  }
-
-  .gway-brand-text strong {
-    font-size: 25px;
-  }
-
-  .gway-brand-text small {
-    max-width: 160px;
-    font-size: 7px;
+  .gway-wordmark small {
+    max-width: 210px;
+    letter-spacing: 0.16em;
   }
 
   .gway-hero {
@@ -615,6 +541,6 @@ body {
   }
 
   .gway-hero h1 {
-    font-size: clamp(48px, 17vw, 72px);
+    font-size: clamp(52px, 17vw, 76px);
   }
 }
