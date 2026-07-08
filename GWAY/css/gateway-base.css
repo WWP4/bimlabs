@@ -1,0 +1,50 @@
+:root {
+  --gway-red: #d70b18;
+  --gway-red-hot: #ff1025;
+  --gway-red-dark: #7b0008;
+  --gway-black: #050505;
+  --gway-white: #ffffff;
+  --gway-soft: #f4f1eb;
+  --gway-muted: rgba(255, 255, 255, 0.68);
+  --gway-line: rgba(255, 255, 255, 0.16);
+
+  --gway-pad: clamp(20px, 4vw, 72px);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: var(--gway-black);
+  color: var(--gway-white);
+  font-family: Arial, Helvetica, sans-serif;
+  overflow-x: hidden;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+.gateway-site {
+  min-height: 100vh;
+  background: var(--gway-black);
+}
+
+::selection {
+  background: var(--gway-red);
+  color: var(--gway-white);
+}
