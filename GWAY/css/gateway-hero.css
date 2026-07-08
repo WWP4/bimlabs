@@ -760,10 +760,8 @@
 
 
 
-
 /* =========================================================
-   FIX: BOTTOM RIGHT CORNER GRAPHIC
-   This replaces the weird floating red block.
+   FIX: BOTTOM RIGHT CORNER GRAPHIC — VISIBLE BUT ANCHORED
 ========================================================= */
 
 .gway-hero-red {
@@ -772,8 +770,8 @@
   bottom: 0;
   z-index: -3;
 
-  width: clamp(260px, 25vw, 520px);
-  height: clamp(150px, 18vh, 260px);
+  width: clamp(360px, 34vw, 660px);
+  height: clamp(210px, 24vh, 320px);
 
   overflow: hidden;
   pointer-events: none;
@@ -781,97 +779,74 @@
   background: transparent;
   box-shadow: none;
   clip-path: none;
-}
-
-/* Main red corner wedge */
-.gway-hero-red::before {
-  content: "";
-  position: absolute;
-  right: -76px;
-  bottom: -84px;
-
-  width: 118%;
-  height: 118%;
-
-  background:
-    linear-gradient(135deg, rgba(255, 19, 38, 0.98), rgba(145, 0, 10, 0.98)),
-    radial-gradient(rgba(255, 255, 255, 0.2) 1px, transparent 1px);
-
-  background-size: auto, 18px 18px;
-
-  clip-path: polygon(48% 0, 100% 0, 100% 100%, 0 100%);
-  box-shadow: -20px -20px 70px rgba(0, 0, 0, 0.45);
-}
-
-/* Thin black/red diagonal stripe like the mockup */
-.gway-hero-red::after {
-  content: "";
-  position: absolute;
-  right: -48px;
-  bottom: 26px;
-
-  width: 115%;
-  height: 54px;
-
-  background: linear-gradient(
-    90deg,
-    rgba(0, 0, 0, 0.76) 0%,
-    rgba(0, 0, 0, 0.76) 38%,
-    rgba(255, 23, 41, 1) 38%,
-    rgba(255, 23, 41, 1) 48%,
-    rgba(130, 0, 9, 0.95) 48%,
-    rgba(130, 0, 9, 0.95) 100%
-  );
-
-  transform: rotate(-47deg);
-  transform-origin: right bottom;
   opacity: 0.95;
 }
 
-/* Remove the logo watermark from the previous version */
-.gway-hero-red img,
-.gway-hero-red .gway-hero-shield {
-  display: none;
+/* Main red wedge — pulled back onto screen */
+.gway-hero-red::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+
+  background:
+    linear-gradient(135deg, rgba(255, 20, 40, 0.98), rgba(120, 0, 10, 0.98)),
+    radial-gradient(rgba(255, 255, 255, 0.18) 1px, transparent 1px);
+
+  background-size: auto, 19px 19px;
+
+  clip-path: polygon(40% 0, 100% 0, 100% 100%, 0 100%);
+  box-shadow: -26px -26px 80px rgba(0, 0, 0, 0.48);
+}
+
+/* Dark diagonal detail inside the red shape */
+.gway-hero-red::after {
+  content: "";
+  position: absolute;
+  right: -8%;
+  bottom: 42px;
+
+  width: 120%;
+  height: 66px;
+
+  background: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 0.78) 0%,
+    rgba(0, 0, 0, 0.78) 35%,
+    rgba(255, 26, 44, 1) 35%,
+    rgba(255, 26, 44, 1) 46%,
+    rgba(115, 0, 9, 0.96) 46%,
+    rgba(115, 0, 9, 0.96) 100%
+  );
+
+  transform: rotate(-47deg);
+  transform-origin: right center;
+  opacity: 0.95;
 }
 
 /* Tablet */
 @media (max-width: 920px) {
   .gway-hero-red {
-    right: 0;
-    bottom: 0;
-    width: clamp(220px, 52vw, 420px);
-    height: clamp(130px, 18vh, 220px);
-    opacity: 0.78;
-  }
-
-  .gway-hero-red::before {
-    right: -70px;
-    bottom: -76px;
+    width: clamp(330px, 62vw, 520px);
+    height: clamp(185px, 22vh, 270px);
+    opacity: 0.82;
   }
 
   .gway-hero-red::after {
-    right: -50px;
-    bottom: 22px;
-    height: 44px;
+    bottom: 34px;
+    height: 56px;
   }
 }
 
 /* Mobile */
 @media (max-width: 520px) {
   .gway-hero-red {
-    width: 235px;
-    height: 145px;
-    opacity: 0.62;
-  }
-
-  .gway-hero-red::before {
-    right: -66px;
-    bottom: -72px;
+    width: 310px;
+    height: 185px;
+    opacity: 0.68;
   }
 
   .gway-hero-red::after {
-    right: -52px;
-    bottom: 18px;
-    height: 38px;
+    bottom: 28px;
+    height: 48px;
   }
 }
