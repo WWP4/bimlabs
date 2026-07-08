@@ -1,0 +1,298 @@
+.gway-hero {
+  position: relative;
+  min-height: 100vh;
+  width: 100%;
+  overflow: hidden;
+  isolation: isolate;
+
+  display: flex;
+  align-items: center;
+
+  padding: 150px var(--gway-pad) 72px;
+  background: var(--gway-black);
+}
+
+/* main real photo background */
+.gway-hero-bg {
+  position: absolute;
+  inset: 0;
+  z-index: -6;
+
+  background-image:
+    linear-gradient(
+      90deg,
+      rgba(0, 0, 0, 0.98) 0%,
+      rgba(0, 0, 0, 0.88) 28%,
+      rgba(0, 0, 0, 0.52) 50%,
+      rgba(0, 0, 0, 0.16) 74%,
+      rgba(0, 0, 0, 0.46) 100%
+    ),
+    linear-gradient(
+      0deg,
+      rgba(0, 0, 0, 0.84) 0%,
+      rgba(0, 0, 0, 0.14) 48%,
+      rgba(0, 0, 0, 0.48) 100%
+    ),
+    url("../assets/hero-team.png");
+
+  background-size: cover;
+  background-position: center center;
+  transform: scale(1.02);
+}
+
+.gway-hero-bg::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+
+  background:
+    radial-gradient(circle at 24% 70%, rgba(215, 11, 24, 0.38), transparent 34%),
+    radial-gradient(circle at 82% 18%, rgba(215, 11, 24, 0.24), transparent 32%),
+    linear-gradient(120deg, rgba(215, 11, 24, 0.16), transparent 46%);
+
+  mix-blend-mode: screen;
+  pointer-events: none;
+}
+
+/* big red graphic shape */
+.gway-hero-red {
+  position: absolute;
+  left: -14vw;
+  bottom: -30vh;
+  z-index: -4;
+
+  width: 84vw;
+  height: 58vh;
+
+  background:
+    linear-gradient(135deg, rgba(215, 11, 24, 0.96), rgba(98, 0, 8, 0.82)),
+    repeating-linear-gradient(
+      -35deg,
+      rgba(255, 255, 255, 0.08) 0 1px,
+      transparent 1px 24px
+    );
+
+  clip-path: polygon(0 15%, 84% 0, 100% 100%, 0 100%);
+  opacity: 0.9;
+}
+
+.gway-hero-red::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+
+  background-image: radial-gradient(rgba(255, 255, 255, 0.2) 1px, transparent 1px);
+  background-size: 18px 18px;
+  opacity: 0.16;
+}
+
+/* subtle giant crest watermark */
+.gway-hero-shield {
+  position: absolute;
+  right: 4vw;
+  bottom: 3vh;
+  z-index: -3;
+
+  width: clamp(250px, 30vw, 540px);
+  opacity: 0.06;
+  transform: rotate(-8deg);
+  pointer-events: none;
+}
+
+.gway-hero-content {
+  position: relative;
+  z-index: 2;
+
+  width: min(100%, 790px);
+  padding-top: 42px;
+}
+
+.gway-eyebrow {
+  margin: 0 0 22px;
+
+  color: var(--gway-red-hot);
+  font-size: clamp(12px, 1vw, 15px);
+  font-weight: 1000;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.gway-hero h1 {
+  margin: 0;
+
+  font-size: clamp(58px, 8vw, 138px);
+  line-height: 0.86;
+  letter-spacing: -0.075em;
+  text-transform: uppercase;
+  font-weight: 1000;
+  font-style: italic;
+}
+
+.gway-hero h1 span {
+  display: block;
+  text-shadow: 0 26px 56px rgba(0, 0, 0, 0.52);
+}
+
+.gway-hero h1 span:first-child {
+  color: var(--gway-white);
+}
+
+.gway-hero h1 span:last-child {
+  color: var(--gway-red-hot);
+}
+
+.gway-hero-copy {
+  position: relative;
+
+  max-width: 590px;
+  margin: 30px 0 0;
+  padding-top: 24px;
+
+  color: rgba(255, 255, 255, 0.88);
+  font-size: clamp(16px, 1.45vw, 21px);
+  line-height: 1.5;
+  font-weight: 700;
+}
+
+.gway-hero-copy::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  width: 88px;
+  height: 4px;
+  background: var(--gway-red-hot);
+}
+
+.gway-hero-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+
+  margin-top: 34px;
+}
+
+.gway-btn {
+  min-width: 190px;
+  height: 62px;
+  padding: 0 28px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+
+  font-size: 12px;
+  font-weight: 1000;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+
+  transition: transform 0.25s ease, background 0.25s ease, border-color 0.25s ease;
+}
+
+.gway-btn:hover {
+  transform: translateY(-2px);
+}
+
+.gway-btn span {
+  font-size: 23px;
+  line-height: 1;
+}
+
+.gway-btn-red {
+  background: var(--gway-red);
+  color: var(--gway-white);
+  box-shadow: 0 18px 44px rgba(215, 11, 24, 0.32);
+}
+
+.gway-btn-red:hover {
+  background: var(--gway-red-hot);
+}
+
+.gway-btn-outline {
+  border: 2px solid rgba(255, 255, 255, 0.78);
+  background: rgba(0, 0, 0, 0.16);
+  color: var(--gway-white);
+  backdrop-filter: blur(10px);
+}
+
+.gway-btn-outline:hover {
+  border-color: var(--gway-white);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+/* bottom highlights */
+.gway-hero-points {
+  width: min(100%, 770px);
+  margin-top: 54px;
+
+  display: flex;
+  align-items: stretch;
+
+  border-top: 1px solid var(--gway-line);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.11);
+}
+
+.gway-hero-points div {
+  flex: 1;
+  padding: 24px 26px 24px 0;
+
+  display: grid;
+  gap: 7px;
+}
+
+.gway-hero-points div + div {
+  padding-left: 28px;
+  border-left: 1px solid var(--gway-line);
+}
+
+.gway-hero-points i {
+  color: var(--gway-red-hot);
+  font-style: normal;
+  font-size: 12px;
+  font-weight: 1000;
+  letter-spacing: 0.14em;
+}
+
+.gway-hero-points strong {
+  color: var(--gway-white);
+  font-size: 13px;
+  font-weight: 1000;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  line-height: 1.15;
+}
+
+.gway-hero-points span {
+  color: rgba(255, 255, 255, 0.56);
+  font-size: 12px;
+  font-weight: 850;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.gway-scroll-tag {
+  position: absolute;
+  right: var(--gway-pad);
+  bottom: 42px;
+  z-index: 3;
+
+  display: flex;
+  align-items: center;
+  gap: 14px;
+
+  color: rgba(255, 255, 255, 0.74);
+  font-size: 11px;
+  font-weight: 950;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  writing-mode: vertical-rl;
+}
+
+.gway-scroll-tag span {
+  width: 1px;
+  height: 58px;
+  background: rgba(255, 255, 255, 0.45);
+}
