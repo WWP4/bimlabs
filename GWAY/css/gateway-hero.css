@@ -1,175 +1,213 @@
+/* =========================================================
+   GSA HERO — MATCH CUSTOM MOCKUP
+========================================================= */
 
 .gway-hero {
-  border: 20px solid lime !important;
-}
-
-.gway-hero {
-
-  
   position: relative;
   min-height: 100vh;
   width: 100%;
   overflow: hidden;
   isolation: isolate;
+
   display: flex;
   align-items: center;
-  padding: 148px var(--gway-pad) 54px;
-  background: #030303;
+
+  padding: 150px var(--gway-pad) 58px;
+  background: #020202;
 }
 
-/* PHOTO BACKGROUND */
+/* =========================================================
+   REAL PHOTO BACKGROUND
+========================================================= */
+
 .gway-hero-bg {
   position: absolute;
   inset: 0;
-  z-index: -8;
+  z-index: -10;
+
   background-image:
     linear-gradient(
       90deg,
       rgba(0, 0, 0, 0.98) 0%,
-      rgba(0, 0, 0, 0.92) 22%,
-      rgba(0, 0, 0, 0.62) 43%,
-      rgba(0, 0, 0, 0.22) 70%,
-      rgba(0, 0, 0, 0.64) 100%
+      rgba(0, 0, 0, 0.9) 20%,
+      rgba(0, 0, 0, 0.5) 45%,
+      rgba(0, 0, 0, 0.12) 70%,
+      rgba(0, 0, 0, 0.42) 100%
     ),
     linear-gradient(
       0deg,
-      rgba(0, 0, 0, 0.92) 0%,
-      rgba(0, 0, 0, 0.42) 44%,
-      rgba(0, 0, 0, 0.58) 100%
+      rgba(0, 0, 0, 0.72) 0%,
+      rgba(0, 0, 0, 0.2) 45%,
+      rgba(0, 0, 0, 0.5) 100%
     ),
     url("../assets/hero-team.png");
+
   background-size: cover;
   background-position: center center;
-  transform: scale(1.03);
+  transform: scale(1.01);
 }
 
 .gway-hero-bg::after {
   content: "";
   position: absolute;
   inset: 0;
-  background:
-    radial-gradient(circle at 18% 62%, rgba(220, 0, 18, 0.36), transparent 34%),
-    radial-gradient(circle at 62% 42%, rgba(255, 255, 255, 0.08), transparent 30%),
-    linear-gradient(90deg, rgba(120, 0, 8, 0.2), transparent 48%);
   pointer-events: none;
+
+  background:
+    radial-gradient(circle at 28% 72%, rgba(220, 0, 18, 0.24), transparent 31%),
+    radial-gradient(circle at 75% 25%, rgba(255, 255, 255, 0.12), transparent 30%);
 }
 
-/* LEFT DARK RED WASH */
-.gway-hero::before {
-  content: "";
+/* =========================================================
+   LEFT RED GRAPHIC WASH
+========================================================= */
+
+.gway-hero-left-design {
   position: absolute;
-  left: -18vw;
+  left: -22vw;
   top: 0;
   bottom: 0;
-  z-index: -5;
+  z-index: -6;
+
   width: 58vw;
+
   background:
-    linear-gradient(90deg, rgba(24, 0, 2, 0.98), rgba(90, 0, 7, 0.48), transparent),
-    radial-gradient(circle at 28% 65%, rgba(255, 16, 37, 0.38), transparent 42%);
+    linear-gradient(
+      90deg,
+      rgba(15, 0, 1, 0.96) 0%,
+      rgba(68, 0, 6, 0.76) 38%,
+      rgba(120, 0, 11, 0.26) 66%,
+      transparent 100%
+    );
   pointer-events: none;
 }
 
-/* BOTTOM RIGHT RED PANEL */
+.gway-hero-left-design::before {
+  content: "";
+  position: absolute;
+  left: -9vw;
+  bottom: -13vh;
+
+  width: 48vw;
+  height: 60vh;
+
+  background:
+    linear-gradient(135deg, rgba(255, 16, 37, 0.72), rgba(92, 0, 8, 0.34)),
+    radial-gradient(rgba(255, 255, 255, 0.28) 1px, transparent 1px);
+
+  background-size: auto, 18px 18px;
+  clip-path: polygon(0 8%, 82% 0, 100% 100%, 0 100%);
+  opacity: 0.58;
+}
+
+.gway-hero-left-design::after {
+  content: "";
+  position: absolute;
+  left: -11vw;
+  bottom: 0;
+
+  width: 54vw;
+  height: 34vh;
+
+  background:
+    linear-gradient(
+      135deg,
+      transparent 0 42%,
+      rgba(0, 0, 0, 0.45) 42.5% 48%,
+      rgba(255, 16, 37, 0.28) 48.5% 51%,
+      transparent 51.5%
+    );
+  opacity: 0.8;
+}
+
+/* =========================================================
+   BOTTOM RIGHT RED CORNER — NOT A GIANT BLOCK
+========================================================= */
+
 .gway-hero-red {
   position: absolute;
-  right: -3vw;
-  bottom: 0;
-  z-index: -3;
-  width: 55vw;
-  height: 33vh;
-  min-height: 270px;
-  max-height: 360px;
+  right: -10vw;
+  bottom: -1px;
+  z-index: -4;
+
+  width: 39vw;
+  height: 25vh;
+  min-height: 210px;
+  max-height: 290px;
+
   overflow: hidden;
 
   background:
-    linear-gradient(135deg, rgba(255, 16, 37, 0.98), rgba(128, 0, 10, 0.98)),
-    repeating-linear-gradient(
-      -21deg,
-      rgba(255, 255, 255, 0.07) 0 1px,
-      transparent 1px 42px
-    );
+    linear-gradient(135deg, rgba(255, 16, 37, 0.96), rgba(114, 0, 9, 0.94)),
+    radial-gradient(rgba(255, 255, 255, 0.24) 1px, transparent 1px);
 
-  clip-path: polygon(28% 0, 100% 0, 100% 100%, 0 100%);
-  box-shadow: -34px -34px 90px rgba(0, 0, 0, 0.65);
+  background-size: auto, 21px 21px;
+  clip-path: polygon(32% 0, 100% 0, 100% 100%, 0 100%);
+  box-shadow: -28px -26px 74px rgba(0, 0, 0, 0.52);
 }
 
-/* black + red diagonal stripe */
-.gway-hero-red::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background:
-    linear-gradient(
-      133deg,
-      transparent 0 37%,
-      rgba(0, 0, 0, 0.88) 37.4% 43%,
-      rgba(255, 17, 37, 0.95) 43.3% 46.1%,
-      rgba(0, 0, 0, 0.32) 46.4% 48.2%,
-      transparent 48.5%
-    ),
-    radial-gradient(rgba(255, 255, 255, 0.28) 1px, transparent 1px);
-  background-size: auto, 24px 24px;
-  background-position: center, 18% 38%;
-  opacity: 0.82;
-}
-
-/* watermark logo inside red */
 .gway-hero-red::before {
   content: "";
   position: absolute;
-  right: 5vw;
-  bottom: -11vh;
-  width: clamp(310px, 31vw, 560px);
+  right: 6vw;
+  bottom: -13vh;
+
+  width: clamp(270px, 28vw, 500px);
   aspect-ratio: 1;
+
   background-image: url("../assets/gsa-logo.png");
   background-repeat: no-repeat;
   background-position: center;
   background-size: contain;
-  opacity: 0.105;
+
+  opacity: 0.1;
   filter: grayscale(1);
-  transform: rotate(-7deg);
+  transform: rotate(-8deg);
 }
 
-/* REMOVE OLD WATERMARK FROM MIDDLE */
+.gway-hero-red::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+
+  background:
+    linear-gradient(
+      132deg,
+      transparent 0 39%,
+      rgba(0, 0, 0, 0.8) 39.4% 43.6%,
+      rgba(255, 16, 37, 0.95) 44% 46%,
+      rgba(0, 0, 0, 0.22) 46.4% 48%,
+      transparent 48.4%
+    );
+}
+
+/* old shield is not needed */
 .gway-hero-shield {
   display: none;
 }
 
-/* CONTENT */
+/* =========================================================
+   HERO CONTENT
+========================================================= */
+
 .gway-hero-content {
   position: relative;
   z-index: 3;
-  width: min(100%, 790px);
+
+  width: min(100%, 760px);
   padding-top: 34px;
 }
 
 .gway-eyebrow {
-  position: relative;
-  margin: 0 0 24px;
-  padding-bottom: 14px;
-  color: rgba(255, 255, 255, 0.92);
-  font-size: clamp(12px, 1vw, 16px);
-  font-weight: 1000;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-}
-
-.gway-eyebrow::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  width: 112px;
-  height: 4px;
-  background: var(--gway-red-hot);
+  display: none;
 }
 
 .gway-hero h1 {
   margin: 0;
-  max-width: 760px;
-  font-size: clamp(74px, 8.2vw, 142px);
-  line-height: 0.82;
-  letter-spacing: -0.075em;
+
+  font-size: clamp(66px, 7.15vw, 122px);
+  line-height: 0.86;
+  letter-spacing: -0.07em;
   text-transform: uppercase;
   font-weight: 1000;
   font-style: italic;
@@ -177,56 +215,73 @@
 
 .gway-hero h1 span {
   display: block;
-  text-shadow: 0 28px 58px rgba(0, 0, 0, 0.62);
+  color: #ffffff;
+  text-shadow: 0 24px 58px rgba(0, 0, 0, 0.72);
 }
 
-.gway-hero h1 span:first-child {
-  color: #fff;
-}
-
-.gway-hero h1 span:last-child {
+.gway-hero h1 .red-word {
   color: var(--gway-red-hot);
 }
 
 .gway-hero-copy {
-  max-width: 590px;
-  margin: 22px 0 0;
-  padding-top: 0;
+  position: relative;
+
+  max-width: 610px;
+  margin: 25px 0 0;
+  padding-top: 23px;
+
   color: rgba(255, 255, 255, 0.92);
-  font-size: clamp(15px, 1.18vw, 19px);
-  line-height: 1.45;
+  font-size: clamp(15px, 1.12vw, 19px);
+  line-height: 1.38;
   font-weight: 850;
+  text-transform: uppercase;
 }
 
 .gway-hero-copy::before {
-  display: none;
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  width: 92px;
+  height: 4px;
+  background: var(--gway-red-hot);
 }
 
-.gway-hero-copy strong,
 .gway-hero-copy b {
   color: var(--gway-red-hot);
+  font-weight: 1000;
 }
+
+/* =========================================================
+   BUTTONS
+========================================================= */
 
 .gway-hero-actions {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
   gap: 18px;
+
   margin-top: 30px;
 }
 
 .gway-btn {
   min-width: 205px;
-  height: 66px;
+  height: 64px;
   padding: 0 30px;
+
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 20px;
+
+  color: #fff;
   font-size: 13px;
   font-weight: 1000;
   letter-spacing: 0.13em;
   text-transform: uppercase;
+
   transition: transform 0.25s ease, background 0.25s ease, border-color 0.25s ease;
 }
 
@@ -241,8 +296,7 @@
 
 .gway-btn-red {
   background: var(--gway-red);
-  color: #fff;
-  box-shadow: 0 20px 48px rgba(215, 11, 24, 0.35);
+  box-shadow: 0 20px 46px rgba(215, 11, 24, 0.32);
 }
 
 .gway-btn-red:hover {
@@ -251,85 +305,102 @@
 
 .gway-btn-outline {
   border: 2px solid rgba(255, 255, 255, 0.82);
-  background: rgba(0, 0, 0, 0.18);
-  color: #fff;
-  backdrop-filter: blur(10px);
+  background: rgba(0, 0, 0, 0.12);
+  backdrop-filter: blur(8px);
 }
 
 .gway-btn-outline:hover {
   background: rgba(255, 255, 255, 0.08);
 }
 
-/* BOTTOM HIGHLIGHTS */
+/* =========================================================
+   BOTTOM FEATURE ROW
+========================================================= */
+
 .gway-hero-points {
-  width: min(100%, 780px);
-  margin-top: 54px;
-  display: flex;
-  align-items: stretch;
-  border-top: 1px solid rgba(255, 255, 255, 0.18);
+  width: min(100%, 720px);
+  margin-top: 43px;
+
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+
+  border-top: none;
   border-bottom: none;
 }
 
 .gway-hero-points div {
-  flex: 1;
-  padding: 24px 28px 18px 0;
-  display: grid;
-  gap: 8px;
+  min-height: 72px;
+  padding: 0 24px;
+
+  display: flex;
+  align-items: center;
+  gap: 16px;
+
+  border-right: 1px solid rgba(255, 255, 255, 0.17);
 }
 
-.gway-hero-points div + div {
-  padding-left: 30px;
-  border-left: 1px solid rgba(255, 255, 255, 0.18);
+.gway-hero-points div:first-child {
+  padding-left: 0;
+}
+
+.gway-hero-points div:last-child {
+  border-right: none;
 }
 
 .gway-hero-points i {
-  color: var(--gway-red-hot);
-  font-style: normal;
-  font-size: 12px;
-  font-weight: 1000;
-  letter-spacing: 0.14em;
+  flex: 0 0 38px;
+  width: 38px;
+  height: 38px;
+
+  display: block;
+
+  background: var(--gway-red-hot);
+  opacity: 0.96;
+
+  mask-position: center;
+  mask-repeat: no-repeat;
+  mask-size: contain;
+  -webkit-mask-position: center;
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-size: contain;
+}
+
+.point-icon-book {
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 64 64' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M8 13v39c8 0 15 2 21 6V18C23 14 16 13 8 13zm48 0c-8 0-15 1-21 5v40c6-4 13-6 21-6V13zM30 18h4v40h-4V18z'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 64 64' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M8 13v39c8 0 15 2 21 6V18C23 14 16 13 8 13zm48 0c-8 0-15 1-21 5v40c6-4 13-6 21-6V13zM30 18h4v40h-4V18z'/%3E%3C/svg%3E");
+}
+
+.point-icon-run {
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 64 64' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M39 8a7 7 0 1 1-14 0 7 7 0 0 1 14 0zM28 18l13 8 10-5 4 7-14 7-8-5-4 10 12 8-5 9-16-11 5-17-8 5-8 12-8-5 10-15 17-8z'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 64 64' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M39 8a7 7 0 1 1-14 0 7 7 0 0 1 14 0zM28 18l13 8 10-5 4 7-14 7-8-5-4 10 12 8-5 9-16-11 5-17-8 5-8 12-8-5 10-15 17-8z'/%3E%3C/svg%3E");
+}
+
+.point-icon-faith {
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 64 64' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M29 5h6v17h14v6H35v31h-6V28H15v-6h14V5z'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 64 64' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M29 5h6v17h14v6H35v31h-6V28H15v-6h14V5z'/%3E%3C/svg%3E");
 }
 
 .gway-hero-points strong {
   color: #fff;
-  font-size: 14px;
-  font-weight: 1000;
-  letter-spacing: 0.08em;
+  font-size: 13px;
+  font-weight: 950;
+  letter-spacing: 0.055em;
   text-transform: uppercase;
-  line-height: 1.15;
+  line-height: 1.18;
 }
 
 .gway-hero-points span {
-  color: rgba(255, 255, 255, 0.64);
-  font-size: 12px;
-  font-weight: 900;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
+  display: none;
 }
 
 .gway-scroll-tag {
-  position: absolute;
-  right: 3.8vw;
-  bottom: 9vh;
-  z-index: 4;
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  color: rgba(255, 255, 255, 0.84);
-  font-size: 10px;
-  font-weight: 1000;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  writing-mode: vertical-rl;
+  display: none;
 }
 
-.gway-scroll-tag span {
-  width: 1px;
-  height: 58px;
-  background: rgba(255, 255, 255, 0.45);
-}
+/* =========================================================
+   RESPONSIVE
+========================================================= */
 
-/* RESPONSIVE */
 @media (max-width: 1120px) {
   .gway-hero {
     padding-top: 126px;
@@ -339,10 +410,12 @@
     background-position: 58% center;
   }
 
+  .gway-hero h1 {
+    font-size: clamp(58px, 8.6vw, 108px);
+  }
+
   .gway-hero-red {
-    width: 62vw;
-    height: 28vh;
-    min-height: 235px;
+    width: 48vw;
   }
 }
 
@@ -350,7 +423,7 @@
   .gway-hero {
     min-height: 100svh;
     align-items: flex-end;
-    padding: 116px 22px 42px;
+    padding: 118px 22px 42px;
   }
 
   .gway-hero-bg {
@@ -359,20 +432,25 @@
         0deg,
         rgba(0, 0, 0, 0.98) 0%,
         rgba(0, 0, 0, 0.9) 38%,
-        rgba(0, 0, 0, 0.48) 70%,
+        rgba(0, 0, 0, 0.5) 72%,
         rgba(0, 0, 0, 0.7) 100%
       ),
       url("../assets/hero-team.png");
+
     background-position: center top;
   }
 
+  .gway-hero-left-design {
+    width: 100vw;
+    left: -36vw;
+  }
+
   .gway-hero-red {
-    right: -20vw;
-    width: 112vw;
-    height: 22vh;
-    min-height: 175px;
-    opacity: 0.82;
-    clip-path: polygon(34% 0, 100% 0, 100% 100%, 0 100%);
+    right: -32vw;
+    width: 105vw;
+    height: 19vh;
+    min-height: 150px;
+    opacity: 0.72;
   }
 
   .gway-hero-content {
@@ -380,22 +458,17 @@
     padding-top: 0;
   }
 
-  .gway-eyebrow {
-    margin-bottom: 16px;
-  }
-
   .gway-hero h1 {
-    font-size: clamp(50px, 16vw, 88px);
+    font-size: clamp(50px, 15.5vw, 84px);
   }
 
   .gway-hero-copy {
     max-width: 100%;
     margin-top: 22px;
-    font-size: 15px;
+    font-size: 14px;
   }
 
   .gway-hero-actions {
-    margin-top: 26px;
     gap: 12px;
   }
 
@@ -406,22 +479,15 @@
   }
 
   .gway-hero-points {
-    margin-top: 30px;
-    display: grid;
+    grid-template-columns: 1fr;
+    margin-top: 28px;
   }
 
   .gway-hero-points div {
-    padding: 15px 0;
-  }
-
-  .gway-hero-points div + div {
-    padding-left: 0;
-    border-left: none;
-    border-top: 1px solid rgba(255, 255, 255, 0.16);
-  }
-
-  .gway-scroll-tag {
-    display: none;
+    min-height: auto;
+    padding: 14px 0;
+    border-right: none;
+    border-top: 1px solid rgba(255, 255, 255, 0.15);
   }
 }
 
