@@ -1,0 +1,112 @@
+.gway-header {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 50;
+
+  height: 94px;
+  padding: 0 var(--gway-pad);
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 34px;
+
+  color: var(--gway-white);
+}
+
+.gway-brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-width: max-content;
+}
+
+.gway-brand img {
+  width: 58px;
+  height: auto;
+  filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.55));
+}
+
+.gway-brand-text {
+  display: grid;
+  gap: 3px;
+  line-height: 1;
+}
+
+.gway-brand-text strong {
+  font-size: clamp(24px, 2.7vw, 42px);
+  font-weight: 1000;
+  letter-spacing: -0.07em;
+  font-style: italic;
+}
+
+.gway-brand-text span {
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  opacity: 0.78;
+}
+
+.gway-nav {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: clamp(20px, 3vw, 48px);
+}
+
+.gway-nav a {
+  position: relative;
+  font-size: 12px;
+  font-weight: 950;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  opacity: 0.86;
+}
+
+.gway-nav a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -9px;
+  width: 0;
+  height: 2px;
+  background: var(--gway-red-hot);
+  transition: width 0.25s ease;
+}
+
+.gway-nav a:hover::after {
+  width: 100%;
+}
+
+.gway-header-btn {
+  height: 54px;
+  min-width: 164px;
+  padding: 0 24px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+
+  background: var(--gway-red);
+  color: var(--gway-white);
+
+  font-size: 12px;
+  font-weight: 1000;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+
+  clip-path: polygon(10% 0, 100% 0, 90% 100%, 0% 100%);
+  box-shadow: 0 20px 42px rgba(215, 11, 24, 0.3);
+  transition: transform 0.25s ease, background 0.25s ease;
+}
+
+.gway-header-btn:hover {
+  transform: translateY(-2px);
+  background: var(--gway-red-hot);
+}
+
+.gway-header-btn span {
+  font-size: 20px;
+}
