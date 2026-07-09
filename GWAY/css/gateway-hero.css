@@ -408,3 +408,47 @@ body {
     font-size: clamp(54px, 17vw, 76px);
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+/* =========================================================
+   SECTION 2: ENROLLMENT BACKGROUND SETUP
+========================================================= */
+
+.enroll-section {
+  position: relative;
+  width: 100%;
+  min-height: 820px;
+  overflow: hidden;
+  isolation: isolate;
+  background: #d50013;
+}
+
+.enroll-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background-image: url("../assets/enroll-bg.png");
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  pointer-events: none;
+}
+
+.enroll-content {
+  position: relative;
+  z-index: 2;
+  width: min(100%, 1680px);
+  min-height: 820px;
+  margin: 0 auto;
+  padding: 72px 7vw 64px;
+}
