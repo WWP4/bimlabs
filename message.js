@@ -775,9 +775,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
-
 /* =========================================================
    LEGACY VIDEO SECTION — GSAP SCROLL FOCUS
+   FIXED: GSAP controls all transforms
 ========================================================= */
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -790,88 +790,239 @@ document.addEventListener("DOMContentLoaded", () => {
   if (!section || !copy || !card || !video) return;
 
   if (typeof gsap === "undefined" || typeof ScrollTrigger === "undefined") {
+    console.warn("GSAP or ScrollTrigger missing for legacy video section.");
     return;
   }
 
   gsap.registerPlugin(ScrollTrigger);
 
-  const isMobile = window.matchMedia("(max-width: 768px)").matches;
+  const oldTrigger = ScrollTrigger.getById("legacy-video-focus");
+  if (oldTrigger) oldTrigger.kill();
 
-  gsap.set(card, {
-    width: isMobile ? "92vw" : "46vw",
-    left: isMobile ? "50%" : "68%",
-    top: isMobile ? "66%" : "50%",
-    scale: isMobile ? 0.86 : 0.82,
-    borderRadius: isMobile ? 16 : 24,
-    opacity: 1
-  });
+  gsap.killTweensOf([copy, card, scrollNote].filter(Boolean));
 
-  const tl = gsap.timeline({
-    scrollTrigger: {
-      trigger: section,
-      start: "top top",
-      end: "+=210%",
-      scrub: 1.1,
-      pin: true,
-      anticipatePin: 1,
-      onEnter: () => {
-        video.muted = true;
-        video.play().catch(() => {});
-      },
-      onEnterBack: () => {
-        video.muted = true;
-        video.play().catch(() => {});
-      },
-      onLeaveBack: () => {
-        video.pause();
-      }
-    }
-  });
+  const mm = gsap.matchMedia();
 
-  tl
-    /* copy fades so video becomes the focus */
-    .to(copy, {
-      opacity: 0,
-      x: isMobile ? 0 : -100,
-      y: isMobile ? -40 : 0,
-      duration: 0.22,
-      ease: "power2.out"
-    }, 0)
-
-    .to(scrollNote, {
-      opacity: 0,
-      y: 20,
-      duration: 0.18,
-      ease: "power2.out"
-    }, 0)
-
-    /* video moves center and grows, but does NOT go full screen */
-    .to(card, {
-      left: "50%",
-      top: "50%",
-      width: isMobile ? "94vw" : "88vw",
-      scale: 1,
-      borderRadius: isMobile ? 14 : 18,
-      boxShadow: "0 44px 120px rgba(0,0,0,0.34)",
-      duration: 0.46,
-      ease: "power3.inOut"
-    }, 0.08)
-
-    /* hold the focused video moment */
-    .to(card, {
-      scale: 1,
-      duration: 0.24,
-      ease: "none"
-    })
-
-    /* ease out so next Book Lloyd section can take over */
-    .to(card, {
-      width: isMobile ? "78vw" : "58vw",
-      top: "24%",
-      scale: 0.78,
-      opacity: 0.18,
-      borderRadius: 20,
-      duration: 0.34,
-      ease: "power3.inOut"
+  /* =========================
+     DESKTOP / TABLET
+  ========================= */
+  mm.add("(min-width: 769px)", () => {
+    gsap.set(copy, {
+      opacity: 1,
+      x: 0,
+      y: 0,
+      yPercent: -50,
+      clearProps: "scale"
     });
+
+    gsap.set(card, {
+      position: "absolute",
+      top: "50%",
+      left: "68%",
+      width: "46vw",
+      height: "auto",
+      xPercent: -50,
+      yPercent: -50,
+      scale: 0.82,
+      opacity: 1,
+      borderRadius: 24,
+      transformOrigin: "center center",
+      boxShadow: "0 32px 90px rgba(0,0,0,0.28)"
+    });
+
+    if (scrollNote) {
+      gsap.set(scrollNote, {
+        opacity: 1,
+        y: 0
+      });
+    }
+
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        id: "legacy-video-focus",
+        trigger: section,
+        start: "top top",
+        end: "+=210%",
+        scrub: 1.1,
+        pin: true,
+        anticipatePin: 1,
+        invalidateOnRefresh: true,
+
+        onEnter: () => {
+          video.muted = true;
+          video.play().catch(() => {});
+        },
+
+        onEnterBack: () => {
+          video.muted = true;
+          video.play().catch(() => {});
+        },
+
+        onLeaveBack: () => {
+          video.pause();
+        }
+      }
+    });
+
+    tl
+      .to(
+        copy,
+        {
+          opacity: 0,
+          x: -110,
+          duration: 0.22,
+          ease: "power2.out"
+        },
+        0
+      )
+
+      .to(
+        scrollNote,
+        {
+          opacity: 0,
+          y: 20,
+          duration: 0.18,
+          ease: "power2.out"
+        },
+        0
+      )
+
+      .to(
+        card,
+        {
+          left: "50%",
+          top: "50%",
+          width: "88vw",
+          scale: 1,
+          borderRadius: 18,
+          boxShadow: "0 44px 120px rgba(0,0,0,0.34)",
+          duration: 0.48,
+          ease: "power3.inOut"
+        },
+        0.08
+      )
+
+      .to(card, {
+        scale: 1,
+        duration: 0.26,
+        ease: "none"
+      })
+
+      .to(card, {
+        width: "58vw",
+        top: "24%",
+        scale: 0.78,
+        opacity: 0.18,
+        borderRadius: 20,
+        duration: 0.36,
+        ease: "power3.inOut"
+      });
+
+    return () => {
+      ScrollTrigger.getById("legacy-video-focus")?.kill();
+    };
+  });
+
+  /* =========================
+     MOBILE
+  ========================= */
+  mm.add("(max-width: 768px)", () => {
+    gsap.set(copy, {
+      opacity: 1,
+      x: 0,
+      y: 0,
+      yPercent: 0
+    });
+
+    gsap.set(card, {
+      position: "absolute",
+      top: "66%",
+      left: "50%",
+      width: "92vw",
+      height: "auto",
+      xPercent: -50,
+      yPercent: -50,
+      scale: 0.86,
+      opacity: 1,
+      borderRadius: 16,
+      transformOrigin: "center center",
+      boxShadow: "0 28px 80px rgba(0,0,0,0.28)"
+    });
+
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        id: "legacy-video-focus-mobile",
+        trigger: section,
+        start: "top top",
+        end: "+=160%",
+        scrub: 1,
+        pin: true,
+        anticipatePin: 1,
+        invalidateOnRefresh: true,
+
+        onEnter: () => {
+          video.muted = true;
+          video.play().catch(() => {});
+        },
+
+        onEnterBack: () => {
+          video.muted = true;
+          video.play().catch(() => {});
+        },
+
+        onLeaveBack: () => {
+          video.pause();
+        }
+      }
+    });
+
+    tl
+      .to(
+        copy,
+        {
+          opacity: 0,
+          y: -36,
+          duration: 0.22,
+          ease: "power2.out"
+        },
+        0
+      )
+
+      .to(
+        card,
+        {
+          top: "50%",
+          width: "94vw",
+          scale: 1,
+          borderRadius: 14,
+          duration: 0.46,
+          ease: "power3.inOut"
+        },
+        0.08
+      )
+
+      .to(card, {
+        scale: 1,
+        duration: 0.22,
+        ease: "none"
+      })
+
+      .to(card, {
+        width: "78vw",
+        top: "24%",
+        scale: 0.78,
+        opacity: 0.18,
+        borderRadius: 18,
+        duration: 0.34,
+        ease: "power3.inOut"
+      });
+
+    return () => {
+      ScrollTrigger.getById("legacy-video-focus-mobile")?.kill();
+    };
+  });
+
+  window.addEventListener("load", () => {
+    ScrollTrigger.refresh();
+  });
 });
