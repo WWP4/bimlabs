@@ -763,3 +763,115 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* =========================================================
+   LEGACY VIDEO SECTION — GSAP SCROLL FOCUS
+========================================================= */
+
+document.addEventListener("DOMContentLoaded", () => {
+  const section = document.querySelector(".legacy-video-section");
+  const copy = document.querySelector(".legacy-video-copy");
+  const card = document.querySelector(".legacy-video-card");
+  const video = document.querySelector(".legacy-video-media");
+  const scrollNote = document.querySelector(".legacy-video-scroll");
+
+  if (!section || !copy || !card || !video) return;
+
+  if (typeof gsap === "undefined" || typeof ScrollTrigger === "undefined") {
+    return;
+  }
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  const isMobile = window.matchMedia("(max-width: 768px)").matches;
+
+  gsap.set(card, {
+    width: isMobile ? "92vw" : "46vw",
+    left: isMobile ? "50%" : "68%",
+    top: isMobile ? "66%" : "50%",
+    scale: isMobile ? 0.86 : 0.82,
+    borderRadius: isMobile ? 16 : 24,
+    opacity: 1
+  });
+
+  const tl = gsap.timeline({
+    scrollTrigger: {
+      trigger: section,
+      start: "top top",
+      end: "+=210%",
+      scrub: 1.1,
+      pin: true,
+      anticipatePin: 1,
+      onEnter: () => {
+        video.muted = true;
+        video.play().catch(() => {});
+      },
+      onEnterBack: () => {
+        video.muted = true;
+        video.play().catch(() => {});
+      },
+      onLeaveBack: () => {
+        video.pause();
+      }
+    }
+  });
+
+  tl
+    /* copy fades so video becomes the focus */
+    .to(copy, {
+      opacity: 0,
+      x: isMobile ? 0 : -100,
+      y: isMobile ? -40 : 0,
+      duration: 0.22,
+      ease: "power2.out"
+    }, 0)
+
+    .to(scrollNote, {
+      opacity: 0,
+      y: 20,
+      duration: 0.18,
+      ease: "power2.out"
+    }, 0)
+
+    /* video moves center and grows, but does NOT go full screen */
+    .to(card, {
+      left: "50%",
+      top: "50%",
+      width: isMobile ? "94vw" : "88vw",
+      scale: 1,
+      borderRadius: isMobile ? 14 : 18,
+      boxShadow: "0 44px 120px rgba(0,0,0,0.34)",
+      duration: 0.46,
+      ease: "power3.inOut"
+    }, 0.08)
+
+    /* hold the focused video moment */
+    .to(card, {
+      scale: 1,
+      duration: 0.24,
+      ease: "none"
+    })
+
+    /* ease out so next Book Lloyd section can take over */
+    .to(card, {
+      width: isMobile ? "78vw" : "58vw",
+      top: "24%",
+      scale: 0.78,
+      opacity: 0.18,
+      borderRadius: 20,
+      duration: 0.34,
+      ease: "power3.inOut"
+    });
+});
