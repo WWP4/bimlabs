@@ -605,85 +605,126 @@ if (typeof gsap !== "undefined" && typeof ScrollTrigger !== "undefined") {
 
 
 /* =========================================================
-   SPEAKING SECTION ENTRANCE
+   SPEAKING SECTION — CREAM-TO-YELLOW REVEAL
+   Mirrors the Journey section's clip-path reveal.
 ========================================================= */
 
-if (typeof gsap !== "undefined" && typeof ScrollTrigger !== "undefined") {
-  gsap.from(".speaking-top", {
-    scrollTrigger: {
-      trigger: ".speaking-section",
-      start: "top 80%",
-      once: true
-    },
-    y: 24,
-    opacity: 0,
-    duration: 0.7,
-    ease: "power3.out"
+document.addEventListener("DOMContentLoaded", () => {
+  const section = document.querySelector(".speaking-section");
+
+  if (!section) return;
+
+  if (typeof gsap === "undefined" || typeof ScrollTrigger === "undefined") {
+    section.style.setProperty("--speakingReveal", "100%");
+    return;
+  }
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  [
+    "speaking-yellow-reveal",
+    "speaking-content-enter",
+    "speaking-figure-enter",
+    "speaking-decor-enter"
+  ].forEach((id) => ScrollTrigger.getById(id)?.kill());
+
+  const reducedMotion = window.matchMedia(
+    "(prefers-reduced-motion: reduce)"
+  ).matches;
+
+  gsap.set(section, {
+    "--speakingReveal": reducedMotion ? "100%" : "0%"
   });
 
-  gsap.from(".speaking-copy h2 span", {
-    scrollTrigger: {
-      trigger: ".speaking-section",
-      start: "top 72%",
-      once: true
-    },
-    y: 50,
-    opacity: 0,
+  if (reducedMotion) return;
+
+  /*
+    Same reveal logic as the Journey section:
+    0%   = cream fully covering the speaking section
+    100% = cream wiped away, yellow section visible
+  */
+  gsap
+    .timeline({
+      scrollTrigger: {
+        id: "speaking-yellow-reveal",
+        trigger: section,
+        start: "top 92%",
+        end: "top 16%",
+        scrub: 0.75,
+        invalidateOnRefresh: true
+      }
+    })
+    .to({}, { duration: 0.1 })
+    .to(section, {
+      "--speakingReveal": "100%",
+      duration: 0.9,
+      ease: "none"
+    });
+
+  const content = [
+    ".speaking-eyebrow",
+    ".speaking-title",
+    ".speaking-copy",
+    ".speaking-cta",
+    ".speaking-availability"
+  ];
+
+  gsap.from(content, {
+    autoAlpha: 0,
+    y: 46,
     duration: 0.9,
-    stagger: 0.08,
-    ease: "power3.out"
+    stagger: 0.075,
+    ease: "power3.out",
+    scrollTrigger: {
+      id: "speaking-content-enter",
+      trigger: section,
+      start: "top 57%",
+      once: true
+    }
   });
 
-  gsap.from(".speaking-lead, .speaking-btn", {
+  gsap.from(".speaking-figure", {
+    autoAlpha: 0,
+    x: 84,
+    y: 38,
+    scale: 0.96,
+    transformOrigin: "right bottom",
+    duration: 1.15,
+    ease: "power3.out",
     scrollTrigger: {
-      trigger: ".speaking-section",
-      start: "top 68%",
+      id: "speaking-figure-enter",
+      trigger: section,
+      start: "top 55%",
       once: true
-    },
-    y: 28,
-    opacity: 0,
-    duration: 0.75,
-    stagger: 0.1,
-    ease: "power3.out"
+    }
   });
 
-  gsap.from(".speaking-availability", {
-    scrollTrigger: {
-      trigger: ".speaking-availability",
-      start: "top 86%",
-      once: true
-    },
-    y: 34,
-    opacity: 0,
-    duration: 0.8,
-    ease: "power3.out"
-  });
+  gsap.from(
+    ".speaking-dots, .speaking-slashes, .speaking-plus",
+    {
+      autoAlpha: 0,
+      scale: 0.92,
+      duration: 0.78,
+      stagger: 0.08,
+      ease: "power2.out",
+      scrollTrigger: {
+        id: "speaking-decor-enter",
+        trigger: section,
+        start: "top 52%",
+        once: true
+      }
+    }
+  );
 
-  gsap.from(".speaking-visual img", {
-    scrollTrigger: {
-      trigger: ".speaking-section",
-      start: "top 70%",
-      once: true
-    },
-    y: 56,
-    opacity: 0,
-    scale: 0.97,
-    duration: 1,
-    ease: "power3.out"
-  });
+  window.addEventListener(
+    "load",
+    () => ScrollTrigger.refresh(),
+    { once: true }
+  );
+});
 
-  gsap.from(".speaking-decor--dots, .speaking-decor--lines", {
-    scrollTrigger: {
-      trigger: ".speaking-section",
-      start: "top 72%",
-      once: true
-    },
-    opacity: 0,
-    duration: 0.8,
-    stagger: 0.08,
-    ease: "power3.out"
-  });
-}
+
+
 
 
 
