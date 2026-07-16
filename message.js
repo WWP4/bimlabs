@@ -765,264 +765,233 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 
-
-
-
-
-
-
-
-
-
-
 /* =========================================================
-   LEGACY VIDEO SECTION — GSAP SCROLL FOCUS
-   FIXED: GSAP controls all transforms
+   MESSAGE FILM BRIDGE — PODCAST TO SPEAKING TRANSITION
 ========================================================= */
 
 document.addEventListener("DOMContentLoaded", () => {
-  const section = document.querySelector(".legacy-video-section");
-  const copy = document.querySelector(".legacy-video-copy");
-  const card = document.querySelector(".legacy-video-card");
-  const video = document.querySelector(".legacy-video-media");
-  const scrollNote = document.querySelector(".legacy-video-scroll");
+  const section = document.querySelector(".message-film-section");
+  const curtain = document.querySelector(".message-film-curtain");
+  const intro = document.querySelector(".message-film-intro");
+  const card = document.querySelector(".message-film-card");
+  const video = document.querySelector(".message-film-media");
+  const playButton = document.querySelector(".message-film-play");
+  const bridge = document.querySelector(".message-film-bridge");
 
-  if (!section || !copy || !card || !video) return;
+  if (!section || !curtain || !intro || !card || !video || !bridge) return;
+
+  /* Real playback: the first click reveals native controls and sound. */
+  const startVideo = async () => {
+    try {
+      video.controls = true;
+      video.muted = false;
+      await video.play();
+      card.classList.add("is-playing");
+    } catch (error) {
+      console.warn("The message video could not start automatically.", error);
+    }
+  };
+
+  playButton?.addEventListener("click", startVideo);
+
+  video.addEventListener("play", () => {
+    card.classList.add("is-playing");
+  });
+
+  video.addEventListener("pause", () => {
+    if (video.currentTime < 0.1 || video.ended) {
+      card.classList.remove("is-playing");
+    }
+  });
+
+  video.addEventListener("ended", () => {
+    card.classList.remove("is-playing");
+  });
+
+  /* Encourage the browser to display the opening frame without autoplaying. */
+  video.addEventListener(
+    "loadedmetadata",
+    () => {
+      if (video.duration > 0 && video.currentTime === 0) {
+        try {
+          video.currentTime = Math.min(0.12, video.duration / 10);
+        } catch (_) {}
+      }
+    },
+    { once: true }
+  );
 
   if (typeof gsap === "undefined" || typeof ScrollTrigger === "undefined") {
-    console.warn("GSAP or ScrollTrigger missing for legacy video section.");
+    console.warn("GSAP or ScrollTrigger is missing for the message film bridge.");
     return;
   }
 
   gsap.registerPlugin(ScrollTrigger);
 
-  const oldTrigger = ScrollTrigger.getById("legacy-video-focus");
-  if (oldTrigger) oldTrigger.kill();
+  [
+    "message-film-flow",
+    "message-film-mobile"
+  ].forEach((id) => ScrollTrigger.getById(id)?.kill());
 
-  gsap.killTweensOf([copy, card, scrollNote].filter(Boolean));
+  const reducedMotion = window.matchMedia(
+    "(prefers-reduced-motion: reduce)"
+  ).matches;
+
+  if (reducedMotion) return;
 
   const mm = gsap.matchMedia();
 
-  /* =========================
-     DESKTOP / TABLET
-  ========================= */
+  /* Desktop: black continues from the podcast, then recedes like a curtain. */
   mm.add("(min-width: 769px)", () => {
-    gsap.set(copy, {
-      opacity: 1,
-      x: 0,
-      y: 0,
-      yPercent: -50,
-      clearProps: "scale"
+    gsap.set(section, {
+      "--curtain-h": "100%",
+      "--curve-x": "0%",
+      "--curve-y": "0%"
+    });
+
+    gsap.set(intro, {
+      autoAlpha: 0,
+      y: 42
     });
 
     gsap.set(card, {
-      position: "absolute",
-      top: "50%",
-      left: "68%",
-      width: "46vw",
-      height: "auto",
-      xPercent: -50,
-      yPercent: -50,
-      scale: 0.82,
-      opacity: 1,
-      borderRadius: 24,
-      transformOrigin: "center center",
-      boxShadow: "0 32px 90px rgba(0,0,0,0.28)"
+      autoAlpha: 0,
+      y: 180,
+      scale: 0.84,
+      transformOrigin: "center center"
     });
 
-    if (scrollNote) {
-      gsap.set(scrollNote, {
-        opacity: 1,
-        y: 0
-      });
-    }
-
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        id: "legacy-video-focus",
-        trigger: section,
-        start: "top top",
-        end: "+=210%",
-        scrub: 1.1,
-        pin: true,
-        anticipatePin: 1,
-        invalidateOnRefresh: true,
-
-        onEnter: () => {
-          video.muted = true;
-          video.play().catch(() => {});
-        },
-
-        onEnterBack: () => {
-          video.muted = true;
-          video.play().catch(() => {});
-        },
-
-        onLeaveBack: () => {
-          video.pause();
-        }
-      }
+    gsap.set(bridge, {
+      autoAlpha: 0,
+      y: 34
     });
 
-    tl
-      .to(
-        copy,
-        {
-          opacity: 0,
-          x: -110,
-          duration: 0.22,
-          ease: "power2.out"
-        },
-        0
-      )
-
-      .to(
-        scrollNote,
-        {
-          opacity: 0,
-          y: 20,
-          duration: 0.18,
-          ease: "power2.out"
-        },
-        0
-      )
-
-      .to(
-        card,
-        {
-          left: "50%",
-          top: "50%",
-          width: "88vw",
-          scale: 1,
-          borderRadius: 18,
-          boxShadow: "0 44px 120px rgba(0,0,0,0.34)",
-          duration: 0.48,
-          ease: "power3.inOut"
-        },
-        0.08
-      )
-
-      .to(card, {
-        scale: 1,
-        duration: 0.26,
-        ease: "none"
-      })
-
-      .to(card, {
-        width: "58vw",
-        top: "24%",
-        scale: 0.78,
-        opacity: 0.18,
-        borderRadius: 20,
-        duration: 0.36,
+    const timeline = gsap.timeline({
+      defaults: {
         ease: "power3.inOut"
-      });
-
-    return () => {
-      ScrollTrigger.getById("legacy-video-focus")?.kill();
-    };
-  });
-
-  /* =========================
-     MOBILE
-  ========================= */
-  mm.add("(max-width: 768px)", () => {
-    gsap.set(copy, {
-      opacity: 1,
-      x: 0,
-      y: 0,
-      yPercent: 0
-    });
-
-    gsap.set(card, {
-      position: "absolute",
-      top: "66%",
-      left: "50%",
-      width: "92vw",
-      height: "auto",
-      xPercent: -50,
-      yPercent: -50,
-      scale: 0.86,
-      opacity: 1,
-      borderRadius: 16,
-      transformOrigin: "center center",
-      boxShadow: "0 28px 80px rgba(0,0,0,0.28)"
-    });
-
-    const tl = gsap.timeline({
+      },
       scrollTrigger: {
-        id: "legacy-video-focus-mobile",
+        id: "message-film-flow",
         trigger: section,
         start: "top top",
-        end: "+=160%",
+        end: "+=135%",
         scrub: 1,
         pin: true,
         anticipatePin: 1,
-        invalidateOnRefresh: true,
-
-        onEnter: () => {
-          video.muted = true;
-          video.play().catch(() => {});
-        },
-
-        onEnterBack: () => {
-          video.muted = true;
-          video.play().catch(() => {});
-        },
-
-        onLeaveBack: () => {
-          video.pause();
-        }
+        invalidateOnRefresh: true
       }
     });
 
-    tl
+    timeline
       .to(
-        copy,
+        intro,
         {
-          opacity: 0,
-          y: -36,
-          duration: 0.22,
-          ease: "power2.out"
+          autoAlpha: 1,
+          y: 0,
+          duration: 0.2,
+          ease: "power3.out"
         },
         0
       )
-
+      .to(
+        section,
+        {
+          "--curtain-h": "64%",
+          "--curve-x": "52%",
+          "--curve-y": "18%",
+          duration: 0.48
+        },
+        0.16
+      )
+      .to(
+        intro,
+        {
+          y: -14,
+          scale: 0.965,
+          duration: 0.38
+        },
+        0.25
+      )
       .to(
         card,
         {
-          top: "50%",
-          width: "94vw",
+          autoAlpha: 1,
+          y: 0,
           scale: 1,
-          borderRadius: 14,
-          duration: 0.46,
-          ease: "power3.inOut"
+          duration: 0.48
         },
-        0.08
+        0.24
       )
-
-      .to(card, {
-        scale: 1,
-        duration: 0.22,
-        ease: "none"
-      })
-
-      .to(card, {
-        width: "78vw",
-        top: "24%",
-        scale: 0.78,
-        opacity: 0.18,
-        borderRadius: 18,
-        duration: 0.34,
-        ease: "power3.inOut"
-      });
+      .to(
+        card,
+        {
+          y: -8,
+          duration: 0.24,
+          ease: "none"
+        },
+        0.68
+      )
+      .to(
+        bridge,
+        {
+          autoAlpha: 1,
+          y: 0,
+          duration: 0.26,
+          ease: "power3.out"
+        },
+        0.66
+      );
 
     return () => {
-      ScrollTrigger.getById("legacy-video-focus-mobile")?.kill();
+      ScrollTrigger.getById("message-film-flow")?.kill();
     };
   });
 
-  window.addEventListener("load", () => {
-    ScrollTrigger.refresh();
+  /* Mobile: a lighter entrance with no long pinned scroll. */
+  mm.add("(max-width: 768px)", () => {
+    gsap.from(intro, {
+      autoAlpha: 0,
+      y: 28,
+      duration: 0.8,
+      ease: "power3.out",
+      scrollTrigger: {
+        id: "message-film-mobile",
+        trigger: section,
+        start: "top 78%",
+        once: true
+      }
+    });
+
+    gsap.from(card, {
+      autoAlpha: 0,
+      y: 48,
+      scale: 0.94,
+      duration: 0.9,
+      ease: "power3.out",
+      scrollTrigger: {
+        trigger: card,
+        start: "top 86%",
+        once: true
+      }
+    });
+
+    gsap.from(bridge, {
+      autoAlpha: 0,
+      y: 24,
+      duration: 0.75,
+      ease: "power3.out",
+      scrollTrigger: {
+        trigger: bridge,
+        start: "top 90%",
+        once: true
+      }
+    });
   });
+
+  window.addEventListener(
+    "load",
+    () => ScrollTrigger.refresh(),
+    { once: true }
+  );
 });
+
