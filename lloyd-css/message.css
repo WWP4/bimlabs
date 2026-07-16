@@ -1185,245 +1185,462 @@
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /* =========================================================
-   LEGACY VIDEO SECTION — SCROLL FOCUS BRIDGE
-   CSS file: /lloyd-css/legacy-video.css
-   BG image: /assets/legacy-bg.png
+   PODCAST → LIVE MESSAGE BRIDGE
+   Isolated styles: only the video section is changed.
 ========================================================= */
 
-.legacy-video-section {
+.message-film-section {
+  --message-black: #050505;
+  --message-cream: #f7efe4;
+  --message-yellow: #f5bf00;
+  --message-curtain-height: 58%;
+  --message-curve-x: 52%;
+  --message-curve-y: 17%;
+
   position: relative;
   min-height: 100vh;
-  background: #f5bf00;
+  min-height: 100svh;
+  overflow: hidden;
+  isolation: isolate;
+  margin: 0;
+  color: var(--message-black);
+  background: var(--message-cream);
+}
+
+.message-film-section,
+.message-film-section * {
+  box-sizing: border-box;
+}
+
+.message-film-section::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 12;
+  height: 8px;
+  background: var(--message-yellow);
+  pointer-events: none;
+}
+
+.message-film-pin {
+  position: relative;
+  min-height: 100vh;
+  min-height: 100svh;
   overflow: hidden;
   isolation: isolate;
 }
 
-.legacy-video-section,
-.legacy-video-section * {
-  box-sizing: border-box;
+.message-film-curtain {
+  position: absolute;
+  top: -2px;
+  left: -4%;
+  z-index: 0;
+  width: 108%;
+  height: var(--message-curtain-height);
+  border-radius:
+    0 0 var(--message-curve-x) var(--message-curve-x) /
+    0 0 var(--message-curve-y) var(--message-curve-y);
+  background:
+    radial-gradient(
+      circle at 50% 12%,
+      rgba(255, 255, 255, 0.035),
+      transparent 35%
+    ),
+    linear-gradient(180deg, #080808 0%, var(--message-black) 100%);
+  box-shadow: 0 34px 90px rgba(0, 0, 0, 0.11);
+  pointer-events: none;
+  will-change: height, border-radius;
 }
 
-.legacy-video-bg {
+.message-film-grain {
   position: absolute;
   inset: 0;
-  z-index: 0;
-  background-image: url("../assets/legacy-bg.png");
-  background-size: cover;
-  background-position: center center;
-  background-repeat: no-repeat;
+  z-index: 1;
+  opacity: 0.085;
   pointer-events: none;
-  transform: scale(1.02);
+  background-image:
+    repeating-radial-gradient(
+      circle at 18% 16%,
+      rgba(255, 255, 255, 0.18) 0 0.45px,
+      transparent 0.7px 4px
+    );
+  background-size: 9px 9px;
+  mix-blend-mode: soft-light;
 }
 
-.legacy-video-pin {
-  position: relative;
-  z-index: 2;
-  min-height: 100vh;
-  display: grid;
-  place-items: center;
-  padding: clamp(30px, 5vw, 78px);
-}
-
-.legacy-video-shell {
-  position: relative;
-  width: min(100%, 1560px);
-  min-height: 82vh;
-}
-
-.legacy-video-copy {
+.message-film-intro {
   position: absolute;
-  left: 0;
-  top: 50%;
+  top: clamp(74px, 9.4vh, 112px);
+  left: 50%;
   z-index: 4;
-  width: min(42vw, 570px);
-  transform: translateY(-50%);
-  color: #050505;
+  width: min(1180px, calc(100% - 40px));
+  transform: translateX(-50%);
+  text-align: center;
+  color: var(--message-cream);
   will-change: transform, opacity;
 }
 
-.legacy-video-kicker {
+.message-film-kicker {
   display: flex;
   align-items: center;
-  gap: 18px;
-  margin-bottom: clamp(34px, 4vw, 58px);
-  font-family: Inter, Arial, sans-serif;
-  color: #050505;
+  justify-content: center;
+  gap: clamp(12px, 1.5vw, 20px);
+  margin-bottom: clamp(22px, 2.4vw, 34px);
+  color: var(--message-yellow);
+  font-family:
+    "Bebas Neue",
+    Impact,
+    Haettenschweiler,
+    "Arial Narrow Bold",
+    sans-serif;
 }
 
-.legacy-video-kicker span,
-.legacy-video-kicker p {
+.message-film-kicker span,
+.message-film-kicker p {
   margin: 0;
-  font-size: 12px;
+  font-size: clamp(12px, 0.78vw, 15px);
+  font-weight: 400;
   line-height: 1;
-  font-weight: 950;
-  letter-spacing: 0.07em;
+  letter-spacing: 0.13em;
   text-transform: uppercase;
 }
 
-.legacy-video-kicker i {
+.message-film-kicker i {
   display: block;
-  width: min(16vw, 220px);
-  height: 2px;
-  background: #050505;
-  opacity: 0.72;
+  width: clamp(90px, 11vw, 180px);
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    rgba(245, 191, 0, 0.24),
+    var(--message-yellow)
+  );
 }
 
-.legacy-video-copy h2 {
+.message-film-intro h2 {
   margin: 0;
-  font-family: "Druk Wide Bold", "Bebas Neue", Impact, sans-serif;
-  font-size: clamp(62px, 8.7vw, 152px);
-  line-height: 0.82;
-  letter-spacing: -0.065em;
+  color: var(--message-cream);
+  font-family:
+    "Bebas Neue",
+    Impact,
+    Haettenschweiler,
+    "Arial Narrow Bold",
+    sans-serif;
+  font-size: clamp(76px, 7.8vw, 148px);
+  font-weight: 400;
+  line-height: 0.79;
+  letter-spacing: 0.008em;
   text-transform: uppercase;
-  color: #050505;
 }
 
-.legacy-video-copy h2 span {
+.message-film-intro h2 span {
   display: block;
 }
 
-.legacy-video-text {
-  width: min(100%, 420px);
-  margin: clamp(28px, 3.6vw, 46px) 0 0;
-  font-family: Inter, Arial, sans-serif;
-  font-size: clamp(16px, 1.3vw, 20px);
-  line-height: 1.18;
-  font-weight: 800;
-  color: #050505;
+.message-film-intro > p {
+  max-width: 690px;
+  margin: clamp(20px, 2vw, 28px) auto 0;
+  color: rgba(247, 239, 228, 0.76);
+  font-family:
+    "Bebas Neue",
+    Impact,
+    Haettenschweiler,
+    "Arial Narrow Bold",
+    sans-serif;
+  font-size: clamp(18px, 1.22vw, 24px);
+  font-weight: 400;
+  line-height: 1.12;
+  letter-spacing: 0.035em;
+  text-transform: uppercase;
 }
 
-.legacy-video-card {
+.message-film-card {
   position: absolute;
-  top: 50%;
-  left: 68%;
-  z-index: 3;
-  width: min(46vw, 760px);
+  top: 57%;
+  left: 50%;
+  z-index: 7;
+  width: min(800px, 68vw);
   aspect-ratio: 16 / 9;
-  transform: translate(-50%, -50%) scale(0.82);
   overflow: hidden;
-  border-radius: 24px;
-  background: #050505;
-  box-shadow: 0 32px 90px rgba(0, 0, 0, 0.28);
-  will-change: transform, width, opacity, border-radius;
+  transform: translate(-50%, -50%);
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  border-radius: 18px;
+  background: #080808;
+  box-shadow:
+    0 34px 92px rgba(0, 0, 0, 0.24),
+    0 10px 26px rgba(0, 0, 0, 0.14);
+  will-change: transform, opacity;
 }
 
-.legacy-video-card::after {
+.message-film-card::after {
   content: "";
   position: absolute;
   inset: 0;
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  z-index: 2;
   border-radius: inherit;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(0, 0, 0, 0.02) 52%,
+      rgba(0, 0, 0, 0.54) 100%
+    );
   pointer-events: none;
 }
 
-.legacy-video-media {
+.message-film-media {
   display: block;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  background: #050505;
+  background: #080808;
 }
 
-.legacy-video-scroll {
+.message-film-play {
   position: absolute;
+  top: 50%;
   left: 50%;
-  bottom: clamp(18px, 4vh, 44px);
-  z-index: 6;
-  transform: translateX(-50%);
+  z-index: 5;
+  width: clamp(68px, 5.4vw, 88px);
+  height: clamp(68px, 5.4vw, 88px);
+  display: grid;
+  place-items: center;
+  transform: translate(-50%, -50%);
+  border: 1px solid rgba(255, 255, 255, 0.56);
+  border-radius: 999px;
+  background: var(--message-yellow);
+  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.26);
+  cursor: pointer;
+  transition:
+    transform 0.28s ease,
+    background 0.28s ease,
+    opacity 0.22s ease;
+}
+
+.message-film-play:hover {
+  transform: translate(-50%, -50%) scale(1.07);
+  background: #ffd42a;
+}
+
+.message-film-play span {
+  width: 0;
+  height: 0;
+  margin-left: 5px;
+  border-top: 10px solid transparent;
+  border-bottom: 10px solid transparent;
+  border-left: 17px solid var(--message-black);
+}
+
+.message-film-card.is-playing .message-film-play {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.message-film-live {
+  position: absolute;
+  right: 18px;
+  bottom: 16px;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  color: rgba(255, 255, 255, 0.82);
+  font-family:
+    "Bebas Neue",
+    Impact,
+    Haettenschweiler,
+    "Arial Narrow Bold",
+    sans-serif;
+  font-size: 12px;
+  line-height: 1;
+  letter-spacing: 0.12em;
+}
+
+.message-film-live i {
+  width: 7px;
+  height: 7px;
+  border-radius: 999px;
+  background: var(--message-yellow);
+  box-shadow: 0 0 0 5px rgba(245, 191, 0, 0.13);
+}
+
+.message-film-handoff {
+  position: absolute;
+  right: 24px;
+  bottom: clamp(28px, 4.3vh, 52px);
+  left: 24px;
+  z-index: 5;
   display: grid;
   justify-items: center;
-  gap: 10px;
-  font-family: Inter, Arial, sans-serif;
-  font-size: 10px;
-  font-weight: 950;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: #050505;
-  pointer-events: none;
-  will-change: opacity, transform;
+  gap: 8px;
+  text-align: center;
+  color: var(--message-black);
+  will-change: transform, opacity;
 }
 
-.legacy-video-scroll span {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: #050505;
+.message-film-handoff > span {
+  color: var(--message-yellow);
+  font-family:
+    "Bebas Neue",
+    Impact,
+    Haettenschweiler,
+    "Arial Narrow Bold",
+    sans-serif;
+  font-size: 13px;
+  letter-spacing: 0.18em;
 }
 
-.legacy-video-scroll p {
+.message-film-handoff p {
   margin: 0;
+  font-family:
+    "Bebas Neue",
+    Impact,
+    Haettenschweiler,
+    "Arial Narrow Bold",
+    sans-serif;
+  font-size: clamp(34px, 3.2vw, 58px);
+  font-weight: 400;
+  line-height: 0.94;
+  letter-spacing: 0.01em;
 }
 
-/* Tablet */
-@media (max-width: 1024px) {
-  .legacy-video-pin {
-    padding: 70px 24px;
+.message-film-handoff a {
+  display: inline-flex;
+  align-items: center;
+  gap: 13px;
+  margin-top: 5px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--message-yellow);
+  color: var(--message-black);
+  font-family:
+    "Bebas Neue",
+    Impact,
+    Haettenschweiler,
+    "Arial Narrow Bold",
+    sans-serif;
+  font-size: 15px;
+  letter-spacing: 0.11em;
+  text-decoration: none;
+}
+
+.message-film-handoff a i {
+  color: var(--message-yellow);
+  font-size: 22px;
+  font-style: normal;
+  transition: transform 0.24s ease;
+}
+
+.message-film-handoff a:hover i {
+  transform: translateX(6px);
+}
+
+/* Compact desktop */
+@media (max-width: 1180px) {
+  .message-film-intro {
+    top: 84px;
   }
 
-  .legacy-video-shell {
-    min-height: 86vh;
+  .message-film-card {
+    width: min(820px, 78vw);
+  }
+}
+
+/* Tablet and mobile: preserve the flow without a long pinned scroll */
+@media (max-width: 768px) {
+  .message-film-section {
+    min-height: auto;
+    --message-curtain-height: 59%;
+    --message-curve-x: 58%;
+    --message-curve-y: 10%;
   }
 
-  .legacy-video-copy {
-    top: 0;
-    left: 0;
-    width: min(100%, 680px);
+  .message-film-pin {
+    min-height: auto;
+    padding: 68px 18px 58px;
+  }
+
+  .message-film-curtain {
+    left: -24%;
+    width: 148%;
+    height: 61%;
+  }
+
+  .message-film-intro,
+  .message-film-card,
+  .message-film-handoff {
+    position: relative;
+    top: auto;
+    right: auto;
+    bottom: auto;
+    left: auto;
     transform: none;
   }
 
-  .legacy-video-card {
-    top: 62%;
-    left: 50%;
-    width: min(88vw, 900px);
-    transform: translate(-50%, -50%) scale(0.86);
+  .message-film-intro {
+    width: 100%;
+    min-height: 390px;
   }
 
-  .legacy-video-copy h2 {
-    font-size: clamp(58px, 14vw, 118px);
+  .message-film-kicker {
+    gap: 10px;
+    margin-bottom: 30px;
+  }
+
+  .message-film-kicker i {
+    width: 50px;
+  }
+
+  .message-film-kicker span,
+  .message-film-kicker p {
+    font-size: 10px;
+  }
+
+  .message-film-intro h2 {
+    font-size: clamp(58px, 17.5vw, 88px);
+    line-height: 0.82;
+  }
+
+  .message-film-intro > p {
+    max-width: 390px;
+    font-size: 17px;
+  }
+
+  .message-film-card {
+    width: 100%;
+    margin: -56px auto 0;
+    border-radius: 13px;
+  }
+
+  .message-film-live {
+    display: none;
+  }
+
+  .message-film-handoff {
+    margin-top: 42px;
+  }
+
+  .message-film-handoff p {
+    font-size: clamp(36px, 11vw, 54px);
   }
 }
 
-/* Mobile */
-@media (max-width: 640px) {
-  .legacy-video-pin {
-    padding: 70px 18px 96px;
+@media (max-width: 440px) {
+  .message-film-pin {
+    padding-right: 14px;
+    padding-left: 14px;
   }
 
-  .legacy-video-shell {
-    min-height: 82vh;
+  .message-film-intro {
+    min-height: 365px;
   }
 
-  .legacy-video-copy h2 {
-    font-size: clamp(52px, 18vw, 84px);
+  .message-film-intro h2 {
+    font-size: clamp(52px, 16.6vw, 74px);
   }
 
-  .legacy-video-text {
-    max-width: 330px;
-    font-size: 15px;
-  }
-
-  .legacy-video-card {
-    top: 66%;
-    width: 92vw;
-    border-radius: 16px;
-  }
-
-  .legacy-video-scroll {
-    display: none;
+  .message-film-play {
+    width: 62px;
+    height: 62px;
   }
 }
