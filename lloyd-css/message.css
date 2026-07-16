@@ -1185,245 +1185,431 @@
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /* =========================================================
-   LEGACY VIDEO SECTION — SCROLL FOCUS BRIDGE
-   CSS file: /lloyd-css/legacy-video.css
-   BG image: /assets/legacy-bg.png
+   MESSAGE FILM BRIDGE
+   Podcast black continues, then recedes to reveal cream.
 ========================================================= */
 
-.legacy-video-section {
+.message-film-section {
+  --film-black: #050505;
+  --film-cream: #f4eee4;
+  --film-yellow: #f5bf00;
+  --curtain-h: 64%;
+  --curve-x: 52%;
+  --curve-y: 18%;
+
   position: relative;
   min-height: 100vh;
-  background: #f5bf00;
+  min-height: 100svh;
+  overflow: hidden;
+  isolation: isolate;
+  color: var(--film-black);
+  background: var(--film-cream);
+}
+
+.message-film-section,
+.message-film-section * {
+  box-sizing: border-box;
+}
+
+.message-film-section::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 8;
+  height: 7px;
+  background: var(--film-yellow);
+  pointer-events: none;
+}
+
+.message-film-pin {
+  position: relative;
+  min-height: 100vh;
+  min-height: 100svh;
   overflow: hidden;
   isolation: isolate;
 }
 
-.legacy-video-section,
-.legacy-video-section * {
-  box-sizing: border-box;
+.message-film-curtain {
+  position: absolute;
+  top: -2px;
+  left: -4%;
+  z-index: 0;
+  width: 108%;
+  height: var(--curtain-h);
+  background:
+    radial-gradient(circle at 50% 12%, rgba(255,255,255,0.035), transparent 34%),
+    linear-gradient(180deg, #080808 0%, var(--film-black) 100%);
+  border-radius:
+    0 0 var(--curve-x) var(--curve-x) /
+    0 0 var(--curve-y) var(--curve-y);
+  box-shadow: 0 28px 80px rgba(0, 0, 0, 0.12);
+  will-change: height, border-radius;
 }
 
-.legacy-video-bg {
+.message-film-grain {
   position: absolute;
   inset: 0;
-  z-index: 0;
-  background-image: url("../assets/legacy-bg.png");
-  background-size: cover;
-  background-position: center center;
-  background-repeat: no-repeat;
+  z-index: 1;
+  opacity: 0.12;
   pointer-events: none;
-  transform: scale(1.02);
+  background-image:
+    repeating-radial-gradient(
+      circle at 12% 18%,
+      rgba(255,255,255,0.18) 0 0.45px,
+      transparent 0.7px 4px
+    );
+  background-size: 9px 9px;
+  mix-blend-mode: soft-light;
 }
 
-.legacy-video-pin {
-  position: relative;
-  z-index: 2;
-  min-height: 100vh;
-  display: grid;
-  place-items: center;
-  padding: clamp(30px, 5vw, 78px);
-}
-
-.legacy-video-shell {
-  position: relative;
-  width: min(100%, 1560px);
-  min-height: 82vh;
-}
-
-.legacy-video-copy {
+.message-film-intro {
   position: absolute;
-  left: 0;
-  top: 50%;
+  top: clamp(84px, 11vh, 126px);
+  left: 50%;
   z-index: 4;
-  width: min(42vw, 570px);
-  transform: translateY(-50%);
-  color: #050505;
+  width: min(1120px, calc(100% - 40px));
+  transform: translateX(-50%);
+  text-align: center;
+  color: var(--film-cream);
   will-change: transform, opacity;
 }
 
-.legacy-video-kicker {
+.message-film-kicker {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 18px;
-  margin-bottom: clamp(34px, 4vw, 58px);
+  margin-bottom: clamp(22px, 2.6vw, 34px);
+  color: var(--film-yellow);
   font-family: Inter, Arial, sans-serif;
-  color: #050505;
 }
 
-.legacy-video-kicker span,
-.legacy-video-kicker p {
+.message-film-kicker span,
+.message-film-kicker p {
   margin: 0;
-  font-size: 12px;
+  font-size: 11px;
+  font-weight: 900;
   line-height: 1;
-  font-weight: 950;
-  letter-spacing: 0.07em;
+  letter-spacing: 0.15em;
   text-transform: uppercase;
 }
 
-.legacy-video-kicker i {
+.message-film-kicker i {
   display: block;
-  width: min(16vw, 220px);
-  height: 2px;
-  background: #050505;
-  opacity: 0.72;
+  width: clamp(84px, 12vw, 174px);
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    rgba(245,191,0,0.28),
+    var(--film-yellow)
+  );
 }
 
-.legacy-video-copy h2 {
+.message-film-intro h2 {
   margin: 0;
-  font-family: "Druk Wide Bold", "Bebas Neue", Impact, sans-serif;
-  font-size: clamp(62px, 8.7vw, 152px);
-  line-height: 0.82;
-  letter-spacing: -0.065em;
+  color: var(--film-cream);
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: clamp(72px, 8vw, 148px);
+  font-weight: 500;
+  line-height: 0.72;
+  letter-spacing: -0.052em;
   text-transform: uppercase;
-  color: #050505;
+  text-wrap: balance;
 }
 
-.legacy-video-copy h2 span {
+.message-film-intro h2 span,
+.message-film-intro h2 em {
   display: block;
 }
 
-.legacy-video-text {
-  width: min(100%, 420px);
-  margin: clamp(28px, 3.6vw, 46px) 0 0;
+.message-film-intro h2 em {
+  margin-top: 0.13em;
+  font-weight: 400;
+  font-style: italic;
+}
+
+.message-film-lead {
+  max-width: 690px;
+  margin: clamp(22px, 2.4vw, 30px) auto 0;
+  color: rgba(244, 238, 228, 0.78);
   font-family: Inter, Arial, sans-serif;
-  font-size: clamp(16px, 1.3vw, 20px);
-  line-height: 1.18;
-  font-weight: 800;
-  color: #050505;
+  font-size: clamp(15px, 1.15vw, 19px);
+  font-weight: 500;
+  line-height: 1.55;
+  letter-spacing: -0.02em;
 }
 
-.legacy-video-card {
+.message-film-card {
   position: absolute;
-  top: 50%;
-  left: 68%;
-  z-index: 3;
-  width: min(46vw, 760px);
+  top: 55%;
+  left: 50%;
+  z-index: 6;
+  width: min(820px, 72vw);
   aspect-ratio: 16 / 9;
-  transform: translate(-50%, -50%) scale(0.82);
   overflow: hidden;
-  border-radius: 24px;
-  background: #050505;
-  box-shadow: 0 32px 90px rgba(0, 0, 0, 0.28);
-  will-change: transform, width, opacity, border-radius;
+  transform: translate(-50%, -50%);
+  border: 1px solid rgba(255,255,255,0.28);
+  border-radius: 18px;
+  background: #0a0a0a;
+  box-shadow:
+    0 32px 90px rgba(0,0,0,0.24),
+    0 8px 24px rgba(0,0,0,0.14);
+  will-change: transform, opacity;
 }
 
-.legacy-video-card::after {
+.message-film-card::after {
   content: "";
   position: absolute;
   inset: 0;
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  z-index: 2;
   border-radius: inherit;
+  background:
+    linear-gradient(180deg, rgba(0,0,0,0.02) 54%, rgba(0,0,0,0.56) 100%);
   pointer-events: none;
 }
 
-.legacy-video-media {
+.message-film-media {
   display: block;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  background: #050505;
+  background: #090909;
 }
 
-.legacy-video-scroll {
+.message-film-play {
   position: absolute;
+  top: 50%;
   left: 50%;
-  bottom: clamp(18px, 4vh, 44px);
-  z-index: 6;
-  transform: translateX(-50%);
+  z-index: 5;
+  width: clamp(68px, 5.4vw, 88px);
+  height: clamp(68px, 5.4vw, 88px);
+  display: grid;
+  place-items: center;
+  transform: translate(-50%, -50%);
+  border: 1px solid rgba(255,255,255,0.68);
+  border-radius: 999px;
+  color: #050505;
+  background: rgba(245,191,0,0.94);
+  box-shadow: 0 18px 44px rgba(0,0,0,0.28);
+  cursor: pointer;
+  transition:
+    transform 0.3s ease,
+    background 0.3s ease,
+    opacity 0.25s ease;
+}
+
+.message-film-play:hover {
+  transform: translate(-50%, -50%) scale(1.07);
+  background: #ffd329;
+}
+
+.message-film-play span {
+  display: block;
+  width: 0;
+  height: 0;
+  margin-left: 5px;
+  border-top: 10px solid transparent;
+  border-bottom: 10px solid transparent;
+  border-left: 16px solid #050505;
+}
+
+.message-film-card.is-playing .message-film-play {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.message-film-card-label {
+  position: absolute;
+  right: 20px;
+  bottom: 17px;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  color: rgba(255,255,255,0.82);
+  font-family: Inter, Arial, sans-serif;
+  font-size: 9px;
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: 0.16em;
+}
+
+.message-film-card-label span {
+  width: 7px;
+  height: 7px;
+  border-radius: 999px;
+  background: var(--film-yellow);
+  box-shadow: 0 0 0 5px rgba(245,191,0,0.12);
+}
+
+.message-film-bridge {
+  position: absolute;
+  right: 24px;
+  bottom: clamp(28px, 4.2vh, 48px);
+  left: 24px;
+  z-index: 5;
   display: grid;
   justify-items: center;
-  gap: 10px;
+  gap: 13px;
+  text-align: center;
+  color: var(--film-black);
+  will-change: transform, opacity;
+}
+
+.message-film-bridge p {
+  margin: 0;
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: clamp(26px, 2.8vw, 46px);
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: -0.035em;
+}
+
+.message-film-bridge a {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  padding-bottom: 7px;
+  border-bottom: 1px solid var(--film-yellow);
+  color: var(--film-black);
   font-family: Inter, Arial, sans-serif;
   font-size: 10px;
-  font-weight: 950;
-  letter-spacing: 0.08em;
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: 0.2em;
+  text-decoration: none;
   text-transform: uppercase;
-  color: #050505;
-  pointer-events: none;
-  will-change: opacity, transform;
 }
 
-.legacy-video-scroll span {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: #050505;
+.message-film-bridge a span {
+  color: var(--film-yellow);
+  font-size: 20px;
+  line-height: 0;
+  transition: transform 0.25s ease;
 }
 
-.legacy-video-scroll p {
-  margin: 0;
+.message-film-bridge a:hover span {
+  transform: translateX(6px);
 }
 
 /* Tablet */
 @media (max-width: 1024px) {
-  .legacy-video-pin {
-    padding: 70px 24px;
+  .message-film-intro {
+    top: 92px;
   }
 
-  .legacy-video-shell {
-    min-height: 86vh;
+  .message-film-intro h2 {
+    font-size: clamp(68px, 10.8vw, 112px);
   }
 
-  .legacy-video-copy {
-    top: 0;
-    left: 0;
-    width: min(100%, 680px);
-    transform: none;
-  }
-
-  .legacy-video-card {
-    top: 62%;
-    left: 50%;
-    width: min(88vw, 900px);
-    transform: translate(-50%, -50%) scale(0.86);
-  }
-
-  .legacy-video-copy h2 {
-    font-size: clamp(58px, 14vw, 118px);
+  .message-film-card {
+    top: 57%;
+    width: min(860px, 86vw);
   }
 }
 
-/* Mobile */
-@media (max-width: 640px) {
-  .legacy-video-pin {
-    padding: 70px 18px 96px;
+/* Mobile: no cramped full-screen composition */
+@media (max-width: 768px) {
+  .message-film-section {
+    --curtain-h: 58%;
+    --curve-x: 56%;
+    --curve-y: 11%;
+    min-height: auto;
   }
 
-  .legacy-video-shell {
-    min-height: 82vh;
+  .message-film-pin {
+    min-height: auto;
+    padding: 72px 18px 54px;
   }
 
-  .legacy-video-copy h2 {
-    font-size: clamp(52px, 18vw, 84px);
+  .message-film-curtain {
+    left: -22%;
+    width: 144%;
+    height: 60%;
   }
 
-  .legacy-video-text {
-    max-width: 330px;
-    font-size: 15px;
+  .message-film-intro,
+  .message-film-card,
+  .message-film-bridge {
+    position: relative;
+    top: auto;
+    right: auto;
+    bottom: auto;
+    left: auto;
+    transform: none;
   }
 
-  .legacy-video-card {
-    top: 66%;
-    width: 92vw;
-    border-radius: 16px;
+  .message-film-intro {
+    width: 100%;
+    min-height: 390px;
+    display: grid;
+    align-content: start;
   }
 
-  .legacy-video-scroll {
+  .message-film-kicker {
+    gap: 11px;
+    margin-bottom: 32px;
+  }
+
+  .message-film-kicker i {
+    width: 54px;
+  }
+
+  .message-film-kicker span,
+  .message-film-kicker p {
+    font-size: 9px;
+    letter-spacing: 0.1em;
+  }
+
+  .message-film-intro h2 {
+    font-size: clamp(54px, 17vw, 88px);
+    line-height: 0.78;
+  }
+
+  .message-film-lead {
+    max-width: 390px;
+    font-size: 14px;
+  }
+
+  .message-film-card {
+    z-index: 6;
+    width: 100%;
+    margin: -52px auto 0;
+    border-radius: 13px;
+  }
+
+  .message-film-card-label {
     display: none;
+  }
+
+  .message-film-bridge {
+    margin-top: 44px;
+  }
+
+  .message-film-bridge p {
+    font-size: clamp(28px, 9vw, 42px);
+  }
+}
+
+@media (max-width: 440px) {
+  .message-film-pin {
+    padding-right: 14px;
+    padding-left: 14px;
+  }
+
+  .message-film-intro {
+    min-height: 365px;
+  }
+
+  .message-film-intro h2 {
+    font-size: clamp(48px, 16.5vw, 72px);
+  }
+
+  .message-film-play {
+    width: 62px;
+    height: 62px;
   }
 }
