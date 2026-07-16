@@ -11,6 +11,34 @@
   --lloyd-yellow-deep: #e4a900;
 }
 
+/* =========================================================
+   GLOBAL TYPOGRAPHY SYSTEM
+   Bebas Neue across the complete Lloyd website.
+========================================================= */
+
+:root {
+  --lloyd-font-primary:
+    "Bebas Neue",
+    Impact,
+    Haettenschweiler,
+    "Arial Narrow Bold",
+    sans-serif;
+}
+
+html,
+body,
+button,
+input,
+textarea,
+select,
+option,
+body *,
+body *::before,
+body *::after {
+  font-family: var(--lloyd-font-primary) !important;
+}
+
+
 .hero {
   position: relative;
   overflow: hidden;
@@ -1311,7 +1339,7 @@
 .message-film-intro h2 {
   margin: 0;
   color: var(--film-cream);
-  font-family: "Cormorant Garamond", Georgia, serif;
+  font-family: "Bebas Neue", Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
   font-size: clamp(72px, 8vw, 148px);
   font-weight: 500;
   line-height: 0.72;
@@ -1328,7 +1356,7 @@
 .message-film-intro h2 em {
   margin-top: 0.13em;
   font-weight: 400;
-  font-style: italic;
+  font-style: normal;
 }
 
 .message-film-lead {
@@ -1461,7 +1489,7 @@
 
 .message-film-bridge p {
   margin: 0;
-  font-family: "Cormorant Garamond", Georgia, serif;
+  font-family: "Bebas Neue", Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
   font-size: clamp(26px, 2.8vw, 46px);
   font-weight: 500;
   line-height: 1;
