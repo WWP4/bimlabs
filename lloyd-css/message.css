@@ -1641,3 +1641,336 @@ body *::after {
     height: 62px;
   }
 }
+
+
+/* =========================================================
+   SPEAKING SECTION — LARGE CINEMATIC SCALE + CREAM REVEAL
+   The cream layer continues from the previous section and
+   wipes away exactly like the Journey section reveal.
+========================================================= */
+
+.speaking-section {
+  --speakingReveal: 0%;
+
+  position: relative;
+  min-height: 124vh;
+  min-height: 124svh;
+  overflow: hidden;
+  isolation: isolate;
+  margin: 0;
+  background:
+    radial-gradient(
+      circle at 50% 28%,
+      rgba(255, 255, 255, 0.18),
+      transparent 42%
+    ),
+    linear-gradient(
+      115deg,
+      var(--lloyd-yellow-bright, #f9cf13) 0%,
+      var(--lloyd-yellow, #f5bf00) 48%,
+      var(--lloyd-yellow-deep, #e4a900) 100%
+    );
+}
+
+/* Cream cover: same clip-path reveal system as .calling-section */
+.speaking-section::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 80;
+  pointer-events: none;
+  background: var(--lloyd-cream, #f7efe4);
+  clip-path: inset(var(--speakingReveal) 0 0 0);
+  will-change: clip-path;
+}
+
+.speaking-shell {
+  position: relative;
+  z-index: 4;
+  width: min(100%, 1760px);
+  min-height: 124vh;
+  min-height: 124svh;
+  margin: 0 auto;
+  padding:
+    clamp(104px, 8vw, 164px)
+    clamp(34px, 6vw, 112px)
+    clamp(88px, 7vw, 138px);
+}
+
+.speaking-copy-wrap {
+  position: relative;
+  z-index: 8;
+  width: min(58%, 900px);
+}
+
+.speaking-eyebrow {
+  margin-bottom: clamp(28px, 3vw, 48px);
+}
+
+.speaking-eyebrow p {
+  font-size: clamp(16px, 1.12vw, 22px);
+  letter-spacing: 0.02em;
+}
+
+.speaking-eyebrow span {
+  width: clamp(230px, 24vw, 470px);
+}
+
+.speaking-title {
+  max-width: 900px;
+  margin: 0;
+  font-size: clamp(124px, 10.3vw, 210px);
+  line-height: 0.77;
+  letter-spacing: 0.008em;
+}
+
+.speaking-copy {
+  max-width: 760px;
+  margin-top: clamp(28px, 3vw, 46px);
+  font-size: clamp(22px, 1.55vw, 30px);
+  line-height: 1.12;
+  letter-spacing: 0.006em;
+}
+
+.speaking-cta {
+  width: min(540px, 100%);
+  min-height: clamp(78px, 5.4vw, 94px);
+  margin-top: clamp(32px, 3.5vw, 54px);
+  padding-inline: clamp(28px, 3vw, 52px);
+  font-size: clamp(22px, 1.35vw, 28px);
+}
+
+.speaking-cta i {
+  font-size: clamp(28px, 2vw, 40px);
+}
+
+.speaking-availability {
+  width: min(850px, 100%);
+  margin-top: clamp(24px, 2.5vw, 38px);
+  border-radius: 18px;
+}
+
+.availability-head {
+  min-height: 76px;
+  padding-inline: clamp(24px, 2.4vw, 38px);
+}
+
+.availability-head h3,
+.availability-head a {
+  font-size: clamp(15px, 1vw, 20px);
+}
+
+.availability-main {
+  min-height: 330px;
+  padding: clamp(20px, 2vw, 32px);
+}
+
+.availability-dates {
+  gap: clamp(10px, 1vw, 16px);
+}
+
+.availability-date {
+  min-height: 238px;
+  border-radius: 12px;
+}
+
+.availability-date__month,
+.availability-date__status {
+  font-size: clamp(14px, 0.95vw, 18px);
+}
+
+.availability-date__day {
+  font-size: clamp(48px, 3.5vw, 70px);
+}
+
+.availability-calendar {
+  min-width: 290px;
+  padding-left: clamp(22px, 2vw, 34px);
+}
+
+.availability-calendar h4 {
+  font-size: clamp(16px, 1.05vw, 20px);
+}
+
+.availability-calendar__grid {
+  gap: clamp(8px, 0.72vw, 13px);
+}
+
+.availability-calendar__grid span,
+.availability-calendar__grid button {
+  font-size: clamp(13px, 0.82vw, 17px);
+}
+
+.availability-note {
+  padding:
+    0
+    clamp(24px, 2.4vw, 38px)
+    clamp(22px, 2vw, 32px);
+  font-size: clamp(13px, 0.85vw, 17px);
+}
+
+/* Make Lloyd feel monumental without covering the content */
+.speaking-figure {
+  position: absolute;
+  right: clamp(-84px, -3.8vw, -24px);
+  bottom: 0;
+  z-index: 6;
+  width: min(58vw, 1080px);
+  height: 98%;
+  max-height: none;
+  object-fit: contain;
+  object-position: right bottom;
+  filter: drop-shadow(-26px 32px 42px rgba(0, 0, 0, 0.14));
+  pointer-events: none;
+  will-change: transform, opacity;
+}
+
+.speaking-dots,
+.speaking-slashes,
+.speaking-plus {
+  z-index: 5;
+}
+
+/* Large desktop */
+@media (min-width: 1800px) {
+  .speaking-shell {
+    width: min(100%, 1840px);
+  }
+
+  .speaking-copy-wrap {
+    width: min(57%, 940px);
+  }
+
+  .speaking-figure {
+    right: -48px;
+    width: min(57vw, 1120px);
+  }
+}
+
+/* Laptop / compact desktop */
+@media (max-width: 1320px) {
+  .speaking-section,
+  .speaking-shell {
+    min-height: 112vh;
+    min-height: 112svh;
+  }
+
+  .speaking-shell {
+    padding-inline: clamp(28px, 4.5vw, 64px);
+  }
+
+  .speaking-copy-wrap {
+    width: min(60%, 760px);
+  }
+
+  .speaking-title {
+    font-size: clamp(108px, 10vw, 158px);
+  }
+
+  .speaking-copy {
+    max-width: 620px;
+    font-size: clamp(20px, 1.5vw, 25px);
+  }
+
+  .speaking-availability {
+    width: min(740px, 100%);
+  }
+
+  .speaking-figure {
+    right: -90px;
+    width: min(59vw, 880px);
+  }
+}
+
+/* Tablet: stack the figure after the copy instead of crushing the layout */
+@media (max-width: 980px) {
+  .speaking-section,
+  .speaking-shell {
+    min-height: auto;
+  }
+
+  .speaking-shell {
+    display: flex;
+    flex-direction: column;
+    padding:
+      92px
+      28px
+      0;
+  }
+
+  .speaking-copy-wrap {
+    width: 100%;
+  }
+
+  .speaking-title {
+    font-size: clamp(92px, 16vw, 142px);
+  }
+
+  .speaking-copy {
+    max-width: 720px;
+  }
+
+  .speaking-availability {
+    width: 100%;
+  }
+
+  .speaking-figure {
+    position: relative;
+    right: auto;
+    bottom: auto;
+    align-self: center;
+    width: min(860px, 112%);
+    height: auto;
+    max-height: 820px;
+    margin-top: 18px;
+    margin-bottom: -2px;
+  }
+}
+
+/* Mobile */
+@media (max-width: 680px) {
+  .speaking-shell {
+    padding:
+      74px
+      18px
+      0;
+  }
+
+  .speaking-eyebrow {
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .speaking-eyebrow span {
+    width: 84px;
+  }
+
+  .speaking-title {
+    font-size: clamp(76px, 24vw, 116px);
+    line-height: 0.8;
+  }
+
+  .speaking-copy {
+    font-size: 20px;
+    line-height: 1.08;
+  }
+
+  .speaking-cta {
+    min-height: 72px;
+  }
+
+  .availability-main {
+    min-height: auto;
+  }
+
+  .availability-calendar {
+    min-width: 0;
+    padding-left: 0;
+  }
+
+  .speaking-figure {
+    width: 126%;
+    max-width: none;
+    margin-left: -13%;
+  }
+}
