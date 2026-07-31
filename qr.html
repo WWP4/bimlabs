@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>For Bella ❤️</title>
+<style>
+:root{--rose:#a64f5f;--ink:#2a1f1c}
+*{box-sizing:border-box}html,body{height:100%;margin:0}
+body{display:grid;place-items:center;padding:24px;color:var(--ink);font-family:Georgia,serif;background:radial-gradient(circle at 20% 20%,#fff,transparent 35%),linear-gradient(135deg,#f7efeb,#ead8d4)}
+.card{width:min(92vw,720px);padding:clamp(28px,6vw,58px);text-align:center;border:1px solid #00000012;background:#fffaf7dd;border-radius:30px;box-shadow:0 28px 80px #492a271f}
+.eyebrow{letter-spacing:.22em;text-transform:uppercase;font:12px Arial;color:#7b625d}
+h1{margin:14px 0 0;font-size:clamp(54px,10vw,96px);font-weight:400;line-height:.9}
+h1 span{display:block;margin-top:16px;color:var(--rose);font-size:.46em;font-style:italic}
+.sub{max-width:520px;margin:24px auto 28px;font:16px/1.7 Arial;color:#66514c}
+#setup{display:none;margin:24px auto 0;max-width:520px;padding:20px;background:white;border-radius:18px}
+#setup input{width:100%;padding:14px 16px;border:1px solid #d6c2bc;border-radius:12px;font:15px Arial}
+#setup button{margin-top:12px;padding:13px 18px;border:0;border-radius:12px;background:var(--rose);color:white;font-weight:700;cursor:pointer}
+#qrWrap{display:none}
+#qr{width:220px;min-height:220px;margin:auto;padding:14px;display:grid;place-items:center;background:white;border-radius:22px;box-shadow:0 14px 35px #422b2820}
+#qr img,#qr canvas{max-width:100%;height:auto}
+.hint{margin-top:20px;font:12px Arial;letter-spacing:.12em;text-transform:uppercase;color:#8b6f69}
+a{display:inline-block;margin-top:18px;color:var(--rose)}
+.small{font:13px/1.5 Arial;color:#826b65;margin-top:10px}
+</style>
+</head>
+<body>
+<main class="card">
+<p class="eyebrow">A little morning surprise</p>
+<h1>Bella<span>this is for you</span></h1>
+<p class="sub">Three years, eleven months, and still my favorite person. Scan this when you’re ready to hear what my heart has been trying to say.</p>
+
+<div id="setup">
+  <strong>Paste the full poem page URL</strong>
+  <input id="targetInput" type="url" placeholder="https://your-site.netlify.app/poem.html">
+  <button id="makeBtn">Create working QR code</button>
+  <div class="small">Upload both files first, open poem.html online, copy its full URL, then paste it here.</div>
+</div>
+
+<div id="qrWrap">
+  <div id="qr"></div>
+  <p class="hint">Scan to open your letter ♥</p>
+  <a id="fallback" href="#">Or tap here</a>
+</div>
+</main>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script>
+const params = new URLSearchParams(location.search);
+const supplied = params.get("to");
+const saved = localStorage.getItem("bellaPoemUrl");
+const setup = document.getElementById("setup");
+const qrWrap = document.getElementById("qrWrap");
+const input = document.getElementById("targetInput");
+
+function validHttpUrl(value){
+  try{
+    const u = new URL(value);
+    return u.protocol === "http:" || u.protocol === "https:";
+  }catch{return false;}
+}
+
+function renderQR(target){
+  document.getElementById("qr").innerHTML = "";
+  new QRCode(document.getElementById("qr"),{
+    text:target,width:192,height:192,
+    colorDark:"#2a1f1c",colorLight:"#fff",
+    correctLevel:QRCode.CorrectLevel.H
+  });
+  document.getElementById("fallback").href = target;
+  setup.style.display = "none";
+  qrWrap.style.display = "block";
+}
+
+const initial = supplied || saved;
+if(initial && validHttpUrl(initial)){
+  renderQR(initial);
+}else{
+  setup.style.display = "block";
+}
+
+document.getElementById("makeBtn").addEventListener("click",()=>{
+  const target = input.value.trim();
+  if(!validHttpUrl(target)){
+    alert("Paste the complete online URL beginning with https://");
+    return;
+  }
+  localStorage.setItem("bellaPoemUrl", target);
+  const newUrl = location.pathname + "?to=" + encodeURIComponent(target);
+  history.replaceState({}, "", newUrl);
+  renderQR(target);
+});
+</script>
+</body>
+</html>
