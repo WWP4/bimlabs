@@ -4,109 +4,183 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>For Bella ❤️</title>
+<meta name="theme-color" content="#f5e9e6">
+
 <style>
-:root{--rose:#a64f5f;--ink:#2a1f1c}
-*{box-sizing:border-box}html,body{min-height:100%;margin:0}
-body{display:grid;place-items:center;padding:24px;color:var(--ink);font-family:Georgia,serif;background:radial-gradient(circle at 20% 20%,#fff,transparent 35%),linear-gradient(135deg,#f7efeb,#ead8d4)}
-.card{width:min(92vw,720px);padding:clamp(28px,6vw,58px);text-align:center;border:1px solid #00000012;background:#fffaf7e8;border-radius:30px;box-shadow:0 28px 80px #492a271f}
-.eyebrow{letter-spacing:.22em;text-transform:uppercase;font:12px Arial;color:#7b625d}
-h1{margin:14px 0 0;font-size:clamp(54px,10vw,96px);font-weight:400;line-height:.9}
-h1 span{display:block;margin-top:16px;color:var(--rose);font-size:.46em;font-style:italic}
-.sub{max-width:520px;margin:24px auto 28px;font:16px/1.7 Arial;color:#66514c}
-#qrBox{width:228px;height:228px;margin:auto;padding:14px;display:grid;place-items:center;background:white;border-radius:22px;box-shadow:0 14px 35px #422b2820}
-#qrImage{width:200px;height:200px;display:block}
-.hint{margin-top:20px;font:12px Arial;letter-spacing:.12em;text-transform:uppercase;color:#8b6f69}
-.controls{margin:24px auto 0;max-width:560px;padding:18px;background:#ffffffb8;border-radius:18px}
-label{display:block;margin-bottom:9px;font:700 13px Arial;color:#644c47;text-align:left}
-input{width:100%;padding:14px 15px;border:1px solid #d9c1bb;border-radius:12px;font:15px Arial;outline:none}
-input:focus{border-color:var(--rose);box-shadow:0 0 0 3px #a64f5f1a}
-.buttons{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:12px}
-button,a.button{border:0;border-radius:12px;padding:13px 17px;font:700 14px Arial;cursor:pointer;text-decoration:none}
-.primary{background:var(--rose);color:white}.secondary{background:#eee2de;color:#533d39}
-.status{min-height:20px;margin-top:10px;font:13px Arial;color:#705852}
+:root{
+  --rose:#a64f5f;
+  --ink:#2a1f1c;
+  --muted:#7b625d;
+}
+
+*{box-sizing:border-box}
+
+html,body{
+  min-height:100%;
+  margin:0;
+}
+
+body{
+  display:grid;
+  place-items:center;
+  padding:24px;
+  overflow:hidden;
+  color:var(--ink);
+  font-family:Georgia,"Times New Roman",serif;
+  background:
+    radial-gradient(circle at 20% 20%,rgba(255,255,255,.95),transparent 34%),
+    radial-gradient(circle at 82% 82%,rgba(166,79,95,.12),transparent 34%),
+    linear-gradient(135deg,#f8f0ec,#ead9d5);
+}
+
+body::before,
+body::after{
+  content:"";
+  position:fixed;
+  border:1px solid rgba(166,79,95,.15);
+  border-radius:50%;
+  pointer-events:none;
+}
+
+body::before{
+  width:30rem;
+  height:30rem;
+  top:-20rem;
+  left:-18rem;
+}
+
+body::after{
+  width:28rem;
+  height:28rem;
+  right:-19rem;
+  bottom:-20rem;
+}
+
+.card{
+  width:min(92vw,700px);
+  padding:clamp(32px,6vw,58px);
+  text-align:center;
+  border:1px solid rgba(65,39,36,.09);
+  border-radius:30px;
+  background:rgba(255,250,247,.88);
+  box-shadow:0 30px 90px rgba(73,42,39,.15);
+  backdrop-filter:blur(18px);
+}
+
+.eyebrow{
+  margin:0 0 16px;
+  color:var(--muted);
+  font:700 11px/1.4 Arial,Helvetica,sans-serif;
+  letter-spacing:.24em;
+  text-transform:uppercase;
+}
+
+h1{
+  margin:0;
+  font-size:clamp(54px,10vw,92px);
+  line-height:.9;
+  font-weight:400;
+  letter-spacing:-.04em;
+}
+
+h1 span{
+  display:block;
+  margin-top:17px;
+  color:var(--rose);
+  font-size:.46em;
+  line-height:1;
+  font-style:italic;
+  letter-spacing:-.02em;
+}
+
+.message{
+  max-width:500px;
+  margin:25px auto 30px;
+  color:#66514c;
+  font:16px/1.7 Arial,Helvetica,sans-serif;
+}
+
+.qr-shell{
+  width:228px;
+  height:228px;
+  margin:0 auto;
+  padding:14px;
+  display:grid;
+  place-items:center;
+  border-radius:24px;
+  background:#fff;
+  box-shadow:0 16px 40px rgba(66,43,40,.13);
+}
+
+.qr-shell img{
+  width:200px;
+  height:200px;
+  display:block;
+}
+
+.hint{
+  margin:21px 0 0;
+  color:#8b6f69;
+  font:700 11px/1.4 Arial,Helvetica,sans-serif;
+  letter-spacing:.13em;
+  text-transform:uppercase;
+}
+
+.tap{
+  display:inline-block;
+  margin-top:16px;
+  color:var(--rose);
+  text-decoration:none;
+  font:500 14px Arial,Helvetica,sans-serif;
+  border-bottom:1px solid currentColor;
+  padding-bottom:3px;
+}
+
+@media (max-width:520px){
+  .card{
+    padding:34px 22px;
+    border-radius:24px;
+  }
+
+  .qr-shell{
+    width:210px;
+    height:210px;
+  }
+
+  .qr-shell img{
+    width:182px;
+    height:182px;
+  }
+}
 </style>
 </head>
+
 <body>
 <main class="card">
-<p class="eyebrow">A little morning surprise</p>
-<h1>Bella<span>this is for you</span></h1>
-<p class="sub">Three years, eleven months, and still my favorite person. Scan this when you’re ready to hear what my heart has been trying to say.</p>
+  <p class="eyebrow">A little morning surprise</p>
 
-<div id="qrBox">
-  <img id="qrImage" alt="QR code to Bella's poem">
-</div>
-<p class="hint">Scan to open your letter ♥</p>
+  <h1>
+    Bella
+    <span>this is for you</span>
+  </h1>
 
-<div class="controls">
-  <label for="urlInput">Where should the QR code take her?</label>
-  <input id="urlInput" type="url" placeholder="https://your-site.netlify.app/poem.html">
-  <div class="buttons">
-    <button class="primary" id="updateBtn">Update QR destination</button>
-    <a class="button secondary" id="testBtn" href="#" target="_blank" rel="noopener">Test destination</a>
-    <button class="secondary" id="clearBtn">Clear saved URL</button>
+  <p class="message">
+    Three years, eleven months, and still my favorite person.
+    Scan this when you’re ready to read what my heart has been trying to say.
+  </p>
+
+  <div class="qr-shell">
+    <img
+      src="data:image/png;base64,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"
+      alt="QR code opening Bella's poem"
+    >
   </div>
-  <div class="status" id="status"></div>
-</div>
+
+  <p class="hint">Scan to open your letter ♥</p>
+
+  <a class="tap" href="https://www.bimlabsstudio.com/poem.html">
+    Or tap here
+  </a>
 </main>
-
-<script>
-const input = document.getElementById("urlInput");
-const qrImage = document.getElementById("qrImage");
-const testBtn = document.getElementById("testBtn");
-const statusEl = document.getElementById("status");
-const storageKey = "bellaQrDestinationV2";
-
-function isValidUrl(value){
-  try{
-    const u = new URL(value);
-    return u.protocol === "https:" || u.protocol === "http:";
-  }catch(e){ return false; }
-}
-
-function qrImageUrl(destination){
-  return "https://api.qrserver.com/v1/create-qr-code/?size=400x400&margin=12&data=" + encodeURIComponent(destination);
-}
-
-function setDestination(destination, save=true){
-  if(!isValidUrl(destination)){
-    statusEl.textContent = "Paste a complete URL beginning with https://";
-    return;
-  }
-  input.value = destination;
-  qrImage.src = qrImageUrl(destination);
-  testBtn.href = destination;
-  if(save) localStorage.setItem(storageKey, destination);
-  statusEl.textContent = "QR updated. Scan it with your phone now to test it.";
-}
-
-document.getElementById("updateBtn").addEventListener("click", () => {
-  setDestination(input.value.trim(), true);
-});
-
-document.getElementById("clearBtn").addEventListener("click", () => {
-  localStorage.removeItem(storageKey);
-  input.value = "";
-  qrImage.removeAttribute("src");
-  testBtn.href = "#";
-  statusEl.textContent = "Saved destination cleared. Paste the new poem URL.";
-  input.focus();
-});
-
-const queryDestination = new URLSearchParams(location.search).get("to");
-const savedDestination = localStorage.getItem(storageKey);
-const sameFolderPoem = location.protocol.startsWith("http")
-  ? new URL("poem.html", location.href).href
-  : "";
-
-if(queryDestination && isValidUrl(queryDestination)){
-  setDestination(queryDestination, true);
-}else if(savedDestination && isValidUrl(savedDestination)){
-  setDestination(savedDestination, false);
-}else if(sameFolderPoem){
-  setDestination(sameFolderPoem, false);
-}else{
-  statusEl.textContent = "Upload this page first, then paste the live poem URL.";
-}
-</script>
 </body>
 </html>
