@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>For Bella ❤️</title>
+<style>
+:root{--rose:#a64f5f;--ink:#2a1f1c}
+*{box-sizing:border-box}html,body{min-height:100%;margin:0}
+body{display:grid;place-items:center;padding:24px;color:var(--ink);font-family:Georgia,serif;background:radial-gradient(circle at 20% 20%,#fff,transparent 35%),linear-gradient(135deg,#f7efeb,#ead8d4)}
+.card{width:min(92vw,720px);padding:clamp(28px,6vw,58px);text-align:center;border:1px solid #00000012;background:#fffaf7e8;border-radius:30px;box-shadow:0 28px 80px #492a271f}
+.eyebrow{letter-spacing:.22em;text-transform:uppercase;font:12px Arial;color:#7b625d}
+h1{margin:14px 0 0;font-size:clamp(54px,10vw,96px);font-weight:400;line-height:.9}
+h1 span{display:block;margin-top:16px;color:var(--rose);font-size:.46em;font-style:italic}
+.sub{max-width:520px;margin:24px auto 28px;font:16px/1.7 Arial;color:#66514c}
+#qrBox{width:228px;height:228px;margin:auto;padding:14px;display:grid;place-items:center;background:white;border-radius:22px;box-shadow:0 14px 35px #422b2820}
+#qrImage{width:200px;height:200px;display:block}
+.hint{margin-top:20px;font:12px Arial;letter-spacing:.12em;text-transform:uppercase;color:#8b6f69}
+.controls{margin:24px auto 0;max-width:560px;padding:18px;background:#ffffffb8;border-radius:18px}
+label{display:block;margin-bottom:9px;font:700 13px Arial;color:#644c47;text-align:left}
+input{width:100%;padding:14px 15px;border:1px solid #d9c1bb;border-radius:12px;font:15px Arial;outline:none}
+input:focus{border-color:var(--rose);box-shadow:0 0 0 3px #a64f5f1a}
+.buttons{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:12px}
+button,a.button{border:0;border-radius:12px;padding:13px 17px;font:700 14px Arial;cursor:pointer;text-decoration:none}
+.primary{background:var(--rose);color:white}.secondary{background:#eee2de;color:#533d39}
+.status{min-height:20px;margin-top:10px;font:13px Arial;color:#705852}
+</style>
+</head>
+<body>
+<main class="card">
+<p class="eyebrow">A little morning surprise</p>
+<h1>Bella<span>this is for you</span></h1>
+<p class="sub">Three years, eleven months, and still my favorite person. Scan this when you’re ready to hear what my heart has been trying to say.</p>
+
+<div id="qrBox">
+  <img id="qrImage" alt="QR code to Bella's poem">
+</div>
+<p class="hint">Scan to open your letter ♥</p>
+
+<div class="controls">
+  <label for="urlInput">Where should the QR code take her?</label>
+  <input id="urlInput" type="url" placeholder="https://your-site.netlify.app/poem.html">
+  <div class="buttons">
+    <button class="primary" id="updateBtn">Update QR destination</button>
+    <a class="button secondary" id="testBtn" href="#" target="_blank" rel="noopener">Test destination</a>
+    <button class="secondary" id="clearBtn">Clear saved URL</button>
+  </div>
+  <div class="status" id="status"></div>
+</div>
+</main>
+
+<script>
+const input = document.getElementById("urlInput");
+const qrImage = document.getElementById("qrImage");
+const testBtn = document.getElementById("testBtn");
+const statusEl = document.getElementById("status");
+const storageKey = "bellaQrDestinationV2";
+
+function isValidUrl(value){
+  try{
+    const u = new URL(value);
+    return u.protocol === "https:" || u.protocol === "http:";
+  }catch(e){ return false; }
+}
+
+function qrImageUrl(destination){
+  return "https://api.qrserver.com/v1/create-qr-code/?size=400x400&margin=12&data=" + encodeURIComponent(destination);
+}
+
+function setDestination(destination, save=true){
+  if(!isValidUrl(destination)){
+    statusEl.textContent = "Paste a complete URL beginning with https://";
+    return;
+  }
+  input.value = destination;
+  qrImage.src = qrImageUrl(destination);
+  testBtn.href = destination;
+  if(save) localStorage.setItem(storageKey, destination);
+  statusEl.textContent = "QR updated. Scan it with your phone now to test it.";
+}
+
+document.getElementById("updateBtn").addEventListener("click", () => {
+  setDestination(input.value.trim(), true);
+});
+
+document.getElementById("clearBtn").addEventListener("click", () => {
+  localStorage.removeItem(storageKey);
+  input.value = "";
+  qrImage.removeAttribute("src");
+  testBtn.href = "#";
+  statusEl.textContent = "Saved destination cleared. Paste the new poem URL.";
+  input.focus();
+});
+
+const queryDestination = new URLSearchParams(location.search).get("to");
+const savedDestination = localStorage.getItem(storageKey);
+const sameFolderPoem = location.protocol.startsWith("http")
+  ? new URL("poem.html", location.href).href
+  : "";
+
+if(queryDestination && isValidUrl(queryDestination)){
+  setDestination(queryDestination, true);
+}else if(savedDestination && isValidUrl(savedDestination)){
+  setDestination(savedDestination, false);
+}else if(sameFolderPoem){
+  setDestination(sameFolderPoem, false);
+}else{
+  statusEl.textContent = "Upload this page first, then paste the live poem URL.";
+}
+</script>
+</body>
+</html>
