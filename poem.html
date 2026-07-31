@@ -4,57 +4,519 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Three Years, Eleven Months</title>
+<meta name="theme-color" content="#f5e8e4">
+
 <style>
-:root{--rose:#a64f5f;--ink:#2c211f;--muted:#7b625d}
-*{box-sizing:border-box}html{scroll-behavior:smooth}
-body{margin:0;color:var(--ink);font-family:Georgia,serif;background:radial-gradient(circle at 20% 0%,#d7a6aa33,transparent 32%),linear-gradient(#f8f0eb,#fffaf7 35%,#f4e7e3)}
-.hero{min-height:100vh;display:grid;place-items:center;padding:40px 20px;text-align:center}
-.kicker{font:12px Arial;letter-spacing:.24em;text-transform:uppercase;color:var(--muted)}
-h1{margin:18px 0 8px;font-size:clamp(56px,11vw,120px);font-weight:400;line-height:.94}
-.script{display:block;margin-top:18px;color:var(--rose);font-size:.46em;font-style:italic}
-.date{font:15px Arial;color:var(--muted);letter-spacing:.08em}
-.down{display:inline-block;margin-top:42px;color:var(--rose);font-size:28px;text-decoration:none}
-.wrap{padding:80px 20px 110px}
-.paper{width:min(92vw,760px);margin:auto;padding:clamp(34px,7vw,78px);border:1px solid #00000012;border-radius:28px;background:#fffdfadd;box-shadow:0 30px 80px #4b2d291f}
-.number{text-align:center;font-size:clamp(72px,13vw,130px);color:var(--rose);line-height:1;margin:0;font-weight:400}
-.months{text-align:center;margin:4px 0 44px;font:12px Arial;letter-spacing:.22em;text-transform:uppercase;color:var(--muted)}
-.poem{text-align:center;font-size:clamp(18px,2.6vw,24px);line-height:1.95}
-.poem p{margin:0 0 28px}.accent{color:var(--rose);font-style:italic}
-.rule{width:80px;height:1px;background:#d9c4be;margin:44px auto}
-.closing{text-align:center;font-size:clamp(22px,3vw,32px);line-height:1.55}
-.signature{margin-top:34px;text-align:center;color:var(--rose);font-style:italic;font-size:22px}
-.next{width:min(92vw,760px);margin:28px auto 0;padding:24px;text-align:center;border-radius:20px;background:#2c211f;color:white;font:16px/1.6 Arial}
-.next strong{color:#f2c8ce}
-footer{text-align:center;padding:36px 20px 60px;font:12px Arial;color:#8a716b}
+:root{
+  --rose:#a64f5f;
+  --rose-soft:#d9aab2;
+  --ink:#2c211f;
+  --muted:#7b625d;
+  --paper:#fffdfb;
+  --line:#dfcbc5;
+}
+
+*{box-sizing:border-box}
+
+html{
+  scroll-behavior:smooth;
+}
+
+body{
+  margin:0;
+  color:var(--ink);
+  font-family:Georgia,"Times New Roman",serif;
+  overflow-x:hidden;
+  background:
+    radial-gradient(circle at 15% 5%,rgba(215,166,170,.24),transparent 28%),
+    radial-gradient(circle at 85% 75%,rgba(166,79,95,.10),transparent 30%),
+    linear-gradient(180deg,#f8f0eb 0%,#fffaf7 42%,#f2e3df 100%);
+}
+
+body::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  opacity:.22;
+  background-image:
+    linear-gradient(rgba(255,255,255,.32) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.18) 1px,transparent 1px);
+  background-size:42px 42px;
+  mask-image:linear-gradient(to bottom,black,transparent 85%);
+}
+
+.hero{
+  min-height:100svh;
+  display:grid;
+  place-items:center;
+  padding:48px 20px;
+  text-align:center;
+  position:relative;
+  isolation:isolate;
+}
+
+.hero::before,
+.hero::after{
+  content:"";
+  position:absolute;
+  border:1px solid rgba(166,79,95,.18);
+  border-radius:50%;
+  z-index:-1;
+}
+
+.hero::before{
+  width:34rem;
+  height:34rem;
+  left:-23rem;
+  top:-15rem;
+}
+
+.hero::after{
+  width:28rem;
+  height:28rem;
+  right:-19rem;
+  bottom:-12rem;
+}
+
+.hero-inner{
+  width:min(92vw,960px);
+}
+
+.kicker{
+  margin:0;
+  font:700 11px/1.4 Arial,Helvetica,sans-serif;
+  letter-spacing:.26em;
+  text-transform:uppercase;
+  color:var(--muted);
+}
+
+h1{
+  margin:22px 0 12px;
+  font-size:clamp(56px,11vw,126px);
+  line-height:.88;
+  font-weight:400;
+  letter-spacing:-.045em;
+}
+
+.script{
+  display:block;
+  margin-top:20px;
+  color:var(--rose);
+  font-size:.43em;
+  line-height:1.05;
+  font-style:italic;
+  letter-spacing:-.02em;
+}
+
+.date{
+  max-width:420px;
+  margin:28px auto 0;
+  font:500 14px/1.7 Arial,Helvetica,sans-serif;
+  letter-spacing:.08em;
+  color:var(--muted);
+}
+
+.down{
+  width:48px;
+  height:48px;
+  margin:40px auto 0;
+  display:grid;
+  place-items:center;
+  border:1px solid rgba(166,79,95,.24);
+  border-radius:50%;
+  color:var(--rose);
+  text-decoration:none;
+  font-size:21px;
+  transition:.25s ease;
+}
+
+.down:hover{
+  transform:translateY(4px);
+  background:rgba(255,255,255,.55);
+}
+
+.wrap{
+  padding:90px 20px 120px;
+  position:relative;
+}
+
+.paper{
+  width:min(92vw,720px);
+  margin:0 auto;
+  padding:clamp(34px,7vw,74px);
+  border:1px solid rgba(73,44,40,.10);
+  border-radius:30px;
+  background:rgba(255,253,251,.90);
+  box-shadow:
+    0 35px 90px rgba(75,45,41,.12),
+    inset 0 1px 0 rgba(255,255,255,.8);
+  backdrop-filter:blur(16px);
+}
+
+.number{
+  margin:0;
+  text-align:center;
+  color:var(--rose);
+  font-size:clamp(74px,13vw,128px);
+  line-height:.82;
+  font-weight:400;
+  letter-spacing:-.05em;
+}
+
+.months{
+  margin:14px 0 48px;
+  text-align:center;
+  font:700 11px/1.4 Arial,Helvetica,sans-serif;
+  letter-spacing:.24em;
+  text-transform:uppercase;
+  color:var(--muted);
+}
+
+.poem{
+  width:min(100%,560px);
+  margin:0 auto;
+  text-align:center;
+  font-size:clamp(18px,2.5vw,23px);
+  line-height:1.72;
+}
+
+.stanza{
+  margin:0 0 34px;
+}
+
+.stanza:last-child{
+  margin-bottom:0;
+}
+
+.line{
+  display:block;
+}
+
+.accent{
+  color:var(--rose);
+  font-style:italic;
+}
+
+.rule{
+  width:72px;
+  height:1px;
+  margin:48px auto;
+  background:var(--line);
+  transform-origin:center;
+}
+
+.closing{
+  width:min(100%,540px);
+  margin:0 auto;
+  text-align:center;
+  font-size:clamp(21px,3vw,29px);
+  line-height:1.45;
+  letter-spacing:-.015em;
+}
+
+.signature{
+  margin-top:34px;
+  text-align:center;
+  color:var(--rose);
+  font-size:22px;
+  font-style:italic;
+}
+
+.next{
+  width:min(92vw,720px);
+  margin:26px auto 0;
+  padding:24px 26px;
+  border-radius:20px;
+  text-align:center;
+  color:#fff;
+  background:#2c211f;
+  box-shadow:0 22px 55px rgba(44,33,31,.18);
+  font:500 15px/1.6 Arial,Helvetica,sans-serif;
+}
+
+.next strong{
+  color:#f3c9d0;
+  font-size:17px;
+}
+
+footer{
+  padding:36px 20px 60px;
+  text-align:center;
+  color:#8a716b;
+  font:500 11px/1.5 Arial,Helvetica,sans-serif;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+
+@media (max-width:600px){
+  .hero{
+    padding-top:72px;
+  }
+
+  h1{
+    font-size:clamp(52px,17vw,76px);
+  }
+
+  .paper{
+    padding:38px 24px 42px;
+    border-radius:24px;
+  }
+
+  .poem{
+    font-size:18px;
+    line-height:1.68;
+  }
+
+  .stanza{
+    margin-bottom:30px;
+  }
+
+  .closing{
+    font-size:22px;
+  }
+}
+
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{
+    animation-duration:.01ms!important;
+    animation-iteration-count:1!important;
+    transition-duration:.01ms!important;
+  }
+}
 </style>
 </head>
+
 <body>
 <section class="hero">
-<div>
-<div class="kicker">For my wife, my best friend, my home</div>
-<h1>Three Years,<span class="script">Eleven Months of You</span></h1>
-<p class="date">47 months together—and still only the beginning.</p>
-<a class="down" href="#poem">↓</a>
-</div>
+  <div class="hero-inner">
+    <p class="kicker">For my wife, my best friend, my home</p>
+
+    <h1>
+      Three Years,
+      <span class="script">Eleven Months of You</span>
+    </h1>
+
+    <p class="date">47 months together—and still only the beginning.</p>
+
+    <a class="down" href="#poem" aria-label="Read the poem">↓</a>
+  </div>
 </section>
 
 <section class="wrap" id="poem">
-<article class="paper">
-<h2 class="number">47</h2>
-<div class="months">Months of us</div>
-<div class="poem">
-<p>I could count our love in months,<br>in mornings, photographs, and nights—<br>but none of those could ever hold<br>the way you changed my life.</p>
-<p>You made the ordinary beautiful:<br>the coffee, drives, and tired days,<br>the walks with Maya, quiet rooms,<br>and all our strange and laughing ways.</p>
-<p>You have known the parts of me<br>that words don’t always show,<br>and somehow, through each changing season,<br>you still decided not to go.</p>
-<p>So after three years and eleven months,<br>here is the simplest truth I know:<br><span class="accent">I would choose you at the beginning,</span><br>and I would choose you as we grow.</p>
-<p>I choose you in the easy moments,<br>and when the world feels hard to face.<br>I choose you for the life ahead—<br>my favorite person, my safest place.</p>
-</div>
-<div class="rule"></div>
-<div class="closing">This isn’t only a celebration of how long we’ve loved each other.<br>It’s my promise that I’m still excited about everything that comes next.</div>
-<div class="signature">Forever yours, Ben ♥</div>
-</article>
-<div class="next">Now come get your flowers and coffee.<br><strong>I’m taking you to breakfast.</strong></div>
+  <article class="paper">
+    <h2 class="number">47</h2>
+    <div class="months">Months of us</div>
+
+    <div class="poem">
+      <p class="stanza">
+        <span class="line">I could count our love in months,</span>
+        <span class="line">in mornings, photographs, and nights—</span>
+        <span class="line">but none of those could ever hold</span>
+        <span class="line">the way you changed my life.</span>
+      </p>
+
+      <p class="stanza">
+        <span class="line">You made the ordinary beautiful:</span>
+        <span class="line">coffee, drives, and tired days,</span>
+        <span class="line">walks with Maya, quiet rooms,</span>
+        <span class="line">and all our strange and laughing ways.</span>
+      </p>
+
+      <p class="stanza">
+        <span class="line">You have known the parts of me</span>
+        <span class="line">that words don’t always show,</span>
+        <span class="line">and through each changing season,</span>
+        <span class="line">you still chose not to go.</span>
+      </p>
+
+      <p class="stanza">
+        <span class="line">After three years and eleven months,</span>
+        <span class="line">here is the simplest truth I know:</span>
+        <span class="line accent">I would choose you at the beginning,</span>
+        <span class="line">and I would choose you as we grow.</span>
+      </p>
+
+      <p class="stanza">
+        <span class="line">I choose you in the easy moments,</span>
+        <span class="line">and when the world feels hard to face.</span>
+        <span class="line">I choose you for the life ahead—</span>
+        <span class="line">my favorite person, my safest place.</span>
+      </p>
+    </div>
+
+    <div class="rule"></div>
+
+    <div class="closing">
+      This is more than celebrating how long we’ve loved each other.
+      It’s my promise that I’m still excited for everything ahead.
+    </div>
+
+    <div class="signature">Forever yours, Ben ♥</div>
+  </article>
+
+  <div class="next">
+    Now come get your flowers and coffee.<br>
+    <strong>I’m taking you to breakfast.</strong>
+  </div>
 </section>
-<footer>Made only for Bella • 3 years and 11 months</footer>
+
+<footer>Made only for Bella • Three years and eleven months</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+<script>
+gsap.registerPlugin(ScrollTrigger);
+
+const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+if (!reduceMotion) {
+  const intro = gsap.timeline({
+    defaults: {
+      ease: "power3.out"
+    }
+  });
+
+  intro
+    .from(".kicker", {
+      opacity: 0,
+      y: 18,
+      duration: .7
+    })
+    .from("h1", {
+      opacity: 0,
+      y: 46,
+      scale: .97,
+      duration: 1.15
+    }, "-=.35")
+    .from(".script", {
+      opacity: 0,
+      y: 20,
+      duration: .8
+    }, "-=.65")
+    .from(".date", {
+      opacity: 0,
+      y: 16,
+      duration: .7
+    }, "-=.4")
+    .from(".down", {
+      opacity: 0,
+      y: -10,
+      duration: .6
+    }, "-=.25");
+
+  gsap.to(".down", {
+    y: 7,
+    duration: 1.2,
+    ease: "sine.inOut",
+    repeat: -1,
+    yoyo: true
+  });
+
+  gsap.from(".paper", {
+    scrollTrigger: {
+      trigger: ".paper",
+      start: "top 82%"
+    },
+    opacity: 0,
+    y: 70,
+    scale: .985,
+    duration: 1.05,
+    ease: "power3.out"
+  });
+
+  gsap.from(".number", {
+    scrollTrigger: {
+      trigger: ".number",
+      start: "top 85%"
+    },
+    opacity: 0,
+    y: 28,
+    scale: .88,
+    duration: .85,
+    ease: "back.out(1.5)"
+  });
+
+  gsap.from(".months", {
+    scrollTrigger: {
+      trigger: ".months",
+      start: "top 88%"
+    },
+    opacity: 0,
+    y: 12,
+    duration: .6
+  });
+
+  document.querySelectorAll(".stanza").forEach((stanza) => {
+    gsap.from(stanza.querySelectorAll(".line"), {
+      scrollTrigger: {
+        trigger: stanza,
+        start: "top 84%"
+      },
+      opacity: 0,
+      y: 18,
+      duration: .6,
+      stagger: .08,
+      ease: "power2.out"
+    });
+  });
+
+  gsap.from(".rule", {
+    scrollTrigger: {
+      trigger: ".rule",
+      start: "top 88%"
+    },
+    scaleX: 0,
+    duration: .8,
+    ease: "power2.out"
+  });
+
+  gsap.from(".closing", {
+    scrollTrigger: {
+      trigger: ".closing",
+      start: "top 86%"
+    },
+    opacity: 0,
+    y: 24,
+    duration: .8,
+    ease: "power3.out"
+  });
+
+  gsap.from(".signature", {
+    scrollTrigger: {
+      trigger: ".signature",
+      start: "top 90%"
+    },
+    opacity: 0,
+    y: 14,
+    duration: .7
+  });
+
+  gsap.from(".next", {
+    scrollTrigger: {
+      trigger: ".next",
+      start: "top 90%"
+    },
+    opacity: 0,
+    y: 34,
+    duration: .85,
+    ease: "power3.out"
+  });
+
+  gsap.to(".hero-inner", {
+    scrollTrigger: {
+      trigger: ".hero",
+      start: "top top",
+      end: "bottom top",
+      scrub: true
+    },
+    y: 90,
+    opacity: .2,
+    ease: "none"
+  });
+}
+</script>
 </body>
 </html>
