@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BIM Labs — Layered 3D System Preview</title>
+  <style>
+    :root {
+      --bg: #f4f5f7;
+      --bg-soft: #eceef2;
+      --text: #10141b;
+      --muted: #5f6774;
+      --white: #ffffff;
+      --blue: #3b82f6;
+      --blue-soft: rgba(59, 130, 246, 0.18);
+      --panel-border: rgba(16, 20, 27, 0.08);
+      --glass: rgba(255, 255, 255, 0.5);
+      --shadow: 0 18px 50px rgba(10, 20, 30, 0.10);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Inter, "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 20% 12%, #ffffff 0%, var(--bg) 42%, var(--bg-soft) 100%);
+      overflow: hidden;
+    }
+
+    .canvas-wrap {
+      position: fixed;
+      inset: 0;
+      z-index: 1;
+    }
+
+    #app3d {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .ui-layer {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      padding: clamp(1.1rem, 2vw, 2rem) clamp(1.2rem, 3vw, 2.4rem);
+      pointer-events: none;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .brand {
+      font-weight: 700;
+      font-size: 0.95rem;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+    }
+
+    .preview-pill {
+      font-size: 0.7rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #2b3340;
+      background: rgba(255, 255, 255, 0.7);
+      border: 1px solid rgba(16, 20, 27, 0.08);
+      padding: 0.45rem 0.85rem;
+      border-radius: 999px;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+
+    .hero-copy {
+      flex: 1;
+      max-width: 740px;
+      margin: 0 auto;
+      width: 100%;
+      display: grid;
+      place-items: center;
+      text-align: center;
+      gap: 1.2rem;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(2rem, 4.8vw, 4rem);
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      font-weight: 600;
+      text-wrap: balance;
+      text-shadow: 0 1px 0 rgba(255,255,255,0.5);
+    }
+
+    p {
+      margin: 0;
+      max-width: 640px;
+      color: var(--muted);
+      font-size: clamp(0.96rem, 1.35vw, 1.2rem);
+      line-height: 1.65;
+      text-wrap: balance;
+    }
+
+    .cta-pill {
+      margin-top: 0.65rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 999px;
+      border: 1px solid rgba(16, 20, 27, 0.1);
+      padding: 0.72rem 1.2rem;
+      font-size: 0.86rem;
+      letter-spacing: 0.03em;
+      color: #161e2a;
+      background: rgba(255, 255, 255, 0.74);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+
+    @media (max-width: 700px) {
+      .hero-copy { margin-top: 2vh; }
+      p { max-width: 92%; }
+    }
+  </style>
+</head>
+<body>
+  <div class="canvas-wrap">
+    <canvas id="app3d"></canvas>
+  </div>
+
+  <main class="ui-layer">
+    <header class="topbar">
+      <div class="brand">BIM Labs</div>
+      <div class="preview-pill">3D SYSTEM PREVIEW</div>
+    </header>
+
+    <section class="hero-copy">
+      <h1>Layered digital systems for modern brands.</h1>
+      <p>Websites, portals, AI workflows, and interactive tools built into one premium experience.</p>
+      <div class="cta-pill">Explore the system</div>
+    </section>
+  </main>
+
+  <script>
+    function loadThreeJs(url) {
+      return new Promise((resolve, reject) => {
+        const script = document.createElement('script');
+        script.src = url;
+        script.onload = resolve;
+        script.onerror = reject;
+        document.head.appendChild(script);
+      });
+    }
+
+    async function ensureThree() {
+      if (window.THREE) return;
+      try {
+        await loadThreeJs('https://cdn.jsdelivr.net/npm/three@0.164.1/build/three.min.js');
+      } catch (err) {
+        await loadThreeJs('https://unpkg.com/three@0.164.1/build/three.min.js');
+      }
+    }
+
+    async function initPreview() {
+      await ensureThree();
+
+      // 1) scene setup
+      const canvas = document.getElementById('app3d');
+      const scene = new THREE.Scene();
+
+    const camera = new THREE.PerspectiveCamera(38, window.innerWidth / window.innerHeight, 0.1, 100);
+    camera.position.set(0, 1.6, 9.2);
+
+    const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.outputColorSpace = THREE.SRGBColorSpace;
+
+    scene.fog = new THREE.Fog(0xf2f4f7, 12, 24);
+
+    const hemi = new THREE.HemisphereLight(0xffffff, 0x9aa3b2, 1.0);
+    scene.add(hemi);
+
+    const key = new THREE.DirectionalLight(0xffffff, 1.35);
+    key.position.set(7, 8, 4);
+    scene.add(key);
+
+    const fill = new THREE.DirectionalLight(0xcfd9e8, 0.55);
+    fill.position.set(-6, 2, 3);
+    scene.add(fill);
+
+    // 2) materials
+    const matPlatformTop = new THREE.MeshStandardMaterial({
+      color: 0xf7f8fa,
+      roughness: 0.48,
+      metalness: 0.08
+    });
+
+    const matPlatformMid = new THREE.MeshStandardMaterial({
+      color: 0xdde2ea,
+      roughness: 0.56,
+      metalness: 0.12
+    });
+
+    const matBase = new THREE.MeshStandardMaterial({
+      color: 0x1a202a,
+      roughness: 0.62,
+      metalness: 0.22
+    });
+
+    const matInterface = new THREE.MeshPhysicalMaterial({
+      color: 0x141922,
+      roughness: 0.45,
+      metalness: 0.28,
+      clearcoat: 0.65,
+      clearcoatRoughness: 0.35
+    });
+
+    const matGlass = new THREE.MeshPhysicalMaterial({
+      color: 0xdce9ff,
+      transparent: true,
+      opacity: 0.3,
+      roughness: 0.08,
+      metalness: 0,
+      transmission: 0.56,
+      ior: 1.45,
+      thickness: 0.35
+    });
+
+    const matSupport = new THREE.MeshStandardMaterial({
+      color: 0x6b7482,
+      roughness: 0.45,
+      metalness: 0.55
+    });
+
+    const matBlueGlow = new THREE.MeshStandardMaterial({
+      color: 0x4ea2ff,
+      emissive: 0x2e7de3,
+      emissiveIntensity: 0.7,
+      roughness: 0.28,
+      metalness: 0.15
+    });
+
+    // 3) model creation
+    const sculpture = new THREE.Group();
+    scene.add(sculpture);
+
+    const base = new THREE.Mesh(new THREE.CylinderGeometry(2.45, 2.9, 0.22, 60), matBase);
+    base.position.y = -1.18;
+    sculpture.add(base);
+
+    const layer1 = new THREE.Mesh(new THREE.BoxGeometry(4.4, 0.22, 2.75), matPlatformMid);
+    layer1.position.y = -0.64;
+    sculpture.add(layer1);
+
+    const layer2 = new THREE.Mesh(new THREE.BoxGeometry(3.38, 0.19, 2.08), matPlatformTop);
+    layer2.position.y = -0.1;
+    sculpture.add(layer2);
+
+    const layer3 = new THREE.Mesh(new THREE.BoxGeometry(2.64, 0.17, 1.52), matPlatformTop);
+    layer3.position.y = 0.37;
+    sculpture.add(layer3);
+
+    const interfaceFrame = new THREE.Mesh(new THREE.BoxGeometry(2.12, 1.16, 0.08), matInterface);
+    interfaceFrame.position.set(0, 0.88, -0.18);
+    sculpture.add(interfaceFrame);
+
+    const interfaceGlass = new THREE.Mesh(new THREE.BoxGeometry(1.9, 0.94, 0.03), matGlass);
+    interfaceGlass.position.set(0, 0.88, -0.12);
+    sculpture.add(interfaceGlass);
+
+    const panelGroup = new THREE.Group();
+    sculpture.add(panelGroup);
+
+    function createGlassPanel(x, y, z, w, h) {
+      const panel = new THREE.Mesh(new THREE.BoxGeometry(w, h, 0.03), matGlass);
+      panel.position.set(x, y, z);
+      panel.rotation.y = (Math.random() - 0.5) * 0.14;
+      panel.userData.floatSeed = Math.random() * Math.PI * 2;
+      panelGroup.add(panel);
+      return panel;
+    }
+
+    createGlassPanel(-1.38, 0.48, 0.52, 0.92, 0.62);
+    createGlassPanel(1.34, 0.57, 0.49, 0.98, 0.58);
+    createGlassPanel(-0.94, 1.22, 0.44, 0.74, 0.45);
+    createGlassPanel(1.02, 1.24, 0.38, 0.68, 0.45);
+
+    const supports = new THREE.Group();
+    sculpture.add(supports);
+
+    function addSupport(x, z, h) {
+      const rod = new THREE.Mesh(new THREE.CylinderGeometry(0.02, 0.02, h, 10), matSupport);
+      rod.position.set(x, -0.64 + h / 2, z);
+      supports.add(rod);
+    }
+
+    addSupport(-1.7, -1.0, 0.54);
+    addSupport(1.7, -1.0, 0.54);
+    addSupport(-1.7, 1.0, 0.54);
+    addSupport(1.7, 1.0, 0.54);
+
+    const nodeGroup = new THREE.Group();
+    sculpture.add(nodeGroup);
+
+    function addNode(x, y, z, s) {
+      const node = new THREE.Mesh(new THREE.SphereGeometry(s, 16, 16), matBlueGlow);
+      node.position.set(x, y, z);
+      node.userData.phase = Math.random() * Math.PI * 2;
+      nodeGroup.add(node);
+      return node;
+    }
+
+    addNode(-1.02, 0.02, 0.78, 0.05);
+    addNode(1.1, 0.22, 0.65, 0.045);
+    addNode(-0.26, 0.92, 0.46, 0.035);
+    addNode(0.62, 1.03, 0.42, 0.038);
+    addNode(0.0, 0.38, 0.86, 0.04);
+
+    const accentStrip1 = new THREE.Mesh(new THREE.BoxGeometry(1.24, 0.02, 0.04), matBlueGlow);
+    accentStrip1.position.set(0, 0.0, 1.12);
+    sculpture.add(accentStrip1);
+
+    const accentStrip2 = new THREE.Mesh(new THREE.BoxGeometry(0.62, 0.018, 0.04), matBlueGlow);
+    accentStrip2.position.set(-0.8, 0.47, 0.68);
+    sculpture.add(accentStrip2);
+
+    sculpture.position.y = -0.05;
+
+    // 4) animation
+    const pointer = new THREE.Vector2(0, 0);
+    const targetRot = new THREE.Vector2(0, 0);
+
+    window.addEventListener('pointermove', (e) => {
+      const x = (e.clientX / window.innerWidth) * 2 - 1;
+      const y = (e.clientY / window.innerHeight) * 2 - 1;
+      pointer.set(x, y);
+      targetRot.x = pointer.y * 0.13;
+      targetRot.y = pointer.x * 0.2;
+    });
+
+    const clock = new THREE.Clock();
+
+    function animate() {
+      const t = clock.getElapsedTime();
+
+      sculpture.position.y = -0.05 + Math.sin(t * 0.72) * 0.12;
+      sculpture.rotation.x += (targetRot.x - sculpture.rotation.x) * 0.03;
+      sculpture.rotation.y += (targetRot.y - sculpture.rotation.y) * 0.03;
+
+      panelGroup.children.forEach((panel, i) => {
+        const drift = Math.sin(t * 0.62 + panel.userData.floatSeed + i * 0.3) * 0.05;
+        panel.position.y += (0.5 + i * 0.24 + drift - panel.position.y) * 0.03;
+      });
+
+      nodeGroup.children.forEach((node, i) => {
+        const pulse = 0.55 + Math.sin(t * 1.65 + node.userData.phase + i) * 0.3;
+        node.material.emissiveIntensity = pulse;
+      });
+
+      camera.position.x += ((pointer.x * 0.33) - camera.position.x) * 0.025;
+      camera.position.y += ((1.6 + pointer.y * -0.16) - camera.position.y) * 0.025;
+      camera.lookAt(0, 0.25, 0);
+
+      renderer.render(scene, camera);
+      requestAnimationFrame(animate);
+    }
+
+      animate();
+
+      // 5) resize handling
+      window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      });
+    }
+
+    initPreview().catch((error) => {
+      console.error('Failed to load Three.js preview:', error);
+    });
+  </script>
+</body>
+</html>
