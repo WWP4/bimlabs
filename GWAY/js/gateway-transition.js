@@ -11,11 +11,9 @@
   const content = stage.querySelector('.gway-hero-content');
   const titleLines = [...stage.querySelectorAll('.gway-hero h1 span')];
   const support = stage.querySelector('.gway-hero-bottom');
-
   const reveal = stage.querySelector('.gway-section-reveal');
   const revealIntro = stage.querySelector('.gway-section-reveal-intro');
   const revealLine = revealIntro?.querySelector('i');
-
   const header = document.querySelector('.gway-header');
 
   const clamp = (value, min = 0, max = 1) =>
@@ -32,7 +30,6 @@
 
   function readProgress() {
     const rect = stage.getBoundingClientRect();
-
     const travel = Math.max(
       1,
       stage.offsetHeight - window.innerHeight
@@ -46,10 +43,6 @@
   }
 
   function render() {
-    /*
-      Smooth interpolation makes mouse-wheel
-      and trackpad scrolling feel more cinematic.
-    */
     current += (target - current) * 0.14;
 
     if (Math.abs(target - current) < 0.0008) {
@@ -58,9 +51,6 @@
 
     const p = current;
 
-    /*
-      HERO TIMING
-    */
     const copyFade =
       1 - smoothstep(0.08, 0.52, p);
 
@@ -70,9 +60,6 @@
     const panelP =
       smoothstep(0.30, 0.90, p);
 
-    /*
-      BACKGROUND PUSH-IN
-    */
     if (bg) {
       const scale = 1.015 + p * 0.065;
       const y = p * 2.1;
@@ -81,17 +68,11 @@
         `translate3d(0, ${y}%, 0) scale(${scale})`;
     }
 
-    /*
-      HERO OVERLAY
-    */
     if (overlay) {
       overlay.style.opacity =
         String(1 - p * 0.16);
     }
 
-    /*
-      ENTIRE HERO CONTENT
-    */
     if (content) {
       content.style.transform =
         `translate3d(0, ${-34 * p}px, 0)
@@ -101,10 +82,6 @@
         'left center';
     }
 
-    /*
-      HEADLINE LINES
-      Each line leaves slightly after the one above it.
-    */
     titleLines.forEach((line, index) => {
       const stagger = index * 0.035;
 
@@ -127,9 +104,6 @@
         )`;
     });
 
-    /*
-      SMALL HERO COPY
-    */
     if (support) {
       support.style.opacity =
         String(copyFade);
@@ -142,9 +116,6 @@
         )`;
     }
 
-    /*
-      HEADER EXITS FIRST
-    */
     if (header) {
       header.style.opacity =
         String(headerFade);
@@ -162,10 +133,6 @@
           : '';
     }
 
-    /*
-      WHITE SECOND SECTION
-      Rises over the hero.
-    */
     if (reveal) {
       reveal.style.transform =
         `translate3d(
@@ -182,9 +149,6 @@
       );
     }
 
-    /*
-      "WHY GSA PREP" INTERSTITIAL
-    */
     if (revealIntro) {
       const introIn =
         smoothstep(0.58, 0.77, p);
@@ -210,9 +174,6 @@
         )`;
     }
 
-    /*
-      SMALL RED LINE
-    */
     if (revealLine) {
       revealLine.style.transform =
         `scaleX(
@@ -220,9 +181,6 @@
         )`;
     }
 
-    /*
-      Makes scroll progress available to CSS too.
-    */
     if (hero) {
       hero.style.setProperty(
         '--hero-scroll-progress',
@@ -230,9 +188,6 @@
       );
     }
 
-    /*
-      Continue animation until current catches target.
-    */
     if (current !== target) {
       raf =
         requestAnimationFrame(render);
