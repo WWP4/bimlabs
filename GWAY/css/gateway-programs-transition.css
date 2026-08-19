@@ -1,19 +1,19 @@
 /* =========================================================
    SECTION 3 — PROGRAMS / MLS
-   Section 2 -> MLS dissolve transition
-   File: /GWAY/css/gateway-programs-transition.css
+   TRUE BLOOM EFFECT
+   Athlete image: ../assets/transparent.png
+
+   Layer stack:
+   1) solid MLS behind athlete
+   2) transparent athlete PNG
+   3) white hollow MLS masked to athlete silhouette
+   4) copy + CTA
 ========================================================= */
 
 .programs-transition {
   position: relative;
-
-  /*
-    The section looks like one white viewport,
-    but the extra scroll runway gives the reveal time to breathe.
-  */
   height: 210vh;
   height: 210svh;
-
   background: #f8f7f4;
   color: #0a0a0a;
 }
@@ -21,14 +21,11 @@
 .programs-stage {
   position: sticky;
   top: 0;
-
   width: 100%;
   height: 100vh;
   height: 100svh;
-
   overflow: hidden;
   isolation: isolate;
-
   background: #f8f7f4;
 }
 
@@ -38,41 +35,34 @@
 
 .programs-kicker {
   position: absolute;
-  z-index: 30;
-
-  top: clamp(34px, 5.4vh, 64px);
+  z-index: 40;
+  top: clamp(34px, 5.2vh, 62px);
   left: 50%;
-
   margin: 0;
 
   color: var(--gway-red, #ef101f);
-
   font-family: "Inter", sans-serif;
   font-size: clamp(11px, 0.72vw, 13px);
   font-weight: 900;
-  letter-spacing: 0.40em;
   line-height: 1;
-
+  letter-spacing: 0.40em;
   text-transform: uppercase;
 
   opacity: 0;
   filter: blur(5px);
-
   transform: translateX(-50%);
 
   will-change: opacity, filter;
 }
 
 /* =========================================================
-   GIANT HOLLOW MLS
+   SHARED MLS TYPE SETTINGS
 ========================================================= */
 
-.programs-mls-back,
-.programs-mls-front {
+.programs-mls-back {
   position: absolute;
-
   left: 50%;
-  top: 47%;
+  top: 46%;
 
   margin: 0;
 
@@ -80,66 +70,58 @@
   font-size: clamp(360px, 50vw, 860px);
   font-weight: 400;
   line-height: 0.72;
-  letter-spacing: 0.055em;
-
+  letter-spacing: -0.02em;
   white-space: nowrap;
   text-transform: uppercase;
 
-  color: transparent;
-  -webkit-text-fill-color: transparent;
-  -webkit-text-stroke: 1.4px rgba(10, 10, 10, 0.08);
-
-  opacity: 0.18;
-
-  transform:
-    translate3d(-50%, -50%, 0)
-    scale(0.975);
-
+  transform: translate3d(-50%, -50%, 0);
   transform-origin: center center;
 
   pointer-events: none;
   user-select: none;
+}
+
+/* =========================================================
+   1 — SOLID MLS BEHIND ATHLETE
+
+   This must be SOLID for the real BLOOM effect.
+========================================================= */
+
+.programs-mls-back {
+  z-index: 5;
+
+  color: #dfdeda;
+  -webkit-text-fill-color: #dfdeda;
+  -webkit-text-stroke: 0;
+
+  opacity: 0;
+
+  transform:
+    translate3d(-50%, -50%, 0)
+    scale(0.985);
 
   will-change:
     opacity,
     transform,
-    letter-spacing,
-    -webkit-text-stroke-color;
-}
-
-.programs-mls-back {
-  z-index: 5;
-}
-
-.programs-mls-front {
-  z-index: 20;
-
-  opacity: 0;
-
-  -webkit-text-stroke:
-    1px rgba(10, 10, 10, 0.08);
+    letter-spacing;
 }
 
 /* =========================================================
-   ATHLETE
+   2 — ATHLETE
 
-   IMPORTANT:
-   No sliding.
-   No rising.
-   No "fly in".
-
-   The athlete stays planted in its final position and only
-   dissolves from soft / blurred to crisp.
+   No sliding or rising.
+   He stays planted and dissolves into focus.
 ========================================================= */
 
 .programs-athlete {
   position: absolute;
-  z-index: 15;
+  z-index: 10;
 
   left: 53%;
   bottom: -1vh;
 
   width: min(34vw, 610px);
+  height: auto;
   max-height: 88vh;
 
   object-fit: contain;
@@ -148,13 +130,13 @@
   opacity: 0;
 
   filter:
-    blur(14px)
-    saturate(0.82)
-    contrast(0.96);
+    blur(12px)
+    saturate(0.88)
+    contrast(0.97);
 
   transform:
     translate3d(-50%, 0, 0)
-    scale(0.995);
+    scale(0.997);
 
   transform-origin: center bottom;
 
@@ -165,15 +147,95 @@
 }
 
 /* =========================================================
+   3 — FRONT BLOOM LAYER
+
+   Full-screen layer masked with transparent.png.
+   The white hollow MLS only exists over the athlete silhouette.
+========================================================= */
+
+.programs-mls-front {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+
+  /*
+    Hide the literal "MLS" text in the HTML.
+    The perfectly aligned word is drawn with ::before.
+  */
+  font-size: 0;
+
+  opacity: 0;
+
+  pointer-events: none;
+  user-select: none;
+
+  /*
+    IMPORTANT:
+    Same PNG and same sizing/position as .programs-athlete.
+  */
+  -webkit-mask-image: url("../assets/transparent.png");
+  mask-image: url("../assets/transparent.png");
+
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+
+  -webkit-mask-size: min(34vw, 610px) auto;
+  mask-size: min(34vw, 610px) auto;
+
+  -webkit-mask-position: 53% calc(100% + 1vh);
+  mask-position: 53% calc(100% + 1vh);
+
+  will-change: opacity;
+}
+
+.programs-mls-front::before {
+  content: "MLS";
+
+  position: absolute;
+  left: 50%;
+  top: 46%;
+
+  font-family: "Bebas Neue", sans-serif;
+  font-size: clamp(360px, 50vw, 860px);
+  font-weight: 400;
+  line-height: 0.72;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+  text-transform: uppercase;
+
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+
+  /*
+    This is the bright outline you see ONLY
+    where it crosses the athlete.
+  */
+  -webkit-text-stroke:
+    2px rgba(255, 255, 255, 0.98);
+
+  transform:
+    translate3d(-50%, -50%, 0);
+
+  /*
+    Helps the white outline stay visible
+    over the athlete's white shirt.
+  */
+  filter:
+    drop-shadow(
+      0 0 0.75px rgba(0, 0, 0, 0.32)
+    );
+}
+
+/* =========================================================
    COPY — LOWER LEFT
 ========================================================= */
 
 .programs-copy {
   position: absolute;
-  z-index: 30;
+  z-index: 35;
 
-  left: clamp(30px, 5.5vw, 104px);
-  bottom: clamp(52px, 7.5vh, 102px);
+  left: clamp(34px, 5.5vw, 104px);
+  bottom: clamp(74px, 10vh, 130px);
 
   width: min(390px, 31vw);
 
@@ -191,13 +253,11 @@
   font-weight: 400;
   line-height: 0.92;
   letter-spacing: 0.01em;
-
   text-transform: uppercase;
 }
 
 .programs-copy strong {
   display: block;
-
   margin-top: 9px;
 
   color: #111;
@@ -212,7 +272,6 @@
 
   width: 54px;
   height: 2px;
-
   margin: 24px 0 19px;
 
   background: var(--gway-red, #ef101f);
@@ -238,10 +297,10 @@
 
 .programs-cta {
   position: absolute;
-  z-index: 30;
+  z-index: 35;
 
-  right: clamp(30px, 5vw, 92px);
-  bottom: clamp(60px, 8vh, 112px);
+  right: clamp(48px, 6vw, 112px);
+  bottom: clamp(78px, 10vh, 134px);
 
   display: inline-flex;
   align-items: center;
@@ -249,16 +308,16 @@
 
   padding-bottom: 6px;
 
-  border-bottom: 1px solid var(--gway-red, #ef101f);
+  border-bottom:
+    1px solid var(--gway-red, #ef101f);
 
   color: #101010;
   text-decoration: none;
 
   font-size: clamp(11px, 0.78vw, 13px);
   font-weight: 900;
-  letter-spacing: 0.08em;
   line-height: 1;
-
+  letter-spacing: 0.08em;
   text-transform: uppercase;
 
   opacity: 0;
@@ -278,7 +337,7 @@
 }
 
 /* =========================================================
-   RESPONSIVE
+   TABLET
 ========================================================= */
 
 @media (max-width: 980px) {
@@ -288,7 +347,7 @@
   }
 
   .programs-mls-back,
-  .programs-mls-front {
+  .programs-mls-front::before {
     font-size: clamp(300px, 66vw, 620px);
   }
 
@@ -297,10 +356,22 @@
     width: min(46vw, 560px);
   }
 
+  .programs-mls-front {
+    -webkit-mask-size: min(46vw, 560px) auto;
+    mask-size: min(46vw, 560px) auto;
+
+    -webkit-mask-position: 54% calc(100% + 1vh);
+    mask-position: 54% calc(100% + 1vh);
+  }
+
   .programs-copy {
     width: min(330px, 36vw);
   }
 }
+
+/* =========================================================
+   MOBILE
+========================================================= */
 
 @media (max-width: 720px) {
   .programs-transition {
@@ -308,20 +379,16 @@
     height: 175svh;
   }
 
-  .programs-stage {
-    min-height: 100svh;
-  }
-
   .programs-kicker {
     top: 28px;
   }
 
   .programs-mls-back,
-  .programs-mls-front {
+  .programs-mls-front::before {
     top: 40%;
 
     font-size: clamp(240px, 88vw, 520px);
-    letter-spacing: 0.02em;
+    letter-spacing: 0;
   }
 
   .programs-athlete {
@@ -330,6 +397,14 @@
 
     width: min(73vw, 520px);
     max-height: 66vh;
+  }
+
+  .programs-mls-front {
+    -webkit-mask-size: min(73vw, 520px) auto;
+    mask-size: min(73vw, 520px) auto;
+
+    -webkit-mask-position: 54% calc(100% - 18vh);
+    mask-position: 54% calc(100% - 18vh);
   }
 
   .programs-copy {
@@ -350,10 +425,7 @@
   }
 
   .programs-copy i {
-    margin:
-      16px
-      0
-      14px;
+    margin: 16px 0 14px;
   }
 
   .programs-cta {
@@ -364,6 +436,11 @@
 @media (max-width: 480px) {
   .programs-athlete {
     width: min(82vw, 470px);
+  }
+
+  .programs-mls-front {
+    -webkit-mask-size: min(82vw, 470px) auto;
+    mask-size: min(82vw, 470px) auto;
   }
 
   .programs-copy p {
@@ -386,132 +463,27 @@
   }
 
   .programs-kicker,
+  .programs-mls-back,
   .programs-athlete,
+  .programs-mls-front,
   .programs-copy,
-  .programs-cta,
-  .programs-mls-front {
+  .programs-cta {
     opacity: 1;
     filter: none;
   }
 
-  .programs-athlete {
-    transform: translate3d(-50%, 0, 0);
-  }
-
   .programs-mls-back {
-    opacity: 1;
-
     transform:
       translate3d(-50%, -50%, 0)
       scale(1);
+  }
 
-    letter-spacing: -0.02em;
-
-    -webkit-text-stroke-color:
-      rgba(10, 10, 10, 0.84);
+  .programs-athlete {
+    transform:
+      translate3d(-50%, 0, 0);
   }
 
   .programs-copy i {
     transform: scaleX(1);
   }
-}
-
-
-
-/* =========================================
-   MLS BLOOM / HOLLOW TYPOGRAPHY EFFECT
-========================================= */
-
-.programs-mls-back,
-.programs-mls-front {
-  position: absolute;
-
-  left: 50%;
-  top: 47%;
-
-  margin: 0;
-
-  font-family: "Bebas Neue", sans-serif;
-  font-size: clamp(360px, 50vw, 860px);
-  font-weight: 400;
-
-  line-height: 0.72;
-  letter-spacing: -0.02em;
-
-  text-transform: uppercase;
-  white-space: nowrap;
-
-  color: transparent;
-  -webkit-text-fill-color: transparent;
-
-  transform:
-    translate3d(-50%, -50%, 0);
-
-  pointer-events: none;
-  user-select: none;
-}
-
-
-/* BLACK OUTLINE BEHIND ATHLETE */
-
-.programs-mls-back {
-  z-index: 5;
-
-  -webkit-text-stroke:
-    2px rgba(10, 10, 10, 0.88);
-}
-
-
-/* ATHLETE IN MIDDLE */
-
-.programs-athlete {
-  position: absolute;
-
-  z-index: 10;
-
-  left: 53%;
-  bottom: -1vh;
-
-  width: min(34vw, 610px);
-  max-height: 88vh;
-
-  object-fit: contain;
-  object-position: center bottom;
-
-  opacity: 0;
-
-  filter: blur(12px);
-
-  transform:
-    translate3d(-50%, 0, 0);
-
-  /*
-    VERY IMPORTANT:
-    this PNG needs a transparent background
-  */
-}
-
-
-/* WHITE OUTLINE OVER ATHLETE */
-
-.programs-mls-front {
-  z-index: 15;
-
-  /*
-    Invisible over white background,
-    visible wherever it crosses athlete.
-  */
-  -webkit-text-stroke:
-    2px rgba(255, 255, 255, 0.98);
-
-  opacity: 0;
-
-  /*
-    Tiny edge helps the white outline remain
-    visible across his white jersey.
-  */
-  filter:
-    drop-shadow(
-      0 0 0.6px rgba(0, 0, 0, 0.30)
-    );
 }
