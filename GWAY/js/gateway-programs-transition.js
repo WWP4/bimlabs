@@ -1,7 +1,8 @@
 (() => {
-  const section = document.querySelector(
-    '[data-programs-transition]'
-  );
+  const section =
+    document.querySelector(
+      '[data-programs-transition]'
+    );
 
   if (!section) return;
 
@@ -10,7 +11,9 @@
       '(prefers-reduced-motion: reduce)'
     );
 
-  if (reducedMotion.matches) return;
+  if (reducedMotion.matches) {
+    return;
+  }
 
   const stage =
     section.querySelector(
@@ -82,6 +85,7 @@
   let target = 0;
   let current = 0;
   let raf = 0;
+
   let lastTime =
     performance.now();
 
@@ -89,7 +93,7 @@
     const rect =
       section.getBoundingClientRect();
 
-    const scrollable =
+    const travel =
       Math.max(
         1,
         section.offsetHeight -
@@ -97,8 +101,7 @@
       );
 
     return clamp(
-      -rect.top /
-      scrollable
+      -rect.top / travel
     );
   }
 
@@ -128,12 +131,19 @@
     lastTime = now;
 
     /*
-      Smooth scroll following.
+      Smooth scroll tracking.
 
-      This does NOT create the BLOOM effect.
-      The SVG mask creates the actual intersection.
+      IMPORTANT:
+      JS is NOT creating the actual BLOOM effect.
+
+      The SVG does the real layering:
+      cream filled MLS
+      behind athlete
+      +
+      cream outline MLS
+      masked over athlete.
     */
-    const easing =
+    const damping =
       1 -
       Math.exp(
         -5.2 * dt
@@ -144,7 +154,7 @@
         target -
         current
       ) *
-      easing;
+      damping;
 
     if (
       Math.abs(
@@ -158,9 +168,9 @@
 
     const p = current;
 
-    /* ==========================================
+    /* =========================================
        01 — PROGRAMS LABEL
-    ========================================== */
+    ========================================= */
 
     if (kicker) {
       const amount =
@@ -177,29 +187,30 @@
         `blur(${(1 - amount) * 5}px)`;
     }
 
-    /* ==========================================
-       02 — SOLID MLS APPEARS FIRST
-    ========================================== */
+    /* =========================================
+       02 — CREAM FILLED MLS
+       BEHIND ATHLETE
+    ========================================= */
 
     if (bloomBack) {
       const amount =
         smoothstep(
           0.07,
-          0.31,
+          0.29,
           p
         );
 
       const settle =
         smoothstep(
           0.08,
-          0.38,
+          0.35,
           p
         );
 
       const scale =
-        0.985 +
+        0.988 +
         settle *
-        0.015;
+        0.012;
 
       bloomBack.style.opacity =
         String(amount);
@@ -208,31 +219,32 @@
         `scale(${scale})`;
     }
 
-    /* ==========================================
-       03 — ATHLETE + BLOOM OUTLINE
+    /* =========================================
+       03 — ATHLETE
 
-       They reveal together.
+       No sliding.
+       No rising.
+       No horizontal movement.
 
-       The foreground MLS is already clipped
-       to the athlete by the SVG mask.
-    ========================================== */
+       Just a soft dissolve into focus.
+    ========================================= */
 
     const athleteIn =
       smoothstep(
-        0.26,
-        0.58,
+        0.25,
+        0.56,
         p
       );
 
     if (athlete) {
       const blur =
         (1 - athleteIn) *
-        13;
+        12;
 
       const saturation =
-        0.88 +
+        0.90 +
         athleteIn *
-        0.12;
+        0.10;
 
       const contrast =
         0.98 +
@@ -258,26 +270,38 @@
         `scale(${scale})`;
     }
 
-    if (bloomFront) {
-      /*
-        No independent position or scale.
+    /* =========================================
+       04 — CREAM OUTLINE MLS
+       IN FRONT OF ATHLETE
 
-        Both MLS layers use the same SVG
-        coordinates, so they stay registered.
-      */
+       SAME color as the filled back MLS.
+
+       The SVG mask clips this layer so
+       the outline only shows where the
+       letters cross the athlete.
+    ========================================= */
+
+    if (bloomFront) {
+      const outlineIn =
+        smoothstep(
+          0.29,
+          0.56,
+          p
+        );
+
       bloomFront.style.opacity =
-        String(athleteIn);
+        String(outlineIn);
     }
 
-    /* ==========================================
-       04 — COPY
-    ========================================== */
+    /* =========================================
+       05 — COPY
+    ========================================= */
 
     if (copy) {
       const amount =
         smoothstep(
-          0.56,
-          0.76,
+          0.55,
+          0.75,
           p
         );
 
@@ -288,7 +312,7 @@
         `blur(${(1 - amount) * 7}px)`;
     }
 
-    /* RED LINE */
+    /* RED RULE */
 
     if (copyLine) {
       const amount =
@@ -302,14 +326,14 @@
         `scaleX(${amount})`;
     }
 
-    /* ==========================================
-       05 — CTA
-    ========================================== */
+    /* =========================================
+       06 — CTA
+    ========================================= */
 
     if (cta) {
       const amount =
         smoothstep(
-          0.67,
+          0.68,
           0.83,
           p
         );
@@ -321,13 +345,12 @@
         `blur(${(1 - amount) * 6}px)`;
     }
 
-    /* ==========================================
-       06 — HOLD
+    /* =========================================
+       07 — HOLD FINAL COMPOSITION
 
-       Nothing changes after roughly 83%.
-       The finished composition sits there
-       before the sticky section releases.
-    ========================================== */
+       After about 83% scroll progress,
+       everything stays finished and still.
+    ========================================= */
 
     if (stage) {
       stage.style.setProperty(
