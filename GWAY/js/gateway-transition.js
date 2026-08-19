@@ -1,5 +1,8 @@
 (() => {
-  const stage = document.querySelector('[data-hero-transition]');
+  const stage = document.querySelector(
+    '[data-hero-transition]'
+  );
+
   if (!stage) return;
 
   const reduceMotion = window.matchMedia(
@@ -8,30 +11,47 @@
 
   if (reduceMotion.matches) return;
 
-  const hero = stage.querySelector('.gway-hero');
-  const bg = stage.querySelector('.gway-hero-bg');
-  const overlay = stage.querySelector('.gway-hero-overlay');
-  const content = stage.querySelector('.gway-hero-content');
+  const hero =
+    stage.querySelector('.gway-hero');
+
+  const bg =
+    stage.querySelector('.gway-hero-bg');
+
+  const overlay =
+    stage.querySelector('.gway-hero-overlay');
+
+  const content =
+    stage.querySelector('.gway-hero-content');
 
   const titleLines = [
-    ...stage.querySelectorAll('.gway-hero h1 span')
+    ...stage.querySelectorAll(
+      '.gway-hero h1 span'
+    )
   ];
 
-  const support = stage.querySelector('.gway-hero-bottom');
+  const support =
+    stage.querySelector('.gway-hero-bottom');
 
-  const reveal = stage.querySelector(
-    '.gway-section-reveal'
-  );
+  const reveal =
+    stage.querySelector(
+      '.gway-section-reveal'
+    );
 
-  const revealIntro = stage.querySelector(
-    '.gway-section-reveal-intro'
-  );
+  const revealIntro =
+    stage.querySelector(
+      '.gway-section-reveal-intro'
+    );
 
   const revealLine =
     revealIntro?.querySelector('i');
 
   const header =
     document.querySelector('.gway-header');
+
+
+  /* -----------------------------
+     HELPERS
+  ----------------------------- */
 
   const clamp = (
     value,
@@ -44,358 +64,512 @@
     );
   };
 
+
   const smoothstep = (
     from,
     to,
     value
   ) => {
+
     const x = clamp(
-      (value - from) / (to - from)
+      (value - from) /
+      (to - from)
     );
 
-    return x * x * (3 - 2 * x);
+    return (
+      x *
+      x *
+      (3 - 2 * x)
+    );
   };
+
 
   let target = 0;
   let current = 0;
   let raf = 0;
 
+
+  /* -----------------------------
+     READ SCROLL
+  ----------------------------- */
+
   function readProgress() {
+
     const rect =
       stage.getBoundingClientRect();
 
-    const travel = Math.max(
-      1,
-      stage.offsetHeight -
+    const travel =
+      Math.max(
+        1,
+        stage.offsetHeight -
         window.innerHeight
-    );
+      );
 
     target = clamp(
       -rect.top / travel
     );
 
+
     if (!raf) {
       raf =
-        requestAnimationFrame(render);
+        requestAnimationFrame(
+          render
+        );
     }
   }
 
+
+  /* -----------------------------
+     RENDER
+  ----------------------------- */
+
   function render() {
+
     /*
-      Slight smoothing without making
-      the page feel slow or detached
-      from the user's scroll.
+      A little more smoothing than before.
+
+      Previous:
+      0.18
+
+      New:
+      0.105
+
+      Lower = more cinematic / less twitchy.
     */
     current +=
-      (target - current) * 0.18;
+      (target - current) *
+      0.105;
+
 
     if (
-      Math.abs(target - current) <
-      0.0008
+      Math.abs(
+        target - current
+      ) < 0.0006
     ) {
       current = target;
     }
 
+
     const p = current;
 
-    /*
-      -------------------------
-      HERO EXIT
-      -------------------------
-    */
 
-    const copyFade =
-      1 -
-      smoothstep(
-        0.05,
-        0.38,
-        p
-      );
+    /* =========================
+       PHASE 1
+       HERO BREATHES
+       0 → .22
+    ========================= */
 
-    const headerFade =
-      1 -
-      smoothstep(
-        0.02,
-        0.24,
-        p
-      );
 
-    /*
-      White panel now starts much
-      earlier and finishes earlier.
-    */
-    const panelP =
-      smoothstep(
-        0.16,
-        0.68,
-        p
-      );
-
-    /*
-      Background push-in.
-    */
     if (bg) {
+
+      const bgMove =
+        smoothstep(
+          0,
+          0.72,
+          p
+        );
+
       const scale =
         1.015 +
-        p * 0.055;
+        bgMove * 0.055;
 
       const y =
-        p * 1.7;
+        bgMove * 1.4;
+
 
       bg.style.transform =
-        `translate3d(
+        `
+        translate3d(
           0,
           ${y}%,
           0
         )
-        scale(${scale})`;
+        scale(${scale})
+        `;
     }
 
-    /*
-      Hero darkness.
-    */
-    if (overlay) {
-      overlay.style.opacity =
-        String(
-          1 - p * 0.12
-        );
-    }
 
     /*
-      Main hero content gently
-      moves away from us.
+      Do not kill the hero immediately.
+
+      It stays readable for the
+      beginning of the scroll.
     */
+
+    const heroExit =
+      smoothstep(
+        0.12,
+        0.48,
+        p
+      );
+
+
     if (content) {
-      const contentScale =
-        1 - p * 0.018;
+
+      const scale =
+        1 -
+        heroExit * 0.022;
+
+      const y =
+        heroExit * -24;
+
 
       content.style.transform =
-        `translate3d(
+        `
+        translate3d(
           0,
-          ${-28 * p}px,
+          ${y}px,
           0
         )
-        scale(${contentScale})`;
+        scale(${scale})
+        `;
 
       content.style.transformOrigin =
         'left center';
     }
 
-    /*
-      Headline disappears
-      line-by-line.
-    */
+
+    /* =========================
+       SUPPORT COPY
+    ========================= */
+
+    if (support) {
+
+      const fade =
+        1 -
+        smoothstep(
+          0.13,
+          0.38,
+          p
+        );
+
+
+      support.style.opacity =
+        String(fade);
+
+
+      support.style.transform =
+        `
+        translate3d(
+          ${-12 * heroExit}px,
+          ${-5 * heroExit}px,
+          0
+        )
+        `;
+    }
+
+
+    /* =========================
+       HERO HEADLINE
+
+       Slower stagger than before.
+    ========================= */
+
     titleLines.forEach(
       (line, index) => {
-        const stagger =
-          index * 0.025;
 
-        const fade =
-          1 -
+        const stagger =
+          index * 0.028;
+
+
+        const lineExit =
           smoothstep(
-            0.10 + stagger,
-            0.43 + stagger,
+            0.18 + stagger,
+            0.51 + stagger,
             p
           );
 
+
         line.style.opacity =
-          String(fade);
+          String(
+            1 - lineExit
+          );
+
 
         line.style.transform =
-          `translate3d(
+          `
+          translate3d(
             0,
             ${
-              -14 *
-              p *
+              -16 *
+              lineExit *
               (index + 1)
             }px,
             0
-          )`;
+          )
+          `;
       }
     );
 
-    /*
-      Supporting copy leaves first.
-    */
-    if (support) {
-      support.style.opacity =
-        String(copyFade);
 
-      support.style.transform =
-        `translate3d(
-          ${-14 * p}px,
-          ${-6 * p}px,
-          0
-        )`;
-    }
+    /* =========================
+       HEADER
+    ========================= */
 
-    /*
-      Header quickly disappears.
-    */
     if (header) {
+
+      const headerExit =
+        smoothstep(
+          0.08,
+          0.30,
+          p
+        );
+
+
       header.style.opacity =
-        String(headerFade);
+        String(
+          1 - headerExit
+        );
+
 
       header.style.transform =
-        `translate3d(
+        `
+        translate3d(
           0,
-          ${
-            -14 *
-            smoothstep(
-              0,
-              0.28,
-              p
-            )
-          }px,
+          ${-14 * headerExit}px,
           0
-        )`;
+        )
+        `;
+
 
       header.style.pointerEvents =
-        headerFade < 0.08
+        headerExit > 0.92
           ? 'none'
           : '';
     }
 
-    /*
-      -------------------------
-      WHITE REVEAL
-      -------------------------
-    */
+
+    /* =========================
+       OVERLAY
+
+       Let image gently breathe.
+    ========================= */
+
+    if (overlay) {
+
+      const overlayMove =
+        smoothstep(
+          0.08,
+          0.65,
+          p
+        );
+
+
+      overlay.style.opacity =
+        String(
+          1 -
+          overlayMove * 0.13
+        );
+    }
+
+
+    /* =========================
+       PHASE 2
+       WHITE PANEL ENTERS
+
+       Slower entrance.
+    ========================= */
+
+    const panelProgress =
+      smoothstep(
+        0.23,
+        0.63,
+        p
+      );
+
 
     if (reveal) {
+
+      const panelY =
+        (
+          1 -
+          panelProgress
+        ) * 100;
+
+
       reveal.style.transform =
-        `translate3d(
+        `
+        translate3d(
           0,
-          ${
-            (1 - panelP) *
-            100
-          }%,
+          ${panelY}%,
           0
-        )`;
+        )
+        `;
+
+
+      /*
+        Keep top line visible longer.
+      */
+
+      const topLineFade =
+        1 -
+        smoothstep(
+          0.80,
+          0.98,
+          p
+        );
+
 
       reveal.style.setProperty(
         '--reveal-line-opacity',
-        String(
-          1 -
-          smoothstep(
-            0.72,
-            0.92,
-            p
-          )
-        )
+        String(topLineFade)
       );
     }
 
-    /*
-      -------------------------
-      WHY GSA PREP
-      -------------------------
 
-      Sequence:
+    /* =========================
+       PHASE 3
+       WHY GSA PREP
 
-      1. appears
-      2. grows with scroll
-      3. holds briefly
-      4. fades away
-      5. real Section 2 arrives
-    */
+       IMPORTANT:
+       There is NO exit fade.
+    ========================= */
 
     if (revealIntro) {
+
+      /*
+        Wait until white panel is
+        substantially visible.
+      */
+
       const introIn =
         smoothstep(
-          0.30,
-          0.44,
+          0.43,
+          0.61,
           p
         );
+
+
+      /*
+        Slow growth across a large
+        portion of the scroll.
+      */
 
       const introGrow =
         smoothstep(
-          0.34,
-          0.70,
+          0.49,
+          0.96,
           p
         );
 
-      const introOut =
-        1 -
-        smoothstep(
-          0.72,
-          0.88,
-          p
-        );
-
-      const opacity =
-        introIn *
-        introOut;
 
       /*
-        Starts around 92% size
-        and slowly grows to 116%.
+        Start understated.
+
+        End only ~13% larger.
+
+        Premium, not gimmicky.
       */
+
       const scale =
-        0.92 +
-        introGrow * 0.24;
+        0.94 +
+        introGrow *
+        0.13;
+
 
       /*
-        Slight upward movement
-        makes the growth feel
-        editorial rather than zoomy.
+        Very tiny upward drift.
+
+        Almost imperceptible.
       */
+
       const y =
-        (1 - introIn) * 18 -
-        introGrow * 5;
+        (
+          1 -
+          introIn
+        ) *
+        20 -
+        introGrow *
+        7;
+
+
+      /*
+        No fade-out.
+
+        Once visible, it stays visible
+        through the end of the pinned
+        transition.
+
+        When the transition wrapper
+        naturally leaves the viewport,
+        the title travels away with it.
+      */
 
       revealIntro.style.opacity =
-        String(opacity);
+        String(introIn);
+
 
       revealIntro.style.transform =
-        `translate3d(
+        `
+        translate3d(
           -50%,
-          calc(-50% + ${y}px),
+          calc(
+            -50% + ${y}px
+          ),
           0
         )
-        scale(${scale})`;
+        scale(${scale})
+        `;
     }
 
-    /*
-      Red line grows underneath
-      WHY GSA PREP.
-    */
+
+    /* =========================
+       RED INTRO LINE
+    ========================= */
+
     if (revealLine) {
+
       const lineGrow =
         smoothstep(
-          0.35,
-          0.58,
+          0.49,
+          0.67,
           p
         );
 
+
       revealLine.style.transform =
-        `scaleX(${lineGrow})`;
+        `
+        scaleX(
+          ${lineGrow}
+        )
+        `;
     }
 
-    /*
-      Make progress available
-      to CSS if needed later.
-    */
+
+    /* =========================
+       CSS PROGRESS VARIABLE
+    ========================= */
+
     if (hero) {
+
       hero.style.setProperty(
         '--hero-scroll-progress',
         p.toFixed(4)
       );
     }
 
-    /*
-      Continue easing until
-      current catches target.
-    */
+
+    /* =========================
+       RAF LOOP
+    ========================= */
+
     if (current !== target) {
+
       raf =
         requestAnimationFrame(
           render
         );
+
     } else {
+
       raf = 0;
     }
   }
+
+
+  /* -----------------------------
+     EVENTS
+  ----------------------------- */
 
   window.addEventListener(
     'scroll',
@@ -405,6 +579,7 @@
     }
   );
 
+
   window.addEventListener(
     'resize',
     readProgress,
@@ -413,5 +588,7 @@
     }
   );
 
+
   readProgress();
+
 })();
