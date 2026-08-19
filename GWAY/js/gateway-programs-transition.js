@@ -14,42 +14,28 @@
   }
 
   const sticky =
-    stage.querySelector(
-      '.programs-stage'
-    );
+    stage.querySelector('.programs-stage');
 
   const kicker =
-    stage.querySelector(
-      '.programs-kicker'
-    );
+    stage.querySelector('.programs-kicker');
 
   const mlsBack =
-    stage.querySelector(
-      '.programs-mls-back'
-    );
+    stage.querySelector('.programs-mls-back');
 
   const mlsFront =
-    stage.querySelector(
-      '.programs-mls-front'
-    );
+    stage.querySelector('.programs-mls-front');
 
   const athlete =
-    stage.querySelector(
-      '.programs-athlete'
-    );
+    stage.querySelector('.programs-athlete');
 
   const copy =
-    stage.querySelector(
-      '.programs-copy'
-    );
+    stage.querySelector('.programs-copy');
 
   const copyLine =
     copy?.querySelector('i');
 
   const cta =
-    stage.querySelector(
-      '.programs-cta'
-    );
+    stage.querySelector('.programs-cta');
 
   const clamp = (
     value,
@@ -72,77 +58,56 @@
       (to - from)
     );
 
-    return (
-      x *
-      x *
-      (3 - 2 * x)
-    );
+    return x * x * (3 - 2 * x);
   };
 
   let target = 0;
   let current = 0;
   let raf = 0;
-  let lastTime =
-    performance.now();
+  let lastTime = performance.now();
 
   function readProgress() {
     const rect =
       stage.getBoundingClientRect();
 
-    const travel =
-      Math.max(
-        1,
-        stage.offsetHeight -
-        window.innerHeight
-      );
+    const travel = Math.max(
+      1,
+      stage.offsetHeight -
+      window.innerHeight
+    );
 
     target = clamp(
       -rect.top / travel
     );
 
     if (!raf) {
-      lastTime =
-        performance.now();
+      lastTime = performance.now();
 
       raf =
-        requestAnimationFrame(
-          render
-        );
+        requestAnimationFrame(render);
     }
   }
 
   function render(now) {
-    /*
-      Smooth visual easing so mouse-wheel
-      movement doesn't make the section snap.
-    */
-    const dt =
-      Math.min(
-        (now - lastTime) /
-        1000,
-        0.05
-      );
+    const dt = Math.min(
+      (now - lastTime) / 1000,
+      0.05
+    );
 
     lastTime = now;
 
+    /*
+      Smooths the animation so wheel scrolling
+      does not instantly snap through the section.
+    */
     const damping =
-      1 -
-      Math.exp(
-        -5.0 * dt
-      );
+      1 - Math.exp(-5.0 * dt);
 
     current +=
-      (
-        target -
-        current
-      ) *
-      damping;
+      (target - current) * damping;
 
     if (
-      Math.abs(
-        target -
-        current
-      ) <
+      Math.abs(target - current) <
       0.0004
     ) {
       current = target;
@@ -150,12 +115,12 @@
 
     const p = current;
 
-    /* ==============================
+    /* ==========================================
        PROGRAMS LABEL
-    ============================== */
+    ========================================== */
 
     if (kicker) {
-      const reveal =
+      const show =
         smoothstep(
           0.04,
           0.18,
@@ -163,28 +128,28 @@
         );
 
       kicker.style.opacity =
-        String(reveal);
+        String(show);
 
       kicker.style.filter =
-        `blur(${(1 - reveal) * 5}px)`;
+        `blur(${(1 - show) * 5}px)`;
     }
 
-    /* ==============================
+    /* ==========================================
        SOLID MLS — BACK LAYER
-    ============================== */
+    ========================================== */
 
     if (mlsBack) {
-      const typeIn =
+      const show =
         smoothstep(
           0.08,
-          0.42,
+          0.40,
           p
         );
 
       const settle =
         smoothstep(
-          0.18,
-          0.56,
+          0.16,
+          0.54,
           p
         );
 
@@ -197,7 +162,7 @@
         settle * 0.038;
 
       mlsBack.style.opacity =
-        String(typeIn);
+        String(show);
 
       mlsBack.style.letterSpacing =
         `${spacing}em`;
@@ -211,16 +176,23 @@
         scale(${scale})`;
     }
 
-    /* ==============================
-       ATHLETE DISSOLVE
-       NO MOVEMENT
-    ============================== */
+    /* ==========================================
+       ATHLETE
+
+       No sliding.
+       No rising.
+       No left/right movement.
+
+       He only dissolves into focus.
+    ========================================== */
+
+    let athleteIn = 0;
 
     if (athlete) {
-      const athleteIn =
+      athleteIn =
         smoothstep(
-          0.30,
-          0.66,
+          0.28,
+          0.64,
           p
         );
 
@@ -238,111 +210,102 @@
         athleteIn *
         0.03;
 
-      const scale =
-        0.997 +
-        athleteIn *
-        0.003;
-
       athlete.style.opacity =
         String(athleteIn);
 
       athlete.style.filter =
         `
-        blur(${blur}px)
-        saturate(${saturation})
-        contrast(${contrast})
+          blur(${blur}px)
+          saturate(${saturation})
+          contrast(${contrast})
         `;
-
-      athlete.style.transform =
-        `translate3d(
-          -50%,
-          0,
-          0
-        )
-        scale(${scale})`;
     }
 
-    /* ==============================
-       FRONT HOLLOW MLS
+    /* ==========================================
+       FRONT BLOOM MLS
 
-       CSS masks this to the athlete PNG,
-       so the white hollow outline only
-       appears over his body.
-    ============================== */
+       IMPORTANT:
+
+       JS is NOT creating the BLOOM effect.
+
+       CSS is masking this layer using:
+       transparent.png
+
+       That means the white hollow MLS only
+       exists inside the athlete silhouette.
+
+       Here we only reveal that already-masked
+       layer at the same rate as the athlete.
+    ========================================== */
 
     if (mlsFront) {
-      const outlineIn =
-        smoothstep(
-          0.38,
-          0.64,
-          p
-        );
-
       mlsFront.style.opacity =
-        String(outlineIn);
+        String(athleteIn);
     }
 
-    /* ==============================
+    /* ==========================================
        COPY
-    ============================== */
+    ========================================== */
 
     if (copy) {
-      const copyIn =
+      const show =
         smoothstep(
-          0.64,
-          0.86,
+          0.62,
+          0.84,
           p
         );
 
       const blur =
-        (1 - copyIn) *
+        (1 - show) *
         7;
 
       copy.style.opacity =
-        String(copyIn);
+        String(show);
 
       copy.style.filter =
         `blur(${blur}px)`;
     }
 
+    /* RED LINE */
+
     if (copyLine) {
-      const lineIn =
+      const show =
         smoothstep(
-          0.72,
-          0.90,
+          0.70,
+          0.88,
           p
         );
 
       copyLine.style.transform =
-        `scaleX(${lineIn})`;
+        `scaleX(${show})`;
     }
 
-    /* ==============================
+    /* ==========================================
        CTA
-    ============================== */
+    ========================================== */
 
     if (cta) {
-      const ctaIn =
+      const show =
         smoothstep(
-          0.75,
-          0.94,
+          0.74,
+          0.93,
           p
         );
 
       const blur =
-        (1 - ctaIn) *
+        (1 - show) *
         6;
 
       cta.style.opacity =
-        String(ctaIn);
+        String(show);
 
       cta.style.filter =
         `blur(${blur}px)`;
     }
 
-    /* ==============================
+    /* ==========================================
        OPTIONAL CSS PROGRESS VALUE
-    ============================== */
+    ========================================== */
 
     if (sticky) {
       sticky.style.setProperty(
@@ -351,15 +314,13 @@
       );
     }
 
-    /* ==============================
-       CONTINUE RAF LOOP
-    ============================== */
+    /* ==========================================
+       KEEP ANIMATION RUNNING
+    ========================================== */
 
     if (current !== target) {
       raf =
-        requestAnimationFrame(
-          render
-        );
+        requestAnimationFrame(render);
     } else {
       raf = 0;
     }
