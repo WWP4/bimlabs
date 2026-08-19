@@ -199,6 +199,86 @@
       </div>
     </section>
 
+
+    <!--
+  PLACE THIS DIRECTLY AFTER SECTION 2.
+
+  For now you can test the motion with any transparent PNG.
+  Later replace mls-athlete.png with the final cutout athlete:
+  one arm down, one arm holding the Adidas ball directly over his face.
+-->
+<section
+  class="programs-transition"
+  id="programs"
+  data-programs-transition
+>
+  <div class="programs-stage">
+
+    <p class="programs-kicker">Programs</p>
+
+    <!-- hollow type behind athlete -->
+    <div
+      class="programs-mls-back"
+      aria-hidden="true"
+    >
+      MLS
+    </div>
+
+    <!-- athlete cutout -->
+    <img
+      class="programs-athlete"
+      src="./GWAY/assets/mls-athlete.png"
+      alt="Soccer student-athlete presenting a ball toward the camera"
+    />
+
+    <!--
+      Optional:
+      if we later export the ball as a separate transparent image,
+      uncomment this and it will get its own subtle depth movement.
+
+    <img
+      class="programs-ball"
+      src="./GWAY/assets/mls-ball.png"
+      alt=""
+      aria-hidden="true"
+    />
+    -->
+
+    <!-- subtle front outline -->
+    <div
+      class="programs-mls-front"
+      aria-hidden="true"
+    >
+      MLS
+    </div>
+
+    <div class="programs-copy">
+      <h2>MLS Program</h2>
+      <strong>Built for the next level.</strong>
+      <i aria-hidden="true"></i>
+
+      <p>
+        Elite soccer development. High-level competition.
+        Exposure and progression. Everything you need to
+        reach your next level.
+      </p>
+
+      <a href="#mls-program">
+        Explore MLS Program
+        <span>→</span>
+      </a>
+    </div>
+
+    <div
+      class="programs-index"
+      aria-hidden="true"
+    >
+      01 / MLS Program
+    </div>
+
+  </div>
+</section>
+
   </main>
   <script src="./GWAY/js/gateway-transition.js" defer></script>
   <script src="./GWAY/js/gateway-why.js" defer></script>
