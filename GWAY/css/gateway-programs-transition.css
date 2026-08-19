@@ -1,31 +1,49 @@
-
-
-
 /* =========================================================
    SECTION 3 — PROGRAMS / MLS
-   SVG BLOOM VERSION
+   CREAM BLOOM EFFECT
 
-   Built for the SVG markup using:
+   SVG layer order:
+   1) cream-filled MLS behind athlete
+   2) athlete PNG
+   3) SAME cream MLS as outline in front of athlete,
+      clipped by the SVG athlete mask
+
+   Expected HTML classes:
+   .programs-transition
+   .programs-stage
+   .programs-kicker
    .programs-art
    .programs-bloom
+   .bloom-text
    .bloom-text-back
    .bloom-athlete
    .bloom-text-front
-
-   The actual BLOOM intersection is created by the SVG mask.
-   CSS only styles and positions the finished composition.
+   .programs-copy
+   .programs-cta
 ========================================================= */
 
 .programs-transition {
+  --bloom-bg: #f8f7f4;
+
+  /*
+    Same exact cream is used for BOTH:
+    - filled MLS behind the athlete
+    - outline MLS in front of the athlete
+  */
+  --bloom-cream: #eee9df;
+
+  --gway-red: #ef101f;
+
   position: relative;
 
   /*
-    Long enough to reveal, hold, then release.
+    Reveal + hold.
+    The final composition finishes before the sticky section releases.
   */
   height: 220vh;
   height: 220svh;
 
-  background: #f8f7f4;
+  background: var(--bloom-bg);
   color: #101010;
 }
 
@@ -40,7 +58,7 @@
   overflow: hidden;
   isolation: isolate;
 
-  background: #f8f7f4;
+  background: var(--bloom-bg);
 }
 
 /* =========================================================
@@ -49,17 +67,17 @@
 
 .programs-kicker {
   position: absolute;
-  z-index: 30;
+  z-index: 40;
 
   top: clamp(34px, 4.9vh, 58px);
   left: 50%;
 
   margin: 0;
 
-  color: var(--gway-red, #ef101f);
+  color: var(--gway-red);
 
   font-family: "Inter", sans-serif;
-  font-size: clamp(11px, 0.7vw, 13px);
+  font-size: clamp(11px, 0.70vw, 13px);
   font-weight: 900;
   line-height: 1;
   letter-spacing: 0.42em;
@@ -70,13 +88,15 @@
 
   transform: translate3d(-50%, 0, 0);
 
+  pointer-events: none;
+
   will-change:
     opacity,
     filter;
 }
 
 /* =========================================================
-   SVG ART
+   SVG ARTBOARD
 ========================================================= */
 
 .programs-art {
@@ -85,6 +105,7 @@
   z-index: 10;
 
   overflow: hidden;
+
   pointer-events: none;
 }
 
@@ -97,17 +118,20 @@
   overflow: visible;
 }
 
-/*
-  IMPORTANT:
-  The mask in the HTML contains a black rectangle plus
-  transparent.png. SVG masks are luminance masks here.
+/* =========================================================
+   SVG MASK
 
-  Black = hidden.
-  White = visible.
+   Your HTML mask contains:
+   - a BLACK rectangle
+   - transparent.png above it
 
-  This converts the athlete image to white while preserving
-  its transparent background, producing a clean silhouette.
-*/
+   SVG masks are luminance-based here:
+   black = hidden
+   white = visible
+
+   So we force the athlete copy inside the mask to white.
+========================================================= */
+
 #mls-athlete-mask {
   mask-type: luminance;
 }
@@ -119,11 +143,19 @@
 }
 
 /* =========================================================
-   SHARED BLOOM TYPE
+   SHARED MLS TYPOGRAPHY
+
+   BOTH text layers use the exact same SVG x/y in the HTML.
+   That is what keeps the fill and outline perfectly registered.
 ========================================================= */
 
 .bloom-text {
   font-family: "Bebas Neue", sans-serif;
+
+  /*
+    Large editorial treatment without completely swallowing
+    the athlete.
+  */
   font-size: 720px;
   font-weight: 400;
   letter-spacing: -18px;
@@ -140,20 +172,20 @@
 }
 
 /* =========================================================
-   1 — SOLID MLS BEHIND ATHLETE
+   LAYER 1 — CREAM FILLED MLS BEHIND ATHLETE
 ========================================================= */
 
 .bloom-text-back {
   /*
-    Soft warm gray/cream, much closer to the BLOOM reference
-    than the heavy gray from the earlier version.
+    SOLID cream.
+    This is behind the athlete.
   */
-  fill: #e8e6e0;
+  fill: var(--bloom-cream);
   stroke: none;
 
   opacity: 0;
 
-  transform: scale(0.985);
+  transform: scale(0.988);
 
   will-change:
     opacity,
@@ -161,23 +193,24 @@
 }
 
 /* =========================================================
-   2 — ATHLETE
+   LAYER 2 — ATHLETE
 ========================================================= */
 
 .bloom-athlete {
   opacity: 0;
 
   /*
-    No travel animation.
-    He resolves in place.
+    Absolutely no travel animation.
+    Athlete resolves in the final position.
   */
   filter:
-    blur(13px)
-    saturate(0.88)
+    blur(12px)
+    saturate(0.90)
     contrast(0.98);
 
   transform-box: fill-box;
   transform-origin: center bottom;
+
   transform: scale(0.998);
 
   will-change:
@@ -187,30 +220,38 @@
 }
 
 /* =========================================================
-   3 — SAME MLS IN FRONT, MASKED TO ATHLETE
+   LAYER 3 — SAME CREAM MLS OUTLINE IN FRONT
+
+   This text element MUST have:
+   mask="url(#mls-athlete-mask)"
+
+   in the SVG HTML.
+
+   Because the outline is masked to the athlete,
+   it only appears where the lettering crosses his body.
 ========================================================= */
 
 .bloom-text-front {
   fill: none;
 
   /*
-    This is the BLOOM outline that is only visible
-    inside the athlete because the SVG text itself
-    has mask="url(#mls-athlete-mask)" in the HTML.
+    SAME cream as the solid back text.
   */
-  stroke: rgba(255, 255, 255, 0.98);
-  stroke-width: 3.2px;
+  stroke: var(--bloom-cream);
+  stroke-width: 4px;
+
   stroke-linejoin: round;
+  stroke-linecap: round;
 
   paint-order: stroke;
 
   /*
-    Gives the white line enough definition across the white
-    jersey without turning it into a dark outline.
+    A tiny neutral edge gives the cream outline definition
+    across the athlete's white shirt without changing its color.
   */
   filter:
     drop-shadow(
-      0 0 1.2px rgba(0, 0, 0, 0.28)
+      0 0 0.9px rgba(20, 20, 20, 0.28)
     );
 
   opacity: 0;
@@ -225,7 +266,7 @@
 
 .programs-copy {
   position: absolute;
-  z-index: 30;
+  z-index: 35;
 
   left: clamp(34px, 5.4vw, 102px);
   bottom: clamp(70px, 9vh, 116px);
@@ -248,6 +289,7 @@
   font-weight: 400;
   line-height: 0.92;
   letter-spacing: 0.005em;
+
   text-transform: uppercase;
 }
 
@@ -272,7 +314,7 @@
 
   margin: 23px 0 18px;
 
-  background: var(--gway-red, #ef101f);
+  background: var(--gway-red);
 
   transform: scaleX(0);
   transform-origin: left center;
@@ -282,6 +324,7 @@
 
 .programs-copy p {
   max-width: 370px;
+
   margin: 0;
 
   color: #55524f;
@@ -298,7 +341,7 @@
 
 .programs-cta {
   position: absolute;
-  z-index: 30;
+  z-index: 35;
 
   right: clamp(48px, 5.7vw, 108px);
   bottom: clamp(76px, 9.5vh, 122px);
@@ -310,7 +353,7 @@
   padding-bottom: 7px;
 
   border-bottom:
-    1px solid var(--gway-red, #ef101f);
+    1px solid var(--gway-red);
 
   color: #111;
   text-decoration: none;
@@ -320,6 +363,7 @@
   font-weight: 900;
   line-height: 1;
   letter-spacing: 0.085em;
+
   text-transform: uppercase;
 
   opacity: 0;
@@ -327,12 +371,12 @@
 
   will-change:
     opacity,
-    filter,
-    transform;
+    filter;
 }
 
 .programs-cta span {
-  color: var(--gway-red, #ef101f);
+  color: var(--gway-red);
+
   font-size: 21px;
   line-height: 1;
 
@@ -341,7 +385,7 @@
 }
 
 .programs-cta:hover {
-  color: var(--gway-red, #ef101f);
+  color: var(--gway-red);
 }
 
 .programs-cta:hover span {
@@ -377,6 +421,7 @@
   .programs-copy {
     left: 28px;
     bottom: 70px;
+
     width: min(330px, 39vw);
   }
 
@@ -401,13 +446,14 @@
   }
 
   /*
-    Keep the SVG composition centered and let its viewBox
-    crop naturally rather than rebuilding the effect with
-    separate positioned elements.
+    Keep the SVG as one composition.
+    Scale/crop the entire art instead of breaking apart
+    the fill / athlete / outline layers.
   */
   .programs-bloom {
     width: 150%;
     max-width: none;
+
     margin-left: -25%;
   }
 
@@ -425,7 +471,8 @@
   }
 
   .programs-copy h2 {
-    font-size: clamp(42px, 12vw, 62px);
+    font-size:
+      clamp(42px, 12vw, 62px);
   }
 
   .programs-copy p {
@@ -434,7 +481,10 @@
   }
 
   .programs-copy i {
-    margin: 16px 0 14px;
+    margin:
+      16px
+      0
+      14px;
   }
 
   .programs-cta {
@@ -464,6 +514,7 @@
 
   .programs-stage {
     position: relative;
+
     min-height: 100svh;
   }
 
