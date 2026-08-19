@@ -28,7 +28,7 @@ body {
 ========================================================= */
 
 .gway-header {
-  position: absolute;
+  position: fixed;
   inset: 0 0 auto 0;
   z-index: 50;
 
@@ -410,45 +410,124 @@ body {
 }
 
 
-
-
-
-
-
-
-
-
-
-
 /* =========================================================
-   SECTION 2: ENROLLMENT BACKGROUND SETUP
+   HERO -> SECTION 2 SCROLL HANDOFF
+   The hero stays pinned while a clean white panel rises over it.
+   gateway-transition.js drives only transforms / opacity.
 ========================================================= */
 
+.gway-hero-transition {
+  position: relative;
+  height: 175vh;
+  height: 175svh;
+  background: var(--gway-black);
+}
+
+.gway-hero-transition .gway-hero {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  height: 100svh;
+  min-height: 100vh;
+  min-height: 100svh;
+}
+
+.gway-section-reveal {
+  position: absolute;
+  inset: 0;
+  z-index: 30;
+  overflow: hidden;
+  pointer-events: none;
+  background: #f8f7f4;
+  transform: translate3d(0, 100%, 0);
+  will-change: transform;
+}
+
+/* razor-thin red handoff line — intentionally restrained */
+.gway-section-reveal::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: min(180px, 22vw);
+  height: 2px;
+  background: var(--gway-red);
+  transform: translateX(-50%);
+  opacity: var(--reveal-line-opacity, 1);
+}
+
+.gway-section-reveal-intro {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  color: var(--gway-red);
+  opacity: 0;
+  transform: translate3d(-50%, calc(-50% + 28px), 0);
+  will-change: transform, opacity;
+}
+
+.gway-section-reveal-intro span {
+  font-size: clamp(10px, 0.78vw, 14px);
+  font-weight: 900;
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.gway-section-reveal-intro i {
+  display: block;
+  width: 44px;
+  height: 1px;
+  background: var(--gway-red);
+  transform: scaleX(0);
+  transform-origin: center;
+  will-change: transform;
+}
+
+/* Empty landing canvas for the second section we build next. */
 .enroll-section {
   position: relative;
   width: 100%;
-  min-height: 820px;
-  overflow: hidden;
-  isolation: isolate;
-  background: #d50013;
-}
-
-.enroll-bg {
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  background-image: url("../assets/enroll-bg.png");
-  background-size: cover;
-  background-position: center center;
-  background-repeat: no-repeat;
-  pointer-events: none;
+  min-height: 100vh;
+  min-height: 100svh;
+  background: #f8f7f4;
+  color: #111;
 }
 
 .enroll-content {
   position: relative;
-  z-index: 2;
   width: min(100%, 1680px);
-  min-height: 820px;
+  min-height: 100vh;
+  min-height: 100svh;
   margin: 0 auto;
-  padding: 72px 7vw 64px;
+}
+
+@media (max-width: 680px) {
+  .gway-hero-transition {
+    height: 155vh;
+    height: 155svh;
+  }
+
+  .gway-section-reveal-intro span {
+    letter-spacing: 0.25em;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gway-hero-transition {
+    height: 100vh;
+    height: 100svh;
+  }
+
+  .gway-hero-transition .gway-hero {
+    position: relative;
+  }
+
+  .gway-section-reveal {
+    display: none;
+  }
 }
