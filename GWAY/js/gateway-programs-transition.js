@@ -5,35 +5,51 @@
 
   if (!stage) return;
 
-  const reducedMotion = window.matchMedia(
-    '(prefers-reduced-motion: reduce)'
-  );
-
-  if (reducedMotion.matches) return;
+  if (
+    window.matchMedia(
+      '(prefers-reduced-motion: reduce)'
+    ).matches
+  ) {
+    return;
+  }
 
   const sticky =
-    stage.querySelector('.programs-stage');
+    stage.querySelector(
+      '.programs-stage'
+    );
 
   const kicker =
-    stage.querySelector('.programs-kicker');
+    stage.querySelector(
+      '.programs-kicker'
+    );
 
   const mlsBack =
-    stage.querySelector('.programs-mls-back');
+    stage.querySelector(
+      '.programs-mls-back'
+    );
 
   const mlsFront =
-    stage.querySelector('.programs-mls-front');
+    stage.querySelector(
+      '.programs-mls-front'
+    );
 
   const athlete =
-    stage.querySelector('.programs-athlete');
+    stage.querySelector(
+      '.programs-athlete'
+    );
 
   const copy =
-    stage.querySelector('.programs-copy');
+    stage.querySelector(
+      '.programs-copy'
+    );
 
   const copyLine =
     copy?.querySelector('i');
 
   const cta =
-    stage.querySelector('.programs-cta');
+    stage.querySelector(
+      '.programs-cta'
+    );
 
   const clamp = (
     value,
@@ -97,12 +113,8 @@
 
   function render(now) {
     /*
-      Smooth visual damping.
-
-      The physical page can move quickly
-      when the mouse wheel is used, but
-      the animation eases toward that
-      position instead of snapping.
+      Smooth visual easing so mouse-wheel
+      movement doesn't make the section snap.
     */
     const dt =
       Math.min(
@@ -138,13 +150,12 @@
 
     const p = current;
 
-    /* ==========================================
+    /* ==============================
        PROGRAMS LABEL
-       Soft dissolve. No movement.
-    ========================================== */
+    ============================== */
 
     if (kicker) {
-      const intro =
+      const reveal =
         smoothstep(
           0.04,
           0.18,
@@ -152,60 +163,44 @@
         );
 
       kicker.style.opacity =
-        String(intro);
+        String(reveal);
 
       kicker.style.filter =
-        `blur(${(1 - intro) * 5}px)`;
+        `blur(${(1 - reveal) * 5}px)`;
     }
 
-    /* ==========================================
-       GIANT HOLLOW MLS
-
-       Typography slowly resolves from
-       faint + loose into crisp.
-    ========================================== */
-
-    const typeIn =
-      smoothstep(
-        0.08,
-        0.44,
-        p
-      );
-
-    const typeResolve =
-      smoothstep(
-        0.28,
-        0.62,
-        p
-      );
+    /* ==============================
+       SOLID MLS — BACK LAYER
+    ============================== */
 
     if (mlsBack) {
-      const opacity =
-        0.14 +
-        typeIn *
-        0.86;
+      const typeIn =
+        smoothstep(
+          0.08,
+          0.42,
+          p
+        );
+
+      const settle =
+        smoothstep(
+          0.18,
+          0.56,
+          p
+        );
 
       const scale =
-        0.975 +
-        typeResolve *
-        0.025;
+        0.985 +
+        settle * 0.015;
 
-      /*
-        Letters start slightly spaced out
-        then close into the final word.
-      */
       const spacing =
-        0.055 -
-        typeResolve *
-        0.075;
-
-      const strokeAlpha =
-        0.08 +
-        typeResolve *
-        0.78;
+        0.018 -
+        settle * 0.038;
 
       mlsBack.style.opacity =
-        String(opacity);
+        String(typeIn);
+
+      mlsBack.style.letterSpacing =
+        `${spacing}em`;
 
       mlsBack.style.transform =
         `translate3d(
@@ -214,59 +209,39 @@
           0
         )
         scale(${scale})`;
-
-      mlsBack.style.letterSpacing =
-        `${spacing}em`;
-
-      mlsBack.style.webkitTextStrokeColor =
-        `rgba(
-          10,
-          10,
-          10,
-          ${strokeAlpha}
-        )`;
     }
 
-    /* ==========================================
+    /* ==============================
        ATHLETE DISSOLVE
-
-       No sliding.
-       No rising.
-       No horizontal movement.
-
-       Athlete simply materializes in place.
-    ========================================== */
+       NO MOVEMENT
+    ============================== */
 
     if (athlete) {
       const athleteIn =
         smoothstep(
-          0.34,
-          0.70,
+          0.30,
+          0.66,
           p
         );
 
       const blur =
         (1 - athleteIn) *
-        14;
+        12;
 
       const saturation =
-        0.82 +
+        0.88 +
         athleteIn *
-        0.18;
+        0.12;
 
       const contrast =
-        0.96 +
+        0.97 +
         athleteIn *
-        0.04;
+        0.03;
 
-      /*
-        Almost zero scale movement.
-        Only 0.995 -> 1.0.
-      */
       const scale =
-        0.995 +
+        0.997 +
         athleteIn *
-        0.005;
+        0.003;
 
       athlete.style.opacity =
         String(athleteIn);
@@ -287,51 +262,35 @@
         scale(${scale})`;
     }
 
-    /* ==========================================
-       FRONT MLS OUTLINE
+    /* ==============================
+       FRONT HOLLOW MLS
 
-       Very subtle duplicate outline over
-       the athlete for layered depth.
-    ========================================== */
+       CSS masks this to the athlete PNG,
+       so the white hollow outline only
+       appears over his body.
+    ============================== */
 
     if (mlsFront) {
-      const frontIn =
+      const outlineIn =
         smoothstep(
-          0.54,
-          0.78,
+          0.38,
+          0.64,
           p
         );
 
       mlsFront.style.opacity =
-        String(
-          frontIn *
-          0.16
-        );
-
-      mlsFront.style.letterSpacing =
-        `-0.02em`;
-
-      mlsFront.style.transform =
-        `translate3d(
-          -50%,
-          -50%,
-          0
-        )
-        scale(1)`;
+        String(outlineIn);
     }
 
-    /* ==========================================
+    /* ==============================
        COPY
-
-       Copy dissolves into focus.
-       No slide animation.
-    ========================================== */
+    ============================== */
 
     if (copy) {
       const copyIn =
         smoothstep(
-          0.66,
-          0.88,
+          0.64,
+          0.86,
           p
         );
 
@@ -346,12 +305,11 @@
         `blur(${blur}px)`;
     }
 
-    /* Red copy rule */
     if (copyLine) {
       const lineIn =
         smoothstep(
-          0.74,
-          0.92,
+          0.72,
+          0.90,
           p
         );
 
@@ -359,16 +317,15 @@
         `scaleX(${lineIn})`;
     }
 
-    /* ==========================================
+    /* ==============================
        CTA
-       Comes in last.
-    ========================================== */
+    ============================== */
 
     if (cta) {
       const ctaIn =
         smoothstep(
-          0.76,
-          0.96,
+          0.75,
+          0.94,
           p
         );
 
@@ -383,13 +340,20 @@
         `blur(${blur}px)`;
     }
 
-    /* Optional CSS progress variable */
+    /* ==============================
+       OPTIONAL CSS PROGRESS VALUE
+    ============================== */
+
     if (sticky) {
       sticky.style.setProperty(
         '--programs-progress',
         p.toFixed(4)
       );
     }
+
+    /* ==============================
+       CONTINUE RAF LOOP
+    ============================== */
 
     if (current !== target) {
       raf =
