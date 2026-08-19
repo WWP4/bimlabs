@@ -415,3 +415,103 @@
     transform: scaleX(1);
   }
 }
+
+
+
+/* =========================================
+   MLS BLOOM / HOLLOW TYPOGRAPHY EFFECT
+========================================= */
+
+.programs-mls-back,
+.programs-mls-front {
+  position: absolute;
+
+  left: 50%;
+  top: 47%;
+
+  margin: 0;
+
+  font-family: "Bebas Neue", sans-serif;
+  font-size: clamp(360px, 50vw, 860px);
+  font-weight: 400;
+
+  line-height: 0.72;
+  letter-spacing: -0.02em;
+
+  text-transform: uppercase;
+  white-space: nowrap;
+
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+
+  transform:
+    translate3d(-50%, -50%, 0);
+
+  pointer-events: none;
+  user-select: none;
+}
+
+
+/* BLACK OUTLINE BEHIND ATHLETE */
+
+.programs-mls-back {
+  z-index: 5;
+
+  -webkit-text-stroke:
+    2px rgba(10, 10, 10, 0.88);
+}
+
+
+/* ATHLETE IN MIDDLE */
+
+.programs-athlete {
+  position: absolute;
+
+  z-index: 10;
+
+  left: 53%;
+  bottom: -1vh;
+
+  width: min(34vw, 610px);
+  max-height: 88vh;
+
+  object-fit: contain;
+  object-position: center bottom;
+
+  opacity: 0;
+
+  filter: blur(12px);
+
+  transform:
+    translate3d(-50%, 0, 0);
+
+  /*
+    VERY IMPORTANT:
+    this PNG needs a transparent background
+  */
+}
+
+
+/* WHITE OUTLINE OVER ATHLETE */
+
+.programs-mls-front {
+  z-index: 15;
+
+  /*
+    Invisible over white background,
+    visible wherever it crosses athlete.
+  */
+  -webkit-text-stroke:
+    2px rgba(255, 255, 255, 0.98);
+
+  opacity: 0;
+
+  /*
+    Tiny edge helps the white outline remain
+    visible across his white jersey.
+  */
+  filter:
+    drop-shadow(
+      0 0 0.6px rgba(0, 0, 0, 0.30)
+    );
+}
