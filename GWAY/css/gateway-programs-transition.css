@@ -1,35 +1,35 @@
+
+
+
 /* =========================================================
-   SECTION 3 — MLS / TRUE BLOOM EFFECT
-   Athlete asset: ../assets/transparent.png
+   SECTION 3 — PROGRAMS / MLS
+   SVG BLOOM VERSION
 
-   REAL COMPOSITING:
-   1) SOLID MLS behind athlete
-   2) transparent athlete PNG above it
-   3) WHITE OUTLINE MLS above athlete, but ALPHA-MASKED
-      by transparent.png so it ONLY exists on the athlete
+   Built for the SVG markup using:
+   .programs-art
+   .programs-bloom
+   .bloom-text-back
+   .bloom-athlete
+   .bloom-text-front
 
-   The mask creates the effect. Opacity does not.
+   The actual BLOOM intersection is created by the SVG mask.
+   CSS only styles and positions the finished composition.
 ========================================================= */
 
 .programs-transition {
   position: relative;
-  height: 210vh;
-  height: 210svh;
+
+  /*
+    Long enough to reveal, hold, then release.
+  */
+  height: 220vh;
+  height: 220svh;
+
   background: #f8f7f4;
-  color: #0a0a0a;
+  color: #101010;
 }
 
 .programs-stage {
-  /*
-    Shared geometry. The athlete element and the CSS mask use
-    the SAME values so they stay perfectly aligned.
-  */
-  --mls-size: clamp(360px, 50vw, 860px);
-  --mls-top: 46%;
-
-  --athlete-width: min(34vw, 610px);
-  --athlete-shift-x: 3vw;
-
   position: sticky;
   top: 0;
 
@@ -49,9 +49,9 @@
 
 .programs-kicker {
   position: absolute;
-  z-index: 40;
+  z-index: 30;
 
-  top: clamp(34px, 5.2vh, 62px);
+  top: clamp(34px, 4.9vh, 58px);
   left: 50%;
 
   margin: 0;
@@ -59,98 +59,16 @@
   color: var(--gway-red, #ef101f);
 
   font-family: "Inter", sans-serif;
-  font-size: clamp(11px, 0.72vw, 13px);
+  font-size: clamp(11px, 0.7vw, 13px);
   font-weight: 900;
-  letter-spacing: 0.40em;
   line-height: 1;
+  letter-spacing: 0.42em;
   text-transform: uppercase;
 
   opacity: 0;
   filter: blur(5px);
 
-  transform: translateX(-50%);
-
-  will-change: opacity, filter;
-}
-
-/* =========================================================
-   1 — SOLID MLS BEHIND ATHLETE
-========================================================= */
-
-.programs-mls-back {
-  position: absolute;
-  z-index: 5;
-
-  left: 50%;
-  top: var(--mls-top);
-
-  margin: 0;
-
-  font-family: "Bebas Neue", sans-serif;
-  font-size: var(--mls-size);
-  font-weight: 400;
-  line-height: 0.72;
-  letter-spacing: -0.02em;
-  white-space: nowrap;
-  text-transform: uppercase;
-
-  /*
-    THIS MUST BE FILLED.
-    The athlete physically hides this layer wherever he overlaps it.
-  */
-  color: #deddda;
-  -webkit-text-fill-color: #deddda;
-  -webkit-text-stroke: 0;
-
-  opacity: 0;
-
-  transform:
-    translate3d(-50%, -50%, 0)
-    scale(0.985);
-
-  transform-origin: center;
-
-  pointer-events: none;
-  user-select: none;
-
-  will-change:
-    opacity,
-    transform,
-    letter-spacing;
-}
-
-/* =========================================================
-   2 — TRANSPARENT ATHLETE
-========================================================= */
-
-.programs-athlete {
-  position: absolute;
-  z-index: 10;
-
-  /*
-    The mask below uses these same stage variables.
-  */
-  left: calc(50% + var(--athlete-shift-x));
-  bottom: 0;
-
-  width: var(--athlete-width);
-  height: auto;
-  max-height: 88vh;
-
-  object-fit: contain;
-  object-position: center bottom;
-
-  opacity: 0;
-
-  filter:
-    blur(12px)
-    saturate(0.88)
-    contrast(0.97);
-
-  transform:
-    translate3d(-50%, 0, 0);
-
-  transform-origin: center bottom;
+  transform: translate3d(-50%, 0, 0);
 
   will-change:
     opacity,
@@ -158,148 +76,190 @@
 }
 
 /* =========================================================
-   3 — REAL BLOOM FOREGROUND OUTLINE
-
-   This is a FULL-STAGE copy of MLS, but the ENTIRE element
-   is alpha-masked by transparent.png.
-
-   Therefore:
-   - the foreground white outline DOES NOT EXIST on the page
-   - it ONLY exists inside the athlete's silhouette
-   - the filled back MLS remains visible everywhere else
-
-   That is the actual BLOOM / cut-through effect.
+   SVG ART
 ========================================================= */
 
-.programs-mls-front {
+.programs-art {
   position: absolute;
   inset: 0;
-  z-index: 20;
+  z-index: 10;
 
-  margin: 0;
-
-  /*
-    Center the same MLS word at the same coordinates as the back layer.
-  */
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
-
-  padding-top: var(--mls-top);
-
-  font-family: "Bebas Neue", sans-serif;
-  font-size: var(--mls-size);
-  font-weight: 400;
-  line-height: 0.72;
-  letter-spacing: -0.02em;
-  white-space: nowrap;
-  text-transform: uppercase;
-
-  color: transparent;
-  -webkit-text-fill-color: transparent;
-
-  /*
-    This is the outline visible on top of the athlete.
-  */
-  -webkit-text-stroke:
-    2px rgba(255, 255, 255, 0.98);
-
-  /*
-    Move the line-box back up by half its own visual height
-    so it matches the back word's translateY(-50%).
-  */
-  transform:
-    translate3d(0, -0.36em, 0);
-
-  /*
-    REAL ALPHA MASK.
-    Browser uses the transparency of transparent.png.
-  */
-  -webkit-mask-image:
-    url("../assets/transparent.png");
-
-  mask-image:
-    url("../assets/transparent.png");
-
-  -webkit-mask-mode: alpha;
-  mask-mode: alpha;
-
-  -webkit-mask-repeat: no-repeat;
-  mask-repeat: no-repeat;
-
-  /*
-    SAME size as .programs-athlete.
-  */
-  -webkit-mask-size:
-    var(--athlete-width) auto;
-
-  mask-size:
-    var(--athlete-width) auto;
-
-  /*
-    SAME center and bottom anchor as .programs-athlete.
-    Because both are bottom anchored and share width, the alpha
-    silhouette lines up with the actual PNG.
-  */
-  -webkit-mask-position:
-    calc(50% + var(--athlete-shift-x)) bottom;
-
-  mask-position:
-    calc(50% + var(--athlete-shift-x)) bottom;
-
-  opacity: 0;
-
-  /*
-    Tiny dark edge only helps the white stroke survive on the white jersey.
-  */
-  filter:
-    drop-shadow(
-      0 0 0.65px rgba(0, 0, 0, 0.30)
-    );
-
+  overflow: hidden;
   pointer-events: none;
-  user-select: none;
+}
 
-  will-change: opacity;
+.programs-bloom {
+  display: block;
+
+  width: 100%;
+  height: 100%;
+
+  overflow: visible;
+}
+
+/*
+  IMPORTANT:
+  The mask in the HTML contains a black rectangle plus
+  transparent.png. SVG masks are luminance masks here.
+
+  Black = hidden.
+  White = visible.
+
+  This converts the athlete image to white while preserving
+  its transparent background, producing a clean silhouette.
+*/
+#mls-athlete-mask {
+  mask-type: luminance;
+}
+
+#mls-athlete-mask image {
+  filter:
+    brightness(0)
+    invert(1);
 }
 
 /* =========================================================
-   COPY
+   SHARED BLOOM TYPE
+========================================================= */
+
+.bloom-text {
+  font-family: "Bebas Neue", sans-serif;
+  font-size: 720px;
+  font-weight: 400;
+  letter-spacing: -18px;
+
+  text-transform: uppercase;
+
+  vector-effect: non-scaling-stroke;
+
+  transform-box: fill-box;
+  transform-origin: center;
+
+  pointer-events: none;
+  user-select: none;
+}
+
+/* =========================================================
+   1 — SOLID MLS BEHIND ATHLETE
+========================================================= */
+
+.bloom-text-back {
+  /*
+    Soft warm gray/cream, much closer to the BLOOM reference
+    than the heavy gray from the earlier version.
+  */
+  fill: #e8e6e0;
+  stroke: none;
+
+  opacity: 0;
+
+  transform: scale(0.985);
+
+  will-change:
+    opacity,
+    transform;
+}
+
+/* =========================================================
+   2 — ATHLETE
+========================================================= */
+
+.bloom-athlete {
+  opacity: 0;
+
+  /*
+    No travel animation.
+    He resolves in place.
+  */
+  filter:
+    blur(13px)
+    saturate(0.88)
+    contrast(0.98);
+
+  transform-box: fill-box;
+  transform-origin: center bottom;
+  transform: scale(0.998);
+
+  will-change:
+    opacity,
+    filter,
+    transform;
+}
+
+/* =========================================================
+   3 — SAME MLS IN FRONT, MASKED TO ATHLETE
+========================================================= */
+
+.bloom-text-front {
+  fill: none;
+
+  /*
+    This is the BLOOM outline that is only visible
+    inside the athlete because the SVG text itself
+    has mask="url(#mls-athlete-mask)" in the HTML.
+  */
+  stroke: rgba(255, 255, 255, 0.98);
+  stroke-width: 3.2px;
+  stroke-linejoin: round;
+
+  paint-order: stroke;
+
+  /*
+    Gives the white line enough definition across the white
+    jersey without turning it into a dark outline.
+  */
+  filter:
+    drop-shadow(
+      0 0 1.2px rgba(0, 0, 0, 0.28)
+    );
+
+  opacity: 0;
+
+  will-change:
+    opacity;
+}
+
+/* =========================================================
+   COPY — LOWER LEFT
 ========================================================= */
 
 .programs-copy {
   position: absolute;
-  z-index: 35;
+  z-index: 30;
 
-  left: clamp(34px, 5.5vw, 104px);
-  bottom: clamp(74px, 10vh, 130px);
+  left: clamp(34px, 5.4vw, 102px);
+  bottom: clamp(70px, 9vh, 116px);
 
   width: min(390px, 31vw);
 
   opacity: 0;
   filter: blur(7px);
 
-  will-change: opacity, filter;
+  will-change:
+    opacity,
+    filter;
 }
 
 .programs-copy h2 {
   margin: 0;
 
   font-family: "Bebas Neue", sans-serif;
-  font-size: clamp(46px, 3.8vw, 72px);
+  font-size: clamp(46px, 3.7vw, 70px);
   font-weight: 400;
   line-height: 0.92;
-  letter-spacing: 0.01em;
+  letter-spacing: 0.005em;
   text-transform: uppercase;
 }
 
 .programs-copy strong {
   display: block;
-  margin-top: 9px;
+
+  margin-top: 8px;
 
   color: #111;
 
-  font-size: clamp(15px, 0.98vw, 18px);
+  font-family: "Inter", sans-serif;
+  font-size: clamp(15px, 0.96vw, 18px);
   font-weight: 800;
   line-height: 1.35;
 }
@@ -310,136 +270,171 @@
   width: 54px;
   height: 2px;
 
-  margin: 24px 0 19px;
+  margin: 23px 0 18px;
 
   background: var(--gway-red, #ef101f);
 
   transform: scaleX(0);
   transform-origin: left center;
+
+  will-change: transform;
 }
 
 .programs-copy p {
+  max-width: 370px;
   margin: 0;
 
-  color: #4a4a4a;
+  color: #55524f;
 
-  font-size: clamp(14px, 0.94vw, 17px);
-  line-height: 1.6;
+  font-family: "Inter", sans-serif;
+  font-size: clamp(14px, 0.92vw, 16px);
+  font-weight: 400;
+  line-height: 1.62;
 }
 
 /* =========================================================
-   CTA
+   CTA — LOWER RIGHT
 ========================================================= */
 
 .programs-cta {
   position: absolute;
-  z-index: 35;
+  z-index: 30;
 
-  right: clamp(48px, 6vw, 112px);
-  bottom: clamp(78px, 10vh, 134px);
+  right: clamp(48px, 5.7vw, 108px);
+  bottom: clamp(76px, 9.5vh, 122px);
 
   display: inline-flex;
   align-items: center;
   gap: 18px;
 
-  padding-bottom: 6px;
+  padding-bottom: 7px;
 
   border-bottom:
     1px solid var(--gway-red, #ef101f);
 
-  color: #101010;
+  color: #111;
   text-decoration: none;
 
-  font-size: clamp(11px, 0.78vw, 13px);
+  font-family: "Inter", sans-serif;
+  font-size: clamp(11px, 0.76vw, 13px);
   font-weight: 900;
-  letter-spacing: 0.08em;
   line-height: 1;
+  letter-spacing: 0.085em;
   text-transform: uppercase;
 
   opacity: 0;
   filter: blur(6px);
 
-  will-change: opacity, filter;
+  will-change:
+    opacity,
+    filter,
+    transform;
 }
 
 .programs-cta span {
   color: var(--gway-red, #ef101f);
-  font-size: 22px;
+  font-size: 21px;
   line-height: 1;
+
+  transition:
+    transform 220ms ease;
+}
+
+.programs-cta:hover {
+  color: var(--gway-red, #ef101f);
+}
+
+.programs-cta:hover span {
+  transform: translateX(4px);
 }
 
 /* =========================================================
-   RESPONSIVE
+   TABLET
 ========================================================= */
 
-@media (max-width: 980px) {
-  .programs-transition {
-    height: 190vh;
-    height: 190svh;
-  }
-
-  .programs-stage {
-    --mls-size: clamp(300px, 66vw, 620px);
-    --athlete-width: min(46vw, 560px);
-    --athlete-shift-x: 4vw;
+@media (max-width: 1100px) {
+  .bloom-text {
+    font-size: 680px;
+    letter-spacing: -16px;
   }
 
   .programs-copy {
-    width: min(330px, 36vw);
+    width: min(350px, 34vw);
   }
 }
 
-@media (max-width: 720px) {
+@media (max-width: 900px) {
   .programs-transition {
-    height: 175vh;
-    height: 175svh;
+    height: 200vh;
+    height: 200svh;
   }
 
-  .programs-stage {
-    --mls-size: clamp(240px, 88vw, 520px);
-    --mls-top: 40%;
+  .bloom-text {
+    font-size: 620px;
+    letter-spacing: -14px;
+  }
 
-    --athlete-width: min(73vw, 520px);
-    --athlete-shift-x: 4vw;
+  .programs-copy {
+    left: 28px;
+    bottom: 70px;
+    width: min(330px, 39vw);
+  }
+
+  .programs-cta {
+    right: 30px;
+    bottom: 76px;
+  }
+}
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 720px) {
+  .programs-transition {
+    height: 180vh;
+    height: 180svh;
   }
 
   .programs-kicker {
-    top: 28px;
-  }
-
-  .programs-athlete {
-    bottom: 18vh;
-    max-height: 66vh;
+    top: 27px;
   }
 
   /*
-    On mobile the athlete is lifted 18vh,
-    so the alpha mask must be lifted by the exact same amount.
+    Keep the SVG composition centered and let its viewBox
+    crop naturally rather than rebuilding the effect with
+    separate positioned elements.
   */
-  .programs-mls-front {
-    -webkit-mask-position:
-      calc(50% + var(--athlete-shift-x))
-      calc(100% - 18vh);
+  .programs-bloom {
+    width: 150%;
+    max-width: none;
+    margin-left: -25%;
+  }
 
-    mask-position:
-      calc(50% + var(--athlete-shift-x))
-      calc(100% - 18vh);
+  .bloom-text {
+    font-size: 650px;
+    letter-spacing: -14px;
   }
 
   .programs-copy {
     left: 20px;
     right: 20px;
     bottom: 28px;
+
     width: auto;
   }
 
   .programs-copy h2 {
-    font-size: clamp(42px, 12vw, 64px);
+    font-size: clamp(42px, 12vw, 62px);
   }
 
   .programs-copy p {
     max-width: 420px;
     font-size: 14px;
+  }
+
+  .programs-copy i {
+    margin: 16px 0 14px;
   }
 
   .programs-cta {
@@ -448,8 +443,9 @@
 }
 
 @media (max-width: 480px) {
-  .programs-stage {
-    --athlete-width: min(82vw, 470px);
+  .programs-bloom {
+    width: 175%;
+    margin-left: -37.5%;
   }
 
   .programs-copy p {
@@ -472,19 +468,18 @@
   }
 
   .programs-kicker,
-  .programs-mls-back,
-  .programs-athlete,
-  .programs-mls-front,
+  .bloom-text-back,
+  .bloom-athlete,
+  .bloom-text-front,
   .programs-copy,
   .programs-cta {
     opacity: 1;
     filter: none;
   }
 
-  .programs-mls-back {
-    transform:
-      translate3d(-50%, -50%, 0)
-      scale(1);
+  .bloom-text-back,
+  .bloom-athlete {
+    transform: none;
   }
 
   .programs-copy i {
