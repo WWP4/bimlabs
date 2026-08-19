@@ -1,41 +1,54 @@
 (() => {
-  const stage = document.querySelector(
+  const section = document.querySelector(
     '[data-programs-transition]'
   );
 
-  if (!stage) return;
+  if (!section) return;
 
-  if (
+  const reducedMotion =
     window.matchMedia(
       '(prefers-reduced-motion: reduce)'
-    ).matches
-  ) {
-    return;
-  }
+    );
 
-  const sticky =
-    stage.querySelector('.programs-stage');
+  if (reducedMotion.matches) return;
+
+  const stage =
+    section.querySelector(
+      '.programs-stage'
+    );
 
   const kicker =
-    stage.querySelector('.programs-kicker');
+    section.querySelector(
+      '.programs-kicker'
+    );
 
-  const mlsBack =
-    stage.querySelector('.programs-mls-back');
-
-  const mlsFront =
-    stage.querySelector('.programs-mls-front');
+  const bloomBack =
+    section.querySelector(
+      '.bloom-text-back'
+    );
 
   const athlete =
-    stage.querySelector('.programs-athlete');
+    section.querySelector(
+      '.bloom-athlete'
+    );
+
+  const bloomFront =
+    section.querySelector(
+      '.bloom-text-front'
+    );
 
   const copy =
-    stage.querySelector('.programs-copy');
+    section.querySelector(
+      '.programs-copy'
+    );
 
   const copyLine =
     copy?.querySelector('i');
 
   const cta =
-    stage.querySelector('.programs-cta');
+    section.querySelector(
+      '.programs-cta'
+    );
 
   const clamp = (
     value,
@@ -53,62 +66,92 @@
     to,
     value
   ) => {
-    const x = clamp(
-      (value - from) /
-      (to - from)
-    );
+    const x =
+      clamp(
+        (value - from) /
+        (to - from)
+      );
 
-    return x * x * (3 - 2 * x);
+    return (
+      x *
+      x *
+      (3 - 2 * x)
+    );
   };
 
   let target = 0;
   let current = 0;
   let raf = 0;
-  let lastTime = performance.now();
+  let lastTime =
+    performance.now();
 
-  function readProgress() {
+  function getProgress() {
     const rect =
-      stage.getBoundingClientRect();
+      section.getBoundingClientRect();
 
-    const travel = Math.max(
-      1,
-      stage.offsetHeight -
-      window.innerHeight
-    );
+    const scrollable =
+      Math.max(
+        1,
+        section.offsetHeight -
+        window.innerHeight
+      );
 
-    target = clamp(
-      -rect.top / travel
+    return clamp(
+      -rect.top /
+      scrollable
     );
+  }
+
+  function requestRender() {
+    target =
+      getProgress();
 
     if (!raf) {
-      lastTime = performance.now();
+      lastTime =
+        performance.now();
 
       raf =
-        requestAnimationFrame(render);
+        requestAnimationFrame(
+          render
+        );
     }
   }
 
   function render(now) {
-    const dt = Math.min(
-      (now - lastTime) / 1000,
-      0.05
-    );
+    const dt =
+      Math.min(
+        (now - lastTime) /
+        1000,
+        0.05
+      );
 
     lastTime = now;
 
     /*
-      Smooths the animation so wheel scrolling
-      does not instantly snap through the section.
+      Smooth scroll following.
+
+      This does NOT create the BLOOM effect.
+      The SVG mask creates the actual intersection.
     */
-    const damping =
-      1 - Math.exp(-5.0 * dt);
+    const easing =
+      1 -
+      Math.exp(
+        -5.2 * dt
+      );
 
     current +=
-      (target - current) * damping;
+      (
+        target -
+        current
+      ) *
+      easing;
 
     if (
-      Math.abs(target - current) <
-      0.0004
+      Math.abs(
+        target -
+        current
+      ) <
+      0.00035
     ) {
       current = target;
     }
@@ -116,89 +159,75 @@
     const p = current;
 
     /* ==========================================
-       PROGRAMS LABEL
+       01 — PROGRAMS LABEL
     ========================================== */
 
     if (kicker) {
-      const show =
+      const amount =
         smoothstep(
-          0.04,
-          0.18,
+          0.035,
+          0.15,
           p
         );
 
       kicker.style.opacity =
-        String(show);
+        String(amount);
 
       kicker.style.filter =
-        `blur(${(1 - show) * 5}px)`;
+        `blur(${(1 - amount) * 5}px)`;
     }
 
     /* ==========================================
-       SOLID MLS — BACK LAYER
+       02 — SOLID MLS APPEARS FIRST
     ========================================== */
 
-    if (mlsBack) {
-      const show =
+    if (bloomBack) {
+      const amount =
         smoothstep(
-          0.08,
-          0.40,
+          0.07,
+          0.31,
           p
         );
 
       const settle =
         smoothstep(
-          0.16,
-          0.54,
+          0.08,
+          0.38,
           p
         );
 
       const scale =
         0.985 +
-        settle * 0.015;
+        settle *
+        0.015;
 
-      const spacing =
-        0.018 -
-        settle * 0.038;
+      bloomBack.style.opacity =
+        String(amount);
 
-      mlsBack.style.opacity =
-        String(show);
-
-      mlsBack.style.letterSpacing =
-        `${spacing}em`;
-
-      mlsBack.style.transform =
-        `translate3d(
-          -50%,
-          -50%,
-          0
-        )
-        scale(${scale})`;
+      bloomBack.style.transform =
+        `scale(${scale})`;
     }
 
     /* ==========================================
-       ATHLETE
+       03 — ATHLETE + BLOOM OUTLINE
 
-       No sliding.
-       No rising.
-       No left/right movement.
+       They reveal together.
 
-       He only dissolves into focus.
+       The foreground MLS is already clipped
+       to the athlete by the SVG mask.
     ========================================== */
 
-    let athleteIn = 0;
+    const athleteIn =
+      smoothstep(
+        0.26,
+        0.58,
+        p
+      );
 
     if (athlete) {
-      athleteIn =
-        smoothstep(
-          0.28,
-          0.64,
-          p
-        );
-
       const blur =
         (1 - athleteIn) *
-        12;
+        13;
 
       const saturation =
         0.88 +
@@ -206,9 +235,14 @@
         0.12;
 
       const contrast =
-        0.97 +
+        0.98 +
         athleteIn *
-        0.03;
+        0.02;
+
+      const scale =
+        0.998 +
+        athleteIn *
+        0.002;
 
       athlete.style.opacity =
         String(athleteIn);
@@ -219,108 +253,94 @@
           saturate(${saturation})
           contrast(${contrast})
         `;
+
+      athlete.style.transform =
+        `scale(${scale})`;
     }
 
-    /* ==========================================
-       FRONT BLOOM MLS
+    if (bloomFront) {
+      /*
+        No independent position or scale.
 
-       IMPORTANT:
-
-       JS is NOT creating the BLOOM effect.
-
-       CSS is masking this layer using:
-       transparent.png
-
-       That means the white hollow MLS only
-       exists inside the athlete silhouette.
-
-       Here we only reveal that already-masked
-       layer at the same rate as the athlete.
-    ========================================== */
-
-    if (mlsFront) {
-      mlsFront.style.opacity =
+        Both MLS layers use the same SVG
+        coordinates, so they stay registered.
+      */
+      bloomFront.style.opacity =
         String(athleteIn);
     }
 
     /* ==========================================
-       COPY
+       04 — COPY
     ========================================== */
 
     if (copy) {
-      const show =
+      const amount =
         smoothstep(
-          0.62,
-          0.84,
+          0.56,
+          0.76,
           p
         );
 
-      const blur =
-        (1 - show) *
-        7;
-
       copy.style.opacity =
-        String(show);
+        String(amount);
 
       copy.style.filter =
-        `blur(${blur}px)`;
+        `blur(${(1 - amount) * 7}px)`;
     }
 
     /* RED LINE */
 
     if (copyLine) {
-      const show =
+      const amount =
         smoothstep(
-          0.70,
-          0.88,
+          0.63,
+          0.80,
           p
         );
 
       copyLine.style.transform =
-        `scaleX(${show})`;
+        `scaleX(${amount})`;
     }
 
     /* ==========================================
-       CTA
+       05 — CTA
     ========================================== */
 
     if (cta) {
-      const show =
+      const amount =
         smoothstep(
-          0.74,
-          0.93,
+          0.67,
+          0.83,
           p
         );
 
-      const blur =
-        (1 - show) *
-        6;
-
       cta.style.opacity =
-        String(show);
+        String(amount);
 
       cta.style.filter =
-        `blur(${blur}px)`;
+        `blur(${(1 - amount) * 6}px)`;
     }
 
     /* ==========================================
-       OPTIONAL CSS PROGRESS VALUE
+       06 — HOLD
+
+       Nothing changes after roughly 83%.
+       The finished composition sits there
+       before the sticky section releases.
     ========================================== */
 
-    if (sticky) {
-      sticky.style.setProperty(
+    if (stage) {
+      stage.style.setProperty(
         '--programs-progress',
         p.toFixed(4)
       );
     }
 
-    /* ==========================================
-       KEEP ANIMATION RUNNING
-    ========================================== */
-
     if (current !== target) {
       raf =
-        requestAnimationFrame(render);
+        requestAnimationFrame(
+          render
+        );
     } else {
       raf = 0;
     }
@@ -328,7 +348,7 @@
 
   window.addEventListener(
     'scroll',
-    readProgress,
+    requestRender,
     {
       passive: true
     }
@@ -336,11 +356,11 @@
 
   window.addEventListener(
     'resize',
-    readProgress,
+    requestRender,
     {
       passive: true
     }
   );
 
-  readProgress();
+  requestRender();
 })();
