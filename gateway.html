@@ -203,61 +203,170 @@
 
       </div>
     </section>
+
+
+
+
 <!-- SECTION 3: PROGRAMS / MLS -->
-    <section
-      class="programs-transition"
-      id="programs"
-      data-programs-transition
-    >
-      <div class="programs-stage">
+<section
+  class="programs-transition"
+  id="programs"
+  data-programs-transition
+>
+  <div class="programs-stage">
 
-        <p class="programs-kicker">Programs</p>
+    <p class="programs-kicker">
+      Programs
+    </p>
 
-        <!-- Giant hollow MLS behind the athlete -->
-        <div
-          class="programs-mls-back"
-          aria-hidden="true"
+    <!-- =========================================
+         TRUE BLOOM VISUAL
+    ========================================== -->
+    <div class="programs-art">
+
+      <svg
+        class="programs-bloom"
+        viewBox="0 0 1600 900"
+        preserveAspectRatio="xMidYMid meet"
+        aria-hidden="true"
+      >
+
+        <defs>
+
+          <!--
+            Athlete alpha mask.
+
+            White = show foreground MLS.
+            Black = hide foreground MLS.
+          -->
+          <mask
+            id="mls-athlete-mask"
+            maskUnits="userSpaceOnUse"
+            x="0"
+            y="0"
+            width="1600"
+            height="900"
+          >
+
+            <rect
+              x="0"
+              y="0"
+              width="1600"
+              height="900"
+              fill="black"
+            />
+
+            <image
+              href="./GWAY/assets/transparent.png"
+              x="590"
+              y="75"
+              width="540"
+              height="825"
+              preserveAspectRatio="xMidYMid meet"
+            />
+
+          </mask>
+
+        </defs>
+
+
+        <!-- =====================================
+             SOLID MLS BEHIND ATHLETE
+        ====================================== -->
+
+        <text
+          class="bloom-text bloom-text-back"
+          x="800"
+          y="610"
+          text-anchor="middle"
         >
           MLS
-        </div>
+        </text>
 
-        <!--
-          Use a transparent PNG here.
-          The image itself does not animate position — it only dissolves in.
-        -->
-        <img
-          class="programs-athlete"
-          src="./GWAY/assets/transparent.png"
-          alt="Soccer student-athlete holding a ball"
+
+        <!-- =====================================
+             ATHLETE
+        ====================================== -->
+
+        <image
+          class="bloom-athlete"
+          href="./GWAY/assets/transparent.png"
+          x="590"
+          y="75"
+          width="540"
+          height="825"
+          preserveAspectRatio="xMidYMid meet"
         />
 
-        <!-- Very subtle duplicate outline over the athlete for depth -->
-        <div
-          class="programs-mls-front"
-          aria-hidden="true"
+
+        <!-- =====================================
+             SAME MLS IN FRONT
+
+             Mask means this outline ONLY exists
+             where the athlete exists.
+        ====================================== -->
+
+        <text
+          class="bloom-text bloom-text-front"
+          x="800"
+          y="610"
+          text-anchor="middle"
+          mask="url(#mls-athlete-mask)"
         >
           MLS
-        </div>
+        </text>
 
-        <div class="programs-copy">
-          <h2>MLS Program</h2>
-          <strong>Built for the next level.</strong>
-          <i aria-hidden="true"></i>
+      </svg>
 
-          <p>
-            Elite soccer development. High-level competition.
-            Exposure and progression. Everything you need to
-            reach your next level.
-          </p>
-        </div>
+    </div>
 
-        <a class="programs-cta" href="#mls-program">
-          Explore MLS Program
-          <span>→</span>
-        </a>
 
-      </div>
-    </section>
+    <!-- =========================================
+         COPY
+    ========================================== -->
+
+    <div class="programs-copy">
+
+      <h2>
+        MLS Program
+      </h2>
+
+      <strong>
+        Built for the next level.
+      </strong>
+
+      <i aria-hidden="true"></i>
+
+      <p>
+        Elite soccer development. High-level competition.
+        Exposure and progression. Everything you need to
+        reach your next level.
+      </p>
+
+    </div>
+
+
+    <!-- =========================================
+         CTA
+    ========================================== -->
+
+    <a
+      class="programs-cta"
+      href="#mls-program"
+    >
+      Explore MLS Program
+      <span>→</span>
+    </a>
+
+  </div>
+</section>
+
+
+
+
+
+
+    
 
   </main>
   <script src="./GWAY/js/gateway-transition.js" defer></script>
