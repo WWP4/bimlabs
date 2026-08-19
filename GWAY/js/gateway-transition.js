@@ -1,594 +1,218 @@
 (() => {
-  const stage = document.querySelector(
-    '[data-hero-transition]'
-  );
-
+  const stage = document.querySelector('[data-hero-transition]');
   if (!stage) return;
 
-  const reduceMotion = window.matchMedia(
+  const reducedMotion = window.matchMedia(
     '(prefers-reduced-motion: reduce)'
   );
 
-  if (reduceMotion.matches) return;
+  if (reducedMotion.matches) return;
 
-  const hero =
-    stage.querySelector('.gway-hero');
-
-  const bg =
-    stage.querySelector('.gway-hero-bg');
-
-  const overlay =
-    stage.querySelector('.gway-hero-overlay');
-
-  const content =
-    stage.querySelector('.gway-hero-content');
+  const hero = stage.querySelector('.gway-hero');
+  const bg = stage.querySelector('.gway-hero-bg');
+  const overlay = stage.querySelector('.gway-hero-overlay');
+  const content = stage.querySelector('.gway-hero-content');
 
   const titleLines = [
-    ...stage.querySelectorAll(
-      '.gway-hero h1 span'
-    )
+    ...stage.querySelectorAll('.gway-hero h1 span')
   ];
 
-  const support =
-    stage.querySelector('.gway-hero-bottom');
+  const support = stage.querySelector('.gway-hero-bottom');
 
-  const reveal =
-    stage.querySelector(
-      '.gway-section-reveal'
-    );
+  const reveal = stage.querySelector(
+    '.gway-section-reveal'
+  );
 
-  const revealIntro =
-    stage.querySelector(
-      '.gway-section-reveal-intro'
-    );
+  const revealIntro = stage.querySelector(
+    '.gway-section-reveal-intro'
+  );
 
-  const revealLine =
-    revealIntro?.querySelector('i');
+  const revealLine = revealIntro?.querySelector('i');
 
-  const header =
-    document.querySelector('.gway-header');
+  const header = document.querySelector('.gway-header');
 
+  const clamp = (value, min = 0, max = 1) =>
+    Math.min(max, Math.max(min, value));
 
-  /* -----------------------------
-     HELPERS
-  ----------------------------- */
-
-  const clamp = (
-    value,
-    min = 0,
-    max = 1
-  ) => {
-    return Math.min(
-      max,
-      Math.max(min, value)
-    );
+  const smoothstep = (from, to, value) => {
+    const x = clamp((value - from) / (to - from));
+    return x * x * (3 - 2 * x);
   };
-
-
-  const smoothstep = (
-    from,
-    to,
-    value
-  ) => {
-
-    const x = clamp(
-      (value - from) /
-      (to - from)
-    );
-
-    return (
-      x *
-      x *
-      (3 - 2 * x)
-    );
-  };
-
 
   let target = 0;
   let current = 0;
   let raf = 0;
-
-
-  /* -----------------------------
-     READ SCROLL
-  ----------------------------- */
+  let lastTime = performance.now();
 
   function readProgress() {
+    const rect = stage.getBoundingClientRect();
 
-    const rect =
-      stage.getBoundingClientRect();
-
-    const travel =
-      Math.max(
-        1,
-        stage.offsetHeight -
-        window.innerHeight
-      );
-
-    target = clamp(
-      -rect.top / travel
+    const travel = Math.max(
+      1,
+      stage.offsetHeight - window.innerHeight
     );
 
+    target = clamp(-rect.top / travel);
 
     if (!raf) {
-      raf =
-        requestAnimationFrame(
-          render
-        );
+      lastTime = performance.now();
+      raf = requestAnimationFrame(render);
     }
   }
 
+  function render(now) {
+    const dt = Math.min((now - lastTime) / 1000, 0.05);
+    lastTime = now;
 
-  /* -----------------------------
-     RENDER
-  ----------------------------- */
+    const smoothing = 1 - Math.exp(-6.3 * dt);
 
-  function render() {
+    current += (target - current) * smoothing;
 
-    /*
-      A little more smoothing than before.
-
-      Previous:
-      0.18
-
-      New:
-      0.105
-
-      Lower = more cinematic / less twitchy.
-    */
-    current +=
-      (target - current) *
-      0.105;
-
-
-    if (
-      Math.abs(
-        target - current
-      ) < 0.0006
-    ) {
+    if (Math.abs(target - current) < 0.00045) {
       current = target;
     }
 
-
     const p = current;
 
-
-    /* =========================
-       PHASE 1
-       HERO BREATHES
-       0 → .22
-    ========================= */
-
-
     if (bg) {
+      const bgP = smoothstep(0.00, 0.72, p);
 
-      const bgMove =
-        smoothstep(
-          0,
-          0.72,
-          p
-        );
-
-      const scale =
-        1.015 +
-        bgMove * 0.055;
-
-      const y =
-        bgMove * 1.4;
-
+      const scale = 1.015 + bgP * 0.055;
+      const y = bgP * 1.45;
 
       bg.style.transform =
-        `
-        translate3d(
-          0,
-          ${y}%,
-          0
-        )
-        scale(${scale})
-        `;
+        `translate3d(0, ${y}%, 0) scale(${scale})`;
     }
 
-
-    /*
-      Do not kill the hero immediately.
-
-      It stays readable for the
-      beginning of the scroll.
-    */
-
-    const heroExit =
-      smoothstep(
-        0.12,
-        0.48,
-        p
-      );
-
+    const contentExit = smoothstep(0.11, 0.48, p);
 
     if (content) {
-
-      const scale =
-        1 -
-        heroExit * 0.022;
-
-      const y =
-        heroExit * -24;
-
+      const scale = 1 - contentExit * 0.021;
+      const y = -24 * contentExit;
 
       content.style.transform =
-        `
-        translate3d(
-          0,
-          ${y}px,
-          0
-        )
-        scale(${scale})
-        `;
+        `translate3d(0, ${y}px, 0) scale(${scale})`;
 
-      content.style.transformOrigin =
-        'left center';
+      content.style.transformOrigin = 'left center';
     }
-
-
-    /* =========================
-       SUPPORT COPY
-    ========================= */
 
     if (support) {
-
-      const fade =
-        1 -
-        smoothstep(
-          0.13,
-          0.38,
-          p
-        );
-
+      const supportExit = smoothstep(0.12, 0.38, p);
 
       support.style.opacity =
-        String(fade);
-
+        String(1 - supportExit);
 
       support.style.transform =
-        `
-        translate3d(
-          ${-12 * heroExit}px,
-          ${-5 * heroExit}px,
-          0
-        )
-        `;
+        `translate3d(${-12 * supportExit}px, ${-6 * supportExit}px, 0)`;
     }
 
+    titleLines.forEach((line, index) => {
+      const stagger = index * 0.025;
 
-    /* =========================
-       HERO HEADLINE
-
-       Slower stagger than before.
-    ========================= */
-
-    titleLines.forEach(
-      (line, index) => {
-
-        const stagger =
-          index * 0.028;
-
-
-        const lineExit =
-          smoothstep(
-            0.18 + stagger,
-            0.51 + stagger,
-            p
-          );
-
-
-        line.style.opacity =
-          String(
-            1 - lineExit
-          );
-
-
-        line.style.transform =
-          `
-          translate3d(
-            0,
-            ${
-              -16 *
-              lineExit *
-              (index + 1)
-            }px,
-            0
-          )
-          `;
-      }
-    );
-
-
-    /* =========================
-       HEADER
-    ========================= */
-
-    if (header) {
-
-      const headerExit =
-        smoothstep(
-          0.08,
-          0.30,
-          p
-        );
-
-
-      header.style.opacity =
-        String(
-          1 - headerExit
-        );
-
-
-      header.style.transform =
-        `
-        translate3d(
-          0,
-          ${-14 * headerExit}px,
-          0
-        )
-        `;
-
-
-      header.style.pointerEvents =
-        headerExit > 0.92
-          ? 'none'
-          : '';
-    }
-
-
-    /* =========================
-       OVERLAY
-
-       Let image gently breathe.
-    ========================= */
-
-    if (overlay) {
-
-      const overlayMove =
-        smoothstep(
-          0.08,
-          0.65,
-          p
-        );
-
-
-      overlay.style.opacity =
-        String(
-          1 -
-          overlayMove * 0.13
-        );
-    }
-
-
-    /* =========================
-       PHASE 2
-       WHITE PANEL ENTERS
-
-       Slower entrance.
-    ========================= */
-
-    const panelProgress =
-      smoothstep(
-        0.23,
-        0.63,
+      const lineExit = smoothstep(
+        0.17 + stagger,
+        0.50 + stagger,
         p
       );
 
+      line.style.opacity =
+        String(1 - lineExit);
+
+      line.style.transform =
+        `translate3d(0, ${-15 * lineExit * (index + 1)}px, 0)`;
+    });
+
+    if (header) {
+      const headerExit = smoothstep(0.07, 0.30, p);
+
+      header.style.opacity =
+        String(1 - headerExit);
+
+      header.style.transform =
+        `translate3d(0, ${-14 * headerExit}px, 0)`;
+
+      header.style.pointerEvents =
+        headerExit > 0.92 ? 'none' : '';
+    }
+
+    if (overlay) {
+      const overlayP = smoothstep(0.08, 0.64, p);
+
+      overlay.style.opacity =
+        String(1 - overlayP * 0.13);
+    }
+
+    const panelP = smoothstep(0.20, 0.62, p);
 
     if (reveal) {
-
-      const panelY =
-        (
-          1 -
-          panelProgress
-        ) * 100;
-
+      const y = (1 - panelP) * 100;
 
       reveal.style.transform =
-        `
-        translate3d(
-          0,
-          ${panelY}%,
-          0
-        )
-        `;
+        `translate3d(0, ${y}%, 0)`;
 
-
-      /*
-        Keep top line visible longer.
-      */
-
-      const topLineFade =
-        1 -
-        smoothstep(
-          0.80,
-          0.98,
-          p
-        );
-
+      const topLineOpacity =
+        1 - smoothstep(0.88, 1.00, p);
 
       reveal.style.setProperty(
         '--reveal-line-opacity',
-        String(topLineFade)
+        String(topLineOpacity)
       );
     }
 
-
-    /* =========================
-       PHASE 3
-       WHY GSA PREP
-
-       IMPORTANT:
-       There is NO exit fade.
-    ========================= */
-
     if (revealIntro) {
-
-      /*
-        Wait until white panel is
-        substantially visible.
-      */
-
-      const introIn =
-        smoothstep(
-          0.43,
-          0.61,
-          p
-        );
-
-
-      /*
-        Slow growth across a large
-        portion of the scroll.
-      */
-
-      const introGrow =
-        smoothstep(
-          0.49,
-          0.96,
-          p
-        );
-
-
-      /*
-        Start understated.
-
-        End only ~13% larger.
-
-        Premium, not gimmicky.
-      */
+      const introIn = smoothstep(0.45, 0.63, p);
+      const introGrow = smoothstep(0.55, 0.98, p);
 
       const scale =
-        0.94 +
-        introGrow *
-        0.13;
-
-
-      /*
-        Very tiny upward drift.
-
-        Almost imperceptible.
-      */
+        0.95 + introGrow * 0.13;
 
       const y =
-        (
-          1 -
-          introIn
-        ) *
-        20 -
-        introGrow *
-        7;
-
-
-      /*
-        No fade-out.
-
-        Once visible, it stays visible
-        through the end of the pinned
-        transition.
-
-        When the transition wrapper
-        naturally leaves the viewport,
-        the title travels away with it.
-      */
+        (1 - introIn) * 24 -
+        introGrow * 7;
 
       revealIntro.style.opacity =
         String(introIn);
 
-
       revealIntro.style.transform =
-        `
-        translate3d(
+        `translate3d(
           -50%,
-          calc(
-            -50% + ${y}px
-          ),
+          calc(-50% + ${y}px),
           0
-        )
-        scale(${scale})
-        `;
+        ) scale(${scale})`;
     }
-
-
-    /* =========================
-       RED INTRO LINE
-    ========================= */
 
     if (revealLine) {
-
-      const lineGrow =
-        smoothstep(
-          0.49,
-          0.67,
-          p
-        );
-
+      const lineP = smoothstep(0.52, 0.72, p);
 
       revealLine.style.transform =
-        `
-        scaleX(
-          ${lineGrow}
-        )
-        `;
+        `scaleX(${lineP})`;
     }
 
-
-    /* =========================
-       CSS PROGRESS VARIABLE
-    ========================= */
-
     if (hero) {
-
       hero.style.setProperty(
         '--hero-scroll-progress',
         p.toFixed(4)
       );
     }
 
-
-    /* =========================
-       RAF LOOP
-    ========================= */
-
     if (current !== target) {
-
-      raf =
-        requestAnimationFrame(
-          render
-        );
-
+      raf = requestAnimationFrame(render);
     } else {
-
       raf = 0;
     }
   }
 
-
-  /* -----------------------------
-     EVENTS
-  ----------------------------- */
-
   window.addEventListener(
     'scroll',
     readProgress,
-    {
-      passive: true
-    }
+    { passive: true }
   );
-
 
   window.addEventListener(
     'resize',
     readProgress,
-    {
-      passive: true
-    }
+    { passive: true }
   );
 
-
   readProgress();
-
 })();
