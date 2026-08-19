@@ -1,3 +1,8 @@
+
+
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,7 +16,7 @@
   <link rel="stylesheet" href="./GWAY/css/gateway-hero.css" />
   <link rel="stylesheet" href="./GWAY/css/gateway-responsive.css" />
   <link rel="stylesheet" href="./GWAY/css/gateway-why.css" />
-  <link rel="stylesheet" href="./GWAY/css/gateway-programs-transition.css">
+    <link rel="stylesheet" href="./GWAY/css/gateway-programs-transition.css" />
 </head>
 
 <body>
@@ -198,86 +203,61 @@
 
       </div>
     </section>
-
-
-    <!--
-  PLACE THIS DIRECTLY AFTER SECTION 2.
-
-  For now you can test the motion with any transparent PNG.
-  Later replace mls-athlete.png with the final cutout athlete:
-  one arm down, one arm holding the Adidas ball directly over his face.
--->
-<section
-  class="programs-transition"
-  id="programs"
-  data-programs-transition
->
-  <div class="programs-stage">
-
-    <p class="programs-kicker">Programs</p>
-
-    <!-- hollow type behind athlete -->
-    <div
-      class="programs-mls-back"
-      aria-hidden="true"
+<!-- SECTION 3: PROGRAMS / MLS -->
+    <section
+      class="programs-transition"
+      id="programs"
+      data-programs-transition
     >
-      MLS
-    </div>
+      <div class="programs-stage">
 
-    <!-- athlete cutout -->
-    <img
-      class="programs-athlete"
-      src="./GWAY/assets/mls-athlete.png"
-      alt="Soccer student-athlete presenting a ball toward the camera"
-    />
+        <p class="programs-kicker">Programs</p>
 
-    <!--
-      Optional:
-      if we later export the ball as a separate transparent image,
-      uncomment this and it will get its own subtle depth movement.
+        <!-- Giant hollow MLS behind the athlete -->
+        <div
+          class="programs-mls-back"
+          aria-hidden="true"
+        >
+          MLS
+        </div>
 
-    <img
-      class="programs-ball"
-      src="./GWAY/assets/mls-ball.png"
-      alt=""
-      aria-hidden="true"
-    />
-    -->
+        <!--
+          Use a transparent PNG here.
+          The image itself does not animate position — it only dissolves in.
+        -->
+        <img
+          class="programs-athlete"
+          src="./GWAY/assets/mls-athlete.png"
+          alt="Soccer student-athlete holding a ball"
+        />
 
-    <!-- subtle front outline -->
-    <div
-      class="programs-mls-front"
-      aria-hidden="true"
-    >
-      MLS
-    </div>
+        <!-- Very subtle duplicate outline over the athlete for depth -->
+        <div
+          class="programs-mls-front"
+          aria-hidden="true"
+        >
+          MLS
+        </div>
 
-    <div class="programs-copy">
-      <h2>MLS Program</h2>
-      <strong>Built for the next level.</strong>
-      <i aria-hidden="true"></i>
+        <div class="programs-copy">
+          <h2>MLS Program</h2>
+          <strong>Built for the next level.</strong>
+          <i aria-hidden="true"></i>
 
-      <p>
-        Elite soccer development. High-level competition.
-        Exposure and progression. Everything you need to
-        reach your next level.
-      </p>
+          <p>
+            Elite soccer development. High-level competition.
+            Exposure and progression. Everything you need to
+            reach your next level.
+          </p>
+        </div>
 
-      <a href="#mls-program">
-        Explore MLS Program
-        <span>→</span>
-      </a>
-    </div>
+        <a class="programs-cta" href="#mls-program">
+          Explore MLS Program
+          <span>→</span>
+        </a>
 
-    <div
-      class="programs-index"
-      aria-hidden="true"
-    >
-      01 / MLS Program
-    </div>
-
-  </div>
-</section>
+      </div>
+    </section>
 
   </main>
   <script src="./GWAY/js/gateway-transition.js" defer></script>
