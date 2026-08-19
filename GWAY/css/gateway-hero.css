@@ -1,15 +1,15 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Bebas+Neue&display=swap");
 
 /* =========================================================
-   GLCA / GSA HERO — MINIMAL 4CANTERA-INSPIRED VERSION
-   CSS file: /GWAY/css/gateway-hero.css
-   Image path: /GWAY/assets/hero-team.png
+   GSA PREP — HERO + HERO TO SECTION 2 HANDOFF
+   File: /GWAY/css/gateway-hero.css
 ========================================================= */
 
 :root {
   --gway-red: #ef101f;
   --gway-black: #020202;
   --gway-white: #ffffff;
+  --gway-paper: #f8f7f4;
   --gway-pad: clamp(26px, 4.5vw, 82px);
 }
 
@@ -24,7 +24,7 @@ body {
 }
 
 /* =========================================================
-   HEADER — CLEANER / LESS CROWDED
+   HEADER
 ========================================================= */
 
 .gway-header {
@@ -39,12 +39,15 @@ body {
   align-items: flex-start;
   justify-content: space-between;
 
-  background: linear-gradient(
-    180deg,
-    rgba(0, 0, 0, 0.62) 0%,
-    rgba(0, 0, 0, 0.26) 58%,
-    transparent 100%
-  );
+  background:
+    linear-gradient(
+      180deg,
+      rgba(0, 0, 0, 0.62) 0%,
+      rgba(0, 0, 0, 0.26) 58%,
+      transparent 100%
+    );
+
+  will-change: transform, opacity;
 }
 
 .gway-brand {
@@ -69,7 +72,6 @@ body {
 
 .gway-brand small {
   margin-top: 13px;
-
   color: rgba(255, 255, 255, 0.86);
   font-size: clamp(8px, 0.65vw, 12px);
   font-weight: 900;
@@ -84,7 +86,6 @@ body {
   gap: clamp(24px, 3vw, 54px);
 }
 
-/* Text-only apply link */
 .gway-apply-link {
   margin-top: 7px;
 
@@ -94,12 +95,15 @@ body {
 
   color: #fff;
   text-decoration: none;
+
   font-size: clamp(12px, 0.8vw, 15px);
   font-weight: 900;
   letter-spacing: 0.12em;
   text-transform: uppercase;
 
-  transition: color 0.25s ease, transform 0.25s ease;
+  transition:
+    color 0.25s ease,
+    transform 0.25s ease;
 }
 
 .gway-apply-link span {
@@ -113,7 +117,6 @@ body {
   transform: translateX(3px);
 }
 
-/* Menu */
 .gway-menu {
   display: inline-flex;
   align-items: center;
@@ -121,6 +124,7 @@ body {
 
   padding: 0;
   border: 0;
+
   background: transparent;
   color: #fff;
   cursor: pointer;
@@ -169,12 +173,14 @@ body {
 .gway-hero {
   position: relative;
   width: 100%;
+
   min-height: 100vh;
   min-height: 100svh;
+
   overflow: hidden;
   isolation: isolate;
 
-  background: #020202;
+  background: var(--gway-black);
 }
 
 .gway-hero-bg {
@@ -188,12 +194,14 @@ body {
   background-repeat: no-repeat;
 
   transform: scale(1.015);
+  will-change: transform;
 }
 
 .gway-hero-overlay {
   position: absolute;
   inset: 0;
   z-index: -5;
+
   pointer-events: none;
 
   background:
@@ -201,12 +209,12 @@ body {
       90deg,
       rgba(0, 0, 0, 0.86) 0%,
       rgba(0, 0, 0, 0.68) 24%,
-      rgba(0, 0, 0, 0.3) 54%,
+      rgba(0, 0, 0, 0.30) 54%,
       rgba(0, 0, 0, 0.28) 100%
     ),
     linear-gradient(
       180deg,
-      rgba(0, 0, 0, 0.5) 0%,
+      rgba(0, 0, 0, 0.50) 0%,
       rgba(0, 0, 0, 0.08) 38%,
       rgba(0, 0, 0, 0.78) 100%
     ),
@@ -215,11 +223,9 @@ body {
       rgba(239, 16, 31, 0.18),
       transparent 31%
     );
-}
 
-/* =========================================================
-   HERO CONTENT — MOVED INWARD / LESS TEXT
-========================================================= */
+  will-change: opacity;
+}
 
 .gway-hero-content {
   position: relative;
@@ -233,13 +239,14 @@ body {
     var(--gway-pad)
     clamp(58px, 7vh, 92px);
 
+  padding-left: clamp(72px, 11.5vw, 220px);
+
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
 
-  /* this pulls the text closer to the reference — not slammed left */
-  padding-left: clamp(72px, 11.5vw, 220px);
+  will-change: transform, opacity;
 }
 
 .gway-hero h1 {
@@ -257,16 +264,20 @@ body {
 .gway-hero h1 span {
   display: block;
   color: #fff;
-  text-shadow: 0 22px 54px rgba(0, 0, 0, 0.7);
+
+  text-shadow:
+    0 22px 54px rgba(0, 0, 0, 0.70);
+
+  will-change: transform, opacity;
 }
 
 .gway-hero h1 .red-word {
   color: var(--gway-red);
 }
 
-/* small support text only */
 .gway-hero-bottom {
   margin-top: clamp(26px, 2.6vw, 44px);
+  will-change: transform, opacity;
 }
 
 .gway-hero-bottom p {
@@ -276,6 +287,7 @@ body {
   padding-left: clamp(76px, 6vw, 112px);
 
   color: rgba(255, 255, 255, 0.92);
+
   font-size: clamp(14px, 0.98vw, 18px);
   font-weight: 900;
   line-height: 1.35;
@@ -283,27 +295,134 @@ body {
 
 .gway-hero-bottom p::before {
   content: "";
+
   position: absolute;
   left: 0;
   top: 0.62em;
 
   width: clamp(48px, 4vw, 82px);
   height: 2px;
+
   background: var(--gway-red);
 }
 
 /* =========================================================
-   ANIMATION TARGETS
+   HERO -> SECTION 2 TRANSITION
+
+   The hero is one visible viewport.
+   The wrapper simply gives the motion enough scroll runway.
 ========================================================= */
 
-.gway-brand,
-.gway-apply-link,
-.gway-menu,
-.gway-hero-bg,
-.gway-hero-overlay,
-.gway-hero h1 span,
-.gway-hero-bottom {
+.gway-hero-transition {
+  position: relative;
+
+  /*
+    200svh creates roughly one extra viewport of scroll travel.
+    Long enough to feel controlled, but not like a dead spacer.
+  */
+  height: 200vh;
+  height: 200svh;
+
+  background: var(--gway-black);
+}
+
+.gway-hero-transition .gway-hero {
+  position: sticky;
+  top: 0;
+
+  height: 100vh;
+  height: 100svh;
+
+  min-height: 100vh;
+  min-height: 100svh;
+}
+
+/*
+  This white panel lives INSIDE the sticky hero,
+  so it is always exactly one viewport tall.
+*/
+.gway-section-reveal {
+  position: absolute;
+  inset: 0;
+
+  z-index: 30;
+
+  overflow: hidden;
+  pointer-events: none;
+
+  background: var(--gway-paper);
+
+  transform: translate3d(0, 100%, 0);
+
+  will-change: transform;
+}
+
+.gway-section-reveal::before {
+  content: "";
+
+  position: absolute;
+  top: 0;
+  left: 50%;
+
+  width: min(190px, 22vw);
+  height: 2px;
+
+  background: var(--gway-red);
+
+  transform: translateX(-50%);
+
+  opacity: var(--reveal-line-opacity, 1);
+}
+
+.gway-section-reveal-intro {
+  position: absolute;
+
+  left: 50%;
+  top: 50%;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+
+  color: var(--gway-red);
+
+  opacity: 0;
+
+  transform:
+    translate3d(-50%, calc(-50% + 24px), 0)
+    scale(0.95);
+
+  transform-origin: center center;
+
   will-change: transform, opacity;
+}
+
+.gway-section-reveal-intro span {
+  font-family: "Inter", sans-serif;
+
+  font-size: clamp(12px, 0.92vw, 17px);
+  font-weight: 900;
+
+  letter-spacing: 0.34em;
+  line-height: 1;
+
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.gway-section-reveal-intro i {
+  display: block;
+
+  width: 48px;
+  height: 1px;
+
+  background: var(--gway-red);
+
+  transform: scaleX(0);
+  transform-origin: center;
+
+  will-change: transform;
 }
 
 /* =========================================================
@@ -351,6 +470,11 @@ body {
     width: 31px;
   }
 
+  .gway-hero-transition {
+    height: 180vh;
+    height: 180svh;
+  }
+
   .gway-hero-bg {
     background-position: 58% center;
   }
@@ -388,9 +512,15 @@ body {
   .gway-hero-bottom p::before {
     position: static;
     display: block;
+
     width: 56px;
     height: 2px;
+
     margin-bottom: 14px;
+  }
+
+  .gway-section-reveal-intro span {
+    letter-spacing: 0.25em;
   }
 }
 
@@ -409,143 +539,17 @@ body {
   }
 }
 
-
-/* =========================================================
-   HERO -> SECTION 2 SCROLL HANDOFF
-========================================================= */
-
-.gway-hero-transition {
-  position: relative;
-
-  /* Enough runway for cinematic motion,
-     but not enough to create dead scrolling */
-  height: 155vh;
-  height: 155svh;
-
-  background: var(--gway-black);
-}
-
-/* Hero stays locked while transition happens */
-.gway-hero-transition .gway-hero {
-  position: sticky;
-  top: 0;
-
-  width: 100%;
-  height: 100vh;
-  height: 100svh;
-
-  min-height: 100vh;
-  min-height: 100svh;
-}
-
-/*
-  IMPORTANT:
-  This panel is now exactly ONE VIEWPORT tall.
-
-  Previously inset:0 made it as tall as the entire
-  175vh transition wrapper, which is why everything
-  felt stretched and too far away.
-*/
-.gway-section-reveal {
-  position: sticky;
-  top: 0;
-
-  width: 100%;
-  height: 100vh;
-  height: 100svh;
-
-  /* overlap the hero */
-  margin-top: -100vh;
-  margin-top: -100svh;
-
-  z-index: 30;
-
-  overflow: hidden;
-  pointer-events: none;
-
-  background: #f8f7f4;
-
-  transform: translate3d(0, 100%, 0);
-
-  will-change: transform;
-}
-
-/* Thin red transition detail */
-.gway-section-reveal::before {
-  content: "";
-
-  position: absolute;
-  top: 0;
-  left: 50%;
-
-  width: min(180px, 22vw);
-  height: 2px;
-
-  background: var(--gway-red);
-
-  transform: translateX(-50%);
-
-  opacity: var(--reveal-line-opacity, 1);
-}
-
-/* WHY GSA PREP */
-.gway-section-reveal-intro {
-  position: absolute;
-
-  left: 50%;
-  top: 50%;
-
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 17px;
-
-  color: var(--gway-red);
-
-  opacity: 0;
-
-  transform:
-    translate3d(-50%, -50%, 0)
-    scale(.94);
-
-  transform-origin: center;
-
-  will-change: transform, opacity;
-}
-
-.gway-section-reveal-intro span {
-  font-size: clamp(11px, 0.82vw, 15px);
-
-  font-weight: 900;
-
-  letter-spacing: 0.34em;
-
-  text-transform: uppercase;
-  white-space: nowrap;
-}
-
-.gway-section-reveal-intro i {
-  display: block;
-
-  width: 46px;
-  height: 1px;
-
-  background: var(--gway-red);
-
-  transform: scaleX(0);
-  transform-origin: center;
-
-  will-change: transform;
-}
-
-@media (max-width: 680px) {
-
+@media (prefers-reduced-motion: reduce) {
   .gway-hero-transition {
-    height: 145vh;
-    height: 145svh;
+    height: 100vh;
+    height: 100svh;
   }
 
-  .gway-section-reveal-intro span {
-    letter-spacing: 0.25em;
+  .gway-hero-transition .gway-hero {
+    position: relative;
+  }
+
+  .gway-section-reveal {
+    display: none;
   }
 }
