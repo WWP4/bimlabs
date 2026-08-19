@@ -1,46 +1,102 @@
 (() => {
-  const section = document.querySelector('.why-gsa');
+
+  const section =
+    document.querySelector(
+      '.why-gsa'
+    );
+
   if (!section) return;
 
-  const items = section.querySelectorAll('[data-reveal]');
+
+  const items =
+    section.querySelectorAll(
+      '[data-reveal]'
+    );
+
   if (!items.length) return;
 
-  if (
+
+  const reducedMotion =
     window.matchMedia(
       '(prefers-reduced-motion: reduce)'
-    ).matches
-  ) {
-    items.forEach((item) => {
-      item.classList.add('is-visible');
-    });
+    ).matches;
+
+
+  if (reducedMotion) {
+
+    items.forEach(
+      (item) => {
+        item.classList.add(
+          'is-visible'
+        );
+      }
+    );
 
     return;
   }
 
-  const observer = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (!entry.isIntersecting) return;
 
-        const el = entry.target;
+  const observer =
+    new IntersectionObserver(
 
-        const delay =
-          Number(el.dataset.delay || 0);
+      (entries) => {
 
-        window.setTimeout(() => {
-          el.classList.add('is-visible');
-        }, delay);
+        entries.forEach(
+          (entry) => {
 
-        observer.unobserve(el);
-      });
-    },
-    {
-      threshold: 0.14,
-      rootMargin: '0px 0px -7% 0px'
+            if (
+              !entry.isIntersecting
+            ) return;
+
+
+            const el =
+              entry.target;
+
+
+            const delay =
+              Number(
+                el.dataset.delay ||
+                0
+              );
+
+
+            window.setTimeout(
+              () => {
+
+                el.classList.add(
+                  'is-visible'
+                );
+
+              },
+              delay
+            );
+
+
+            observer.unobserve(
+              el
+            );
+          }
+        );
+      },
+
+      {
+        /*
+          Begin revealing almost
+          immediately as Section 2
+          enters the viewport.
+        */
+        threshold: 0.04,
+
+        rootMargin:
+          '0px 0px -2% 0px'
+      }
+    );
+
+
+  items.forEach(
+    (item) => {
+      observer.observe(item);
     }
   );
 
-  items.forEach((item) => {
-    observer.observe(item);
-  });
 })();
