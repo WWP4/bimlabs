@@ -1,8 +1,3 @@
-
-
-
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -207,168 +202,108 @@
 
 
 
-<!-- SECTION 3: PROGRAMS / MLS -->
-<section
-  class="programs-transition"
-  id="programs"
-  data-programs-transition
->
-  <div class="programs-stage">
+    <!-- SECTION 3: PROGRAMS / MLS -->
+    <section
+      class="programs-transition"
+      id="programs"
+      data-programs-transition
+    >
+      <div class="programs-stage">
 
-    <p class="programs-kicker">
-      Programs
-    </p>
+        <p class="programs-kicker">Programs</p>
 
-    <!-- =========================================
-         TRUE BLOOM VISUAL
-    ========================================== -->
-    <div class="programs-art">
-
-      <svg
-        class="programs-bloom"
-        viewBox="0 0 1600 900"
-        preserveAspectRatio="xMidYMid meet"
-        aria-hidden="true"
-      >
-
-        <defs>
-
-          <!--
-            Athlete alpha mask.
-
-            White = show foreground MLS.
-            Black = hide foreground MLS.
-          -->
-          <mask
-            id="mls-athlete-mask"
-            maskUnits="userSpaceOnUse"
-            x="0"
-            y="0"
-            width="1600"
-            height="900"
+        <!--
+          BLOOM COMPOSITION
+          1. Cream MLS fill sits behind the athlete.
+          2. Athlete sits above the fill.
+          3. The exact same MLS is drawn again as a cream outline,
+             but clipped to the athlete's alpha silhouette.
+        -->
+        <div class="programs-art" aria-hidden="true">
+          <svg
+            class="programs-bloom"
+            viewBox="0 0 1600 900"
+            preserveAspectRatio="xMidYMid meet"
           >
+            <defs>
+              <!--
+                Alpha mask: only the non-transparent pixels of
+                transparent.png reveal the front MLS outline.
+              -->
+              <mask
+                id="mls-athlete-mask"
+                x="0"
+                y="0"
+                width="1600"
+                height="900"
+                maskUnits="userSpaceOnUse"
+                maskContentUnits="userSpaceOnUse"
+                style="mask-type: alpha;"
+              >
+                <image
+                  href="./GWAY/assets/transparent.png"
+                  x="610"
+                  y="110"
+                  width="480"
+                  height="760"
+                  preserveAspectRatio="xMidYMid meet"
+                />
+              </mask>
+            </defs>
 
-            <rect
-              x="0"
-              y="0"
-              width="1600"
-              height="900"
-              fill="black"
-            />
+            <!-- CREAM FILLED MLS — BEHIND ATHLETE -->
+            <text
+              class="bloom-text bloom-text-back"
+              x="800"
+              y="625"
+              text-anchor="middle"
+            >MLS</text>
 
+            <!-- ATHLETE -->
             <image
+              class="bloom-athlete"
               href="./GWAY/assets/transparent.png"
-              x="590"
-              y="75"
-              width="540"
-              height="825"
+              x="610"
+              y="110"
+              width="480"
+              height="760"
               preserveAspectRatio="xMidYMid meet"
             />
 
-          </mask>
+            <!--
+              SAME MLS — SAME x/y — CREAM OUTLINE IN FRONT.
+              The mask makes this outline exist only over the athlete.
+            -->
+            <text
+              class="bloom-text bloom-text-front"
+              x="800"
+              y="625"
+              text-anchor="middle"
+              mask="url(#mls-athlete-mask)"
+            >MLS</text>
+          </svg>
+        </div>
 
-        </defs>
+        <div class="programs-copy">
+          <h2>MLS Program</h2>
+          <strong>Built for the next level.</strong>
+          <i aria-hidden="true"></i>
+          <p>
+            Elite soccer development. High-level competition.
+            Exposure and progression. Everything you need to
+            reach your next level.
+          </p>
+        </div>
 
+        <a class="programs-cta" href="#mls-program">
+          Explore MLS Program
+          <span>→</span>
+        </a>
 
-        <!-- =====================================
-             SOLID MLS BEHIND ATHLETE
-        ====================================== -->
-
-        <text
-          class="bloom-text bloom-text-back"
-          x="800"
-          y="610"
-          text-anchor="middle"
-        >
-          MLS
-        </text>
-
-
-        <!-- =====================================
-             ATHLETE
-        ====================================== -->
-
-        <image
-          class="bloom-athlete"
-          href="./GWAY/assets/transparent.png"
-          x="590"
-          y="75"
-          width="540"
-          height="825"
-          preserveAspectRatio="xMidYMid meet"
-        />
-
-
-        <!-- =====================================
-             SAME MLS IN FRONT
-
-             Mask means this outline ONLY exists
-             where the athlete exists.
-        ====================================== -->
-
-        <text
-          class="bloom-text bloom-text-front"
-          x="800"
-          y="610"
-          text-anchor="middle"
-          mask="url(#mls-athlete-mask)"
-        >
-          MLS
-        </text>
-
-      </svg>
-
-    </div>
+      </div>
+    </section>
 
 
-    <!-- =========================================
-         COPY
-    ========================================== -->
-
-    <div class="programs-copy">
-
-      <h2>
-        MLS Program
-      </h2>
-
-      <strong>
-        Built for the next level.
-      </strong>
-
-      <i aria-hidden="true"></i>
-
-      <p>
-        Elite soccer development. High-level competition.
-        Exposure and progression. Everything you need to
-        reach your next level.
-      </p>
-
-    </div>
-
-
-    <!-- =========================================
-         CTA
-    ========================================== -->
-
-    <a
-      class="programs-cta"
-      href="#mls-program"
-    >
-      Explore MLS Program
-      <span>→</span>
-    </a>
-
-  </div>
-</section>
-
-
-
-
-
-
-    
-
-  </main>
   <script src="./GWAY/js/gateway-transition.js" defer></script>
   <script src="./GWAY/js/gateway-why.js" defer></script>
   <script src="./GWAY/js/gateway-programs-transition.js" defer></script>
