@@ -207,34 +207,11 @@
 
         <p class="programs-kicker">Programs</p>
 
-        <!--
-          REAL THREE-DIMENSIONAL LAYER STACK
-
-          1. Cream filled MLS sits BEHIND the athlete.
-          2. transparent.png athlete sits IN FRONT of that fill.
-          3. The COMPLETE MLS outline sits IN FRONT of the athlete.
-
-          There is intentionally NO mask on the foreground outline.
-          The entire silver + white outline remains visible.
-        -->
-        <div class="programs-art" aria-hidden="true">
-          <svg
-            class="programs-bloom"
-            viewBox="0 0 1600 900"
-            preserveAspectRatio="xMidYMid meet"
-          >
-            <!-- LAYER 1: solid cream word behind athlete -->
-            <text
-              class="bloom-text bloom-text-back"
-              x="800"
-              y="630"
-              text-anchor="middle"
-            >MLS</text>
-
+      
             <!-- LAYER 2: athlete PNG -->
             <image
               class="bloom-athlete"
-              href="./GWAY/assets/transparent.png"
+              href="./GWAY/assets/1transparent.png"
               x="565"
               y="72"
               width="590"
@@ -242,25 +219,7 @@
               preserveAspectRatio="xMidYMid meet"
             />
 
-            <!--
-              LAYER 3A + 3B: full MLS outline in front.
-              Silver is the wider outer edge; white is the crisp inner edge.
-            -->
-            <text
-              class="bloom-text bloom-text-outline bloom-text-outline--silver"
-              x="800"
-              y="630"
-              text-anchor="middle"
-            >MLS</text>
-
-            <text
-              class="bloom-text bloom-text-outline bloom-text-outline--white"
-              x="800"
-              y="630"
-              text-anchor="middle"
-            >MLS</text>
-          </svg>
-        </div>
+           
 
         <div class="programs-copy">
           <h2>MLS Program</h2>
