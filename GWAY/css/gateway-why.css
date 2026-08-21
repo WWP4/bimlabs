@@ -1,81 +1,130 @@
 /* =========================================================
    SECTION 2 — WHY GSA PREP
-   Editorial / Awwwards-inspired redesign
+   HIGH-END EDITORIAL / PATHWAY COMPOSITION
    File: /GWAY/css/gateway-why.css
+
+   Goal:
+   - left side feels editorial, premium, minimal
+   - giant red-outline PATHWAY is embedded into composition
+   - team photo blends into page instead of reading as a rectangle
+   - trophy photo stays as a deliberate editorial inset
 ========================================================= */
 
 .why-gsa {
   position: relative;
   z-index: 35;
+
+  width: 100%;
   overflow: clip;
+
   background: #f7f6f2;
-  color: #111;
+  color: #111111;
 }
 
 .why-gsa__inner {
   position: relative;
-  width: min(100%, 1720px);
+
+  width: min(100%, 1760px);
+  min-height: clamp(780px, 76vw, 1080px);
+
   margin: 0 auto;
+
   padding:
-    clamp(88px, 10vh, 130px)
-    clamp(28px, 4.8vw, 74px)
-    clamp(92px, 11vh, 138px);
+    clamp(92px, 9vh, 132px)
+    clamp(28px, 4.8vw, 82px)
+    clamp(92px, 9vh, 132px);
 
   display: grid;
-  grid-template-columns: minmax(360px, 500px) minmax(0, 1fr);
-  gap: clamp(40px, 5vw, 90px);
-  align-items: start;
+  grid-template-columns:
+    minmax(360px, 0.72fr)
+    minmax(0, 1.28fr);
+
+  gap: clamp(34px, 4.8vw, 86px);
+
+  align-items: stretch;
 }
 
+/* subtle angled divider between editorial copy and image world */
 .why-gsa__inner::after {
   content: "";
+
   position: absolute;
-  top: 0;
-  bottom: 0;
-  left: clamp(430px, 33vw, 555px);
+
+  top: -2%;
+  bottom: -2%;
+  left: clamp(420px, 32.5vw, 565px);
+
   width: 1px;
-  background: linear-gradient(
-    to bottom,
-    rgba(0,0,0,0) 0%,
-    rgba(0,0,0,0.12) 10%,
-    rgba(0,0,0,0.12) 90%,
-    rgba(0,0,0,0) 100%
-  );
-  transform: rotate(11deg);
-  transform-origin: top center;
+
+  background:
+    linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0) 0%,
+      rgba(0, 0, 0, 0.10) 12%,
+      rgba(0, 0, 0, 0.10) 88%,
+      rgba(0, 0, 0, 0) 100%
+    );
+
+  transform:
+    rotate(11deg);
+
+  transform-origin:
+    center top;
+
   pointer-events: none;
 }
 
+
+/* =========================================================
+   LEFT EDITORIAL COLUMN
+========================================================= */
+
 .why-gsa__left {
   position: relative;
-  z-index: 2;
-  padding-top: 18px;
+  z-index: 10;
+
+  align-self: center;
+
+  padding-top: 10px;
 }
 
 .why-gsa__eyebrow {
   display: inline-flex;
   align-items: center;
+
   gap: 14px;
-  margin: 0 0 34px;
+
+  margin: 0 0 38px;
+
   color: var(--gway-red, #ef101f);
+
   font-family: "Inter", sans-serif;
-  font-size: 13px;
+  font-size: clamp(11px, 0.76vw, 13px);
   font-weight: 900;
-  letter-spacing: 0.28em;
   line-height: 1;
+
+  letter-spacing: 0.31em;
+
   text-transform: uppercase;
 }
 
 .why-gsa__eyebrow::after {
   content: "";
+
   width: 56px;
   height: 2px;
+
   background: var(--gway-red, #ef101f);
-  opacity: 0.9;
 }
+
+
+/* =========================================================
+   HEADLINE
+========================================================= */
 
 .why-gsa__headline {
   margin: 0;
+
   text-transform: uppercase;
 }
 
@@ -85,259 +134,524 @@
 }
 
 .why-gsa__headline-thin {
+  color: #111111;
+
   font-family: "Bebas Neue", sans-serif;
-  font-size: clamp(86px, 8vw, 142px);
+  font-size: clamp(84px, 7vw, 126px);
   font-weight: 400;
-  line-height: 0.88;
-  letter-spacing: 0.01em;
-  color: #111;
+
+  line-height: 0.86;
+  letter-spacing: 0.006em;
 }
 
 .why-gsa__headline-bold {
+  color: #111111;
+
   font-family: "Bebas Neue", sans-serif;
-  font-size: clamp(118px, 9.7vw, 184px);
+  font-size: clamp(116px, 8.7vw, 168px);
   font-weight: 400;
-  line-height: 0.84;
+
+  line-height: 0.82;
   letter-spacing: -0.025em;
-  color: #111;
 }
 
 .why-gsa__headline-bold--red {
   color: var(--gway-red, #ef101f);
 }
 
+
+/* =========================================================
+   SUPPORTING COPY
+========================================================= */
+
 .why-gsa__lead {
-  max-width: 420px;
-  margin: 34px 0 0;
-  color: #323232;
+  width: min(100%, 430px);
+
+  margin: 40px 0 0;
+
+  color: #383838;
+
   font-family: "Inter", sans-serif;
-  font-size: clamp(18px, 1.18vw, 24px);
+  font-size: clamp(17px, 1.05vw, 21px);
   font-weight: 400;
-  line-height: 1.62;
+
+  line-height: 1.65;
 }
+
+
+/* =========================================================
+   PROOF
+========================================================= */
 
 .why-gsa__proof {
   display: flex;
   align-items: center;
+
   gap: 18px;
-  margin-top: 48px;
+
+  margin-top: 46px;
 }
 
 .why-gsa__proof-line {
   flex: 0 0 2px;
-  height: 72px;
+
+  width: 2px;
+  height: 68px;
+
   background: var(--gway-red, #ef101f);
 }
 
 .why-gsa__proof-copy {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+
+  gap: 5px;
 }
 
 .why-gsa__proof-copy strong,
 .why-gsa__proof-copy span {
   display: block;
+
   font-family: "Bebas Neue", sans-serif;
   font-weight: 400;
+
   line-height: 0.98;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.045em;
+
   text-transform: uppercase;
 }
 
 .why-gsa__proof-copy strong {
-  color: #161616;
-  font-size: clamp(24px, 2vw, 36px);
+  color: #151515;
+
+  font-size: clamp(25px, 1.7vw, 34px);
 }
 
 .why-gsa__proof-copy span {
   color: var(--gway-red, #ef101f);
-  font-size: clamp(24px, 2vw, 36px);
+
+  font-size: clamp(25px, 1.7vw, 34px);
 }
+
+
+/* =========================================================
+   GSA SIGN-OFF
+========================================================= */
 
 .why-gsa__signoff {
   display: flex;
   align-items: flex-end;
-  gap: 28px;
-  margin-top: 52px;
+
+  gap: 24px;
+
+  margin-top: 48px;
 }
 
 .why-gsa__signature {
   color: var(--gway-red, #ef101f);
-  font-family: "Caveat", "Brush Script MT", cursive;
-  font-size: clamp(70px, 5vw, 108px);
-  line-height: 0.85;
+
+  font-family:
+    "Caveat",
+    "Brush Script MT",
+    "Segoe Script",
+    cursive;
+
+  font-size: clamp(70px, 5.4vw, 108px);
+  font-weight: 400;
+
+  line-height: 0.78;
+
+  transform:
+    rotate(-3deg);
 }
 
 .why-gsa__tagline {
-  color: #151515;
+  padding-bottom: 11px;
+
+  color: #141414;
+
   font-family: "Inter", sans-serif;
-  font-size: 12px;
+  font-size: clamp(9px, 0.72vw, 12px);
   font-weight: 800;
-  letter-spacing: 0.38em;
+
   line-height: 1;
+  letter-spacing: 0.36em;
+
   text-transform: uppercase;
-  padding-bottom: 12px;
+
   white-space: nowrap;
 }
+
+
+/* =========================================================
+   RIGHT VISUAL WORLD
+========================================================= */
 
 .why-gsa__right {
   position: relative;
-  min-height: clamp(620px, 68vw, 980px);
   z-index: 1;
+
+  min-height: clamp(660px, 68vw, 980px);
+
+  overflow: visible;
 }
+
+
+/* =========================================================
+   HUGE PATHWAY WORD
+   Lives behind the team photo
+========================================================= */
 
 .why-gsa__bg-word {
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
+  z-index: 1;
+
+  top: -1.5%;
+  left: -7%;
+
+  margin: 0;
 
   color: transparent;
-  -webkit-text-stroke: 2px rgba(239, 16, 31, 0.95);
-  text-stroke: 2px rgba(239, 16, 31, 0.95);
+
+  -webkit-text-stroke:
+    2px rgba(239, 16, 31, 0.94);
+
+  text-stroke:
+    2px rgba(239, 16, 31, 0.94);
 
   font-family: "Bebas Neue", sans-serif;
-  font-size: clamp(310px, 24vw, 520px);
+  font-size: clamp(300px, 24vw, 520px);
   font-weight: 400;
-  line-height: 0.76;
-  letter-spacing: -0.022em;
+
+  line-height: 0.72;
+  letter-spacing: -0.026em;
+
   text-transform: uppercase;
+
+  white-space: nowrap;
 
   pointer-events: none;
   user-select: none;
-  white-space: nowrap;
 }
+
+
+/* =========================================================
+   TEAM PHOTO — BLENDED INTO SITE
+========================================================= */
 
 .why-gsa__main-photo {
   position: absolute;
-  right: 0;
-  bottom: 0;
-  width: min(100%, 1020px);
-  margin: 0;
   z-index: 2;
+
+  right: -4%;
+  bottom: -1%;
+
+  width: min(112%, 1160px);
+
+  margin: 0;
+
+  overflow: visible;
+
+  background: transparent;
+
+  pointer-events: none;
 }
 
 .why-gsa__main-photo img {
   display: block;
+
   width: 100%;
   height: auto;
-  object-fit: cover;
-  filter: drop-shadow(0 28px 54px rgba(0, 0, 0, 0.10));
-  transform: translate3d(0, var(--main-photo-shift, 0px), 0);
+
+  object-fit: contain;
+
+  /*
+    This is the key:
+    fade the left edge of the image into the cream page,
+    so it stops reading like a rectangular photo.
+  */
+  -webkit-mask-image:
+    linear-gradient(
+      to right,
+      transparent 0%,
+      rgba(0, 0, 0, 0.04) 3%,
+      rgba(0, 0, 0, 0.16) 7%,
+      rgba(0, 0, 0, 0.52) 13%,
+      #000 20%,
+      #000 100%
+    );
+
+  mask-image:
+    linear-gradient(
+      to right,
+      transparent 0%,
+      rgba(0, 0, 0, 0.04) 3%,
+      rgba(0, 0, 0, 0.16) 7%,
+      rgba(0, 0, 0, 0.52) 13%,
+      #000 20%,
+      #000 100%
+    );
+
+  /*
+    soften only a touch so the photo sits in the same visual world
+    as the warm cream canvas.
+  */
+  filter:
+    saturate(0.95)
+    contrast(1.02)
+    drop-shadow(
+      0 28px 52px rgba(0, 0, 0, 0.08)
+    );
+
+  transform:
+    translate3d(
+      0,
+      var(--main-photo-shift, 0px),
+      0
+    );
+
   transition:
-    transform 0.85s cubic-bezier(0.16, 1, 0.3, 1),
-    filter 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+    filter 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+
+  will-change:
+    transform,
+    filter;
 }
 
-.why-gsa__main-photo:hover img {
-  filter: drop-shadow(0 32px 64px rgba(0, 0, 0, 0.13));
+
+/* atmospheric cream wash over photo's left edge */
+.why-gsa__right::after {
+  content: "";
+
+  position: absolute;
+  z-index: 3;
+
+  top: 14%;
+  left: -2%;
+  bottom: -3%;
+
+  width: 27%;
+
+  background:
+    linear-gradient(
+      to right,
+      #f7f6f2 0%,
+      rgba(247, 246, 242, 0.96) 18%,
+      rgba(247, 246, 242, 0.68) 46%,
+      rgba(247, 246, 242, 0.28) 72%,
+      rgba(247, 246, 242, 0) 100%
+    );
+
+  pointer-events: none;
 }
+
+
+/* =========================================================
+   TROPHY INSET
+   Deliberately stays framed like an editorial print
+========================================================= */
 
 .why-gsa__inset-photo {
   position: absolute;
-  left: clamp(-14px, 3vw, 40px);
-  bottom: clamp(30px, 5vw, 74px);
-  width: clamp(180px, 19vw, 310px);
-  margin: 0;
-  z-index: 4;
-  background: #fff;
-  padding: 12px;
-  box-shadow:
-    0 16px 48px rgba(0, 0, 0, 0.10),
-    0 0 0 1px rgba(0,0,0,0.06);
-  transform:
-    translate3d(0, var(--inset-photo-shift, 0px), 0)
-    rotate(-0.2deg);
-  transition:
-    transform 0.85s cubic-bezier(0.16, 1, 0.3, 1),
-    box-shadow 0.85s cubic-bezier(0.16, 1, 0.3, 1);
-}
+  z-index: 5;
 
-.why-gsa__inset-photo:hover {
+  left: clamp(-22px, 2.5vw, 34px);
+  bottom: clamp(24px, 4.5vw, 68px);
+
+  width: clamp(180px, 18vw, 292px);
+
+  margin: 0;
+  padding: 10px;
+
+  background: #f7f6f2;
+
   box-shadow:
-    0 22px 62px rgba(0, 0, 0, 0.14),
-    0 0 0 1px rgba(0,0,0,0.06);
+    0 18px 50px rgba(0, 0, 0, 0.09),
+    0 0 0 1px rgba(0, 0, 0, 0.055);
+
+  transform:
+    translate3d(
+      0,
+      var(--inset-photo-shift, 0px),
+      0
+    )
+    rotate(-0.35deg);
+
+  transition:
+    box-shadow 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+
+  will-change:
+    transform;
 }
 
 .why-gsa__inset-photo::before {
   content: "";
+
   position: absolute;
+  z-index: -1;
+
   left: -34px;
   bottom: -38px;
+
   width: 98px;
   height: 98px;
-  border: 1px solid rgba(0,0,0,0.12);
-  z-index: -2;
+
+  border:
+    1px solid rgba(0, 0, 0, 0.12);
 }
 
 .why-gsa__inset-photo::after {
   content: "";
+
   position: absolute;
-  left: -48px;
-  top: 50%;
-  width: 64px;
+
+  left: -50px;
+  top: 51%;
+
+  width: 66px;
   height: 2px;
-  background: var(--gway-red, #ef101f);
-  transform: translateY(-50%);
+
+  background:
+    var(--gway-red, #ef101f);
+
+  transform:
+    translateY(-50%);
 }
 
 .why-gsa__inset-photo img {
   display: block;
+
   width: 100%;
   height: auto;
+
+  object-fit: cover;
 }
 
-/* Section entrance motion */
+
+/* =========================================================
+   REVEAL MOTION
+========================================================= */
+
 .why-gsa [data-reveal] {
   opacity: 0;
-  transform: translate3d(0, 34px, 0);
+
+  transform:
+    translate3d(0, 34px, 0);
+
   transition:
     opacity 0.95s cubic-bezier(0.16, 1, 0.3, 1),
     transform 0.95s cubic-bezier(0.16, 1, 0.3, 1);
-  will-change: transform, opacity;
+
+  will-change:
+    opacity,
+    transform;
 }
 
 .why-gsa [data-reveal="left"] {
-  transform: translate3d(-38px, 16px, 0);
+  transform:
+    translate3d(-38px, 16px, 0);
 }
 
 .why-gsa [data-reveal="right"] {
-  transform: translate3d(38px, 16px, 0);
+  transform:
+    translate3d(38px, 16px, 0);
 }
 
 .why-gsa [data-reveal].is-visible {
   opacity: 1;
-  transform: translate3d(0, 0, 0);
+
+  transform:
+    translate3d(0, 0, 0);
 }
 
-/* Large tablets */
+
+/* =========================================================
+   SHORT DESKTOP
+========================================================= */
+
+@media (min-width: 981px) and (max-height: 850px) {
+  .why-gsa__inner {
+    min-height: 760px;
+
+    padding-top: 74px;
+    padding-bottom: 78px;
+  }
+
+  .why-gsa__headline-thin {
+    font-size: clamp(72px, 6.5vw, 108px);
+  }
+
+  .why-gsa__headline-bold {
+    font-size: clamp(98px, 8vw, 146px);
+  }
+
+  .why-gsa__lead {
+    margin-top: 28px;
+  }
+
+  .why-gsa__proof {
+    margin-top: 34px;
+  }
+
+  .why-gsa__signoff {
+    margin-top: 34px;
+  }
+
+  .why-gsa__right {
+    min-height: 650px;
+  }
+
+  .why-gsa__bg-word {
+    font-size: clamp(280px, 23vw, 470px);
+  }
+}
+
+
+/* =========================================================
+   TABLET / SMALL LAPTOP
+========================================================= */
+
 @media (max-width: 1240px) {
   .why-gsa__inner {
-    grid-template-columns: minmax(320px, 420px) minmax(0, 1fr);
-    gap: 34px;
+    grid-template-columns:
+      minmax(320px, 430px)
+      minmax(0, 1fr);
+
+    gap: 32px;
   }
 
   .why-gsa__inner::after {
     left: clamp(360px, 33vw, 470px);
   }
 
-  .why-gsa__lead {
-    font-size: 18px;
+  .why-gsa__tagline {
+    letter-spacing: 0.28em;
   }
 
-  .why-gsa__tagline {
-    font-size: 11px;
-    letter-spacing: 0.30em;
+  .why-gsa__main-photo {
+    right: -7%;
+
+    width: 116%;
   }
 }
 
-/* Tablet */
+
+/* =========================================================
+   TABLET
+========================================================= */
+
 @media (max-width: 980px) {
   .why-gsa__inner {
+    min-height: 0;
+
     grid-template-columns: 1fr;
-    gap: 52px;
-    padding-top: 72px;
+
+    gap: 56px;
+
+    padding:
+      74px
+      clamp(24px, 5vw, 54px)
+      92px;
   }
 
   .why-gsa__inner::after {
@@ -345,61 +659,89 @@
   }
 
   .why-gsa__left {
-    max-width: 620px;
+    max-width: 650px;
+
+    padding-top: 0;
   }
 
   .why-gsa__right {
-    min-height: clamp(520px, 72vw, 760px);
+    min-height:
+      clamp(520px, 74vw, 760px);
   }
 
   .why-gsa__bg-word {
-    font-size: clamp(220px, 28vw, 390px);
+    top: 0;
+    left: -5%;
+
+    font-size:
+      clamp(230px, 29vw, 390px);
   }
 
   .why-gsa__main-photo {
-    width: 100%;
+    right: -6%;
+    bottom: -2%;
+
+    width: 112%;
+  }
+
+  .why-gsa__right::after {
+    width: 23%;
   }
 
   .why-gsa__inset-photo {
-    left: 12px;
-    bottom: 10px;
+    left: 8px;
+    bottom: 6px;
   }
 }
 
-/* Mobile */
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
 @media (max-width: 640px) {
   .why-gsa__inner {
+    gap: 42px;
+
     padding:
-      64px
+      62px
       18px
       76px;
   }
 
   .why-gsa__eyebrow {
-    font-size: 11px;
-    gap: 12px;
+    margin-bottom: 30px;
+
+    font-size: 10px;
+
+    gap: 10px;
   }
 
   .why-gsa__eyebrow::after {
-    width: 40px;
+    width: 36px;
   }
 
   .why-gsa__headline-thin {
-    font-size: clamp(62px, 13vw, 94px);
+    font-size:
+      clamp(62px, 16vw, 92px);
   }
 
   .why-gsa__headline-bold {
-    font-size: clamp(88px, 18vw, 134px);
+    font-size:
+      clamp(84px, 21vw, 126px);
   }
 
   .why-gsa__lead {
-    max-width: none;
+    width: 100%;
+
+    margin-top: 30px;
+
     font-size: 16px;
-    line-height: 1.56;
+    line-height: 1.58;
   }
 
   .why-gsa__proof {
-    margin-top: 36px;
+    margin-top: 34px;
   }
 
   .why-gsa__proof-line {
@@ -408,48 +750,89 @@
 
   .why-gsa__proof-copy strong,
   .why-gsa__proof-copy span {
-    font-size: 24px;
+    font-size: 23px;
   }
 
   .why-gsa__signoff {
-    gap: 16px;
-    align-items: center;
+    margin-top: 38px;
+
+    gap: 14px;
+
     flex-wrap: wrap;
-    margin-top: 40px;
+    align-items: center;
   }
 
   .why-gsa__signature {
-    font-size: 72px;
+    font-size: 70px;
   }
 
   .why-gsa__tagline {
     padding-bottom: 0;
-    font-size: 10px;
-    letter-spacing: 0.22em;
+
+    font-size: 9px;
+    letter-spacing: 0.20em;
   }
 
   .why-gsa__right {
-    min-height: 420px;
+    min-height: 440px;
   }
 
   .why-gsa__bg-word {
-    top: 8px;
-    font-size: 180px;
-    -webkit-text-stroke: 1.4px rgba(239, 16, 31, 0.92);
+    top: 4px;
+    left: -12%;
+
+    font-size: 182px;
+
+    -webkit-text-stroke:
+      1.4px rgba(239, 16, 31, 0.92);
+  }
+
+  .why-gsa__main-photo {
+    right: -12%;
+    bottom: -2%;
+
+    width: 125%;
+  }
+
+  .why-gsa__main-photo img {
+    -webkit-mask-image:
+      linear-gradient(
+        to right,
+        transparent 0%,
+        rgba(0,0,0,0.20) 7%,
+        #000 18%,
+        #000 100%
+      );
+
+    mask-image:
+      linear-gradient(
+        to right,
+        transparent 0%,
+        rgba(0,0,0,0.20) 7%,
+        #000 18%,
+        #000 100%
+      );
+  }
+
+  .why-gsa__right::after {
+    width: 18%;
   }
 
   .why-gsa__inset-photo {
-    width: 148px;
-    padding: 8px;
-    left: 8px;
-    bottom: -6px;
+    left: 4px;
+    bottom: -4px;
+
+    width: 146px;
+
+    padding: 7px;
   }
 
   .why-gsa__inset-photo::before {
     left: -18px;
     bottom: -18px;
-    width: 56px;
-    height: 56px;
+
+    width: 54px;
+    height: 54px;
   }
 
   .why-gsa__inset-photo::after {
@@ -457,20 +840,30 @@
   }
 }
 
+
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+
 @media (prefers-reduced-motion: reduce) {
   .why-gsa [data-reveal] {
     opacity: 1;
+
     transform: none;
+
     transition: none;
   }
 
   .why-gsa__main-photo img {
     transform: none;
+
     transition: none;
   }
 
   .why-gsa__inset-photo {
-    transform: rotate(-0.2deg);
+    transform:
+      rotate(-0.35deg);
+
     transition: none;
   }
 }
