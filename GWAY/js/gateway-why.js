@@ -2,109 +2,175 @@
   const section = document.querySelector('.why-gsa');
   if (!section) return;
 
-  const items = [
+  const reveals = [
     ...section.querySelectorAll('[data-reveal]')
   ];
 
-  if (!items.length) return;
-
-  const reducedMotion = window.matchMedia(
-    '(prefers-reduced-motion: reduce)'
-  ).matches;
+  const reducedMotion =
+    window.matchMedia(
+      '(prefers-reduced-motion: reduce)'
+    ).matches;
 
   if (reducedMotion) {
-    items.forEach((item) => {
+    reveals.forEach((item) => {
       item.classList.add('is-visible');
     });
 
     return;
   }
 
-  const observer = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (!entry.isIntersecting) return;
+  /* =========================================
+     REVEAL ANIMATIONS
+  ========================================= */
 
-        const el = entry.target;
+  const observer =
+    new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
 
-        const requestedDelay =
-          Number(el.dataset.delay || 0);
+          const el = entry.target;
 
-        const delay =
-          Math.min(requestedDelay, 180);
+          const requestedDelay =
+            Number(
+              el.dataset.delay || 0
+            );
 
-        window.setTimeout(() => {
-          el.classList.add('is-visible');
-        }, delay);
+          const delay =
+            Math.min(
+              requestedDelay,
+              220
+            );
 
-        observer.unobserve(el);
-      });
-    },
-    {
-      threshold: 0.06,
-      rootMargin: '0px 0px -3% 0px'
-    }
-  );
+          window.setTimeout(
+            () => {
+              el.classList.add(
+                'is-visible'
+              );
+            },
+            delay
+          );
 
-  items.forEach((item) => {
+          observer.unobserve(el);
+        });
+      },
+      {
+        threshold: 0.08,
+        rootMargin:
+          '0px 0px -4% 0px'
+      }
+    );
+
+  reveals.forEach((item) => {
     observer.observe(item);
   });
 
-  const photos = [
-    ...section.querySelectorAll('.why-gsa__photo img')
-  ];
+  /* =========================================
+     PHOTO PARALLAX
+  ========================================= */
 
-  if (!photos.length) return;
+  const mainPhoto =
+    section.querySelector(
+      '.why-gsa__main-photo img'
+    );
+
+  const inset =
+    section.querySelector(
+      '.why-gsa__inset-photo'
+    );
+
+  if (!mainPhoto || !inset) {
+    return;
+  }
 
   let ticking = false;
 
   function updateParallax() {
     ticking = false;
 
-    const rect = section.getBoundingClientRect();
-    const viewport = window.innerHeight;
+    const rect =
+      section.getBoundingClientRect();
 
-    const progress = Math.min(
-      1,
-      Math.max(
-        0,
-        (viewport - rect.top) /
-          (viewport + rect.height)
-      )
+    const viewport =
+      window.innerHeight;
+
+    const progress =
+      Math.min(
+        1,
+        Math.max(
+          0,
+          (
+            viewport -
+            rect.top
+          ) /
+          (
+            viewport +
+            rect.height
+          )
+        )
+      );
+
+    /*
+      Main team image moves very slightly
+      downward/upward with scroll.
+
+      Inset trophy moves opposite direction.
+    */
+
+    const mainShift =
+      (
+        progress -
+        0.5
+      ) *
+      28;
+
+    const insetShift =
+      (
+        progress -
+        0.5
+      ) *
+      -16;
+
+    mainPhoto.style.setProperty(
+      '--main-photo-shift',
+      `${mainShift}px`
     );
 
-    const shift =
-      (progress - 0.5) * 18;
-
-    photos.forEach((photo, index) => {
-      const direction =
-        index % 2 === 0 ? 1 : -1;
-
-      photo.style.setProperty(
-        '--photo-shift',
-        `${shift * direction}px`
-      );
-    });
+    inset.style.setProperty(
+      '--inset-photo-shift',
+      `${insetShift}px`
+    );
   }
 
-  function requestParallax() {
+  function requestTick() {
     if (ticking) return;
 
     ticking = true;
-    requestAnimationFrame(updateParallax);
+
+    requestAnimationFrame(
+      updateParallax
+    );
   }
+
+  /* =========================================
+     EVENTS
+  ========================================= */
 
   window.addEventListener(
     'scroll',
-    requestParallax,
-    { passive: true }
+    requestTick,
+    {
+      passive: true
+    }
   );
 
   window.addEventListener(
     'resize',
-    requestParallax,
-    { passive: true }
+    requestTick,
+    {
+      passive: true
+    }
   );
 
-  requestParallax();
+  requestTick();
 })();
