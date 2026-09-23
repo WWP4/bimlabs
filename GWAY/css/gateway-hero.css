@@ -556,13 +556,15 @@ body {
 
 
 /* =========================================================
-   HERO -> SECTION 2
-   Direct editorial wipe. No interstitial title card.
+   HERO -> SECTION 2 — PHOTO-LED HANDOFF
+   The training image arrives inside the hero transition in
+   the same position it occupies in Section 2, so the story
+   continues instead of stopping on an interstitial screen.
 ========================================================= */
 
 .gway-hero-transition {
-  height: 148vh;
-  height: 148svh;
+  height: 174vh;
+  height: 174svh;
 }
 
 .gway-section-reveal {
@@ -573,23 +575,157 @@ body {
 .gway-section-reveal::before {
   content: "";
   position: absolute;
-  top: 0;
-  left: 0;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 76% 24%, rgba(239,16,31,0.045), transparent 28%);
+}
 
+.gway-reveal-label {
+  position: absolute;
+  z-index: 4;
+  top: clamp(30px, 4.2vh, 48px);
+  left: clamp(24px, 5vw, 90px);
+
+  display: flex;
+  align-items: center;
+  gap: 13px;
+
+  opacity: var(--handoff-label-opacity, 0);
+  transform: translate3d(0, var(--handoff-label-y, 12px), 0);
+
+  color: #0a0a0a;
+  font-family: "Inter", Arial, sans-serif;
+  font-size: 9px;
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+
+  will-change: opacity, transform;
+}
+
+.gway-reveal-label span {
+  color: var(--gway-red);
+}
+
+.gway-reveal-label strong {
+  font-weight: 900;
+}
+
+.gway-reveal-photo {
+  position: absolute;
+  z-index: 2;
+
+  top: clamp(92px, 11vh, 122px);
+  right: clamp(24px, 4.6vw, 82px);
+  bottom: clamp(92px, 11vh, 126px);
+
+  width: min(49vw, 900px);
+  margin: 0;
+  overflow: hidden;
+  background: #d8d3ca;
+
+  clip-path: inset(0 0 0 var(--handoff-photo-cut, 100%));
+  transform:
+    translate3d(var(--handoff-photo-x, 12vw), var(--handoff-photo-y, 18px), 0)
+    scale(var(--handoff-photo-scale, 1.02));
+
+  transform-origin: center;
+  will-change: clip-path, transform;
+}
+
+.gway-reveal-photo::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background:
+    linear-gradient(180deg, rgba(0,0,0,0.02), transparent 45%, rgba(0,0,0,0.20) 100%);
+}
+
+.gway-reveal-photo img {
   width: 100%;
-  height: 4px;
-
-  background: var(--gway-red);
-
-  opacity: 1;
-  transform: scaleX(var(--gway-reveal-edge, 0));
-  transform-origin: left center;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  filter: saturate(0.92) contrast(1.06);
+  transform: translate3d(0, var(--handoff-image-y, 0px), 0) scale(var(--handoff-image-scale, 1.08));
   will-change: transform;
 }
 
-@media (max-width: 680px) {
+.gway-reveal-ticker {
+  position: absolute;
+  z-index: 5;
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+  height: clamp(54px, 5vw, 74px);
+  overflow: hidden;
+
+  display: flex;
+  align-items: center;
+
+  background: var(--gway-red);
+  transform: translate3d(0, var(--handoff-ticker-y, 101%), 0);
+  will-change: transform;
+}
+
+.gway-reveal-ticker-track {
+  width: max-content;
+  display: flex;
+  align-items: center;
+  gap: clamp(15px, 2vw, 28px);
+  padding-left: clamp(24px, 4vw, 68px);
+
+  color: #050505;
+  white-space: nowrap;
+
+  transform: translate3d(var(--handoff-ticker-x, 0px), 0, 0);
+  will-change: transform;
+}
+
+.gway-reveal-ticker-track span {
+  font-family: "Bebas Neue", "Arial Narrow", Impact, sans-serif;
+  font-size: clamp(29px, 2.8vw, 48px);
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+}
+
+.gway-reveal-ticker-track i {
+  color: #f5f2eb;
+  font-size: 14px;
+  font-style: normal;
+}
+
+@media (max-width: 760px) {
   .gway-hero-transition {
-    height: 142vh;
-    height: 142svh;
+    height: 164vh;
+    height: 164svh;
+  }
+
+  .gway-reveal-label {
+    top: 22px;
+    left: 18px;
+  }
+
+  .gway-reveal-photo {
+    top: 78px;
+    right: -8vw;
+    bottom: 88px;
+    width: 78vw;
+  }
+
+  .gway-reveal-ticker {
+    height: 58px;
+  }
+
+  .gway-reveal-ticker-track span {
+    font-size: 30px;
   }
 }
