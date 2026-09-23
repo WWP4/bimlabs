@@ -3,17 +3,13 @@
   if (!section) return;
 
   const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
-  if (reduced.matches) return;
+  if (reduced.matches || window.matchMedia('(max-width: 760px)').matches) return;
 
-  const topLine = section.querySelector('.why-gsa__topline');
-  const wordBack = section.querySelector('.why-gsa__word--back');
-  const wordFront = section.querySelector('.why-gsa__word--front');
-  const photo = section.querySelector('.why-gsa__main-photo');
-  const photoImg = photo?.querySelector('img');
-  const caption = photo?.querySelector('figcaption');
+  const stage = section.querySelector('.why-gsa__stage');
   const copy = section.querySelector('.why-gsa__copy');
-  const pillars = section.querySelector('.why-gsa__pillars');
-  const progressBar = section.querySelector('.why-gsa__progress i');
+  const visual = section.querySelector('.why-gsa__visual');
+  const photo = visual?.querySelector('img');
+  const footer = section.querySelector('.why-gsa__footer');
 
   const clamp = (v, min = 0, max = 1) =>
     Math.min(max, Math.max(min, v));
@@ -28,14 +24,14 @@
   let raf = 0;
   let last = performance.now();
 
-  function readProgress() {
+  function getProgress() {
     const rect = section.getBoundingClientRect();
     const travel = Math.max(1, section.offsetHeight - innerHeight);
     return clamp(-rect.top / travel);
   }
 
   function requestRender() {
-    target = readProgress();
+    target = getProgress();
 
     if (!raf) {
       last = performance.now();
@@ -58,88 +54,53 @@
     const p = current;
 
     /*
-      STORY:
-      1. editorial header appears
-      2. MORE settles into the canvas
-      3. team photo opens through the word
-      4. thin red outline completes the layered type effect
-      5. copy and three focus words arrive
+      Motion is intentionally quiet:
+      - image opens slightly
+      - crop drifts
+      - copy breathes upward a few pixels
+      - lower rail settles
+      Nothing performs for attention.
     */
 
-    const chromeIn = smooth(0.00, 0.12, p);
-    const wordIn = smooth(0.00, 0.23, p);
-    const photoIn = smooth(0.08, 0.40, p);
-    const outlineIn = smooth(0.23, 0.48, p);
-    const captionIn = smooth(0.34, 0.50, p);
-    const copyIn = smooth(0.37, 0.61, p);
-    const pillarsIn = smooth(0.50, 0.69, p);
-    const drift = smooth(0.52, 1.00, p);
+    const open = smooth(0.00, 0.48, p);
+    const settle = smooth(0.24, 0.82, p);
 
-    if (topLine) {
-      topLine.style.opacity = String(chromeIn);
-      topLine.style.transform =
-        `translateY(${(1 - chromeIn) * 10}px)`;
-    }
+    if (visual) {
+      const cut = 8 * (1 - open);
+      const x = -18 * settle;
+      const y = -5 * settle;
+      const scale = 1 + settle * 0.012;
 
-    if (wordBack) {
-      const scale = 0.96 + wordIn * 0.04;
-      const x = -52 + wordIn * 2 - drift * 1.4;
-
-      wordBack.style.opacity = String(wordIn);
-      wordBack.style.transform =
-        `translate3d(${x}%, -50%, 0) scale(${scale})`;
+      visual.style.setProperty('--why-image-cut', `${cut}%`);
+      visual.style.setProperty('--why-image-x', `${x}px`);
+      visual.style.setProperty('--why-image-y', `${y}px`);
+      visual.style.setProperty('--why-image-scale', String(scale));
     }
 
     if (photo) {
-      const side = 49 * (1 - photoIn);
-      const y = (1 - photoIn) * 2.8 - drift * 0.7;
-      const scale = 1.035 - photoIn * 0.035 + drift * 0.012;
+      const photoScale = 1.055 + settle * 0.022;
+      const photoY = -14 * settle;
 
-      photo.style.clipPath =
-        `inset(0 ${side}% 0 ${side}%)`;
-
-      photo.style.transform =
-        `translate3d(-50%, ${y}vh, 0) scale(${scale})`;
-    }
-
-    if (photoImg) {
-      const scale = 1.12 - photoIn * 0.07 + drift * 0.025;
-      const y = drift * -1.2;
-
-      photoImg.style.transform =
-        `translate3d(0, ${y}%, 0) scale(${scale})`;
-    }
-
-    if (wordFront) {
-      const scale = 0.985 + outlineIn * 0.015;
-      const x = -50 - drift * 1.4;
-
-      wordFront.style.opacity = String(outlineIn);
-      wordFront.style.transform =
-        `translate3d(${x}%, -50%, 0) scale(${scale})`;
-    }
-
-    if (caption) {
-      caption.style.opacity = String(captionIn);
-      caption.style.transform =
-        `translateY(${(1 - captionIn) * 10}px)`;
+      photo.style.setProperty('--why-photo-scale', String(photoScale));
+      photo.style.setProperty('--why-photo-y', `${photoY}px`);
     }
 
     if (copy) {
-      copy.style.opacity = String(copyIn);
       copy.style.transform =
-        `translateY(${(1 - copyIn) * 30 - drift * 5}px)`;
+        `translate3d(0, calc(-48% - ${settle * 10}px), 0)`;
     }
 
-    if (pillars) {
-      pillars.style.opacity = String(pillarsIn);
-      pillars.style.transform =
-        `translateY(${(1 - pillarsIn) * 18 - drift * 3}px)`;
+    if (footer) {
+      footer.style.opacity = String(0.72 + open * 0.28);
+      footer.style.transform =
+        `translate3d(0, ${(1 - open) * 8}px, 0)`;
     }
 
-    if (progressBar) {
-      progressBar.style.transform =
-        `translateY(${(1 - p) * -100}%)`;
+    if (stage) {
+      stage.style.setProperty(
+        '--why-scroll-line',
+        `${-100 + p * 100}%`
+      );
     }
 
     if (current !== target) {
