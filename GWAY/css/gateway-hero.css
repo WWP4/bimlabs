@@ -553,3 +553,186 @@ body {
     display: none;
   }
 }
+
+
+/* =========================================================
+   ANGEL CITY-LED HERO -> SECTION 2 HANDOFF
+   Campaign title card instead of a "Why GLCA" interstitial.
+========================================================= */
+
+.gway-section-reveal {
+  background: #f5f2eb;
+}
+
+.gway-section-reveal::before {
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 8px;
+  background: var(--gway-red);
+  transform: none;
+}
+
+.gway-section-reveal-intro {
+  inset: 0;
+  left: 0;
+  top: 0;
+
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding:
+    clamp(46px, 6vh, 72px)
+    var(--gway-pad)
+    clamp(44px, 6vh, 72px);
+
+  color: #080808;
+  opacity: 0;
+
+  transform: translate3d(0, 28px, 0);
+  transform-origin: center;
+
+  will-change: opacity, transform;
+}
+
+.gway-reveal-meta {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 16px;
+}
+
+.gway-reveal-meta::after {
+  content: "";
+  grid-column: 2;
+  grid-row: 1;
+  height: 1px;
+  background: rgba(8, 8, 8, 0.16);
+}
+
+.gway-reveal-meta span {
+  margin: 0;
+
+  color: rgba(8,8,8,0.72);
+  font-family: "Inter", sans-serif;
+  font-size: 9px;
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+.gway-reveal-meta span:first-child {
+  color: var(--gway-red);
+  grid-column: 1;
+}
+
+.gway-reveal-meta span:last-child {
+  grid-column: 3;
+}
+
+.gway-reveal-title {
+  position: absolute;
+  left: var(--gway-pad);
+  right: var(--gway-pad);
+  top: 50%;
+
+  transform: translateY(-48%);
+}
+
+.gway-reveal-title span,
+.gway-reveal-title strong {
+  display: block;
+
+  margin: 0;
+  font-family: "Bebas Neue", sans-serif;
+  font-size: clamp(100px, 14.2vw, 272px);
+  font-weight: 400;
+  line-height: 0.72;
+  letter-spacing: -0.035em;
+  text-transform: uppercase;
+
+  transform: translateY(34px);
+  opacity: 0;
+
+  will-change: transform, opacity;
+}
+
+.gway-reveal-title span {
+  color: #080808;
+}
+
+.gway-reveal-title strong {
+  color: var(--gway-red);
+}
+
+.gway-reveal-foot {
+  position: absolute;
+  left: var(--gway-pad);
+  right: var(--gway-pad);
+  bottom: clamp(38px, 5.6vh, 66px);
+
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.gway-reveal-foot i {
+  display: block;
+  width: clamp(52px, 6vw, 100px);
+  height: 2px;
+
+  background: var(--gway-red);
+  transform: scaleX(0);
+  transform-origin: left center;
+}
+
+.gway-reveal-foot span {
+  color: rgba(8,8,8,0.66);
+  font-family: "Inter", sans-serif;
+  font-size: clamp(9px, 0.7vw, 12px);
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+@media (max-width: 680px) {
+  .gway-section-reveal-intro {
+    padding: 28px 18px 34px;
+  }
+
+  .gway-reveal-meta {
+    grid-template-columns: auto 1fr;
+  }
+
+  .gway-reveal-meta span:last-child {
+    display: none;
+  }
+
+  .gway-reveal-meta::after {
+    grid-column: 2;
+  }
+
+  .gway-reveal-title {
+    left: 18px;
+    right: 18px;
+  }
+
+  .gway-reveal-title span,
+  .gway-reveal-title strong {
+    font-size: clamp(82px, 28vw, 132px);
+    line-height: 0.76;
+  }
+
+  .gway-reveal-foot {
+    left: 18px;
+    right: 18px;
+    bottom: 36px;
+  }
+
+  .gway-reveal-foot span {
+    font-size: 8px;
+    letter-spacing: 0.12em;
+  }
+}
