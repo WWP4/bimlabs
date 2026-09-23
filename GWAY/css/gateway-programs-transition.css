@@ -1,85 +1,155 @@
 /* =========================================================
-   SECTION 3 — MLS PROGRAM
-   No sticky scroll scene. One strong editorial program block.
+   SECTION 3 — STORY CHAPTER 02 / MLS PATHWAY
+   Giant layered typography with athlete crossing the word.
 ========================================================= */
 
 .programs-transition {
   --programs-bg: #080808;
-  --programs-panel: #f5f1e9;
   --programs-red: #ef101f;
   --programs-white: #ffffff;
-  --programs-muted: rgba(255, 255, 255, 0.66);
+  --programs-cream: #f2eee5;
 
   position: relative;
-  overflow: hidden;
+  height: 230vh;
+  height: 230svh;
   background: var(--programs-bg);
   color: var(--programs-white);
 }
 
-.programs-transition::before {
+.programs-stage {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  height: 100vh;
+  height: 100svh;
+  overflow: hidden;
+  isolation: isolate;
+  background: var(--programs-bg);
+}
+
+.programs-stage::before {
   content: "";
   position: absolute;
-  inset: auto -16vw -32vw auto;
-  width: 58vw;
-  height: 58vw;
-  border-radius: 50%;
-  background: radial-gradient(
-    circle,
-    rgba(239, 16, 31, 0.16) 0%,
-    rgba(239, 16, 31, 0.04) 42%,
-    transparent 70%
-  );
+  z-index: 0;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 52% 44%, rgba(239,16,31,0.12), transparent 33%),
+    linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+  background-size: auto, 8vw 100%;
+}
+
+.programs-index {
+  position: absolute;
+  z-index: 30;
+  top: clamp(30px, 4.6vh, 52px);
+  left: clamp(24px, 5vw, 88px);
+  margin: 0;
+
+  color: var(--programs-red);
+  font: 900 10px/1 "Inter", Arial, sans-serif;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+
+  opacity: 0;
+  transform: translateY(12px);
+  will-change: opacity, transform;
+}
+
+.programs-word {
+  position: absolute;
+  left: 50%;
+  top: 46%;
+  width: 100%;
+
+  text-align: center;
+  white-space: nowrap;
+
+  font-family: "Bebas Neue", "Arial Narrow", Impact, sans-serif;
+  font-size: clamp(240px, 37vw, 690px);
+  font-weight: 400;
+  line-height: 0.68;
+  letter-spacing: -0.045em;
+  text-transform: uppercase;
+
+  transform: translate3d(-50%, -50%, 0) scale(0.86);
+  transform-origin: center;
+  will-change: opacity, transform;
+  user-select: none;
   pointer-events: none;
 }
 
-.programs-stage {
-  position: relative;
-  z-index: 1;
-  width: min(100%, 1760px);
-  min-height: clamp(780px, 76vw, 1040px);
-  margin: 0 auto;
-  padding:
-    clamp(96px, 10vh, 138px)
-    clamp(28px, 5.2vw, 92px);
+.programs-word--back {
+  z-index: 2;
+  color: rgba(242,238,229,0.10);
+  opacity: 0;
+}
 
-  display: grid;
-  grid-template-columns: minmax(340px, 0.76fr) minmax(0, 1.24fr);
-  gap: clamp(58px, 7vw, 122px);
-  align-items: center;
+.programs-word--front {
+  z-index: 8;
+  color: transparent;
+  -webkit-text-stroke: 2px rgba(255,255,255,0.92);
+  text-stroke: 2px rgba(255,255,255,0.92);
+  opacity: 0;
+}
+
+.bloom-athlete {
+  position: absolute;
+  z-index: 5;
+  left: 50%;
+  bottom: -2%;
+  width: min(62vw, 980px);
+  height: 90%;
+  max-width: none;
+
+  object-fit: contain;
+  object-position: center bottom;
+
+  opacity: 0;
+  filter: blur(16px) saturate(0.9) contrast(1.02);
+  transform: translate3d(-50%, 8%, 0) scale(1.08);
+  transform-origin: center bottom;
+  will-change: opacity, filter, transform;
 }
 
 .programs-copy {
-  max-width: 560px;
+  position: absolute;
+  z-index: 16;
+  left: clamp(24px, 5vw, 88px);
+  bottom: clamp(40px, 7vh, 82px);
+  width: min(470px, 36vw);
+
+  opacity: 0;
+  transform: translateY(34px);
+  will-change: opacity, transform;
 }
 
 .programs-kicker {
   display: flex;
   align-items: center;
-  gap: 15px;
-  margin: 0 0 28px;
+  gap: 13px;
+  margin: 0 0 18px;
 
   color: var(--programs-red);
-  font-family: "Inter", Arial, sans-serif;
-  font-size: 12px;
-  font-weight: 900;
-  line-height: 1;
-  letter-spacing: 0.32em;
+  font: 900 10px/1 "Inter", Arial, sans-serif;
+  letter-spacing: 0.28em;
   text-transform: uppercase;
 }
 
 .programs-kicker::before {
   content: "";
-  width: 46px;
+  width: 40px;
   height: 2px;
   background: var(--programs-red);
 }
 
 .programs-copy h2 {
   margin: 0;
+
   font-family: "Bebas Neue", "Arial Narrow", Impact, sans-serif;
-  font-size: clamp(78px, 7.4vw, 138px);
+  font-size: clamp(64px, 6vw, 112px);
   font-weight: 400;
-  line-height: 0.88;
+  line-height: 0.84;
   letter-spacing: -0.02em;
   text-transform: uppercase;
 }
@@ -90,246 +160,163 @@
 }
 
 .programs-lead {
-  max-width: 510px;
-  margin: 32px 0 0;
+  max-width: 420px;
+  margin: 22px 0 0;
 
-  color: var(--programs-muted);
-  font-family: "Inter", Arial, sans-serif;
-  font-size: clamp(16px, 1.02vw, 20px);
-  font-weight: 500;
-  line-height: 1.62;
-}
-
-.programs-points {
-  margin-top: 38px;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-}
-
-.programs-points span {
-  padding: 10px 13px;
-  border: 1px solid rgba(255, 255, 255, 0.16);
-
-  color: rgba(255, 255, 255, 0.86);
-  font-family: "Inter", Arial, sans-serif;
-  font-size: 10px;
-  font-weight: 800;
-  line-height: 1;
-  letter-spacing: 0.13em;
-  text-transform: uppercase;
+  color: rgba(255,255,255,0.68);
+  font: 500 clamp(14px, 0.9vw, 16px)/1.55 "Inter", Arial, sans-serif;
 }
 
 .programs-cta {
   width: fit-content;
-  margin-top: 44px;
-  padding-bottom: 8px;
+  margin-top: 28px;
+  padding-bottom: 7px;
 
   display: inline-flex;
   align-items: center;
-  gap: 18px;
+  gap: 16px;
 
   border-bottom: 1px solid var(--programs-red);
-  color: var(--programs-white);
+  color: #fff;
   text-decoration: none;
 
-  font-family: "Inter", Arial, sans-serif;
-  font-size: 12px;
-  font-weight: 900;
-  line-height: 1;
+  font: 900 11px/1 "Inter", Arial, sans-serif;
   letter-spacing: 0.09em;
   text-transform: uppercase;
-
-  transition: color 220ms ease;
 }
 
 .programs-cta span {
   color: var(--programs-red);
-  font-size: 22px;
-  line-height: 1;
+  font-size: 20px;
   transition: transform 220ms ease;
-}
-
-.programs-cta:hover {
-  color: var(--programs-red);
 }
 
 .programs-cta:hover span {
   transform: translateX(5px);
 }
 
-.programs-visual {
-  position: relative;
-  min-width: 0;
-}
-
-.programs-frame {
-  position: relative;
-  min-height: clamp(560px, 54vw, 820px);
-  overflow: hidden;
-  background: var(--programs-panel);
-}
-
-.programs-frame::before {
-  content: "";
+.programs-rail {
   position: absolute;
-  z-index: 2;
-  top: 0;
-  left: 0;
-  width: 5px;
-  height: 100%;
-  background: var(--programs-red);
+  z-index: 16;
+  right: clamp(24px, 4vw, 74px);
+  top: 50%;
+  display: flex;
+  gap: 24px;
+
+  color: rgba(255,255,255,0.54);
+  font: 800 9px/1 "Inter", Arial, sans-serif;
+  letter-spacing: 0.17em;
+  text-transform: uppercase;
+
+  opacity: 0;
+  transform: translate3d(44%, -50%, 0) rotate(90deg);
+  transform-origin: center;
+  will-change: opacity;
 }
 
-.programs-frame::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background:
-    linear-gradient(180deg, rgba(0,0,0,0.035), transparent 24%),
-    linear-gradient(0deg, rgba(0,0,0,0.06), transparent 22%);
-}
-
-.bloom-athlete {
-  position: absolute;
-  inset: 4% 4% 9%;
-  width: 92%;
-  height: 87%;
-  max-width: none;
-  display: block;
-  object-fit: contain;
-  object-position: center;
-  opacity: 1;
-  filter: none;
-  transform: none;
-}
-
-.programs-frame-label {
-  position: absolute;
-  z-index: 4;
-  left: clamp(24px, 3vw, 46px);
-  bottom: clamp(22px, 2.8vw, 42px);
-  padding: 14px 18px 15px;
-
-  background: rgba(8, 8, 8, 0.94);
-  color: #ffffff;
-  border-left: 3px solid var(--programs-red);
-}
-
-.programs-frame-label span,
-.programs-frame-label strong {
-  display: block;
-}
-
-.programs-frame-label span {
-  margin-bottom: 6px;
+.programs-rail span + span::before {
+  content: "—";
+  margin-right: 24px;
   color: var(--programs-red);
-  font-family: "Inter", Arial, sans-serif;
-  font-size: 9px;
-  font-weight: 900;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
 }
 
-.programs-frame-label strong {
-  font-family: "Bebas Neue", "Arial Narrow", Impact, sans-serif;
-  font-size: clamp(20px, 1.8vw, 30px);
-  font-weight: 400;
-  line-height: 1;
-  letter-spacing: 0.02em;
-  text-transform: uppercase;
-}
-
-@media (max-width: 1080px) {
-  .programs-stage {
-    grid-template-columns: minmax(310px, 0.85fr) minmax(0, 1.15fr);
-    gap: 46px;
+@media (max-width: 900px) {
+  .programs-transition {
+    height: 210svh;
   }
 
-  .programs-copy h2 {
-    font-size: clamp(72px, 8.2vw, 110px);
-  }
-
-  .programs-frame {
-    min-height: 610px;
-  }
-}
-
-@media (max-width: 860px) {
-  .programs-stage {
-    min-height: 0;
-    grid-template-columns: 1fr;
-    gap: 58px;
-    padding:
-      86px
-      clamp(22px, 5vw, 48px)
-      92px;
-  }
-
-  .programs-copy {
-    max-width: 700px;
-  }
-
-  .programs-copy h2 {
-    font-size: clamp(74px, 14vw, 120px);
-  }
-
-  .programs-frame {
-    min-height: clamp(520px, 82vw, 720px);
-  }
-}
-
-@media (max-width: 560px) {
-  .programs-stage {
-    gap: 44px;
-    padding: 68px 18px 72px;
-  }
-
-  .programs-kicker {
-    margin-bottom: 22px;
-    font-size: 10px;
-    letter-spacing: 0.25em;
-  }
-
-  .programs-copy h2 {
-    font-size: clamp(62px, 18vw, 88px);
-  }
-
-  .programs-lead {
-    margin-top: 24px;
-    font-size: 15px;
-  }
-
-  .programs-points {
-    margin-top: 28px;
-  }
-
-  .programs-cta {
-    margin-top: 34px;
-  }
-
-  .programs-frame {
-    min-height: 470px;
+  .programs-word {
+    font-size: clamp(220px, 47vw, 420px);
   }
 
   .bloom-athlete {
-    inset: 3% 2% 12%;
-    width: 96%;
-    height: 85%;
+    width: min(82vw, 760px);
   }
 
-  .programs-frame-label {
-    left: 16px;
-    right: 16px;
-    bottom: 16px;
+  .programs-copy {
+    width: min(500px, 48vw);
+  }
+
+  .programs-rail {
+    display: none;
+  }
+}
+
+@media (max-width: 700px) {
+  .programs-transition {
+    height: 190svh;
+  }
+
+  .programs-stage::before {
+    background-size: auto, 22vw 100%;
+  }
+
+  .programs-index {
+    top: 24px;
+    left: 18px;
+  }
+
+  .programs-word {
+    top: 40%;
+    font-size: clamp(190px, 60vw, 310px);
+  }
+
+  .bloom-athlete {
+    width: 112vw;
+    height: 73%;
+    bottom: 9%;
+  }
+
+  .programs-copy {
+    left: 18px;
+    right: 18px;
+    bottom: 32px;
     width: auto;
+  }
+
+  .programs-copy h2 {
+    font-size: clamp(58px, 17vw, 84px);
+  }
+
+  .programs-lead {
+    max-width: 350px;
+    margin-top: 15px;
+    font-size: 13px;
+  }
+
+  .programs-cta {
+    margin-top: 20px;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .programs-cta,
-  .programs-cta span {
-    transition: none;
+  .programs-transition {
+    height: auto;
+  }
+
+  .programs-stage {
+    position: relative;
+    min-height: 100svh;
+  }
+
+  .programs-index,
+  .programs-word,
+  .bloom-athlete,
+  .programs-copy,
+  .programs-rail {
+    opacity: 1;
+  }
+
+  .programs-word {
+    transform: translate3d(-50%, -50%, 0);
+  }
+
+  .bloom-athlete {
+    filter: none;
+    transform: translate3d(-50%, 0, 0);
+  }
+
+  .programs-copy {
+    transform: none;
   }
 }
