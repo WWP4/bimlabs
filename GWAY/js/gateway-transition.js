@@ -12,11 +12,6 @@
   const titleLines = [...stage.querySelectorAll('.gway-hero h1 span')];
   const support = stage.querySelector('.gway-hero-bottom');
   const reveal = stage.querySelector('.gway-section-reveal');
-  const revealIntro = stage.querySelector('.gway-section-reveal-intro');
-  const revealTitle = [...stage.querySelectorAll('.gway-reveal-title > *')];
-  const revealMeta = stage.querySelector('.gway-reveal-meta');
-  const revealFoot = stage.querySelector('.gway-reveal-foot');
-  const revealFootLine = revealFoot?.querySelector('i');
   const header = document.querySelector('.gway-header');
 
   const clamp = (value, min = 0, max = 1) =>
@@ -34,8 +29,7 @@
 
   function readProgress() {
     const rect = stage.getBoundingClientRect();
-    const travel = Math.max(1, stage.offsetHeight - window.innerHeight);
-
+    const travel = Math.max(1, stage.offsetHeight - innerHeight);
     target = clamp(-rect.top / travel);
 
     if (!raf) {
@@ -48,7 +42,7 @@
     const dt = Math.min((now - lastTime) / 1000, 0.05);
     lastTime = now;
 
-    current += (target - current) * (1 - Math.exp(-6.3 * dt));
+    current += (target - current) * (1 - Math.exp(-7.2 * dt));
 
     if (Math.abs(target - current) < 0.00045) {
       current = target;
@@ -56,90 +50,65 @@
 
     const p = current;
 
-    if (bg) {
-      const bgP = smoothstep(0.00, 0.72, p);
-      bg.style.transform =
-        `translate3d(0, ${bgP * 1.45}%, 0) scale(${1.015 + bgP * 0.055})`;
-    }
+    // Keep the hero alive longer, then clear it quickly into the next chapter.
+    const heroExit = smoothstep(0.22, 0.76, p);
 
-    const contentExit = smoothstep(0.11, 0.48, p);
+    if (bg) {
+      bg.style.transform =
+        `translate3d(0, ${heroExit * 1.2}%, 0) scale(${1.015 + heroExit * 0.038})`;
+    }
 
     if (content) {
       content.style.transform =
-        `translate3d(0, ${-24 * contentExit}px, 0) scale(${1 - contentExit * 0.021})`;
+        `translate3d(0, ${-18 * heroExit}px, 0) scale(${1 - heroExit * 0.012})`;
       content.style.transformOrigin = 'left center';
+      content.style.opacity = String(1 - heroExit * 0.96);
     }
 
     if (support) {
-      const supportExit = smoothstep(0.12, 0.38, p);
+      const supportExit = smoothstep(0.26, 0.62, p);
       support.style.opacity = String(1 - supportExit);
       support.style.transform =
-        `translate3d(${-12 * supportExit}px, ${-6 * supportExit}px, 0)`;
+        `translate3d(0, ${-8 * supportExit}px, 0)`;
     }
 
     titleLines.forEach((line, index) => {
-      const stagger = index * 0.025;
-      const lineExit = smoothstep(0.17 + stagger, 0.50 + stagger, p);
-
-      line.style.opacity = String(1 - lineExit);
-      line.style.transform =
-        `translate3d(0, ${-15 * lineExit * (index + 1)}px, 0)`;
-    });
-
-    if (header) {
-      const headerExit = smoothstep(0.07, 0.30, p);
-      header.style.opacity = String(1 - headerExit);
-      header.style.transform =
-        `translate3d(0, ${-14 * headerExit}px, 0)`;
-      header.style.pointerEvents = headerExit > 0.92 ? 'none' : '';
-    }
-
-    if (overlay) {
-      const overlayP = smoothstep(0.08, 0.64, p);
-      overlay.style.opacity = String(1 - overlayP * 0.13);
-    }
-
-    const panelP = smoothstep(0.20, 0.62, p);
-
-    if (reveal) {
-      reveal.style.transform =
-        `translate3d(0, ${(1 - panelP) * 100}%, 0)`;
-    }
-
-    const introIn = smoothstep(0.45, 0.64, p);
-    const introOut = smoothstep(0.88, 1.00, p);
-
-    if (revealIntro) {
-      revealIntro.style.opacity = String(introIn * (1 - introOut));
-      revealIntro.style.transform =
-        `translate3d(0, ${(1 - introIn) * 28 - introOut * 26}px, 0)`;
-    }
-
-    if (revealMeta) {
-      revealMeta.style.opacity =
-        String(smoothstep(0.49, 0.66, p) * (1 - introOut));
-    }
-
-    revealTitle.forEach((line, index) => {
-      const lineIn = smoothstep(
-        0.52 + index * 0.045,
-        0.70 + index * 0.045,
+      const lineExit = smoothstep(
+        0.30 + index * 0.025,
+        0.70 + index * 0.025,
         p
       );
 
-      line.style.opacity = String(lineIn * (1 - introOut));
+      line.style.opacity = String(1 - lineExit);
       line.style.transform =
-        `translateY(${(1 - lineIn) * 34 - introOut * 18}px)`;
+        `translate3d(0, ${-10 * lineExit * (index + 1)}px, 0)`;
     });
 
-    if (revealFoot) {
-      const footIn = smoothstep(0.62, 0.78, p);
-      revealFoot.style.opacity = String(footIn * (1 - introOut));
+    if (header) {
+      const headerExit = smoothstep(0.22, 0.58, p);
+      header.style.opacity = String(1 - headerExit);
+      header.style.transform =
+        `translate3d(0, ${-10 * headerExit}px, 0)`;
+      header.style.pointerEvents = headerExit > 0.95 ? 'none' : '';
     }
 
-    if (revealFootLine) {
-      revealFootLine.style.transform =
-        `scaleX(${smoothstep(0.62, 0.78, p)})`;
+    if (overlay) {
+      overlay.style.opacity =
+        String(1 - smoothstep(0.20, 0.72, p) * 0.16);
+    }
+
+    // The cream sheet only completes at the very end of the hero runway,
+    // so there is no blank "title-card" screen between hero and section 2.
+    const wipe = smoothstep(0.47, 1.00, p);
+
+    if (reveal) {
+      reveal.style.transform =
+        `translate3d(0, ${(1 - wipe) * 101}%, 0)`;
+
+      reveal.style.setProperty(
+        '--gway-reveal-edge',
+        String(smoothstep(0.48, 0.78, p))
+      );
     }
 
     if (hero) {
