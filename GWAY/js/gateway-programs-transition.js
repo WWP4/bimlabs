@@ -5,31 +5,67 @@
   const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
   if (reduced.matches) return;
 
-  const track = section.querySelector('.programs-marquee__track');
-  const copy = section.querySelector('.programs-copy');
-  const main = section.querySelector('.programs-visual--main');
-  const cards = [...section.querySelectorAll('.programs-card')];
-  const mediaImages = [...section.querySelectorAll('.programs-media img')];
-  const footer = section.querySelector('.programs-footer');
+  const scrollSpace = section.querySelector('.programs-scroll-space');
+  const sticky = section.querySelector('.programs-sticky');
+  const track = section.querySelector('[data-story-track]');
+  const cards = [...section.querySelectorAll('.story-card')];
+  const marquee = section.querySelector('.programs-marquee__track');
+  const progressBar = section.querySelector('.programs-progress__bar i');
+  const progressCount = section.querySelector('.programs-progress__count');
 
-  const clamp = (v,min=0,max=1) => Math.min(max,Math.max(min,v));
-  const smooth = (a,b,v) => {
-    const x = clamp((v-a)/(b-a));
-    return x*x*(3-2*x);
+  if (!scrollSpace || !sticky || !track) return;
+
+  const clamp = (value, min = 0, max = 1) =>
+    Math.min(max, Math.max(min, value));
+
+  const smooth = (from, to, value) => {
+    const x = clamp((value - from) / (to - from));
+    return x * x * (3 - 2 * x);
   };
 
   let target = 0;
   let current = 0;
   let raf = 0;
   let last = performance.now();
+  let maxTranslate = 0;
 
-  function progress() {
-    const rect = section.getBoundingClientRect();
-    return clamp((innerHeight - rect.top) / Math.max(1, innerHeight + rect.height));
+  function measure() {
+    if (innerWidth <= 760) {
+      maxTranslate = 0;
+      return;
+    }
+
+    const leftPad = parseFloat(getComputedStyle(track).paddingLeft) || 0;
+    const rightPad = parseFloat(getComputedStyle(track).paddingRight) || 0;
+
+    // End with the final frame comfortably inside the viewport,
+    // rather than flying completely off screen.
+    maxTranslate = Math.max(
+      0,
+      track.scrollWidth - innerWidth + leftPad + rightPad
+    );
+  }
+
+  function getProgress() {
+    if (innerWidth <= 760) return 0;
+
+    const rect = scrollSpace.getBoundingClientRect();
+    const travel = Math.max(1, scrollSpace.offsetHeight - innerHeight);
+
+    return clamp(-rect.top / travel);
+  }
+
+  function activeScene(p) {
+    // intro + six photographic moments
+    const scene = Math.min(6, Math.max(0, Math.round(p * 6)));
+    return scene;
   }
 
   function requestRender() {
-    target = progress();
+    if (innerWidth <= 760) return;
+
+    target = getProgress();
+
     if (!raf) {
       last = performance.now();
       raf = requestAnimationFrame(render);
@@ -37,48 +73,52 @@
   }
 
   function render(now) {
-    const dt = Math.min((now-last)/1000,.05);
+    const dt = Math.min((now - last) / 1000, 0.05);
     last = now;
 
-    current += (target-current) * (1-Math.exp(-6.2*dt));
-    if (Math.abs(target-current) < .00035) current = target;
+    current += (target - current) * (1 - Math.exp(-7.0 * dt));
+    if (Math.abs(target - current) < 0.00035) current = target;
 
     const p = current;
-    const inView = smooth(.03,.34,p);
-    const settle = smooth(.18,.78,p);
+    const eased = smooth(0, 1, p);
+    const x = -maxTranslate * eased;
 
-    if (track) {
-      track.style.setProperty('--culture-marquee-x', `${-190*p}px`);
+    track.style.setProperty('--story-x', `${x}px`);
+
+    if (marquee) {
+      marquee.style.setProperty('--culture-marquee-x', `${-240 * p}px`);
     }
 
-    if (copy) {
-      copy.style.opacity = String(inView);
-      copy.style.transform =
-        `translate3d(0,${(1-inView)*28 - settle*6}px,0)`;
+    if (progressBar) {
+      progressBar.style.setProperty('--story-progress', String(p));
     }
 
-    if (main && innerWidth > 760) {
-      main.style.setProperty('--culture-image-cut', `${8*(1-inView)}%`);
-      main.style.setProperty('--culture-image-y', `${(1-inView)*24 - settle*10}px`);
+    if (progressCount) {
+      const scene = Math.max(1, activeScene(p));
+      progressCount.textContent =
+        `${String(scene).padStart(2, '0')} / 06`;
     }
 
-    cards.forEach((card,index) => {
-      const q = smooth(.14 + index*.06,.40 + index*.06,p);
-      card.style.opacity = String(q);
-      card.style.transform = `translate3d(${(1-q)*22}px,0,0)`;
+    // Give every frame a tiny depth response as it crosses the viewport.
+    cards.forEach((card, index) => {
+      const rect = card.getBoundingClientRect();
+      const center = rect.left + rect.width / 2;
+      const distance = Math.abs(center - innerWidth / 2);
+      const proximity = 1 - clamp(distance / (innerWidth * 0.78));
+
+      const lift = -10 * proximity;
+      const scale = 0.985 + 0.015 * proximity;
+
+      card.style.setProperty('--story-card-y', `${lift}px`);
+      card.style.setProperty('--story-card-scale', String(scale));
+
+      const image = card.querySelector('img');
+      if (image) {
+        const drift = (center - innerWidth / 2) / innerWidth;
+        image.style.setProperty('--story-image-x', `${-18 * drift}px`);
+        image.style.setProperty('--story-image-scale', String(1.045 + 0.02 * proximity));
+      }
     });
-
-    mediaImages.forEach((img,index) => {
-      const q = settle * (index === 0 ? 1 : .65);
-      img.style.setProperty('--culture-photo-y', `${-10*q}px`);
-      img.style.setProperty('--culture-photo-scale', String(1.045 + q*.016));
-    });
-
-    if (footer) {
-      const q = smooth(.30,.52,p);
-      footer.style.opacity = String(q);
-      footer.style.transform = `translateY(${(1-q)*10}px)`;
-    }
 
     if (current !== target) {
       raf = requestAnimationFrame(render);
@@ -87,7 +127,30 @@
     }
   }
 
-  addEventListener('scroll',requestRender,{passive:true});
-  addEventListener('resize',requestRender,{passive:true});
-  requestRender();
+  function onResize() {
+    measure();
+    requestRender();
+  }
+
+  addEventListener('scroll', requestRender, { passive: true });
+  addEventListener('resize', onResize, { passive: true });
+
+  requestAnimationFrame(() => {
+    measure();
+    requestRender();
+  });
+
+  // Re-measure once images settle so the final translation is exact.
+  Promise.all(
+    [...section.querySelectorAll('img')].map(img => {
+      if (img.complete) return Promise.resolve();
+      return new Promise(resolve => {
+        img.addEventListener('load', resolve, { once: true });
+        img.addEventListener('error', resolve, { once: true });
+      });
+    })
+  ).then(() => {
+    measure();
+    requestRender();
+  });
 })();
