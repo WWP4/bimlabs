@@ -56,8 +56,8 @@
   }
 
   function activeScene(p) {
-    // intro + six photographic moments
-    const scene = Math.min(6, Math.max(0, Math.round(p * 6)));
+    // intro + four storyboard scenes
+    const scene = Math.min(4, Math.max(0, Math.round(p * 4)));
     return scene;
   }
 
@@ -96,7 +96,7 @@
     if (progressCount) {
       const scene = Math.max(1, activeScene(p));
       progressCount.textContent =
-        `${String(scene).padStart(2, '0')} / 06`;
+        `${String(scene).padStart(2, '0')} / 04`;
     }
 
     // Give every frame a tiny depth response as it crosses the viewport.
