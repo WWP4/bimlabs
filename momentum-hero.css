@@ -1,36 +1,35 @@
-/* Momentum / editable coded hero with independent high-resolution transparent athlete. */
+/* Momentum / editable typographic hero; trophy player cutout layered in front of oversized title. */
 :root{--red:#ed0016;--gutter:clamp(25px,3.8vw,66px)}
 *{box-sizing:border-box}
 html,body{margin:0;min-width:320px}
 body{background:#fff;color:#070707;font-family:'DM Sans',Arial,sans-serif;-webkit-font-smoothing:antialiased}
 .momentum-hero{min-height:max(760px,55.9vw);position:relative;isolation:isolate;background:#fff;overflow:hidden}
-.hero-athlete{
- position:absolute;z-index:0;top:-18px;right:clamp(-56px,3vw,52px);
- width:clamp(410px,47vw,780px);max-width:none;height:auto;
- opacity:.28;filter:grayscale(1) contrast(1.12);
+.hero-trophy{
+ position:absolute;z-index:3;top:20px;right:-16px;
+ width:clamp(500px,51vw,790px);max-width:none;height:auto;
  pointer-events:none;user-select:none;
- -webkit-mask-image:linear-gradient(to bottom,#000 0%,#000 42%,rgba(0,0,0,.75) 61%,transparent 96%);
- mask-image:linear-gradient(to bottom,#000 0%,#000 42%,rgba(0,0,0,.75) 61%,transparent 96%);
+ -webkit-mask-image:linear-gradient(to bottom,#000 0%,#000 82%,transparent 100%);
+ mask-image:linear-gradient(to bottom,#000 0%,#000 82%,transparent 100%);
 }
 .hero-content{position:relative;z-index:1;padding:31px var(--gutter) 100px}
-.brand{font-size:clamp(24px,2.1vw,32px);font-weight:800;letter-spacing:-.075em;line-height:1}
+.brand{position:relative;z-index:4;font-size:clamp(24px,2.1vw,32px);font-weight:800;letter-spacing:-.075em;line-height:1}
 .brand span{color:var(--red);margin-left:2px}
-.intro{margin-top:clamp(78px,6.55vw,104px)}
+.intro{position:relative;z-index:4;margin-top:clamp(78px,6.55vw,104px)}
 .eyebrow{display:flex;align-items:center;column-gap:13px;margin:0 0 22px;text-transform:uppercase;font-size:clamp(9px,.82vw,12px);font-weight:800;letter-spacing:.29em;white-space:nowrap}
 .eyebrow-line{width:54px;max-width:5vw;height:2px;background:var(--red);margin-right:8px;flex:none}
 .slash{padding:0 2px;font-weight:500}
 h1{margin:0;font-family:'Archivo Black','Arial Black',Arial,sans-serif;text-transform:uppercase;font-size:clamp(54px,7.2vw,111px);font-weight:900;line-height:.84;letter-spacing:-.075em}
-.giant-title{width:calc(100vw - 44px);margin:18px 0 0 calc(-1*var(--gutter) + 22px);font-family:'Archivo Black','Arial Black',Arial,sans-serif;color:var(--red);font-weight:900;font-size:clamp(135px,17vw,340px);line-height:.77;letter-spacing:-.085em;white-space:nowrap}
+.giant-title{position:relative;z-index:2;width:calc(100vw - 44px);margin:48px 0 0 calc(-1*var(--gutter) + 22px);font-family:'Archivo Black','Arial Black',Arial,sans-serif;color:var(--red);font-weight:900;font-size:clamp(135px,17vw,340px);line-height:.77;letter-spacing:-.085em;white-space:nowrap}
 .giant-title span{display:inline-block;transform-origin:left center}
-.hero-description{max-width:710px;margin:25px 0 0;font-size:clamp(18px,1.55vw,24px);line-height:1.31;letter-spacing:-.04em;color:#565658}
+.hero-description{position:relative;z-index:4;max-width:710px;margin:25px 0 0;font-size:clamp(18px,1.55vw,24px);line-height:1.31;letter-spacing:-.04em;color:#565658}
 @media(max-width:850px){
  .momentum-hero{min-height:100svh}
  .hero-content{padding-top:28px}
  .intro{margin-top:clamp(112px,15vw,140px)}
  h1{font-size:clamp(53px,8.1vw,75px)}
- .giant-title{font-size:19vw;line-height:.88;margin-top:27px}
+ .giant-title{font-size:19vw;line-height:.88;margin-top:45px}
  .hero-description{font-size:clamp(17px,2vw,20px);max-width:580px}
- .hero-athlete{right:-18vw;width:82vw;opacity:.24}
+ .hero-trophy{top:54px;right:-10vw;width:76vw}
  .desktop-break{display:none}
 }
 @media(max-width:520px){
@@ -41,8 +40,8 @@ h1{margin:0;font-family:'Archivo Black','Arial Black',Arial,sans-serif;text-tran
  .eyebrow{letter-spacing:.1em;gap:5px;font-size:8px;white-space:normal;line-height:1.5;margin-bottom:19px}
  .eyebrow-line{width:22px;max-width:none;margin-right:6px}
  h1{font-size:clamp(43px,11vw,60px);line-height:.98;letter-spacing:-.065em}
- .giant-title{font-size:20vw;line-height:1;margin:35px 0 0 calc(-1*var(--gutter) + 14px);width:calc(100vw - 28px)}
+ .giant-title{font-size:20vw;line-height:1;margin:45px 0 0 calc(-1*var(--gutter) + 14px);width:calc(100vw - 28px)}
  .hero-description{margin-top:35px;font-size:17px;letter-spacing:-.024em;line-height:1.5}
- .hero-athlete{top:12px;right:-37vw;width:107vw;opacity:.19;filter:grayscale(1) contrast(1.08);-webkit-mask-image:linear-gradient(to bottom,#000 0%,rgba(0,0,0,.72) 55%,transparent 90%);mask-image:linear-gradient(to bottom,#000 0%,rgba(0,0,0,.72) 55%,transparent 90%)}
+ .hero-trophy{top:180px;right:-42vw;width:101vw;-webkit-mask-image:linear-gradient(to bottom,#000 0%,#000 78%,transparent 100%);mask-image:linear-gradient(to bottom,#000 0%,#000 78%,transparent 100%)}
 }
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
