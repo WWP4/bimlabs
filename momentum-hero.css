@@ -1,4 +1,4 @@
-/* Momentum / responsive, editable coded hero (no flattened page image). */
+/* Momentum / editable coded hero with independent high-resolution transparent athlete. */
 :root{--red:#ed0016;--gutter:clamp(25px,3.8vw,66px)}
 *{box-sizing:border-box}
 html,body{margin:0;min-width:320px}
@@ -7,7 +7,7 @@ body{background:#fff;color:#070707;font-family:'DM Sans',Arial,sans-serif;-webki
 .hero-athlete{
  position:absolute;z-index:0;top:-18px;right:clamp(-56px,3vw,52px);
  width:clamp(410px,47vw,780px);max-width:none;height:auto;
- opacity:.21;filter:grayscale(1) contrast(.92);
+ opacity:.28;filter:grayscale(1) contrast(1.12);
  pointer-events:none;user-select:none;
  -webkit-mask-image:linear-gradient(to bottom,#000 0%,#000 42%,rgba(0,0,0,.75) 61%,transparent 96%);
  mask-image:linear-gradient(to bottom,#000 0%,#000 42%,rgba(0,0,0,.75) 61%,transparent 96%);
@@ -30,7 +30,7 @@ h1{margin:0;font-family:'Archivo Black','Arial Black',Arial,sans-serif;text-tran
  h1{font-size:clamp(53px,8.1vw,75px)}
  .giant-title{font-size:19vw;line-height:.88;margin-top:27px}
  .hero-description{font-size:clamp(17px,2vw,20px);max-width:580px}
- .hero-athlete{right:-18vw;width:82vw;opacity:.16}
+ .hero-athlete{right:-18vw;width:82vw;opacity:.24}
  .desktop-break{display:none}
 }
 @media(max-width:520px){
@@ -43,6 +43,6 @@ h1{margin:0;font-family:'Archivo Black','Arial Black',Arial,sans-serif;text-tran
  h1{font-size:clamp(43px,11vw,60px);line-height:.98;letter-spacing:-.065em}
  .giant-title{font-size:20vw;line-height:1;margin:35px 0 0 calc(-1*var(--gutter) + 14px);width:calc(100vw - 28px)}
  .hero-description{margin-top:35px;font-size:17px;letter-spacing:-.024em;line-height:1.5}
- .hero-athlete{top:12px;right:-37vw;width:107vw;opacity:.13;filter:grayscale(1) contrast(.9);-webkit-mask-image:linear-gradient(to bottom,#000 0%,rgba(0,0,0,.72) 55%,transparent 90%);mask-image:linear-gradient(to bottom,#000 0%,rgba(0,0,0,.72) 55%,transparent 90%)}
+ .hero-athlete{top:12px;right:-37vw;width:107vw;opacity:.19;filter:grayscale(1) contrast(1.08);-webkit-mask-image:linear-gradient(to bottom,#000 0%,rgba(0,0,0,.72) 55%,transparent 90%);mask-image:linear-gradient(to bottom,#000 0%,rgba(0,0,0,.72) 55%,transparent 90%)}
 }
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
