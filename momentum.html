@@ -10,7 +10,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=DM+Sans:wght@400;500;600;700;800;900&family=League+Spartan:wght@600;700;800;900&display=swap" rel="stylesheet">
   <link rel="preload" as="image" href="/assets/momentum-trophy-player-final.webp" type="image/webp">
-  <link rel="stylesheet" href="/momentum-hero.css?v=section3-reveal-20261023">
+  <link rel="stylesheet" href="/momentum-hero.css?v=footer-rise-20261023">
 </head>
 <body>
 <header class="site-header" id="site-header">
@@ -428,6 +428,22 @@
     }
   });
   section.classList.add('is-reveal-ready');
+})();
+
+/* Footer: dark panel rises into view, followed by its editorial typography. */
+(() => {
+  const footer = document.querySelector('.momentum-footer');
+  if (!footer || !('IntersectionObserver' in window) || !window.matchMedia ||
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  const observer = new IntersectionObserver((entries) => {
+    if (!entries.some(entry => entry.isIntersecting)) return;
+    footer.classList.add('is-visible');
+    observer.disconnect();
+  }, { rootMargin: '0px 0px -2% 0px', threshold: 0.04 });
+
+  footer.classList.add('is-reveal-ready');
+  observer.observe(footer);
 })();
 </script>
 </body>
