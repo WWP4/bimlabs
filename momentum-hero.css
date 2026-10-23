@@ -1,66 +1,186 @@
-/* Momentum partner hero — editable typography and an opaque foreground photo with native transparent cutout. */
-:root{--red:#ee001a;--gutter:clamp(24px,3.8vw,66px)}
-*{box-sizing:border-box}
-html,body{margin:0;min-width:320px}
-body{background:#fff;color:#080808;font-family:'DM Sans',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
-.momentum-hero{position:relative;isolation:isolate;min-height:max(840px,61vw);overflow:hidden;background:#fff}
-.hero-content{position:relative;max-width:1800px;margin:0 auto;padding:31px var(--gutter) 0}
-.brand{position:relative;z-index:5;width:max-content;font-size:clamp(24px,2.1vw,32px);font-weight:800;letter-spacing:-.075em;line-height:1}
-.brand span{color:var(--red);margin-left:2px}
-.intro{position:relative;z-index:4;margin-top:clamp(78px,6.55vw,104px);max-width:750px}
-.eyebrow{display:flex;align-items:center;column-gap:13px;margin:0 0 22px;text-transform:uppercase;font-size:clamp(9px,.82vw,12px);font-weight:800;letter-spacing:.29em;white-space:nowrap}
-.eyebrow-line{width:54px;max-width:5vw;height:2px;background:var(--red);margin-right:8px;flex:none}
-.slash{padding:0 2px;font-weight:500}
-h1{margin:0;font-family:'Archivo Black','Arial Black',Arial,sans-serif;text-transform:uppercase;font-size:clamp(54px,7.2vw,111px);font-weight:900;line-height:.84;letter-spacing:-.075em}
-.hero-description{position:relative;z-index:5;max-width:590px;margin:24px 0 0;font-size:clamp(18px,1.5vw,23px);line-height:1.34;letter-spacing:-.035em;color:#57585c}
-.word-stage{position:relative;isolation:isolate;min-height:clamp(350px,29vw,440px);margin-top:clamp(78px,6.2vw,98px)}
-.giant-title{position:relative;z-index:1;width:calc(100vw - 44px);max-width:calc(1800px - 44px);margin:0 0 0 calc(-1*var(--gutter) + 22px);font-family:'League Spartan',Arial,sans-serif;font-size:clamp(146px,19vw,355px);font-weight:600;line-height:.87;letter-spacing:-.065em;color:var(--red);white-space:nowrap}
-.giant-title span{display:inline-block;transform-origin:left center}
-.hero-trophy{position:absolute;z-index:2;top:clamp(-415px,-25vw,-310px);left:50%;transform:translateX(-50%);width:clamp(465px,43vw,650px);max-width:none;height:auto;pointer-events:none;user-select:none;object-fit:contain;}
-@media(max-width:900px){
- .momentum-hero{min-height:810px}
- .intro{margin-top:clamp(105px,13vw,130px)}
- h1{font-size:clamp(54px,8vw,82px)}
- .hero-description{font-size:clamp(17px,2.15vw,20px);max-width:530px}
- .word-stage{margin-top:110px;min-height:390px}
- .giant-title{font-size:21vw}
- .hero-trophy{top:-260px;width:clamp(405px,57vw,520px)}
+/*
+ * MOMENTUM — Partner Landing Hero
+ * Complete responsive CSS rebuild for existing momentum.html.
+ * Trophy cutout remains at 100% opacity, without filters or fading.
+ */
+:root {
+  --momentum-red: #ee001a;
+  --momentum-ink: #080808;
+  --momentum-muted: #57585c;
+  --page-gutter: clamp(24px, 3.8vw, 66px);
 }
-@media(max-width:520px){
- :root{--gutter:22px}
- .momentum-hero{min-height:850px}
- .hero-content{padding-top:28px}
- .brand{font-size:25px}
- .intro{margin-top:118px}
- .eyebrow{font-size:8px;letter-spacing:.12em;column-gap:6px;white-space:normal;line-height:1.45;margin-bottom:18px}
- .eyebrow-line{width:24px;max-width:none;margin-right:6px}
- h1{font-size:clamp(44px,11vw,58px);line-height:.95;letter-spacing:-.067em}
- .hero-description{font-size:16.5px;line-height:1.48;letter-spacing:-.025em;margin-top:20px}
- .word-stage{margin-top:162px;min-height:330px}
- .giant-title{font-size:24.5vw;line-height:.88;width:calc(100vw - 28px);margin-left:calc(-1*var(--gutter) + 14px)}
- .hero-trophy{top:-156px;width:90vw;max-width:390px}
+*, *::before, *::after { box-sizing: border-box; }
+html, body { min-width: 320px; margin: 0; }
+body {
+  background: #fff;
+  color: var(--momentum-ink);
+  font-family: 'DM Sans', system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
 }
-@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
-/* Soft editorial background portrait: independent layer behind the code-based hero. */
-.hero-background-athlete{
-  position:absolute;
-  z-index:0;
-  top:-40px;
-  right:clamp(-100px,-4vw,-20px);
-  width:clamp(540px,58vw,900px);
-  max-width:none;
-  height:auto;
-  opacity:.27;
-  filter:grayscale(1) contrast(.9) brightness(1.08);
-  mix-blend-mode:multiply;
-  pointer-events:none;
-  user-select:none;
-  -webkit-mask-image:linear-gradient(to bottom,#000 0%,#000 38%,rgba(0,0,0,.68) 65%,transparent 98%);
-  mask-image:linear-gradient(to bottom,#000 0%,#000 38%,rgba(0,0,0,.68) 65%,transparent 98%);
+.momentum-hero {
+  position: relative;
+  isolation: isolate;
+  min-height: max(980px, 68vw);
+  overflow: hidden;
+  background: #fff;
 }
-@media(max-width:900px){
-  .hero-background-athlete{width:78vw;right:-16vw;top:-5px;opacity:.20}
+.hero-content {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 1800px;
+  margin-inline: auto;
+  padding: 31px var(--page-gutter) 0;
 }
-@media(max-width:520px){
-  .hero-background-athlete{width:123vw;right:-57vw;top:35px;opacity:.12}
+.brand {
+  position: relative;
+  z-index: 5;
+  width: max-content;
+  font-size: clamp(24px, 2.1vw, 32px);
+  font-weight: 800;
+  letter-spacing: -0.075em;
+  line-height: 1;
+}
+.brand span { margin-left: 2px; color: var(--momentum-red); }
+.intro {
+  position: relative;
+  z-index: 4;
+  max-width: 750px;
+  margin-top: clamp(78px, 6.55vw, 104px);
+}
+.eyebrow {
+  display: flex;
+  align-items: center;
+  column-gap: 13px;
+  margin: 0 0 22px;
+  font-size: clamp(9px, 0.82vw, 12px);
+  font-weight: 800;
+  letter-spacing: 0.29em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.eyebrow-line {
+  flex: none;
+  width: 54px;
+  max-width: 5vw;
+  height: 2px;
+  margin-right: 8px;
+  background: var(--momentum-red);
+}
+.slash { padding-inline: 2px; font-weight: 500; }
+.intro h1 {
+  margin: 0;
+  font-family: 'Archivo Black', 'Arial Black', Arial, sans-serif;
+  font-size: clamp(54px, 7.2vw, 111px);
+  font-weight: 900;
+  line-height: 0.84;
+  letter-spacing: -0.075em;
+  text-transform: uppercase;
+}
+.hero-description {
+  position: relative;
+  z-index: 5;
+  max-width: 590px;
+  margin: 24px 0 0;
+  color: var(--momentum-muted);
+  font-size: clamp(18px, 1.5vw, 23px);
+  line-height: 1.34;
+  letter-spacing: -0.035em;
+}
+/* Bigger red wordmark, placed higher than before */
+.word-stage {
+  position: relative;
+  isolation: isolate;
+  min-height: clamp(430px, 35vw, 600px);
+  margin-top: clamp(22px, 2.8vw, 42px);
+}
+.giant-title {
+  position: relative;
+  z-index: 1;
+  width: calc(100vw - 44px);
+  max-width: calc(1800px - 44px);
+  margin: 0 0 0 calc(-1 * var(--page-gutter) + 22px);
+  color: var(--momentum-red);
+  font-family: 'League Spartan', Arial, sans-serif;
+  font-size: clamp(172px, 22vw, 430px);
+  font-weight: 700;
+  line-height: 0.82;
+  letter-spacing: -0.065em;
+  white-space: nowrap;
+}
+.giant-title span {
+  display: inline-block;
+  transform-origin: left center;
+}
+/* Full-color, full-opacity transparent cutout */
+.hero-trophy {
+  position: absolute;
+  z-index: 2;
+  top: clamp(-520px, -32vw, -390px);
+  left: 50%;
+  width: clamp(600px, 54vw, 860px);
+  max-width: none;
+  height: auto;
+  transform: translateX(-50%);
+  object-fit: contain;
+  pointer-events: none;
+  user-select: none;
+}
+/* Separate grayscale atmospheric portrait, behind the typography */
+.hero-background-athlete {
+  position: absolute;
+  z-index: 0;
+  top: -40px;
+  right: clamp(-100px, -4vw, -20px);
+  width: clamp(540px, 58vw, 900px);
+  max-width: none;
+  height: auto;
+  opacity: 0.27;
+  filter: grayscale(1) contrast(0.9) brightness(1.08);
+  mix-blend-mode: multiply;
+  pointer-events: none;
+  user-select: none;
+  -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 38%, rgba(0,0,0,0.68) 65%, transparent 98%);
+  mask-image: linear-gradient(to bottom, #000 0%, #000 38%, rgba(0,0,0,0.68) 65%, transparent 98%);
+}
+@media (max-width: 900px) {
+  .momentum-hero { min-height: 900px; }
+  .intro { margin-top: clamp(105px, 13vw, 130px); }
+  .intro h1 { font-size: clamp(54px, 8vw, 82px); }
+  .hero-description { max-width: 530px; font-size: clamp(17px, 2.15vw, 20px); }
+  .word-stage { min-height: 475px; margin-top: clamp(36px, 5vw, 58px); }
+  .giant-title { font-size: 24vw; font-weight: 700; line-height: 0.83; }
+  .hero-trophy { top: clamp(-360px, -38vw, -270px); width: clamp(490px, 70vw, 680px); }
+  .hero-background-athlete { top: -5px; right: -16vw; width: 78vw; opacity: 0.20; }
+}
+@media (max-width: 520px) {
+  :root { --page-gutter: 22px; }
+  .momentum-hero { min-height: 910px; }
+  .hero-content { padding-top: 28px; }
+  .brand { font-size: 25px; }
+  .intro { margin-top: 118px; }
+  .eyebrow {
+    column-gap: 6px;
+    margin-bottom: 18px;
+    font-size: 8px;
+    line-height: 1.45;
+    letter-spacing: 0.12em;
+    white-space: normal;
+  }
+  .eyebrow-line { width: 24px; max-width: none; margin-right: 6px; }
+  .intro h1 { font-size: clamp(44px, 11vw, 58px); line-height: 0.95; letter-spacing: -0.067em; }
+  .hero-description { margin-top: 20px; font-size: 16.5px; line-height: 1.48; letter-spacing: -0.025em; }
+  .word-stage { min-height: 430px; margin-top: clamp(40px, 10vw, 58px); }
+  .giant-title {
+    width: calc(100vw - 28px);
+    margin-left: calc(-1 * var(--page-gutter) + 14px);
+    font-size: 27vw;
+    font-weight: 700;
+    line-height: 0.84;
+  }
+  .hero-trophy { top: clamp(-260px, -54vw, -185px); width: 110vw; max-width: 520px; }
+  .hero-background-athlete { top: 35px; right: -57vw; width: 123vw; opacity: 0.12; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { scroll-behavior: auto !important; }
 }
