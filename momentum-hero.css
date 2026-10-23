@@ -799,235 +799,153 @@ img { display: block; }
 
 
 
-/* ============================================================
-   SECTION 03 — HOW IT WORKS / FOUR SIMPLE STEPS
-   Clean white editorial layout, matching the approved concept.
-   ============================================================ */
+/* ===============================================================
+   SECTION 03 — HOW IT WORKS
+   Restrained editorial styling: generous space, fine separators,
+   modest icons and concise copy. No cards or secondary CTA.
+   =============================================================== */
 .momentum-flow-section {
   position: relative;
-  padding: clamp(92px, 8vw, 135px) 0 clamp(98px, 8vw, 145px);
-  background: #fff;
-  color: #0b0d10;
   overflow: hidden;
+  padding: clamp(104px, 10vw, 164px) 0 clamp(114px, 11vw, 182px);
+  background: #fff;
+  color: #15171a;
 }
 .momentum-flow-wrap {
-  width: min(calc(100% - 2 * var(--gutter)), 1570px);
+  width: min(calc(100% - 2 * var(--gutter)), 1380px);
   margin-inline: auto;
 }
-.momentum-flow-head {
-  margin-bottom: clamp(54px, 5.4vw, 92px);
+.momentum-flow-heading {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(300px, .64fr);
+  align-items: end;
+  gap: clamp(55px, 8vw, 155px);
+  margin-bottom: clamp(80px, 9vw, 140px);
 }
 .momentum-flow-kicker {
   display: flex;
   align-items: center;
-  gap: 19px;
-  margin: 0 0 clamp(25px, 2.4vw, 41px);
-  color: #24282d;
-  font: 800 11px/1.3 'DM Sans', sans-serif;
-  letter-spacing: .24em;
+  gap: 18px;
+  margin: 0 0 35px;
+  color: #5c6066;
+  font: 800 10px/1.4 'DM Sans', Arial, sans-serif;
+  letter-spacing: .21em;
 }
 .momentum-flow-line {
   display: inline-block;
-  flex: none;
-  width: 61px;
+  width: 33px;
   height: 2px;
-  background: var(--red);
+  flex: none;
+  background: #cf1730;
 }
-.momentum-flow-head-grid {
-  display: grid;
-  grid-template-columns: minmax(0, 2.2fr) minmax(275px, .78fr);
-  align-items: start;
-  gap: clamp(35px, 5vw, 88px);
-}
-.momentum-flow-head-grid h2 {
+.momentum-flow-heading h2 {
   margin: 0;
-  min-width: 0;
-  font-family: 'Archivo Black', 'Arial Black', Arial, sans-serif;
-  font-size: clamp(54px, 6.1vw, 102px);
-  line-height: .97;
-  font-weight: 900;
-  letter-spacing: -.083em;
-  white-space: nowrap;
+  color: #161719;
+  font-family: 'DM Sans', Arial, sans-serif;
+  font-size: clamp(44px, 4.4vw, 70px);
+  font-weight: 800;
+  letter-spacing: -.063em;
+  line-height: 1.12;
 }
-.momentum-flow-head-grid .flow-title-line {
-  display: block;
-  margin-top: 7px;
-  font-size: .695em;
-  letter-spacing: -.067em;
-  line-height: 1.04;
-}
-.momentum-flow-head-grid h2 em {
-  color: var(--red);
+.momentum-flow-heading h2 em {
+  color: #c91932;
   font-style: normal;
+  font-weight: 700;
 }
-.momentum-flow-summary {
+.momentum-flow-heading-secondary {
+  padding: 0 0 4px 26px;
+  border-left: 1px solid #dfe1e4;
+}
+.momentum-flow-heading-secondary p {
   max-width: 390px;
-  margin: 5px 0 0;
-  padding: 0 0 0 clamp(20px, 2vw, 33px);
-  border-left: 1px solid #c6c9ce;
-  color: #555a62;
-  font-size: clamp(17px, 1.28vw, 21px);
-  line-height: 1.58;
+  margin: 0;
+  color: #646971;
+  font-size: clamp(16px, 1.3vw, 19px);
   font-weight: 400;
-  letter-spacing: -.023em;
+  letter-spacing: -.018em;
+  line-height: 1.7;
 }
 .momentum-flow-steps {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: clamp(18px, 2vw, 32px);
+  column-gap: clamp(25px, 4vw, 74px);
+  row-gap: 52px;
 }
 .momentum-flow-step {
   min-width: 0;
+  padding-top: 24px;
+  border-top: 1px solid #d9dce0;
 }
 .momentum-flow-step-top {
   display: flex;
-  align-items: center;
-  gap: 19px;
-  margin-bottom: 20px;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
+  min-height: 70px;
+  margin: 0 0 31px;
 }
 .momentum-flow-number {
-  color: var(--red);
-  font-size: clamp(22px, 1.75vw, 29px);
-  line-height: 1;
-  font-weight: 900;
-  letter-spacing: -.035em;
+  color: #cb1932;
+  font: 800 13px/1.3 'DM Sans', Arial, sans-serif;
+  letter-spacing: .04em;
 }
-.momentum-flow-rule {
+.momentum-flow-step-top svg {
   display: block;
-  flex: 1;
-  height: 1px;
-  background: #d6d8dc;
-}
-.momentum-flow-icon-card {
-  display: grid;
-  place-items: center;
-  height: clamp(132px, 11.2vw, 171px);
-  margin: 0 0 24px;
-  border: 1px solid #f2f2f4;
-  border-radius: 15px;
-  background: #f7f7f8;
-}
-.momentum-flow-icon-card svg {
-  width: clamp(65px, 5.4vw, 85px);
-  height: clamp(65px, 5.4vw, 85px);
-  color: #111214;
+  width: 46px;
+  height: 46px;
+  color: #25272c;
+  flex: none;
 }
 .momentum-flow-step h3 {
-  margin: 0 0 15px;
-  color: #101113;
+  margin: 0 0 13px;
+  color: #181a1d;
   font-family: 'DM Sans', Arial, sans-serif;
-  font-size: clamp(27px, 2.5vw, 41px);
-  line-height: 1.1;
-  font-weight: 800;
-  letter-spacing: -.059em;
+  font-size: clamp(24px, 2.1vw, 31px);
+  font-weight: 750;
+  line-height: 1.18;
+  letter-spacing: -.053em;
 }
 .momentum-flow-step p {
-  max-width: 325px;
+  max-width: 290px;
   margin: 0;
-  color: #51555d;
-  font-size: clamp(16px, 1.16vw, 20px);
-  line-height: 1.55;
-  letter-spacing: -.022em;
+  color: #6c7179;
+  font-size: clamp(15px, 1.15vw, 17px);
+  font-weight: 400;
+  letter-spacing: -.012em;
+  line-height: 1.7;
 }
-.momentum-flow-footer {
-  display: flex;
-  align-items: center;
-  gap: 30px;
-  min-height: 132px;
-  margin-top: clamp(55px, 5.4vw, 93px);
-  padding: 28px clamp(25px, 3vw, 52px);
-  border-radius: 22px;
-  background: #f8f8f9;
-}
-.momentum-flow-footer-arrow {
-  flex: none;
-  color: var(--red);
-  font-family: Arial, sans-serif;
-  font-size: clamp(41px, 3.3vw, 57px);
-  line-height: 1;
-}
-.momentum-flow-footer-copy {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 8px;
-  min-height: 58px;
-  padding-left: 28px;
-  border-left: 1px solid #d4d6da;
-}
-.momentum-flow-footer-copy span {
-  color: #292d32;
-  font-size: 11px;
-  line-height: 1.3;
-  font-weight: 900;
-  letter-spacing: .2em;
-}
-.momentum-flow-footer-copy b {
-  padding-inline: 8px;
-  color: #adb1b7;
-  font-weight: 500;
-}
-.momentum-flow-footer-word {
-  margin-left: auto;
-  color: #1c1c1d;
-  font-size: clamp(18px, 2vw, 29px);
-  line-height: 1;
-  font-weight: 900;
-  letter-spacing: -.075em;
-}
-.momentum-flow-footer-word span { color: var(--red); }
 
-@media (max-width: 1200px) {
-  .momentum-flow-head-grid {
-    grid-template-columns: minmax(0, 1fr);
-    gap: 25px;
+@media (max-width: 1050px) {
+  .momentum-flow-heading {
+    grid-template-columns: 1fr;
+    align-items: start;
+    gap: 32px;
+    margin-bottom: 75px;
   }
-  .momentum-flow-summary {
-    max-width: 800px;
-    font-size: clamp(18px, 1.9vw, 21px);
-  }
-  .momentum-flow-head-grid h2 { font-size: clamp(59px, 7.4vw, 90px); }
-}
-@media (max-width: 900px) {
+  .momentum-flow-heading-secondary p { max-width: 640px; }
   .momentum-flow-steps {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 38px 23px;
+    column-gap: clamp(30px, 8vw, 85px);
+    row-gap: 65px;
   }
-  .momentum-flow-icon-card { height: 160px; }
-  .momentum-flow-step h3 { font-size: 34px; }
-  .momentum-flow-step p { font-size: 17px; }
-  .momentum-flow-footer { padding: 28px 30px; }
+  .momentum-flow-step p { max-width: 370px; }
 }
-@media (max-width: 650px) {
-  .momentum-flow-section { padding: 78px 0 90px; }
-  .momentum-flow-kicker { margin-bottom: 24px; font-size: 10px; gap: 13px; letter-spacing: .19em; }
-  .momentum-flow-line { width: 38px; }
-  .momentum-flow-head { margin-bottom: 52px; }
-  .momentum-flow-head-grid h2 {
-    font-size: clamp(43px, 10.4vw, 67px);
-    white-space: normal;
-    line-height: 1;
+@media (max-width: 600px) {
+  .momentum-flow-section { padding: 88px 0 110px; }
+  .momentum-flow-heading { gap: 25px; margin-bottom: 64px; }
+  .momentum-flow-kicker { gap: 12px; margin-bottom: 26px; font-size: 10px; }
+  .momentum-flow-line { width: 27px; }
+  .momentum-flow-heading h2 {
+    font-size: clamp(39px, 10.3vw, 55px);
+    line-height: 1.1;
+    letter-spacing: -.058em;
   }
-  .momentum-flow-head-grid .flow-title-line {
-    margin-top: 5px;
-    font-size: .82em;
-    line-height: 1.07;
-  }
-  .momentum-flow-summary { padding-left: 19px; font-size: 16px; line-height: 1.55; }
-  .momentum-flow-steps { grid-template-columns: 1fr; gap: 37px; }
-  .momentum-flow-step-top { margin-bottom: 15px; }
-  .momentum-flow-icon-card { height: 125px; margin-bottom: 20px; border-radius: 13px; }
-  .momentum-flow-icon-card svg { width: 70px; height: 70px; }
-  .momentum-flow-step h3 { font-size: 33px; margin-bottom: 10px; }
-  .momentum-flow-step p { max-width: 440px; font-size: 16px; line-height: 1.52; }
-  .momentum-flow-footer { min-height: 110px; margin-top: 53px; gap: 16px; padding: 23px 20px; border-radius: 15px; }
-  .momentum-flow-footer-arrow { font-size: 38px; }
-  .momentum-flow-footer-copy { padding-left: 17px; gap: 8px; }
-  .momentum-flow-footer-copy span { font-size: 9px; letter-spacing: .13em; }
-  .momentum-flow-footer-copy b { padding-inline: 4px; }
-  .momentum-flow-footer-word { display: none; }
-}
-@media (max-width: 370px) {
-  .momentum-flow-head-grid h2 { font-size: 40px; }
-  .momentum-flow-head-grid .flow-title-line { font-size: .75em; }
+  .momentum-flow-heading-secondary { padding-left: 17px; }
+  .momentum-flow-heading-secondary p { font-size: 15.5px; line-height: 1.65; }
+  .momentum-flow-steps { grid-template-columns: 1fr; row-gap: 43px; }
+  .momentum-flow-step { padding-top: 20px; }
+  .momentum-flow-step-top { min-height: 55px; margin-bottom: 24px; }
+  .momentum-flow-step-top svg { width: 41px; height: 41px; }
+  .momentum-flow-step h3 { margin-bottom: 9px; font-size: 27px; }
+  .momentum-flow-step p { max-width: 400px; font-size: 15.5px; line-height: 1.65; }
 }
