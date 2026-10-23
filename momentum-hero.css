@@ -41,3 +41,26 @@ h1{margin:0;font-family:'Archivo Black','Arial Black',Arial,sans-serif;text-tran
  .hero-trophy{top:-156px;width:82vw;max-width:355px}
 }
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+/* Soft editorial background portrait: independent layer behind the code-based hero. */
+.hero-background-athlete{
+  position:absolute;
+  z-index:0;
+  top:-40px;
+  right:clamp(-100px,-4vw,-20px);
+  width:clamp(540px,58vw,900px);
+  max-width:none;
+  height:auto;
+  opacity:.27;
+  filter:grayscale(1) contrast(.9) brightness(1.08);
+  mix-blend-mode:multiply;
+  pointer-events:none;
+  user-select:none;
+  -webkit-mask-image:linear-gradient(to bottom,#000 0%,#000 38%,rgba(0,0,0,.68) 65%,transparent 98%);
+  mask-image:linear-gradient(to bottom,#000 0%,#000 38%,rgba(0,0,0,.68) 65%,transparent 98%);
+}
+@media(max-width:900px){
+  .hero-background-athlete{width:78vw;right:-16vw;top:-5px;opacity:.20}
+}
+@media(max-width:520px){
+  .hero-background-athlete{width:123vw;right:-57vw;top:35px;opacity:.12}
+}
