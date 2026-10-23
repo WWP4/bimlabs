@@ -1,4 +1,4 @@
-/* Momentum partner hero — editable typography and a real transparent trophy photo. */
+/* Momentum partner hero — editable typography and an opaque foreground photo with native transparent cutout. */
 :root{--red:#ee001a;--gutter:clamp(24px,3.8vw,66px)}
 *{box-sizing:border-box}
 html,body{margin:0;min-width:320px}
@@ -16,7 +16,7 @@ h1{margin:0;font-family:'Archivo Black','Arial Black',Arial,sans-serif;text-tran
 .word-stage{position:relative;isolation:isolate;min-height:clamp(350px,29vw,440px);margin-top:clamp(78px,6.2vw,98px)}
 .giant-title{position:relative;z-index:1;width:calc(100vw - 44px);max-width:calc(1800px - 44px);margin:0 0 0 calc(-1*var(--gutter) + 22px);font-family:'League Spartan',Arial,sans-serif;font-size:clamp(146px,19vw,355px);font-weight:600;line-height:.87;letter-spacing:-.065em;color:var(--red);white-space:nowrap}
 .giant-title span{display:inline-block;transform-origin:left center}
-.hero-trophy{position:absolute;z-index:2;top:clamp(-415px,-25vw,-310px);left:50%;transform:translateX(-50%);width:clamp(465px,43vw,650px);opacity:.70;max-width:none;height:auto;pointer-events:none;user-select:none;object-fit:contain;-webkit-mask-image:linear-gradient(to bottom,#000 0%,#000 78%,rgba(0,0,0,.83) 86%,transparent 100%);mask-image:linear-gradient(to bottom,#000 0%,#000 78%,rgba(0,0,0,.83) 86%,transparent 100%)}
+.hero-trophy{position:absolute;z-index:2;top:clamp(-415px,-25vw,-310px);left:50%;transform:translateX(-50%);width:clamp(465px,43vw,650px);max-width:none;height:auto;pointer-events:none;user-select:none;object-fit:contain;}
 @media(max-width:900px){
  .momentum-hero{min-height:810px}
  .intro{margin-top:clamp(105px,13vw,130px)}
