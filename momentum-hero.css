@@ -1021,3 +1021,60 @@ img { display: block; }
     transition: none !important;
   }
 }
+
+
+/* ==============================================================
+   FOOTER REVEAL — dark panel rises from under the final section.
+   One-time entrance, synchronized content stagger, no parallax lag.
+   The panel stays visible without JavaScript and for reduced motion.
+   ============================================================== */
+.momentum-flow-section {
+  z-index: 2;
+}
+.momentum-footer {
+  position: relative;
+  z-index: 1;
+  margin-top: -1px;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .momentum-footer.is-reveal-ready {
+    transform: translate3d(0, 86px, 0);
+    transition: transform 1050ms cubic-bezier(.22, 1, .36, 1);
+    will-change: transform;
+  }
+  .momentum-footer.is-reveal-ready.is-visible {
+    transform: translate3d(0, 0, 0);
+    will-change: auto;
+  }
+  .momentum-footer.is-reveal-ready .footer-meta,
+  .momentum-footer.is-reveal-ready .footer-word,
+  .momentum-footer.is-reveal-ready .footer-bottom {
+    opacity: 0;
+    transform: translate3d(0, 22px, 0);
+    transition:
+      opacity 850ms cubic-bezier(.22, 1, .36, 1),
+      transform 850ms cubic-bezier(.22, 1, .36, 1);
+  }
+  .momentum-footer.is-reveal-ready.is-visible .footer-meta,
+  .momentum-footer.is-reveal-ready.is-visible .footer-word,
+  .momentum-footer.is-reveal-ready.is-visible .footer-bottom {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+  .momentum-footer.is-reveal-ready.is-visible .footer-meta { transition-delay: 140ms; }
+  .momentum-footer.is-reveal-ready.is-visible .footer-word { transition-delay: 220ms; }
+  .momentum-footer.is-reveal-ready.is-visible .footer-bottom { transition-delay: 340ms; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .momentum-footer {
+    transform: none !important;
+    transition: none !important;
+  }
+  .momentum-footer .footer-meta,
+  .momentum-footer .footer-word,
+  .momentum-footer .footer-bottom {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}
