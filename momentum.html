@@ -10,7 +10,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=DM+Sans:wght@400;500;600;700;800;900&family=League+Spartan:wght@600;700;800;900&display=swap" rel="stylesheet">
   <link rel="preload" as="image" href="/assets/momentum-trophy-player-final.webp" type="image/webp">
-  <link rel="stylesheet" href="/momentum-hero.css?v=partner-app-v1">
+  <link rel="stylesheet" href="/momentum-hero.css?v=partner-app-refined-20261023">
 </head>
 <body>
 <header class="site-header" id="site-header">
@@ -65,93 +65,110 @@
   </section>
 
 
+
+  <!-- Section 02: Professional, responsive Momentum partner application -->
   <section class="momentum-application" id="apply" aria-labelledby="application-title">
     <div class="application-wrap">
-      <div class="application-meta"><span><i></i> 02 / PARTNER APPLICATION</span><span>THE NEXT GENERATION STARTS HERE</span></div>
-      <div class="application-intro">
-        <div>
-          <p class="application-eyebrow">MOMENTUM / SCHOOLS + CLUBS</p>
-          <h2 id="application-title">MAKE YOUR<br><em>NEXT MOVE.</em></h2>
+      <div class="application-story">
+        <p class="application-eyebrow"><span aria-hidden="true"></span> PARTNER APPLICATION</p>
+        <h2 id="application-title">Apply to<br><em>Partner</em><span class="application-dot">.</span></h2>
+        <p class="application-lead">Join Momentum to create new opportunities for student-athletes and explore a stronger future for your school or club.</p>
+        <div class="application-benefits" aria-label="Why partner with Momentum">
+          <div class="application-benefit">
+            <span class="application-benefit-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="8" r="3"/><path d="M2.5 19v-1.2a5.5 5.5 0 0 1 11 0V19M16 11a3 3 0 1 0-1-5.8M16 13a5 5 0 0 1 5 5v1"/></svg>
+            </span>
+            <div><h3>Built for schools and clubs</h3><p>Explore a partnership shaped around your organization and its goals.</p></div>
+          </div>
+          <div class="application-benefit">
+            <span class="application-benefit-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V10l8-5 8 5v10H4Z"/><path d="M8 20v-6h8v6M3 10l9-6 9 6M10 10h4"/></svg>
+            </span>
+            <div><h3>Student-first opportunities</h3><p>Help student-athletes pursue opportunities beyond the field.</p></div>
+          </div>
+          <div class="application-benefit">
+            <span class="application-benefit-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m4 17 6-6 4 4 6-8"/><path d="M14 7h6v6"/></svg>
+            </span>
+            <div><h3>A new path for growth</h3><p>Discuss how Momentum could support your program and its future.</p></div>
+          </div>
         </div>
-        <p>Great partnerships start somewhere. Tell us who you are and we'll explore what's possible together.</p>
+        <div class="application-story-signature"><strong>Momentum<span>/</span></strong><span>PEOPLE. OPPORTUNITY. PROGRESS.</span></div>
       </div>
 
-      <div class="application-shell">
-        <aside class="application-art" aria-label="Application introduction">
-          <div class="application-art-top"><span class="application-monogram">M<span>/</span></span><span>PARTNER PORTAL<br>2026 / APPLICATIONS</span></div>
-          <div class="application-art-center">
-            <div class="application-art-kicker"><span class="status-bullet"></span> OPEN TO SCHOOLS &amp; CLUBS</div>
-            <h3>FOR THE<br>GAME<span>.</span><br>FOR THE<br>FUTURE<span>.</span></h3>
+      <div class="application-card">
+        <div class="application-card-header">
+          <div class="application-stepper" aria-label="Application sections">
+            <span class="application-step-indicator is-current" data-indicator="organization"><b>1</b><span>Organization</span></span>
+            <i aria-hidden="true"></i>
+            <span class="application-step-indicator" data-indicator="contact"><b>2</b><span>Contact</span></span>
+            <i aria-hidden="true"></i>
+            <span class="application-step-indicator" data-indicator="details"><b>3</b><span>Details</span></span>
           </div>
-          <div class="application-art-bottom"><span>STUDENT OPPORTUNITY<br>ORGANIZATION GROWTH</span><span>↗</span></div>
-        </aside>
+        </div>
 
-        <div class="application-card">
-          <div class="application-card-head">
-            <div class="application-card-title"><span class="live-dot"></span> NEW PARTNER APPLICATION</div>
-            <div class="application-step-counter"><span id="application-step-number">01</span><span> / 02</span></div>
-          </div>
-          <div class="application-progress" role="progressbar" aria-label="Application progress" aria-valuemin="0" aria-valuemax="2" aria-valuenow="1"><span id="application-progress-fill"></span></div>
-          <form id="momentum-partner-form" class="momentum-partner-form" name="momentum-partnership" method="POST" data-netlify="true" netlify-honeypot="bot-field">
-            <p class="form-honeypot" hidden><label>Leave blank<input name="bot-field" type="text" tabindex="-1" autocomplete="off"></label></p>
+        <form id="momentum-partner-form" class="momentum-partner-form" name="momentum-partnership" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+          <input type="hidden" name="form-name" value="momentum-partnership">
+          <p class="form-honeypot" hidden><label>Leave this field blank <input name="bot-field" type="text" tabindex="-1" autocomplete="off"></label></p>
 
-            <fieldset class="application-step" data-step="1">
-              <legend class="sr-only">Your organization</legend>
-              <p class="app-step-label">STEP 01 — YOUR ORGANIZATION</p>
-              <h3>Who are we<br>partnering with<span>?</span></h3>
-              <p class="app-step-subtitle">Start by telling us a little about your school or club.</p>
-              <span class="app-input-label" id="organization-type-label">I REPRESENT A <b>*</b></span>
-              <div class="app-type-options" role="group" aria-labelledby="organization-type-label">
-                <label class="app-type-card">
-                  <input type="radio" name="organization_type" value="school" required>
-                  <span class="app-type-inner"><span class="app-type-icon" aria-hidden="true">01</span><strong>SCHOOL</strong><span class="app-type-check" aria-hidden="true">↗</span></span>
-                </label>
-                <label class="app-type-card">
-                  <input type="radio" name="organization_type" value="club" required>
-                  <span class="app-type-inner"><span class="app-type-icon" aria-hidden="true">02</span><strong>SPORTS CLUB</strong><span class="app-type-check" aria-hidden="true">↗</span></span>
-                </label>
-                <label class="app-type-card">
-                  <input type="radio" name="organization_type" value="other" required>
-                  <span class="app-type-inner"><span class="app-type-icon" aria-hidden="true">03</span><strong>OTHER</strong><span class="app-type-check" aria-hidden="true">↗</span></span>
-                </label>
-              </div>
-              <div class="app-field-grid">
-                <label class="app-field app-field-full"><span>ORGANIZATION NAME <b>*</b></span><input name="organization" type="text" required maxlength="160" autocomplete="organization" placeholder="e.g. Northside Soccer Academy"></label>
-                <label class="app-field"><span>WEBSITE <small>(OPTIONAL)</small></span><input name="website" type="text" maxlength="250" inputmode="url" placeholder="example.com"></label>
-                <label class="app-field"><span>STUDENT-ATHLETES <small>(OPTIONAL)</small></span><select name="athlete_count"><option value="">Select range</option><option value="1-25">1–25</option><option value="26-50">26–50</option><option value="51-100">51–100</option><option value="101-250">101–250</option><option value="250+">250+</option></select></label>
-              </div>
-              <div class="application-controls">
-                <span class="application-controls-note"><span class="note-marker"></span> ABOUT 1 MINUTE TO COMPLETE</span>
-                <button class="application-action" type="button" id="application-next">CONTINUE <span aria-hidden="true">↗</span></button>
-              </div>
-            </fieldset>
+          <fieldset class="application-form-group" data-form-group="organization">
+            <legend>Organization Information</legend>
+            <p>Tell us about your organization and how you're looking to partner with Momentum.</p>
+            <div class="application-fields">
+              <label class="application-field"><span>Organization Type <b>*</b></span>
+                <select name="organization_type" required>
+                  <option value="" disabled selected>Select organization type</option>
+                  <option value="school">School</option>
+                  <option value="club">Sports club</option>
+                  <option value="other">Other organization</option>
+                </select>
+              </label>
+              <label class="application-field"><span>School or Club Name <b>*</b></span>
+                <input name="organization" type="text" maxlength="160" required autocomplete="organization" placeholder="Enter your organization name">
+              </label>
+              <label class="application-field application-field-full"><span>Website <small>(optional)</small></span>
+                <input name="website" type="text" maxlength="250" inputmode="url" placeholder="https://">
+              </label>
+              <label class="application-field application-field-full"><span>Approximate Number of Student-Athletes <small>(optional)</small></span>
+                <select name="athlete_count"><option value="">Select a range</option><option value="1-25">1–25</option><option value="26-50">26–50</option><option value="51-100">51–100</option><option value="101-250">101–250</option><option value="250+">250+</option></select>
+              </label>
+            </div>
+          </fieldset>
 
-            <fieldset class="application-step" data-step="2">
-              <legend class="sr-only">Your contact information</legend>
-              <p class="app-step-label">STEP 02 — YOUR DETAILS</p>
-              <h3>Let's make<br>it happen<span>.</span></h3>
-              <p class="app-step-subtitle">Where can our team reach you about a Momentum partnership?</p>
-              <div class="app-field-grid">
-                <label class="app-field app-field-full"><span>YOUR NAME <b>*</b></span><input name="name" type="text" required maxlength="120" autocomplete="name" placeholder="First and last name"></label>
-                <label class="app-field"><span>EMAIL ADDRESS <b>*</b></span><input name="email" type="email" required maxlength="254" autocomplete="email" placeholder="you@organization.com"></label>
-                <label class="app-field"><span>PHONE NUMBER <small>(OPTIONAL)</small></span><input name="phone" type="tel" maxlength="60" autocomplete="tel" placeholder="(555) 000-0000"></label>
-                <label class="app-field app-field-full"><span>ANYTHING WE SHOULD KNOW? <small>(OPTIONAL)</small></span><textarea name="message" rows="3" maxlength="2000" placeholder="Tell us about your organization, goals, or questions."></textarea></label>
-              </div>
-              <div class="application-controls">
-                <button class="application-back" type="button" id="application-back"><span aria-hidden="true">←</span> BACK</button>
-                <button class="application-action" id="application-submit" type="submit">SUBMIT APPLICATION <span aria-hidden="true">↗</span></button>
-              </div>
-              <p class="app-privacy-note">We'll only use your information to follow up about your application.</p>
-            </fieldset>
-            <div class="application-feedback" id="application-feedback" role="alert" aria-live="polite" hidden></div>
-          </form>
-          <div class="application-complete" id="application-complete" hidden tabindex="-1">
-            <div class="complete-symbol" aria-hidden="true">✓</div>
-            <p class="app-step-label">APPLICATION RECEIVED</p>
-            <h3>YOU'RE<br>ON YOUR WAY<span>.</span></h3>
-            <p>Thanks for reaching out. Your Momentum partnership application has been received.</p>
-          </div>
-          <div class="application-card-foot"><span>SECURE PARTNER INTAKE</span><span>MOMENTUM / 2026</span></div>
+          <fieldset class="application-form-group" data-form-group="contact">
+            <legend>Primary Contact</legend>
+            <p>Share the best contact information for our team to reach you.</p>
+            <div class="application-fields">
+              <label class="application-field"><span>Contact Name <b>*</b></span>
+                <input name="name" type="text" required maxlength="120" autocomplete="name" placeholder="Enter your full name">
+              </label>
+              <label class="application-field"><span>Email Address <b>*</b></span>
+                <input name="email" type="email" required maxlength="254" autocomplete="email" placeholder="name@organization.com">
+              </label>
+              <label class="application-field application-field-full"><span>Phone Number <small>(optional)</small></span>
+                <input name="phone" type="tel" maxlength="60" autocomplete="tel" placeholder="(555) 123-4567">
+              </label>
+            </div>
+          </fieldset>
+
+          <fieldset class="application-form-group" data-form-group="details">
+            <legend>Additional Information</legend>
+            <p>Tell us a little about your program and what you hope to achieve.</p>
+            <div class="application-fields">
+              <label class="application-field application-field-full"><span>How can Momentum support your organization? <small>(optional)</small></span>
+                <textarea name="message" rows="3" maxlength="2000" placeholder="Share your goals or any questions you'd like us to know."></textarea>
+              </label>
+            </div>
+          </fieldset>
+          <div class="application-feedback" id="application-feedback" role="alert" aria-live="polite" hidden></div>
+          <button class="application-submit" id="application-submit" type="submit">Submit Application <span aria-hidden="true">→</span></button>
+          <p class="application-privacy">We'll only use your information to follow up about a potential Momentum partnership.</p>
+        </form>
+
+        <div class="application-complete" id="application-complete" hidden tabindex="-1" aria-live="polite">
+          <span class="application-complete-symbol" aria-hidden="true">✓</span>
+          <h3>Application received.</h3>
+          <p>Thank you for your interest in partnering with Momentum. Your details have been submitted.</p>
         </div>
       </div>
     </div>
@@ -232,91 +249,73 @@
   header.querySelectorAll('a').forEach(link => link.addEventListener('click', () => header.classList.remove('is-hidden')));
 })();
 
+
 (() => {
   const form = document.getElementById('momentum-partner-form');
-  const panel = document.querySelector('.application-card');
-  if (!form || !panel) return;
-
-  const steps = [...form.querySelectorAll('.application-step')];
-  const next = document.getElementById('application-next');
-  const back = document.getElementById('application-back');
+  if (!form) return;
   const submit = document.getElementById('application-submit');
-  const progress = document.querySelector('.application-progress');
-  const counter = document.getElementById('application-step-number');
-  const fill = document.getElementById('application-progress-fill');
   const feedback = document.getElementById('application-feedback');
-  let activeStep = 1;
+  const completed = document.getElementById('application-complete');
+  const indicators = [...document.querySelectorAll('.application-step-indicator')];
+  const groups = [...form.querySelectorAll('[data-form-group]')];
 
-  form.classList.add('is-enhanced');
-  function clearMessage() { feedback.hidden = true; feedback.textContent = ''; }
-  function showStep(number, focus = false) {
-    activeStep = number;
-    steps.forEach(el => { el.hidden = Number(el.dataset.step) !== number; });
-    counter.textContent = number === 1 ? '01' : '02';
-    fill.style.width = number === 1 ? '50%' : '100%';
-    progress.setAttribute('aria-valuenow', String(number));
-    clearMessage();
-    if (focus) {
-      const title = steps[number - 1].querySelector('h3');
-      title.setAttribute('tabindex', '-1');
-      title.focus({ preventScroll: true });
-      if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches)
-        panel.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }
+  function setActiveSection(section) {
+    const index = ['organization', 'contact', 'details'].indexOf(section);
+    indicators.forEach((indicator, i) => {
+      indicator.classList.toggle('is-current', i === index);
+      indicator.classList.toggle('is-past', i < index);
+    });
   }
-
-  function validateStep(number) {
-    const fields = [...steps[number - 1].querySelectorAll('input, select, textarea')];
-    const invalid = fields.find(el => !el.checkValidity());
-    if (invalid) { invalid.focus(); invalid.reportValidity(); return false; }
-    return true;
-  }
-
-  next.addEventListener('click', () => {
-    if (validateStep(1)) showStep(2, true);
-  });
-  back.addEventListener('click', () => showStep(1, true));
+  groups.forEach(group => group.addEventListener('focusin', () => {
+    setActiveSection(group.dataset.formGroup);
+  }));
 
   document.querySelectorAll('[data-prefill-type]').forEach(link => {
     link.addEventListener('click', () => {
-      const target = form.querySelector('input[name="organization_type"][value="' + link.dataset.prefillType + '"]');
-      if (target) { target.checked = true; showStep(1); }
+      const option = form.querySelector('select[name="organization_type"]');
+      if (option) option.value = link.dataset.prefillType;
+      setActiveSection('organization');
     });
   });
 
   form.addEventListener('submit', async event => {
     event.preventDefault();
-    if (!validateStep(1)) { showStep(1); validateStep(1); return; }
-    if (!validateStep(2)) { showStep(2); validateStep(2); return; }
-
-    clearMessage();
-    const original = submit.innerHTML;
+    if (!form.reportValidity()) return;
+    feedback.hidden = true;
+    feedback.textContent = '';
     submit.disabled = true;
-    submit.textContent = 'SENDING APPLICATION…';
+    const previousText = submit.innerHTML;
+    submit.textContent = 'Submitting application…';
+
     try {
-      const data = Object.fromEntries(new FormData(form).entries());
+      const application = Object.fromEntries(new FormData(form).entries());
       const response = await fetch('/.netlify/functions/momentum-apply', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data)
+        body: JSON.stringify(application)
       });
-      const outcome = await response.json();
-      if (!response.ok || !outcome.ok) throw new Error(outcome.error || 'Unable to submit right now.');
+      let result;
+      try { result = await response.json(); }
+      catch { throw new Error('The application service returned an unexpected response. Please try again.'); }
+      if (!response.ok || !result.ok) throw new Error(result.error || 'We could not submit your application. Please try again.');
+
       form.hidden = true;
-      document.getElementById('application-complete').hidden = false;
-      document.getElementById('application-complete').focus({ preventScroll: true });
-      panel.classList.add('is-complete');
+      completed.hidden = false;
+      completed.focus({ preventScroll: true });
+      indicators.forEach(indicator => {
+        indicator.classList.remove('is-current');
+        indicator.classList.add('is-past');
+      });
     } catch (error) {
       feedback.textContent = error.message || 'Something went wrong. Please try again.';
       feedback.hidden = false;
-      feedback.focus?.();
+      feedback.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     } finally {
       submit.disabled = false;
-      submit.innerHTML = original;
+      submit.innerHTML = previousText;
     }
   });
-  showStep(1);
-})();
+});;
 </script>
 </body>
 </html>
