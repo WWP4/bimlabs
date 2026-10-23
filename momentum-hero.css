@@ -989,3 +989,35 @@ img { display: block; }
     transition: none !important;
   }
 }
+
+/* ==============================================================
+   SECTION 03 — quiet, one-time scroll reveal (matches Section 02)
+   Opt-in via JS, with a full reduced-motion fallback.
+   ============================================================== */
+@media (prefers-reduced-motion: no-preference) {
+  .momentum-flow-section.is-reveal-ready .reveal-item {
+    opacity: 0;
+    transform: translate3d(0, 22px, 0);
+    transition:
+      opacity 760ms cubic-bezier(.22, 1, .36, 1),
+      transform 760ms cubic-bezier(.22, 1, .36, 1);
+    transition-delay: var(--reveal-delay, 0ms);
+  }
+  .momentum-flow-section.is-reveal-ready .reveal-item.is-visible {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+  .momentum-flow-section.is-reveal-ready .momentum-flow-step.reveal-item {
+    transform: translate3d(0, 16px, 0);
+  }
+  .momentum-flow-section.is-reveal-ready .momentum-flow-step.reveal-item.is-visible {
+    transform: translate3d(0, 0, 0);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .momentum-flow-section .reveal-item {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}
