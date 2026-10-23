@@ -1,7 +1,7 @@
 /*
  * MOMENTUM — Partner Landing Hero
  * Complete responsive CSS rebuild for existing momentum.html.
- * Trophy cutout remains at 100% opacity, without filters or fading.
+ * Real soccer player remains full-opacity with native cutout transparency.
  */
 :root {
   --momentum-red: #ee001a;
@@ -112,13 +112,13 @@ body {
   display: inline-block;
   transform-origin: left center;
 }
-/* Full-color, full-opacity transparent cutout */
-.hero-trophy {
+/* Original player photo: full opacity, transparent cutout, no masking */
+.hero-player {
   position: absolute;
   z-index: 2;
-  top: clamp(-520px, -32vw, -390px);
+  top: clamp(-445px, -30vw, -340px);
   left: 50%;
-  width: clamp(600px, 54vw, 860px);
+  width: clamp(410px, 38vw, 600px);
   max-width: none;
   height: auto;
   transform: translateX(-50%);
@@ -150,7 +150,7 @@ body {
   .hero-description { max-width: 530px; font-size: clamp(17px, 2.15vw, 20px); }
   .word-stage { min-height: 475px; margin-top: clamp(36px, 5vw, 58px); }
   .giant-title { font-size: 24vw; font-weight: 700; line-height: 0.83; }
-  .hero-trophy { top: clamp(-360px, -38vw, -270px); width: clamp(490px, 70vw, 680px); }
+  .hero-player { top: clamp(-300px, -31vw, -205px); width: clamp(340px, 48vw, 490px); }
   .hero-background-athlete { top: -5px; right: -16vw; width: 78vw; opacity: 0.20; }
 }
 @media (max-width: 520px) {
@@ -178,7 +178,7 @@ body {
     font-weight: 700;
     line-height: 0.84;
   }
-  .hero-trophy { top: clamp(-260px, -54vw, -185px); width: 110vw; max-width: 520px; }
+  .hero-player { top: clamp(-210px, -39vw, -110px); width: 87vw; max-width: 390px; }
   .hero-background-athlete { top: 35px; right: -57vw; width: 123vw; opacity: 0.12; }
 }
 @media (prefers-reduced-motion: reduce) {
