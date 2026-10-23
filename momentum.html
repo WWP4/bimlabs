@@ -10,7 +10,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=DM+Sans:wght@400;500;600;700;800;900&family=League+Spartan:wght@600;700;800;900&display=swap" rel="stylesheet">
   <link rel="preload" as="image" href="/assets/momentum-trophy-player-final.webp" type="image/webp">
-  <link rel="stylesheet" href="/momentum-hero.css?v=section2-reveal-20261023">
+  <link rel="stylesheet" href="/momentum-hero.css?v=section3-reveal-20261023">
 </head>
 <body>
 <header class="site-header" id="site-header">
@@ -389,6 +389,44 @@
     }
   });
 
+  section.classList.add('is-reveal-ready');
+})();
+
+/* Section 03: staggered, one-time editorial entrance on scroll. */
+(() => {
+  const section = document.querySelector('.momentum-flow-section');
+  if (!section || !('IntersectionObserver' in window) || !window.matchMedia ||
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  const items = [
+    [section.querySelector('.momentum-flow-kicker'), 0],
+    [section.querySelector('.momentum-flow-heading h2'), 80],
+    [section.querySelector('.momentum-flow-heading-secondary'), 150],
+    ...Array.from(section.querySelectorAll('.momentum-flow-step'), (el, index) => [el, 170 + index * 90])
+  ].filter(([el]) => Boolean(el));
+
+  if (!items.length) return;
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+      entry.target.classList.add('is-visible');
+      observer.unobserve(entry.target);
+    });
+  }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
+
+  items.forEach(([element, delay]) => {
+    element.style.setProperty('--reveal-delay', delay + 'ms');
+    element.classList.add('reveal-item');
+    observer.observe(element);
+  });
+
+  section.addEventListener('focusin', (event) => {
+    const target = event.target.closest('.reveal-item');
+    if (target) {
+      target.classList.add('is-visible');
+      observer.unobserve(target);
+    }
+  });
   section.classList.add('is-reveal-ready');
 })();
 </script>
