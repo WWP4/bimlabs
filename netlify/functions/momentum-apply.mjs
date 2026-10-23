@@ -99,11 +99,3 @@ export default async function momentumApply(request, context) {
   }
 }
 
-export const config = {
-  rateLimit: {
-    action: "rate_limit",
-    aggregateBy: "ip",
-    windowSize: 60,
-    windowLimit: 8,
-  },
-};
