@@ -13,13 +13,24 @@
   <link rel="stylesheet" href="/momentum-hero.css">
 </head>
 <body>
-<main>
+<header class="site-header" id="site-header">
+  <div class="site-nav-shell">
+    <a class="site-logo" href="#top" aria-label="Momentum, back to top">Momentum<span>/</span></a>
+    <nav class="site-nav" aria-label="Main navigation">
+      <a href="#about">ABOUT</a>
+      <a href="#partnership">PARTNERSHIP</a>
+      <a href="#how-it-works">HOW IT WORKS</a>
+      <a href="#schools">SCHOOLS</a>
+      <a href="#clubs">CLUBS</a>
+    </nav>
+    <a class="site-apply" href="#apply">APPLY NOW <span aria-hidden="true">↗</span></a>
+  </div>
+</header>
+<main id="top">
   <section class="momentum-hero" aria-labelledby="hero-title">
     <img class="hero-ghost" src="/assets/momentum-upper-right-player.webp" width="1100" height="1218" alt="" aria-hidden="true" decoding="async">
 
     <div class="hero-wrap">
-      <div class="brand-mark" aria-label="Momentum">Momentum<span>/</span></div>
-
       <div class="hero-copy">
         <p class="eyebrow"><span class="eyebrow-rule" aria-hidden="true"></span>SCHOOLS <span class="eyebrow-slash">/</span> CLUBS <span class="eyebrow-slash">/</span> A STRONGER TOMORROW</p>
         <h1 id="hero-title">BECOME A<br>PARTNER.</h1>
@@ -53,14 +64,14 @@
     </div>
   </section>
 
-  <section class="opportunity-section" aria-labelledby="opportunity-title">
+  <section class="opportunity-section" id="about" aria-labelledby="opportunity-title">
     <div class="section-wrap">
       <div class="section-topline"><span>THE OPPORTUNITY</span><span>02 / MOMENTUM</span></div>
       <div class="opportunity-heading">
         <h2 id="opportunity-title">MORE THAN<br>A <em>PARTNERSHIP.</em></h2>
         <p>Built around student-athletes. Designed for the schools and clubs moving them forward.</p>
       </div>
-      <div class="opportunity-split">
+      <div class="opportunity-split" id="schools">
         <article class="opportunity-item">
           <div class="item-number">01 <span></span></div>
           <h3>MORE FOR<br>STUDENTS.</h3>
@@ -76,14 +87,14 @@
     <div class="opportunity-marquee" aria-hidden="true"><span>BUILT TO MOVE FORWARD.</span></div>
   </section>
 
-  <section class="process-section" aria-labelledby="process-title">
+  <section class="process-section" id="partnership" aria-labelledby="process-title">
     <div class="section-wrap">
       <div class="section-topline"><span>THE PARTNERSHIP</span><span>03 / THE PROCESS</span></div>
       <div class="process-heading">
         <h2 id="process-title">GOOD THINGS<br>START <em>TOGETHER.</em></h2>
         <p>A straightforward way to explore what a Momentum partnership could look like for your organization.</p>
       </div>
-      <div class="process-grid">
+      <div class="process-grid" id="how-it-works">
         <article><span class="step-index">01 — CONNECT</span><h3>LET'S<br>TALK.</h3><p>Start with your school or club, your student-athletes, and your goals.</p></article>
         <article><span class="step-index">02 — EXPLORE</span><h3>FIND THE<br>FIT.</h3><p>Look at the opportunities and discuss how a partnership could work.</p></article>
         <article><span class="step-index">03 — BUILD</span><h3>MOVE<br>FORWARD.</h3><p>Shape a plan around the people and community you're here to serve.</p></article>
@@ -96,11 +107,34 @@
     </div>
   </section>
 
-  <section class="statement-section" aria-label="Momentum mission statement">
+  <section class="statement-section" id="clubs" aria-label="Momentum mission statement">
     <div class="section-wrap">
       <p class="statement-kicker">FOR SCHOOLS. FOR CLUBS. FOR WHAT'S NEXT.</p>
       <p class="statement-text">YOUR STUDENTS.<br>YOUR COMMUNITY.<br><span>OUR MOMENTUM.</span></p>
       <p class="statement-footnote">A stronger tomorrow starts with the opportunities we create today.</p>
+    </div>
+  </section>
+
+  <section class="apply-section" id="apply" aria-labelledby="apply-title">
+    <div class="section-wrap">
+      <div class="section-topline"><span>JOIN THE MOVEMENT</span><span>04 / BECOME A PARTNER</span></div>
+      <div class="apply-layout">
+        <div class="apply-copy">
+          <p class="apply-kicker">FOR SCHOOLS &amp; CLUBS</p>
+          <h2 id="apply-title">LET'S MAKE<br><em>IT HAPPEN.</em></h2>
+          <p>Tell us a little about your organization. Start the conversation about becoming a Momentum partner.</p>
+        </div>
+        <form class="partner-form" name="momentum-partnership" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+          <p class="form-honeypot"><label>Leave this field empty <input name="bot-field" tabindex="-1" autocomplete="off"></label></p>
+          <div class="form-row"><label for="partner-name">YOUR NAME</label><input id="partner-name" name="name" type="text" autocomplete="name" placeholder="First and last name" required></div>
+          <div class="form-row"><label for="partner-email">EMAIL ADDRESS</label><input id="partner-email" name="email" type="email" autocomplete="email" placeholder="you@organization.com" required></div>
+          <div class="form-row"><label for="partner-organization">SCHOOL OR CLUB</label><input id="partner-organization" name="organization" type="text" autocomplete="organization" placeholder="Organization name" required></div>
+          <div class="form-row"><label for="partner-type">ORGANIZATION TYPE</label><select id="partner-type" name="organization_type" required><option value="" disabled selected>Select one</option><option value="school">School</option><option value="club">Club</option><option value="other">Other</option></select></div>
+          <div class="form-row"><label for="partner-message">ANYTHING ELSE? <span>(OPTIONAL)</span></label><textarea id="partner-message" name="message" rows="3" placeholder="Tell us about your student-athletes or goals."></textarea></div>
+          <button class="form-submit" type="submit">SEND APPLICATION <span aria-hidden="true">↗</span></button>
+          <p class="form-caption">Your information will be used to follow up about a potential partnership.</p>
+        </form>
+      </div>
     </div>
   </section>
 
@@ -129,6 +163,26 @@
   fit();
   window.addEventListener('resize', fit, { passive: true });
   if (document.fonts) document.fonts.ready.then(fit);
+})();
+(() => {
+  const header = document.getElementById('site-header');
+  if (!header) return;
+  let last = window.scrollY;
+  let scheduled = false;
+  function refresh() {
+    const current = window.scrollY;
+    const delta = current - last;
+    header.classList.toggle('is-scrolled', current > 28);
+    if (current < 100) header.classList.remove('is-hidden');
+    else if (delta > 7 && current > 260) header.classList.add('is-hidden');
+    else if (delta < -7) header.classList.remove('is-hidden');
+    last = current;
+    scheduled = false;
+  }
+  window.addEventListener('scroll', () => {
+    if (!scheduled) { window.requestAnimationFrame(refresh); scheduled = true; }
+  }, { passive: true });
+  header.querySelectorAll('a').forEach(link => link.addEventListener('click', () => header.classList.remove('is-hidden')));
 })();
 </script>
 </body>
