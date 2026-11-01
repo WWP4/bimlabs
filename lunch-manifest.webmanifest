@@ -10,5 +10,13 @@
   "categories": [
     "education",
     "food"
+  ],
+  "icons": [
+    {
+      "src": "/lunch-icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
   ]
 }
