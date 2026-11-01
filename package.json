@@ -3,6 +3,8 @@
   "private": true,
   "type": "module",
   "dependencies": {
-    "stripe": "^14.0.0"
+    "stripe": "^14.0.0",
+    "@netlify/database": "latest",
+    "@netlify/identity": "latest"
   }
 }
