@@ -19,6 +19,7 @@
 </style>
 <link rel="stylesheet" href="/lunch-gateways.css">
 <link rel="stylesheet" href="/lunch-editorial.css">
+<link rel="stylesheet" href="/lunch-menu.css">
 </head>
 <body class="gateways-student">
 <div class="shell">
@@ -74,7 +75,13 @@
 <div class="gw-passhelper"><div class="gw-helpermark">✓</div><p>Keep this page handy. Just open it whenever it's time for lunch.</p></div>
 </div>
 <div id="pending-view" hidden><div class="pending"><span class="pending-badge" id="pending-state">AWAITING APPROVAL</span><h2 id="pending-title">You’re on the list!</h2><p id="pending-detail">Staff can approve your demo profile on this device.</p></div><button class="btn secondary" id="refresh-btn">Check approval status</button></div>
-<div id="menu-view" hidden><div class="eyebrow">School meals</div><h2 class="panel-title">This week's menu</h2><p class="panel-copy">See what’s cooking this week.</p><div id="menu-items"></div></div>
+<div id="menu-view" hidden>
+  <div class="gw-menu-topline"><div class="gw-menu-supra">WHAT'S COOKING / THIS WEEK</div><span class="gw-menu-week" id="gw-menu-week"></span></div>
+  <h2 class="gw-menu-headline">Good food.<br><span>Good days.</span></h2>
+  <p class="gw-menu-caption">Your lunch lineup, all in one place.</p>
+  <div class="gw-week-tabs" id="gw-week-tabs" role="tablist" aria-label="Choose a lunch day"></div>
+  <div id="menu-items" aria-live="polite"></div>
+</div>
 <div id="account-view" hidden><div class="eyebrow">MY ACCOUNT</div><h2 class="panel-title">My profile</h2><p class="panel-copy">Your details for this demo.</p><div class="account-card" id="account-items"></div><div style="margin-top:19px"><button class="btn secondary" id="account-switch">Return to demo welcome</button><a class="btn text-button" href="/lunch.html">Open kitchen staff demo →</a></div></div>
 </section>
 </main>
@@ -90,7 +97,7 @@
 'use strict';
 var DATA_KEY='kitchenflow_demo_v1',PASS_KEY='kitchenflow_mobile_demo_pass_v1';
 var DEMO={id:'STU-1001',code:'STU-1001',name:'Alex Carter',period:'Lunch A',grade:'7',active:true,status:'approved',source:'fictional-sample'};
-var chosen=null,currentView='pass';
+var chosen=null,currentView='pass',activeMenuDay=0;
 function el(id){return document.getElementById(id)}
 function txt(id,value){el(id).textContent=value==null?'':String(value)}
 function show(id,visible){el(id).hidden=!visible}
@@ -111,7 +118,96 @@ function setTab(tab){currentView=tab;show('pass-view',tab==='pass');show('pendin
 function showWallet(id){if(!profile(id)){showGate();return}chosen=id;localStorage.setItem(PASS_KEY,id);show('gate',false);show('enroll',false);show('wallet',true);show('bottom',true);renderWallet();setTab('pass')}
 function renderWallet(){var s=selected();if(!s)return showGate();txt('wallet-greeting','My lunch pass');txt('wallet-date',new Date().toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'}));var approved=s.active!==false&&status(s)==='approved';show('pass-view',approved);show('pending-view',!approved);txt('student-name',s.name);txt('student-meta',s.period+' · '+(s.grade?'Grade '+s.grade:'Student'));txt('pass-period',s.period);txt('student-initials',s.name.trim().split(/\s+/).slice(0,2).map(function(w){return w.charAt(0)}).join('').toUpperCase());txt('student-code',s.code||s.id);txt('pass-status',approved?'ACTIVE':'PENDING');var qr=el('qr');qr.replaceChildren();if(approved){if(window.KitchenQR&&window.KitchenQR.svg){qr.innerHTML=window.KitchenQR.svg(s.code||s.id)}else{qr.textContent='QR image loading…'}}txt('pending-state',status(s)==='rejected'?'NOT APPROVED':'AWAITING APPROVAL');txt('pending-title',status(s)==='rejected'?'Registration not approved':'Your registration was received');txt('pending-detail',status(s)==='rejected'?'Contact the kitchen to review your demo registration.':'This browser has a pending demo registration. A staff member can approve it from the kitchen dashboard on the same device.');}
 function renderAccount(){var s=selected();if(!s)return;var fields=[['Student',s.name],['Lunch period',s.period],['Grade',s.grade||'—'],['Email',s.email||'Not provided'],['Phone',s.phone||'Not provided'],['Country',s.country||'Not provided'],['Demo status',status(s)]];el('account-items').innerHTML=fields.map(function(f){return '<div class="account-row"><span>'+escapeHtml(f[0])+'</span><strong>'+escapeHtml(f[1])+'</strong></div>'}).join('')}
-function renderMenu(){var data=read(),menus=data?.menu||{},start=new Date();var diff=(start.getDay()+6)%7;start.setDate(start.getDate()-diff);var days=[];for(var n=0;n<5;n++){var d=new Date(start);d.setDate(start.getDate()+n);var iso=d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());var m=menus[iso];days.push('<div class="menu-item"><span class="menu-day">'+['MON','TUE','WED','THU','FRI'][n]+'</span><div><div class="menu-title">'+escapeHtml(m?.title||'Menu not published')+'</div><div class="menu-desc">'+escapeHtml(m?.description||'Ask the kitchen for today’s meal.')+'</div></div></div>')}el('menu-items').innerHTML=days.join('')}
+/* Food photography is illustrative, and is never used to represent an unverified school's actual offerings.
+ * Unsplash free license sources:
+ * chicken https://unsplash.com/photos/healthy-chicken-and-rice-bowl-with-fresh-vegetables-tB2MPTiSrsg
+ * taco https://unsplash.com/photos/a-plate-of-chicken-black-beans-corn-and-salsa-cIXQYJ8V0Gw
+ * pasta https://unsplash.com/photos/sauced-penne-pasta-dish-on-bowl-aeESmmFKH0M
+ * pizza https://unsplash.com/photos/close-up-photo-of-pizza-with-cheese-D3Mag4BKqns
+ * sandwich https://unsplash.com/photos/a-chicken-sandwich-sitting-on-top-of-a-piece-of-paper-PcXZtTcRNvY
+ * salad https://unsplash.com/photos/green-salad-on-white-plate-d825JrXvun8
+ * fruit https://unsplash.com/photos/fruit-salad-on-white-plate-_WpB9l8_Kn4
+ */
+var MENU_PHOTOS={
+ chicken:'https://images.unsplash.com/photo-1762631383628-77f92d18b184?auto=format&fit=crop&w=1100&q=82',
+ taco:'https://images.unsplash.com/photo-1716392976013-66d90cac4411?auto=format&fit=crop&w=1100&q=82',
+ pasta:'https://images.unsplash.com/photo-1555949258-eb67b1ef0ceb?auto=format&fit=crop&w=1100&q=82',
+ pizza:'https://images.unsplash.com/photo-1593504049359-74330189a345?auto=format&fit=crop&w=1100&q=82',
+ sandwich:'https://images.unsplash.com/photo-1685381918549-6bbc1f2503de?auto=format&fit=crop&w=1100&q=82',
+ salad:'https://images.unsplash.com/photo-1472926373053-51b220987527?auto=format&fit=crop&w=380&q=78',
+ fruit:'https://images.unsplash.com/photo-1564093497595-593b96d80180?auto=format&fit=crop&w=380&q=78'
+};
+var MENU_SAMPLES=[
+ {title:'Chicken & Rice Bowl',description:'Roasted chicken · Steamed rice · Fresh vegetables',photo:'chicken'},
+ {title:'Beef Taco Bowl',description:'Seasoned beef · Rice · Black beans · Salsa',photo:'taco'},
+ {title:'Tomato Basil Pasta',description:'Warm pasta · Tomato sauce · Fresh basil',photo:'pasta'},
+ {title:'Chicken Sandwich',description:'Grilled chicken · Soft bun · Fresh greens',photo:'sandwich'},
+ {title:'Cheese Pizza',description:'Golden crust · Tomato sauce · Melty cheese',photo:'pizza'}
+];
+function menuWeek(){
+ var start=new Date();start.setHours(12,0,0,0);
+ var weekday=start.getDay(),delta=(weekday+6)%7;
+ start.setDate(start.getDate()-delta+(weekday===0||weekday===6?7:0));
+ return start;
+}
+function menuIso(date){return date.getFullYear()+'-'+pad(date.getMonth()+1)+'-'+pad(date.getDate())}
+function mealPhoto(title){
+ var t=String(title||'').toLowerCase();
+ if(/taco|burrito|fajita/.test(t))return MENU_PHOTOS.taco;
+ if(/pizza|flatbread/.test(t))return MENU_PHOTOS.pizza;
+ if(/pasta|penne|spaghetti|macaroni|noodle/.test(t))return MENU_PHOTOS.pasta;
+ if(/sandwich|burger|wrap/.test(t))return MENU_PHOTOS.sandwich;
+ if(/salad/.test(t))return MENU_PHOTOS.salad;
+ if(/fruit/.test(t))return MENU_PHOTOS.fruit;
+ if(/chicken|rice|bowl/.test(t))return MENU_PHOTOS.chicken;
+ return null;
+}
+function renderMenu(){
+ var data=read(),menus=data&&data.menu||{},start=menuWeek(),now=new Date();
+ var d0=menuIso(start),endDate=new Date(start);endDate.setDate(start.getDate()+4);
+ var days=[],fullDays=['Monday','Tuesday','Wednesday','Thursday','Friday'];
+ for(var i=0;i<5;i++){var d=new Date(start);d.setDate(start.getDate()+i);days.push({date:d,iso:menuIso(d),name:fullDays[i]})}
+ var isPreview=!days.some(function(day){var m=menus[day.iso];return m&&String(m.title||'').trim()});
+ var idx=Math.max(0,Math.min(4,activeMenuDay));
+ var selected=days[idx],actual=menus[selected.iso],published=!!(actual&&String(actual.title||'').trim());
+ var menu=published?actual:isPreview?MENU_SAMPLES[idx]:{title:'Menu coming soon',description:'Check back for this day’s lunch.',photo:null};
+ var chosenPhoto=published?mealPhoto(menu.title):(isPreview?MENU_PHOTOS[menu.photo]:null);
+ el('gw-menu-week').textContent=start.toLocaleDateString('en-US',{month:'short',day:'numeric'})+' — '+endDate.toLocaleDateString('en-US',{month:'short',day:'numeric'});
+ el('gw-week-tabs').innerHTML=days.map(function(day,i){
+  var isSelected=i===idx;
+  return '<button type="button" role="tab" aria-label="'+day.name+', '+day.date.toLocaleDateString('en-US',{month:'short',day:'numeric'})+'" aria-selected="'+String(isSelected)+'" tabindex="'+(isSelected?'0':'-1')+'" data-menu-day="'+i+'"><strong>'+day.name.slice(0,3).toUpperCase()+'</strong><span>'+day.date.getDate()+'</span></button>';
+ }).join('');
+ var label=isPreview?'SAMPLE MENU / PREVIEW':published?'ON THE MENU':'MENU UPDATE';
+ var photoHTML=chosenPhoto?'<div class="gw-menu-photo"><img src="'+chosenPhoto+'" alt="Illustrative food photography" loading="lazy" decoding="async"><span class="gw-meal-chip">'+(isPreview?'SAMPLE FEATURE':'FEATURED LUNCH')+'</span></div>':'<div class="gw-menu-no-photo"><span class="gw-photo-letter">G.</span></div>';
+ var note=isPreview?'Example meal for the design preview':published?'Menu set by the kitchen':'Not published yet';
+ var feature='<article class="gw-featured">'+photoHTML+'<div class="gw-featured-main"><div class="gw-feature-kicker">'+escapeHtml(label)+'</div><h3>'+escapeHtml(menu.title||'Menu coming soon')+'</h3><p>'+escapeHtml(menu.description||'More information coming soon.')+'</p><div class="gw-meal-meta"><strong>'+escapeHtml(selected.name)+' / Lunch</strong><span>'+escapeHtml(note)+'</span></div></div></article>';
+ var extras='';
+ if(isPreview){
+  var a=[['Garden Salad','Fresh & crunchy',MENU_PHOTOS.salad],['Fresh Fruit Cup','Sweet and colorful',MENU_PHOTOS.fruit]];
+  extras='<div class="gw-extras-head"><h3>A little something extra</h3><span>Sample sides</span></div><div class="gw-extras">'+a.map(function(item){
+   return '<article class="gw-extra"><img class="gw-extra-photo" loading="lazy" decoding="async" src="'+item[2]+'" alt="Illustrative food photography"><div class="gw-extra-content"><h4 class="gw-extra-title">'+escapeHtml(item[0])+'</h4><p class="gw-extra-description">'+escapeHtml(item[1])+'</p></div></article>';
+  }).join('')+'</div>';
+ }
+ var footer='<div class="gw-menu-bottom-strip"><strong>Every day deserves a good lunch.</strong><span aria-hidden="true">✳</span></div>';
+ var disclaimer='<p class="gw-menu-disclaimer">'+(isPreview?'Sample meals and sides for this interactive demo — not confirmed school offerings. ':'')+'Food photos are illustrative. Actual meals may vary.</p>';
+ el('menu-items').innerHTML=feature+extras+footer+disclaimer;
+}
+el('gw-week-tabs').addEventListener('click',function(event){
+ var button=event.target.closest('button[data-menu-day]');
+ if(!button)return;
+ activeMenuDay=Number(button.dataset.menuDay);
+ renderMenu();
+ el('gw-week-tabs').querySelector('[data-menu-day="'+activeMenuDay+'"]')?.focus();
+});
+el('gw-week-tabs').addEventListener('keydown',function(event){
+ if(event.key!=='ArrowRight'&&event.key!=='ArrowLeft'&&event.key!=='Home'&&event.key!=='End')return;
+ event.preventDefault();
+ if(event.key==='Home')activeMenuDay=0;
+ else if(event.key==='End')activeMenuDay=4;
+ else activeMenuDay=(activeMenuDay+(event.key==='ArrowRight'?1:4))%5;
+ renderMenu();
+ el('gw-week-tabs').querySelector('[data-menu-day="'+activeMenuDay+'"]')?.focus();
+});
 el('demo-btn').addEventListener('click',function(){showWallet(DEMO.id)});
 el('signup-btn').addEventListener('click',showEnroll);
 el('signup-back').addEventListener('click',showGate);
