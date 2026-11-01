@@ -9,7 +9,7 @@ async function me(u){
 async function pass(u){
  const r=await db.pool.query("SELECT id FROM gateways_students WHERE identity_user_id=$1 AND status='approved' LIMIT 1",[u.id]);
  if(!r.rows.length)return error(403,'Student account not yet approved');
- return reply(createPass(r.rows[0].id));
+ return reply(await createPass(r.rows[0].id));
 }
 async function menu(u,url){
  const start=url.searchParams.get('start')||today();
@@ -58,7 +58,7 @@ async function approveStudent(u,req){
 }
 async function scan(u,req){
  const denied=permission(u);if(denied)return denied;
- const data=await body(req),studentId=validatePass(data?.token),mode=data?.mode,day=today();
+ const data=await body(req),studentId=await validatePass(data?.token),mode=data?.mode,day=today();
  if(!studentId)return error(400,'Invalid or expired pass');
  if(!['arrival','lunch','second'].includes(mode))return error(400,'Invalid service mode');
  const c=await db.pool.connect();
@@ -108,7 +108,7 @@ export default async function handler(req){
  if(route==='health'){
   if(req.method!=='GET')return error(405,'Method not allowed');
   try{
-   const ready=await db.pool.query("SELECT to_regclass('public.gateways_students') IS NOT NULL AS ready");
+   const ready=await db.pool.query("SELECT (to_regclass('public.gateways_students') IS NOT NULL AND to_regclass('public.gateways_private_secrets') IS NOT NULL AND EXISTS(SELECT 1 FROM gateways_private_secrets WHERE id='lunch-qr-v1')) AS ready");
    return ready.rows[0]?.ready===true ? reply({ok:true}) : error(503,'Gateway database not initialized');
   }catch(e){console.error('Gateways health check unavailable',e?.message);return error(503,'Gateways database not available')}
  }
