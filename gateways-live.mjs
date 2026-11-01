@@ -1,4 +1,4 @@
-import {getUser,login,logout,getSettings,handleAuthCallback,acceptInvite,requestPasswordRecovery,updateUser} from '@netlify/identity';
+import {getUser,signup,login,logout,getSettings,handleAuthCallback,acceptInvite,requestPasswordRecovery,updateUser} from '@netlify/identity';
 const root=document.getElementById('gateways-root');
 const student=document.body.dataset.gatewaysPortal==='student';
 let currentUser=null,profile=null,activeTab=student?'pass':'overview',activeCamera=null,cameraFrame=0,detector=null,scanBusy=false,scanMode='lunch';
@@ -14,9 +14,47 @@ async function api(path,method='GET',body){
  if(!res.ok)throw Error(data.error||'Request failed');return data;
 }
 function loginPage(){
- root.innerHTML='<div class="auth-wrap"><div class="eyebrow">GATEWAYS / SECURE '+(student?'STUDENT':'KITCHEN')+' ACCESS</div><h1>Welcome back.</h1><p>Sign in with your school-approved account. For security, the school verifies every student before issuing a lunch pass.</p><div class="panel"><div class="panel-body"><form id="login-form"><div class="form-row"><label>Email address</label><input name="email" type="email" autocomplete="username" required></div><div class="form-row"><label>Password</label><input name="password" type="password" autocomplete="current-password" required></div><div class="form-actions"><button class="btn primary">Sign in</button><button class="btn flat" type="button" id="forgot">Forgot password?</button></div></form><div id="message" hidden></div></div></div><div class="helpbar">School accounts are by invitation only. If you have not been invited, contact the kitchen office.</div></div>';
+ const signUpLink=student?'<div class="helpbar">New to Gateways? <button id="create-link" type="button" class="btn tiny primary">Create student account</button><p class="small" style="margin:8px 0 0">Students register themselves. The school reviews each application before enabling a QR lunch pass.</p></div>':'<div class="helpbar">Staff accounts are created by a Gateways school administrator.</div>';
+ root.innerHTML='<div class="auth-wrap"><div class="eyebrow">GATEWAYS / '+(student?'STUDENT':'KITCHEN')+' PORTAL</div><h1>Welcome back.</h1><p>Sign in with your Gateways account.</p><section class="panel"><div class="panel-body"><form id="login-form"><div class="form-row"><label for="login-email">Email address</label><input id="login-email" name="email" type="email" autocomplete="username" required></div><div class="form-row"><label for="login-password">Password</label><input id="login-password" name="password" type="password" autocomplete="current-password" required></div><div class="form-actions"><button class="btn primary" type="submit">Sign in</button><button class="btn flat" type="button" id="forgot">Forgot password?</button></div></form><div id="message" hidden></div></div></section>'+signUpLink+'</div>';
  el('login-form').onsubmit=async ev=>{ev.preventDefault();const b=ev.submitter;b.disabled=true;const data=new FormData(ev.target);try{await login(String(data.get('email')).trim(),String(data.get('password')));await load()}catch(err){msg(err.message)}finally{b.disabled=false}};
- el('forgot').onclick=()=>{root.innerHTML='<div class="auth-wrap"><h1>Reset your password.</h1><p>Enter the email associated with your school account.</p><div class="panel"><div class="panel-body"><form id="reset-request"><label>Email</label><input type="email" name="email" required><button class="btn primary" style="margin-top:14px">Send recovery link</button></form><div id="message" hidden></div></div></div><button class="btn flat" id="back">Back to sign in</button></div>';el('back').onclick=loginPage;el('reset-request').onsubmit=async e=>{e.preventDefault();try{await requestPasswordRecovery(new FormData(e.target).get('email'));msg('Check your email for the recovery link.','success')}catch(err){msg(err.message)}}};
+ if(el('create-link'))el('create-link').onclick=signupPage;
+ el('forgot').onclick=()=>{
+  root.innerHTML='<div class="auth-wrap"><div class="eyebrow">GATEWAYS / PASSWORD RECOVERY</div><h1>Reset your password.</h1><p>Enter the email associated with your account.</p><section class="panel"><div class="panel-body"><form id="reset-request"><div class="form-row"><label>Email address</label><input type="email" name="email" autocomplete="email" required></div><button type="submit" class="btn primary">Send recovery email</button></form><div id="message" hidden></div></div></section><button class="btn flat" id="back">Back to sign in</button></div>';
+  el('back').onclick=loginPage;
+  el('reset-request').onsubmit=async e=>{e.preventDefault();try{await requestPasswordRecovery(new FormData(e.target).get('email'));msg('Check your email for the recovery link.',true)}catch(err){msg(err.message)}};
+ };
+}
+function signupPage(){
+ if(!student){loginPage();return}
+ root.innerHTML='<div class="auth-wrap"><div class="eyebrow">GATEWAYS / NEW STUDENT</div><h1>Create your account.</h1><p>One short form. You will receive an email to verify your account, and the school will approve your lunch pass.</p><section class="panel"><div class="panel-body"><form id="register-form"><div class="form-row"><label for="register-name">Student full name</label><input id="register-name" name="name" autocomplete="name" maxlength="100" required placeholder="First and last name"></div><div class="form-grid"><div><label for="register-grade">Grade</label><select name="grade" id="register-grade" required><option value="">Choose grade</option>'+['K','1','2','3','4','5','6','7','8','9','10','11','12'].map(x=>'<option value="'+x+'">'+(x==='K'?'Kindergarten':'Grade '+x)+'</option>').join('')+'</select></div><div><label for="register-period">Lunch period</label><select name="lunchPeriod" id="register-period" required><option value="">Choose lunch</option><option value="Lunch A">Lunch A</option><option value="Lunch B">Lunch B</option><option value="Lunch C">Lunch C</option></select></div></div><div class="form-row" style="margin-top:14px"><label for="register-email">Email address</label><input id="register-email" name="email" type="email" autocomplete="email" maxlength="200" required></div><div class="form-row"><label for="register-password">Create password (12+ characters)</label><input id="register-password" name="password" type="password" minlength="12" autocomplete="new-password" required></div><button class="btn primary" type="submit" style="width:100%">Create account</button></form><div id="message" hidden></div></div></section><div class="helpbar">Your information is used only to request a school lunch pass. A school administrator must verify your enrollment before your QR code is activated.</div><button class="btn flat" id="back-login">Already have an account? Sign in</button></div>';
+ el('back-login').onclick=loginPage;
+ el('register-form').onsubmit=async ev=>{
+  ev.preventDefault();const button=ev.submitter;button.disabled=true;
+  const f=new FormData(ev.target),name=String(f.get('name')||'').trim(),grade=String(f.get('grade')||''),lunchPeriod=String(f.get('lunchPeriod')||''),email=String(f.get('email')||'').trim().toLowerCase(),password=String(f.get('password')||'');
+  if(name.length<2||!grade||!lunchPeriod||password.length<12){msg('Please complete your name, grade, lunch period, and password.');button.disabled=false;return}
+  try{
+   // Metadata is stored in the Identity account to avoid retyping the same
+   // school details after clicking the email confirmation link.
+   await signup(email,password,{full_name:name,grade,lunchPeriod});
+   const possibleUser=await getUser().catch(()=>null);
+   if(possibleUser){await load();return}
+   root.innerHTML='<div class="auth-wrap"><div class="eyebrow">GATEWAYS / EMAIL CONFIRMATION</div><h1>Check your email.</h1><p>We sent a verification link to <strong>'+safe(email)+'</strong>. Open it to finish setting up your account.</p><section class="panel"><div class="panel-body"><span class="badge good">ACCOUNT REQUESTED</span><h2 style="margin:16px 0 8px">You’re almost done.</h2><p class="small muted">Once you verify your email, Gateways can send your application to the kitchen staff for review. You’ll only receive a working QR pass after approval.</p><button class="btn primary" id="go-signin" style="margin-top:12px">Go to sign in</button></div></section></div>';
+   el('go-signin').onclick=loginPage;
+  }catch(err){msg(err.message)}
+  finally{button.disabled=false}
+ };
+}
+function selfDetails(){
+ const metadata=currentUser?.userMetadata||currentUser?.user_metadata||{};
+ return {name:String(metadata.full_name||metadata.fullName||'').trim(),
+  grade:String(metadata.grade||'').trim(),
+  lunchPeriod:String(metadata.lunchPeriod||metadata.lunch_period||'').trim()};
+}
+function completeApplication(){
+ const d=selfDetails();
+ root.innerHTML='<div class="student-shell"><div class="eyebrow">GATEWAYS / LAST STEP</div><h1 style="font-size:34px;letter-spacing:-1px;margin:14px 0">Finish your lunch pass request.</h1><p class="small muted">Your email is verified. Confirm these details so the kitchen can review your application.</p><section class="panel"><div class="panel-body"><form id="application-form"><div class="form-row"><label>Full name</label><input name="name" maxlength="100" autocomplete="name" value="'+safe(d.name)+'" required></div><div class="form-grid"><div><label>Grade</label><select name="grade" required><option value="">Choose grade</option>'+['K','1','2','3','4','5','6','7','8','9','10','11','12'].map(x=>'<option value="'+x+'"'+(d.grade===x?' selected':'')+'>'+x+'</option>').join('')+'</select></div><div><label>Lunch period</label><select name="lunchPeriod" required><option value="">Choose lunch</option>'+['Lunch A','Lunch B','Lunch C'].map(x=>'<option'+(d.lunchPeriod===x?' selected':'')+'>'+x+'</option>').join('')+'</select></div></div><button class="btn primary" style="width:100%;margin-top:18px">Submit application</button></form><div id="message" hidden></div></div></section><p class="small muted">Applications require school approval. No meal history or plate counts will be visible to students.</p><div class="flex">'+logoutButton()+'</div></div>';
+ bindLogout();
+ el('application-form').onsubmit=async ev=>{ev.preventDefault();const b=ev.submitter;b.disabled=true;try{await api('apply','POST',Object.fromEntries(new FormData(ev.target)));await load()}catch(err){msg(err.message)}finally{b.disabled=false}};
 }
 function newPassword(mode,token){
  root.innerHTML='<div class="auth-wrap"><div class="eyebrow">GATEWAYS / ACCOUNT ACTIVATION</div><h1>Choose a password.</h1><p>'+(mode==='invite'?'Your school invitation is ready.':'Complete your account recovery.')+'</p><section class="panel"><div class="panel-body"><form id="password-form"><div class="form-row"><label>Password, at least 12 characters</label><input type="password" name="password" minlength="12" autocomplete="new-password" required></div><div class="form-row"><label>Confirm password</label><input type="password" name="confirm" minlength="12" autocomplete="new-password" required></div><button class="btn primary">Activate account</button></form><div id="message" hidden></div></div></section></div>';
@@ -26,6 +64,17 @@ async function load(){
  stopCamera();
  try{currentUser=await getUser()}catch{currentUser=null}
  if(!currentUser)return loginPage();
+ try{
+  if(student){
+   const my=await api('me');
+   if(my.account==='unlinked'){
+    const d=selfDetails();
+    if(d.name.length>=2&&d.grade&&['Lunch A','Lunch B','Lunch C'].includes(d.lunchPeriod)){
+     try{await api('apply','POST',d)}catch(err){console.warn('Automatic application submission not completed',err.message)}
+    }
+   }
+  }
+ }catch{}
  try{profile=await api('me')}catch(err){root.innerHTML='<div class="auth-wrap"><h1>Activation pending.</h1><p class="muted">The Netlify Identity or database setup is incomplete. No student records have been accessed.</p><div class="error">'+safe(err.message)+'</div><button id="logout" class="btn">Sign out</button></div>';bindLogout();return}
  student?renderStudent():renderStaff();
 }
@@ -33,8 +82,11 @@ function logoutButton(){return '<button id="logout" class="btn tiny">Sign out</b
 function bindLogout(){if(el('logout'))el('logout').onclick=async()=>{stopCamera();await logout();currentUser=null;profile=null;loginPage()}}
 function renderStudent(){
  let s=profile?.student;
- if(!s||s.status!=='approved'){
- root.innerHTML='<div class="student-shell"><div class="eyebrow">GATEWAYS / STUDENT ACCESS</div><h1 style="font-size:35px;letter-spacing:-1px">School approval required.</h1><p class="muted">Your account must be linked to an approved school roster entry. Please contact the kitchen office.</p><div class="flex"><button id="retry" class="btn primary">Check approval</button>'+logoutButton()+'</div></div>';el('retry').onclick=load;bindLogout();return}
+ if(!s){completeApplication();return}
+ if(s.status!=='approved'){
+  root.innerHTML='<div class="student-shell"><div class="eyebrow">GATEWAYS / APPLICATION STATUS</div><h1 style="font-size:35px;letter-spacing:-1px;margin:14px 0">Application received.</h1><p class="small muted">Your information has been sent to the Gateways kitchen staff.</p><section class="panel"><div class="panel-body"><span class="badge neutral">'+(s.status==='pending'?'WAITING FOR APPROVAL':'NOT ACTIVE')+'</span><h2 style="margin:16px 0 8px">'+(s.status==='pending'?'Your lunch pass is under review.':'Please contact the school office.')+'</h2><p class="small muted">Name: '+safe(s.name)+'<br>Grade: '+safe(s.grade)+'<br>Lunch period: '+safe(s.lunchPeriod)+'</p><p class="small muted">Once the school verifies your enrollment, your QR pass becomes available in this account.</p><button id="retry" class="btn primary" type="button">Check status</button></div></section><div class="flex" style="margin-top:16px">'+logoutButton()+'</div></div>';
+  el('retry').onclick=load;bindLogout();return;
+ }
  root.innerHTML='<div class="student-shell"><div class="flex" style="justify-content:space-between"><span class="eyebrow">GATEWAYS / STUDENT PORTAL</span>'+logoutButton()+'</div><h1 style="font-size:36px;letter-spacing:-1.5px;margin:17px 0 5px">Lunch, on your time.</h1><p class="muted small">Your QR pass is yours alone.</p><nav class="student-tabs"><button data-tab="pass">My pass</button><button data-tab="menu">Weekly menu</button><button data-tab="profile">Profile</button></nav><div id="content"></div></div>';
  bindLogout();root.querySelectorAll('[data-tab]').forEach(b=>b.onclick=()=>{activeTab=b.dataset.tab;showStudent()});showStudent();
 }
