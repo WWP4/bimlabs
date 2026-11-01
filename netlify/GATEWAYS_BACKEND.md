@@ -9,7 +9,7 @@ This branch introduces the **backend foundation only**. The live Gateways kitche
 - **GitHub + Netlify:** existing website and deployments; no Supabase anywhere
 
 ## Authentication and authorization
-Enable Identity in the Netlify site UI and set **Registration = Invite only** before using any student data. Each student must receive a verified invitation linked by an administrator to a verified school roster entry.
+Enable Identity in the Netlify site UI and set **Registration = Open** before using any student data. Each student must receive a verified invitation linked by an administrator to a verified school roster entry.
 
 Roles (must be assigned by trusted Netlify Identity administrators via app metadata, never in student-controlled profile fields):
 - `gateways_admin`: approve/link students, correct a scan with a written reason, manage menus, scan and view roster/aggregates.
@@ -66,3 +66,11 @@ This isolates the Netlify build failure to **database package provisioning**, no
 To unblock: Netlify team dashboard > Usage & billing > Plan details > Change team plan > select credit-based plan. This is an **irreversible billing change** requiring a Team Owner's decision. Then enable Netlify Identity (Invite only) in the site dashboard, set GATEWAYS_QR_SECRET (at least 32 random chars, Functions scope), rerun the Deploy Preview and confirm working database/Identity endpoints, and perform full cross-device/access-control testing before student rollout.
 
 The environment-variable API returned 422 when attempting to set the secret; it was not created, so configure it in the Netlify UI. No tokens, usernames or real student records are included in the repo.
+
+## Student self-registration (November 1, 2026)
+Students are NOT preloaded into the database. The student portal provides a Create Account form for name, grade, lunch period, email, and password.
+Netlify Identity handles signup and email confirmation. After verification, the authenticated student submits their application to POST /api/gateways/apply. The server links the Identity user ID and email to an automatically generated internal student ID, with status pending.
+The kitchen's Students page shows an Awaiting approval queue with Approve and Decline controls. Email verification proves email ownership, not school enrollment; the school must check enrollment before approving a QR pass.
+Public signups never grant gateways_staff or gateways_admin roles. Unapproved accounts never receive QR credentials. Students never see lunch counts or meal history.
+**Required dashboard setting:** Enable Netlify Identity and change Registration to OPEN (not Invite only). Keep email verification ON and autoconfirm OFF. This setting cannot be changed by the connector's public API.
+Only begin real student enrollment after school approval of age-appropriate privacy, parental permissions where applicable, retention policies, and two-device end-to-end verification. The QR signing key is now generated inside Netlify Database; do not configure an external GATEWAYS_QR_SECRET.
