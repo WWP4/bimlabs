@@ -50,3 +50,19 @@ The database has append-only meal and audit event tables; corrections are compen
 
 ## Current status
 The API and schema are **staged implementation code**, not validated against a provisioned school database, and **not a production-ready student system**. No student accounts have been provisioned or migrated. The live demo has not changed.
+## Verified Netlify deployment blocker — 2026-11-01
+The Netlify site is on a team created 2025-05-09 with a Pro subscription, preceding 2025-09-04 credit-based billing. This is expected to be a **Legacy Pro** account. Netlify Database is credit-based-plan only.
+
+Controlled Deploy Preview tests against draft PR #74:
+- Full backend + database package + migration: failed Netlify build (exit 4).
+- Database package still installed, migration removed, API replaced with a fail-closed diagnostic stub: **failed** Netlify build (exit 4).
+- Database package removed, API still a fail-closed stub, migration removed: **ready** Netlify Deploy Preview (no school data enabled).
+- Database package added back with fail-closed stub and no migration: **failed** Netlify build (exit 4).
+
+This isolates the Netlify build failure to **database package provisioning**, not SQL migration logic or the browser bundle. The actual Netlify log was not available through the connected deployment diagnostic, so exact provider-side error text is not verified. Netlify's documentation says Netlify Database requires a credit-based billing plan.
+
+**The real API, SQL migration, and front-end build command have all been restored to the secure feature branch.** It remains draft; DO NOT merge to production while the account does not support the database.
+
+To unblock: Netlify team dashboard > Usage & billing > Plan details > Change team plan > select credit-based plan. This is an **irreversible billing change** requiring a Team Owner's decision. Then enable Netlify Identity (Invite only) in the site dashboard, set GATEWAYS_QR_SECRET (at least 32 random chars, Functions scope), rerun the Deploy Preview and confirm working database/Identity endpoints, and perform full cross-device/access-control testing before student rollout.
+
+The environment-variable API returned 422 when attempting to set the secret; it was not created, so configure it in the Netlify UI. No tokens, usernames or real student records are included in the repo.
