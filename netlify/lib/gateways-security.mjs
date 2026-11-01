@@ -14,18 +14,23 @@ export const uuidOK=s=>typeof s==='string'&&/^[a-f\d]{8}-[a-f\d]{4}-[a-f\d]{4}-[
 export const text=(s,max)=>typeof s==='string'?s.trim().slice(0,max):'';
 export const sameOrigin=req=>{try{verifyRequestOrigin(req);return true}catch{return false}};
 export async function body(req){const raw=await req.text();if(raw.length>16384)throw Error('Request too large');return JSON.parse(raw)}
-const key=()=>{const k=Netlify.env.get('GATEWAYS_QR_SECRET');if(!k||k.length<32)throw Error('Gateways signing secret missing');return k};
-export function createPass(id){
+async function signingKey(){
+ const result=await db.pool.query("SELECT secret FROM gateways_private_secrets WHERE id='lunch-qr-v1' LIMIT 1");
+ const secret=result.rows[0]?.secret;
+ if(typeof secret!=='string'||secret.length<64)throw Error('Gateways QR signing key not initialized');
+ return secret;
+}
+export async function createPass(id){
  const e=Math.floor(Date.now()/1000)+120;
  const encoded=Buffer.from(JSON.stringify({v:1,s:id,e})).toString('base64url');
- const sig=createHmac('sha256',key()).update(encoded).digest('base64url');
- return{token:'GW1.'+encoded+'.'+sig,expiresAt:new Date(e*1000).toISOString()};
+ const sig=createHmac('sha256',await signingKey()).update(encoded).digest('base64url');
+ return {token:'GW1.'+encoded+'.'+sig,expiresAt:new Date(e*1000).toISOString()};
 }
-export function validatePass(token){
+export async function validatePass(token){
  try{
   if(typeof token!=='string'||token.length>800)return null;
   const p=token.split('.');if(p.length!==3||p[0]!=='GW1')return null;
-  const expected=createHmac('sha256',key()).update(p[1]).digest();
+  const expected=createHmac('sha256',await signingKey()).update(p[1]).digest();
   const actual=Buffer.from(p[2],'base64url');
   if(expected.length!==actual.length||!timingSafeEqual(expected,actual))return null;
   const parsed=JSON.parse(Buffer.from(p[1],'base64url').toString('utf8'));
