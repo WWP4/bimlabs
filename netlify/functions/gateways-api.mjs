@@ -1,6 +1,6 @@
 // Gateways school lunch API. Only Netlify Identity + Netlify Database.
 import {db,reply,error,getActor,isAdmin,isStaff,dateOK,today,uuidOK,text,sameOrigin,body,createPass,validatePass,audit} from '../lib/gateways-security.mjs';
-const routeNames=new Set(['me','pass','menu','roster','scan','correct','stats']);
+const routeNames=new Set(['health','me','pass','menu','roster','scan','correct','stats']);
 const permission=(u,admin=false)=>(admin?!isAdmin(u):!isStaff(u))?error(403,'Insufficient permissions'):null;
 async function me(u){
  const r=await db.pool.query("SELECT full_name,grade,lunch_period,status FROM gateways_students WHERE identity_user_id=$1 LIMIT 1",[u.id]);
@@ -105,6 +105,14 @@ export default async function handler(req){
  const url=new URL(req.url),route=url.pathname.replace(/\/$/,'').split('/').pop();
  if(!routeNames.has(route))return error(404,'Not found');
  if(!['GET','POST','PATCH','PUT'].includes(req.method))return error(405,'Method not allowed');
+ if(route==='health'){
+  if(req.method!=='GET')return error(405,'Method not allowed');
+  try{
+   const ready=await db.pool.query("SELECT to_regclass('public.gateways_students') IS NOT NULL AS ready");
+   return ready.rows[0]?.ready===true ? reply({ok:true}) : error(503,'Gateway database not initialized');
+  }catch(e){console.error('Gateways health check unavailable',e?.message);return error(503,'Gateways database not available')}
+ }
+
  if(req.method!=='GET'&&!sameOrigin(req))return error(403,'Request origin not verified');
  let u;
  try{u=await getActor()}catch{return error(503,'Identity unavailable')}
