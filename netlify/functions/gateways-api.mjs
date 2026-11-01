@@ -134,7 +134,7 @@ export default async function handler(req){
  if(route==='health'){
   if(req.method!=='GET')return error(405,'Method not allowed');
   try{
-   const ready=await db.pool.query("SELECT (to_regclass('public.gateways_students') IS NOT NULL AND to_regclass('public.gateways_private_secrets') IS NOT NULL AND EXISTS(SELECT 1 FROM gateways_private_secrets WHERE id='lunch-qr-v1')) AS ready");
+   const ready=await db.pool.query("SELECT (to_regclass('public.gateways_students') IS NOT NULL AND to_regclass('public.gateways_private_secrets') IS NOT NULL AND EXISTS(SELECT 1 FROM gateways_private_secrets WHERE id='lunch-qr-v1') AND EXISTS(SELECT 1 FROM information_schema.columns WHERE table_schema='public' AND table_name='gateways_students' AND column_name='account_email')) AS ready");
    return ready.rows[0]?.ready===true ? reply({ok:true}) : error(503,'Gateway database not initialized');
   }catch(e){console.error('Gateways health check unavailable',e?.message);return error(503,'Gateways database not available')}
  }
