@@ -1,12 +1,12 @@
 {
-  "name": "KitchenFlow Student Pass",
-  "short_name": "Lunch Pass",
-  "description": "Student lunch pass demonstration",
+  "name": "Gateways Lunch — Student Pass",
+  "short_name": "Gateways Lunch",
+  "description": "Gateways digital lunch pass demonstration",
   "start_url": "/lunch-pass.html",
   "scope": "/",
   "display": "standalone",
   "background_color": "#ffffff",
-  "theme_color": "#111b32",
+  "theme_color": "#17171D",
   "categories": [
     "education",
     "food"
