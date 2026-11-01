@@ -6,5 +6,11 @@
     "stripe": "^14.0.0",
     "@netlify/database": "latest",
     "@netlify/identity": "latest"
+  },
+  "scripts": {
+    "build": "esbuild gateways-live.mjs --bundle --platform=browser --format=esm --target=es2022 --outfile=gateways-live.bundle.js --minify"
+  },
+  "devDependencies": {
+    "esbuild": "^0.25.0"
   }
 }
