@@ -1,0 +1,44 @@
+name: Gateways live backend smoke test
+on:
+  push:
+    branches:
+      - gateways/netlify-secure-backend
+    paths:
+      - '.github/workflows/gateways-smoke.yml'
+      - 'netlify/**'
+      - 'package.json'
+      - 'netlify.toml'
+  workflow_dispatch:
+jobs:
+  test-preview:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check database readiness and unauthorized access
+        shell: bash
+        env:
+          BASE: https://deploy-preview-74--bimlab.netlify.app
+        run: |
+          set -euo pipefail
+          health=000
+          for attempt in $(seq 1 16); do
+            health=$(curl -sS -m 10 -o /tmp/gw-health.txt -w '%{http_code}' "$BASE/api/gateways/health" || echo 000)
+            echo "Health response attempt $attempt: $health"
+            if [ "$health" = 200 ]; then break; fi
+            sleep 8
+          done
+          cat /tmp/gw-health.txt || true
+          [ "$health" = 200 ] || { echo "Database health not ready"; exit 1; }
+          for path in me pass menu roster stats; do
+            status=$(curl -sS -m 10 -o /dev/null -w '%{http_code}' "$BASE/api/gateways/$path")
+            echo "Unauthenticated /api/gateways/$path -> $status"
+            [ "$status" = 401 ] || exit 1
+          done
+          scan=$(curl -sS -m 10 -o /dev/null -w '%{http_code}' -X POST "$BASE/api/gateways/scan" -H 'content-type: application/json' -d '{"mode":"lunch","token":"forged"}')
+          echo "Untrusted scan -> $scan"
+          [ "$scan" = 401 ] || [ "$scan" = 403 ] || exit 1
+          for file in gateways.html gateways-kitchen.html gateways-live.bundle.js; do
+            status=$(curl -sS -m 10 -o /dev/null -w '%{http_code}' "$BASE/$file")
+            echo "Portal asset $file -> $status"
+            [ "$status" = 200 ] || exit 1
+          done
+          echo 'Gateways preview passed unauthenticated smoke checks'
