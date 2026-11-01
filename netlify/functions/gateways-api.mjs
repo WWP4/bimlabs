@@ -1,10 +1,35 @@
 // Gateways school lunch API. Only Netlify Identity + Netlify Database.
 import {db,reply,error,getActor,isAdmin,isStaff,dateOK,today,uuidOK,text,sameOrigin,body,createPass,validatePass,audit} from '../lib/gateways-security.mjs';
-const routeNames=new Set(['health','me','pass','menu','roster','scan','correct','stats']);
+const routeNames=new Set(['health','me','apply','pass','menu','roster','scan','correct','stats']);
 const permission=(u,admin=false)=>(admin?!isAdmin(u):!isStaff(u))?error(403,'Insufficient permissions'):null;
 async function me(u){
  const r=await db.pool.query("SELECT full_name,grade,lunch_period,status FROM gateways_students WHERE identity_user_id=$1 LIMIT 1",[u.id]);
  const s=r.rows[0];return reply({account:s?'linked':'unlinked',staff:isStaff(u),student:s?{name:s.full_name,grade:s.grade,lunchPeriod:s.lunch_period,status:s.status}:null});
+}
+// Student-initiated application. The authenticated Identity account, not supplied
+// student metadata or a browser ID, is always the owner of the pending record.
+async function apply(u,req){
+ if(isStaff(u))return error(403,'Staff accounts cannot create student applications');
+ if(typeof u.id!=='string'||typeof u.email!=='string'||!u.email.includes('@'))return error(403,'A verified email account is required');
+ const data=await body(req);
+ const name=text(data?.name,100),grade=text(data?.grade,20),period=text(data?.lunchPeriod,64);
+ if(name.length<2||name.length>100||!grade||!['Lunch A','Lunch B','Lunch C'].includes(period))
+  return error(400,'Name, grade, and lunch period are required');
+ if(!/^[\p{L}\p{M}][\p{L}\p{M} .'-]{1,99}$/u.test(name))return error(400,'Enter a valid student name');
+ const email=u.email.trim().toLowerCase();
+ const c=await db.pool.connect();
+ try{
+  await c.query('BEGIN');
+  const existing=await c.query('SELECT id,status FROM gateways_students WHERE identity_user_id=$1 LIMIT 1',[u.id]);
+  if(existing.rowCount){
+   await c.query('COMMIT');
+   return reply({status:existing.rows[0].status,alreadySubmitted:true});
+  }
+  const r=await c.query("INSERT INTO gateways_students(school_student_id,full_name,grade,lunch_period,identity_user_id,account_email,status) VALUES('SELF-' || gen_random_uuid()::text,$1,$2,$3,$4,$5,'pending') RETURNING id,status",[name,grade,period,u.id,email]);
+  await audit(c,u.id,'student.application',r.rows[0].id,{selfSubmitted:true});
+  await c.query('COMMIT');
+  return reply({status:'pending',submitted:true},201);
+ }catch(e){await c.query('ROLLBACK');throw e}finally{c.release()}
 }
 async function pass(u){
  const r=await db.pool.query("SELECT id FROM gateways_students WHERE identity_user_id=$1 AND status='approved' LIMIT 1",[u.id]);
@@ -29,7 +54,7 @@ async function editMenu(u,req){
 }
 async function roster(u){
  const denied=permission(u);if(denied)return denied;
- const r=await db.pool.query("SELECT id,school_student_id,full_name,grade,lunch_period,status,identity_user_id IS NOT NULL AS linked FROM gateways_students ORDER BY full_name LIMIT 2000");
+ const r=await db.pool.query("SELECT id,school_student_id,full_name,grade,lunch_period,status,account_email,identity_user_id IS NOT NULL AS linked FROM gateways_students ORDER BY (status='pending') DESC, created_at DESC LIMIT 2000");
  return reply({students:r.rows});
 }
 async function addStudent(u,req){
@@ -47,11 +72,12 @@ async function approveStudent(u,req){
  const denied=permission(u,true);if(denied)return denied;
  const data=await body(req),id=data?.id,identityId=text(data?.identityUserId,160),status=data?.status;
  if(!uuidOK(id)||!['approved','pending','inactive'].includes(status))return error(400,'Valid record ID and status required');
- if(status==='approved'&&!identityId)return error(400,'Verified invited Identity account ID required');
+ // Self-applications are already linked to their authenticated Identity account.
+ // Manually entered records must still be linked before approval.
  const c=await db.pool.connect();
  try{await c.query('BEGIN');
-  const r=await c.query("UPDATE gateways_students SET status=$1,identity_user_id=COALESCE(NULLIF($2,''),identity_user_id),approved_by=CASE WHEN $1='approved' THEN $3 ELSE approved_by END,approved_at=CASE WHEN $1='approved' THEN now() ELSE approved_at END WHERE id=$4 RETURNING id,status",[status,identityId,u.id,id]);
-  if(!r.rowCount){await c.query('ROLLBACK');return error(404,'Record not found')}
+  const r=await c.query("UPDATE gateways_students SET status=$1,identity_user_id=COALESCE(NULLIF($2,''),identity_user_id),approved_by=CASE WHEN $1='approved' THEN $3 ELSE approved_by END,approved_at=CASE WHEN $1='approved' THEN now() ELSE approved_at END WHERE id=$4 AND ($1<>'approved' OR COALESCE(NULLIF($2,''),identity_user_id) IS NOT NULL) RETURNING id,status",[status,identityId,u.id,id]);
+  if(!r.rowCount){await c.query('ROLLBACK');return error(400,'Student missing or account not verified')}
   await audit(c,u.id,'student.status',id,{status,linked:!!identityId});
   await c.query('COMMIT');return reply({ok:true,status});
  }catch(e){await c.query('ROLLBACK');throw e}finally{c.release()}
@@ -119,6 +145,7 @@ export default async function handler(req){
  if(!u)return error(401,'Sign in required');
  try{
   if(route==='me'&&req.method==='GET')return await me(u);
+  if(route==='apply'&&req.method==='POST')return await apply(u,req);
   if(route==='pass'&&req.method==='GET')return await pass(u);
   if(route==='menu'&&req.method==='GET')return await menu(u,url);
   if(route==='menu'&&req.method==='PUT')return await editMenu(u,req);
