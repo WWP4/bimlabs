@@ -1,0 +1,19 @@
+name: Gateways Netlify deployment authorization check
+on:
+  push:
+    branches: [gateways-lunch-site]
+    paths: ['.github/workflows/gateways-deploy-check.yml']
+  workflow_dispatch:
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check for existing deployment credential
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+        run: |
+          if [ -n "$NETLIFY_AUTH_TOKEN" ]; then
+            echo "Netlify deployment credential configured: yes"
+          else
+            echo "Netlify deployment credential configured: no"
+          fi
