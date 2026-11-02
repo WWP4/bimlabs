@@ -3,8 +3,8 @@ import {db,reply,error,getActor,isAdmin,isStaff,dateOK,today,uuidOK,text,sameOri
 const routeNames=new Set(['health','me','apply','pass','menu','roster','scan','correct','stats']);
 const permission=(u,admin=false)=>(admin?!isAdmin(u):!isStaff(u))?error(403,'Insufficient permissions'):null;
 async function me(u){
- const r=await db.pool.query("SELECT full_name,grade,lunch_period,status FROM gateways_students WHERE identity_user_id=$1 LIMIT 1",[u.id]);
- const s=r.rows[0];return reply({account:s?'linked':'unlinked',staff:isStaff(u),student:s?{name:s.full_name,grade:s.grade,lunchPeriod:s.lunch_period,status:s.status}:null});
+ const r=await db.pool.query("SELECT full_name,lunch_period,phone_number,status FROM gateways_students WHERE identity_user_id=$1 LIMIT 1",[u.id]);
+ const s=r.rows[0];return reply({account:s?'linked':'unlinked',staff:isStaff(u),student:s?{name:s.full_name,phone:s.phone_number,lunchPeriod:s.lunch_period,status:s.status}:null});
 }
 // Student-initiated application. The authenticated Identity account, not supplied
 // student metadata or a browser ID, is always the owner of the pending record.
@@ -12,9 +12,11 @@ async function apply(u,req){
  if(isStaff(u))return error(403,'Staff accounts cannot create student applications');
  if(typeof u.id!=='string'||typeof u.email!=='string'||!u.email.includes('@'))return error(403,'A verified email account is required');
  const data=await body(req);
- const name=text(data?.name,100),grade=text(data?.grade,20),period=text(data?.lunchPeriod,64);
- if(name.length<2||name.length>100||!grade||!['Lunch A','Lunch B','Lunch C'].includes(period))
-  return error(400,'Name, grade, and lunch period are required');
+ const name=text(data?.name,100),phone=text(data?.phone,30),period=text(data?.lunchPeriod,64);
+ const digits=phone.replace(/\D/g,'');
+ if(name.length<2||name.length>100||!['Lunch A','Lunch B','Lunch C'].includes(period))
+  return error(400,'Name and lunch period are required');
+ if(digits.length<10||digits.length>15)return error(400,'Enter a valid phone number, including area code');
  if(!/^[\p{L}\p{M}][\p{L}\p{M} .'-]{1,99}$/u.test(name))return error(400,'Enter a valid student name');
  const email=u.email.trim().toLowerCase();
  const c=await db.pool.connect();
@@ -25,7 +27,7 @@ async function apply(u,req){
    await c.query('COMMIT');
    return reply({status:existing.rows[0].status,alreadySubmitted:true});
   }
-  const r=await c.query("INSERT INTO gateways_students(school_student_id,full_name,grade,lunch_period,identity_user_id,account_email,status) VALUES('SELF-' || gen_random_uuid()::text,$1,$2,$3,$4,$5,'pending') RETURNING id,status",[name,grade,period,u.id,email]);
+  const r=await c.query("INSERT INTO gateways_students(school_student_id,full_name,lunch_period,identity_user_id,account_email,phone_number,status) VALUES('SELF-' || gen_random_uuid()::text,$1,$2,$3,$4,$5,'pending') RETURNING id,status",[name,period,u.id,email,phone]);
   await audit(c,u.id,'student.application',r.rows[0].id,{selfSubmitted:true});
   await c.query('COMMIT');
   return reply({status:'pending',submitted:true},201);
@@ -54,7 +56,7 @@ async function editMenu(u,req){
 }
 async function roster(u){
  const denied=permission(u);if(denied)return denied;
- const r=await db.pool.query("SELECT id,school_student_id,full_name,grade,lunch_period,status,account_email,identity_user_id IS NOT NULL AS linked FROM gateways_students ORDER BY (status='pending') DESC, created_at DESC LIMIT 2000");
+ const r=await db.pool.query("SELECT id,school_student_id,full_name,lunch_period,status,account_email,phone_number,identity_user_id IS NOT NULL AS linked FROM gateways_students ORDER BY (status='pending') DESC, created_at DESC LIMIT 2000");
  return reply({students:r.rows});
 }
 async function addStudent(u,req){
@@ -134,7 +136,7 @@ export default async function handler(req){
  if(route==='health'){
   if(req.method!=='GET')return error(405,'Method not allowed');
   try{
-   const ready=await db.pool.query("SELECT (to_regclass('public.gateways_students') IS NOT NULL AND to_regclass('public.gateways_private_secrets') IS NOT NULL AND EXISTS(SELECT 1 FROM gateways_private_secrets WHERE id='lunch-qr-v1') AND EXISTS(SELECT 1 FROM information_schema.columns WHERE table_schema='public' AND table_name='gateways_students' AND column_name='account_email')) AS ready");
+   const ready=await db.pool.query("SELECT (to_regclass('public.gateways_students') IS NOT NULL AND to_regclass('public.gateways_private_secrets') IS NOT NULL AND EXISTS(SELECT 1 FROM gateways_private_secrets WHERE id='lunch-qr-v1') AND EXISTS(SELECT 1 FROM information_schema.columns WHERE table_schema='public' AND table_name='gateways_students' AND column_name='account_email') AND EXISTS(SELECT 1 FROM information_schema.columns WHERE table_schema='public' AND table_name='gateways_students' AND column_name='phone_number')) AS ready");
    return ready.rows[0]?.ready===true ? reply({ok:true}) : error(503,'Gateway database not initialized');
   }catch(e){console.error('Gateways health check unavailable',e?.message);return error(503,'Gateways database not available')}
  }
