@@ -1,0 +1,31 @@
+name: Gateways Identity signup readiness
+on:
+  push:
+    branches: [gateways/netlify-secure-backend]
+    paths: ['.github/workflows/gateways-identity-check.yml', 'gateways-live.mjs', 'netlify/functions/gateways-api.mjs']
+  workflow_dispatch:
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check Identity settings available publicly
+        run: |
+          python3 - <<'PY'
+          import urllib.request,urllib.error,json
+          for host in ("https://deploy-preview-74--bimlab.netlify.app", "https://www.bimlabsstudio.com"):
+              url=host+"/.netlify/identity/settings"
+              try:
+                  with urllib.request.urlopen(urllib.request.Request(url,headers={"User-Agent":"Gateways-Readiness-Check"}), timeout=12) as response:
+                      data=response.read(65536)
+                      print(host, "identity-settings HTTP", response.status)
+                  try:
+                      value=json.loads(data)
+                      print("  signup: disable_signup =",value.get("disable_signup"),"; autoconfirm =",value.get("mailer_autoconfirm"),"; external =",value.get("external",{}).get("email",{}).get("enabled"))
+                      print("  keys:",sorted(k for k in value if k in {"disable_signup","mailer_autoconfirm","external","site_url","error","msg"}))
+                  except Exception:
+                      print("  Settings response was not JSON")
+              except urllib.error.HTTPError as error:
+                  print(host, "identity-settings HTTP",error.code)
+              except Exception as error:
+                  print(host, "identity-settings: unavailable",type(error).__name__)
+          PY
