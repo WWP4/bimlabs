@@ -20,10 +20,10 @@ jobs:
                       print(host, "identity-settings HTTP", response.status, "type", response.headers.get("content-type"), "starts_html", data.lstrip()[:25].lower().startswith(b"<!doctype html") or data.lstrip()[:6].lower().startswith(b"<html"))
                   try:
                       value=json.loads(data)
-                      print("  signup: disable_signup =",value.get("disable_signup"),"; autoconfirm =",value.get("mailer_autoconfirm"),"; external =",value.get("external",{}).get("email",{}).get("enabled"))
+                      print("  signup: disable_signup =",value.get("disable_signup"),"; autoconfirm =",value.get("mailer_autoconfirm"),"; external =",str(value.get("external",{}).get("email")) if isinstance(value.get("external"),dict) else type(value.get("external")).__name__)
                       print("  keys:",sorted(k for k in value if k in {"disable_signup","mailer_autoconfirm","external","site_url","error","msg"}))
-                  except Exception:
-                      print("  Settings response was not JSON")
+                  except Exception as error:
+                      print("  Could not interpret settings",type(error).__name__)
               except urllib.error.HTTPError as error:
                   print(host, "identity-settings HTTP",error.code)
               except Exception as error:
