@@ -1,14 +1,14 @@
 {
-  "name": "bimlabs-site",
+  "name": "gateways-lunch",
   "private": true,
+  "version": "1.0.0",
   "type": "module",
-  "dependencies": {
-    "stripe": "^14.0.0",
-    "@netlify/identity": "latest",
-    "esbuild": "^0.25.0",
-    "@netlify/database": "latest"
-  },
   "scripts": {
-    "build": "esbuild gateways-live.mjs --bundle --platform=browser --format=esm --target=es2022 --outfile=gateways-live.bundle.js --minify"
+    "build": "esbuild src/gateways-live.mjs --bundle --platform=browser --format=esm --target=es2022 --outfile=public/gateways-live.bundle.js --minify"
+  },
+  "dependencies": {
+    "@netlify/database": "latest",
+    "@netlify/identity": "latest",
+    "esbuild": "^0.25.0"
   }
 }

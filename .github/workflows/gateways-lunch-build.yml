@@ -1,0 +1,22 @@
+name: Gateways standalone site build
+on:
+  push:
+    branches: [gateways-lunch-site]
+  workflow_dispatch:
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - run: npm install --no-audit --no-fund
+      - run: npm run build
+      - run: |
+          node --check src/gateways-live.mjs
+          node --check netlify/functions/gateways-api.mjs
+          node --check netlify/lib/gateways-security.mjs
+          test -s public/gateways-live.bundle.js
+          test -s public/index.html
+          test -s public/kitchen.html
