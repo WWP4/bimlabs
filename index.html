@@ -2,6 +2,14 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <!-- Netlify Identity confirmation emails return to the site root by default.
+       Forward only recognized Identity hash tokens to the Gateways callback handler;
+       fragments never leave the browser via the HTTP request. -->
+  <script>
+    if (/^#(?:confirmation_token|recovery_token|invite_token|email_change_token)=/.test(location.hash)) {
+      location.replace('/gateways.html' + location.hash);
+    }
+  </script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <title>BIM Labs</title>
