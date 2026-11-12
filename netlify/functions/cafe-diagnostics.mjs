@@ -5,6 +5,7 @@ import { json, ready, settings, liveCatalog, square } from "../lib/cafe-square.m
 export default async (req) => {
   if (req.method !== "GET") return json({ error: "Method not allowed" }, 405);
   const cfg = settings();
+  const logStatus = (res) => { console.info('GLCA_CAFE_PUBLIC_READINESS', JSON.stringify({environment:res.environment,locationValid:res.locationValid,squareReachable:res.squareReachable,categoryFound:res.categoryFound,itemCount:res.itemCount,availableItemCount:res.availableItemCount,expectedMenuReady:res.expectedMenuReady,missingMenuItems:res.missingMenuItems,pickupSlotsConfigured:res.pickupSlotsConfigured,checkoutEnabled:res.checkoutEnabled,canTakeOrders:res.canTakeOrders,summary:res.summary})); return res; };
   const result = {
     environment: cfg.environment,
     tokenConfigured: Boolean(cfg.accessToken),
@@ -20,14 +21,14 @@ export default async (req) => {
     checkoutEnabled: cfg.acceptingOrders,
     canTakeOrders: false
   };
-  if (!ready(cfg)) return json({...result, summary:"Square credentials are missing."});
+  if (!ready(cfg)) return json(logStatus({...result, summary:"Square credentials are missing."}));
   try {
     const loc = await square("/v2/locations/" + encodeURIComponent(cfg.locationId), {}, cfg);
     result.locationValid = Boolean(loc.location && loc.location.id === cfg.locationId);
     result.squareReachable = true;
   } catch (err) {
     console.error("GLCA Square location test failed:",err.message);
-    return json({...result,summary:"Square credentials or location could not be verified."}, 200);
+    return json(logStatus({...result,summary:"Square credentials or location could not be verified."}), 200);
   }
   try {
     const { items, categoryFound } = await liveCatalog(cfg);
@@ -53,9 +54,9 @@ export default async (req) => {
       !result.pickupSlotsConfigured ? "Configure actual pickup time slots in Netlify." :
       !result.checkoutEnabled ? "Café checkout is disabled until you enable it." :
       "Additional configuration required.";
-    return json(result);
+    return json(logStatus(result));
   } catch (err) {
     console.error("GLCA Square catalog test failed:",err.message);
-    return json({...result,summary:"The Square catalog could not be read. Verify the token permissions and item setup."});
+    return json(logStatus({...result,summary:"The Square catalog could not be read. Verify the token permissions and item setup."}));
   }
 };
