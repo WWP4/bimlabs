@@ -89,7 +89,6 @@ export default async (req) => {
       },
       checkout_options:{allow_tipping:false,ask_for_shipping_address:false,redirect_url:cfg.returnUrl}
     };
-    if(email)squareBody.pre_populated_data={buyer_email:email,...(phone?{buyer_phone_number:phone}:{})};
     const response=await square("/v2/online-checkout/payment-links",{method:"POST",body:squareBody},cfg);
     const link=response.payment_link?.url;
     const orderId=response.payment_link?.order_id;
