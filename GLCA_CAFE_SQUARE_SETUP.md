@@ -14,8 +14,10 @@ Do not paste access tokens in chat, commit them to GitHub, or add them to browse
 2. Under **Credentials**, obtain a Sandbox access token for testing, then a separate Production token only when ready for live payments.
 3. In Square Dashboard, identify the exact café **Location ID**. Use the location that will receive the orders.
 4. In the Square Item Library, create a category with the exact name **GLCA Café**. Assign only the items intended for the student café to this category, even if they also have other categories.
-5. Give each menu item a fixed USD price, appropriate taxes, variations, optional Square images, and the correct sold-out status. The site intentionally omits variable-priced items.
-6. Be sure a suitable Square POS / Orders setup is available to kitchen staff; test receipt and fulfillment routing before launch.
+5. Give each menu item a fixed USD price, appropriate taxes, variations, optional Square images, and the correct sold-out status.
+6. Create another Square category named **GLCA Featured**. Put items you want under **New This Week** in both **GLCA Café** and **GLCA Featured**. Changes to the weekly specials automatically appear on the website.
+7.  The site intentionally omits variable-priced items.
+Be sure a suitable Square POS / Orders setup is available to kitchen staff; test receipt and fulfillment routing before launch.
 
 ## 2. Add site-level Netlify environment variables
 
@@ -27,6 +29,7 @@ In https://app.netlify.com/projects/bimlab > Project configuration > Environment
 | `SQUARE_LOCATION_ID` | Your Square location ID | Yes |
 | `SQUARE_ENVIRONMENT` | `sandbox` then `production` | Yes |
 | `SQUARE_CAFE_CATEGORY_NAME` | `GLCA Café` | Recommended (default is GLCA Café) |
+| `SQUARE_CAFE_FEATURED_CATEGORY_NAME` | `GLCA Featured` | Optional (default is GLCA Featured) |
 | `SQUARE_CAFE_CATEGORY_ID` | ID of that Square catalog category | Optional, overrides category name |
 | `SQUARE_CAFE_PICKUP_SLOTS` | `11:30,12:00,12:30,13:00` | Yes, set actual kitchen hours |
 | `SQUARE_CAFE_PICKUP_DAYS` | `1,2,3,4,5` (Mon–Fri; Sun=0) | Optional |
