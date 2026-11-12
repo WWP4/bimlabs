@@ -17,14 +17,13 @@
 
 
 @media(max-width:650px){.hero-in{grid-template-columns:1fr;gap:10px}.hero h1{font-size:clamp(55px,14vw,91px)}.hero-art{grid-row:1;max-width:420px;margin:auto}.nav-right a{display:none}.hero-copy{padding-bottom:10px}.wrap{width:calc(100% - 32px)}}
-.fries-offer{margin:16px 0;padding:14px 17px;border:1px solid #ffd2dc;border-radius:16px;background:#fff1f4;color:#a70a25}.fries-offer strong,.fries-offer span{display:block}.fries-offer strong{font-weight:900}.fries-offer span{font-size:13px;font-variant-numeric:tabular-nums}
+.fries-offer{display:flex;justify-content:center;align-items:center;flex-wrap:wrap;gap:2px 14px;padding:7px 12px;background:#c8102e;color:#fff;text-align:center;font-size:12px;line-height:1.35}.fries-offer[hidden]{display:none}.fries-offer strong{font-weight:800}.fries-offer span{font-variant-numeric:tabular-nums}@media(max-width:540px){.fries-offer{font-size:11px}}
 </style></head><body>
-<header><nav class="wrap nav" aria-label="Main menu"><a class="brand" href="#top">GLCA WORLD CUP CAFÉ</a><div class="nav-right"><a href="#order">Menu</a><button class="cart-toggle" type="button" id="openCart">My order (<b id="count">0</b>)</button></div></nav></header>
+<header><div class="fries-offer" id="friesOffer" hidden><strong>Free extra fries with a combo</strong><span id="friesCounter"></span></div><nav class="wrap nav" aria-label="Main menu"><a class="brand" href="#top">GLCA WORLD CUP CAFÉ</a><div class="nav-right"><a href="#order">Menu</a><button class="cart-toggle" type="button" id="openCart">My order (<b id="count">0</b>)</button></div></nav></header>
 <main id="top"><section class="hero" aria-label="Café menu"><div class="wrap hero-in"><div class="hero-copy">
 <div class="kick">The café favorites</div>
 <h1>GOOD FOOD.<br>GOOD MOOD.</h1>
 <p class="desc">Burger + Fries + Shake</p>
-<div class="fries-offer" id="friesOffer" hidden><strong>PRE-ORDER NOW. GET EXTRA FRIES FREE.</strong><span id="friesCounter"></span></div>
 <div class="combo-line"><span>THE COMBO</span><strong>$12.50</strong></div>
 <button class="btn" type="button" data-add="combo">ADD COMBO — $12.50 <span aria-hidden="true">→</span></button>
 <div class="singles" id="order" aria-label="Burger and fries option">
