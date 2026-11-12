@@ -13,9 +13,9 @@
 :root{--red:#d60022;--ink:#111417;--paper:#ffffff}
 *{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.45 "DM Sans",sans-serif}button,input,select,textarea{font:inherit}button{cursor:pointer}a{color:inherit;text-decoration:none}:focus-visible{outline:3px solid var(--red);outline-offset:4px}
 .wrap{width:min(1380px,calc(100% - 7vw));margin:auto}.nav{display:flex;justify-content:space-between;align-items:center;min-height:76px;gap:16px}.brand{font-weight:900;font-size:clamp(17px,2.3vw,29px);letter-spacing:-.055em}.nav-right{display:flex;align-items:center;gap:clamp(10px,3vw,36px);font-weight:800;font-size:12px;text-transform:uppercase}.cart-toggle{border:0;background:none;color:inherit;font:inherit;padding:10px 0;text-transform:inherit}.hero-in{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);align-items:center;gap:2vw;padding-block:clamp(18px,4vw,70px)}.kick{color:var(--red);font-weight:900;text-transform:uppercase;letter-spacing:.06em;transform:rotate(-4deg);transform-origin:left;margin-bottom:12px}.hero h1{font:900 clamp(45px,8.3vw,122px)/.83 "Barlow Condensed",Impact,sans-serif;letter-spacing:-.028em;margin:0}.desc{font-size:clamp(20px,3vw,42px);font-weight:900;letter-spacing:-.045em;margin:14px 0 8px}.combo-line{display:flex;align-items:center;gap:12px;margin-bottom:16px;font-size:clamp(19px,2.7vw,35px);font-weight:900}.combo-line span{background:var(--red);color:#fff;border-radius:999px;padding:4px 12px;font-size:.64em}.btn,.plus{border:0;background:var(--red);color:#fff;border-radius:999px;font-weight:800}.btn{padding:13px 23px;display:inline-flex;align-items:center;justify-content:center;gap:14px;font-size:13px}.btn:hover,.plus:hover{background:#b4001b}.btn:disabled{opacity:.55;cursor:not-allowed}.hero-art{margin:0}.hero-art img{display:block;width:100%;height:auto;mix-blend-mode:multiply}.singles{display:grid;grid-template-columns:repeat(3,1fr);margin-top:24px;padding-top:12px;border-top:1px solid #cfcac4}.single{display:flex;align-items:center;justify-content:space-between;gap:4px;padding-inline:10px;border-right:1px solid #cfcac4}.single:first-child{padding-left:0}.single:last-child{border:0;padding-right:0}.single strong,.single small{display:block;font-size:clamp(11px,1.35vw,16px)}.plus{width:28px;height:28px;flex:none}.menu-note,.status{font-size:13px;color:#54504d}.status{margin:8px 0 0}.foot{border-top:1px solid #dedbd6;padding:15px 0;color:#54504d;font-size:13px}
-.backdrop{position:fixed;inset:0;background:#09090cba;z-index:30;opacity:0;pointer-events:none;transition:opacity .25s}.backdrop.open{opacity:1;pointer-events:auto}.drawer{position:fixed;z-index:31;right:0;top:0;bottom:0;background:#f7f6f3;color:#151719;width:min(490px,100%);transform:translateX(105%);transition:transform .3s;box-shadow:-30px 0 80px #0007;display:flex;flex-direction:column}.drawer.open{transform:translateX(0)}.drawer-head{display:flex;align-items:center;justify-content:space-between;padding:26px;border-bottom:1px solid #dedbd6}.drawer-head h2{font:700 27px "Space Grotesk",sans-serif;letter-spacing:-.05em;margin:0}.close{width:38px;height:38px;border:1px solid #ddd;background:white;border-radius:50%;font-size:24px}.drawer-body{padding:25px;overflow:auto;flex:1}.drawer-sub{font-size:13px;line-height:1.6;color:#696a6f;margin-bottom:20px}.cart-row{padding:15px 0;display:flex;justify-content:space-between;gap:20px;border-bottom:1px solid #ddd9d2}.cart-row strong{font-size:15px}.cart-row small{display:block;color:#717177;margin-top:4px}.controls{display:flex;align-items:center;gap:13px}.controls button{width:29px;height:29px;border-radius:50%;background:white;border:1px solid #d9d6d2;font-size:19px}.subtotal{display:flex;justify-content:space-between;font:700 20px "Space Grotesk",sans-serif;letter-spacing:-.04em;margin:20px 0 5px}.fineprint{color:#85868a;font-size:11px;line-height:1.6}.checkout{margin-top:27px;display:grid;gap:14px}.checkout h3{font:700 21px "Space Grotesk",sans-serif;letter-spacing:-.04em;margin:0}.field{display:grid;gap:6px}.field label{font-size:11px;text-transform:uppercase;font-weight:800;letter-spacing:.1em}.field input,.field select,.field textarea{width:100%;border:1px solid #d5d3d0;border-radius:4px;padding:12px;background:#fff;color:#191a1c}.sauces{border:1px solid #dad6d0;background:#fff;padding:15px;border-radius:6px}.sauces strong{font-size:12px}.sauces p{font-size:11px;color:#777;margin:3px 0 12px}.checks{display:flex;gap:22px;flex-wrap:wrap}.checks label{font-size:13px;font-weight:700;display:flex;align-items:center;gap:8px;cursor:pointer}.checks input{accent-color:var(--red);height:17px;width:17px}.checkout .btn{width:100%}.form-note{font-size:12px;color:#805246;background:#f7e9e3;padding:12px;border-radius:5px}.success{background:#e7f3e5;border:1px solid #a5c7a1;padding:14px;color:#294629;border-radius:6px}.result{font-size:13px;color:#943442}.lock{overflow:hidden}
+.drawer{position:fixed;inset:0;margin:auto;border:0;padding:0;background:#fff;color:#151719;width:min(520px,calc(100% - 28px));max-height:calc(100dvh - 32px);border-radius:24px;box-shadow:0 24px 90px #15171938;overflow:auto}.drawer::backdrop{background:#15171980;backdrop-filter:blur(4px)}.drawer .drawer-head{position:sticky;top:0;background:#fff;z-index:1;padding:19px 24px}.drawer .drawer-body{padding:8px 24px 24px;overflow:visible}.cart-actions{display:grid;gap:10px;margin-top:20px;text-align:center}.cart-actions .btn{width:100%;min-height:46px}.back-order{border:0;background:none;padding:12px 0 0;color:#54504d;font-weight:700}.back-order:hover{text-decoration:underline}.drawer [hidden]{display:none}.drawer .checkout{margin-top:16px}.drawer .field input,.drawer .field select,.drawer .field textarea{border-radius:9px}.drawer .sauces{border-radius:12px}.drawer .result:not(:empty){margin-top:16px}@media(prefers-reduced-motion:no-preference){.drawer[open]{animation:pop-in .18s ease-out}@keyframes pop-in{from{opacity:0;transform:translateY(8px) scale(.98)}to{opacity:1;transform:none}}}.drawer-head{display:flex;align-items:center;justify-content:space-between;padding:26px;border-bottom:1px solid #dedbd6}.drawer-head h2{font:700 27px "Space Grotesk",sans-serif;letter-spacing:-.05em;margin:0}.close{width:38px;height:38px;border:1px solid #ddd;background:white;border-radius:50%;font-size:24px}.drawer-body{padding:25px;overflow:auto;flex:1}.drawer-sub{font-size:13px;line-height:1.6;color:#696a6f;margin-bottom:20px}.cart-row{padding:15px 0;display:flex;justify-content:space-between;gap:20px;border-bottom:1px solid #ddd9d2}.cart-row strong{font-size:15px}.cart-row small{display:block;color:#717177;margin-top:4px}.controls{display:flex;align-items:center;gap:13px}.controls button{width:29px;height:29px;border-radius:50%;background:white;border:1px solid #d9d6d2;font-size:19px}.subtotal{display:flex;justify-content:space-between;font:700 20px "Space Grotesk",sans-serif;letter-spacing:-.04em;margin:20px 0 5px}.fineprint{color:#85868a;font-size:11px;line-height:1.6}.checkout{margin-top:27px;display:grid;gap:14px}.checkout h3{font:700 21px "Space Grotesk",sans-serif;letter-spacing:-.04em;margin:0}.field{display:grid;gap:6px}.field label{font-size:11px;text-transform:uppercase;font-weight:800;letter-spacing:.1em}.field input,.field select,.field textarea{width:100%;border:1px solid #d5d3d0;border-radius:4px;padding:12px;background:#fff;color:#191a1c}.sauces{border:1px solid #dad6d0;background:#fff;padding:15px;border-radius:6px}.sauces strong{font-size:12px}.sauces p{font-size:11px;color:#777;margin:3px 0 12px}.checks{display:flex;gap:22px;flex-wrap:wrap}.checks label{font-size:13px;font-weight:700;display:flex;align-items:center;gap:8px;cursor:pointer}.checks input{accent-color:var(--red);height:17px;width:17px}.checkout .btn{width:100%}.form-note{font-size:12px;color:#805246;background:#f7e9e3;padding:12px;border-radius:5px}.success{background:#e7f3e5;border:1px solid #a5c7a1;padding:14px;color:#294629;border-radius:6px}.result{font-size:13px;color:#943442}.lock{overflow:hidden}
 
-.drawer[aria-hidden="true"]{visibility:hidden}.drawer.open{visibility:visible}
+
 @media(max-width:650px){.hero-in{grid-template-columns:1fr;gap:10px}.hero h1{font-size:clamp(55px,14vw,91px)}.hero-art{grid-row:1;max-width:420px;margin:auto}.nav-right a{display:none}.hero-copy{padding-bottom:10px}.wrap{width:calc(100% - 32px)}}
 </style></head><body>
 <header><nav class="wrap nav" aria-label="Main menu"><a class="brand" href="#top">GLCA WORLD CUP CAFÉ</a><div class="nav-right"><a href="#order">Menu</a><button class="cart-toggle" type="button" id="openCart">My order (<b id="count">0</b>)</button></div></nav></header>
@@ -33,12 +33,11 @@
 <p class="status" id="menuStatus" role="status">Checking preorder availability…</p>
 </div><figure class="hero-art"><img src="/glca-cafe-hero.webp" width="1600" height="1200" fetchpriority="high" alt="Double cheeseburger, fries in a red diner basket, and a vanilla milkshake"></figure></div></section></main>
 <footer class="foot"><div class="wrap">Campus pickup · Secure checkout by Square</div></footer>
-<div class="backdrop" id="backdrop"></div>
-<aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="drawerTitle">
- <div class="drawer-head"><h2 id="drawerTitle">Your GLCA order</h2><button type="button" class="close" id="closeCart" aria-label="Close order">×</button></div>
+<dialog class="drawer" id="drawer" aria-labelledby="drawerTitle">
+ <div class="drawer-head"><h2 id="drawerTitle">Your order</h2><button type="button" class="close" id="closeCart" aria-label="Close order">×</button></div>
  <div class="drawer-body">
-  <p class="drawer-sub">Choose your items, pick free sauces, then select a campus pickup time.</p>
-  <div id="cartItems"></div>
+  <div id="cartSummary"><div id="cartItems"></div><div class="cart-actions"><button type="button" class="btn" id="proceed" disabled>Proceed to checkout <span aria-hidden="true">→</span></button></div></div>
+  <div id="pickupDetails" hidden><button type="button" class="back-order" id="backToCart">← Back to order</button>
   <div class="sauces"><strong>FREE SAUCES</strong><p>Pick either, both, or none. $0.00 extra.</p><div class="checks">
     <label><input type="checkbox" id="ketchup"> Ketchup</label><label><input type="checkbox" id="mayo"> Mayo</label>
   </div></div>
@@ -52,10 +51,10 @@
    <div class="field"><label for="orderNotes">Kitchen note (optional)</label><textarea id="orderNotes" name="orderNotes" maxlength="350" rows="2" placeholder="Anything the kitchen should know?"></textarea></div>
    <p class="form-note" id="checkoutNote">Checkout opens when GLCA completes Square menu and pickup setup. You can build a cart now.</p>
    <button type="submit" class="btn" id="checkout" disabled>Square checkout opening soon</button>
-   <div class="result" id="orderResult" role="status" aria-live="polite"></div>
-  </form>
+  </form></div>
+  <div class="result" id="orderResult" role="status" aria-live="polite"></div>
  </div>
-</aside>
+</dialog>
 <script>
 (function(){
 "use strict";
@@ -91,16 +90,46 @@ function render(){
   lines.push('<div class="cart-row"><div><strong>'+p.name+'</strong><small>'+money(p.cents)+' each</small></div><div class="controls"><button type="button" data-dec="'+p.key+'" aria-label="Remove one '+p.name+'">−</button><span>'+n+'</span><button type="button" data-inc="'+p.key+'" aria-label="Add one '+p.name+'">+</button></div></div>');
  });
  holder.innerHTML=lines.length?lines.join("")+'<div class="subtotal"><span>Subtotal</span><span>'+money(subtotal)+'</span></div><p class="fineprint">Final taxes and discounts, if any, are calculated by Square at checkout.</p>':'<p style="color:#707177;padding:12px 0 20px">Your bag is empty. Add the combo or choose individual items.</p>';
+ el("proceed").disabled=count()===0;
  var allowed=canPay();
  el("checkout").disabled=!allowed;
  el("checkout").textContent=allowed?"Continue to secure Square checkout":"Square checkout opening soon";
 }
-function open(){el("drawer").classList.add("open");el("backdrop").classList.add("open");el("drawer").setAttribute("aria-hidden","false");document.body.classList.add("lock");el("closeCart").focus()}
-function close(){el("drawer").classList.remove("open");el("backdrop").classList.remove("open");el("drawer").setAttribute("aria-hidden","true");document.body.classList.remove("lock");el("openCart").focus()}
+var dialog=el("drawer"),returnFocus;
+function showStep(pickup){
+ el("cartSummary").hidden=pickup;
+ el("pickupDetails").hidden=!pickup;
+ el("drawerTitle").textContent=pickup?"Checkout":"Your order";
+ dialog.scrollTop=0;
+}
+function open(){
+ if(dialog.open)return;
+ returnFocus=document.activeElement;
+ showStep(false);
+ dialog.showModal();
+ document.body.classList.add("lock");
+ el("closeCart").focus();
+}
 el("openCart").addEventListener("click",open);
-el("closeCart").addEventListener("click",close);
-el("backdrop").addEventListener("click",close);
-document.addEventListener("keydown",function(e){if(e.key==="Escape"&&el("drawer").classList.contains("open"))close()});
+el("closeCart").addEventListener("click",function(){dialog.close()});
+dialog.addEventListener("close",function(){
+ document.body.classList.remove("lock");
+ if(returnFocus instanceof HTMLElement)returnFocus.focus();
+});
+var pointerStartedOutside=false;
+dialog.addEventListener("pointerdown",function(e){
+ var rect=dialog.getBoundingClientRect();
+ pointerStartedOutside=e.target===dialog&&(e.clientX<rect.left||e.clientX>rect.right||e.clientY<rect.top||e.clientY>rect.bottom);
+});
+dialog.addEventListener("click",function(e){if(pointerStartedOutside&&e.target===dialog)dialog.close();pointerStartedOutside=false});
+el("proceed").addEventListener("click",function(){
+ showStep(true);
+ el("studentName").focus();
+});
+el("backToCart").addEventListener("click",function(){
+ showStep(false);
+ el("proceed").focus();
+});
 document.addEventListener("click",function(e){
  var add=e.target.closest("[data-add]"),inc=e.target.closest("[data-inc]"),dec=e.target.closest("[data-dec]");
  if(add){var a=add.getAttribute("data-add");cart[a]=Math.min(10,(cart[a]||0)+1);idem="";save();render();open()}
