@@ -36,20 +36,20 @@ jobs:
           safe = ["environment", "tokenConfigured", "locationConfigured",
                   "locationValid", "squareReachable", "categoryFound",
                   "itemCount", "availableItemCount", "pickupSlotsConfigured",
-                  "checkoutEnabled", "canTakeOrders", "summary"]
+                  "checkoutEnabled", "expectedMenuReady", "missingMenuItems", "canTakeOrders", "summary"]
           print("GLCA Cafe Square diagnostic:")
           for key in safe:
               if key in payload:
                   print(f"{key}: {payload[key]}")
-          if not payload.get("squareReachable") or not payload.get("locationValid"):
+          if payload.get("environment") != "production" or not payload.get("canTakeOrders") or not payload.get("expectedMenuReady"):
               raise SystemExit(1)
           PY
               then
-                echo "Square location connection healthy."
+                echo "GLCA Café production Square menu and checkout readiness confirmed."
                 exit 0
               fi
             fi
             sleep 10
           done
-          echo "Smoke test did not establish a healthy Square connection."
+          echo "GLCA Café is not fully ready to accept real production orders."
           exit 1
