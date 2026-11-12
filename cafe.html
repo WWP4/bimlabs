@@ -205,6 +205,10 @@ function renderFries(){
  el("friesOffer").hidden=!seconds;
  if(!seconds)return;
  var time=[Math.floor(seconds/3600),Math.floor(seconds/60)%60,seconds%60].map(n=>String(n).padStart(2,"0")).join(":");
+ if(Date.now()<Date.parse(friesOffer.opensAt)){
+  el("friesCounter").textContent="Only 50 today · Preorders open at 7:45 a.m. Central";
+  return;
+ }
  el("friesCounter").textContent=friesOffer.available
    ? friesOffer.available+" of 50 available · "+friesOffer.paid+" redeemed · Ends in "+time
    : "All 50 spots claimed · "+friesOffer.paid+" redeemed";

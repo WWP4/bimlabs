@@ -1,10 +1,10 @@
 import { getDatabase } from "@netlify/database";
 import { square } from "./cafe-square.mjs";
 
-export function friesCampaign(cfg) {
+export function friesCampaign(cfg, includeScheduled = false) {
   const endsAt = globalThis.Netlify?.env?.get("SQUARE_CAFE_FRIES_ENDS_AT") || process.env.SQUARE_CAFE_FRIES_ENDS_AT;
   const end = Date.parse(endsAt);
-  return cfg.environment === "production" && cfg.acceptingOrders && end > Date.now()
+  return cfg.environment === "production" && end > Date.now() && (cfg.acceptingOrders || (includeScheduled && Date.parse(cfg.preorderStartsAt) > Date.now() && Date.parse(cfg.preorderStartsAt) < end))
     ? new Date(end).toISOString() : null;
 }
 

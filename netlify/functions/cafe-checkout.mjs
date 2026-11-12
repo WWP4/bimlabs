@@ -101,8 +101,9 @@ export default async (req) => {
     if (body.friesOffer && (!eligible || body.friesOffer!==campaign)) {
       return json({error:"The extra fries offer ended. Refresh your order to continue."},409);
     }
+    const reserved=eligible && await reserveFries(campaign,idempotencyKey);
     if (eligible) {
-      if (await reserveFries(campaign,idempotencyKey)) {
+      if (reserved) {
         squareBody.order.line_items.push({name:"Free extra fries",quantity:"1",base_price_money:{amount:0,currency:"USD"},note:destination});
       } else if (body.friesOffer) {
         return json({error:"A free fries spot is no longer available. Refresh your order to continue."},409);
@@ -113,7 +114,7 @@ export default async (req) => {
     const orderId=response.payment_link?.order_id;
     if(!link || !/^https:\/\/(?:square\.link|(?:checkout\.)?square\.site|checkout\.squareupsandbox\.com|(?:sandbox|staging)\.square\.link)\//.test(link))
       throw Error("Square checkout link not available.");
-    if (eligible && orderId) await attachFriesOrder(campaign,idempotencyKey,orderId);
+    if (reserved && orderId) await attachFriesOrder(campaign,idempotencyKey,orderId);
     return json({checkoutUrl:link,orderId,mode:cfg.environment});
   } catch(err){
     console.error("Café checkout error:",err.message);
