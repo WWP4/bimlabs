@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#ffffff">
-<meta name="description" content="GLCA Café: burger, fries and milkshake combo for $13.50, or order individually. Boarding student pre-orders.">
+<meta name="description" content="GLCA Café: burger, fries and milkshake combo for $12.50, or order individually. Boarding student pre-orders.">
 <title>GLCA World Cup Café</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -23,11 +23,11 @@
 <div class="kick">The café favorites</div>
 <h1>GOOD FOOD.<br>GOOD MOOD.</h1>
 <p class="desc">Burger + Fries + Shake</p>
-<div class="combo-line"><span>THE COMBO</span><strong>$13.50</strong></div>
-<button class="btn" type="button" data-add="combo">ADD COMBO — $13.50 <span aria-hidden="true">→</span></button>
+<div class="combo-line"><span>THE COMBO</span><strong>$12.50</strong></div>
+<button class="btn" type="button" data-add="combo">ADD COMBO — $12.50 <span aria-hidden="true">→</span></button>
 <div class="singles" id="order" aria-label="Order individually">
-<div class="single"><div><strong>Burger</strong><small>$8.50</small></div><button class="plus" type="button" data-add="burger" aria-label="Add burger">+</button></div>
-<div class="single"><div><strong>Fries</strong><small>$2.50</small></div><button class="plus" type="button" data-add="fries" aria-label="Add fries">+</button></div>
+<div class="single"><div><strong>Burger</strong><small>$6.50</small></div><button class="plus" type="button" data-add="burger" aria-label="Add burger">+</button></div>
+<div class="single"><div><strong>Fries</strong><small>$3.50</small></div><button class="plus" type="button" data-add="fries" aria-label="Add fries">+</button></div>
 <div class="single"><div><strong>Shake</strong><small>$3.75</small></div><button class="plus" type="button" data-add="milkshake" aria-label="Add shake">+</button></div>
 </div><p class="menu-note">Free ketchup &amp; mayo</p>
 <p class="status" id="menuStatus" role="status">Checking preorder availability…</p>
@@ -60,9 +60,9 @@
 (function(){
 "use strict";
 var products=[
- {key:"combo",name:"Burger, Fries & Milkshake Combo",cents:1350,aliases:["burger fries milkshake combo","burger fries shake combo","glca combo","combo","burger combo"]},
- {key:"burger",name:"Burger",cents:850,aliases:["burger","single burger"]},
- {key:"fries",name:"Fries",cents:250,aliases:["fries","french fries"]},
+ {key:"combo",name:"Burger, Fries & Milkshake Combo",cents:1250,aliases:["burger fries milkshake combo","burger fries shake combo","glca combo","combo","burger combo"]},
+ {key:"burger",name:"Burger",cents:650,aliases:["burger","single burger"]},
+ {key:"fries",name:"Fries",cents:350,aliases:["fries","french fries"]},
  {key:"milkshake",name:"Milkshake",cents:375,aliases:["milkshake","shake"]}
 ];
 var el=function(id){return document.getElementById(id)};

@@ -59,9 +59,9 @@ export async function liveCatalog(config = settings()) {
   }
   if (!categoryId && config.environment === "sandbox" && config.useSandboxMenu) {
     const items = [
-      ["combo", "Burger, Fries & Milkshake Combo", 1350],
-      ["burger", "Burger", 850],
-      ["fries", "Fries", 250],
+      ["combo", "Burger, Fries & Milkshake Combo", 1250],
+      ["burger", "Burger", 650],
+      ["fries", "Fries", 350],
       ["milkshake", "Milkshake", 375]
     ].map(([id, name, priceCents]) => ({
       id: "sandbox-" + id, name, priceCents, currency: "USD", available: true, category: "Café Favorites"

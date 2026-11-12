@@ -23,9 +23,9 @@ export default async (req) => {
   const sauces=body.sauces ?? [];
   const normalizedName=(name)=>String(name||"").toLowerCase().replace(/[^a-z0-9]+/g," ").trim();
   const approved=[
-    {names:["burger fries milkshake combo","burger fries shake combo","glca combo","combo","burger combo"],price:1350},
-    {names:["burger","single burger"],price:850},
-    {names:["fries","french fries"],price:250},
+    {names:["burger fries milkshake combo","burger fries shake combo","glca combo","combo","burger combo"],price:1250},
+    {names:["burger","single burger"],price:650},
+    {names:["fries","french fries"],price:350},
     {names:["milkshake","shake"],price:375}
   ];
   if(!Array.isArray(sauces)||sauces.length>2||new Set(sauces).size!==sauces.length||
