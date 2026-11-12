@@ -44,7 +44,7 @@ export default async (req) => {
   const pickupAt=legacy?validatePickup(body.pickupDay,body.pickupTime,cfg):dates.flatMap(date=>cfg.pickupSlots.map(time=>validatePickup(date,time,cfg))).filter(Boolean).sort()[0];
   if (!pickupAt) return json({error:"No café service times are available right now."},409);
   try{
-    const {items:catalog,categoryFound}=await liveCatalog(cfg);
+    const {items:catalog,categoryFound,sandboxMenu}=await liveCatalog(cfg);
     if(!categoryFound) return json({error:"The café menu is not configured."},503);
     const catalogMap=new Map(catalog.map(x=>[x.id,x]));
     const grouped=new Map();
@@ -74,7 +74,13 @@ export default async (req) => {
       order:{
         location_id:cfg.locationId,
         source:{name:"GLCA Café"},
-        line_items:[...grouped].map(([id,qty])=>({catalog_object_id:id,quantity:String(qty),note:description})),
+        line_items:[...grouped].map(([id,qty])=>{
+          const item=catalogMap.get(id);
+          const product=sandboxMenu
+            ? {name:item.name,base_price_money:{amount:item.priceCents,currency:"USD"}}
+            : {catalog_object_id:id};
+          return {...product,quantity:String(qty),note:description};
+        }),
         pricing_options:{auto_apply_taxes:true,auto_apply_discounts:true},
         // Campus staff handle dorm delivery using the destination on the café ticket.
         fulfillments:[{

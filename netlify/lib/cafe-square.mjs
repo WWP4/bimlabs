@@ -8,6 +8,7 @@ export const settings = () => ({
   categoryName: env("SQUARE_CAFE_CATEGORY_NAME") || "GLCA Café",
   featuredCategoryName: env("SQUARE_CAFE_FEATURED_CATEGORY_NAME") || "GLCA Featured",
   environment: env("SQUARE_ENVIRONMENT") === "production" ? "production" : "sandbox",
+  useSandboxMenu: env("SQUARE_CAFE_SANDBOX_MENU") === "true",
   acceptingOrders: env("SQUARE_CAFE_ORDERS_ENABLED") === "true",
   pickupSlots: (env("SQUARE_CAFE_PICKUP_SLOTS") || "").split(",").map(s => s.trim()).filter(s => /^\d\d:\d\d$/.test(s)),
   pickupDays: (env("SQUARE_CAFE_PICKUP_DAYS") || "1,2,3,4,5").split(",").map(Number).filter(x => Number.isInteger(x) && x >= 0 && x <= 6),
@@ -55,6 +56,17 @@ export async function liveCatalog(config = settings()) {
   if (!categoryId) {
     const match = [...categories].find(([, name]) => name.toLowerCase().trim() === config.categoryName.toLowerCase().trim());
     categoryId = match?.[0] || "";
+  }
+  if (!categoryId && config.environment === "sandbox" && config.useSandboxMenu) {
+    const items = [
+      ["combo", "Burger, Fries & Milkshake Combo", 1350],
+      ["burger", "Burger", 850],
+      ["fries", "Fries", 250],
+      ["milkshake", "Milkshake", 375]
+    ].map(([id, name, priceCents]) => ({
+      id: "sandbox-" + id, name, priceCents, currency: "USD", available: true, category: "Café Favorites"
+    }));
+    return { items, categoryFound: true, sandboxMenu: true };
   }
   if (!categoryId) return { items: [], categoryFound: false };
   const featuredCategoryId = [...categories].find(([,name])=>name.toLowerCase().trim()===config.featuredCategoryName.toLowerCase().trim())?.[0] || "";
