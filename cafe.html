@@ -94,7 +94,7 @@ function render(){
  el("proceed").disabled=count()===0;
  var allowed=canPay();
  el("checkout").disabled=!allowed;
- el("checkout").textContent=allowed?"Continue to secure Square checkout":"Square checkout opening soon";
+ el("checkout").textContent=allowed?(squareCfg.mode==="sandbox"?"Continue to test checkout":"Continue to secure Square checkout"):"Square checkout opening soon";
 }
 var dialog=el("drawer"),returnFocus;
 function showStep(pickup){
@@ -156,7 +156,7 @@ async function syncSquare(){
   if(!data.connected)status("Menu preview · Square is not currently connected. Real orders are closed.");
   else if(!products.every(squareMatch))status("Online ordering is currently closed.");
   else if(!data.acceptingOrders)status("Online ordering is currently closed.");
-  else if(data.mode==="sandbox")status("SQUARE SANDBOX · Testing only. No real charges will be made.");
+  else if(data.mode==="sandbox")status("Test ordering is open. Use a Square Sandbox test card at checkout.");
   else status("");
   el("checkoutNote").textContent=canPay()?"You will be redirected to Square's secure checkout. The café will confirm your order.":"Square checkout is currently closed.";
   render();
