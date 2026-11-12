@@ -6,6 +6,7 @@ export const settings = () => ({
   locationId: env("SQUARE_LOCATION_ID"),
   categoryId: env("SQUARE_CAFE_CATEGORY_ID"),
   categoryName: env("SQUARE_CAFE_CATEGORY_NAME") || "GLCA Café",
+  featuredCategoryName: env("SQUARE_CAFE_FEATURED_CATEGORY_NAME") || "GLCA Featured",
   environment: env("SQUARE_ENVIRONMENT") === "production" ? "production" : "sandbox",
   acceptingOrders: env("SQUARE_CAFE_ORDERS_ENABLED") === "true",
   pickupSlots: (env("SQUARE_CAFE_PICKUP_SLOTS") || "").split(",").map(s => s.trim()).filter(s => /^\d\d:\d\d$/.test(s)),
@@ -56,6 +57,7 @@ export async function liveCatalog(config = settings()) {
     categoryId = match?.[0] || "";
   }
   if (!categoryId) return { items: [], categoryFound: false };
+  const featuredCategoryId = [...categories].find(([,name])=>name.toLowerCase().trim()===config.featuredCategoryName.toLowerCase().trim())?.[0] || "";
   const items = [];
   for (const item of objects.filter(x => x.type === "ITEM" && belongsHere(x, config.locationId))) {
     const data = item.item_data || {};
@@ -78,7 +80,7 @@ export async function liveCatalog(config = settings()) {
         description: data.description_plaintext || data.description || "",
         category: group, priceCents: Number(amount), currency: "USD",
         image: /^https:\/\//.test(image) ? image : "",
-        available: !soldOut
+        available: !soldOut, featured: Boolean(featuredCategoryId && itemCats.includes(featuredCategoryId))
       });
     }
   }
