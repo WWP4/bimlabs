@@ -1,4 +1,4 @@
-import { json, ready, settings, liveCatalog, validatePickup, square } from "./cafe-square.mjs";
+import { json, ready, settings, liveCatalog, validatePickup, square } from "../lib/cafe-square.mjs";
 export default async (req) => {
   if (req.method !== "POST") return json({ error:"Method not allowed." },405);
   const cfg=settings();
