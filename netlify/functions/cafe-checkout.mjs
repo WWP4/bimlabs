@@ -13,6 +13,18 @@ export default async (req) => {
   const dorm=String(body.boardingHouse||"").trim();
   const notes=String(body.notes||"").trim();
   const items=body.items;
+  const sauces=body.sauces ?? [];
+  const normalizedName=(name)=>String(name||"").toLowerCase().replace(/[^a-z0-9]+/g," ").trim();
+  const approved=[
+    {names:["burger fries milkshake combo","burger fries shake combo","glca combo","combo","burger combo"],price:1350},
+    {names:["burger","single burger"],price:850},
+    {names:["fries","french fries"],price:250},
+    {names:["milkshake","shake"],price:375}
+  ];
+  if(!Array.isArray(sauces)||sauces.length>2||new Set(sauces).size!==sauces.length||
+     sauces.some(x=>x!=="ketchup"&&x!=="mayo"))
+    return json({error:"Choose ketchup, mayo, both, or no sauce."},400);
+  const sauceNote=sauces.length?"Free sauces: "+sauces.map(x=>x==="ketchup"?"Ketchup":"Mayo").join(", "):"No sauces requested";
   const idempotencyKey=String(body.idempotencyKey||"");
   if (name.length<2||name.length>80 || email.length>150 || (email && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) ||
       dorm.length>80||notes.length>350 || !Array.isArray(items) || !items.length||items.length>16 ||
@@ -27,8 +39,11 @@ export default async (req) => {
     for(const entry of items){
       const id=String(entry.id||"");
       const qty=Number(entry.quantity);
-      if(!catalogMap.has(id)||!catalogMap.get(id).available||!Number.isInteger(qty)||qty<1||qty>10)
+      const product=catalogMap.get(id);
+      if(!product||!product.available||!Number.isInteger(qty)||qty<1||qty>10)
         return json({error:"One or more items are unavailable. Please refresh the menu."},409);
+      const allowed=approved.some(x=>x.price===product.priceCents&&x.names.includes(normalizedName(product.name)));
+      if(!allowed)return json({error:"Square item or price does not match the GLCA menu. Please contact café staff."},409);
       grouped.set(id,(grouped.get(id)||0)+qty);
       if(grouped.get(id)>10) return json({error:"Maximum quantity per item is 10."},400);
     }
@@ -37,14 +52,14 @@ export default async (req) => {
     if(qtyTotal>30 || subtotal<=0 || subtotal>50000) return json({error:"Please contact the café for large or zero-price orders."},400);
     const recipient={display_name:name};
     if(email)recipient.email_address=email;
-    const description=[dorm&&"Dorm: "+dorm,notes&&"Note: "+notes].filter(Boolean).join(" | ");
+    const description=[sauceNote,dorm&&"Dorm: "+dorm,notes&&"Note: "+notes].filter(Boolean).join(" | ");
     const squareBody={
       idempotency_key:idempotencyKey,
       description:"GLCA Café campus pickup",
       order:{
         location_id:cfg.locationId,
         source:{name:"GLCA Café"},
-        line_items:[...grouped].map(([id,qty])=>({catalog_object_id:id,quantity:String(qty)})),
+        line_items:[...grouped].map(([id,qty])=>({catalog_object_id:id,quantity:String(qty),note:sauceNote})),
         pricing_options:{auto_apply_taxes:true,auto_apply_discounts:true},
         fulfillments:[{
           type:"PICKUP",state:"PROPOSED",
