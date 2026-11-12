@@ -1,4 +1,4 @@
-import { json, settings, ready, square } from "./cafe-square.mjs";
+import { json, settings, ready, square } from "../lib/cafe-square.mjs";
 // Public endpoint discloses payment/fulfillment state only, never buyer details.
 export default async (req) => {
   if (req.method !== "GET") return json({ error:"Method not allowed." },405);
