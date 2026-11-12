@@ -33,7 +33,7 @@
 </div><p class="menu-note">Free ketchup &amp; mayo</p>
 <p class="status" id="menuStatus" role="status">Checking preorder availability…</p>
 </div><figure class="hero-art"><img src="/glca-cafe-hero.webp" width="1600" height="1200" fetchpriority="high" alt="Double cheeseburger, fries in a red diner basket, and a vanilla milkshake"></figure></div></section></main>
-<footer class="foot"><div class="wrap">Campus pickup · Secure checkout by Square</div></footer>
+<footer class="foot"><div class="wrap">Kitchen open noon–4 p.m. · Secure checkout by Square</div></footer>
 <dialog class="drawer" id="drawer" aria-labelledby="drawerTitle">
  <div class="drawer-head"><h2 id="drawerTitle">Your order</h2><button type="button" class="close" id="closeCart" aria-label="Close order">×</button></div>
  <div class="drawer-body">
@@ -103,6 +103,7 @@ function render(){
 }
 var dialog=el("drawer"),returnFocus;
 function showStep(pickup){
+ el("orderResult").textContent="";
  el("cartSummary").hidden=pickup;
  el("pickupDetails").hidden=!pickup;
  el("drawerTitle").textContent=pickup?"Checkout":"Your order";
@@ -160,9 +161,9 @@ async function syncSquare(){
 
   if(!data.connected)status("Menu preview · Square is not currently connected. Real orders are closed.");
   else if(!products.every(squareMatch))status("Online ordering is currently closed.");
-  else if(!data.acceptingOrders)status(Date.now()<Date.parse(data.preorderStartsAt)?"Preorders open at 7:45 a.m. Central.":"Online ordering is currently closed.");
+  else if(!data.acceptingOrders)status(Date.now()<Date.parse(data.preorderStartsAt)?"Preorders open at 7:45 a.m..":"Online ordering is currently closed.");
   else if(data.mode==="sandbox")status("Test ordering is open. Use a Square Sandbox test card at checkout.");
-  else status(data.preorderEndsAt?"Preorders close at 4 p.m. Central.":"");
+  else status(data.preorderEndsAt?"Preorders close at 4 p.m..":"");
   el("checkoutNote").textContent=canPay()?"You will be redirected to Square's secure checkout. The café will confirm your order.":"Square checkout is currently closed.";
   render();
  }catch(err){squareCfg={};catalog=[];status("The Square menu is temporarily unavailable. You can preview your order, but checkout is closed.");render()}
@@ -181,23 +182,60 @@ el("orderForm").addEventListener("submit",async function(e){
   var data=await resp.json();if(!resp.ok||!data.checkoutUrl)throw Error(data.error||"Square checkout is unavailable.");
   if(!/^https:\/\/(?:square\.link|staging\.square\.link|sandbox\.square\.link|checkout\.square\.site|checkout\.squareupsandbox\.com|square\.site)\//.test(data.checkoutUrl))throw Error("Unexpected payment address");
   try{sessionStorage.setItem("glcaPendingOrderId",data.orderId||"")}catch(e){}
+ try{localStorage.setItem("glcaPendingOrder",JSON.stringify({id:data.orderId,at:Date.now()}))}catch(e){}
   window.location.assign(data.checkoutUrl);
  }catch(err){message.textContent=err.message;btn.disabled=false;btn.textContent="Continue to secure Square checkout"}
 });
 async function verifyReturn(){
- var query=new URLSearchParams(location.search);
- if(query.get("checkout")!=="returned")return;
- open();var result=el("orderResult");
- result.innerHTML='<div class="form-note">Checking Square payment status. Returning to this page does not confirm payment.</div>';
- var id=query.get("orderId")||query.get("order_id")||"";
- try{if(!id)id=sessionStorage.getItem("glcaPendingOrderId")||""}catch(e){}
- if(!id)return;
- try{
-  var resp=await fetch("/.netlify/functions/cafe-status?orderId="+encodeURIComponent(id),{cache:"no-store"});
-  var data=await resp.json();
-  if(data.status==="paid"){result.innerHTML='<div class="success">Payment verified by Square. Your café order has been received.</div>';cart={};save();render()}
-  else result.innerHTML='<div class="form-note">Payment is not yet confirmed. Check your Square receipt or ask café staff before ordering again.</div>';
- }catch(e){result.textContent="Could not verify payment. Check your Square receipt or ask café staff."}
+ const url=new URL(location.href);
+ if(url.searchParams.get("checkout")!=="returned")return;
+ let pending="";
+ try{pending=sessionStorage.getItem("glcaPendingOrderId")||""}catch(e){}
+ if(!pending)try{
+  const saved=JSON.parse(localStorage.getItem("glcaPendingOrder")||"null");
+  if(saved && Date.now()-saved.at<86400000)pending=saved.id||"";
+ }catch(e){}
+ const fromSquare=url.searchParams.get("orderId")||url.searchParams.get("order_id")||"";
+ const ids=[...new Set([fromSquare,pending].filter(id=>/^[A-Za-z0-9_-]{12,200}$/.test(id)))];
+ open();
+ const result=el("orderResult");
+ el("cartSummary").hidden=true;
+ el("drawerTitle").textContent="Checking your payment…";
+ result.textContent="Please wait while Square confirms your order.";
+ for(let attempt=0;ids.length && attempt<12;attempt++){
+  if(!dialog.open)return;
+  for(const id of ids)try{
+   const resp=await fetch("/.netlify/functions/cafe-status?orderId="+encodeURIComponent(id),{cache:"no-store",signal:AbortSignal.timeout(6000)});
+   const data=await resp.json();
+   if(!resp.ok||data.status!=="paid")continue;
+   if(!dialog.open)return;
+   el("drawerTitle").textContent="Order confirmed!";
+   const message=document.createElement("div");
+   message.className="success";
+   const service=data.method==="delivery"?"Dorm delivery":"Pickup at the café";
+   message.textContent=service+(data.serviceTime?" at "+data.serviceTime:"")+". Your payment went through.";
+   result.replaceChildren(message);
+   if(pending===id){
+    cart={};save();render();
+    try{sessionStorage.removeItem("glcaPendingOrderId")}catch(e){}
+    try{if(JSON.parse(localStorage.getItem("glcaPendingOrder")||"null")?.id===id)localStorage.removeItem("glcaPendingOrder")}catch(e){}
+   }
+   url.searchParams.delete("order_id");
+   url.searchParams.set("orderId",id);
+   history.replaceState(null,"",url);
+   return;
+  }catch(e){}
+  if(attempt<11)await new Promise(resolve=>setTimeout(resolve,2500));
+ }
+ if(!dialog.open)return;
+ el("drawerTitle").textContent=ids.length?"Payment confirmation pending":"Check your Square receipt";
+ result.textContent="If you paid, check your Square receipt before placing another order.";
+ if(ids.length){
+  const retry=document.createElement("button");
+  retry.type="button";retry.className="back-order";retry.textContent="Check payment again";
+  retry.addEventListener("click",verifyReturn,{once:true});
+  result.append(document.createElement("br"),retry);
+ }
 }
 var friesOffer=null;
 function renderFries(){
@@ -207,7 +245,7 @@ function renderFries(){
  el("friesGoal").value=friesOffer.paid;
  var time=[Math.floor(seconds/3600),Math.floor(seconds/60)%60,seconds%60].map(n=>String(n).padStart(2,"0")).join(":");
  if(Date.now()<Date.parse(friesOffer.opensAt)){
-  el("friesCounter").textContent="Only 50 today · Preorders open at 7:45 a.m. Central";
+  el("friesCounter").textContent="Only 50 today · Preorders open at 7:45 a.m.";
   return;
  }
  el("friesCounter").textContent=friesOffer.available
@@ -224,7 +262,7 @@ async function syncFries(){
  }catch(e){friesOffer=null}
  renderFries();
 }
-render();syncSquare().then(verifyReturn);
+render();syncSquare();verifyReturn();
 syncFries();
 setInterval(renderFries,1000);
 setInterval(function(){if(!document.hidden)syncFries()},15000);

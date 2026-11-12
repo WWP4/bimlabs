@@ -10,7 +10,7 @@ function ticket(order, fulfillment, timeZone) {
   const pickup = fulfillment.pickup_details;
   const contact = pickup.recipient || {};
   const when = new Intl.DateTimeFormat("en-US", {
-    timeZone, weekday:"short", hour:"numeric", minute:"2-digit", timeZoneName:"short"
+    timeZone, weekday:"short", hour:"numeric", minute:"2-digit"
   }).format(new Date(pickup.pickup_at));
   return [
     "GLCA CAFÉ · PAID ORDER",

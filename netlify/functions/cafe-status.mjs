@@ -21,7 +21,12 @@ export default async (req) => {
       const relevant=(paymentResult.payments||[]).filter(p=>p.order_id===orderId);
       if(relevant.some(p=>p.status==="COMPLETED")) {
         const fulfillment=order.fulfillments.find(f=>f.type==="PICKUP");
-        return json({status:"paid",fulfillment:fulfillment?.state||"PROPOSED"});
+        const pickup=fulfillment?.pickup_details;
+        const at=Date.parse(pickup?.pickup_at);
+        const serviceTime=Number.isFinite(at)?new Intl.DateTimeFormat("en-US",{
+          timeZone:cfg.timeZone,hour:"numeric",minute:"2-digit"
+        }).format(at):null;
+        return json({status:"paid",method:pickup?.note?.startsWith("Dorm delivery:")?"delivery":"pickup",serviceTime});
       }
       if(!paymentResult.cursor || seen.has(paymentResult.cursor))break;
       seen.add(paymentResult.cursor);cursor=paymentResult.cursor;
