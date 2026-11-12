@@ -1,0 +1,55 @@
+name: GLCA Cafe Square read-only smoke test
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "netlify/functions/cafe-diagnostics.mjs"
+      - ".github/workflows/glca-cafe-smoke.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check-square:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Wait for latest Netlify deploy and check Square diagnostic
+        shell: bash
+        run: |
+          set -euo pipefail
+          site="https://www.bimlabsstudio.com"
+          echo "Testing the live café page and read-only Square connection."
+          for attempt in $(seq 1 18); do
+            echo "Attempt ${attempt}/18"
+            if curl -fsSL --retry 2 --retry-delay 1 --connect-timeout 10 --max-time 25 "$site/cafe.html" -o /tmp/cafe.html \
+              && grep -q 'GLCA Café' /tmp/cafe.html \
+              && curl -fsSL --retry 2 --retry-delay 1 --connect-timeout 10 --max-time 25 "$site/.netlify/functions/cafe-diagnostics" -o /tmp/diagnostics.json; then
+              if python3 - <<'PY'
+          import json
+          path = "/tmp/diagnostics.json"
+          try:
+              payload = json.load(open(path))
+          except Exception:
+              raise SystemExit(2)
+          safe = ["environment", "tokenConfigured", "locationConfigured",
+                  "locationValid", "squareReachable", "categoryFound",
+                  "itemCount", "availableItemCount", "pickupSlotsConfigured",
+                  "checkoutEnabled", "canTakeOrders", "summary"]
+          print("GLCA Cafe Square diagnostic:")
+          for key in safe:
+              if key in payload:
+                  print(f"{key}: {payload[key]}")
+          if not payload.get("squareReachable") or not payload.get("locationValid"):
+              raise SystemExit(1)
+          PY
+              then
+                echo "Square location connection healthy."
+                exit 0
+              fi
+            fi
+            sleep 10
+          done
+          echo "Smoke test did not establish a healthy Square connection."
+          exit 1
