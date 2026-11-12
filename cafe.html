@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#1c1714">
 <meta name="description" content="Fresh campus café favorites, rotating weekly specials, and easy pre-orders for boarding students.">
-<title>Campus Café | Fresh on Campus</title>
+<title>GLCA Café | Fresh on Campus</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Fraunces:opsz,wght,SOFT,WONK@9..144,500,30,0;9..144,600,30,0;9..144,700,30,0&display=swap" rel="stylesheet">
@@ -28,9 +28,9 @@ section{scroll-margin-top:90px}.section{padding:90px 0}.heading{display:flex;ali
 <div class="topbar">Made fresh for boarding life <span>✦</span> Weekly favorites & new discoveries</div>
 <header class="head">
  <nav class="shell nav" aria-label="Main navigation">
-  <a class="brand" href="#top" aria-label="Campus Café home">
+  <a class="brand" href="#top" aria-label="GLCA Café home">
    <svg viewBox="0 0 48 48" fill="none" stroke="#9e3e2f" stroke-width="2.5" stroke-linecap="round"><path d="M9 16h25v15c0 8-25 8-25 0zM34 19h5a6 6 0 0 1 0 12h-5M7 40h31M15 10c-3-3 3-5 0-8M24 10c-3-3 3-5 0-8"/></svg>
-   <span>Campus Café<small>Fresh on campus</small></span>
+   <span>GLCA Café<small>Fresh on campus</small></span>
   </a>
   <div class="links" id="navLinks"><a href="#new">What's New</a><a href="#menu">Explore the Menu</a><a href="#menu">Pre-Order</a></div>
   <div class="nav-actions"><button class="pill dark" id="headerOrder" type="button">Your Order <span id="navCount">0</span></button><button class="menu-toggle" id="menuToggle" type="button" aria-controls="navLinks" aria-expanded="false" aria-label="Toggle menu">☰</button></div>
@@ -45,7 +45,7 @@ section{scroll-margin-top:90px}.section{padding:90px 0}.heading{display:flex;ali
     <p>From cozy drinks and sweet treats to savory favorites and something new every week. Discover what's cooking, then pre-order for campus pickup.</p>
     <div class="hero-actions"><a href="#menu" class="pill light">Explore the Menu <span aria-hidden="true">↗</span></a><a href="#new" class="pill red">See What's New <span aria-hidden="true">↗</span></a></div>
    </div>
-   <div class="hero-image" aria-label="Campus café food collage">
+   <div class="hero-image" aria-label="GLCA café food collage">
     <div class="pic main"><img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=900&q=85" alt="Fresh cheeseburger" fetchpriority="high"></div>
     <div class="pic"><img src="https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=600&q=85" alt="Iced café drink" fetchpriority="high"></div>
     <div class="pic"><img src="https://images.unsplash.com/photo-1499636136210-6f4ee915583e?w=600&q=85" alt="Fresh cookies" fetchpriority="high"></div>
@@ -68,36 +68,36 @@ section{scroll-margin-top:90px}.section{padding:90px 0}.heading{display:flex;ali
  <section class="menu-section" id="menu">
   <div class="shell">
    <div class="heading"><div><div class="eyebrow" style="color:var(--red)">Find your new favorite</div><h2>The café menu<span style="color:var(--red)">.</span></h2></div><p>Snacks between classes, satisfying meals, iced drinks, and sweet little rewards.</p></div>
-   <div class="filters" role="group" aria-label="Menu categories">
+   <div class="filters" id="categoryFilters" role="group" aria-label="Menu categories">
     <button class="filter" data-category="All" aria-pressed="true" type="button">All favorites</button>
     <button class="filter" data-category="Meals" aria-pressed="false" type="button">Meals</button>
     <button class="filter" data-category="Drinks" aria-pressed="false" type="button">Drinks</button>
     <button class="filter" data-category="Treats" aria-pressed="false" type="button">Treats & snacks</button>
    </div>
    <div class="menu-grid" id="menuGrid" aria-live="polite"></div>
-   <div class="preview-note"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#9e3e2f" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 11v6m0-10v1"/></svg><span>Preview menu: product availability, prices, pickup schedule, and ordering are being finalized. No orders are being accepted yet.</span></div>
+   <div class="preview-note"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#9e3e2f" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 11v6m0-10v1"/></svg><span>Menu prices and availability sync from Square. Checkout stays disabled until GLCA enables ordering.</span></div>
   </div>
  </section>
 </main>
-<footer class="footer"><div class="shell footer-content"><div class="brand"><svg viewBox="0 0 48 48" fill="none" stroke="#e9b179" stroke-width="2.5" stroke-linecap="round"><path d="M9 16h25v15c0 8-25 8-25 0zM34 19h5a6 6 0 0 1 0 12h-5M7 40h31M15 10c-3-3 3-5 0-8M24 10c-3-3 3-5 0-8"/></svg><span>Campus Café<small>Fresh on campus</small></span></div><small>Made for our boarding students. &nbsp;•&nbsp; Menu and pickup details coming soon.</small><a href="#top" aria-label="Back to top">Back to top ↑</a></div></footer>
+<footer class="footer"><div class="shell footer-content"><div class="brand"><svg viewBox="0 0 48 48" fill="none" stroke="#e9b179" stroke-width="2.5" stroke-linecap="round"><path d="M9 16h25v15c0 8-25 8-25 0zM34 19h5a6 6 0 0 1 0 12h-5M7 40h31M15 10c-3-3 3-5 0-8M24 10c-3-3 3-5 0-8"/></svg><span>GLCA Café<small>Fresh on campus</small></span></div><small>Made for our boarding students. &nbsp;•&nbsp; Menu and pickup details coming soon.</small><a href="#top" aria-label="Back to top">Back to top ↑</a></div></footer>
 <div class="backdrop" id="backdrop"></div>
 <aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-labelledby="cartTitle" aria-hidden="true">
  <div class="drawer-header"><h2 id="cartTitle">Your pre-order</h2><button class="icon-button" id="closeDrawer" type="button" aria-label="Close order panel">×</button></div>
  <div class="drawer-body">
-  <p class="drawer-sub">Build your order for campus pickup. Ordering will open when the full café menu is confirmed.</p>
+  <p class="drawer-sub">Browse GLCA café items and choose a campus pickup time.</p>
   <div id="cartItems"></div>
-  <form class="checkout" id="orderForm" name="cafe-preorders" method="POST" data-netlify="true" netlify-honeypot="bot-field">
-   <input type="hidden" name="form-name" value="cafe-preorders">
-   <div class="sr-only"><label>Leave this blank <input name="bot-field" autocomplete="off"></label></div>
+  <form class="checkout" id="orderForm" novalidate>
+   
+   
    <input type="hidden" name="order_items" id="orderItemsField">
    <h3>Pickup details</h3>
    <div class="field"><label for="studentName">Student name</label><input id="studentName" name="student_name" autocomplete="name" maxlength="80" required placeholder="Full name"></div>
    <div class="field"><label for="studentEmail">Email (optional)</label><input id="studentEmail" name="student_email" type="email" autocomplete="email" maxlength="150" placeholder="you@school.edu"></div>
    <div class="field"><label for="boardingHouse">Dorm or boarding house (optional)</label><input id="boardingHouse" name="boarding_house" maxlength="80" placeholder="Where you're staying"></div>
    <div class="field"><label for="pickupDay">Requested pickup day</label><input id="pickupDay" name="pickup_day" type="date" required></div>
-   <div class="field"><label for="pickupTime">Requested pickup time</label><select id="pickupTime" name="pickup_time" required><option value="">Choose a time</option><option>11:00 AM</option><option>11:30 AM</option><option>12:00 PM</option><option>12:30 PM</option><option>1:00 PM</option><option>1:30 PM</option><option>2:00 PM</option><option>2:30 PM</option><option>3:00 PM</option><option>3:30 PM</option><option>4:00 PM</option><option>4:30 PM</option><option>5:00 PM</option></select></div>
+   <div class="field"><label for="pickupTime">Requested pickup time</label><select id="pickupTime" name="pickup_time" required><option value="">Choose a time</option></select></div>
    <div class="field"><label for="orderNotes">Special requests (optional)</label><textarea name="notes" id="orderNotes" rows="2" maxlength="350" placeholder="Any requests for the kitchen?"></textarea></div>
-   <div class="form-note" id="checkoutNote">Preview only — menu, prices, pickup times, and availability have not been confirmed. No orders will be submitted yet.</div>
+   <div class="form-note" id="checkoutNote">Square checkout opens when the GLCA menu and pickup schedule are configured.</div>
    <button class="pill red" id="submitOrder" type="submit" disabled>Pre-orders opening soon</button>
    <div id="orderResult" role="status" aria-live="polite"></div>
   </form>
@@ -106,47 +106,117 @@ section{scroll-margin-top:90px}.section{padding:90px 0}.heading{display:flex;ali
 <script>
 (function(){
 "use strict";
-var ORDERING_OPEN=false; // Switch on only after real menu, prices and pickup schedule are approved.
-var menu=[
-{id:"smash-burger",name:"Smash Burger",category:"Meals",tag:"JUST ADDED",description:"Golden bun, juicy burger, melty cheese. The new campus classic.",image:"photo-1568901346375-23c9450c58cd"},
-{id:"chicken-wrap",name:"Chicken Wrap",category:"Meals",tag:"SAVORY",description:"A flavorful handheld lunch for busy campus days.",image:"photo-1626700051175-6818013e1d4f"},
-{id:"loaded-fries",name:"Loaded Fries",category:"Meals",tag:"SIDE",description:"Crispy, golden, and made for sharing.",image:"photo-1573080496219-bb080dd4f877"},
-{id:"iced-latte",name:"Iced Latte",category:"Drinks",tag:"COLD DRINK",description:"A chilled café treat, creamy and refreshing.",image:"photo-1461023058943-07fcbe16d735"},
-{id:"matcha",name:"Matcha Latte",category:"Drinks",tag:"CAFÉ PICK",description:"A smooth, green café favorite.",image:"photo-1515823064-d6e0c04616a7"},
-{id:"cookies",name:"Fresh Cookies",category:"Treats",tag:"BAKERY",description:"A little something sweet between classes.",image:"photo-1499636136210-6f4ee915583e"},
-{id:"brownie",name:"Chocolate Brownie",category:"Treats",tag:"SWEET TOOTH",description:"Rich chocolate goodness for dessert time.",image:"photo-1606313564200-e75d5e30476c"},
-{id:"coffee",name:"Hot Coffee",category:"Drinks",tag:"CLASSIC",description:"A comforting café staple.",image:"photo-1509042239860-f550ce710b93"}
-];
-var menuGrid=document.getElementById("menuGrid"),cartItems=document.getElementById("cartItems"),drawer=document.getElementById("drawer"),backdrop=document.getElementById("backdrop"),navCount=document.getElementById("navCount");
-var cart={};try{cart=JSON.parse(localStorage.getItem("campus-cafe-preview-cart")||"{}")||{}}catch(e){cart={}}
-function escapeText(s){return String(s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
-function save(){try{localStorage.setItem("campus-cafe-preview-cart",JSON.stringify(cart))}catch(e){}}
-function count(){return Object.keys(cart).reduce(function(s,k){return s+(cart[k]||0)},0)}
-function renderMenu(cat){
-var list=menu.filter(function(m){return cat==="All"||m.category===cat});
-menuGrid.innerHTML=list.map(function(m){return '<article class="item"><div class="photo"><img loading="lazy" src="https://images.unsplash.com/'+m.image+'?w=600&q=80" alt="'+escapeText(m.name)+'"></div><div class="item-body"><h3>'+escapeText(m.name)+'</h3><p>'+escapeText(m.description)+'</p><div class="item-bottom"><span class="tag">'+escapeText(m.tag)+'</span><button class="add" type="button" aria-label="Add '+escapeText(m.name)+' to order" data-add="'+escapeText(m.id)+'">+</button></div></div></article>'}).join("");
+var $=function(id){return document.getElementById(id)};
+var menuGrid=$("menuGrid"),cartItems=$("cartItems"),drawer=$("drawer"),backdrop=$("backdrop"),navCount=$("navCount"),form=$("orderForm");
+var menu=[],cart={},cfg={},accepting=false,category="All";
+try{cart=JSON.parse(localStorage.getItem("glca-cafe-cart-v2")||"{}")||{}}catch(e){cart={}}
+function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&#39;"}[c]})}
+function money(n){return new Intl.NumberFormat("en-US",{style:"currency",currency:"USD"}).format(n/100)}
+function save(){try{localStorage.setItem("glca-cafe-cart-v2",JSON.stringify(cart))}catch(e){}}
+function count(){return Object.keys(cart).reduce(function(n,id){return n+Number(cart[id]||0)},0)}
+function banner(message){
+ var p=$("squareStatus");
+ if(!p){p=document.createElement("p");p.id="squareStatus";p.setAttribute("role","status");p.style.cssText="padding:15px 19px;background:#f4ebdf;border-left:3px solid #9e3e2f;border-radius:8px;margin:15px 0 23px;color:#574a3d;font-size:13px";menuGrid.parentNode.insertBefore(p,menuGrid)}
+ p.textContent=message||"";p.style.display=message?"block":"none";
+}
+function renderFilters(){
+ var groups=["All"].concat([...new Set(menu.map(function(m){return m.category}))]);
+ var filter=$("categoryFilters");
+ filter.innerHTML=groups.map(function(c){return '<button type="button" class="filter" data-category="'+esc(c)+'" aria-pressed="'+(c===category?'true':'false')+'">'+esc(c==="All"?"All favorites":c)+'</button>'}).join("");
+ filter.querySelectorAll("button").forEach(function(b){b.addEventListener("click",function(){category=b.dataset.category;renderFilters();renderMenu()})});
+}
+function renderMenu(){
+ var list=menu.filter(function(m){return category==="All"||category===m.category});
+ if(!list.length){menuGrid.innerHTML='<p style="grid-column:1/-1;padding:27px 4px;color:#7f7368">Live Square café items will appear here as soon as the café catalog is connected.</p>';return}
+ menuGrid.innerHTML=list.map(function(m){
+  var pic=m.image?'<img loading="lazy" src="'+esc(m.image)+'" alt="'+esc(m.name)+'">':'<div style="height:100%;display:grid;place-items:center;background:#e9dfd2;color:#68554b;font:600 22px Fraunces,serif;text-align:center;padding:15px">'+esc(m.name)+'</div>';
+  var disabled=!m.available||!accepting;
+  var suffix=m.variation&&m.variation!=="Regular"&&m.variation!==m.name?'<small style="font-size:12px;color:#7a7067;display:block">'+esc(m.variation)+'</small>':'';
+  return '<article class="item"><div class="photo">'+pic+'</div><div class="item-body"><h3>'+esc(m.name)+suffix+'</h3><p>'+esc(m.description).slice(0,170)+'</p><div class="item-bottom"><strong>'+money(m.priceCents)+'</strong><button class="add" type="button" data-add="'+esc(m.id)+'" aria-label="Add '+esc(m.name)+'"'+(disabled?' disabled style="opacity:.35;cursor:not-allowed"':'')+'>'+(m.available?'+':'×')+'</button></div>'+(m.available?'':'<span class="tag">SOLD OUT</span>')+'</div></article>'
+ }).join("");
 }
 function renderCart(){
-navCount.textContent=count();
-var ids=Object.keys(cart).filter(function(id){return cart[id]>0&&menu.some(function(m){return m.id===id})});
-if(!ids.length){cartItems.innerHTML='<p style="padding:18px 0;color:#786d63">Your bag is empty. Explore the menu and add something you love.</p>'}else{
-cartItems.innerHTML=ids.map(function(id){var m=menu.find(function(x){return x.id===id});return '<div class="cart-item"><div><strong>'+escapeText(m.name)+'</strong><div style="color:#84786f;font-size:12px">Menu preview</div></div><div class="quantity"><button type="button" data-decrease="'+escapeText(id)+'" aria-label="Remove one '+escapeText(m.name)+'">−</button><span>'+cart[id]+'</span><button type="button" data-increase="'+escapeText(id)+'" aria-label="Add one '+escapeText(m.name)+'">+</button></div></div>'}).join("")}
-document.getElementById("orderItemsField").value=ids.map(function(id){var m=menu.find(function(x){return x.id===id});return cart[id]+' x '+m.name}).join("; ");
-document.getElementById("submitOrder").disabled=!ORDERING_OPEN||count()===0;
-document.getElementById("submitOrder").textContent=ORDERING_OPEN?"Submit preorder":"Pre-orders opening soon";
+ var map=new Map(menu.map(function(m){return [m.id,m]}));
+ Object.keys(cart).forEach(function(id){if(!map.has(id)||!map.get(id).available)delete cart[id]});save();
+ navCount.textContent=count();
+ var ids=Object.keys(cart).filter(function(id){return cart[id]>0});
+ cartItems.innerHTML=ids.length?ids.map(function(id){
+  var m=map.get(id);
+  return '<div class="cart-item"><div><strong>'+esc(m.name)+'</strong><div style="color:#84786f;font-size:12px">'+money(m.priceCents)+' each</div></div><div class="quantity"><button type="button" data-decrease="'+esc(id)+'" aria-label="Remove one '+esc(m.name)+'">−</button><span>'+cart[id]+'</span><button type="button" data-increase="'+esc(id)+'" aria-label="Add one '+esc(m.name)+'">+</button></div></div>';
+ }).join("")+'<p style="font-weight:800;display:flex;justify-content:space-between;margin-top:22px"><span>Subtotal</span><span>'+money(ids.reduce(function(s,id){return s+map.get(id).priceCents*cart[id]},0))+'</span></p><p style="color:#84786f;font-size:12px">Final taxes and discounts are calculated by Square.</p>':'<p style="padding:18px 0;color:#786d63">Your bag is empty. Choose an item from the menu.</p>';
+ $("submitOrder").disabled=!accepting||!count();
+ $("submitOrder").textContent=accepting?"Continue to secure Square checkout":"Pre-orders opening soon";
 }
-function open(){drawer.classList.add("open");backdrop.classList.add("open");drawer.setAttribute("aria-hidden","false");document.body.classList.add("lock");document.getElementById("closeDrawer").focus()}
-function close(){drawer.classList.remove("open");backdrop.classList.remove("open");drawer.setAttribute("aria-hidden","true");document.body.classList.remove("lock");document.getElementById("headerOrder").focus()}
-document.getElementById("headerOrder").addEventListener("click",open);document.getElementById("closeDrawer").addEventListener("click",close);backdrop.addEventListener("click",close);document.addEventListener("keydown",function(e){if(e.key==="Escape"&&drawer.classList.contains("open"))close()});
-document.addEventListener("click",function(e){var a=e.target.closest("[data-add]"),inc=e.target.closest("[data-increase]"),dec=e.target.closest("[data-decrease]");if(a){var id=a.getAttribute("data-add");cart[id]=(cart[id]||0)+1;save();renderCart();open()}if(inc){var ii=inc.getAttribute("data-increase");cart[ii]=(cart[ii]||0)+1;save();renderCart()}if(dec){var dd=dec.getAttribute("data-decrease");cart[dd]=Math.max(0,(cart[dd]||0)-1);save();renderCart()}});
-document.querySelectorAll("[data-category]").forEach(function(b){b.addEventListener("click",function(){document.querySelectorAll("[data-category]").forEach(function(x){x.setAttribute("aria-pressed","false")});b.setAttribute("aria-pressed","true");renderMenu(b.getAttribute("data-category"))})});
-document.getElementById("menuToggle").addEventListener("click",function(){var list=document.getElementById("navLinks");list.classList.toggle("show");this.setAttribute("aria-expanded",String(list.classList.contains("show")))});
-document.querySelectorAll("#navLinks a").forEach(function(a){a.addEventListener("click",function(){document.getElementById("navLinks").classList.remove("show");document.getElementById("menuToggle").setAttribute("aria-expanded","false")})});
-var localDate=new Date();localDate.setMinutes(localDate.getMinutes()-localDate.getTimezoneOffset());document.getElementById("pickupDay").min=localDate.toISOString().slice(0,10);
-document.getElementById("orderForm").addEventListener("submit",async function(e){e.preventDefault();if(!ORDERING_OPEN){document.getElementById("orderResult").textContent="Ordering is not open yet.";return}if(!count()){document.getElementById("orderResult").textContent="Please add an item first.";return}
-var btn=document.getElementById("submitOrder");btn.disabled=true;btn.textContent="Submitting...";
-try{var body=new URLSearchParams(new FormData(this));var response=await fetch("/cafe.html",{method:"POST",headers:{"Content-Type":"application/x-www-form-urlencoded"},body:body.toString()});if(!response.ok)throw Error("Submission was not confirmed");cart={};save();renderCart();this.reset();document.getElementById("orderResult").innerHTML='<div class="success">Your preorder request has been received. The kitchen will confirm availability and pickup details.</div>'}catch(err){document.getElementById("orderResult").textContent="Could not submit the order. Please try again or contact café staff."}finally{btn.disabled=!ORDERING_OPEN||count()===0;btn.textContent=ORDERING_OPEN?"Submit preorder":"Pre-orders opening soon"}});
-renderMenu("All");renderCart();
+function open(){drawer.classList.add("open");backdrop.classList.add("open");drawer.setAttribute("aria-hidden","false");document.body.classList.add("lock");$("closeDrawer").focus()}
+function close(){drawer.classList.remove("open");backdrop.classList.remove("open");drawer.setAttribute("aria-hidden","true");document.body.classList.remove("lock");$("headerOrder").focus()}
+$("headerOrder").addEventListener("click",open);$("closeDrawer").addEventListener("click",close);backdrop.addEventListener("click",close);
+document.addEventListener("keydown",function(e){if(e.key==="Escape"&&drawer.classList.contains("open"))close()});
+document.addEventListener("click",function(e){
+ var add=e.target.closest("[data-add]"),inc=e.target.closest("[data-increase]"),dec=e.target.closest("[data-decrease]");
+ if(add&&!add.disabled&&accepting){var a=add.dataset.add;cart[a]=Math.min(10,(cart[a]||0)+1);save();renderCart();open()}
+ if(inc){var i=inc.dataset.increase;cart[i]=Math.min(10,(cart[i]||0)+1);save();renderCart()}
+ if(dec){var d=dec.dataset.decrease;cart[d]=Math.max(0,(cart[d]||0)-1);save();renderCart()}
+});
+$("menuToggle").addEventListener("click",function(){var nav=$("navLinks");nav.classList.toggle("show");this.setAttribute("aria-expanded",String(nav.classList.contains("show")))});
+document.querySelectorAll("#navLinks a").forEach(function(a){a.addEventListener("click",function(){$("navLinks").classList.remove("show");$("menuToggle").setAttribute("aria-expanded","false")})});
+function dayInZone(date,zone){
+ var parts=new Intl.DateTimeFormat("en-US",{timeZone:zone||"America/Chicago",year:"numeric",month:"2-digit",day:"2-digit"}).formatToParts(date);
+ var p=Object.fromEntries(parts.map(function(x){return [x.type,x.value]}));
+ return p.year+"-"+p.month+"-"+p.day;
+}
+function updateSlots(){
+ var select=$("pickupTime");
+ select.innerHTML='<option value="">Choose a pickup time</option>'+(cfg.pickupSlots||[]).map(function(slot){var n=slot.split(":").map(Number),h=n[0],minute=n[1];return '<option value="'+slot+'">'+((h+11)%12+1)+":"+String(minute).padStart(2,"0")+" "+(h>=12?"PM":"AM")+'</option>'}).join("");
+ $("pickupDay").min=dayInZone(new Date(),cfg.timeZone);
+ $("pickupDay").max=dayInZone(new Date(Date.now()+(cfg.maxDaysAhead||7)*86400000),cfg.timeZone);
+}
+async function loadCatalog(){
+ try{
+  var response=await fetch("/.netlify/functions/cafe-menu",{cache:"no-store"});
+  var data=await response.json();if(!response.ok)throw Error(data.reason||"Square menu is not available.");
+  var oldSlots=JSON.stringify(cfg.pickupSlots||[]);
+  cfg=data;menu=Array.isArray(data.items)?data.items:[];accepting=Boolean(data.acceptingOrders);
+  var groupSet=new Set(menu.map(function(m){return m.category}));if(category!=="All"&&!groupSet.has(category))category="All";
+  banner(!menu.length?data.reason||"No Square café items are available yet.":!accepting?"Live Square menu — checkout is not yet enabled. "+(data.reason||""):data.mode==="sandbox"?"SQUARE TEST MODE — this is not a live payment.":"");
+  if(oldSlots!==JSON.stringify(cfg.pickupSlots||[]))updateSlots();
+  renderFilters();renderMenu();renderCart();
+  $("checkoutNote").textContent=accepting?"You will pay securely on Square. Pickup requests are subject to café confirmation.":"Square checkout is disabled until the live café menu and pickup schedule are configured.";
+  document.querySelector(".drawer-sub").textContent=accepting?"Choose a pickup time and pay securely with Square.":"Browse the menu. Ordering will open once GLCA completes Square setup.";
+ }catch(err){
+  accepting=false;menu=[];banner("Unable to load the Square menu right now. No orders can be placed.");renderFilters();renderMenu();renderCart();
+ }
+}
+var idemKey="";
+form.addEventListener("submit",async function(e){
+ e.preventDefault();if(!accepting||!count()||!form.reportValidity())return;
+ var result=$("orderResult");result.textContent="";
+ var btn=$("submitOrder");btn.disabled=true;btn.textContent="Connecting to Square…";
+ try{
+  if(!idemKey)idemKey=crypto.randomUUID();
+  var payload={studentName:$("studentName").value.trim(),email:$("studentEmail").value.trim(),boardingHouse:$("boardingHouse").value.trim(),pickupDay:$("pickupDay").value,pickupTime:$("pickupTime").value,notes:$("orderNotes").value.trim(),items:Object.entries(cart).filter(function(x){return x[1]>0}).map(function(x){return {id:x[0],quantity:x[1]}}),idempotencyKey:idemKey};
+  var response=await fetch("/.netlify/functions/cafe-checkout",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(payload)});
+  var data=await response.json();
+  if(!response.ok||!data.checkoutUrl)throw Error(data.error||"Square checkout could not be started.");
+  if(!/^https:\/\/(?:square\.link|staging\.square\.link|checkout\.square\.site|square\.site)\//.test(data.checkoutUrl))throw Error("Invalid Square checkout address.");
+  try{sessionStorage.setItem("glcaPendingOrderId",data.orderId||"")}catch(e){}
+  window.location.assign(data.checkoutUrl);
+ }catch(err){result.textContent=err.message||"Unable to start Square checkout.";btn.disabled=false;btn.textContent="Continue to secure Square checkout"}
+});
+async function verifyReturn(){
+ var params=new URLSearchParams(window.location.search);if(params.get("checkout")!=="returned")return;
+ var id=params.get("orderId")||params.get("order_id")||sessionStorage.getItem("glcaPendingOrderId")||"";
+ open();var result=$("orderResult");
+ result.innerHTML='<div class="form-note">Checking payment with Square. A redirect alone does not confirm payment.</div>';
+ if(!id)return;
+ try{
+  var response=await fetch("/.netlify/functions/cafe-status?orderId="+encodeURIComponent(id),{cache:"no-store"});
+  var data=await response.json();
+  if(data.status==="paid"){result.innerHTML='<div class="success">Payment verified by Square. Your GLCA café pickup order has been received.</div>';cart={};save();renderCart();}
+  else result.innerHTML='<div class="form-note">Payment has not been verified yet. Check your Square receipt or ask café staff before ordering again.</div>';
+ }catch(e){result.innerHTML='<div class="form-note">We could not verify payment. Check your Square receipt or contact café staff.</div>'}
+}
+loadCatalog().then(verifyReturn);
+setInterval(function(){if(!document.hidden)loadCatalog()},45000);
 })();
 </script>
 </body>
