@@ -57,12 +57,7 @@ section{scroll-margin-top:90px}.section{padding:90px 0}.heading{display:flex;ali
  <section class="section" id="new">
   <div class="shell">
    <div class="heading"><div><div class="eyebrow" style="color:var(--red)">Something to look forward to</div><h2>New this week<span style="color:var(--red)">.</span></h2></div><p>Fresh ideas, student favorites, and special menu drops. Here's a taste of what's coming to the café.</p></div>
-   <div class="new-grid">
-    <article class="new-card"><div class="new-photo"><img loading="lazy" src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=800&q=85" alt="Juicy cheeseburger"><span class="flag">New addition</span></div><div class="new-info"><h3>The Smash Burger</h3><p>A juicy new café favorite, made for serious cravings.</p></div></article>
-    <article class="new-card"><div class="new-photo"><img loading="lazy" src="https://images.unsplash.com/photo-1547592180-85f173990554?w=800&q=85" alt="Fresh café meal"><span class="flag">Café picks</span></div><div class="new-info"><h3>Fresh & Savory</h3><p>Great meals, easy bites, and something different to try.</p></div></article>
-    <article class="new-card"><div class="new-photo"><img loading="lazy" src="https://images.unsplash.com/photo-1499636136210-6f4ee915583e?w=800&q=85" alt="Freshly baked cookies"><span class="flag">Sweet treat</span></div><div class="new-info"><h3>Something Sweet</h3><p>Cookies, café treats, and the perfect after-class pick-me-up.</p></div></article>
-   </div>
-   <div class="intro"><div><strong>Good food. Less waiting.</strong><br><span>Browse your favorites, build a pre-order, and pick it up on campus.</span></div><a href="#menu">Find your favorite &nbsp;↗</a></div>
+   <div class="new-grid" id="specialsGrid"><p style="grid-column:1/-1;color:#7f7368">New café specials will appear here when announced in Square.</p></div><div class="intro"><div><strong>Good food. Less waiting.</strong><br><span>Browse your favorites, build a pre-order, and pick it up on campus.</span></div><a href="#menu">Find your favorite &nbsp;↗</a></div>
   </div>
  </section>
  <section class="menu-section" id="menu">
@@ -135,6 +130,15 @@ function renderMenu(){
   return '<article class="item"><div class="photo">'+pic+'</div><div class="item-body"><h3>'+esc(m.name)+suffix+'</h3><p>'+esc(m.description).slice(0,170)+'</p><div class="item-bottom"><strong>'+money(m.priceCents)+'</strong><button class="add" type="button" data-add="'+esc(m.id)+'" aria-label="Add '+esc(m.name)+'"'+(disabled?' disabled style="opacity:.35;cursor:not-allowed"':'')+'>'+(m.available?'+':'×')+'</button></div>'+(m.available?'':'<span class="tag">SOLD OUT</span>')+'</div></article>'
  }).join("");
 }
+function renderHighlights(){
+ var grid=$("specialsGrid");
+ var list=menu.filter(function(m){return m.featured&&m.available}).slice(0,3);
+ if(!list.length){grid.innerHTML='<p style="grid-column:1/-1;color:#7f7368;padding:26px 3px">Weekly specials will appear here when GLCA adds items to the “GLCA Featured” category in Square.</p>';return}
+ grid.innerHTML=list.map(function(m){
+  var photo=m.image?'<img loading="lazy" src="'+esc(m.image)+'" alt="'+esc(m.name)+'">':'<div style="height:100%;display:grid;place-items:center;background:#e6d7c8;color:#5a463c;padding:20px;text-align:center;font:600 24px Fraunces,serif">'+esc(m.name)+'</div>';
+  return '<article class="new-card"><div class="new-photo">'+photo+'<span class="flag">GLCA special</span></div><div class="new-info"><h3>'+esc(m.name)+'</h3><p>'+esc(m.description).slice(0,150)+'</p><strong style="display:block;margin-top:10px;color:#9e3e2f">'+money(m.priceCents)+'</strong></div></article>';
+ }).join("");
+}
 function renderCart(){
  var map=new Map(menu.map(function(m){return [m.id,m]}));
  Object.keys(cart).forEach(function(id){if(!map.has(id)||!map.get(id).available)delete cart[id]});save();
@@ -179,11 +183,11 @@ async function loadCatalog(){
   var groupSet=new Set(menu.map(function(m){return m.category}));if(category!=="All"&&!groupSet.has(category))category="All";
   banner(!menu.length?data.reason||"No Square café items are available yet.":!accepting?"Live Square menu — checkout is not yet enabled. "+(data.reason||""):data.mode==="sandbox"?"SQUARE TEST MODE — this is not a live payment.":"");
   if(oldSlots!==JSON.stringify(cfg.pickupSlots||[]))updateSlots();
-  renderFilters();renderMenu();renderCart();
+  renderFilters();renderMenu();renderHighlights();renderCart();
   $("checkoutNote").textContent=accepting?"You will pay securely on Square. Pickup requests are subject to café confirmation.":"Square checkout is disabled until the live café menu and pickup schedule are configured.";
   document.querySelector(".drawer-sub").textContent=accepting?"Choose a pickup time and pay securely with Square.":"Browse the menu. Ordering will open once GLCA completes Square setup.";
  }catch(err){
-  accepting=false;menu=[];banner("Unable to load the Square menu right now. No orders can be placed.");renderFilters();renderMenu();renderCart();
+  accepting=false;menu=[];banner("Unable to load the Square menu right now. No orders can be placed.");renderFilters();renderMenu();renderHighlights();renderCart();
  }
 }
 var idemKey="";
