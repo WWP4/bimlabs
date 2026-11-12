@@ -3,224 +3,214 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#1c1714">
-<meta name="description" content="Fresh campus café favorites, rotating weekly specials, and easy pre-orders for boarding students.">
-<title>GLCA Café | Fresh on Campus</title>
+<meta name="theme-color" content="#101113">
+<meta name="description" content="GLCA Café: burger, fries and milkshake combo for $13.50, or order individually. Boarding student pre-orders.">
+<title>GLCA Café — Burger Night</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Fraunces:opsz,wght,SOFT,WONK@9..144,500,30,0;9..144,600,30,0;9..144,700,30,0&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-:root{--ink:#201812;--cream:#f8f4ed;--paper:#fffdf8;--muted:#84786f;--red:#9e3e2f;--orange:#e0a66a;--line:rgba(44,27,16,.14);--shadow:0 24px 65px rgba(47,29,14,.14)}
-*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;color:var(--ink);background:var(--cream);font:15px/1.5 "DM Sans",sans-serif}body.lock{overflow:hidden}button,input,select,textarea{font:inherit}button{cursor:pointer}a{color:inherit;text-decoration:none}button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid #dfad6d;outline-offset:3px}img{display:block;width:100%;height:100%;object-fit:cover}.shell{width:min(1360px,calc(100% - 112px));margin:auto}.eyebrow{text-transform:uppercase;letter-spacing:.19em;font-size:11px;font-weight:800}.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}
-.topbar{background:#211b16;color:#fff7ed;text-align:center;padding:9px 16px;font-size:11px;font-weight:700;letter-spacing:.15em;text-transform:uppercase}.topbar span{color:#e4b178;margin:0 12px}.head{height:88px;position:relative;z-index:5;background:#f9f4eb;border-bottom:1px solid var(--line)}.nav{height:100%;display:flex;align-items:center;justify-content:space-between;gap:28px}.brand{display:flex;gap:12px;align-items:center;font-family:"Fraunces",serif;font-size:25px;line-height:1;white-space:nowrap;letter-spacing:-.03em}.brand svg{width:40px;height:40px;flex:none}.brand small{display:block;font:700 9px/1.5 "DM Sans",sans-serif;letter-spacing:.22em;text-transform:uppercase;margin-top:5px}.links{display:flex;gap:38px;align-items:center;font-size:13px;font-weight:700}.links a:hover{text-decoration:underline;text-underline-offset:6px}.nav-actions{display:flex;align-items:center;gap:14px}.pill{border-radius:999px;border:0;display:inline-flex;gap:10px;align-items:center;justify-content:center;padding:15px 24px;font-weight:800;font-size:13px;white-space:nowrap;transition:transform .2s,background .2s}.pill:hover{transform:translateY(-2px)}.pill.dark{color:#fff;background:#24201c}.pill.red{color:#fff;background:var(--red)}.pill.light{background:#fff9ed;color:var(--ink)}.menu-toggle{display:none;background:transparent;border:0;font-size:26px;padding:8px}
-.hero{background:#231a14;color:#fff9ed;position:relative;overflow:hidden}.hero:before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(24,18,15,.94) 0%,rgba(24,18,15,.8) 39%,rgba(24,18,15,.13) 100%),url('https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=1800&q=85') center/cover;opacity:.75}.hero:after{content:"";inset:0;position:absolute;background:radial-gradient(circle at 72% 65%,rgba(160,84,37,.23),transparent 45%);pointer-events:none}.hero-inner{position:relative;z-index:1;min-height:625px;display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:35px;padding:65px 0 80px}.hero-copy{max-width:620px;padding:20px 0}.hero .eyebrow{color:#e6b681}.hero h1{font-family:"Fraunces",serif;font-weight:600;line-height:1.01;letter-spacing:-.046em;font-size:clamp(55px,6vw,95px);margin:22px 0 25px}.hero h1 i{color:#f0b879;font-weight:500}.hero p{color:#e6d8c8;font-size:16px;line-height:1.7;max-width:465px;margin-bottom:34px}.hero-actions{display:flex;gap:13px;flex-wrap:wrap}.hero-image{height:510px;position:relative;display:grid;grid-template-columns:1.12fr .82fr;grid-template-rows:1fr 1fr;gap:15px;transform:rotate(-2deg)}.pic{position:relative;overflow:hidden;border:6px solid rgba(255,249,236,.94);box-shadow:var(--shadow);border-radius:19px;background:#4e3425}.pic.main{grid-row:1/3}.pic img{filter:saturate(1.07);transition:transform .4s}.pic:hover img{transform:scale(1.05)}.sticker{position:absolute;right:16%;bottom:18px;z-index:2;background:#edbd74;border-radius:50%;width:117px;height:117px;display:flex;justify-content:center;align-items:center;text-align:center;transform:rotate(12deg);font:700 20px/1.05 "Fraunces",serif;color:#402216;box-shadow:0 12px 35px #160c0a88}.sticker small{font:800 10px/1 "DM Sans",sans-serif;letter-spacing:.1em;display:block;margin-bottom:4px}.hero-bottom{border-top:1px solid #ffffff30;position:relative;z-index:1}.hero-bottom .shell{display:flex;justify-content:space-between;gap:15px;padding:15px 0;color:#cbbcae;font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:700}
-section{scroll-margin-top:90px}.section{padding:90px 0}.heading{display:flex;align-items:end;justify-content:space-between;gap:20px;margin-bottom:29px}.heading h2{font:600 clamp(39px,4.3vw,64px)/1.08 "Fraunces",serif;letter-spacing:-.037em;margin:8px 0 0}.heading p{max-width:330px;color:#817468;font-size:14px;line-height:1.6;margin:0 0 5px}.rule{width:48px;height:2px;background:var(--red);display:inline-block;vertical-align:middle;margin-right:11px}.new-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}.new-card{background:var(--paper);border:1px solid var(--line);overflow:hidden;border-radius:17px;box-shadow:0 4px 20px #33210d06}.new-photo{height:285px;overflow:hidden;position:relative;background:#64402b}.new-photo img{transition:transform .4s}.new-card:hover img{transform:scale(1.07)}.flag{position:absolute;top:16px;left:16px;background:var(--paper);padding:8px 12px;font-size:10px;text-transform:uppercase;font-weight:800;letter-spacing:.13em;border-radius:4px}.new-info{padding:19px 23px 24px}.new-info h3{font:600 27px/1.2 "Fraunces",serif;letter-spacing:-.02em;margin:0 0 7px}.new-info p{font-size:13px;line-height:1.55;color:#72665e;margin:0}.intro{background:#eee6db;border-radius:13px;display:flex;gap:30px;align-items:center;justify-content:space-between;padding:23px 34px;margin-top:26px}.intro strong{font-family:"Fraunces",serif;font-size:22px;font-weight:600}.intro span{color:#746a62;font-size:13px}.intro a{font-weight:800;font-size:13px;white-space:nowrap;border-bottom:1px solid var(--red);padding-bottom:3px}
-.menu-section{background:#fffdf9;padding:88px 0 96px;border-top:1px solid var(--line)}.filters{display:flex;gap:10px;flex-wrap:wrap;margin:25px 0 28px}.filter{border:1px solid #d8cfc3;border-radius:999px;padding:10px 20px;background:transparent;color:var(--ink);font-weight:700;font-size:12px}.filter[aria-pressed="true"]{background:var(--ink);color:#fff;border-color:var(--ink)}.menu-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:17px}.item{border:1px solid #e6ddd1;background:#fff;border-radius:14px;overflow:hidden;display:flex;flex-direction:column}.item .photo{aspect-ratio:1.12;overflow:hidden;background:#e9ddd2}.item .photo img{transition:transform .35s}.item:hover img{transform:scale(1.06)}.item-body{padding:17px;display:flex;flex:1;flex-direction:column}.item h3{font:600 23px/1.17 "Fraunces",serif;letter-spacing:-.02em;margin:0 0 7px}.item p{color:#7f7368;margin:0 0 21px;font-size:12px;line-height:1.5}.item-bottom{margin-top:auto;display:flex;align-items:center;justify-content:space-between;gap:10px}.tag{font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--red)}.add{background:#281e18;color:#fff;border:0;border-radius:50%;width:36px;height:36px;font-size:23px;line-height:1}.add:hover{background:var(--red)}.preview-note{font-size:12px;margin-top:25px;color:#86786b;display:flex;gap:8px;align-items:flex-start}.preview-note svg{flex:none}
-.footer{padding:38px 0;background:#211a16;color:#fff9ed}.footer-content{display:flex;align-items:center;justify-content:space-between;gap:20px}.footer small{color:#c6b6a6;font-size:11px}.footer a{color:#f4bd7e}.footer .brand{font-size:22px}
-.backdrop{position:fixed;inset:0;background:#120e0bc2;z-index:20;opacity:0;pointer-events:none;transition:opacity .25s}.backdrop.open{opacity:1;pointer-events:auto}.drawer{position:fixed;z-index:21;right:0;top:0;bottom:0;background:#fffdf8;width:min(510px,100%);transform:translateX(105%);transition:transform .3s;box-shadow:-20px 0 65px #100a0750;display:flex;flex-direction:column}.drawer.open{transform:none}.drawer-header{display:flex;align-items:center;justify-content:space-between;padding:23px 29px;border-bottom:1px solid var(--line)}.drawer-header h2{font:600 35px/1.1 "Fraunces",serif;margin:0}.icon-button{border:1px solid #e2d7ca;background:white;width:38px;height:38px;border-radius:50%;font-size:23px}.drawer-body{flex:1;overflow-y:auto;padding:23px 29px}.drawer-sub{color:#786d63;font-size:13px;margin:0 0 18px}.cart-item{display:grid;grid-template-columns:1fr auto;gap:15px;border-bottom:1px solid var(--line);padding:14px 0}.cart-item strong{font-size:14px}.quantity{display:flex;align-items:center;gap:14px}.quantity button{border:1px solid #ddcfbf;background:transparent;border-radius:50%;width:27px;height:27px;font-size:16px}.checkout{display:grid;gap:12px;margin-top:25px}.checkout h3{font:600 25px "Fraunces",serif;margin:0 0 2px}.field{display:grid;gap:5px}.field label{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.08em}.field input,.field select,.field textarea{border-radius:9px;border:1px solid #d8cbbc;background:white;padding:12px;color:#27201a;width:100%;outline-offset:2px}.checkout .pill{width:100%;margin-top:8px}.checkout .pill:disabled{opacity:.5;cursor:not-allowed;transform:none}.form-note{background:#f3eadb;color:#7c5d3c;padding:12px;border-radius:9px;font-size:12px;line-height:1.55}.success{background:#e9f6e9;border:1px solid #a4c99e;padding:14px;border-radius:9px;color:#244627;margin-top:16px}.hide{display:none!important}
-@media(max-width:1100px){.shell{width:min(100% - 64px,1360px)}.hero-inner{grid-template-columns:1fr .85fr;min-height:560px}.hero h1{font-size:clamp(53px,6vw,76px)}.hero-image{height:440px}.menu-grid{grid-template-columns:repeat(3,1fr)}.links{gap:22px}.new-photo{height:240px}}
-@media(max-width:780px){.topbar{font-size:9px}.head{height:74px}.shell{width:calc(100% - 36px)}.brand{font-size:21px}.brand svg{width:31px;height:31px}.links{display:none;position:absolute;left:0;top:74px;right:0;background:var(--cream);padding:20px 25px;flex-direction:column;align-items:flex-start;box-shadow:0 15px 20px #0002}.links.show{display:flex}.menu-toggle{display:inline-block}.nav-actions .pill{padding:11px 14px;font-size:11px}.hero-inner{display:flex;flex-direction:column;align-items:stretch;min-height:0;padding:64px 0 42px;gap:30px}.hero-copy{padding:0}.hero h1{font-size:clamp(49px,12vw,75px);margin:18px 0}.hero p{font-size:15px}.hero-image{height:350px;max-width:550px;align-self:center;width:100%;transform:rotate(-1deg)}.hero-bottom .shell{flex-wrap:wrap;font-size:9px}.section,.menu-section{padding:66px 0}.heading{align-items:start;flex-direction:column;gap:10px}.heading h2{font-size:46px}.new-grid{grid-template-columns:1fr;gap:16px}.new-card{display:grid;grid-template-columns:40% 60%}.new-photo{height:190px}.new-info{align-self:center;padding:14px 17px}.new-info h3{font-size:25px}.intro{align-items:flex-start;flex-direction:column;padding:22px}.menu-grid{grid-template-columns:repeat(2,1fr);gap:12px}.footer-content{flex-direction:column;align-items:start}.drawer-body{padding:20px}.drawer-header{padding:20px}}
-@media(max-width:500px){.brand small{font-size:7px}.hero h1{font-size:51px}.hero-image{height:280px;gap:9px}.pic{border-width:4px;border-radius:12px}.sticker{width:83px;height:83px;font-size:15px;right:13%;bottom:9px}.hero-bottom .shell span:last-child{display:none}.new-card{grid-template-columns:43% 57%}.new-photo{height:170px}.new-info h3{font-size:22px}.new-info p{font-size:11px}.menu-grid{grid-template-columns:1fr 1fr}.item .photo{aspect-ratio:.9}.item-body{padding:12px}.item h3{font-size:21px}.item p{font-size:11px}.heading h2{font-size:41px}.nav-actions .pill{padding:10px 12px}.brand{font-size:19px}}
-@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{transition:none!important;animation:none!important}}
+:root{--black:#121315;--night:#1b1d20;--red:#dc2035;--red2:#b71329;--silver:#e9e9e8;--gray:#b3b4b7;--light:#f4f3f0;--ink:#17191c}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--black);color:white;font:15px/1.48 "DM Sans",sans-serif}button,input,select,textarea{font:inherit}button{cursor:pointer}a{color:inherit;text-decoration:none}img{display:block;width:100%;height:100%;object-fit:cover}button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid #e12841;outline-offset:3px}.wrap{width:min(1280px,calc(100% - 84px));margin:auto}.eyebrow{font-size:11px;font-weight:800;letter-spacing:.2em;text-transform:uppercase}.top{height:78px;border-bottom:1px solid #ffffff23;display:flex;align-items:center;position:relative;z-index:4;background:#111214}.nav{display:flex;align-items:center;justify-content:space-between;gap:20px}.brand{display:flex;align-items:center;gap:12px;font:700 26px/.95 "Space Grotesk",sans-serif;letter-spacing:-.06em}.brandmark{height:34px;width:34px;background:var(--red);clip-path:polygon(0 0,100% 0,100% 70%,68% 100%,0 100%);display:grid;place-items:center;color:white;font:800 19px "Space Grotesk",sans-serif}.brand small{font:700 9px "DM Sans",sans-serif;letter-spacing:.22em;display:block;margin-top:7px;color:#afb1b4}.nav-right{display:flex;gap:22px;align-items:center}.nav-right a{font-size:13px;font-weight:700;color:#d1d2d2}.nav-right a:hover{color:white}.cart-toggle{border:1px solid #ffffff3c;color:white;background:#222327;padding:12px 18px;border-radius:4px;font-size:12px;font-weight:800;display:flex;gap:14px;align-items:center}.cart-toggle b{background:var(--red);min-width:24px;height:24px;border-radius:50%;display:grid;place-items:center}
+.hero{overflow:hidden;position:relative;background:radial-gradient(circle at 70% 48%,#373038 0%,#1c1a1e 38%,#101112 78%)}.hero:before{content:"GLCA";position:absolute;top:27%;right:-3%;font:800 clamp(160px,30vw,470px)/1 "Space Grotesk",sans-serif;letter-spacing:-.13em;color:#ffffff07;pointer-events:none}.hero-in{display:grid;grid-template-columns:52% 48%;align-items:center;min-height:690px;position:relative}.hero-copy{z-index:2;padding:75px 0 85px}.kick{display:inline-flex;align-items:center;gap:12px;color:#ef6574}.kick:before{content:"";height:2px;width:36px;background:var(--red)}h1,h2,h3,p{margin-top:0}.hero h1{font:700 clamp(66px,8vw,128px)/.87 "Space Grotesk",sans-serif;letter-spacing:-.085em;text-transform:uppercase;margin:29px 0 23px}.hero h1 .red{color:var(--red)}.hero .desc{font-size:16px;color:#cac5c6;max-width:440px;line-height:1.7;margin-bottom:29px}.combo-line{display:flex;gap:18px;align-items:center;margin-bottom:32px}.price{font:700 65px/.9 "Space Grotesk",sans-serif;letter-spacing:-.08em}.combo-line small{display:block;color:#b5b4b7;font-size:12px;line-height:1.55;max-width:200px}.combo-line b{color:#fff}.btn{display:inline-flex;align-items:center;justify-content:center;gap:16px;background:var(--red);color:#fff;padding:15px 24px;border:0;border-radius:3px;font-weight:800;font-size:13px;transition:background .2s,transform .2s}.btn:hover{background:#bc142b;transform:translateY(-2px)}.btn:disabled{cursor:not-allowed;opacity:.5;transform:none}.hero-poster{position:relative;height:610px;align-self:stretch;display:flex;align-items:center;justify-content:center}.red-splash{position:absolute;width:78%;aspect-ratio:1;border-radius:50%;background:var(--red);top:15%;left:12%;box-shadow:0 0 90px #d9203927;transform:rotate(-16deg)}.poster-main{position:absolute;top:10%;left:8%;width:77%;height:65%;border-radius:46% 46% 28% 28%;overflow:hidden;transform:rotate(-8deg);border:7px solid #eeeeeb;box-shadow:25px 33px 55px #0007;background:#252326}.poster-main img{filter:saturate(1.06) contrast(1.04)}.poster-side{position:absolute;bottom:14%;width:35%;height:31%;border:6px solid #ededec;border-radius:13px;box-shadow:0 19px 40px #0007;overflow:hidden}.poster-side.fries{left:0;transform:rotate(9deg)}.poster-side.shake{right:0;transform:rotate(-10deg)}.seal{position:absolute;right:0;top:9%;width:119px;height:119px;border-radius:50%;background:#ececea;color:#222;display:grid;place-items:center;text-align:center;transform:rotate(13deg);font:700 19px/.95 "Space Grotesk",sans-serif;letter-spacing:-.05em;box-shadow:0 10px 30px #0005}.seal small{font:800 10px "DM Sans",sans-serif;letter-spacing:.12em;display:block;margin-bottom:5px;color:var(--red)}.strip{border-top:1px solid #ffffff24;position:relative;background:#111214}.strip .wrap{display:flex;justify-content:space-between;gap:16px;padding:17px 0;align-items:center;color:#bbb;font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:800}.strip span:nth-child(2){color:#f1f1f1}
+.order{background:var(--light);color:var(--ink);padding:100px 0 125px;scroll-margin-top:20px}.order-top{display:flex;justify-content:space-between;align-items:end;gap:40px;margin-bottom:34px}.order .eyebrow{color:var(--red)}.order h2{font:700 clamp(43px,5.8vw,77px)/1 "Space Grotesk",sans-serif;letter-spacing:-.075em;margin:11px 0 0}.order-top p{max-width:325px;color:#6b6b71;font-size:14px;line-height:1.6;margin:0 0 5px}.menu-layout{display:grid;grid-template-columns:1.12fr 1fr;gap:20px}.feature{border-radius:8px;background:var(--night);color:#fff;min-height:433px;position:relative;overflow:hidden;padding:34px;display:flex;flex-direction:column;align-items:flex-start;justify-content:space-between}.feature:before{content:"13.50";position:absolute;right:-3%;bottom:-11%;font:800 160px "Space Grotesk",sans-serif;letter-spacing:-.09em;color:#ffffff07}.feature .badge{background:var(--red);color:white;padding:9px 12px;font-size:10px;letter-spacing:.17em;font-weight:800;text-transform:uppercase}.feature h3{font:700 49px/.95 "Space Grotesk",sans-serif;letter-spacing:-.065em;text-transform:uppercase;margin:12px 0}.feature h3 em{font-style:normal;color:#fa465c}.feature p{color:#bebec3;margin:0 0 22px;font-size:14px;max-width:220px}.feature-price{font:700 50px/.95 "Space Grotesk",sans-serif;letter-spacing:-.07em;margin-bottom:20px}.feature-img{position:absolute;right:-3%;top:17%;height:61%;width:52%;border-radius:40% 0 0 40%;overflow:hidden;opacity:.93;box-shadow:-18px 16px 30px #0005}.feature-content{position:relative;z-index:1;max-width:57%}.feature-bottom{position:relative;z-index:2}.feature button{background:white;color:#181818;border:none;padding:12px 17px;font-weight:800;font-size:13px;border-radius:3px}.feature button:hover{background:#ededec}
+.singles{background:white;border:1px solid #e2e0dd;border-radius:8px;padding:32px;display:flex;flex-direction:column}.singles-heading{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-bottom:15px}.singles-heading h3{font:700 28px "Space Grotesk",sans-serif;letter-spacing:-.045em;margin:0}.singles-heading small{font-size:11px;color:#99989a;font-weight:700;letter-spacing:.1em;text-transform:uppercase}.single{display:flex;align-items:center;gap:14px;min-height:95px;border-bottom:1px solid #eceae8}.single:last-child{border:0}.single-image{width:72px;height:72px;border-radius:4px;overflow:hidden;background:#dedbd6;flex:none}.single-info{flex:1;min-width:0}.single-info h4{font:700 18px "Space Grotesk",sans-serif;letter-spacing:-.035em;margin:0 0 2px}.single-info span{color:#85868a;font-size:12px}.single-price{font:700 19px "Space Grotesk",sans-serif;white-space:nowrap}.plus{height:37px;width:37px;border-radius:50%;border:1px solid #d8d8d8;background:white;color:#1b1c1e;font-size:23px;line-height:1;display:grid;place-items:center}.plus:hover{color:white;background:var(--red);border-color:var(--red)}
+.menu-note{margin:24px 0 0;color:#757578;font-size:13px;display:flex;gap:10px;align-items:center}.menu-note b{color:var(--red)}.status{margin-top:20px;padding:14px 18px;border:1px solid #e1c4b9;background:#fff9f5;color:#7e3e38;border-radius:5px;font-size:13px;line-height:1.55}.foot{background:#101113;border-top:1px solid #ffffff22;padding:29px 0;color:#a8aab0;font-size:12px}.foot .wrap{display:flex;align-items:center;justify-content:space-between;gap:15px}.foot strong{font:700 18px "Space Grotesk",sans-serif;letter-spacing:-.05em;color:white}
+.backdrop{position:fixed;inset:0;background:#09090cba;z-index:30;opacity:0;pointer-events:none;transition:opacity .25s}.backdrop.open{opacity:1;pointer-events:auto}.drawer{position:fixed;z-index:31;right:0;top:0;bottom:0;background:#f7f6f3;color:#151719;width:min(490px,100%);transform:translateX(105%);transition:transform .3s;box-shadow:-30px 0 80px #0007;display:flex;flex-direction:column}.drawer.open{transform:translateX(0)}.drawer-head{display:flex;align-items:center;justify-content:space-between;padding:26px;border-bottom:1px solid #dedbd6}.drawer-head h2{font:700 27px "Space Grotesk",sans-serif;letter-spacing:-.05em;margin:0}.close{width:38px;height:38px;border:1px solid #ddd;background:white;border-radius:50%;font-size:24px}.drawer-body{padding:25px;overflow:auto;flex:1}.drawer-sub{font-size:13px;line-height:1.6;color:#696a6f;margin-bottom:20px}.cart-row{padding:15px 0;display:flex;justify-content:space-between;gap:20px;border-bottom:1px solid #ddd9d2}.cart-row strong{font-size:15px}.cart-row small{display:block;color:#717177;margin-top:4px}.controls{display:flex;align-items:center;gap:13px}.controls button{width:29px;height:29px;border-radius:50%;background:white;border:1px solid #d9d6d2;font-size:19px}.subtotal{display:flex;justify-content:space-between;font:700 20px "Space Grotesk",sans-serif;letter-spacing:-.04em;margin:20px 0 5px}.fineprint{color:#85868a;font-size:11px;line-height:1.6}.checkout{margin-top:27px;display:grid;gap:14px}.checkout h3{font:700 21px "Space Grotesk",sans-serif;letter-spacing:-.04em;margin:0}.field{display:grid;gap:6px}.field label{font-size:11px;text-transform:uppercase;font-weight:800;letter-spacing:.1em}.field input,.field select,.field textarea{width:100%;border:1px solid #d5d3d0;border-radius:4px;padding:12px;background:#fff;color:#191a1c}.sauces{border:1px solid #dad6d0;background:#fff;padding:15px;border-radius:6px}.sauces strong{font-size:12px}.sauces p{font-size:11px;color:#777;margin:3px 0 12px}.checks{display:flex;gap:22px;flex-wrap:wrap}.checks label{font-size:13px;font-weight:700;display:flex;align-items:center;gap:8px;cursor:pointer}.checks input{accent-color:var(--red);height:17px;width:17px}.checkout .btn{width:100%}.form-note{font-size:12px;color:#805246;background:#f7e9e3;padding:12px;border-radius:5px}.success{background:#e7f3e5;border:1px solid #a5c7a1;padding:14px;color:#294629;border-radius:6px}.result{font-size:13px;color:#943442}.lock{overflow:hidden}
+@media(max-width:1000px){.wrap{width:calc(100% - 54px)}.hero-in{grid-template-columns:53% 47%;min-height:570px}.hero h1{font-size:clamp(64px,8vw,88px)}.hero-poster{height:510px}.feature-img{width:46%}.feature h3{font-size:42px}.feature-price{font-size:43px}.singles{padding:25px}}
+@media(max-width:740px){.wrap{width:calc(100% - 36px)}.top{height:68px}.brand{font-size:23px}.nav-right a{display:none}.hero-in{display:flex;flex-direction:column;min-height:0;align-items:stretch}.hero-copy{padding:64px 0 0}.hero h1{font-size:clamp(63px,13vw,106px);margin:23px 0}.hero .desc{font-size:14px}.hero-poster{height:410px;width:100%;max-width:560px;margin:0 auto}.poster-main{width:70%;height:68%;left:17%;top:5%}.red-splash{width:68%;left:18%;top:9%}.poster-side{width:30%;height:31%;bottom:7%}.seal{top:8%;right:4%;height:95px;width:95px;font-size:16px}.strip .wrap{flex-wrap:wrap;font-size:9px}.strip .wrap span:last-child{display:none}.order{padding:65px 0 80px}.order-top{flex-direction:column;align-items:start;gap:12px;margin-bottom:25px}.order h2{font-size:52px}.menu-layout{grid-template-columns:1fr}.feature{min-height:370px}.singles{padding:20px}.foot .wrap{flex-direction:column;align-items:flex-start}}
+@media(max-width:410px){.brand small{font-size:8px}.hero h1{font-size:59px}.price{font-size:57px}.hero-poster{height:330px}.feature-content{max-width:62%}.feature h3{font-size:38px}.feature-price{font-size:42px}.feature{padding:22px}.feature-img{width:44%}.single-image{width:62px;height:62px}.single{gap:9px}.single-price{font-size:16px}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{transition:none!important}}
 </style>
 </head>
 <body>
-<div class="topbar">Made fresh for boarding life <span>✦</span> Weekly favorites & new discoveries</div>
-<header class="head">
- <nav class="shell nav" aria-label="Main navigation">
-  <a class="brand" href="#top" aria-label="GLCA Café home">
-   <svg viewBox="0 0 48 48" fill="none" stroke="#9e3e2f" stroke-width="2.5" stroke-linecap="round"><path d="M9 16h25v15c0 8-25 8-25 0zM34 19h5a6 6 0 0 1 0 12h-5M7 40h31M15 10c-3-3 3-5 0-8M24 10c-3-3 3-5 0-8"/></svg>
-   <span>GLCA Café<small>Fresh on campus</small></span>
-  </a>
-  <div class="links" id="navLinks"><a href="#new">What's New</a><a href="#menu">Explore the Menu</a><a href="#menu">Pre-Order</a></div>
-  <div class="nav-actions"><button class="pill dark" id="headerOrder" type="button">Your Order <span id="navCount">0</span></button><button class="menu-toggle" id="menuToggle" type="button" aria-controls="navLinks" aria-expanded="false" aria-label="Toggle menu">☰</button></div>
- </nav>
-</header>
-<main id="top">
- <section class="hero" aria-labelledby="heroTitle">
-  <div class="shell hero-inner">
-   <div class="hero-copy">
-    <div class="eyebrow"><span class="rule"></span> Your everyday campus café</div>
-    <h1 id="heroTitle">Fresh picks.<br>Good food.<br><i>Your café.</i></h1>
-    <p>From cozy drinks and sweet treats to savory favorites and something new every week. Discover what's cooking, then pre-order for campus pickup.</p>
-    <div class="hero-actions"><a href="#menu" class="pill light">Explore the Menu <span aria-hidden="true">↗</span></a><a href="#new" class="pill red">See What's New <span aria-hidden="true">↗</span></a></div>
-   </div>
-   <div class="hero-image" aria-label="GLCA café food collage">
-    <div class="pic main"><img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=900&q=85" alt="Fresh cheeseburger" fetchpriority="high"></div>
-    <div class="pic"><img src="https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=600&q=85" alt="Iced café drink" fetchpriority="high"></div>
-    <div class="pic"><img src="https://images.unsplash.com/photo-1499636136210-6f4ee915583e?w=600&q=85" alt="Fresh cookies" fetchpriority="high"></div>
-    <div class="sticker"><div><small>JUST ADDED</small>New<br>burgers!</div></div>
+<header class="top"><nav class="wrap nav" aria-label="Main menu">
+  <a class="brand" href="#top"><span class="brandmark" aria-hidden="true">G</span><span>GLCA CAFÉ<small>Fresh off the grill</small></span></a>
+  <div class="nav-right"><a href="#order">Today's menu</a><button type="button" class="cart-toggle" id="openCart">Your order <b id="count">0</b></button></div>
+</nav></header>
+<main>
+<section class="hero" id="top" aria-label="Featured combo">
+ <div class="wrap hero-in">
+  <div class="hero-copy">
+   <div class="eyebrow kick">The GLCA café special</div>
+   <h1>BIG<br>BURGER.<br><span class="red">BETTER<br>DEAL.</span></h1>
+   <p class="desc">One burger. Golden fries. A creamy milkshake. Everything you want in one easy campus pickup.</p>
+   <div class="combo-line"><strong class="price">$13.50</strong><small>THE FULL COMBO<br><b>Burger + fries + milkshake</b></small></div>
+   <a class="btn" href="#order">Build your order <span aria-hidden="true">↗</span></a>
+  </div>
+  <div class="hero-poster" aria-label="Illustrative food photography of burger, fries, and shake">
+   <div class="red-splash"></div>
+   <div class="poster-main"><img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=1100&q=85" alt="Burger food photograph; illustrative until GLCA's product image is uploaded"></div>
+   <div class="poster-side fries"><img src="https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=550&q=80" alt="French fries"></div>
+   <div class="poster-side shake"><img src="https://images.unsplash.com/photo-1572490122747-3968b75cc699?w=550&q=80" alt="Milkshake"></div>
+   <div class="seal"><div><small>COMBO</small>ALL<br>THREE</div></div>
+  </div>
+ </div>
+ <div class="strip"><div class="wrap"><span>✦ GLCA boarding students</span><span>✦ All-in combo · $13.50</span><span>✦ Pickup on campus</span></div></div>
+</section>
+<section class="order" id="order" aria-label="Order menu">
+ <div class="wrap">
+  <div class="order-top"><div><div class="eyebrow">Made simple</div><h2>Pick your meal<span style="color:var(--red)">.</span></h2></div><p>Go for the full combo or order what you want individually. Ketchup and mayo are always free.</p></div>
+  <div class="menu-layout">
+   <article class="feature">
+    <div class="feature-img"><img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=850&q=85" alt="Burger image, representative"></div>
+    <div class="feature-content"><span class="badge">The full meal deal</span><h3>Burger.<br>Fries.<br><em>Shake.</em></h3><p>Everything together, one easy order.</p></div>
+    <div class="feature-bottom"><div class="feature-price">$13.50</div><button type="button" data-add="combo" aria-label="Add the burger, fries and shake combo to your order">Add combo +</button></div>
+   </article>
+   <div class="singles">
+    <div class="singles-heading"><h3>Or go solo.</h3><small>Order individually</small></div>
+    <div class="single"><div class="single-image"><img loading="lazy" src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=240&q=80" alt="Burger"></div><div class="single-info"><h4>Burger</h4><span>Made fresh</span></div><strong class="single-price">$8.50</strong><button class="plus" type="button" data-add="burger" aria-label="Add burger">+</button></div>
+    <div class="single"><div class="single-image"><img loading="lazy" src="https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=240&q=80" alt="French fries"></div><div class="single-info"><h4>Fries</h4><span>Golden & crispy</span></div><strong class="single-price">$2.50</strong><button class="plus" type="button" data-add="fries" aria-label="Add fries">+</button></div>
+    <div class="single"><div class="single-image"><img loading="lazy" src="https://images.unsplash.com/photo-1572490122747-3968b75cc699?w=240&q=80" alt="Milkshake"></div><div class="single-info"><h4>Milkshake</h4><span>Cold & creamy</span></div><strong class="single-price">$3.75</strong><button class="plus" type="button" data-add="milkshake" aria-label="Add milkshake">+</button></div>
+    <p class="menu-note"><b>✦</b> Free sauces: ketchup & mayo. Choose them when ordering.</p>
    </div>
   </div>
-  <div class="hero-bottom"><div class="shell"><span>✦ Made for our boarding community</span><span>✦ Fresh weekly specials</span><span>✦ Easy campus pickup</span></div></div>
- </section>
- <section class="section" id="new">
-  <div class="shell">
-   <div class="heading"><div><div class="eyebrow" style="color:var(--red)">Something to look forward to</div><h2>New this week<span style="color:var(--red)">.</span></h2></div><p>Fresh ideas, student favorites, and special menu drops. Here's a taste of what's coming to the café.</p></div>
-   <div class="new-grid" id="specialsGrid"><p style="grid-column:1/-1;color:#7f7368">New café specials will appear here when announced in Square.</p></div><div class="intro"><div><strong>Good food. Less waiting.</strong><br><span>Browse your favorites, build a pre-order, and pick it up on campus.</span></div><a href="#menu">Find your favorite &nbsp;↗</a></div>
-  </div>
- </section>
- <section class="menu-section" id="menu">
-  <div class="shell">
-   <div class="heading"><div><div class="eyebrow" style="color:var(--red)">Find your new favorite</div><h2>The café menu<span style="color:var(--red)">.</span></h2></div><p>Snacks between classes, satisfying meals, iced drinks, and sweet little rewards.</p></div>
-   <div class="filters" id="categoryFilters" role="group" aria-label="Menu categories">
-    <button class="filter" data-category="All" aria-pressed="true" type="button">All favorites</button>
-    <button class="filter" data-category="Meals" aria-pressed="false" type="button">Meals</button>
-    <button class="filter" data-category="Drinks" aria-pressed="false" type="button">Drinks</button>
-    <button class="filter" data-category="Treats" aria-pressed="false" type="button">Treats & snacks</button>
-   </div>
-   <div class="menu-grid" id="menuGrid" aria-live="polite"></div>
-   <div class="preview-note"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#9e3e2f" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 11v6m0-10v1"/></svg><span>Menu prices and availability sync from Square. Checkout stays disabled until GLCA enables ordering.</span></div>
-  </div>
- </section>
+  <p class="status" id="menuStatus" role="status">Connecting to Square to check preorder availability…</p>
+ </div>
+</section>
 </main>
-<footer class="footer"><div class="shell footer-content"><div class="brand"><svg viewBox="0 0 48 48" fill="none" stroke="#e9b179" stroke-width="2.5" stroke-linecap="round"><path d="M9 16h25v15c0 8-25 8-25 0zM34 19h5a6 6 0 0 1 0 12h-5M7 40h31M15 10c-3-3 3-5 0-8M24 10c-3-3 3-5 0-8"/></svg><span>GLCA Café<small>Fresh on campus</small></span></div><small>Made for our boarding students. &nbsp;•&nbsp; Menu and pickup details coming soon.</small><a href="#top" aria-label="Back to top">Back to top ↑</a></div></footer>
+<footer class="foot"><div class="wrap"><strong>GLCA CAFÉ.</strong><span>Made for the GLCA boarding community · Campus pickup</span><span>Powered by Square secure checkout</span></div></footer>
 <div class="backdrop" id="backdrop"></div>
-<aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-labelledby="cartTitle" aria-hidden="true">
- <div class="drawer-header"><h2 id="cartTitle">Your pre-order</h2><button class="icon-button" id="closeDrawer" type="button" aria-label="Close order panel">×</button></div>
+<aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="drawerTitle">
+ <div class="drawer-head"><h2 id="drawerTitle">Your GLCA order</h2><button type="button" class="close" id="closeCart" aria-label="Close order">×</button></div>
  <div class="drawer-body">
-  <p class="drawer-sub">Browse GLCA café items and choose a campus pickup time.</p>
+  <p class="drawer-sub">Choose your items, pick free sauces, then select a campus pickup time.</p>
   <div id="cartItems"></div>
-  <form class="checkout" id="orderForm" novalidate>
-   
-   
-   <input type="hidden" name="order_items" id="orderItemsField">
+  <div class="sauces"><strong>FREE SAUCES</strong><p>Pick either, both, or none. $0.00 extra.</p><div class="checks">
+    <label><input type="checkbox" id="ketchup"> Ketchup</label><label><input type="checkbox" id="mayo"> Mayo</label>
+  </div></div>
+  <form class="checkout" id="orderForm">
    <h3>Pickup details</h3>
-   <div class="field"><label for="studentName">Student name</label><input id="studentName" name="student_name" autocomplete="name" maxlength="80" required placeholder="Full name"></div>
-   <div class="field"><label for="studentEmail">Email (optional)</label><input id="studentEmail" name="student_email" type="email" autocomplete="email" maxlength="150" placeholder="you@school.edu"></div>
-   <div class="field"><label for="boardingHouse">Dorm or boarding house (optional)</label><input id="boardingHouse" name="boarding_house" maxlength="80" placeholder="Where you're staying"></div>
-   <div class="field"><label for="pickupDay">Requested pickup day</label><input id="pickupDay" name="pickup_day" type="date" required></div>
-   <div class="field"><label for="pickupTime">Requested pickup time</label><select id="pickupTime" name="pickup_time" required><option value="">Choose a time</option></select></div>
-   <div class="field"><label for="orderNotes">Special requests (optional)</label><textarea name="notes" id="orderNotes" rows="2" maxlength="350" placeholder="Any requests for the kitchen?"></textarea></div>
-   <div class="form-note" id="checkoutNote">Square checkout opens when the GLCA menu and pickup schedule are configured.</div>
-   <button class="pill red" id="submitOrder" type="submit" disabled>Pre-orders opening soon</button>
-   <div id="orderResult" role="status" aria-live="polite"></div>
+   <div class="field"><label for="studentName">Student name</label><input id="studentName" name="studentName" required minlength="2" maxlength="80" autocomplete="name" placeholder="Your full name"></div>
+   <div class="field"><label for="studentEmail">Email (optional)</label><input id="studentEmail" name="studentEmail" type="email" autocomplete="email" maxlength="150" placeholder="you@school.edu"></div>
+   <div class="field"><label for="boardingHouse">Dorm / boarding house (optional)</label><input id="boardingHouse" name="boardingHouse" maxlength="80" placeholder="Your dorm"></div>
+   <div class="field"><label for="pickupDay">Pickup date</label><input id="pickupDay" name="pickupDay" type="date" required></div>
+   <div class="field"><label for="pickupTime">Pickup time</label><select id="pickupTime" name="pickupTime" required><option value="">Choose a time</option></select></div>
+   <div class="field"><label for="orderNotes">Kitchen note (optional)</label><textarea id="orderNotes" name="orderNotes" maxlength="350" rows="2" placeholder="Anything the kitchen should know?"></textarea></div>
+   <p class="form-note" id="checkoutNote">Checkout opens when GLCA completes Square menu and pickup setup. You can build a cart now.</p>
+   <button type="submit" class="btn" id="checkout" disabled>Square checkout opening soon</button>
+   <div class="result" id="orderResult" role="status" aria-live="polite"></div>
   </form>
  </div>
 </aside>
 <script>
 (function(){
 "use strict";
-var $=function(id){return document.getElementById(id)};
-var menuGrid=$("menuGrid"),cartItems=$("cartItems"),drawer=$("drawer"),backdrop=$("backdrop"),navCount=$("navCount"),form=$("orderForm");
-var menu=[],cart={},cfg={},accepting=false,category="All";
-try{cart=JSON.parse(localStorage.getItem("glca-cafe-cart-v2")||"{}")||{}}catch(e){cart={}}
-function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&#39;"}[c]})}
-function money(n){return new Intl.NumberFormat("en-US",{style:"currency",currency:"USD"}).format(n/100)}
-function save(){try{localStorage.setItem("glca-cafe-cart-v2",JSON.stringify(cart))}catch(e){}}
-function count(){return Object.keys(cart).reduce(function(n,id){return n+Number(cart[id]||0)},0)}
-function banner(message){
- var p=$("squareStatus");
- if(!p){p=document.createElement("p");p.id="squareStatus";p.setAttribute("role","status");p.style.cssText="padding:15px 19px;background:#f4ebdf;border-left:3px solid #9e3e2f;border-radius:8px;margin:15px 0 23px;color:#574a3d;font-size:13px";menuGrid.parentNode.insertBefore(p,menuGrid)}
- p.textContent=message||"";p.style.display=message?"block":"none";
+var products=[
+ {key:"combo",name:"Burger, Fries & Milkshake Combo",cents:1350,aliases:["burger fries milkshake combo","burger fries shake combo","glca combo","combo","burger combo"]},
+ {key:"burger",name:"Burger",cents:850,aliases:["burger","single burger"]},
+ {key:"fries",name:"Fries",cents:250,aliases:["fries","french fries"]},
+ {key:"milkshake",name:"Milkshake",cents:375,aliases:["milkshake","shake"]}
+];
+var el=function(id){return document.getElementById(id)};
+var cart={},catalog=[],squareCfg={},ready=false,idem="",pendingReturn=false;
+try{cart=JSON.parse(localStorage.getItem("glca-cafe-selection-v3")||"{}")||{}}catch(e){cart={}}
+var save=function(){try{localStorage.setItem("glca-cafe-selection-v3",JSON.stringify(cart))}catch(e){}};
+var money=function(c){return new Intl.NumberFormat("en-US",{style:"currency",currency:"USD"}).format(c/100)};
+var norm=function(s){return String(s||"").toLowerCase().replace(/[^a-z0-9]+/g," ").trim()};
+var count=function(){return Object.keys(cart).reduce(function(s,id){return s+(cart[id]||0)},0)};
+function squareMatch(p){
+ return catalog.find(function(item){return item.available && item.priceCents===p.cents && p.aliases.includes(norm(item.name))})||null;
 }
-function renderFilters(){
- var groups=["All"].concat([...new Set(menu.map(function(m){return m.category}))]);
- var filter=$("categoryFilters");
- filter.innerHTML=groups.map(function(c){return '<button type="button" class="filter" data-category="'+esc(c)+'" aria-pressed="'+(c===category?'true':'false')+'">'+esc(c==="All"?"All favorites":c)+'</button>'}).join("");
- filter.querySelectorAll("button").forEach(function(b){b.addEventListener("click",function(){category=b.dataset.category;renderFilters();renderMenu()})});
+function canPay(){
+ return Boolean(squareCfg.acceptingOrders && count()>0 && products.filter(function(p){return cart[p.key]>0}).every(function(p){return squareMatch(p)}) && squareCfg.pickupSlots && squareCfg.pickupSlots.length);
 }
-function renderMenu(){
- var list=menu.filter(function(m){return category==="All"||category===m.category});
- if(!list.length){menuGrid.innerHTML='<p style="grid-column:1/-1;padding:27px 4px;color:#7f7368">Live Square café items will appear here as soon as the café catalog is connected.</p>';return}
- menuGrid.innerHTML=list.map(function(m){
-  var pic=m.image?'<img loading="lazy" src="'+esc(m.image)+'" alt="'+esc(m.name)+'">':'<div style="height:100%;display:grid;place-items:center;background:#e9dfd2;color:#68554b;font:600 22px Fraunces,serif;text-align:center;padding:15px">'+esc(m.name)+'</div>';
-  var disabled=!m.available||!accepting;
-  var suffix=m.variation&&m.variation!=="Regular"&&m.variation!==m.name?'<small style="font-size:12px;color:#7a7067;display:block">'+esc(m.variation)+'</small>':'';
-  return '<article class="item"><div class="photo">'+pic+'</div><div class="item-body"><h3>'+esc(m.name)+suffix+'</h3><p>'+esc(m.description).slice(0,170)+'</p><div class="item-bottom"><strong>'+money(m.priceCents)+'</strong><button class="add" type="button" data-add="'+esc(m.id)+'" aria-label="Add '+esc(m.name)+'"'+(disabled?' disabled style="opacity:.35;cursor:not-allowed"':'')+'>'+(m.available?'+':'×')+'</button></div>'+(m.available?'':'<span class="tag">SOLD OUT</span>')+'</div></article>'
- }).join("");
+function status(message){
+ var e=el("menuStatus");
+ e.textContent=message;
+ e.style.display=message?"block":"none";
 }
-function renderHighlights(){
- var grid=$("specialsGrid");
- var list=menu.filter(function(m){return m.featured&&m.available}).slice(0,3);
- if(!list.length){grid.innerHTML='<p style="grid-column:1/-1;color:#7f7368;padding:26px 3px">Weekly specials will appear here when GLCA adds items to the “GLCA Featured” category in Square.</p>';return}
- grid.innerHTML=list.map(function(m){
-  var photo=m.image?'<img loading="lazy" src="'+esc(m.image)+'" alt="'+esc(m.name)+'">':'<div style="height:100%;display:grid;place-items:center;background:#e6d7c8;color:#5a463c;padding:20px;text-align:center;font:600 24px Fraunces,serif">'+esc(m.name)+'</div>';
-  return '<article class="new-card"><div class="new-photo">'+photo+'<span class="flag">GLCA special</span></div><div class="new-info"><h3>'+esc(m.name)+'</h3><p>'+esc(m.description).slice(0,150)+'</p><strong style="display:block;margin-top:10px;color:#9e3e2f">'+money(m.priceCents)+'</strong></div></article>';
- }).join("");
+function render(){
+ var holder=el("cartItems");el("count").textContent=count();
+ var subtotal=0,lines=[];
+ products.forEach(function(p){
+  var n=cart[p.key]||0;if(!n)return;subtotal+=p.cents*n;
+  lines.push('<div class="cart-row"><div><strong>'+p.name+'</strong><small>'+money(p.cents)+' each</small></div><div class="controls"><button type="button" data-dec="'+p.key+'" aria-label="Remove one '+p.name+'">−</button><span>'+n+'</span><button type="button" data-inc="'+p.key+'" aria-label="Add one '+p.name+'">+</button></div></div>');
+ });
+ holder.innerHTML=lines.length?lines.join("")+'<div class="subtotal"><span>Subtotal</span><span>'+money(subtotal)+'</span></div><p class="fineprint">Final taxes and discounts, if any, are calculated by Square at checkout.</p>':'<p style="color:#707177;padding:12px 0 20px">Your bag is empty. Add the combo or choose individual items.</p>';
+ var allowed=canPay();
+ el("checkout").disabled=!allowed;
+ el("checkout").textContent=allowed?"Continue to secure Square checkout":"Square checkout opening soon";
 }
-function renderCart(){
- var map=new Map(menu.map(function(m){return [m.id,m]}));
- Object.keys(cart).forEach(function(id){if(!map.has(id)||!map.get(id).available)delete cart[id]});save();
- navCount.textContent=count();
- var ids=Object.keys(cart).filter(function(id){return cart[id]>0});
- cartItems.innerHTML=ids.length?ids.map(function(id){
-  var m=map.get(id);
-  return '<div class="cart-item"><div><strong>'+esc(m.name)+'</strong><div style="color:#84786f;font-size:12px">'+money(m.priceCents)+' each</div></div><div class="quantity"><button type="button" data-decrease="'+esc(id)+'" aria-label="Remove one '+esc(m.name)+'">−</button><span>'+cart[id]+'</span><button type="button" data-increase="'+esc(id)+'" aria-label="Add one '+esc(m.name)+'">+</button></div></div>';
- }).join("")+'<p style="font-weight:800;display:flex;justify-content:space-between;margin-top:22px"><span>Subtotal</span><span>'+money(ids.reduce(function(s,id){return s+map.get(id).priceCents*cart[id]},0))+'</span></p><p style="color:#84786f;font-size:12px">Final taxes and discounts are calculated by Square.</p>':'<p style="padding:18px 0;color:#786d63">Your bag is empty. Choose an item from the menu.</p>';
- $("submitOrder").disabled=!accepting||!count();
- $("submitOrder").textContent=accepting?"Continue to secure Square checkout":"Pre-orders opening soon";
-}
-function open(){drawer.classList.add("open");backdrop.classList.add("open");drawer.setAttribute("aria-hidden","false");document.body.classList.add("lock");$("closeDrawer").focus()}
-function close(){drawer.classList.remove("open");backdrop.classList.remove("open");drawer.setAttribute("aria-hidden","true");document.body.classList.remove("lock");$("headerOrder").focus()}
-$("headerOrder").addEventListener("click",open);$("closeDrawer").addEventListener("click",close);backdrop.addEventListener("click",close);
-document.addEventListener("keydown",function(e){if(e.key==="Escape"&&drawer.classList.contains("open"))close()});
+function open(){el("drawer").classList.add("open");el("backdrop").classList.add("open");el("drawer").setAttribute("aria-hidden","false");document.body.classList.add("lock");el("closeCart").focus()}
+function close(){el("drawer").classList.remove("open");el("backdrop").classList.remove("open");el("drawer").setAttribute("aria-hidden","true");document.body.classList.remove("lock");el("openCart").focus()}
+el("openCart").addEventListener("click",open);
+el("closeCart").addEventListener("click",close);
+el("backdrop").addEventListener("click",close);
+document.addEventListener("keydown",function(e){if(e.key==="Escape"&&el("drawer").classList.contains("open"))close()});
 document.addEventListener("click",function(e){
- var add=e.target.closest("[data-add]"),inc=e.target.closest("[data-increase]"),dec=e.target.closest("[data-decrease]");
- if(add&&!add.disabled&&accepting){var a=add.dataset.add;cart[a]=Math.min(10,(cart[a]||0)+1);save();renderCart();open()}
- if(inc){var i=inc.dataset.increase;cart[i]=Math.min(10,(cart[i]||0)+1);save();renderCart()}
- if(dec){var d=dec.dataset.decrease;cart[d]=Math.max(0,(cart[d]||0)-1);save();renderCart()}
+ var add=e.target.closest("[data-add]"),inc=e.target.closest("[data-inc]"),dec=e.target.closest("[data-dec]");
+ if(add){var a=add.getAttribute("data-add");cart[a]=Math.min(10,(cart[a]||0)+1);idem="";save();render();open()}
+ if(inc){var i=inc.getAttribute("data-inc");cart[i]=Math.min(10,(cart[i]||0)+1);idem="";save();render()}
+ if(dec){var d=dec.getAttribute("data-dec");cart[d]=Math.max(0,(cart[d]||0)-1);idem="";save();render()}
 });
-$("menuToggle").addEventListener("click",function(){var nav=$("navLinks");nav.classList.toggle("show");this.setAttribute("aria-expanded",String(nav.classList.contains("show")))});
-document.querySelectorAll("#navLinks a").forEach(function(a){a.addEventListener("click",function(){$("navLinks").classList.remove("show");$("menuToggle").setAttribute("aria-expanded","false")})});
+["ketchup","mayo","studentName","studentEmail","boardingHouse","pickupDay","pickupTime","orderNotes"].forEach(function(id){
+ el(id).addEventListener("change",function(){idem=""});
+});
 function dayInZone(date,zone){
- var parts=new Intl.DateTimeFormat("en-US",{timeZone:zone||"America/Chicago",year:"numeric",month:"2-digit",day:"2-digit"}).formatToParts(date);
- var p=Object.fromEntries(parts.map(function(x){return [x.type,x.value]}));
- return p.year+"-"+p.month+"-"+p.day;
+ var p=new Intl.DateTimeFormat("en-US",{timeZone:zone||"America/Chicago",year:"numeric",month:"2-digit",day:"2-digit"}).formatToParts(date);
+ var o=Object.fromEntries(p.map(function(part){return [part.type,part.value]}));
+ return o.year+"-"+o.month+"-"+o.day;
 }
-function updateSlots(){
- var select=$("pickupTime");
- select.innerHTML='<option value="">Choose a pickup time</option>'+(cfg.pickupSlots||[]).map(function(slot){var n=slot.split(":").map(Number),h=n[0],minute=n[1];return '<option value="'+slot+'">'+((h+11)%12+1)+":"+String(minute).padStart(2,"0")+" "+(h>=12?"PM":"AM")+'</option>'}).join("");
- $("pickupDay").min=dayInZone(new Date(),cfg.timeZone);
- $("pickupDay").max=dayInZone(new Date(Date.now()+(cfg.maxDaysAhead||7)*86400000),cfg.timeZone);
+function slotLabel(s){
+ var p=s.split(":").map(Number),h=p[0];
+ return ((h+11)%12+1)+":"+String(p[1]).padStart(2,"0")+" "+(h>=12?"PM":"AM");
 }
-async function loadCatalog(){
+async function syncSquare(){
  try{
-  var response=await fetch("/.netlify/functions/cafe-menu",{cache:"no-store"});
-  var data=await response.json();if(!response.ok)throw Error(data.reason||"Square menu is not available.");
-  var oldSlots=JSON.stringify(cfg.pickupSlots||[]);
-  cfg=data;menu=Array.isArray(data.items)?data.items:[];accepting=Boolean(data.acceptingOrders);
-  var groupSet=new Set(menu.map(function(m){return m.category}));if(category!=="All"&&!groupSet.has(category))category="All";
-  banner(!menu.length?data.reason||"No Square café items are available yet.":!accepting?"Live Square menu — checkout is not yet enabled. "+(data.reason||""):data.mode==="sandbox"?"SQUARE TEST MODE — this is not a live payment.":"");
-  if(oldSlots!==JSON.stringify(cfg.pickupSlots||[]))updateSlots();
-  renderFilters();renderMenu();renderHighlights();renderCart();
-  $("checkoutNote").textContent=accepting?"You will pay securely on Square. Pickup requests are subject to café confirmation.":"Square checkout is disabled until the live café menu and pickup schedule are configured.";
-  document.querySelector(".drawer-sub").textContent=accepting?"Choose a pickup time and pay securely with Square.":"Browse the menu. Ordering will open once GLCA completes Square setup.";
- }catch(err){
-  accepting=false;menu=[];banner("Unable to load the Square menu right now. No orders can be placed.");renderFilters();renderMenu();renderHighlights();renderCart();
- }
+  var resp=await fetch("/.netlify/functions/cafe-menu",{cache:"no-store"});
+  var data=await resp.json();
+  if(!resp.ok)throw Error("Square menu request failed");
+  var oldSlots=JSON.stringify(squareCfg.pickupSlots||[]);
+  squareCfg=data;catalog=Array.isArray(data.items)?data.items:[];
+  if(oldSlots!==JSON.stringify(data.pickupSlots||[])){
+   el("pickupTime").innerHTML='<option value="">Choose a time</option>'+(data.pickupSlots||[]).map(function(s){return '<option value="'+s+'">'+slotLabel(s)+'</option>'}).join("");
+   el("pickupDay").min=dayInZone(new Date(),data.timeZone);
+   el("pickupDay").max=dayInZone(new Date(Date.now()+(data.maxDaysAhead||7)*86400000),data.timeZone);
+  }
+  if(!data.connected)status("Menu preview · Square is not currently connected. Real orders are closed.");
+  else if(!products.every(squareMatch))status("Menu preview · Add the four matching items to your Square GLCA Café catalog at these exact prices to activate ordering.");
+  else if(!data.acceptingOrders)status("Menu ready · Square checkout is closed until GLCA configures pickup hours and enables test orders.");
+  else if(data.mode==="sandbox")status("SQUARE SANDBOX · Testing only. No real charges will be made.");
+  else status("");
+  el("checkoutNote").textContent=canPay()?"You will be redirected to Square's secure checkout. Payment and pickup must be confirmed by the café.":"You can build your order now. Square checkout opens once the official menu, pickup schedule and test setup are ready.";
+  render();
+ }catch(err){squareCfg={};catalog=[];status("The Square menu is temporarily unavailable. You can preview your order, but checkout is closed.");render()}
 }
-var idemKey="";
-form.addEventListener("submit",async function(e){
- e.preventDefault();if(!accepting||!count()||!form.reportValidity())return;
- var result=$("orderResult");result.textContent="";
- var btn=$("submitOrder");btn.disabled=true;btn.textContent="Connecting to Square…";
+el("orderForm").addEventListener("submit",async function(e){
+ e.preventDefault();
+ if(!canPay()||!this.reportValidity())return;
+ var message=el("orderResult"),btn=el("checkout");
+ message.textContent="";btn.disabled=true;btn.textContent="Opening Square…";
  try{
-  if(!idemKey)idemKey=crypto.randomUUID();
-  var payload={studentName:$("studentName").value.trim(),email:$("studentEmail").value.trim(),boardingHouse:$("boardingHouse").value.trim(),pickupDay:$("pickupDay").value,pickupTime:$("pickupTime").value,notes:$("orderNotes").value.trim(),items:Object.entries(cart).filter(function(x){return x[1]>0}).map(function(x){return {id:x[0],quantity:x[1]}}),idempotencyKey:idemKey};
-  var response=await fetch("/.netlify/functions/cafe-checkout",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(payload)});
-  var data=await response.json();
-  if(!response.ok||!data.checkoutUrl)throw Error(data.error||"Square checkout could not be started.");
-  if(!/^https:\/\/(?:square\.link|staging\.square\.link|checkout\.square\.site|square\.site)\//.test(data.checkoutUrl))throw Error("Invalid Square checkout address.");
+  if(!idem)idem=crypto.randomUUID();
+  var items=products.filter(function(p){return cart[p.key]>0}).map(function(p){return {id:squareMatch(p).id,quantity:cart[p.key]}});
+  var sauces=[];if(el("ketchup").checked)sauces.push("ketchup");if(el("mayo").checked)sauces.push("mayo");
+  var payload={studentName:el("studentName").value.trim(),email:el("studentEmail").value.trim(),boardingHouse:el("boardingHouse").value.trim(),pickupDay:el("pickupDay").value,pickupTime:el("pickupTime").value,notes:el("orderNotes").value.trim(),sauces:sauces,items:items,idempotencyKey:idem};
+  var resp=await fetch("/.netlify/functions/cafe-checkout",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(payload)});
+  var data=await resp.json();if(!resp.ok||!data.checkoutUrl)throw Error(data.error||"Square checkout is unavailable.");
+  if(!/^https:\/\/(?:square\.link|staging\.square\.link|checkout\.square\.site|square\.site)\//.test(data.checkoutUrl))throw Error("Unexpected payment address");
   try{sessionStorage.setItem("glcaPendingOrderId",data.orderId||"")}catch(e){}
   window.location.assign(data.checkoutUrl);
- }catch(err){result.textContent=err.message||"Unable to start Square checkout.";btn.disabled=false;btn.textContent="Continue to secure Square checkout"}
+ }catch(err){message.textContent=err.message;btn.disabled=false;btn.textContent="Continue to secure Square checkout"}
 });
 async function verifyReturn(){
- var params=new URLSearchParams(window.location.search);if(params.get("checkout")!=="returned")return;
- var id=params.get("orderId")||params.get("order_id")||sessionStorage.getItem("glcaPendingOrderId")||"";
- open();var result=$("orderResult");
- result.innerHTML='<div class="form-note">Checking payment with Square. A redirect alone does not confirm payment.</div>';
+ var query=new URLSearchParams(location.search);
+ if(query.get("checkout")!=="returned")return;
+ open();var result=el("orderResult");
+ result.innerHTML='<div class="form-note">Checking Square payment status. Returning to this page does not confirm payment.</div>';
+ var id=query.get("orderId")||query.get("order_id")||"";
+ try{if(!id)id=sessionStorage.getItem("glcaPendingOrderId")||""}catch(e){}
  if(!id)return;
  try{
-  var response=await fetch("/.netlify/functions/cafe-status?orderId="+encodeURIComponent(id),{cache:"no-store"});
-  var data=await response.json();
-  if(data.status==="paid"){result.innerHTML='<div class="success">Payment verified by Square. Your GLCA café pickup order has been received.</div>';cart={};save();renderCart();}
-  else result.innerHTML='<div class="form-note">Payment has not been verified yet. Check your Square receipt or ask café staff before ordering again.</div>';
- }catch(e){result.innerHTML='<div class="form-note">We could not verify payment. Check your Square receipt or contact café staff.</div>'}
+  var resp=await fetch("/.netlify/functions/cafe-status?orderId="+encodeURIComponent(id),{cache:"no-store"});
+  var data=await resp.json();
+  if(data.status==="paid"){result.innerHTML='<div class="success">Payment verified by Square. Your café pickup order has been received.</div>';cart={};save();render()}
+  else result.innerHTML='<div class="form-note">Payment is not yet confirmed. Check your Square receipt or ask café staff before ordering again.</div>';
+ }catch(e){result.textContent="Could not verify payment. Check your Square receipt or ask café staff."}
 }
-loadCatalog().then(verifyReturn);
-setInterval(function(){if(!document.hidden)loadCatalog()},45000);
+render();syncSquare().then(verifyReturn);
+setInterval(function(){if(!document.hidden)syncSquare()},45000);
 })();
 </script>
 </body>
