@@ -18,7 +18,7 @@ export default async (req) => {
   const mode=body.fulfillment??"pickup";
   const building=String(body.dormBuilding||"").trim();
   const room=String(body.dormRoom||"").trim();
-  if (!["pickup","delivery"].includes(mode) || (!legacy && (!email || !/^[+\d(). -]{7,25}$/.test(phone) || digits.length<7 || digits.length>15)) ||
+  if (!["pickup","delivery","dine-in"].includes(mode) || (!legacy && (!email || !/^[+\d(). -]{7,25}$/.test(phone) || digits.length<7 || digits.length>15)) ||
       (mode==="delivery" && ![building,room].every(value=>/^[\w -]{1,40}$/.test(value)))) return json({error:"Check your contact and dorm details."},400);
   const items=body.items;
   const sauces=body.sauces ?? [];
@@ -42,8 +42,8 @@ export default async (req) => {
   const dateParts=Object.fromEntries(parts.map(part=>[part.type,part.value]));
   const today=`${dateParts.year}-${dateParts.month}-${dateParts.day}`;
   const dates=Array.from({length:cfg.environment==="production" && cfg.preorderStartsAt ? 1 : cfg.maxDaysAhead+1},(_,index)=>new Date(Date.parse(today+"T12:00:00Z")+index*86400000).toISOString().slice(0,10));
-  const pickupAt=legacy && !(cfg.environment==="production" && cfg.preorderStartsAt)?validatePickup(body.pickupDay,body.pickupTime,cfg):dates.flatMap(date=>cfg.pickupSlots.map(time=>validatePickup(date,time,cfg))).filter(Boolean).sort()[0];
-  if (!pickupAt) return json({error:"No café service times are available right now."},409);
+  const pickupAt=!legacy && body.pickupTime ? validatePickup(today,body.pickupTime,cfg) : legacy && !(cfg.environment==="production" && cfg.preorderStartsAt)?validatePickup(body.pickupDay,body.pickupTime,cfg):dates.flatMap(date=>cfg.pickupSlots.map(time=>validatePickup(date,time,cfg))).filter(Boolean).sort()[0];
+  if (!pickupAt) return json({error:"That time is no longer available. Choose another café service time."},409);
   try{
     const {items:catalog,categoryFound,sandboxMenu}=await liveCatalog(cfg);
     if(!categoryFound) return json({error:"The café menu is not configured."},503);
@@ -67,11 +67,11 @@ export default async (req) => {
     if(email)recipient.email_address=email;
     if(phone)recipient.phone_number=phone;
     const delivery=mode==="delivery";
-    const destination=delivery?`Dorm delivery: building ${building}, room ${room}`:"Café pickup";
+    const destination=delivery?`Dorm delivery: building ${building}, room ${room}`:mode==="dine-in"?"Dine in at the café":"Café pickup";
     const description=[destination,sauceNote,legacy&&body.boardingHouse&&"Dorm: "+String(body.boardingHouse).slice(0,80),legacy&&body.notes&&"Note: "+String(body.notes).slice(0,350)].filter(Boolean).join(" | ");
     const squareBody={
       idempotency_key:idempotencyKey,
-      description:delivery?"GLCA Café dorm delivery":"GLCA Café pickup",
+      description:"GLCA Café · "+(delivery?"dorm delivery":mode==="dine-in"?"dine in":"pickup"),
       order:{
         location_id:cfg.locationId,
         source:{name:"GLCA Café"},

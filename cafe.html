@@ -43,7 +43,8 @@
     <label><input type="checkbox" id="ketchup"> Ketchup</label><label><input type="checkbox" id="mayo"> Mayo</label>
   </div></div>
   <form class="checkout" id="orderForm">
-   <fieldset class="fulfillment"><legend>How would you like your order?</legend><label><input type="radio" name="fulfillment" value="pickup" checked> Café pickup</label><label><input type="radio" name="fulfillment" value="delivery" id="delivery"> Dorm delivery</label></fieldset>
+   <fieldset class="fulfillment"><legend>How would you like your order?</legend><label><input type="radio" name="fulfillment" value="pickup" checked> Café pickup</label><label><input type="radio" name="fulfillment" value="dine-in"> Dine in at the café</label><label><input type="radio" name="fulfillment" value="delivery" id="delivery"> Dorm delivery</label></fieldset>
+   <div class="field"><label for="serviceTime">Choose a time</label><select id="serviceTime" required><option value="">Select a time</option></select></div>
    <div class="field"><label for="studentName">Name</label><input id="studentName" required minlength="2" maxlength="80" autocomplete="name"></div>
    <div class="field"><label for="studentEmail">Email</label><input id="studentEmail" required type="email" autocomplete="email" maxlength="150"></div>
    <div class="field"><label for="studentPhone">Phone</label><input id="studentPhone" required type="tel" autocomplete="tel" maxlength="25"></div>
@@ -81,7 +82,7 @@ function squareMatch(p){
  return catalog.find(function(item){return item.available && item.priceCents===p.cents && p.aliases.includes(norm(item.name))})||null;
 }
 function canPay(){
- return Boolean(squareCfg.acceptingOrders && count()>0 && orderLines().every(function(line){return squareMatch(line.product)}) && squareCfg.pickupSlots && squareCfg.pickupSlots.length);
+ return Boolean(squareCfg.acceptingOrders && count()>0 && orderLines().every(function(line){return squareMatch(line.product)}) && squareCfg.serviceTimes && squareCfg.serviceTimes.length);
 }
 function status(message){
  var e=el("menuStatus");
@@ -156,6 +157,10 @@ async function syncSquare(){
   var data=await resp.json();
   if(!resp.ok)throw Error("Square menu request failed");
   squareCfg=data;catalog=Array.isArray(data.items)?data.items:[];
+  const select=el("serviceTime"), previous=select.value;
+  select.replaceChildren(new Option("Select a time",""));
+  for(const time of data.serviceTimes||[])select.add(new Option(time.label,time.value));
+  if((data.serviceTimes||[]).some(time=>time.value===previous))select.value=previous;
 
 
 
@@ -177,7 +182,7 @@ el("orderForm").addEventListener("submit",async function(e){
   if(!idem)idem=crypto.randomUUID();
   var items=orderLines().map(function(line){return {id:squareMatch(line.product).id,quantity:line.quantity}});
   var sauces=[];if(el("ketchup").checked)sauces.push("ketchup");if(el("mayo").checked)sauces.push("mayo");
-  var payload={studentName:el("studentName").value.trim(),email:el("studentEmail").value.trim(),phone:el("studentPhone").value.trim(),fulfillment:el("delivery").checked?"delivery":"pickup",dormBuilding:el("dormBuilding").value.trim(),dormRoom:el("dormRoom").value.trim(),sauces:sauces,items:items,friesOffer:cart.combo>0&&friesOffer?.available>0&&Date.parse(friesOffer.endsAt)>Date.now()?friesOffer.endsAt:undefined,idempotencyKey:idem};
+  var payload={studentName:el("studentName").value.trim(),email:el("studentEmail").value.trim(),phone:el("studentPhone").value.trim(),fulfillment:this.querySelector('input[name="fulfillment"]:checked').value,pickupTime:el("serviceTime").value,dormBuilding:el("dormBuilding").value.trim(),dormRoom:el("dormRoom").value.trim(),sauces:sauces,items:items,friesOffer:cart.combo>0&&friesOffer?.available>0&&Date.parse(friesOffer.endsAt)>Date.now()?friesOffer.endsAt:undefined,idempotencyKey:idem};
   var resp=await fetch("/.netlify/functions/cafe-checkout",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(payload)});
   var data=await resp.json();if(!resp.ok||!data.checkoutUrl)throw Error(data.error||"Square checkout is unavailable.");
   if(!/^https:\/\/(?:square\.link|staging\.square\.link|sandbox\.square\.link|checkout\.square\.site|checkout\.squareupsandbox\.com|square\.site)\//.test(data.checkoutUrl))throw Error("Unexpected payment address");
@@ -212,7 +217,7 @@ async function verifyReturn(){
    el("drawerTitle").textContent="Order confirmed!";
    const message=document.createElement("div");
    message.className="success";
-   const service=data.method==="delivery"?"Dorm delivery":"Pickup at the café";
+   const service=data.method==="delivery"?"Dorm delivery":data.method==="dine-in"?"Dine in at the café":"Pickup at the café";
    message.textContent=service+(data.serviceTime?" at "+data.serviceTime:"")+". Your payment went through.";
    result.replaceChildren(message);
    if(pending===id){

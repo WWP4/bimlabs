@@ -26,7 +26,7 @@ export default async (req) => {
         const serviceTime=Number.isFinite(at)?new Intl.DateTimeFormat("en-US",{
           timeZone:cfg.timeZone,hour:"numeric",minute:"2-digit"
         }).format(at):null;
-        return json({status:"paid",method:pickup?.note?.startsWith("Dorm delivery:")?"delivery":"pickup",serviceTime});
+        return json({status:"paid",method:pickup?.note?.startsWith("Dorm delivery:")?"delivery":pickup?.note?.startsWith("Dine in at the café")?"dine-in":"pickup",serviceTime});
       }
       if(!paymentResult.cursor || seen.has(paymentResult.cursor))break;
       seen.add(paymentResult.cursor);cursor=paymentResult.cursor;
