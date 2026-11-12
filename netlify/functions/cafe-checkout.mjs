@@ -1,4 +1,5 @@
 import { json, ready, settings, liveCatalog, validatePickup, square } from "../lib/cafe-square.mjs";
+import { friesCampaign, reserveFries, attachFriesOrder } from "../lib/cafe-fries.mjs";
 export default async (req) => {
   if (req.method !== "POST") return json({ error:"Method not allowed." },405);
   const cfg=settings();
@@ -89,11 +90,23 @@ export default async (req) => {
       },
       checkout_options:{allow_tipping:false,ask_for_shipping_address:false,redirect_url:cfg.returnUrl}
     };
+    const campaign=friesCampaign(cfg);
+    const eligible=campaign && [...grouped.keys()].some(id=>catalogMap.get(id).priceCents===1250);
+    if (body.friesOffer && (!eligible || body.friesOffer!==campaign)) {
+      return json({error:"The extra fries offer ended. Refresh your order to continue."},409);
+    }
+    if (body.friesOffer) {
+      if (!await reserveFries(campaign,idempotencyKey)) {
+        return json({error:"An extra fries spot could not be reserved. Refresh your order and try again."},409);
+      }
+      squareBody.order.line_items.push({name:"Free extra fries",quantity:"1",base_price_money:{amount:0,currency:"USD"},note:destination});
+    }
     const response=await square("/v2/online-checkout/payment-links",{method:"POST",body:squareBody},cfg);
     const link=response.payment_link?.url;
     const orderId=response.payment_link?.order_id;
     if(!link || !/^https:\/\/(?:square\.link|(?:checkout\.)?square\.site|checkout\.squareupsandbox\.com|(?:sandbox|staging)\.square\.link)\//.test(link))
       throw Error("Square checkout link not available.");
+    if (body.friesOffer && orderId) await attachFriesOrder(campaign,idempotencyKey,orderId);
     return json({checkoutUrl:link,orderId,mode:cfg.environment});
   } catch(err){
     console.error("Café checkout error:",err.message);
