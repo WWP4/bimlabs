@@ -13,7 +13,7 @@
 :root{--red:#d60022;--ink:#111417;--paper:#ffffff}
 *{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.45 "DM Sans",sans-serif}button,input,select,textarea{font:inherit}button{cursor:pointer}a{color:inherit;text-decoration:none}:focus-visible{outline:3px solid var(--red);outline-offset:4px}
 .wrap{width:min(1380px,calc(100% - 7vw));margin:auto}.nav{display:flex;justify-content:space-between;align-items:center;min-height:76px;gap:16px}.brand{font-weight:900;font-size:clamp(17px,2.3vw,29px);letter-spacing:-.055em}.nav-right{display:flex;align-items:center;gap:clamp(10px,3vw,36px);font-weight:800;font-size:12px;text-transform:uppercase}.cart-toggle{border:0;background:none;color:inherit;font:inherit;padding:10px 0;text-transform:inherit}.hero-in{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);align-items:center;gap:2vw;padding-block:clamp(18px,4vw,70px)}.kick{color:var(--red);font-weight:900;text-transform:uppercase;letter-spacing:.06em;transform:rotate(-4deg);transform-origin:left;margin-bottom:12px}.hero h1{font:900 clamp(45px,8.3vw,122px)/.83 "Barlow Condensed",Impact,sans-serif;letter-spacing:-.028em;margin:0}.desc{font-size:clamp(20px,3vw,42px);font-weight:900;letter-spacing:-.045em;margin:14px 0 8px}.combo-line{display:flex;align-items:center;gap:12px;margin-bottom:16px;font-size:clamp(19px,2.7vw,35px);font-weight:900}.combo-line span{background:var(--red);color:#fff;border-radius:999px;padding:4px 12px;font-size:.64em}.btn,.plus{border:0;background:var(--red);color:#fff;border-radius:999px;font-weight:800}.btn{padding:13px 23px;display:inline-flex;align-items:center;justify-content:center;gap:14px;font-size:13px}.btn:hover,.plus:hover{background:#b4001b}.btn:disabled{opacity:.55;cursor:not-allowed}.hero-art{margin:0}.hero-art img{display:block;width:100%;height:auto;mix-blend-mode:multiply}.singles{display:grid;grid-template-columns:repeat(3,1fr);margin-top:24px;padding-top:12px;border-top:1px solid #cfcac4}.single{display:flex;align-items:center;justify-content:space-between;gap:4px;padding-inline:10px;border-right:1px solid #cfcac4}.single:first-child{padding-left:0}.single:last-child{border:0;padding-right:0}.single strong,.single small{display:block;font-size:clamp(11px,1.35vw,16px)}.plus{width:28px;height:28px;flex:none}.menu-note,.status{font-size:13px;color:#54504d}.status{margin:8px 0 0}.foot{border-top:1px solid #dedbd6;padding:15px 0;color:#54504d;font-size:13px}
-.drawer{position:fixed;inset:0;margin:auto;border:0;padding:0;background:#fff;color:#151719;width:min(520px,calc(100% - 28px));max-height:calc(100dvh - 32px);border-radius:24px;box-shadow:0 24px 90px #15171938;overflow:auto}.drawer::backdrop{background:#15171980;backdrop-filter:blur(4px)}.drawer .drawer-head{position:sticky;top:0;background:#fff;z-index:1;padding:19px 24px}.drawer .drawer-body{padding:8px 24px 24px;overflow:visible}.cart-actions{display:grid;gap:10px;margin-top:20px;text-align:center}.cart-actions .btn{width:100%;min-height:46px}.back-order{border:0;background:none;padding:12px 0 0;color:#54504d;font-weight:700}.back-order:hover{text-decoration:underline}.drawer [hidden]{display:none}.drawer .checkout{margin-top:16px}.drawer .field input,.drawer .field select,.drawer .field textarea{border-radius:9px}.drawer .sauces{border-radius:12px}.drawer .result:not(:empty){margin-top:16px}@media(prefers-reduced-motion:no-preference){.drawer[open]{animation:pop-in .18s ease-out}@keyframes pop-in{from{opacity:0;transform:translateY(8px) scale(.98)}to{opacity:1;transform:none}}}.drawer-head{display:flex;align-items:center;justify-content:space-between;padding:26px;border-bottom:1px solid #dedbd6}.drawer-head h2{font:700 27px "Space Grotesk",sans-serif;letter-spacing:-.05em;margin:0}.close{width:38px;height:38px;border:1px solid #ddd;background:white;border-radius:50%;font-size:24px}.drawer-body{padding:25px;overflow:auto;flex:1}.drawer-sub{font-size:13px;line-height:1.6;color:#696a6f;margin-bottom:20px}.cart-row{padding:15px 0;display:flex;justify-content:space-between;gap:20px;border-bottom:1px solid #ddd9d2}.cart-row strong{font-size:15px}.cart-row small{display:block;color:#717177;margin-top:4px}.controls{display:flex;align-items:center;gap:13px}.controls button{width:29px;height:29px;border-radius:50%;background:white;border:1px solid #d9d6d2;font-size:19px}.subtotal{display:flex;justify-content:space-between;font:700 20px "Space Grotesk",sans-serif;letter-spacing:-.04em;margin:20px 0 5px}.fineprint{color:#85868a;font-size:11px;line-height:1.6}.checkout{margin-top:27px;display:grid;gap:14px}.checkout h3{font:700 21px "Space Grotesk",sans-serif;letter-spacing:-.04em;margin:0}.field{display:grid;gap:6px}.field label{font-size:11px;text-transform:uppercase;font-weight:800;letter-spacing:.1em}.field input,.field select,.field textarea{width:100%;border:1px solid #d5d3d0;border-radius:4px;padding:12px;background:#fff;color:#191a1c}.sauces{border:1px solid #dad6d0;background:#fff;padding:15px;border-radius:6px}.sauces strong{font-size:12px}.sauces p{font-size:11px;color:#777;margin:3px 0 12px}.checks{display:flex;gap:22px;flex-wrap:wrap}.checks label{font-size:13px;font-weight:700;display:flex;align-items:center;gap:8px;cursor:pointer}.checks input{accent-color:var(--red);height:17px;width:17px}.checkout .btn{width:100%}.form-note{font-size:12px;color:#805246;background:#f7e9e3;padding:12px;border-radius:5px}.success{background:#e7f3e5;border:1px solid #a5c7a1;padding:14px;color:#294629;border-radius:6px}.result{font-size:13px;color:#943442}.lock{overflow:hidden}
+.drawer{position:fixed;inset:auto 0 0;margin:0 auto;border:1px solid #eae6e4;padding:0;background:#fffffff5;color:#151719;width:min(520px,calc(100% - 28px));max-height:calc(100dvh - 32px);border-radius:22px 22px 0 0;box-shadow:0 -8px 36px #15171924;overflow:auto}.drawer::backdrop{background:transparent}.drawer .drawer-head{position:sticky;top:0;background:#fffffff5;z-index:1;padding:19px 24px}.drawer .drawer-body{padding:8px 24px 24px;overflow:visible}.cart-actions{display:grid;gap:10px;margin-top:20px;text-align:center}.cart-actions .btn{width:100%;min-height:46px}.back-order{border:0;background:none;padding:12px 0 0;color:#54504d;font-weight:700}.back-order:hover{text-decoration:underline}.fulfillment{display:flex;flex-wrap:wrap;gap:8px 20px;border:0;margin:0;padding:0}.fulfillment legend{font-weight:800;margin-bottom:6px}.fulfillment input{accent-color:var(--red)}.dorm-fields{display:grid;grid-template-columns:1fr 1fr;gap:10px}.drawer [hidden]{display:none}.drawer .checkout{margin-top:16px}.drawer .field input,.drawer .field select,.drawer .field textarea{border-radius:9px}.drawer .sauces{border-radius:12px}.drawer .result:not(:empty){margin-top:16px}@media(prefers-reduced-motion:no-preference){.drawer[open]{animation:pop-in .26s ease-out}@keyframes pop-in{from{opacity:0;transform:translateY(100%)}to{opacity:1;transform:none}}}.drawer-head{display:flex;align-items:center;justify-content:space-between;padding:26px;border-bottom:1px solid #dedbd6}.drawer-head h2{font:700 27px "Space Grotesk",sans-serif;letter-spacing:-.05em;margin:0}.close{width:38px;height:38px;border:1px solid #ddd;background:white;border-radius:50%;font-size:24px}.drawer-body{padding:25px;overflow:auto;flex:1}.drawer-sub{font-size:13px;line-height:1.6;color:#696a6f;margin-bottom:20px}.cart-row{padding:15px 0;display:flex;justify-content:space-between;gap:20px;border-bottom:1px solid #ddd9d2}.cart-row strong{font-size:15px}.cart-row small{display:block;color:#717177;margin-top:4px}.controls{display:flex;align-items:center;gap:13px}.controls button{width:29px;height:29px;border-radius:50%;background:white;border:1px solid #d9d6d2;font-size:19px}.subtotal{display:flex;justify-content:space-between;font:700 20px "Space Grotesk",sans-serif;letter-spacing:-.04em;margin:20px 0 5px}.fineprint{color:#85868a;font-size:11px;line-height:1.6}.checkout{margin-top:27px;display:grid;gap:14px}.checkout h3{font:700 21px "Space Grotesk",sans-serif;letter-spacing:-.04em;margin:0}.field{display:grid;gap:6px}.field label{font-size:11px;text-transform:uppercase;font-weight:800;letter-spacing:.1em}.field input,.field select,.field textarea{width:100%;border:1px solid #d5d3d0;border-radius:4px;padding:12px;background:#fff;color:#191a1c}.sauces{border:1px solid #dad6d0;background:#fff;padding:15px;border-radius:6px}.sauces strong{font-size:12px}.sauces p{font-size:11px;color:#777;margin:3px 0 12px}.checks{display:flex;gap:22px;flex-wrap:wrap}.checks label{font-size:13px;font-weight:700;display:flex;align-items:center;gap:8px;cursor:pointer}.checks input{accent-color:var(--red);height:17px;width:17px}.checkout .btn{width:100%}.form-note{font-size:12px;color:#805246;background:#f7e9e3;padding:12px;border-radius:5px}.success{background:#e7f3e5;border:1px solid #a5c7a1;padding:14px;color:#294629;border-radius:6px}.result{font-size:13px;color:#943442}.lock{overflow:hidden}
 
 
 @media(max-width:650px){.hero-in{grid-template-columns:1fr;gap:10px}.hero h1{font-size:clamp(55px,14vw,91px)}.hero-art{grid-row:1;max-width:420px;margin:auto}.nav-right a{display:none}.hero-copy{padding-bottom:10px}.wrap{width:calc(100% - 32px)}}
@@ -42,13 +42,14 @@
     <label><input type="checkbox" id="ketchup"> Ketchup</label><label><input type="checkbox" id="mayo"> Mayo</label>
   </div></div>
   <form class="checkout" id="orderForm">
-   <h3>Pickup details</h3>
-   <div class="field"><label for="studentName">Student name</label><input id="studentName" name="studentName" required minlength="2" maxlength="80" autocomplete="name" placeholder="Your full name"></div>
-   <div class="field"><label for="studentEmail">Email (optional)</label><input id="studentEmail" name="studentEmail" type="email" autocomplete="email" maxlength="150" placeholder="you@school.edu"></div>
-   <div class="field"><label for="boardingHouse">Dorm / boarding house (optional)</label><input id="boardingHouse" name="boardingHouse" maxlength="80" placeholder="Your dorm"></div>
-   <div class="field"><label for="pickupDay">Pickup date</label><input id="pickupDay" name="pickupDay" type="date" required></div>
-   <div class="field"><label for="pickupTime">Pickup time</label><select id="pickupTime" name="pickupTime" required><option value="">Choose a time</option></select></div>
-   <div class="field"><label for="orderNotes">Kitchen note (optional)</label><textarea id="orderNotes" name="orderNotes" maxlength="350" rows="2" placeholder="Anything the kitchen should know?"></textarea></div>
+   <fieldset class="fulfillment"><legend>How would you like your order?</legend><label><input type="radio" name="fulfillment" value="pickup" checked> Café pickup</label><label><input type="radio" name="fulfillment" value="delivery" id="delivery"> Dorm delivery</label></fieldset>
+   <div class="field"><label for="studentName">Name</label><input id="studentName" required minlength="2" maxlength="80" autocomplete="name"></div>
+   <div class="field"><label for="studentEmail">Email</label><input id="studentEmail" required type="email" autocomplete="email" maxlength="150"></div>
+   <div class="field"><label for="studentPhone">Phone</label><input id="studentPhone" required type="tel" autocomplete="tel" maxlength="25"></div>
+   <div class="dorm-fields" id="dormFields" hidden>
+    <div class="field"><label for="dormBuilding">Dorm building number</label><input id="dormBuilding" maxlength="40" disabled></div>
+    <div class="field"><label for="dormRoom">Dorm room number</label><input id="dormRoom" maxlength="40" disabled></div>
+   </div>
    <p class="form-note" id="checkoutNote">Checkout opens when GLCA completes Square menu and pickup setup. You can build a cart now.</p>
    <button type="submit" class="btn" id="checkout" disabled>Square checkout opening soon</button>
   </form></div>
@@ -136,38 +137,28 @@ document.addEventListener("click",function(e){
  if(inc){var i=inc.getAttribute("data-inc");cart[i]=Math.min(10,(cart[i]||0)+1);idem="";save();render()}
  if(dec){var d=dec.getAttribute("data-dec");cart[d]=Math.max(0,(cart[d]||0)-1);idem="";save();render()}
 });
-["ketchup","mayo","studentName","studentEmail","boardingHouse","pickupDay","pickupTime","orderNotes"].forEach(function(id){
- el(id).addEventListener("change",function(){idem=""});
+el("orderForm").addEventListener("input",function(){idem=""});
+["ketchup","mayo"].forEach(function(id){el(id).addEventListener("change",function(){idem=""})});
+el("orderForm").addEventListener("change",function(){
+ var delivery=el("delivery").checked;
+ el("dormFields").hidden=!delivery;
+ ["dormBuilding","dormRoom"].forEach(function(id){el(id).disabled=!delivery;el(id).required=delivery});
 });
-function dayInZone(date,zone){
- var p=new Intl.DateTimeFormat("en-US",{timeZone:zone||"America/Chicago",year:"numeric",month:"2-digit",day:"2-digit"}).formatToParts(date);
- var o=Object.fromEntries(p.map(function(part){return [part.type,part.value]}));
- return o.year+"-"+o.month+"-"+o.day;
-}
-function slotLabel(s){
- var p=s.split(":").map(Number),h=p[0];
- return ((h+11)%12+1)+":"+String(p[1]).padStart(2,"0")+" "+(h>=12?"PM":"AM");
-}
 async function syncSquare(){
  try{
   var resp=await fetch("/.netlify/functions/cafe-menu",{cache:"no-store"});
   var data=await resp.json();
   if(!resp.ok)throw Error("Square menu request failed");
-  var oldSlots=JSON.stringify(squareCfg.pickupSlots||[]);
   squareCfg=data;catalog=Array.isArray(data.items)?data.items:[];
 
 
-  if(oldSlots!==JSON.stringify(data.pickupSlots||[])){
-   el("pickupTime").innerHTML='<option value="">Choose a time</option>'+(data.pickupSlots||[]).map(function(s){return '<option value="'+s+'">'+slotLabel(s)+'</option>'}).join("");
-   el("pickupDay").min=dayInZone(new Date(),data.timeZone);
-   el("pickupDay").max=dayInZone(new Date(Date.now()+(data.maxDaysAhead||7)*86400000),data.timeZone);
-  }
+
   if(!data.connected)status("Menu preview · Square is not currently connected. Real orders are closed.");
   else if(!products.every(squareMatch))status("Online ordering is currently closed.");
   else if(!data.acceptingOrders)status("Online ordering is currently closed.");
   else if(data.mode==="sandbox")status("SQUARE SANDBOX · Testing only. No real charges will be made.");
   else status("");
-  el("checkoutNote").textContent=canPay()?"You will be redirected to Square's secure checkout. Payment and pickup must be confirmed by the café.":"Square checkout is currently closed.";
+  el("checkoutNote").textContent=canPay()?"You will be redirected to Square's secure checkout. The café will confirm your order.":"Square checkout is currently closed.";
   render();
  }catch(err){squareCfg={};catalog=[];status("The Square menu is temporarily unavailable. You can preview your order, but checkout is closed.");render()}
 }
@@ -180,10 +171,10 @@ el("orderForm").addEventListener("submit",async function(e){
   if(!idem)idem=crypto.randomUUID();
   var items=products.filter(function(p){return cart[p.key]>0}).map(function(p){return {id:squareMatch(p).id,quantity:cart[p.key]}});
   var sauces=[];if(el("ketchup").checked)sauces.push("ketchup");if(el("mayo").checked)sauces.push("mayo");
-  var payload={studentName:el("studentName").value.trim(),email:el("studentEmail").value.trim(),boardingHouse:el("boardingHouse").value.trim(),pickupDay:el("pickupDay").value,pickupTime:el("pickupTime").value,notes:el("orderNotes").value.trim(),sauces:sauces,items:items,idempotencyKey:idem};
+  var payload={studentName:el("studentName").value.trim(),email:el("studentEmail").value.trim(),phone:el("studentPhone").value.trim(),fulfillment:el("delivery").checked?"delivery":"pickup",dormBuilding:el("dormBuilding").value.trim(),dormRoom:el("dormRoom").value.trim(),sauces:sauces,items:items,idempotencyKey:idem};
   var resp=await fetch("/.netlify/functions/cafe-checkout",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(payload)});
   var data=await resp.json();if(!resp.ok||!data.checkoutUrl)throw Error(data.error||"Square checkout is unavailable.");
-  if(!/^https:\/\/(?:square\.link|staging\.square\.link|checkout\.square\.site|checkout\.squareupsandbox\.com|square\.site)\//.test(data.checkoutUrl))throw Error("Unexpected payment address");
+  if(!/^https:\/\/(?:square\.link|staging\.square\.link|sandbox\.square\.link|checkout\.square\.site|checkout\.squareupsandbox\.com|square\.site)\//.test(data.checkoutUrl))throw Error("Unexpected payment address");
   try{sessionStorage.setItem("glcaPendingOrderId",data.orderId||"")}catch(e){}
   window.location.assign(data.checkoutUrl);
  }catch(err){message.textContent=err.message;btn.disabled=false;btn.textContent="Continue to secure Square checkout"}
@@ -199,7 +190,7 @@ async function verifyReturn(){
  try{
   var resp=await fetch("/.netlify/functions/cafe-status?orderId="+encodeURIComponent(id),{cache:"no-store"});
   var data=await resp.json();
-  if(data.status==="paid"){result.innerHTML='<div class="success">Payment verified by Square. Your café pickup order has been received.</div>';cart={};save();render()}
+  if(data.status==="paid"){result.innerHTML='<div class="success">Payment verified by Square. Your café order has been received.</div>';cart={};save();render()}
   else result.innerHTML='<div class="form-note">Payment is not yet confirmed. Check your Square receipt or ask café staff before ordering again.</div>';
  }catch(e){result.textContent="Could not verify payment. Check your Square receipt or ask café staff."}
 }
