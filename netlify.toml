@@ -4,6 +4,14 @@
 [functions]
   node_bundler = "esbuild"
 
+# Serve the café landing page at the root of its future custom subdomain.
+# This is a 200 rewrite: the browser keeps cafe.bimlabsstudio.com.
+[[redirects]]
+  from = "https://cafe.bimlabsstudio.com/"
+  to = "/cafe.html"
+  status = 200
+  force = true
+
 [[redirects]]
   from = "/checkout"
   to   = "/.netlify/functions/checkout"
