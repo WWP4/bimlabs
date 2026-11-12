@@ -9,7 +9,11 @@ export const settings = () => ({
   featuredCategoryName: env("SQUARE_CAFE_FEATURED_CATEGORY_NAME") || "GLCA Featured",
   environment: env("SQUARE_ENVIRONMENT") === "production" ? "production" : "sandbox",
   useSandboxMenu: env("SQUARE_CAFE_SANDBOX_MENU") === "true",
-  acceptingOrders: env("SQUARE_CAFE_ORDERS_ENABLED") === "true",
+  preorderStartsAt: env("SQUARE_CAFE_PREORDER_STARTS_AT"),
+  preorderEndsAt: env("SQUARE_CAFE_PREORDER_ENDS_AT"),
+  acceptingOrders: env("SQUARE_ENVIRONMENT") === "production" && env("SQUARE_CAFE_PREORDER_STARTS_AT")
+    ? Date.now() >= Date.parse(env("SQUARE_CAFE_PREORDER_STARTS_AT")) && Date.now() < Date.parse(env("SQUARE_CAFE_PREORDER_ENDS_AT"))
+    : env("SQUARE_CAFE_ORDERS_ENABLED") === "true",
   pickupSlots: (env("SQUARE_CAFE_PICKUP_SLOTS") || "").split(",").map(s => s.trim()).filter(s => /^\d\d:\d\d$/.test(s)),
   pickupDays: (env("SQUARE_CAFE_PICKUP_DAYS") || "1,2,3,4,5").split(",").map(Number).filter(x => Number.isInteger(x) && x >= 0 && x <= 6),
   timeZone: env("SQUARE_CAFE_TIME_ZONE") || "America/Chicago",

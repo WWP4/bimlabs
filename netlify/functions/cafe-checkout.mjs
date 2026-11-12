@@ -41,8 +41,8 @@ export default async (req) => {
   const parts=new Intl.DateTimeFormat("en",{timeZone:cfg.timeZone,year:"numeric",month:"2-digit",day:"2-digit"}).formatToParts(new Date());
   const dateParts=Object.fromEntries(parts.map(part=>[part.type,part.value]));
   const today=`${dateParts.year}-${dateParts.month}-${dateParts.day}`;
-  const dates=Array.from({length:cfg.maxDaysAhead+1},(_,index)=>new Date(Date.parse(today+"T12:00:00Z")+index*86400000).toISOString().slice(0,10));
-  const pickupAt=legacy?validatePickup(body.pickupDay,body.pickupTime,cfg):dates.flatMap(date=>cfg.pickupSlots.map(time=>validatePickup(date,time,cfg))).filter(Boolean).sort()[0];
+  const dates=Array.from({length:cfg.environment==="production" && cfg.preorderStartsAt ? 1 : cfg.maxDaysAhead+1},(_,index)=>new Date(Date.parse(today+"T12:00:00Z")+index*86400000).toISOString().slice(0,10));
+  const pickupAt=legacy && !(cfg.environment==="production" && cfg.preorderStartsAt)?validatePickup(body.pickupDay,body.pickupTime,cfg):dates.flatMap(date=>cfg.pickupSlots.map(time=>validatePickup(date,time,cfg))).filter(Boolean).sort()[0];
   if (!pickupAt) return json({error:"No café service times are available right now."},409);
   try{
     const {items:catalog,categoryFound,sandboxMenu}=await liveCatalog(cfg);
@@ -59,6 +59,12 @@ export default async (req) => {
       if(!allowed)return json({error:"Square item or price does not match the GLCA menu. Please contact café staff."},409);
       grouped.set(id,(grouped.get(id)||0)+qty);
       if(grouped.get(id)>10) return json({error:"Maximum quantity per item is 10."},400);
+    }
+    if (cfg.environment==="production" && cfg.preorderStartsAt) {
+      const qtyAtPrice=price=>[...grouped].reduce((qty,[id,count])=>qty+(catalogMap.get(id).priceCents===price?count:0),0);
+      if (qtyAtPrice(375) || qtyAtPrice(650)!==qtyAtPrice(350)) {
+        return json({error:"Choose a combo or order burger and fries together."},400);
+      }
     }
     const qtyTotal=[...grouped.values()].reduce((a,b)=>a+b,0);
     const subtotal=[...grouped].reduce((total,[id,qty])=>total+catalogMap.get(id).priceCents*qty,0);
@@ -95,18 +101,19 @@ export default async (req) => {
     if (body.friesOffer && (!eligible || body.friesOffer!==campaign)) {
       return json({error:"The extra fries offer ended. Refresh your order to continue."},409);
     }
-    if (body.friesOffer) {
-      if (!await reserveFries(campaign,idempotencyKey)) {
-        return json({error:"An extra fries spot could not be reserved. Refresh your order and try again."},409);
+    if (eligible) {
+      if (await reserveFries(campaign,idempotencyKey)) {
+        squareBody.order.line_items.push({name:"Free extra fries",quantity:"1",base_price_money:{amount:0,currency:"USD"},note:destination});
+      } else if (body.friesOffer) {
+        return json({error:"A free fries spot is no longer available. Refresh your order to continue."},409);
       }
-      squareBody.order.line_items.push({name:"Free extra fries",quantity:"1",base_price_money:{amount:0,currency:"USD"},note:destination});
     }
     const response=await square("/v2/online-checkout/payment-links",{method:"POST",body:squareBody},cfg);
     const link=response.payment_link?.url;
     const orderId=response.payment_link?.order_id;
     if(!link || !/^https:\/\/(?:square\.link|(?:checkout\.)?square\.site|checkout\.squareupsandbox\.com|(?:sandbox|staging)\.square\.link)\//.test(link))
       throw Error("Square checkout link not available.");
-    if (body.friesOffer && orderId) await attachFriesOrder(campaign,idempotencyKey,orderId);
+    if (eligible && orderId) await attachFriesOrder(campaign,idempotencyKey,orderId);
     return json({checkoutUrl:link,orderId,mode:cfg.environment});
   } catch(err){
     console.error("Café checkout error:",err.message);

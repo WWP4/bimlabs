@@ -9,6 +9,7 @@ export default async (req) => {
     const acceptingOrders = config.acceptingOrders && hasMenu && config.pickupSlots.length > 0;
     return json({
       connected:true, acceptingOrders, mode:config.environment, items, categoryFound,
+      preorderStartsAt:config.preorderStartsAt, preorderEndsAt:config.preorderEndsAt,
       categories:[...new Set(items.map(x=>x.category))],
       pickupSlots:config.pickupSlots, pickupDays:config.pickupDays, timeZone:config.timeZone,
       maxDaysAhead:config.maxDaysAhead, minLeadMinutes:config.minLeadMinutes,
