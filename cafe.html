@@ -21,6 +21,46 @@
 @media(max-width:740px){.wrap{width:calc(100% - 36px)}.top{height:68px}.brand{font-size:23px}.nav-right a{display:none}.hero-in{display:flex;flex-direction:column;min-height:0;align-items:stretch}.hero-copy{padding:64px 0 0}.hero h1{font-size:clamp(63px,13vw,106px);margin:23px 0}.hero .desc{font-size:14px}.hero-poster{height:410px;width:100%;max-width:560px;margin:0 auto}.poster-main{width:70%;height:68%;left:17%;top:5%}.red-splash{width:68%;left:18%;top:9%}.poster-side{width:30%;height:31%;bottom:7%}.seal{top:8%;right:4%;height:95px;width:95px;font-size:16px}.strip .wrap{flex-wrap:wrap;font-size:9px}.strip .wrap span:last-child{display:none}.order{padding:65px 0 80px}.order-top{flex-direction:column;align-items:start;gap:12px;margin-bottom:25px}.order h2{font-size:52px}.menu-layout{grid-template-columns:1fr}.feature{min-height:370px}.singles{padding:20px}.foot .wrap{flex-direction:column;align-items:flex-start}}
 @media(max-width:410px){.brand small{font-size:8px}.hero h1{font-size:59px}.price{font-size:57px}.hero-poster{height:330px}.feature-content{max-width:62%}.feature h3{font-size:38px}.feature-price{font-size:42px}.feature{padding:22px}.feature-img{width:44%}.single-image{width:62px;height:62px}.single{gap:9px}.single-price{font-size:16px}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{transition:none!important}}
+
+/* Runway website concept: one clean white canvas, oversized black type, scarlet red. */
+:root{--black:#171719;--night:#ffffff;--red:#d41932;--red2:#bc1029;--silver:#e5e6e8;--gray:#777980;--light:#ffffff;--ink:#141518}
+body{background:#fff;color:var(--ink)}
+.top{background:#fff;border-bottom:1px solid #e8e8e9;height:76px;color:var(--ink)}
+.brand{color:#141414;letter-spacing:-.065em}.brand small{color:#85858c}.brandmark{background:var(--red);clip-path:none;border-radius:7px}
+.nav-right a{color:#313138}.nav-right a:hover{color:var(--red)}
+.cart-toggle{background:#fff;color:#171719;border:1px solid #e3e3e6;border-radius:999px;box-shadow:none}.cart-toggle b{color:#fff}
+.hero{background:#fff;color:#141416;isolation:isolate;overflow:hidden}
+.hero:before{content:"";background:none}
+.hero-in{grid-template-columns:51% 49%;min-height:590px;max-height:750px}
+.hero-copy{padding:45px 0 55px}
+.kick{color:#ca1c31}.hero h1{font-size:clamp(65px,7.7vw,118px);margin:20px 0 23px;line-height:.94;letter-spacing:-.088em}
+.hero h1 .red{color:var(--red)}.hero .desc{color:#525358;line-height:1.65;max-width:440px}
+.price{font-size:64px}.combo-line{gap:20px;margin:23px 0 26px}.combo-line small{color:#66676b}.combo-line b{color:#27272a}
+.btn{background:var(--red);border-radius:7px;font-size:13px;padding:17px 24px;box-shadow:none}.btn:hover{background:#b90d26}
+.hero-poster{height:560px}
+.red-splash{width:68%;top:17%;left:18%;background:#f5f0f0;border:1px solid #f0eded;box-shadow:none;border-radius:50%;transform:none}
+.poster-main{width:69%;height:63%;left:14%;top:11%;transform:none;border:0;border-radius:17px;box-shadow:none;overflow:hidden;background:#fafafa}
+.poster-main img{object-fit:cover;filter:none}
+.poster-side{width:30%;height:27%;bottom:9%;border:5px solid #fff;border-radius:12px;box-shadow:0 8px 25px #18181820}
+.poster-side.fries{left:8%;transform:rotate(-6deg)}.poster-side.shake{right:8%;transform:rotate(7deg)}
+.seal{background:var(--red);color:white;width:98px;height:98px;right:5%;top:12%;font-size:17px;box-shadow:none}.seal small{color:#fff}
+.poster-main img,.poster-side img{transition:transform .4s ease}.poster-main:hover img,.poster-side:hover img{transform:scale(1.04)}
+.strip{background:#fff;border-top:1px solid #e8e8e8;border-bottom:1px solid #e8e8e8}
+.strip .wrap{color:#66676b;letter-spacing:.08em;padding:12px 0;font-size:10px}.strip span:nth-child(2){color:#c31932}
+.order{background:#fff;color:#171719;padding:75px 0 90px}
+.order-top p{color:#65676b}.order h2{font-size:clamp(44px,5vw,72px)}
+.menu-layout{grid-template-columns:1.05fr 1fr;gap:20px}
+.feature{background:#f5f5f6;color:#18191c;min-height:350px;border:1px solid #eeedef}
+.feature:before{color:#edeced}
+.feature .badge{border-radius:3px}.feature h3{font-size:45px}.feature h3 em{color:var(--red)}.feature p{color:#66676b}
+.feature-price{font-size:48px}.feature button{background:var(--red);color:#fff;border-radius:6px}.feature button:hover{background:#b80f2a}
+.feature-img{border-radius:12px;top:20%;right:3%;width:43%;height:54%;box-shadow:none}
+.singles{border:1px solid #e8e8e9}.single-image{background:#f4f4f4}
+.foot{background:#fff;color:#79797e;border-top:1px solid #e8e8e9}.foot strong{color:#141416}
+.status{background:#fff8f8;border-color:#f2d7d9}
+@media(max-width:1000px){.hero-in{min-height:525px}.hero-poster{height:490px}.hero h1{font-size:clamp(58px,7.8vw,87px)}.feature-img{width:43%}}
+@media(max-width:740px){.hero-in{max-height:none;min-height:0;display:flex;flex-direction:column}.hero-copy{padding:57px 0 0}.hero h1{font-size:clamp(53px,12vw,84px)}.hero-poster{height:370px}.poster-main{height:67%;width:67%;left:16%;top:7%}.poster-side{bottom:5%;height:29%}.red-splash{top:10%}.seal{top:6%}.order{padding:65px 0}.feature{min-height:330px}}
+@media(max-width:410px){.hero h1{font-size:58px}.hero-poster{height:320px}.feature h3{font-size:38px}.feature-img{width:42%}}
 </style>
 </head>
 <body>
@@ -33,16 +73,16 @@
  <div class="wrap hero-in">
   <div class="hero-copy">
    <div class="eyebrow kick">The GLCA café special</div>
-   <h1>BIG<br>BURGER.<br><span class="red">BETTER<br>DEAL.</span></h1>
-   <p class="desc">One burger. Golden fries. A creamy milkshake. Everything you want in one easy campus pickup.</p>
-   <div class="combo-line"><strong class="price">$13.50</strong><small>THE FULL COMBO<br><b>Burger + fries + milkshake</b></small></div>
-   <a class="btn" href="#order">Build your order <span aria-hidden="true">↗</span></a>
+   <h1>BURGER.<br>FRIES.<br><span class="red">SHAKE.</span></h1>
+   <p class="desc">Your favorites, all together. Freshly made and ready for pickup at GLCA.</p>
+   <div class="combo-line"><strong class="price">$13.50</strong><small>THE GLCA COMBO<br><b>Save $1.25 vs. ordering separately</b></small></div>
+   <button class="btn" type="button" data-add="combo">ADD COMBO — $13.50 <span aria-hidden="true">+</span></button>
   </div>
   <div class="hero-poster" aria-label="Illustrative food photography of burger, fries, and shake">
    <div class="red-splash"></div>
-   <div class="poster-main"><img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=1100&q=85" alt="Burger food photograph; illustrative until GLCA's product image is uploaded"></div>
-   <div class="poster-side fries"><img src="https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=550&q=80" alt="French fries"></div>
-   <div class="poster-side shake"><img src="https://images.unsplash.com/photo-1572490122747-3968b75cc699?w=550&q=80" alt="Milkshake"></div>
+   <div class="poster-main"><img id="heroBurgerPhoto" src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=1100&q=85" alt="Burger food photograph; illustrative until GLCA's product image is uploaded"></div>
+   <div class="poster-side fries"><img id="heroFriesPhoto" src="https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=550&q=80" alt="French fries"></div>
+   <div class="poster-side shake"><img id="heroMilkshakePhoto" src="https://images.unsplash.com/photo-1572490122747-3968b75cc699?w=550&q=80" alt="Milkshake"></div>
    <div class="seal"><div><small>COMBO</small>ALL<br>THREE</div></div>
   </div>
  </div>
@@ -50,18 +90,18 @@
 </section>
 <section class="order" id="order" aria-label="Order menu">
  <div class="wrap">
-  <div class="order-top"><div><div class="eyebrow">Made simple</div><h2>Pick your meal<span style="color:var(--red)">.</span></h2></div><p>Go for the full combo or order what you want individually. Ketchup and mayo are always free.</p></div>
+  <div class="order-top"><div><div class="eyebrow">Or choose your favorites</div><h2>Build your order<span style="color:var(--red)">.</span></h2></div><p>Go for the full combo or order what you want individually. Ketchup and mayo are always free.</p></div>
   <div class="menu-layout">
    <article class="feature">
-    <div class="feature-img"><img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=850&q=85" alt="Burger image, representative"></div>
+    <div class="feature-img"><img id="menuComboPhoto" src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=850&q=85" alt="Burger image, representative"></div>
     <div class="feature-content"><span class="badge">The full meal deal</span><h3>Burger.<br>Fries.<br><em>Shake.</em></h3><p>Everything together, one easy order.</p></div>
-    <div class="feature-bottom"><div class="feature-price">$13.50</div><button type="button" data-add="combo" aria-label="Add the burger, fries and shake combo to your order">Add combo +</button></div>
+    <div class="feature-bottom"><div class="feature-price">$13.50</div><span style="display:block;color:#cb1b36;font-weight:800;font-size:12px;margin-bottom:14px">SAVE $1.25</span><button type="button" data-add="combo" aria-label="Add the burger, fries and shake combo to your order">Add combo +</button></div>
    </article>
    <div class="singles">
     <div class="singles-heading"><h3>Or go solo.</h3><small>Order individually</small></div>
-    <div class="single"><div class="single-image"><img loading="lazy" src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=240&q=80" alt="Burger"></div><div class="single-info"><h4>Burger</h4><span>Made fresh</span></div><strong class="single-price">$8.50</strong><button class="plus" type="button" data-add="burger" aria-label="Add burger">+</button></div>
-    <div class="single"><div class="single-image"><img loading="lazy" src="https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=240&q=80" alt="French fries"></div><div class="single-info"><h4>Fries</h4><span>Golden & crispy</span></div><strong class="single-price">$2.50</strong><button class="plus" type="button" data-add="fries" aria-label="Add fries">+</button></div>
-    <div class="single"><div class="single-image"><img loading="lazy" src="https://images.unsplash.com/photo-1572490122747-3968b75cc699?w=240&q=80" alt="Milkshake"></div><div class="single-info"><h4>Milkshake</h4><span>Cold & creamy</span></div><strong class="single-price">$3.75</strong><button class="plus" type="button" data-add="milkshake" aria-label="Add milkshake">+</button></div>
+    <div class="single"><div class="single-image"><img data-product="burger" loading="lazy" src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=240&q=80" alt="Burger"></div><div class="single-info"><h4>Burger</h4><span>Made fresh</span></div><strong class="single-price">$8.50</strong><button class="plus" type="button" data-add="burger" aria-label="Add burger">+</button></div>
+    <div class="single"><div class="single-image"><img data-product="fries" loading="lazy" src="https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=240&q=80" alt="French fries"></div><div class="single-info"><h4>Fries</h4><span>Golden & crispy</span></div><strong class="single-price">$2.50</strong><button class="plus" type="button" data-add="fries" aria-label="Add fries">+</button></div>
+    <div class="single"><div class="single-image"><img data-product="milkshake" loading="lazy" src="https://images.unsplash.com/photo-1572490122747-3968b75cc699?w=240&q=80" alt="Milkshake"></div><div class="single-info"><h4>Milkshake</h4><span>Cold & creamy</span></div><strong class="single-price">$3.75</strong><button class="plus" type="button" data-add="milkshake" aria-label="Add milkshake">+</button></div>
     <p class="menu-note"><b>✦</b> Free sauces: ketchup & mayo. Choose them when ordering.</p>
    </div>
   </div>
@@ -163,6 +203,16 @@ async function syncSquare(){
   if(!resp.ok)throw Error("Square menu request failed");
   var oldSlots=JSON.stringify(squareCfg.pickupSlots||[]);
   squareCfg=data;catalog=Array.isArray(data.items)?data.items:[];
+  // Pull the customer's real Square product photos whenever they exist.
+  products.forEach(function(p){
+   var found=squareMatch(p);
+   if(!found||!found.image)return;
+   if(p.key==="burger"){["heroBurgerPhoto","menuComboPhoto"].forEach(function(id){el(id).src=found.image});}
+   if(p.key==="fries")el("heroFriesPhoto").src=found.image;
+   if(p.key==="milkshake")el("heroMilkshakePhoto").src=found.image;
+   document.querySelectorAll('img[data-product="'+p.key+'"]').forEach(function(img){img.src=found.image});
+  });
+
   if(oldSlots!==JSON.stringify(data.pickupSlots||[])){
    el("pickupTime").innerHTML='<option value="">Choose a time</option>'+(data.pickupSlots||[]).map(function(s){return '<option value="'+s+'">'+slotLabel(s)+'</option>'}).join("");
    el("pickupDay").min=dayInZone(new Date(),data.timeZone);
