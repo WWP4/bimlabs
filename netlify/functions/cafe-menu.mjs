@@ -1,4 +1,4 @@
-import { json, ready, settings, liveCatalog } from "./cafe-square.mjs";
+import { json, ready, settings, liveCatalog } from "../lib/cafe-square.mjs";
 export default async (req) => {
   if (req.method !== "GET") return json({ error:"Method not allowed" },405);
   const config = settings();
