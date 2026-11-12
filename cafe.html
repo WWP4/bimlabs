@@ -17,17 +17,19 @@
 
 
 @media(max-width:650px){.hero-in{grid-template-columns:1fr;gap:10px}.hero h1{font-size:clamp(55px,14vw,91px)}.hero-art{grid-row:1;max-width:420px;margin:auto}.nav-right a{display:none}.hero-copy{padding-bottom:10px}.wrap{width:calc(100% - 32px)}}
-.fries-offer{display:flex;justify-content:center;align-items:center;flex-wrap:wrap;gap:2px 14px;padding:7px 12px;background:#c8102e;color:#fff;text-align:center;font-size:12px;line-height:1.35}.fries-offer[hidden]{display:none}.fries-offer strong{font-weight:800}.fries-offer span{font-variant-numeric:tabular-nums}@media(max-width:540px){.fries-offer{font-size:11px}}
+.fries-offer{display:flex;justify-content:center;align-items:center;flex-wrap:wrap;gap:2px 14px;padding:7px 12px;background:#c8102e;color:#fff;text-align:center;font-size:12px;line-height:1.35}.fries-offer[hidden]{display:none}.fries-offer strong{font-weight:800}.fries-offer span{font-variant-numeric:tabular-nums}.fries-offer progress{width:clamp(65px,11vw,136px);height:6px;appearance:none;border:0;border-radius:999px;background:#fff5;overflow:hidden}.fries-offer progress::-webkit-progress-bar{background:#fff5;border-radius:999px}.fries-offer progress::-webkit-progress-value{background:#fff;border-radius:999px}.fries-offer progress::-moz-progress-bar{background:#fff;border-radius:999px}@media(max-width:540px){.fries-offer{font-size:11px}}
 </style></head><body>
-<header><div class="fries-offer" id="friesOffer" hidden><strong>Free extra fries with a combo</strong><span id="friesCounter"></span></div><nav class="wrap nav" aria-label="Main menu"><a class="brand" href="#top">GLCA WORLD CUP CAFÉ</a><div class="nav-right"><a href="#order">Menu</a><button class="cart-toggle" type="button" id="openCart">My order (<b id="count">0</b>)</button></div></nav></header>
+<header><div class="fries-offer" id="friesOffer" hidden><strong>Free extra fries with a combo</strong><span id="friesCounter"></span><progress id="friesGoal" max="50" value="0" aria-label="Paid combo offers redeemed out of 50"></progress></div><nav class="wrap nav" aria-label="Main menu"><a class="brand" href="#top">GLCA WORLD CUP CAFÉ</a><div class="nav-right"><a href="#order">Menu</a><button class="cart-toggle" type="button" id="openCart">My order (<b id="count">0</b>)</button></div></nav></header>
 <main id="top"><section class="hero" aria-label="Café menu"><div class="wrap hero-in"><div class="hero-copy">
 <div class="kick">The café favorites</div>
 <h1>GOOD FOOD.<br>GOOD MOOD.</h1>
 <p class="desc">Burger + Fries + Shake</p>
 <div class="combo-line"><span>THE COMBO</span><strong>$12.50</strong></div>
 <button class="btn" type="button" data-add="combo">ADD COMBO — $12.50 <span aria-hidden="true">→</span></button>
-<div class="singles" id="order" aria-label="Burger and fries option">
-<div class="single"><div><strong>Burger + Fries</strong><small>$10.00</small></div><button class="plus" type="button" data-add="pair" aria-label="Add burger and fries">+</button></div>
+<div class="singles" id="order" aria-label="Order individually">
+<div class="single"><div><strong>Burger</strong><small>$6.50</small></div><button class="plus" type="button" data-add="burger" aria-label="Add burger">+</button></div>
+<div class="single"><div><strong>Fries</strong><small>$3.50</small></div><button class="plus" type="button" data-add="fries" aria-label="Add fries">+</button></div>
+<div class="single"><div><strong>Shake</strong><small>$3.75</small></div><button class="plus" type="button" data-add="milkshake" aria-label="Add shake">+</button></div>
 </div><p class="menu-note">Free ketchup &amp; mayo</p>
 <p class="status" id="menuStatus" role="status">Checking preorder availability…</p>
 </div><figure class="hero-art"><img src="/glca-cafe-hero.webp" width="1600" height="1200" fetchpriority="high" alt="Double cheeseburger, fries in a red diner basket, and a vanilla milkshake"></figure></div></section></main>
@@ -67,14 +69,13 @@ var products=[
 var el=function(id){return document.getElementById(id)};
 var cart={},catalog=[],squareCfg={},ready=false,idem="",pendingReturn=false;
 try{cart=JSON.parse(localStorage.getItem("glca-cafe-selection-v3")||"{}")||{}}catch(e){cart={}}
+if(cart.pair){cart.burger=Math.min(10,(cart.burger||0)+cart.pair);cart.fries=Math.min(10,(cart.fries||0)+cart.pair);delete cart.pair;try{localStorage.setItem("glca-cafe-selection-v3",JSON.stringify(cart))}catch(e){}}
 var save=function(){try{localStorage.setItem("glca-cafe-selection-v3",JSON.stringify(cart))}catch(e){}};
 var money=function(c){return new Intl.NumberFormat("en-US",{style:"currency",currency:"USD"}).format(c/100)};
 var norm=function(s){return String(s||"").toLowerCase().replace(/[^a-z0-9]+/g," ").trim()};
 var count=function(){return Object.keys(cart).reduce(function(s,id){return s+(cart[id]||0)},0)};
-var pair={key:"pair",name:"Burger + Fries",cents:1000};
-var cartProducts=[products[0],pair];
 function orderLines(){
- return products.filter(p=>p.key!=="milkshake").map(p=>({product:p,quantity:(p.key==="combo"?cart.combo:cart.pair)||0})).filter(x=>x.quantity>0);
+ return products.map(p=>({product:p,quantity:cart[p.key]||0})).filter(x=>x.quantity>0);
 }
 function squareMatch(p){
  return catalog.find(function(item){return item.available && item.priceCents===p.cents && p.aliases.includes(norm(item.name))})||null;
@@ -90,7 +91,7 @@ function status(message){
 function render(){
  var holder=el("cartItems");el("count").textContent=count();
  var subtotal=0,lines=[];
- cartProducts.forEach(function(p){
+ products.forEach(function(p){
   var n=cart[p.key]||0;if(!n)return;subtotal+=p.cents*n;
   lines.push('<div class="cart-row"><div><strong>'+p.name+'</strong><small>'+money(p.cents)+' each</small></div><div class="controls"><button type="button" data-dec="'+p.key+'" aria-label="Remove one '+p.name+'">−</button><span>'+n+'</span><button type="button" data-inc="'+p.key+'" aria-label="Add one '+p.name+'">+</button></div></div>');
  });
@@ -203,13 +204,14 @@ function renderFries(){
  var seconds=friesOffer?Math.max(0,Math.ceil((Date.parse(friesOffer.endsAt)-Date.now())/1000)):0;
  el("friesOffer").hidden=!seconds;
  if(!seconds)return;
+ el("friesGoal").value=friesOffer.paid;
  var time=[Math.floor(seconds/3600),Math.floor(seconds/60)%60,seconds%60].map(n=>String(n).padStart(2,"0")).join(":");
  if(Date.now()<Date.parse(friesOffer.opensAt)){
   el("friesCounter").textContent="Only 50 today · Preorders open at 7:45 a.m. Central";
   return;
  }
  el("friesCounter").textContent=friesOffer.available
-   ? friesOffer.available+" of 50 available · "+friesOffer.paid+" redeemed · Ends in "+time
+   ? friesOffer.available+" of 50 available · "+friesOffer.paid+" of 50 redeemed · Ends in "+time
    : "All 50 spots claimed · "+friesOffer.paid+" redeemed";
 }
 async function syncFries(){

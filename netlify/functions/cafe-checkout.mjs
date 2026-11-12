@@ -60,12 +60,6 @@ export default async (req) => {
       grouped.set(id,(grouped.get(id)||0)+qty);
       if(grouped.get(id)>10) return json({error:"Maximum quantity per item is 10."},400);
     }
-    if (cfg.environment==="production" && cfg.preorderStartsAt) {
-      const qtyAtPrice=price=>[...grouped].reduce((qty,[id,count])=>qty+(catalogMap.get(id).priceCents===price?count:0),0);
-      if (qtyAtPrice(375) || qtyAtPrice(650)!==qtyAtPrice(350)) {
-        return json({error:"Choose a combo or order burger and fries together."},400);
-      }
-    }
     const qtyTotal=[...grouped.values()].reduce((a,b)=>a+b,0);
     const subtotal=[...grouped].reduce((total,[id,qty])=>total+catalogMap.get(id).priceCents*qty,0);
     if(qtyTotal>30 || subtotal<=0 || subtotal>50000) return json({error:"Please contact the café for large or zero-price orders."},400);
