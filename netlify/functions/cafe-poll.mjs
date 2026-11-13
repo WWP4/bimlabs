@@ -1,6 +1,7 @@
 import { getDatabase } from "@netlify/database";
 const countries=new Set(["AW","AF","AO","AI","AX","AL","AD","AE","AR","AM","AS","AQ","TF","AG","AU","AT","AZ","BI","BE","BJ","BQ","BF","BD","BG","BH","BS","BA","BL","BY","BZ","BM","BO","BR","BB","BN","BT","BV","BW","CF","CA","CC","CH","CL","CN","CI","CM","CD","CG","CK","CO","KM","CV","CR","CU","CW","CX","KY","CY","CZ","DE","DJ","DM","DK","DO","DZ","EC","EG","ER","EH","ES","EE","ET","FI","FJ","FK","FR","FO","FM","GA","GB","GE","GG","GH","GI","GN","GP","GM","GW","GQ","GR","GD","GL","GT","GF","GU","GY","HK","HM","HN","HR","HT","HU","ID","IM","IN","IO","IE","IR","IQ","IS","IL","IT","JM","JE","JO","JP","KZ","KE","KG","KH","KI","KN","KR","KW","LA","LB","LR","LY","LC","LI","LK","LS","LT","LU","LV","MO","MF","MA","MC","MD","MG","MV","MX","MH","MK","ML","MT","MM","ME","MN","MP","MZ","MR","MS","MQ","MU","MW","MY","YT","NA","NC","NE","NF","NG","NI","NU","NL","NO","NP","NR","NZ","OM","PK","PA","PN","PE","PH","PW","PG","PL","PR","KP","PT","PY","PS","PF","QA","RE","RO","RU","RW","SA","SD","SN","SG","GS","SH","SJ","SB","SL","SV","SM","SO","PM","RS","SS","ST","SR","SK","SI","SE","SZ","SX","SC","SY","TC","TD","TG","TH","TJ","TK","TM","TL","TO","TT","TN","TR","TV","TW","TZ","UG","UA","UM","UY","US","UZ","VA","VC","VE","VG","VI","VN","VU","WF","WS","YE","ZA","ZM","ZW"]);
-const json=(data,status=200)=>Response.json(data,{status,headers:{"Cache-Control":"no-store"}});
+const json=(data,status=200,headers={})=>Response.json(data,{status,headers:{"Cache-Control":"no-store",...headers}});
+const normalize=value=>typeof value==="string"?value.normalize("NFKC").trim().replace(/\s+/gu," ").toLowerCase():"";
 export default async function(req){
   const {sql}=getDatabase();
   try{
@@ -11,11 +12,15 @@ export default async function(req){
       let ballot;
       try{ballot=JSON.parse(raw)}catch{return json({error:"Invalid ballot."},400)}
       const {id,item,special,country,dish}=ballot||{};
+      const first=normalize(ballot?.firstName),last=normalize(ballot?.lastName);
+      if(![first,last].every(name=>name.length<=80&&/\p{L}/u.test(name)))return json({error:"Enter your first and last name."},400);
+      if(/(?:^|;\s*)glca_poll_round2=1(?:;|$)/.test(req.headers.get("cookie")||""))return json({error:"This browser has already voted."},409);
       if(typeof id!=="string"||!/^[a-f0-9-]{36}$/.test(id)||!["chicken","fries"].includes(item)||
          !["meal","dessert"].includes(special)||!countries.has(country)||typeof dish!=="string"||dish.trim().length>100)
         return json({error:"Choose a menu item, a special, and a country or territory."},400);
-      await sql`INSERT INTO cafe_menu_ballots_round2 (id,item,special,country,dish) VALUES (${id},${item},${special},${country},${dish.trim()}) ON CONFLICT (id) DO NOTHING`;
-      return json({ok:true});
+      const inserted=await sql`INSERT INTO cafe_menu_ballots_round2 (id,item,special,country,dish,first_name,last_name) VALUES (${id},${item},${special},${country},${dish.trim()},${first},${last}) ON CONFLICT DO NOTHING RETURNING id`;
+      if(!inserted.length)return json({error:"A vote has already been recorded for this browser or name and country."},409);
+      return json({ok:true},200,{"Set-Cookie":"glca_poll_round2=1; Path=/; Max-Age=31536000; Secure; HttpOnly; SameSite=Lax"});
     }
     if(req.method!=="GET")return json({error:"Method not allowed."},405);
     const rows=await sql`SELECT item,special,country,count(*)::int AS votes FROM cafe_menu_ballots_round2 GROUP BY item,special,country`;
