@@ -14,11 +14,11 @@ export default async function(req){
       if(typeof id!=="string"||!/^[a-f0-9-]{36}$/.test(id)||!["chicken","fries"].includes(item)||
          !["meal","dessert"].includes(special)||!countries.has(country)||typeof dish!=="string"||dish.trim().length>100)
         return json({error:"Choose a menu item, a special, and a country or territory."},400);
-      await sql`INSERT INTO cafe_menu_ballots (id,item,special,country,dish) VALUES (${id},${item},${special},${country},${dish.trim()}) ON CONFLICT (id) DO NOTHING`;
+      await sql`INSERT INTO cafe_menu_ballots_round2 (id,item,special,country,dish) VALUES (${id},${item},${special},${country},${dish.trim()}) ON CONFLICT (id) DO NOTHING`;
       return json({ok:true});
     }
     if(req.method!=="GET")return json({error:"Method not allowed."},405);
-    const rows=await sql`SELECT item,special,country,count(*)::int AS votes FROM cafe_menu_ballots GROUP BY item,special,country`;
+    const rows=await sql`SELECT item,special,country,count(*)::int AS votes FROM cafe_menu_ballots_round2 GROUP BY item,special,country`;
     const results={item:{chicken:0,fries:0},special:{meal:0,dessert:0},country:{},total:0};
     for(const row of rows){
       results.item[row.item]+=row.votes;
