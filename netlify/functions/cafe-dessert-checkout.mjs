@@ -86,6 +86,6 @@ export default async function checkout(req) {
     return respond({ checkoutUrl: url, orderId });
   } catch (error) {
     console.error("Dessert checkout:", error.message);
-    return respond({ error: "Square could not start checkout. Please try again.", detail: /^Square (?:could not complete this request \(\d+\)|response did not contain)/.test(error.message) ? error.message : undefined }, 502);
+    return respond({ error: "Square could not start checkout. Please try again.", fields: error.fields, detail: /^Square (?:could not complete this request \(\d+\)|response did not contain)/.test(error.message) ? error.message : undefined }, 502);
   }
 }
