@@ -82,9 +82,10 @@ export default async function checkout(req) {
       pre_populated_data: { buyer_email: email }
     } }, cfg);
     const { url, order_id: orderId } = result.payment_link ?? {};
-    if (!orderId || !/^https:\/\/(?:square\.link|(?:checkout\.)?square\.site)\//.test(url || "")) throw Error();
+    if (!orderId || !/^https:\/\/(?:square\.link|(?:checkout\.)?square\.site)\//.test(url || "")) throw Error("Square response did not contain a supported payment link and order ID.");
     return respond({ checkoutUrl: url, orderId });
-  } catch {
-    return respond({ error: "Square could not start checkout. Please try again." }, 502);
+  } catch (error) {
+    console.error("Dessert checkout:", error.message);
+    return respond({ error: "Square could not start checkout. Please try again.", detail: /^Square (?:could not complete this request \(\d+\)|response did not contain)/.test(error.message) ? error.message : undefined }, 502);
   }
 }
