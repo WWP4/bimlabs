@@ -28,7 +28,7 @@ export default async function checkout(req) {
   if (Date.now() >= deadline) return respond({ error: "Dessert preorders are closed." }, 409);
   const cfg = settings();
   if (!ready(cfg) || cfg.environment !== "production") return respond({ error: "Dessert checkout is unavailable." }, 503);
-  const slot = globalThis.Netlify?.env?.get?.("GLCA_DESSERT_PICKUP_TIME") ?? process.env.GLCA_DESSERT_PICKUP_TIME;
+  const slot = "10:00";
   const pickupAt = validatePickup(pickupDay, slot, { ...cfg, pickupDays: [0], pickupSlots: [slot] });
   if (!pickupAt) return respond({ error: "Dessert pickup time has not been set." }, 503);
   let body;
@@ -75,7 +75,7 @@ export default async function checkout(req) {
         fulfillments: [{ type: "PICKUP", state: "PROPOSED", pickup_details: {
           schedule_type: "SCHEDULED", pickup_at: pickupAt,
           recipient: { display_name: name, email_address: email },
-          note: "Brazilian dessert preorder"
+          note: "Sunday pickup at GLCA Café, 10 AM–4 PM Central"
         } }]
       },
       checkout_options: { allow_tipping: false, ask_for_shipping_address: false, redirect_url: storefront + "/?checkout=returned" },
