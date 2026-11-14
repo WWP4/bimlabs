@@ -78,8 +78,7 @@ export default async function checkout(req) {
           note: "Sunday pickup at GLCA Café, 10 AM–4 PM Central"
         } }]
       },
-      checkout_options: { allow_tipping: false, ask_for_shipping_address: false, redirect_url: storefront + "/?checkout=returned" },
-      pre_populated_data: { buyer_email: email }
+      checkout_options: { allow_tipping: false, ask_for_shipping_address: false, redirect_url: storefront + "/?checkout=returned" }
     } }, cfg);
     const { url, order_id: orderId } = result.payment_link ?? {};
     if (!orderId || !/^https:\/\/(?:square\.link|(?:checkout\.)?square\.site)\//.test(url || "")) throw Error("Square response did not contain a supported payment link and order ID.");
