@@ -16,3 +16,8 @@
   from = "/checkout"
   to   = "/.netlify/functions/checkout"
   status = 200
+
+[[redirects]]
+  from = "/cafe-dessert"
+  to = "/cafe-dessert.html"
+  status = 200

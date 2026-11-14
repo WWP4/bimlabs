@@ -12,6 +12,7 @@ const storefront = "https://glca-todays-flavors.bimlabsstudio.chatgpt.site";
 
 export default async function checkout(req) {
   const origin = req.headers.get("origin");
+  const netlifyStorefront = ["https://www.bimlabsstudio.com", "https://bimlabsstudio.com"].includes(origin);
   const headers = {
     "Access-Control-Allow-Origin": storefront,
     "Access-Control-Allow-Methods": "POST, OPTIONS",
@@ -22,7 +23,7 @@ export default async function checkout(req) {
     for (const [key, value] of Object.entries(headers)) response.headers.set(key, value);
     return response;
   }
-  if (origin !== storefront) return respond({ error: "Invalid storefront." }, 403);
+  if (origin !== storefront && !netlifyStorefront) return respond({ error: "Invalid storefront." }, 403);
   if (req.method === "OPTIONS") return new Response(null, { status: 204, headers });
   if (req.method !== "POST") return respond({ error: "Method not allowed." }, 405);
   if (Date.now() >= deadline) return respond({ error: "Dessert preorders are closed." }, 409);
@@ -74,7 +75,7 @@ export default async function checkout(req) {
           note: "Sunday pickup at GLCA Café, 10 AM–4 PM Central"
         } }]
       },
-      checkout_options: { allow_tipping: false, ask_for_shipping_address: false, redirect_url: storefront + "/?checkout=returned" }
+      checkout_options: { allow_tipping: false, ask_for_shipping_address: false, redirect_url: netlifyStorefront ? origin + "/cafe-dessert?checkout=returned" : storefront + "/?checkout=returned" }
     } }, cfg);
     const { url, order_id: orderId } = result.payment_link ?? {};
     if (!orderId || !/^https:\/\/(?:square\.link|(?:checkout\.)?square\.site)\//.test(url || "")) throw Error("Square response did not contain a supported payment link and order ID.");
