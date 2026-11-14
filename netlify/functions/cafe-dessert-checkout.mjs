@@ -1,8 +1,8 @@
 import { json, ready, settings, square, validatePickup } from "../lib/cafe-square.mjs";
 
 const products = {
-  bala: ["Bala Baiana", 175],
-  bem: ["Bem-casado", 250],
+  bala4: ["Bala Baiana · 4-pack", 600],
+  bem4: ["Bem-casado · 4-pack", 900],
   bolo: ["Mini Bolo de Cenoura", 500],
   bundle: ["Tasting Bundle", 850]
 };
@@ -53,11 +53,7 @@ export default async function checkout(req) {
       !Number.isInteger(quantity) || quantity < 1 || quantity > 10)) {
     return respond({ error: "Choose between one and ten of each item." }, 400);
   }
-  const counts = { bala: 0, bem: 0, bolo: 0, bundle: 0, ...items };
-  const matched = Math.min(counts.bala, counts.bem, counts.bolo);
-  for (const id of ["bala", "bem", "bolo"]) counts[id] -= matched;
-  counts.bundle += matched;
-  const lineItems = Object.entries(counts).filter(([, quantity]) => quantity).map(([id, quantity]) => ({
+  const lineItems = entries.map(([id, quantity]) => ({
     name: products[id][0],
     quantity: String(quantity),
     base_price_money: { amount: products[id][1], currency: "USD" },
