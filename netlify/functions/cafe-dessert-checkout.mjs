@@ -1,8 +1,8 @@
 import { json, ready, settings, square, validatePickup } from "../lib/cafe-square.mjs";
 
 const products = {
-  bala4: ["Bala Baiana · 4-pack", 600],
-  bem4: ["Bem-casado · 4-pack", 900],
+  bala3: ["Bala Baiana · 3-pack", 450],
+  bem3: ["Bem-casado · 3-pack", 675],
   bolo: ["Mini Bolo de Cenoura", 500],
   bundle: ["Tasting Bundle", 850]
 };
