@@ -6,6 +6,10 @@ export const config = { schedule: "* * * * *" };
 const recipients = ["info@wonderworldplaysets.com", "tricitycanvasproducts@gmail.com"];
 const env = key => globalThis.Netlify?.env?.get?.(key) ?? process.env[key];
 
+const dessertStart = Date.parse("2026-11-14T00:00:00-06:00");
+const dessertEnd = Date.parse("2026-11-15T00:00:00-06:00");
+const dessertNote = "Sunday pickup at GLCA Café, 10 AM–4 PM Central";
+
 function ticket(order, fulfillment, timeZone) {
   const pickup = fulfillment.pickup_details;
   const contact = pickup.recipient || {};
@@ -16,11 +20,11 @@ function ticket(order, fulfillment, timeZone) {
     "GLCA CAFÉ · PAID ORDER",
     "Order " + order.id,
     pickup.note,
-    "Service time: " + when,
+    pickup.note === dessertNote ? undefined : "Service time: " + when,
     "Name: " + (contact.display_name || "Not provided"),
     contact.phone_number && "Phone: " + contact.phone_number,
     "",
-    ...(order.line_items || []).map(item => item.quantity + " × " + item.name)
+    ...(order.line_items || []).map(item => item.quantity + " × " + item.name + (pickup.note === dessertNote && item.note ? " (" + item.note + ")" : ""))
   ].filter(line => line !== undefined && line !== false).join("\n");
 }
 
@@ -34,7 +38,7 @@ async function sendTicket(order, fulfillment, recipient, cfg, sql) {
     },
     body:JSON.stringify({
       from:env("BOOKING_FROM_EMAIL"), to:[recipient],
-      subject:"GLCA Café paid order #" + order.id.slice(-8),
+      subject:(fulfillment.pickup_details.note === dessertNote ? "GLCA Café paid dessert order #" : "GLCA Café paid order #") + order.id.slice(-8),
       text:ticket(order,fulfillment,cfg.timeZone)
     }),
     signal:AbortSignal.timeout(8000)
@@ -48,11 +52,15 @@ async function sendTicket(order, fulfillment, recipient, cfg, sql) {
 
 export default async () => {
   const cfg = settings();
-  const start = Date.parse(cfg.preorderStartsAt);
-  const end = Date.parse(cfg.preorderEndsAt);
+  const burgerStart = Date.parse(cfg.preorderStartsAt);
+  const burgerEnd = Date.parse(cfg.preorderEndsAt);
   const now = Date.now();
-  if (!ready(cfg) || cfg.environment !== "production" || !Number.isFinite(start) ||
-      !Number.isFinite(end) || now < start || now > end + 86400000) return new Response(null,{status:204});
+  const burgerActive = Number.isFinite(burgerStart) && now >= burgerStart && now <= burgerEnd + 86400000;
+  const dessertActive = now >= dessertStart && now <= dessertEnd + 86400000;
+  if (!ready(cfg) || cfg.environment !== "production" || (!burgerActive && !dessertActive)) {
+    return new Response(null, { status:204 });
+  }
+  const start = Math.min(burgerActive ? burgerStart : Infinity, dessertActive ? dessertStart : Infinity);
   if (!env("RESEND_API_KEY") || !env("BOOKING_FROM_EMAIL")) {
     console.error("Café ticket email sender is missing");
     return new Response(null,{status:503});
@@ -80,6 +88,10 @@ export default async () => {
         if (order?.location_id !== cfg.locationId || order.source?.name !== "GLCA Café") continue;
         const fulfillment = order.fulfillments?.find(entry => entry.type === "PICKUP" && entry.pickup_details?.pickup_at);
         if (!fulfillment) continue;
+        const created = Date.parse(order.created_at);
+        const dessert = fulfillment.pickup_details.note === dessertNote;
+        if (dessert ? !dessertActive || !(created >= dessertStart && created < dessertEnd)
+                    : !burgerActive || !(created >= burgerStart)) continue;
         const results = await Promise.allSettled(pending.map(address => sendTicket(order,fulfillment,address,cfg,sql)));
         for (const result of results) if (result.status === "rejected") {
           console.error("Café ticket send failed:",result.reason.message);
