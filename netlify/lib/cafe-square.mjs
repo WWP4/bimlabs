@@ -36,7 +36,9 @@ export async function square(path, options = {}, config = settings()) {
   if (!res.ok || body.errors?.length) {
     const errors = (body.errors || []).map(x => x.code).join(", ");
     console.error("Square API request failed", res.status, errors); // Never log tokens or customer data.
-    throw new Error("Square could not complete this request (" + res.status + ").");
+    const error = new Error("Square could not complete this request (" + res.status + ").");
+    error.fields = (body.errors || []).map(x => [x.code, x.field].filter(v => /^[a-zA-Z0-9_.\u005b\u005d-]+$/.test(v ?? "")).join(":"));
+    throw error;
   }
   return body;
 }
